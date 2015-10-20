@@ -16,69 +16,41 @@ namespace Tera.DamageMeter
             InitializeComponent();
         }
 
-        private static string FormatValue(long value)
-        {
-            int exponent = 0;
-            decimal decimalValue = value;
-            decimal rounded;
-            while (Math.Abs(rounded = (long)decimal.Round(decimalValue)) >= 1000)
-            {
-                decimalValue /= 10;
-                exponent++;
-            }
-            while (exponent % 3 != 0)
-            {
-                rounded *= 0.1m;
-                exponent++;
-            }
-            string suffix;
-            const string thinspace = "\u2009";
-            switch (exponent)
-            {
-                case 0:
-                    suffix = "";
-                    break;
-                case 3:
-                    suffix = thinspace + "k";
-                    break;
-                case 6:
-                    suffix = thinspace + "M";
-                    break;
-                case 9:
-                    suffix = thinspace + "B";
-                    break;
-                default:
-                    suffix = thinspace + "E" + thinspace + exponent;
-                    break;
-            }
-            return rounded.ToString() + suffix;
-        }
-
-        public void Fetch(PlayerStats playerStats)
+        public void Fetch(PlayerStats playerStats, long totalDamage)
         {
             PlayerNameLabel.Text = playerStats.Name;
             PlayerClassLabel.Text = playerStats.Class.ToString();
-            DamageLabel.Text = FormatValue(playerStats.Damage);
-            HealLabel.Text = FormatValue(playerStats.Heal);
+            DamageLabel.Text = Helpers.FormatValue(playerStats.Dealt.Damage);
+            HealLabel.Text = Helpers.FormatValue(playerStats.Dealt.Heal);
+            InfoLabel.Text = string.Format("Critrate {0:f1}% Hits {1} Received {2}",
+                                           (playerStats.Dealt.Crits * 100.0 / playerStats.Dealt.Hits),
+                                           playerStats.Dealt.Hits,
+                                           Helpers.FormatValue(playerStats.Received.Damage));
+            DamagePercentLabel.Text = (playerStats.Dealt.Damage * 100.0 / totalDamage).ToString("f1") + "%";
 
-            PlayerNameLabel.Left = PlayerClassLabel.Right;
-            int pos = Width - 4;
-            HealLabel.Visible = playerStats.Heal != 0;
+
+            HealLabel.Visible = playerStats.Dealt.Heal != 0;
             DamageHealSeparator.Visible = HealLabel.Visible;
-            if (HealLabel.Visible)
+
+            // Positioning
+            PlayerNameLabel.Left = PlayerClassLabel.Right;
+            DamagePercentLabel.Left = Width - 4 - DamagePercentLabel.Width;
+
+            int pos = Width - 4;
+            if (DamageLabel.Visible)
             {
-                pos -= HealLabel.Width;
-                HealLabel.Left = pos;
+                pos -= DamageLabel.Width;
+                DamageLabel.Left = pos;
             }
             if (DamageHealSeparator.Visible)
             {
                 pos -= DamageHealSeparator.Width;
                 DamageHealSeparator.Left = pos;
             }
-            if (DamageLabel.Visible)
+            if (HealLabel.Visible)
             {
-                pos -= DamageLabel.Width;
-                DamageLabel.Left = pos;
+                pos -= HealLabel.Width;
+                HealLabel.Left = pos;
             }
         }
     }

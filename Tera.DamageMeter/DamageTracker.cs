@@ -30,21 +30,27 @@ namespace Tera.DamageMeter
         public void Update(EachSkillResultServerMessage message)
         {
             var source = _entityRegistry.Get(message.Source) as User;
-            var target = _entityRegistry.Get(message.Source) as User;
-
             if (source != null)
             {
-                var stats = GetOrCreate(source);
-                stats.Damage += message.Damage;
-                stats.Heal += message.Heal;
+                var playerStats = GetOrCreate(source);
+                UpdateStats(playerStats.Dealt, message);
             }
 
+            var target = _entityRegistry.Get(message.Target) as User;
             if (target != null)
             {
-                var stats = GetOrCreate(target);
-                stats.DamageReceived += message.Damage;
-                stats.HealReceived += message.Heal;
+                var playerStats = GetOrCreate(target);
+                UpdateStats(playerStats.Received, message);
             }
+        }
+
+        private void UpdateStats(Stats stats, EachSkillResultServerMessage message)
+        {
+            stats.Damage += message.Damage;
+            stats.Heal += message.Heal;
+            stats.Hits++;
+            if (message.IsCritical)
+                stats.Crits++;
         }
 
         public IEnumerator<PlayerStats> GetEnumerator()

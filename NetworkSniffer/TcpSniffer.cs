@@ -8,6 +8,7 @@ namespace NetworkSniffer
 {
     public class TcpSniffer
     {
+        public string TcpLogFile { get; set; }
         private readonly object _lock = new object();
 
         public event Action<TcpConnection> NewConnection;
@@ -52,7 +53,8 @@ namespace NetworkSniffer
                     if (!isInterestingConnection)
                         return;
 
-                    File.AppendAllText("TCP", string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n", connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived, connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber), tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber, connection.BufferedPacketDescription));
+                    if (!string.IsNullOrEmpty(TcpLogFile))
+                        File.AppendAllText(TcpLogFile, string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n", connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived, connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber), tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber, connection.BufferedPacketDescription));
                     connection.HandleTcpReceived(tcpPacket.SequenceNumber, tcpPacket.Payload);
                 }
             }

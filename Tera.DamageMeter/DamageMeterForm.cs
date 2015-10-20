@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Tera.Data;
-using Tera.Protocol;
 using Tera.Protocol.Game;
 using Tera.Sniffer;
 using Message = Tera.Protocol.Message;
@@ -46,15 +41,26 @@ namespace Tera.DamageMeter
             Invoke(action);
         }
 
+
+        public void Fetch()
+        {
+            if (_damageTracker != null)
+            {
+                Fetch(_damageTracker);
+            }
+        }
+
         public void Fetch(IEnumerable<PlayerStats> playerStatsSequence)
         {
-            playerStatsSequence =
-                playerStatsSequence.OrderByDescending(playerStats => playerStats.Damage + playerStats.Heal);
+            playerStatsSequence = playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
+            var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
+            TotalDamageLabel.Text = Helpers.FormatValue(totalDamage);
+            TotalDamageLabel.Left = HeaderPanel.Width - TotalDamageLabel.Width;
             int pos = 0;
             var visiblePlayerStats = new HashSet<PlayerStats>();
             foreach (var playerStats in playerStatsSequence)
             {
-                if (pos > Height)
+                if (pos > ListPanel.Height)
                     break;
 
                 visiblePlayerStats.Add(playerStats);
@@ -63,12 +69,13 @@ namespace Tera.DamageMeter
                 if (playerStatsControl == null)
                 {
                     playerStatsControl = new PlayerStatsControl();
+                    playerStatsControl.Width = ListPanel.Width;
                     _controls.Add(playerStats, playerStatsControl);
-                    playerStatsControl.Parent = this;
+                    playerStatsControl.Parent = ListPanel;
                 }
                 playerStatsControl.Top = pos;
                 pos += playerStatsControl.Height;
-                playerStatsControl.Fetch(playerStats);
+                playerStatsControl.Fetch(playerStats, totalDamage);
             }
 
             var invisibleControls = _controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -83,8 +90,8 @@ namespace Tera.DamageMeter
         {
             InvokeAction(() =>
                 {
-                    if(!Text.Contains("connected"))
-                    Text += " connected";
+                    if (!Text.Contains("connected"))
+                        Text += " connected";
                     _entityRegistry = new EntityRegistry();
                     _damageTracker = new DamageTracker(_entityRegistry);
                 });
@@ -109,13 +116,16 @@ namespace Tera.DamageMeter
         {
             _teraSniffer.Enabled = false;
         }
-
-        private void timer1_Tick(object sender, EventArgs e)
+        
+        private void ResetButton_Click(object sender, EventArgs e)
         {
-            if (_damageTracker != null)
-            {
-                Fetch(_damageTracker);
-            }
+            _damageTracker = new DamageTracker(_entityRegistry);
+            Fetch();
+        }
+
+        private void RefershTimer_Tick(object sender, EventArgs e)
+        {
+            Fetch();
         }
     }
 }
