@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Sniffer", "Tera.Sniffer\Tera.Sniffer.csproj", "{AB53A885-EA95-4ABC-8D65-32E8E80485B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Protocol", "Tera.Protocol\Tera.Protocol.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60571443-038A-4337-9ED2-D4164D35B0F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter", "Tera.DamageMeter\Tera.DamageMeter.csproj", "{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Data", "Tera.Data\Tera.Data.csproj", "{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB53A885-EA95-4ABC-8D65-32E8E80485B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB53A885-EA95-4ABC-8D65-32E8E80485B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB53A885-EA95-4ABC-8D65-32E8E80485B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB53A885-EA95-4ABC-8D65-32E8E80485B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B431143-1A77-44FF-8BC3-926FEC8AD97C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B431143-1A77-44FF-8BC3-926FEC8AD97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B431143-1A77-44FF-8BC3-926FEC8AD97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B431143-1A77-44FF-8BC3-926FEC8AD97C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
