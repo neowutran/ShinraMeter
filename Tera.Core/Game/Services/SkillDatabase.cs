@@ -39,6 +39,8 @@ namespace Tera.Game
                 var index = _userSkilldata[rgc2].BinarySearch(searchSkill, comparer);
                 if (index < 0)
                     index = ~index - 1;
+                if (index < 0)
+                    continue;
 
                 var item = _userSkilldata[rgc2][index];
                 return item;

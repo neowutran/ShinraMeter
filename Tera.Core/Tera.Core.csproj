@@ -34,6 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\Region.cs" />
     <Compile Include="Game\Server.cs" />
     <Compile Include="Game\Services\Helpers.cs" />
     <Compile Include="Game\Skill.cs" />

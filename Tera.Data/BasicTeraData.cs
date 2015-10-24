@@ -18,6 +18,7 @@ namespace Tera.Data
 
         public string ResourceDirectory { get; private set; }
         public IEnumerable<Server> Servers { get; private set; }
+        public IEnumerable<Region> Regions { get;private set; }
         private readonly Func<string, TeraData> _dataForRegion;
 
         public TeraData DataForRegion(string region)
@@ -34,7 +35,8 @@ namespace Tera.Data
         {
             ResourceDirectory = resourceDirectory;
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
-            Servers = GetServers(Path.Combine(ResourceDirectory, "servers.txt"));
+            Servers = GetServers(Path.Combine(ResourceDirectory, "servers.txt")).ToList();
+            Regions = GetRegions(Path.Combine(ResourceDirectory, "regions.txt")).ToList();
         }
 
         private static string FindResourceDirectory()
@@ -50,13 +52,20 @@ namespace Tera.Data
             throw new InvalidOperationException("Could not find the resource directory");
         }
 
-        private static List<Server> GetServers(string filename)
+        private static IEnumerable<Region> GetRegions(string filename)
+        {
+            return File.ReadAllLines(filename)
+                       .Where(s => !string.IsNullOrWhiteSpace(s))
+                       .Select(s => s.Split(new[] { ' ' }))
+                       .Select(parts => new Region(parts[0], parts[1]));
+        }
+
+        private static IEnumerable<Server> GetServers(string filename)
         {
             return File.ReadAllLines(filename)
                        .Where(s => !string.IsNullOrWhiteSpace(s))
                        .Select(s => s.Split(new[] { ' ' }, 3))
-                       .Select(parts => new Server(parts[2], parts[1], parts[0]))
-                       .ToList();
+                       .Select(parts => new Server(parts[2], parts[1], parts[0]));
         }
     }
 }
