@@ -14,7 +14,6 @@ TeraSniffer and Damage Meter by Gothos.
 
   Used a modified version of DataTools to extract the list from this dump.
 
-
 * TeraEmulator was very helpful for understanding the packet structures.
 
-  https://github.com/r4ymonf/TeraEmulator
+   https://github.com/r4ymonf/TeraEmulator

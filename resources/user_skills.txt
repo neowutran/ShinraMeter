@@ -1,0 +1,2067 @@
+4999 Common Common Common Self-Destruct
+10000 Common Common Berserker UNK
+10000 Common Common Lancer UNK
+10001 Common Common Warrior UNK
+10002 Common Common Archer UNK
+10002 Common Common Mystic UNK
+10002 Common Common Priest UNK
+10002 Common Common Slayer UNK
+10002 Common Common Sorcerer UNK
+10100 Common Common Archer Arrow I
+10100 Common Common Berserker Combo Attack I
+10100 Common Common Mystic Sharan Bolt I
+10100 Common Common Gunner Blast I
+10100 Common Common Lancer Combo Attack I
+10100 Common Common Priest Divine Radiance I
+10100 Common Common Slayer Combo Attack I
+10100 Common Common Sorcerer Fireball I
+10100 Common Common Warrior Combo Attack I
+10100 Common Common Reaper Spiral Barrage I
+10200 Common Common Archer Arrow II
+10200 Common Common Berserker Combo Attack II
+10200 Common Common Mystic Sharan Bolt II
+10200 Common Common Gunner Blast II
+10200 Common Common Lancer Combo Attack II
+10200 Common Common Priest Divine Radiance II
+10200 Common Common Slayer Combo Attack II
+10200 Common Common Sorcerer Fireball II
+10200 Common Common Warrior Combo Attack II
+10200 Common Common Reaper Spiral Barrage II
+10300 Common Common Archer Arrow III
+10300 Common Common Berserker Combo Attack III
+10300 Common Common Mystic Sharan Bolt III
+10300 Common Common Gunner Blast III
+10300 Common Common Lancer Combo Attack III
+10300 Common Common Priest Divine Radiance III
+10300 Common Common Slayer Combo Attack III
+10300 Common Common Sorcerer Fireball III
+10300 Common Common Warrior Combo Attack III
+10300 Common Common Reaper Spiral Barrage III
+10400 Common Common Archer Arrow IV
+10400 Common Common Berserker Combo Attack IV
+10400 Common Common Mystic Sharan Bolt IV
+10400 Common Common Gunner Blast IV
+10400 Common Common Lancer Combo Attack IV
+10400 Common Common Priest Divine Radiance IV
+10400 Common Common Slayer Combo Attack IV
+10400 Common Common Sorcerer Fireball IV
+10400 Common Common Warrior Combo Attack IV
+10500 Common Common Archer Arrow V
+10500 Common Common Berserker Combo Attack V
+10500 Common Common Mystic Sharan Bolt V
+10500 Common Common Gunner Blast V
+10500 Common Common Lancer Combo Attack V
+10500 Common Common Priest Divine Radiance V
+10500 Common Common Slayer Combo Attack V
+10500 Common Common Sorcerer Fireball V
+10500 Common Common Warrior Combo Attack V
+10600 Common Common Archer Arrow VI
+10600 Common Common Berserker Combo Attack VI
+10600 Common Common Mystic Sharan Bolt VI
+10600 Common Common Gunner Blast VI
+10600 Common Common Lancer Combo Attack VI
+10600 Common Common Priest Divine Radiance VI
+10600 Common Common Slayer Combo Attack VI
+10600 Common Common Sorcerer Fireball VI
+10600 Common Common Warrior Combo Attack VI
+10700 Common Common Archer Arrow VII
+10700 Common Common Berserker Combo Attack VII
+10700 Common Common Mystic Sharan Bolt VII
+10700 Common Common Gunner Blast VII
+10700 Common Common Lancer Combo Attack VII
+10700 Common Common Priest Divine Radiance VII
+10700 Common Common Slayer Combo Attack VII
+10700 Common Common Sorcerer Fireball VII
+10700 Common Common Warrior Combo Attack VII
+10800 Common Common Archer Arrow VIII
+10800 Common Common Berserker Combo Attack VIII
+10800 Common Common Mystic Sharan Bolt VIII
+10800 Common Common Gunner Blast VIII
+10800 Common Common Lancer Combo Attack VIII
+10800 Common Common Priest Divine Radiance VIII
+10800 Common Common Slayer Combo Attack VIII
+10800 Common Common Sorcerer Fireball VIII
+10800 Common Common Warrior Combo Attack VIII
+10900 Common Common Archer Arrow IX
+10900 Common Common Berserker Combo Attack IX
+10900 Common Common Mystic Sharan Bolt IX
+10900 Common Common Gunner Blast IX
+10900 Common Common Lancer Combo Attack IX
+10900 Common Common Priest Divine Radiance IX
+10900 Common Common Slayer Combo Attack IX
+10900 Common Common Sorcerer Fireball IX
+10900 Common Common Warrior Combo Attack IX
+11000 Common Common Archer Arrow X
+11000 Common Common Berserker Combo Attack X
+11000 Common Common Mystic Sharan Bolt X
+11000 Common Common Gunner Blast X
+11000 Common Common Lancer Combo Attack X
+11000 Common Common Priest Divine Radiance X
+11000 Common Common Slayer Combo Attack X
+11000 Common Common Sorcerer Fireball X
+11000 Common Common Warrior Combo Attack X
+11010 Common Common Warrior UNK
+11020 Common Common Warrior UNK
+11100 Common Common Archer Arrow XI
+11100 Common Common Berserker Combo Attack XI
+11100 Common Common Mystic Sharan Bolt XI
+11100 Common Common Gunner Blast XI
+11100 Common Common Lancer Combo Attack XI
+11100 Common Common Priest Divine Radiance XI
+11100 Common Common Slayer Combo Attack XI
+11100 Common Common Sorcerer Fireball XI
+11100 Common Common Warrior Combo Attack XI
+11200 Common Common Archer Arrow XII
+11200 Common Common Berserker Combo Attack XII
+11200 Common Common Mystic Sharan Bolt XII
+11200 Common Common Gunner Blast XII
+11200 Common Common Lancer Combo Attack XII
+11200 Common Common Priest Divine Radiance XII
+11200 Common Common Slayer Combo Attack XII
+11200 Common Common Sorcerer Fireball XII
+11200 Common Common Warrior Combo Attack XII
+12024 Common Common Lancer UNK
+12030 Common Common Lancer UNK
+13010 Common Common Slayer UNK
+13011 Common Common Slayer UNK
+13020 Common Common Slayer UNK
+13030 Common Common Slayer UNK
+14010 Common Common Berserker UNK
+14040 Common Common Berserker UNK
+15010 Common Common Sorcerer UNK
+15020 Common Common Sorcerer UNK
+19100 Human Common Common UNK
+19101 Human Common Common UNK
+19102 Human Common Common UNK
+19200 Highelf Common Common UNK
+19201 Highelf Common Common UNK
+19300 Castanic Common Common UNK
+19301 Castanic Common Common UNK
+19302 Castanic Common Common UNK
+19400 Aman Common Common UNK
+19401 Aman Common Common UNK
+19402 Aman Common Common UNK
+19500 Popori Common Common UNK
+19501 Popori Common Common UNK
+19600 Baraka Male Common UNK
+19601 Baraka Male Common UNK
+19602 Baraka Male Common UNK
+20100 Common Common Archer Arrow Volley I
+20100 Common Common Berserker Axe Block
+20100 Common Common Mystic Corruption Ring I
+20100 Common Common Gunner Bombardment I
+20100 Common Common Lancer Stand Fast I
+20100 Common Common Priest Regeneration Circle I
+20100 Common Common Slayer Knockdown Strike I
+20100 Common Common Sorcerer Ice Needle I
+20100 Common Common Warrior Evasive Roll
+20200 Common Common Archer Arrow Volley II
+20200 Common Common Mystic Corruption Ring II
+20200 Common Common Gunner Bombardment II
+20200 Common Common Priest Regeneration Circle II
+20200 Common Common Slayer Knockdown Strike II
+20200 Common Common Sorcerer Ice Needle II
+20300 Common Common Archer Arrow Volley III
+20300 Common Common Mystic Corruption Ring III
+20300 Common Common Gunner Bombardment III
+20300 Common Common Priest Regeneration Circle III
+20300 Common Common Slayer Knockdown Strike III
+20300 Common Common Sorcerer Ice Needle III
+20400 Common Common Archer Arrow Volley IV
+20400 Common Common Mystic Corruption Ring IV
+20400 Common Common Gunner Bombardment IV
+20400 Common Common Priest Regeneration Circle IV
+20400 Common Common Slayer Knockdown Strike IV
+20400 Common Common Sorcerer Ice Needle IV
+20500 Common Common Archer Arrow Volley V
+20500 Common Common Mystic Corruption Ring V
+20500 Common Common Gunner Bombardment V
+20500 Common Common Priest Regeneration Circle V
+20500 Common Common Slayer Knockdown Strike V
+20500 Common Common Sorcerer Ice Needle V
+20600 Common Common Archer Arrow Volley VI
+20600 Common Common Mystic Corruption Ring VI
+20600 Common Common Gunner Bombardment VI
+20600 Common Common Priest Regeneration Circle VI
+20600 Common Common Slayer Knockdown Strike VI
+20600 Common Common Sorcerer Ice Needle VI
+20700 Common Common Archer Arrow Volley VII
+20700 Common Common Mystic Corruption Ring VII
+20700 Common Common Priest Regeneration Circle VII
+20700 Common Common Slayer Knockdown Strike VII
+20700 Common Common Sorcerer Ice Needle VII
+20800 Common Common Archer Arrow Volley VIII
+20800 Common Common Mystic Corruption Ring VIII
+20800 Common Common Priest Regeneration Circle VIII
+20800 Common Common Slayer Knockdown Strike VIII
+20800 Common Common Sorcerer Ice Needle VIII
+20900 Common Common Archer Arrow Volley IX
+20900 Common Common Mystic Corruption Ring IX
+20900 Common Common Priest Regeneration Circle IX
+20900 Common Common Slayer Knockdown Strike IX
+20900 Common Common Sorcerer Ice Needle IX
+21000 Common Common Archer Arrow Volley X
+21000 Common Common Mystic Corruption Ring X
+21000 Common Common Slayer Knockdown Strike X
+21000 Common Common Sorcerer Ice Needle X
+21100 Common Common Archer Arrow Volley XI
+21100 Common Common Slayer Knockdown Strike XI
+30100 Common Common Archer Radiant Arrow I
+30100 Common Common Berserker Thunder Strike I
+30100 Common Common Mystic Titanic Wrath I
+30100 Common Common Gunner Scattershot I
+30100 Common Common Lancer Onslaught I
+30100 Common Common Priest Healing Circle I
+30100 Common Common Slayer Whirlwind I
+30100 Common Common Sorcerer Lightning Trap I
+30100 Common Common Warrior Torrent of Blows I
+30100 Common Common Reaper Double Shear I
+30200 Common Common Archer Radiant Arrow II
+30200 Common Common Berserker Thunder Strike II
+30200 Common Common Mystic Titanic Wrath II
+30200 Common Common Gunner Scattershot II
+30200 Common Common Lancer Onslaught II
+30200 Common Common Priest Healing Circle II
+30200 Common Common Slayer Whirlwind II
+30200 Common Common Sorcerer Lightning Trap II
+30200 Common Common Warrior Torrent of Blows II
+30200 Common Common Reaper Double Shear II
+30300 Common Common Archer Radiant Arrow III
+30300 Common Common Berserker Thunder Strike III
+30300 Common Common Mystic Titanic Wrath III
+30300 Common Common Gunner Scattershot III
+30300 Common Common Lancer Onslaught III
+30300 Common Common Priest Healing Circle III
+30300 Common Common Slayer Whirlwind III
+30300 Common Common Sorcerer Lightning Trap III
+30300 Common Common Warrior Torrent of Blows III
+30300 Common Common Reaper Double Shear III
+30400 Common Common Archer Radiant Arrow IV
+30400 Common Common Berserker Thunder Strike IV
+30400 Common Common Gunner Scattershot IV
+30400 Common Common Lancer Onslaught IV
+30400 Common Common Priest Healing Circle IV
+30400 Common Common Slayer Whirlwind IV
+30400 Common Common Warrior Torrent of Blows IV
+30500 Common Common Archer Radiant Arrow V
+30500 Common Common Berserker Thunder Strike V
+30500 Common Common Gunner Scattershot V
+30500 Common Common Lancer Onslaught V
+30500 Common Common Priest Healing Circle V
+30500 Common Common Slayer Whirlwind V
+30500 Common Common Warrior Torrent of Blows V
+30600 Common Common Archer Radiant Arrow VI
+30600 Common Common Berserker Thunder Strike VI
+30600 Common Common Gunner Scattershot VI
+30600 Common Common Lancer Onslaught VI
+30600 Common Common Priest Healing Circle VI
+30600 Common Common Slayer Whirlwind VI
+30600 Common Common Warrior Torrent of Blows VI
+30700 Common Common Archer Radiant Arrow VII
+30700 Common Common Berserker Thunder Strike VII
+30700 Common Common Gunner Scattershot VII
+30700 Common Common Lancer Onslaught VII
+30700 Common Common Priest Healing Circle VII
+30700 Common Common Slayer Whirlwind VII
+30700 Common Common Warrior Torrent of Blows VII
+30800 Common Common Archer Radiant Arrow VIII
+30800 Common Common Berserker Thunder Strike VIII
+30800 Common Common Gunner Scattershot VIII
+30800 Common Common Lancer Onslaught VIII
+30800 Common Common Slayer Whirlwind VIII
+30800 Common Common Warrior Torrent of Blows VIII
+30900 Common Common Archer Radiant Arrow IX
+30900 Common Common Berserker Thunder Strike IX
+30900 Common Common Gunner Scattershot IX
+30900 Common Common Slayer Whirlwind IX
+30900 Common Common Warrior Torrent of Blows IX
+31000 Common Common Berserker Thunder Strike X
+31000 Common Common Gunner Scattershot X
+31000 Common Common Slayer Whirlwind X
+31100 Common Common Gunner Scattershot XI
+31100 Common Common Slayer Whirlwind XI
+40100 Common Common Archer Penetrating Arrow I
+40100 Common Common Berserker Flatten I
+40100 Common Common Mystic Ancient Binding I
+40100 Common Common Gunner Point Blank I
+40100 Common Common Lancer Challenging Shout I
+40100 Common Common Slayer Evasive Roll
+40100 Common Common Sorcerer Arcane Pulse I
+40100 Common Common Warrior Rain of Blows I
+40100 Common Common Reaper Sundering Strike I
+40200 Common Common Archer Penetrating Arrow II
+40200 Common Common Berserker Flatten II
+40200 Common Common Mystic Ancient Binding II
+40200 Common Common Gunner Point Blank II
+40200 Common Common Lancer Challenging Shout II
+40200 Common Common Slayer Evasive Roll II
+40200 Common Common Sorcerer Arcane Pulse II
+40200 Common Common Warrior Rain of Blows II
+40200 Common Common Reaper Sundering Strike II
+40300 Common Common Archer Penetrating Arrow III
+40300 Common Common Berserker Flatten III
+40300 Common Common Gunner Point Blank III
+40300 Common Common Lancer Challenging Shout III
+40300 Common Common Sorcerer Arcane Pulse III
+40300 Common Common Warrior Rain of Blows III
+40300 Common Common Reaper Sundering Strike III
+40400 Common Common Archer Penetrating Arrow IV
+40400 Common Common Berserker Flatten IV
+40400 Common Common Gunner Point Blank IV
+40400 Common Common Lancer Challenging Shout IV
+40400 Common Common Sorcerer Arcane Pulse IV
+40400 Common Common Warrior Rain of Blows IV
+40500 Common Common Archer Penetrating Arrow V
+40500 Common Common Berserker Flatten V
+40500 Common Common Gunner Point Blank V
+40500 Common Common Lancer Challenging Shout V
+40500 Common Common Sorcerer Arcane Pulse V
+40500 Common Common Warrior Rain of Blows V
+40600 Common Common Archer Penetrating Arrow VI
+40600 Common Common Berserker Flatten VI
+40600 Common Common Gunner Point Blank VI
+40600 Common Common Lancer Challenging Shout VI
+40600 Common Common Sorcerer Arcane Pulse VI
+40600 Common Common Warrior Rain of Blows VI
+40700 Common Common Archer Penetrating Arrow VII
+40700 Common Common Berserker Flatten VII
+40700 Common Common Gunner Point Blank VII
+40700 Common Common Lancer Challenging Shout VII
+40700 Common Common Sorcerer Arcane Pulse VII
+40700 Common Common Warrior Rain of Blows VII
+40800 Common Common Archer Penetrating Arrow VIII
+40800 Common Common Berserker Flatten VIII
+40800 Common Common Gunner Point Blank VIII
+40800 Common Common Lancer Challenging Shout VIII
+40800 Common Common Sorcerer Arcane Pulse VIII
+40800 Common Common Warrior Rain of Blows VIII
+40900 Common Common Archer Penetrating Arrow IX
+40900 Common Common Berserker Flatten IX
+40900 Common Common Gunner Point Blank IX
+40900 Common Common Lancer Challenging Shout IX
+40900 Common Common Sorcerer Arcane Pulse IX
+40900 Common Common Warrior Rain of Blows IX
+41000 Common Common Archer Penetrating Arrow X
+41000 Common Common Berserker Flatten X
+41000 Common Common Warrior Rain of Blows X
+41100 Common Common Archer Penetrating Arrow XI
+41100 Common Common Berserker Flatten XI
+41100 Common Common Warrior Rain of Blows XI
+41200 Common Common Archer Penetrating Arrow XII
+50100 Common Common Archer Rain of Arrows I
+50100 Common Common Berserker Dash I
+50100 Common Common Mystic Titanic Favor I
+50100 Common Common Gunner Burst Fire I
+50100 Common Common Lancer Shield Bash
+50100 Common Common Priest Blessing of Shakan I
+50100 Common Common Slayer Dash I
+50100 Common Common Sorcerer Mana Infusion I
+50100 Common Common Warrior Battle Cry I
+50100 Common Common Reaper Grim Strike I
+50200 Common Common Archer Rain of Arrows II
+50200 Common Common Berserker Dash II
+50200 Common Common Mystic Titanic Favor II
+50200 Common Common Gunner Burst Fire II
+50200 Common Common Priest Blessing of Shakan II
+50200 Common Common Slayer Dash II
+50200 Common Common Sorcerer Mana Infusion II
+50200 Common Common Warrior Battle Cry II
+50200 Common Common Reaper Grim Strike II
+50300 Common Common Mystic Titanic Favor III
+50300 Common Common Gunner Burst Fire III
+50300 Common Common Slayer Dash III
+50300 Common Common Warrior Battle Cry III
+50300 Common Common Reaper Grim Strike III
+50400 Common Common Mystic Titanic Favor IV
+50400 Common Common Gunner Burst Fire IV
+50400 Common Common Warrior Battle Cry IV
+50500 Common Common Mystic Titanic Favor V
+50500 Common Common Gunner Burst Fire V
+50500 Common Common Warrior Battle Cry V
+50600 Common Common Mystic Titanic Favor VI
+50600 Common Common Gunner Burst Fire VI
+50600 Common Common Warrior Battle Cry VI
+50700 Common Common Mystic Titanic Favor VII
+50700 Common Common Gunner Burst Fire VII
+50700 Common Common Warrior Battle Cry VII
+50800 Common Common Mystic Titanic Favor VIII
+50800 Common Common Gunner Burst Fire VIII
+50800 Common Common Warrior Battle Cry VIII
+50900 Common Common Mystic Titanic Favor IX
+50900 Common Common Gunner Burst Fire IX
+50900 Common Common Warrior Battle Cry IX
+51000 Common Common Gunner Burst Fire X
+60100 Common Common Archer Backstep
+60100 Common Common Berserker Staggering Strike I
+60100 Common Common Mystic Shara's Lash
+60100 Common Common Gunner Time Bomb I
+60100 Common Common Priest Arise I
+60100 Common Common Slayer Backstab I
+60100 Common Common Sorcerer Fireblast I
+60100 Common Common Reaper Death Spiral I
+60200 Common Common Berserker Staggering Strike II
+60200 Common Common Gunner Time Bomb II
+60200 Common Common Priest Arise II
+60200 Common Common Slayer Backstab II
+60200 Common Common Sorcerer Fireblast II
+60200 Common Common Reaper Death Spiral II
+60300 Common Common Berserker Staggering Strike III
+60300 Common Common Gunner Time Bomb III
+60300 Common Common Sorcerer Fireblast III
+60400 Common Common Berserker Staggering Strike IV
+60400 Common Common Gunner Time Bomb IV
+60400 Common Common Sorcerer Fireblast IV
+60500 Common Common Berserker Staggering Strike V
+60500 Common Common Gunner Time Bomb V
+60500 Common Common Sorcerer Fireblast V
+60600 Common Common Gunner Time Bomb VI
+60600 Common Common Sorcerer Fireblast VI
+60700 Common Common Gunner Time Bomb VII
+60700 Common Common Sorcerer Fireblast VII
+60800 Common Common Gunner Time Bomb VIII
+60900 Common Common Gunner Time Bomb IX
+61000 Common Common Gunner Time Bomb X
+61100 Common Common Gunner Time Bomb XI
+70100 Common Common Archer Feign Death I
+70100 Common Common Berserker Mocking Shout
+70100 Common Common Mystic Mana Infusion
+70100 Common Common Gunner Arcane Barrage I
+70100 Common Common Lancer Guardian Shout I
+70100 Common Common Slayer Triumphant Shout I
+70100 Common Common Sorcerer Backstep
+70200 Common Common Archer Feign Death II
+70200 Common Common Gunner Arcane Barrage II
+70200 Common Common Lancer Guardian Shout II
+70200 Common Common Slayer Triumphant Shout II
+70300 Common Common Archer Feign Death III
+70300 Common Common Gunner Arcane Barrage III
+70300 Common Common Lancer Guardian Shout III
+70400 Common Common Gunner Arcane Barrage IV
+70500 Common Common Gunner Arcane Barrage V
+70600 Common Common Gunner Arcane Barrage VI
+70700 Common Common Gunner Arcane Barrage VII
+70800 Common Common Gunner Arcane Barrage VIII
+80100 Common Common Archer Rapid Fire I
+80100 Common Common Berserker Fiery Rage I
+80100 Common Common Mystic Metamorphic Blast I
+80100 Common Common Lancer Shield Counter I
+80100 Common Common Priest Mana Infusion
+80100 Common Common Slayer Overhand Strike I
+80100 Common Common Sorcerer Flame Pillar I
+80100 Common Common Warrior Assault Stance I
+80100 Common Common Reaper Whipsaw I
+80200 Common Common Archer Rapid Fire II
+80200 Common Common Berserker Fiery Rage II
+80200 Common Common Mystic Metamorphic Blast II
+80200 Common Common Lancer Shield Counter II
+80200 Common Common Slayer Overhand Strike II
+80200 Common Common Sorcerer Flame Pillar II
+80200 Common Common Warrior Assault Stance II
+80200 Common Common Reaper Whipsaw II
+80300 Common Common Archer Rapid Fire III
+80300 Common Common Berserker Fiery Rage III
+80300 Common Common Mystic Metamorphic Blast III
+80300 Common Common Lancer Shield Counter III
+80300 Common Common Slayer Overhand Strike III
+80300 Common Common Sorcerer Flame Pillar III
+80300 Common Common Warrior Assault Stance III
+80400 Common Common Archer Rapid Fire IV
+80400 Common Common Berserker Fiery Rage IV
+80400 Common Common Mystic Metamorphic Blast IV
+80400 Common Common Lancer Shield Counter IV
+80400 Common Common Slayer Overhand Strike IV
+80400 Common Common Sorcerer Flame Pillar IV
+80400 Common Common Warrior Assault Stance IV
+80500 Common Common Archer Rapid Fire V
+80500 Common Common Berserker Fiery Rage V
+80500 Common Common Mystic Metamorphic Blast V
+80500 Common Common Lancer Shield Counter V
+80500 Common Common Slayer Overhand Strike V
+80500 Common Common Sorcerer Flame Pillar V
+80600 Common Common Archer Rapid Fire VI
+80600 Common Common Mystic Metamorphic Blast VI
+80600 Common Common Lancer Shield Counter VI
+80600 Common Common Slayer Overhand Strike VI
+80600 Common Common Sorcerer Flame Pillar VI
+80700 Common Common Archer Rapid Fire VII
+80700 Common Common Mystic Metamorphic Blast VII
+80700 Common Common Lancer Shield Counter VII
+80700 Common Common Slayer Overhand Strike VII
+80700 Common Common Sorcerer Flame Pillar VII
+80800 Common Common Archer Rapid Fire VIII
+80800 Common Common Mystic Metamorphic Blast VIII
+80800 Common Common Slayer Overhand Strike VIII
+80800 Common Common Sorcerer Flame Pillar VIII
+80900 Common Common Archer Rapid Fire IX
+80900 Common Common Mystic Metamorphic Blast IX
+80900 Common Common Slayer Overhand Strike IX
+80900 Common Common Sorcerer Flame Pillar IX
+81000 Common Common Mystic Metamorphic Blast X
+81000 Common Common Sorcerer Flame Pillar X
+81100 Common Common Mystic Metamorphic Blast XI
+81100 Common Common Sorcerer Flame Pillar XI
+90001 Common Common Reaper UNK
+90003 Common Common Reaper UNK
+90005 Common Common Reaper UNK
+90100 Common Common Archer Slow Trap I
+90100 Common Common Berserker Triumphant Shout I
+90100 Common Common Mystic Arun's Cleansing Touch
+90100 Common Common Gunner Mana Missiles I
+90100 Common Common Lancer Leash I
+90100 Common Common Slayer Leaping Strike I
+90100 Common Common Sorcerer Overchannel I
+90100 Common Common Warrior Defensive Stance I
+90100 Common Common Reaper Smite
+90200 Common Common Archer Slow Trap II
+90200 Common Common Berserker Triumphant Shout II
+90200 Common Common Gunner Mana Missiles II
+90200 Common Common Lancer Leash II
+90200 Common Common Slayer Leaping Strike II
+90200 Common Common Sorcerer Overchannel II
+90200 Common Common Warrior Defensive Stance II
+90300 Common Common Archer Slow Trap III
+90300 Common Common Gunner Mana Missiles III
+90300 Common Common Lancer Leash III
+90300 Common Common Slayer Leaping Strike III
+90300 Common Common Sorcerer Overchannel III
+90300 Common Common Warrior Defensive Stance III
+90400 Common Common Archer Slow Trap IV
+90400 Common Common Gunner Mana Missiles IV
+90400 Common Common Slayer Leaping Strike IV
+90400 Common Common Sorcerer Overchannel IV
+90400 Common Common Warrior Defensive Stance IV
+90500 Common Common Archer Slow Trap V
+90500 Common Common Gunner Mana Missiles V
+90500 Common Common Slayer Leaping Strike V
+90500 Common Common Sorcerer Overchannel V
+90600 Common Common Archer Slow Trap VI
+90600 Common Common Gunner Mana Missiles VI
+90600 Common Common Slayer Leaping Strike VI
+90600 Common Common Sorcerer Overchannel VI
+90700 Common Common Gunner Mana Missiles VII
+90700 Common Common Slayer Leaping Strike VII
+90800 Common Common Gunner Mana Missiles VIII
+90800 Common Common Slayer Leaping Strike VIII
+90900 Common Common Gunner Mana Missiles IX
+91000 Common Common Gunner Mana Missiles X
+91002 Common Common Gunner UNK
+91003 Common Common Gunner UNK
+91004 Common Common Gunner UNK
+91006 Common Common Gunner UNK
+91008 Common Common Gunner UNK
+91009 Common Common Gunner UNK
+91010 Common Common Gunner UNK
+91011 Common Common Gunner UNK
+91012 Common Common Gunner UNK
+91013 Common Common Gunner UNK
+91014 Common Common Gunner UNK
+91015 Common Common Gunner UNK
+100100 Common Common Archer Stunning Trap I
+100100 Common Common Berserker Cyclone I
+100100 Common Common Mystic Resurrect
+100100 Common Common Gunner Arc Bomb I
+100100 Common Common Lancer Debilitate I
+100100 Common Common Priest Purifying Circle
+100100 Common Common Slayer Retaliate I
+100100 Common Common Sorcerer Mana Barrier I
+100100 Common Common Warrior Death From Above I
+100100 Common Common Reaper Pendulum Strike I
+100200 Common Common Archer Stunning Trap II
+100200 Common Common Berserker Cyclone II
+100200 Common Common Gunner Arc Bomb II
+100200 Common Common Lancer Debilitate II
+100200 Common Common Slayer Retaliate II
+100200 Common Common Sorcerer Mana Barrier II
+100200 Common Common Warrior Death From Above II
+100200 Common Common Reaper Pendulum Strike II
+100300 Common Common Archer Stunning Trap III
+100300 Common Common Berserker Cyclone III
+100300 Common Common Gunner Arc Bomb III
+100300 Common Common Lancer Debilitate III
+100300 Common Common Slayer Retaliate III
+100300 Common Common Sorcerer Mana Barrier III
+100300 Common Common Warrior Death From Above III
+100400 Common Common Archer Stunning Trap IV
+100400 Common Common Berserker Cyclone IV
+100400 Common Common Gunner Arc Bomb IV
+100400 Common Common Slayer Retaliate IV
+100400 Common Common Warrior Death From Above IV
+100500 Common Common Berserker Cyclone V
+100500 Common Common Gunner Arc Bomb V
+100500 Common Common Slayer Retaliate V
+100500 Common Common Warrior Death From Above V
+100600 Common Common Berserker Cyclone VI
+100600 Common Common Gunner Arc Bomb VI
+100600 Common Common Slayer Retaliate VI
+100600 Common Common Warrior Death From Above VI
+100700 Common Common Berserker Cyclone VII
+100700 Common Common Gunner Arc Bomb VII
+100700 Common Common Slayer Retaliate VII
+100700 Common Common Warrior Death From Above VII
+100800 Common Common Berserker Cyclone VIII
+100800 Common Common Gunner Arc Bomb VIII
+100800 Common Common Slayer Retaliate VIII
+100900 Common Common Berserker Cyclone IX
+100900 Common Common Gunner Arc Bomb IX
+100900 Common Common Slayer Retaliate IX
+101000 Common Common Berserker Cyclone X
+101000 Common Common Gunner Arc Bomb X
+101000 Common Common Slayer Retaliate X
+101100 Common Common Berserker Cyclone XI
+101100 Common Common Gunner Arc Bomb XI
+110100 Common Common Berserker Leaping Strike I
+110100 Common Common Mystic Summon: Party
+110100 Common Common Gunner Rocket Jump I
+110100 Common Common Lancer Retaliate I
+110100 Common Common Priest Metamorphic Blast I
+110100 Common Common Sorcerer Magma Bomb I
+110100 Common Common Warrior Poison Blade I
+110100 Common Common Reaper Shadow Lash I
+110200 Common Common Berserker Leaping Strike II
+110200 Common Common Gunner Rocket Jump II
+110200 Common Common Lancer Retaliate II
+110200 Common Common Priest Metamorphic Blast II
+110200 Common Common Sorcerer Magma Bomb II
+110200 Common Common Warrior Poison Blade II
+110200 Common Common Reaper Shadow Lash II
+110300 Common Common Berserker Leaping Strike III
+110300 Common Common Gunner Rocket Jump III
+110300 Common Common Lancer Retaliate III
+110300 Common Common Priest Metamorphic Blast III
+110300 Common Common Sorcerer Magma Bomb III
+110300 Common Common Warrior Poison Blade III
+110400 Common Common Berserker Leaping Strike IV
+110400 Common Common Gunner Rocket Jump IV
+110400 Common Common Lancer Retaliate IV
+110400 Common Common Priest Metamorphic Blast IV
+110400 Common Common Sorcerer Magma Bomb IV
+110400 Common Common Warrior Poison Blade IV
+110500 Common Common Berserker Leaping Strike V
+110500 Common Common Gunner Rocket Jump V
+110500 Common Common Lancer Retaliate V
+110500 Common Common Priest Metamorphic Blast V
+110500 Common Common Sorcerer Magma Bomb V
+110500 Common Common Warrior Poison Blade V
+110600 Common Common Berserker Leaping Strike VI
+110600 Common Common Gunner Rocket Jump VI
+110600 Common Common Lancer Retaliate VI
+110600 Common Common Priest Metamorphic Blast VI
+110600 Common Common Sorcerer Magma Bomb VI
+110600 Common Common Warrior Poison Blade VI
+110700 Common Common Berserker Leaping Strike VII
+110700 Common Common Gunner Rocket Jump VII
+110700 Common Common Lancer Retaliate VII
+110700 Common Common Priest Metamorphic Blast VII
+110700 Common Common Sorcerer Magma Bomb VII
+110700 Common Common Warrior Poison Blade VII
+110800 Common Common Berserker Leaping Strike VIII
+110800 Common Common Gunner Rocket Jump VIII
+110800 Common Common Lancer Retaliate VIII
+110800 Common Common Priest Metamorphic Blast VIII
+110800 Common Common Sorcerer Magma Bomb VIII
+110800 Common Common Warrior Poison Blade VIII
+110900 Common Common Gunner Rocket Jump IX
+110900 Common Common Lancer Retaliate IX
+110900 Common Common Priest Metamorphic Blast IX
+110900 Common Common Sorcerer Magma Bomb IX
+111000 Common Common Lancer Retaliate X
+111000 Common Common Priest Metamorphic Blast X
+111000 Common Common Sorcerer Magma Bomb X
+111100 Common Common Priest Metamorphic Blast XI
+111100 Common Common Sorcerer Magma Bomb XI
+111111 Common Common Common Summon: Bay Gelding
+111112 Common Common Common Summon: Fast Bay Gelding
+111113 Common Common Common Summon: Honor Steed
+111114 Common Common Common Summon: Fast White Stallion
+111115 Common Common Common Summon: Arcadian Dapple
+111116 Common Common Common Summon: Chestnut Gelding
+111117 Common Common Common Summon: Velikan Gray
+111118 Common Common Common Summon: Pinto
+111119 Common Common Common Summon: Blue Roan
+111120 Common Common Common Summon: Battle Charger
+111121 Common Common Common Summon: Fast Arcadian Dapple
+111122 Common Common Common Summon: Fast Pinto
+111123 Common Common Common Summon: Night Mare
+111124 Common Common Common Summon: Federation Charger
+111125 Common Common Common Summon: Quick-Start Charger
+111126 Common Common Common Summon: White Stallion
+111127 Common Common Common Summon: Arcadian Dapple
+111128 Common Common Common Summon: Blue Roan
+111129 Common Common Common Summon: Velikan Gray
+111130 Common Common Common Summon: Pinto
+111131 Common Common Common Summon: Chestnut Gelding
+111132 Common Common Common Summon: Regal Frostlion
+111133 Common Common Common Summon: Sleipnir
+111134 Common Common Common Summon: EX-TRM
+111135 Common Common Common Summon: Smolder
+111136 Common Common Common Summon: Boneshaker
+111137 Common Common Common Summon: Munchhausen
+111138 Common Common Common Summon: Gourmando
+111139 Common Common Common Summon: Sheldon
+111141 Common Common Common Summon: Rainbow
+111142 Common Common Common Summon: Terminus
+111143 Common Common Common Summon: Fast Arcadian Dapple
+111144 Common Common Common Summon: Fast Velikan Gray
+111145 Common Common Common Summon: Death Charger
+111146 Common Common Common Summon: Shadow Steed
+111147 Common Common Common Summon: Aeolian Zebra
+111148 Common Common Common Summon: Black Leopard
+111149 Common Common Common Summon: Razormane
+111150 Common Common Common Summon: Snowdrift
+111151 Common Common Common Summon: EX-TRM
+111152 Common Common Common Summon: Sheldon
+111153 Common Common Common Summon: Munchhausen
+111154 Common Common Common Summon: Gourmando
+111155 Common Common Common Summon: Squawk
+111156 Common Common Common Summon: Blaze
+111157 Common Common Common Summon: Peep
+111158 Common Common Common Summon: Ember
+111159 Common Common Common Summon: Squawk
+111160 Common Common Common Summon: Squawk
+111161 Common Common Common Summon: Blaze
+111162 Common Common Common Summon: Blaze
+111163 Common Common Common Summon: Peep
+111164 Common Common Common Summon: Peep
+111165 Common Common Common Summon: Ember
+111166 Common Common Common Summon: Ember
+111167 Common Common Common Summon Pet: Candyspinner
+111168 Common Common Common Summon: Quackerjack
+111169 Common Common Common Summon: Quackerjack
+111170 Common Common Common Summon: Duckerberg
+111171 Common Common Common Summon: Duckerberg
+111172 Common Common Common Summon: White Afro Duck
+111173 Common Common Common Summon: White Afro Duck
+111174 Common Common Common Summon: Black Afro Duck (Stamina)
+111175 Common Common Common Summon: Black Afro Duck (Stamina)
+111176 Common Common Common Summon: Waddles
+111177 Common Common Common Summon: Harry Porker
+111178 Common Common Common Summon: Boss
+111179 Common Common Common Summon: Petunia
+111180 Common Common Common Summon: Harley
+111190 Common Common Common Summon: Fast Velikan Gray
+111191 Common Common Common Summon: Shadow Steed
+111192 Common Common Common Summon: Electrum Wind
+111193 Common Common Common Summon: Nexus Warhorse
+111194 Common Common Common Summon: Razormane
+111195 Common Common Common Summon: Aeolian Zebra
+111196 Common Common Common Summon: Death Charger
+111197 Common Common Common Summon: Jeweled Lion
+111198 Common Common Common Summon: Tawny Huntress
+111199 Common Common Common Summon: Black Leopard
+111202 Common Common Common Summon: Bound Night Mare
+111204 Common Common Common Summon: Lupus Obscurus
+111205 Common Common Common Summon: Lupus Aeris
+111206 Common Common Common Summon: Lupus Aeris
+111207 Common Common Common Summon: Lupus Noctus
+111208 Common Common Common Summon: Lupus Argentum
+111209 Common Common Common Summon: Snow Tiger
+111210 Common Common Common Summon: Battle Ready Snow Tiger
+111211 Common Common Common Summon: Bengal Tiger
+111212 Common Common Common Summon: Battle Ready Bengal Tiger
+111213 Common Common Common Summon: Lupus Argentum
+111214 Common Common Common 
+111215 Common Common Common 
+111216 Common Common Common 
+111217 Common Common Common Summon: Lupus Noctus
+111218 Common Common Common 
+111219 Common Common Common 
+111220 Common Common Common Summon: Lupus Obscurus
+111221 Common Common Common Summon: Blitzheart
+111222 Common Common Common Summon: Temperheart
+111223 Common Common Common Summon: Slasheart
+111224 Common Common Common Summon: Tiger B
+111225 Common Common Common Summon: Tiger B
+111226 Common Common Common Summon: Tiger B
+111227 Common Common Common Summon: Tiger D
+111228 Common Common Common Summon: Tiger D
+111229 Common Common Common Summon: Tiger D
+111230 Common Common Common Summon: Saolo
+111231 Common Common Common Summon: Paolo
+111232 Common Common Common Summon: Tigerinho
+111233 Common Common Common Summon: Tigeraldo
+111234 Common Common Common Summon: Saolo
+111235 Common Common Common Summon: Energetic Saolo
+111236 Common Common Common Summon: Tough Saolo
+111237 Common Common Common Summon: Tireless Saolo
+111238 Common Common Common Summon: Paolo
+111239 Common Common Common Summon: Energetic Paolo
+111241 Common Common Common Summon: Tireless Paolo
+111242 Common Common Common Summon: Tigerinho
+111243 Common Common Common Summon: Energetic Tigerinho
+111244 Common Common Common Summon: Tough Tigerinho
+111245 Common Common Common Summon: Tireless Tigerinho
+111246 Common Common Common Summon: Tigeraldo
+111247 Common Common Common Summon: Energetic Tigeraldo
+111248 Common Common Common Summon: Tough Tigeraldo
+111249 Common Common Common Summon: Tireless Tigeraldo
+111250 Common Common Common Summon: Tough Paolo
+111251 Common Common Common Summon: Frost Tail
+111252 Common Common Common Summon: Mythical Frost Tail
+111253 Common Common Common Summon: Fabled Frost Tail
+111254 Common Common Common Summon: Legendary Frost Tail
+111255 Common Common Common Summon: Jeweled Lion
+111256 Common Common Common Summon: Ember Tail
+111257 Common Common Common Summon: Mythical Ember Tail
+111258 Common Common Common Summon: Fabled Ember Tail
+111259 Common Common Common Summon: Legendary Ember Tail
+111260 Common Common Common Summon: Police Car
+111261 Common Common Common Summon: Tuned Police Car
+111262 Common Common Common Summon: Polished Police Car
+111263 Common Common Common Summon: Gassed-Up Police Car
+111264 Common Common Common Summon: Legendary Rainbow
+111265 Common Common Common Summon: Mythical Sleipnir
+111266 Common Common Common Summon: Fabled Night Mare
+111267 Common Common Common Summon: Legendary Bone Dancer
+111268 Common Common Common Summon: Mythical Snowdrift
+111269 Common Common Common Summon: Fabled Tawny Huntress
+111270 Common Common Common Summon: Fyrewing
+111271 Common Common Common Summon: Mythical Fyrewing
+111272 Common Common Common Summon: Fabled Fyrewing
+111273 Common Common Common Summon: Legendary Fyrewing
+111274 Common Common Common Summon: Trekking Kumas
+111275 Common Common Common Summon: Cheerful Trekking Kumas
+111276 Common Common Common Summon: Jovial Trekking Kumas
+111277 Common Common Common Summon: Charitable Trekking Kumas
+111278 Common Common Common Summon: Wintera Christmas Kumas
+111279 Common Common Common Summon: Cheerful Wintera Christmas Kumas
+111280 Common Common Common Summon: Jovial Wintera Christmas Kumas
+111281 Common Common Common Summon: Charitable Wintera Christmas Kumas
+111282 Common Common Common Summon: Wintera Snowbite
+111283 Common Common Common Summon: Cheerful Wintera Snowbite
+111284 Common Common Common Summon: Jovial Wintera Snowbite
+111285 Common Common Common Summon: Charitable Wintera Snowbite
+111286 Common Common Common Summon: Christmas Kumas
+111287 Common Common Common Summon: Cheerful Christmas Kumas
+111288 Common Common Common Summon: Jovial Christmas Kumas
+111289 Common Common Common Summon: Charitable Christmas Kumas
+111290 Common Common Common Summon: Snowbite
+111291 Common Common Common Summon: Cheerful Snowbite
+111292 Common Common Common Summon: Jovial Snowbite
+111293 Common Common Common Summon: Charitable Snowbite
+111294 Common Common Common Summon: Goldwing 
+111295 Common Common Common Summon: Mythical Goldwing 
+111296 Common Common Common Summon: Fabled Goldwing 
+111297 Common Common Common Summon: Legendary Goldwing 
+111298 Common Common Common Summon: Lucky Pig
+111299 Common Common Common Summon: Madcap Lucky Pig
+111301 Common Common Common Summon: Hog-wild Lucky Pig
+111302 Common Common Common Summon: Slippery Lucky Pig
+116001 Common Common Common Summon: Black Pearl
+120100 Common Common Archer Velik's Mark I
+120100 Common Common Berserker Unchained Anger I
+120100 Common Common Mystic Vow of Rebirth
+120100 Common Common Lancer Infuriate
+120100 Common Common Priest Resurrect
+120100 Common Common Slayer Heart Thrust I
+120100 Common Common Sorcerer Void Pulse I
+120100 Common Common Warrior Leaping Strike I
+120100 Common Common Reaper Shadow Burst I
+120200 Common Common Archer Velik's Mark II
+120200 Common Common Berserker Unchained Anger II
+120200 Common Common Slayer Heart Thrust II
+120200 Common Common Sorcerer Void Pulse II
+120200 Common Common Warrior Leaping Strike II
+120200 Common Common Reaper Shadow Burst II
+120300 Common Common Archer Velik's Mark III
+120300 Common Common Berserker Unchained Anger III
+120300 Common Common Slayer Heart Thrust III
+120300 Common Common Sorcerer Void Pulse III
+120300 Common Common Warrior Leaping Strike III
+120400 Common Common Berserker Unchained Anger IV
+120400 Common Common Slayer Heart Thrust IV
+120400 Common Common Sorcerer Void Pulse IV
+120400 Common Common Warrior Leaping Strike IV
+120500 Common Common Berserker Unchained Anger V
+120500 Common Common Slayer Heart Thrust V
+120500 Common Common Sorcerer Void Pulse V
+120500 Common Common Warrior Leaping Strike V
+120600 Common Common Berserker Unchained Anger VI
+120600 Common Common Sorcerer Void Pulse VI
+120600 Common Common Warrior Leaping Strike VI
+120700 Common Common Berserker Unchained Anger VII
+120700 Common Common Warrior Leaping Strike VII
+120800 Common Common Warrior Leaping Strike VIII
+130100 Common Common Berserker Retaliate I
+130100 Common Common Mystic Aura of the Merciless I
+130100 Common Common Gunner Balder's Vengeance I
+130100 Common Common Lancer Spring Attack I
+130100 Common Common Priest Homeward Bound
+130100 Common Common Slayer Stunning Backhand I
+130100 Common Common Sorcerer Mindblast I
+130100 Common Common Warrior Retaliate I
+130100 Common Common Reaper Soul Reversal
+130200 Common Common Berserker Retaliate II
+130200 Common Common Mystic Aura of the Merciless II
+130200 Common Common Gunner Balder's Vengeance II
+130200 Common Common Lancer Spring Attack II
+130200 Common Common Slayer Stunning Backhand II
+130200 Common Common Sorcerer Mindblast II
+130200 Common Common Warrior Retaliate II
+130300 Common Common Berserker Retaliate III
+130300 Common Common Lancer Spring Attack III
+130300 Common Common Slayer Stunning Backhand III
+130300 Common Common Sorcerer Mindblast III
+130300 Common Common Warrior Retaliate III
+130400 Common Common Berserker Retaliate IV
+130400 Common Common Lancer Spring Attack IV
+130400 Common Common Slayer Stunning Backhand IV
+130400 Common Common Warrior Retaliate IV
+130500 Common Common Berserker Retaliate V
+130500 Common Common Lancer Spring Attack V
+130500 Common Common Slayer Stunning Backhand V
+130500 Common Common Warrior Retaliate V
+130600 Common Common Berserker Retaliate VI
+130600 Common Common Lancer Spring Attack VI
+130600 Common Common Slayer Stunning Backhand VI
+130600 Common Common Warrior Retaliate VI
+130700 Common Common Berserker Retaliate VII
+130700 Common Common Lancer Spring Attack VII
+130700 Common Common Slayer Stunning Backhand VII
+130700 Common Common Warrior Retaliate VII
+130800 Common Common Berserker Retaliate VIII
+130800 Common Common Lancer Spring Attack VIII
+130800 Common Common Warrior Retaliate VIII
+130900 Common Common Berserker Retaliate IX
+130900 Common Common Lancer Spring Attack IX
+130900 Common Common Warrior Retaliate IX
+131000 Common Common Berserker Retaliate X
+131000 Common Common Lancer Spring Attack X
+131000 Common Common Warrior Retaliate X
+131100 Common Common Lancer Spring Attack XI
+140100 Common Common Archer Retaliate I
+140100 Common Common Mystic Aura of the Swift I
+140100 Common Common Priest Summon: Party
+140100 Common Common Slayer Distant Blade I
+140100 Common Common Sorcerer Retaliate I
+140100 Common Common Warrior Mangle
+140100 Common Common Reaper Retaliate I
+140200 Common Common Archer Retaliate II
+140200 Common Common Mystic Aura of the Swift II
+140200 Common Common Slayer Distant Blade II
+140200 Common Common Sorcerer Retaliate II
+140200 Common Common Reaper Retaliate II
+140300 Common Common Archer Retaliate III
+140300 Common Common Slayer Distant Blade III
+140300 Common Common Sorcerer Retaliate III
+140300 Common Common Reaper Retaliate III
+140400 Common Common Archer Retaliate IV
+140400 Common Common Slayer Distant Blade IV
+140400 Common Common Sorcerer Retaliate IV
+140500 Common Common Archer Retaliate V
+140500 Common Common Slayer Distant Blade V
+140500 Common Common Sorcerer Retaliate V
+140600 Common Common Archer Retaliate VI
+140600 Common Common Slayer Distant Blade VI
+140600 Common Common Sorcerer Retaliate VI
+140700 Common Common Archer Retaliate VII
+140700 Common Common Slayer Distant Blade VII
+140700 Common Common Sorcerer Retaliate VII
+140800 Common Common Archer Retaliate VIII
+140800 Common Common Slayer Distant Blade VIII
+140800 Common Common Sorcerer Retaliate VIII
+140900 Common Common Archer Retaliate IX
+140900 Common Common Sorcerer Retaliate IX
+141000 Common Common Archer Retaliate X
+141000 Common Common Sorcerer Retaliate X
+150100 Common Common Archer Incendiary Trap I
+150100 Common Common Berserker Vampiric Blow I
+150100 Common Common Mystic Aura of the Unyielding I
+150100 Common Common Gunner Replenishment I
+150100 Common Common Lancer Charging Lunge I
+150100 Common Common Priest Blessing of Zenobia
+150100 Common Common Slayer Startling Kick I
+150100 Common Common Reaper Retribution I
+150200 Common Common Archer Incendiary Trap II
+150200 Common Common Berserker Vampiric Blow II
+150200 Common Common Mystic Aura of the Unyielding II
+150200 Common Common Gunner Replenishment II
+150200 Common Common Lancer Charging Lunge II
+150200 Common Common Slayer Startling Kick II
+150200 Common Common Reaper Retribution II
+150300 Common Common Archer Incendiary Trap III
+150300 Common Common Berserker Vampiric Blow III
+150300 Common Common Mystic Aura of the Unyielding III
+150300 Common Common Gunner Replenishment III
+150300 Common Common Lancer Charging Lunge III
+150300 Common Common Slayer Startling Kick III
+150300 Common Common Reaper Retribution III
+150400 Common Common Archer Incendiary Trap IV
+150400 Common Common Berserker Vampiric Blow IV
+150400 Common Common Mystic Aura of the Unyielding IV
+150400 Common Common Gunner Replenishment IV
+150400 Common Common Lancer Charging Lunge IV
+150400 Common Common Slayer Startling Kick IV
+150500 Common Common Archer Incendiary Trap V
+150500 Common Common Berserker Vampiric Blow V
+150500 Common Common Gunner Replenishment V
+150500 Common Common Lancer Charging Lunge V
+150500 Common Common Slayer Startling Kick V
+150600 Common Common Archer Incendiary Trap VI
+150600 Common Common Berserker Vampiric Blow VI
+150600 Common Common Gunner Replenishment VI
+150600 Common Common Lancer Charging Lunge VI
+150600 Common Common Slayer Startling Kick VI
+150700 Common Common Archer Incendiary Trap VII
+150700 Common Common Berserker Vampiric Blow VII
+150700 Common Common Gunner Replenishment VII
+150700 Common Common Lancer Charging Lunge VII
+150700 Common Common Slayer Startling Kick VII
+150800 Common Common Berserker Vampiric Blow VIII
+150800 Common Common Gunner Replenishment VIII
+150800 Common Common Lancer Charging Lunge VIII
+150800 Common Common Slayer Startling Kick VIII
+150900 Common Common Berserker Vampiric Blow IX
+150900 Common Common Gunner Replenishment IX
+150900 Common Common Lancer Charging Lunge IX
+150900 Common Common Slayer Startling Kick IX
+151000 Common Common Lancer Charging Lunge X
+160100 Common Common Archer Breakaway Bolt I
+160100 Common Common Berserker Fearsome Shout I
+160100 Common Common Mystic Aura of the Tenacious
+160100 Common Common Lancer Second Wind I
+160100 Common Common Priest Shocking Implosion I
+160100 Common Common Slayer Fury Strike I
+160100 Common Common Sorcerer Painblast I
+160100 Common Common Warrior Charging Slash I
+160100 Common Common Reaper Shadow Reaping
+160200 Common Common Archer Breakaway Bolt II
+160200 Common Common Berserker Fearsome Shout II
+160200 Common Common Lancer Second Wind II
+160200 Common Common Priest Shocking Implosion II
+160200 Common Common Slayer Fury Strike II
+160200 Common Common Sorcerer Painblast II
+160200 Common Common Warrior Charging Slash II
+160300 Common Common Archer Breakaway Bolt III
+160300 Common Common Berserker Fearsome Shout III
+160300 Common Common Lancer Second Wind III
+160300 Common Common Priest Shocking Implosion III
+160300 Common Common Slayer Fury Strike III
+160300 Common Common Sorcerer Painblast III
+160300 Common Common Warrior Charging Slash III
+160400 Common Common Archer Breakaway Bolt IV
+160400 Common Common Berserker Fearsome Shout IV
+160400 Common Common Lancer Second Wind IV
+160400 Common Common Priest Shocking Implosion IV
+160400 Common Common Slayer Fury Strike IV
+160400 Common Common Sorcerer Painblast IV
+160400 Common Common Warrior Charging Slash IV
+160500 Common Common Archer Breakaway Bolt V
+160500 Common Common Lancer Second Wind V
+160500 Common Common Priest Shocking Implosion V
+160500 Common Common Sorcerer Painblast V
+160500 Common Common Warrior Charging Slash V
+160600 Common Common Archer Breakaway Bolt VI
+160600 Common Common Lancer Second Wind VI
+160600 Common Common Priest Shocking Implosion VI
+160600 Common Common Sorcerer Painblast VI
+160600 Common Common Warrior Charging Slash VI
+160700 Common Common Archer Breakaway Bolt VII
+160700 Common Common Lancer Second Wind VII
+160700 Common Common Priest Shocking Implosion VII
+160700 Common Common Sorcerer Painblast VII
+160700 Common Common Warrior Charging Slash VII
+160800 Common Common Archer Breakaway Bolt VIII
+160800 Common Common Lancer Second Wind VIII
+160800 Common Common Priest Shocking Implosion VIII
+160800 Common Common Sorcerer Painblast VIII
+160900 Common Common Archer Breakaway Bolt IX
+160900 Common Common Lancer Second Wind IX
+160900 Common Common Priest Shocking Implosion IX
+160900 Common Common Sorcerer Painblast IX
+161000 Common Common Archer Breakaway Bolt X
+170100 Common Common Archer Web Arrow I
+170100 Common Common Berserker Flurry of Blows I
+170100 Common Common Mystic Teleport Jaunt
+170100 Common Common Lancer Adrenaline Rush I
+170100 Common Common Priest Prayer of Peace I
+170100 Common Common Slayer Headlong Rush I
+170100 Common Common Sorcerer Painful Trap I
+170100 Common Common Warrior Vortex Slash I
+170200 Common Common Archer Web Arrow II
+170200 Common Common Berserker Flurry of Blows II
+170200 Common Common Lancer Adrenaline Rush II
+170200 Common Common Priest Prayer of Peace II
+170200 Common Common Slayer Headlong Rush II
+170200 Common Common Sorcerer Painful Trap II
+170200 Common Common Warrior Vortex Slash II
+170300 Common Common Archer Web Arrow III
+170300 Common Common Priest Prayer of Peace III
+170300 Common Common Slayer Headlong Rush III
+170300 Common Common Sorcerer Painful Trap III
+170300 Common Common Warrior Vortex Slash III
+170400 Common Common Priest Prayer of Peace IV
+170400 Common Common Slayer Headlong Rush IV
+170400 Common Common Sorcerer Painful Trap IV
+170400 Common Common Warrior Vortex Slash IV
+170500 Common Common Sorcerer Painful Trap V
+170500 Common Common Warrior Vortex Slash V
+170600 Common Common Sorcerer Painful Trap VI
+170600 Common Common Warrior Vortex Slash VI
+170700 Common Common Warrior Vortex Slash VII
+170800 Common Common Warrior Vortex Slash VIII
+170900 Common Common Warrior Vortex Slash IX
+171000 Common Common Warrior Vortex Slash X
+171100 Common Common Warrior Vortex Slash XI
+180100 Common Common Archer Close Quarters I
+180100 Common Common Berserker Lethal Strike I
+180100 Common Common Mystic Arun's Vitae I
+180100 Common Common Gunner HB-1
+180100 Common Common Lancer Shield Barrage I
+180100 Common Common Priest Heal Thyself I
+180100 Common Common Slayer Overpower I
+180100 Common Common Sorcerer Glacial Retreat I
+180100 Common Common Warrior Combative Strike I
+180100 Common Common Reaper Shrouded Escape
+180200 Common Common Archer Close Quarters II
+180200 Common Common Berserker Lethal Strike II
+180200 Common Common Mystic Arun's Vitae II
+180200 Common Common Gunner HB-2
+180200 Common Common Lancer Shield Barrage II
+180200 Common Common Priest Heal Thyself II
+180200 Common Common Slayer Overpower II
+180200 Common Common Sorcerer Glacial Retreat II
+180200 Common Common Warrior Combative Strike II
+180300 Common Common Archer Close Quarters III
+180300 Common Common Berserker Lethal Strike III
+180300 Common Common Mystic Arun's Vitae III
+180300 Common Common Gunner HB-3
+180300 Common Common Lancer Shield Barrage III
+180300 Common Common Priest Heal Thyself III
+180300 Common Common Sorcerer Glacial Retreat III
+180300 Common Common Warrior Combative Strike III
+180400 Common Common Archer Close Quarters IV
+180400 Common Common Berserker Lethal Strike IV
+180400 Common Common Mystic Arun's Vitae IV
+180400 Common Common Gunner HB-4
+180400 Common Common Lancer Shield Barrage IV
+180400 Common Common Priest Heal Thyself IV
+180400 Common Common Sorcerer Glacial Retreat IV
+180400 Common Common Warrior Combative Strike IV
+180500 Common Common Archer Close Quarters V
+180500 Common Common Berserker Lethal Strike V
+180500 Common Common Mystic Arun's Vitae V
+180500 Common Common Gunner HB-5
+180500 Common Common Lancer Shield Barrage V
+180500 Common Common Priest Heal Thyself V
+180500 Common Common Sorcerer Glacial Retreat V
+180500 Common Common Warrior Combative Strike V
+180600 Common Common Archer Close Quarters VI
+180600 Common Common Berserker Lethal Strike VI
+180600 Common Common Mystic Arun's Vitae VI
+180600 Common Common Gunner HB-6
+180600 Common Common Lancer Shield Barrage VI
+180600 Common Common Priest Heal Thyself VI
+180600 Common Common Sorcerer Glacial Retreat VI
+180600 Common Common Warrior Combative Strike VI
+180700 Common Common Archer Close Quarters VII
+180700 Common Common Mystic Arun's Vitae VII
+180700 Common Common Gunner HB-7
+180700 Common Common Lancer Shield Barrage VII
+180700 Common Common Priest Heal Thyself VII
+180700 Common Common Sorcerer Glacial Retreat VII
+180700 Common Common Warrior Combative Strike VII
+180800 Common Common Archer Close Quarters VIII
+180800 Common Common Mystic Arun's Vitae VIII
+180800 Common Common Lancer Shield Barrage VIII
+180800 Common Common Priest Heal Thyself VIII
+180800 Common Common Sorcerer Glacial Retreat VIII
+180800 Common Common Warrior Combative Strike VIII
+180900 Common Common Archer Close Quarters IX
+180900 Common Common Mystic Arun's Vitae IX
+180900 Common Common Lancer Shield Barrage IX
+180900 Common Common Priest Heal Thyself IX
+180900 Common Common Sorcerer Glacial Retreat IX
+180900 Common Common Warrior Combative Strike IX
+181000 Common Common Archer Close Quarters X
+181000 Common Common Mystic Arun's Vitae X
+181000 Common Common Lancer Shield Barrage X
+181000 Common Common Priest Heal Thyself X
+181000 Common Common Warrior Combative Strike X
+181100 Common Common Mystic Arun's Vitae XI
+181100 Common Common Lancer Shield Barrage XI
+181100 Common Common Priest Heal Thyself XI
+181100 Common Common Warrior Combative Strike XI
+181200 Common Common Priest Heal Thyself XII
+190100 Common Common Archer Poison Arrow I
+190100 Common Common Berserker Tenacity I
+190100 Common Common Gunner ST-1
+190100 Common Common Lancer Pledge of Protection
+190100 Common Common Priest Focus Heal I
+190100 Common Common Slayer Tenacity I
+190100 Common Common Sorcerer Mana Siphon
+190100 Common Common Warrior Rising Fury I
+190200 Common Common Archer Poison Arrow II
+190200 Common Common Berserker Tenacity II
+190200 Common Common Gunner ST-2
+190200 Common Common Priest Focus Heal II
+190200 Common Common Slayer Tenacity II
+190200 Common Common Warrior Rising Fury II
+190300 Common Common Archer Poison Arrow III
+190300 Common Common Berserker Tenacity III
+190300 Common Common Gunner ST-3
+190300 Common Common Priest Focus Heal III
+190300 Common Common Slayer Tenacity III
+190300 Common Common Warrior Rising Fury III
+190400 Common Common Archer Poison Arrow IV
+190400 Common Common Gunner ST-4
+190400 Common Common Priest Focus Heal IV
+190400 Common Common Warrior Rising Fury IV
+190500 Common Common Archer Poison Arrow V
+190500 Common Common Priest Focus Heal V
+190500 Common Common Warrior Rising Fury V
+190600 Common Common Archer Poison Arrow VI
+190600 Common Common Priest Focus Heal VI
+190600 Common Common Warrior Rising Fury VI
+190700 Common Common Archer Poison Arrow VII
+190700 Common Common Priest Focus Heal VII
+190700 Common Common Warrior Rising Fury VII
+190800 Common Common Archer Poison Arrow VIII
+190800 Common Common Priest Focus Heal VIII
+190800 Common Common Warrior Rising Fury VIII
+190900 Common Common Priest Focus Heal IX
+190900 Common Common Warrior Rising Fury IX
+191000 Common Common Warrior Rising Fury X
+200001 Common Common Common Outlaw Declaration
+200002 Common Common Common Outlaw Declaration
+200003 Common Common Common Murderous Intent
+200100 Common Common Archer Restraining Arrow I
+200100 Common Common Berserker Inescapable Doom I
+200100 Common Common Gunner Retaliate I
+200100 Common Common Lancer Menacing Wave
+200100 Common Common Priest Blessing of Seren I
+200100 Common Common Slayer In Cold Blood I
+200100 Common Common Sorcerer Flaming Barrage I
+200100 Common Common Warrior Deadly Gamble I
+200100 Common Common Reaper Cable Step
+200200 Common Common Archer Restraining Arrow II
+200200 Common Common Berserker Inescapable Doom II
+200200 Common Common Gunner Retaliate II
+200200 Common Common Priest Blessing of Seren II
+200200 Common Common Slayer In Cold Blood II
+200200 Common Common Sorcerer Flaming Barrage II
+200200 Common Common Warrior Deadly Gamble II
+200300 Common Common Gunner Retaliate III
+200300 Common Common Sorcerer Flaming Barrage III
+200400 Common Common Gunner Retaliate IV
+200400 Common Common Sorcerer Flaming Barrage IV
+200500 Common Common Gunner Retaliate V
+200500 Common Common Sorcerer Flaming Barrage V
+200600 Common Common Gunner Retaliate VI
+200700 Common Common Gunner Retaliate VII
+200800 Common Common Gunner Retaliate VIII
+200900 Common Common Gunner Retaliate IX
+201000 Common Common Gunner Retaliate X
+210100 Common Common Archer Sniper's Eye I
+210100 Common Common Berserker Bloodlust I
+210100 Common Common Mystic Retaliate I
+210100 Common Common Gunner Command: Recall I
+210100 Common Common Lancer Lockdown Blow I
+210100 Common Common Priest Blessing of Arachne
+210100 Common Common Slayer Exhausting Blow
+210100 Common Common Sorcerer Nerve Exhaustion
+210100 Common Common Warrior Cascade of Stuns I
+210200 Common Common Archer Sniper's Eye II
+210200 Common Common Berserker Bloodlust II
+210200 Common Common Mystic Retaliate II
+210200 Common Common Gunner Command: Recall II
+210200 Common Common Lancer Lockdown Blow II
+210200 Common Common Warrior Cascade of Stuns II
+210300 Common Common Mystic Retaliate III
+210300 Common Common Gunner Command: Recall III
+210300 Common Common Lancer Lockdown Blow III
+210400 Common Common Mystic Retaliate IV
+210400 Common Common Lancer Lockdown Blow IV
+210500 Common Common Mystic Retaliate V
+210600 Common Common Mystic Retaliate VI
+210700 Common Common Mystic Retaliate VII
+210800 Common Common Mystic Retaliate VIII
+210900 Common Common Mystic Retaliate IX
+211000 Common Common Mystic Retaliate X
+211141 Common Common Common Summon: Rainbow
+211145 Common Common Common Summon: Death Charger
+211150 Common Common Common Summon: Snowdrift
+220100 Common Common Archer Final Salvo I
+220100 Common Common Mystic Arun's Tears
+220100 Common Common Gunner Command: Self-Destruct
+220100 Common Common Lancer Iron Will I
+220100 Common Common Priest Kaia's Shield I
+220100 Common Common Sorcerer Burning Breath I
+220100 Common Common Warrior Backstab I
+220200 Common Common Archer Final Salvo II
+220200 Common Common Lancer Iron Will II
+220200 Common Common Priest Kaia's Shield II
+220200 Common Common Sorcerer Burning Breath II
+220200 Common Common Warrior Backstab II
+220300 Common Common Archer Final Salvo III
+220300 Common Common Lancer Iron Will III
+220300 Common Common Priest Kaia's Shield III
+220300 Common Common Sorcerer Burning Breath III
+220400 Common Common Archer Final Salvo IV
+220400 Common Common Lancer Iron Will IV
+220400 Common Common Priest Kaia's Shield IV
+220400 Common Common Sorcerer Burning Breath IV
+220500 Common Common Archer Final Salvo V
+220500 Common Common Lancer Iron Will V
+220500 Common Common Priest Kaia's Shield V
+220600 Common Common Archer Final Salvo VI
+220600 Common Common Lancer Iron Will VI
+220700 Common Common Archer Final Salvo VII
+220800 Common Common Archer Final Salvo VIII
+230100 Common Common Archer Concussion Trap I
+230100 Common Common Mystic Metamorphic Smite I
+230100 Common Common Gunner Command: Stay/Follow
+230100 Common Common Lancer Master's Leash I
+230100 Common Common Priest Blessing of Balder I
+230100 Common Common Slayer Measured Slice I
+230100 Common Common Sorcerer Mana Volley I
+230100 Common Common Warrior Staggering Counter I
+230200 Common Common Archer Concussion Trap II
+230200 Common Common Mystic Metamorphic Smite II
+230200 Common Common Lancer Master's Leash II
+230200 Common Common Priest Blessing of Balder II
+230200 Common Common Slayer Measured Slice II
+230200 Common Common Sorcerer Mana Volley II
+230200 Common Common Warrior Staggering Counter II
+230300 Common Common Mystic Metamorphic Smite III
+230300 Common Common Priest Blessing of Balder III
+230400 Common Common Mystic Metamorphic Smite IV
+230400 Common Common Priest Blessing of Balder IV
+230500 Common Common Mystic Metamorphic Smite V
+230500 Common Common Priest Blessing of Balder V
+230600 Common Common Mystic Metamorphic Smite VI
+230700 Common Common Mystic Metamorphic Smite VII
+230800 Common Common Mystic Metamorphic Smite VIII
+230900 Common Common Mystic Metamorphic Smite IX
+231000 Common Common Mystic Metamorphic Smite X
+240100 Common Common Archer Ensnaring Trap I
+240100 Common Common Berserker Evasive Smash I
+240100 Common Common Mystic Volley of Curses I
+240100 Common Common Lancer Chained Leash
+240100 Common Common Slayer Eviscerate
+240100 Common Common Sorcerer Burst of Celerity
+240100 Common Common Warrior Smoke Aggressor I
+240200 Common Common Archer Ensnaring Trap II
+240200 Common Common Berserker Evasive Smash II
+240200 Common Common Mystic Volley of Curses II
+240200 Common Common Warrior Smoke Aggressor II
+240300 Common Common Mystic Volley of Curses III
+240300 Common Common Warrior Smoke Aggressor III
+240400 Common Common Mystic Volley of Curses IV
+240400 Common Common Warrior Smoke Aggressor IV
+240500 Common Common Mystic Volley of Curses V
+240500 Common Common Warrior Smoke Aggressor V
+240600 Common Common Mystic Volley of Curses VI
+240600 Common Common Warrior Smoke Aggressor VI
+240700 Common Common Mystic Volley of Curses VII
+240700 Common Common Warrior Smoke Aggressor VII
+240800 Common Common Mystic Volley of Curses VIII
+240800 Common Common Warrior Smoke Aggressor VIII
+240900 Common Common Mystic Volley of Curses IX
+240900 Common Common Warrior Smoke Aggressor IX
+250100 Common Common Archer Explosion Trap I
+250100 Common Common Berserker Raze
+250100 Common Common Mystic Thrall of Protection I
+250100 Common Common Lancer Wallop I
+250100 Common Common Priest Retaliate I
+250100 Common Common Sorcerer Time Gyre I
+250100 Common Common Warrior Command: Attack
+250200 Common Common Archer Explosion Trap II
+250200 Common Common Mystic Thrall of Protection II
+250200 Common Common Lancer Wallop II
+250200 Common Common Priest Retaliate II
+250200 Common Common Sorcerer Time Gyre II
+250300 Common Common Mystic Thrall of Protection III
+250300 Common Common Lancer Wallop III
+250300 Common Common Priest Retaliate III
+250300 Common Common Sorcerer Time Gyre III
+250400 Common Common Mystic Thrall of Protection IV
+250400 Common Common Lancer Wallop IV
+250400 Common Common Priest Retaliate IV
+250400 Common Common Sorcerer Time Gyre IV
+250500 Common Common Mystic Thrall of Protection V
+250500 Common Common Lancer Wallop V
+250500 Common Common Priest Retaliate V
+250600 Common Common Mystic Thrall of Protection VI
+250600 Common Common Lancer Wallop VI
+250600 Common Common Priest Retaliate VI
+250700 Common Common Mystic Thrall of Protection VII
+250700 Common Common Lancer Wallop VII
+250700 Common Common Priest Retaliate VII
+250800 Common Common Mystic Thrall of Protection VIII
+250800 Common Common Priest Retaliate VIII
+250900 Common Common Mystic Thrall of Protection IX
+250900 Common Common Priest Retaliate IX
+251000 Common Common Mystic Thrall of Protection X
+251000 Common Common Priest Retaliate X
+251100 Common Common Mystic Thrall of Protection XI
+251200 Common Common Mystic Thrall of Protection XII
+251300 Common Common Mystic Thrall of Protection XIII
+251400 Common Common Mystic Thrall of Protection XIV
+251500 Common Common Mystic Thrall of Protection XV
+251600 Common Common Mystic Thrall of Protection XVI
+260100 Common Common Berserker Tackle
+260100 Common Common Lancer Backstep
+260100 Common Common Priest Fiery Escape I
+260100 Common Common Sorcerer Teleport Jaunt
+260100 Common Common Warrior Command: Follow
+260200 Common Common Priest Fiery Escape II
+260300 Common Common Priest Fiery Escape III
+260400 Common Common Priest Fiery Escape IV
+260500 Common Common Priest Fiery Escape V
+260600 Common Common Priest Fiery Escape VI
+260700 Common Common Priest Fiery Escape VII
+260800 Common Common Priest Fiery Escape VIII
+260900 Common Common Priest Fiery Escape IX
+261000 Common Common Priest Fiery Escape X
+261100 Common Common Priest Fiery Escape XI
+270100 Common Common Berserker Unbreakable
+270100 Common Common Mystic Thrall of Life I
+270100 Common Common Lancer Rallying Cry
+270100 Common Common Priest Final Reprisal I
+270100 Common Common Sorcerer Hail Storm I
+270100 Common Common Warrior Pounce I
+270200 Common Common Mystic Thrall of Life II
+270200 Common Common Priest Final Reprisal II
+270200 Common Common Sorcerer Hail Storm II
+270200 Common Common Warrior Pounce II
+270300 Common Common Mystic Thrall of Life III
+270300 Common Common Priest Final Reprisal III
+270300 Common Common Sorcerer Hail Storm III
+270300 Common Common Warrior Pounce III
+270400 Common Common Mystic Thrall of Life IV
+270400 Common Common Priest Final Reprisal IV
+270400 Common Common Sorcerer Hail Storm IV
+270400 Common Common Warrior Pounce IV
+270500 Common Common Mystic Thrall of Life V
+270500 Common Common Priest Final Reprisal V
+270500 Common Common Warrior Pounce V
+270600 Common Common Mystic Thrall of Life VI
+270600 Common Common Priest Final Reprisal VI
+270600 Common Common Warrior Pounce VI
+270700 Common Common Mystic Thrall of Life VII
+270700 Common Common Priest Final Reprisal VII
+270700 Common Common Warrior Pounce VII
+270800 Common Common Mystic Thrall of Life VIII
+270800 Common Common Priest Final Reprisal VIII
+270800 Common Common Warrior Pounce VIII
+270900 Common Common Mystic Thrall of Life IX
+270900 Common Common Priest Final Reprisal IX
+271000 Common Common Mystic Thrall of Life X
+271000 Common Common Priest Final Reprisal X
+271100 Common Common Mystic Thrall of Life XI
+271200 Common Common Mystic Thrall of Life XII
+271300 Common Common Mystic Thrall of Life XIII
+280100 Common Common Archer Eagle's Eye I
+280100 Common Common Mystic Sonorous Dreams I
+280100 Common Common Priest Mana Charge
+280100 Common Common Sorcerer Stone Skin
+280100 Common Common Warrior Traverse Cut I
+280200 Common Common Archer Eagle's Eye II
+280200 Common Common Mystic Sonorous Dreams II
+280200 Common Common Warrior Traverse Cut II
+280300 Common Common Warrior Traverse Cut III
+280400 Common Common Warrior Traverse Cut IV
+280500 Common Common Warrior Traverse Cut V
+280600 Common Common Warrior Traverse Cut VI
+280700 Common Common Warrior Traverse Cut VII
+290100 Common Common Archer Thunderbolt
+290100 Common Common Mystic Regression I
+290100 Common Common Priest Triple Nemesis I
+290100 Common Common Warrior Blade Draw I
+290200 Common Common Mystic Regression II
+290200 Common Common Priest Triple Nemesis II
+290200 Common Common Warrior Blade Draw II
+290300 Common Common Priest Triple Nemesis III
+290300 Common Common Warrior Blade Draw III
+290400 Common Common Priest Triple Nemesis IV
+290400 Common Common Warrior Blade Draw IV
+290500 Common Common Priest Triple Nemesis V
+290500 Common Common Warrior Blade Draw V
+290600 Common Common Priest Triple Nemesis VI
+290600 Common Common Warrior Blade Draw VI
+290700 Common Common Priest Triple Nemesis VII
+290700 Common Common Warrior Blade Draw VII
+290800 Common Common Priest Triple Nemesis VIII
+290900 Common Common Priest Triple Nemesis IX
+291000 Common Common Priest Triple Nemesis X
+291100 Common Common Priest Triple Nemesis XI
+300100 Common Common Mystic Curse of Exhaustion I
+300100 Common Common Priest Plague of Exhaustion I
+300100 Common Common Sorcerer Nova
+300100 Common Common Warrior Scythe I
+300200 Common Common Mystic Curse of Exhaustion II
+300200 Common Common Priest Plague of Exhaustion II
+300200 Common Common Warrior Scythe II
+300300 Common Common Mystic Curse of Exhaustion III
+300300 Common Common Priest Plague of Exhaustion III
+300400 Common Common Priest Plague of Exhaustion IV
+300500 Common Common Priest Plague of Exhaustion V
+300600 Common Common Priest Plague of Exhaustion VI
+300700 Common Common Priest Plague of Exhaustion VII
+300800 Common Common Priest Plague of Exhaustion VIII
+310100 Common Common Archer Tenacity
+310100 Common Common Mystic Curse of Confusion
+310100 Common Common Priest Guardian Sanctuary I
+310100 Common Common Sorcerer Warp Barrier
+310100 Common Common Warrior Reaping Slash I
+310200 Common Common Priest Guardian Sanctuary II
+310200 Common Common Warrior Reaping Slash II
+310300 Common Common Warrior Reaping Slash III
+310400 Common Common Warrior Reaping Slash IV
+310500 Common Common Warrior Reaping Slash V
+310600 Common Common Warrior Reaping Slash VI
+310700 Common Common Warrior Reaping Slash VII
+310800 Common Common Warrior Reaping Slash VIII
+310900 Common Common Warrior Reaping Slash IX
+320100 Common Common Mystic Mire I
+320100 Common Common Priest Divine Respite I
+320100 Common Common Warrior Cross Parry
+320200 Common Common Mystic Mire II
+320200 Common Common Priest Divine Respite II
+330100 Common Common Mystic Thrall of Vengeance I
+330100 Common Common Priest Ishara's Lullaby I
+330100 Common Common Warrior Smoke Flanker I
+330200 Common Common Mystic Thrall of Vengeance II
+330200 Common Common Priest Ishara's Lullaby II
+330200 Common Common Warrior Smoke Flanker II
+330300 Common Common Mystic Thrall of Vengeance III
+330300 Common Common Priest Ishara's Lullaby III
+330300 Common Common Warrior Smoke Flanker III
+330400 Common Common Mystic Thrall of Vengeance IV
+330400 Common Common Warrior Smoke Flanker IV
+330500 Common Common Mystic Thrall of Vengeance V
+330500 Common Common Warrior Smoke Flanker V
+330600 Common Common Mystic Thrall of Vengeance VI
+330600 Common Common Warrior Smoke Flanker VI
+330700 Common Common Mystic Thrall of Vengeance VII
+330700 Common Common Warrior Smoke Flanker VII
+330800 Common Common Mystic Thrall of Vengeance VIII
+330800 Common Common Warrior Smoke Flanker VIII
+330900 Common Common Mystic Thrall of Vengeance IX
+330900 Common Common Warrior Smoke Flanker IX
+331000 Common Common Mystic Thrall of Vengeance X
+331100 Common Common Mystic Thrall of Vengeance XI
+331200 Common Common Mystic Thrall of Vengeance XII
+331300 Common Common Mystic Thrall of Vengeance XIII
+331400 Common Common Mystic Thrall of Vengeance XIV
+340100 Common Common Mystic Thrall of Wrath I
+340100 Common Common Priest Restorative Burst I
+340100 Common Common Warrior Binding Sword
+340200 Common Common Mystic Thrall of Wrath II
+340200 Common Common Priest Restorative Burst II
+340300 Common Common Mystic Thrall of Wrath III
+340300 Common Common Priest Restorative Burst III
+340400 Common Common Mystic Thrall of Wrath IV
+340400 Common Common Priest Restorative Burst IV
+340500 Common Common Mystic Thrall of Wrath V
+340500 Common Common Priest Restorative Burst V
+340600 Common Common Mystic Thrall of Wrath VI
+340600 Common Common Priest Restorative Burst VI
+340700 Common Common Mystic Thrall of Wrath VII
+340700 Common Common Priest Restorative Burst VII
+340800 Common Common Priest Restorative Burst VIII
+340900 Common Common Priest Restorative Burst IX
+341000 Common Common Priest Restorative Burst X
+341100 Common Common Priest Restorative Burst XI
+350100 Common Common Mystic Command: Attack
+350100 Common Common Priest Energy Stars I
+350200 Common Common Priest Energy Stars II
+350300 Common Common Priest Energy Stars III
+350400 Common Common Priest Energy Stars IV
+360100 Common Common Mystic Command: Follow
+370100 Common Common Mystic Warding Totem I
+370100 Common Common Priest Healing Immersion I
+370200 Common Common Mystic Warding Totem II
+370200 Common Common Priest Healing Immersion II
+380100 Common Common Priest Backstep
+390100 Common Common Priest Grace of Resurrection
+400100 Common Common Gunner Rolling Reload
+400100 Common Common Priest Zenobia's Vortex
+400100 Common Common Reaper Shadow Step
+410100 Common Common Mystic Contagion
+410100 Common Common Priest Divine Intervention
+420100 Common Common Mystic Boomerang Pulse
+1111231 Common Common Common Summon: Night Mare
+1111232 Common Common Common Summon: Night Mare
+1111321 Common Common Common Summon: Regal Frostlion
+1111322 Common Common Common Summon: Regal Frostlion
+1111323 Common Common Common Summon: Jeweled Lion
+1111324 Common Common Common Summon: Jeweled Lion
+1111331 Common Common Common Summon: Sleipnir
+1111332 Common Common Common Summon: Sleipnir
+1111361 Common Common Common Summon: Boneshaker
+1111362 Common Common Common Summon: Boneshaker
+1111363 Common Common Common Summon: Boneshaker
+1111371 Common Common Common Summon: Munchhausen
+1111381 Common Common Common Summon: Gourmando
+1111411 Common Common Common Summon: Rainbow
+1111501 Common Common Common Summon: Snowdrift
+1111502 Common Common Common Summon: Snowdrift
+1111511 Common Common Common Summon: EX-TRM
+1111512 Common Common Common Summon: Light Lion
+1111513 Common Common Common Summon: Festive Carpet
+1111514 Common Common Common Summon: Waddles
+1111515 Common Common Common Summon: Harry Porker
+1111516 Common Common Common Summon: Boss
+1111517 Common Common Common Summon: Petunia
+1111518 Common Common Common Summon: Quackerjack
+1111519 Common Common Common Summon: Duckerberg
+1111520 Common Common Common Summon: Duck (Punk)
+1111521 Common Common Common Summon: Carmine
+1111522 Common Common Common Summon: Carmine
+1111523 Common Common Common Summon: Sparky
+1111524 Common Common Common Summon: Sparky
+1111525 Common Common Common Summon: White Afro Duck
+1111526 Common Common Common Summon: Black Afro Duck
+1111527 Common Common Common Summon: Shadow Steed
+1111528 Common Common Common Summon: Death Charger
+1111529 Common Common Common Summon: Rootstock Carpet
+1111530 Common Common Common Summon: Moonsilk Carpet
+1111531 Common Common Common Summon: Harley
+1111532 Common Common Common Summon: Lupus Obscurus
+1111533 Common Common Common Summon: Snow Tiger
+1111534 Common Common Common Summon: Battle Ready Snow Tiger
+1111535 Common Common Common Summon: Bengal Tiger
+1111536 Common Common Common Summon: Battle Ready Bengal Tiger
+1111537 Common Common Common Summon: Lupus Aurum
+1111538 Common Common Common Summon: Lupus Aeris
+1111539 Common Common Common Summon: Lupus Noctus
+1111540 Common Common Common Summon: Lupus Argentum
+1111541 Common Common Common UNK
+1111542 Common Common Common UNK
+1111543 Common Common Common UNK
+1111544 Common Common Common UNK
+1111545 Common Common Common UNK
+1111546 Common Common Common UNK
+1111547 Common Common Common UNK
+1111548 Common Common Common UNK
+1111549 Common Common Common UNK
+1111550 Common Common Common UNK
+1111551 Common Common Common UNK
+1111552 Common Common Common UNK
+1111553 Common Common Common UNK
+1111554 Common Common Common UNK
+1111555 Common Common Common UNK
+1111556 Common Common Common UNK
+1111557 Common Common Common UNK
+1111558 Common Common Common UNK
+1111559 Common Common Common UNK
+1111560 Common Common Common UNK
+1111561 Common Common Common UNK
+1111562 Common Common Common UNK
+1111563 Common Common Common UNK
+1111564 Common Common Common UNK
+1111565 Common Common Common UNK
+1111566 Common Common Common UNK
+1111567 Common Common Common UNK
+1111568 Common Common Common UNK
+1111651 Common Common Common Summon: Ember
+1111911 Common Common Common UNK
+1111921 Common Common Common UNK
+1111961 Common Common Common UNK
+1112001 Common Common Common UNK
+1112002 Common Common Common UNK
+1112003 Common Common Common UNK
+1112004 Common Common Common UNK
+1701270 Common Common Common UNK
+1701271 Common Common Common UNK
+1701272 Common Common Common UNK
+1701273 Common Common Common UNK
+1701274 Common Common Common UNK
+1701275 Common Common Common UNK
+1701276 Common Common Common UNK
+1701277 Common Common Common UNK
+1701278 Common Common Common UNK
+1701279 Common Common Common UNK
+1701280 Common Common Common UNK
+1701281 Common Common Common UNK
+1701282 Common Common Common UNK
+1701283 Common Common Common UNK
+1701284 Common Common Common UNK
+1701285 Common Common Common UNK
+1701292 Common Common Common UNK
+1701293 Common Common Common UNK
+1701294 Common Common Common UNK
+1701295 Common Common Common UNK
+2222537 Common Common Common Summon: Lupus Aurum
+2222538 Common Common Common Summon: Lupus Aeris
+2222539 Common Common Common Summon: Lupus Noctus
+2222540 Common Common Common Summon: Lupus Argentum
+2222541 Common Common Common Summon: Lupus Argentum
+2222542 Common Common Common Summon: Blitz
+2222543 Common Common Common Summon: Glimmer
+2222544 Common Common Common Summon: Temper
+2222545 Common Common Common Summon: Cinder
+2222546 Common Common Common Summon: Slash
+2222547 Common Common Common Summon: Glimmerforce
+2222548 Common Common Common Summon: Glimmerforce
+2222549 Common Common Common Summon: Glimmershine
+2222550 Common Common Common Summon: Glimmershine
+2222551 Common Common Common Summon: Glimmerheart
+2222552 Common Common Common Summon: Glimmerheart
+2222553 Common Common Common Summon: Lupus Noctus
+2222554 Common Common Common Summon: Cinderstorm
+2222555 Common Common Common Summon: Cinderglow
+2222556 Common Common Common Summon: Cinderglow
+2222557 Common Common Common Summon: Cinderheart
+2222558 Common Common Common Summon: Cinderheart
+2222559 Common Common Common Summon: Lupus Obscurus
+2222560 Common Common Common Summon: Nexus Warhorse
+2222561 Common Common Common Summon: Aeolian Zebra
+2222562 Common Common Common Summon: Death Charger
+2222563 Common Common Common Summon: Blitzheart
+2222564 Common Common Common Summon: Blitzheart
+2222565 Common Common Common Summon: Temperheart
+2222566 Common Common Common Summon: Temperheart
+2222567 Common Common Common Summon: Slasheart
+2222568 Common Common Common Summon: Slasheart
+2222569 Common Common Common Summon: Tiger A
+2222570 Common Common Common Summon: Tiger B
+2222571 Common Common Common Summon: Tiger C
+2222572 Common Common Common Summon: Tiger D
+2222573 Common Common Common Summon: Tiger B
+2222574 Common Common Common Summon: Tiger B
+2222575 Common Common Common Summon: Tiger B
+2222576 Common Common Common Summon: Tiger B
+2222577 Common Common Common Summon: Tiger B
+2222578 Common Common Common Summon: Tiger B
+2222579 Common Common Common Summon: Tiger D
+2222580 Common Common Common Summon: Tiger D
+2222581 Common Common Common Summon: Tiger D
+2222582 Common Common Common Summon: Tiger D
+2222583 Common Common Common Summon: Tiger D
+2222584 Common Common Common Summon: Tiger D
+2222585 Common Common Common Summon: Saolo
+2222586 Common Common Common Summon: Energetic Saolo
+2222587 Common Common Common Summon: Tough Saolo
+2222588 Common Common Common Summon: Tireless Saolo
+2222589 Common Common Common Summon: Saolo
+2222590 Common Common Common Summon: Energetic Saolo
+2222591 Common Common Common Summon: Tough Saolo
+2222592 Common Common Common Summon: Tireless Saolo
+2222593 Common Common Common Summon: Paolo
+2222594 Common Common Common Summon: Energetic Paolo
+2222595 Common Common Common Summon: Tough Paolo
+2222596 Common Common Common Summon: Tireless Paolo
+2222597 Common Common Common Summon: Paolo
+2222598 Common Common Common Summon: Energetic Paolo
+2222599 Common Common Common Summon: Tough Paolo
+2222600 Common Common Common Summon: Tireless Paolo
+2222601 Common Common Common Summon: Tigerinho
+2222602 Common Common Common Summon: Energetic Tigerinho
+2222603 Common Common Common Summon: Tough Tigerinho
+2222604 Common Common Common Summon: Tireless Tigerinho
+2222605 Common Common Common Summon: Tigerinho
+2222606 Common Common Common Summon: Energetic Tigerinho
+2222607 Common Common Common Summon: Tough Tigerinho
+2222608 Common Common Common Summon: Tireless Tigerinho
+2222609 Common Common Common Summon: Tigeraldo
+2222610 Common Common Common Summon: Energetic Tigeraldo
+2222611 Common Common Common Summon: Tough Tigeraldo
+2222612 Common Common Common Summon: Tireless Tigeraldo
+2222613 Common Common Common Summon: Tigeraldo
+2222614 Common Common Common Summon: Energetic Tigeraldo
+2222615 Common Common Common Summon: Tough Tigeraldo
+2222616 Common Common Common Summon: Tireless Tigeraldo
+2222617 Common Common Common Summon: Frost Tail
+2222618 Common Common Common Summon: Frost Tail
+2222619 Common Common Common Summon: Mythical Frost Tail
+2222620 Common Common Common Summon: Mythical Frost Tail
+2222621 Common Common Common Summon: Fabled Frost Tail
+2222622 Common Common Common Summon: Fabled Frost Tail
+2222623 Common Common Common Summon: Legendary Frost Tail
+2222624 Common Common Common Summon: Legendary Frost Tail
+2222625 Common Common Common Summon: Jeweled Lion
+2222626 Common Common Common Summon: Ember Tail
+2222627 Common Common Common Summon: Ember Tail
+2222628 Common Common Common Summon: Mythical Ember Tail
+2222629 Common Common Common Summon: Mythical Ember Tail
+2222630 Common Common Common Summon: Fabled Ember Tail
+2222631 Common Common Common Summon: Fabled Ember Tail
+2222632 Common Common Common Summon: Legendary Ember Tail
+2222633 Common Common Common Summon: Legendary Ember Tail
+2222634 Common Common Common Summon: Police Car
+2222635 Common Common Common Summon: Police Car
+2222636 Common Common Common Summon: Tuned Police Car
+2222637 Common Common Common Summon: Tuned Police Car
+2222638 Common Common Common Summon: Polished Police Car
+2222639 Common Common Common Summon: Polished Police Car
+2222640 Common Common Common Summon: Gassed-Up Police Car
+2222641 Common Common Common Summon: Gassed-Up Police Car
+2222642 Common Common Common Summon: Legendary Rainbow
+2222643 Common Common Common Summon: Mythical Sleipnir
+2222644 Common Common Common Summon: Fabled Night Mare
+2222645 Common Common Common Summon: Legendary Bone Dancer
+2222646 Common Common Common Summon: Mythical Snowdrift
+2222647 Common Common Common Summon: Fabled Tawny Huntress
+2222648 Common Common Common Summon: Fyrewing
+2222649 Common Common Common Summon: Fyrewing
+2222650 Common Common Common Summon: Mythical Fyrewing
+2222651 Common Common Common Summon: Mythical Fyrewing
+2222652 Common Common Common Summon: Fabled Fyrewing
+2222653 Common Common Common Summon: Fabled Fyrewing
+2222654 Common Common Common Summon: Legendary Fyrewing
+2222655 Common Common Common Summon: Legendary Fyrewing
+2222656 Common Common Common Summon: Trekking Kumas
+2222657 Common Common Common Summon: Trekking Kumas
+2222658 Common Common Common Summon: Cheerful Trekking Kumas
+2222659 Common Common Common Summon: Cheerful Trekking Kumas
+2222660 Common Common Common Summon: Jovial Trekking Kumas
+2222661 Common Common Common Summon: Jovial Trekking Kumas
+2222662 Common Common Common Summon: Charitable Trekking Kumas
+2222663 Common Common Common Summon: Charitable Trekking Kumas
+2222664 Common Common Common Summon: Wintera Christmas Kumas
+2222665 Common Common Common Summon: Wintera Christmas Kumas
+2222666 Common Common Common Summon: Cheerful Wintera Christmas Kumas
+2222667 Common Common Common Summon: Cheerful Wintera Christmas Kumas
+2222668 Common Common Common Summon: Jovial Wintera Christmas Kumas
+2222669 Common Common Common Summon: Jovial Wintera Christmas Kumas
+2222670 Common Common Common Summon: Charitable Wintera Christmas Kumas
+2222671 Common Common Common Summon: Charitable Wintera Christmas Kumas
+2222672 Common Common Common Summon: Wintera Snowbite
+2222673 Common Common Common Summon: Wintera Snowbite
+2222674 Common Common Common Summon: Cheerful Wintera Snowbite
+2222675 Common Common Common Summon: Cheerful Wintera Snowbite
+2222676 Common Common Common Summon: Jovial Wintera Snowbite
+2222677 Common Common Common Summon: Jovial Wintera Snowbite
+2222678 Common Common Common Summon: Charitable Wintera Snowbite
+2222679 Common Common Common Summon: Charitable Wintera Snowbite
+2222680 Common Common Common Summon: Christmas Kumas
+2222681 Common Common Common Summon: Christmas Kumas
+2222682 Common Common Common Summon: Cheerful Christmas Kumas
+2222683 Common Common Common Summon: Cheerful Christmas Kumas
+2222684 Common Common Common Summon: Jovial Christmas Kumas
+2222685 Common Common Common Summon: Jovial Christmas Kumas
+2222686 Common Common Common Summon: Charitable Christmas Kumas
+2222687 Common Common Common Summon: Charitable Christmas Kumas
+2222688 Common Common Common Summon: Snowbite
+2222689 Common Common Common Summon: Snowbite
+2222690 Common Common Common Summon: Cheerful Snowbite
+2222691 Common Common Common Summon: Cheerful Snowbite
+2222692 Common Common Common Summon: Jovial Snowbite
+2222693 Common Common Common Summon: Jovial Snowbite
+2222694 Common Common Common Summon: Charitable Snowbite
+2222695 Common Common Common Summon: Charitable Snowbite
+2222696 Common Common Common UNK
+2222697 Common Common Common Summon: Goldwing
+2222698 Common Common Common UNK
+2222699 Common Common Common Summon: Mythical Goldwing 
+2222700 Common Common Common UNK
+2222701 Common Common Common Summon: Fabled Goldwing 
+2222702 Common Common Common UNK
+2222703 Common Common Common Summon: Legendary Goldwing 
+2222704 Common Common Common Summon: Lucky Pig
+2222705 Common Common Common Summon: Lucky Pig
+2222706 Common Common Common Summon: Madcap Lucky Pig
+2222707 Common Common Common Summon: Madcap Lucky Pig
+2222708 Common Common Common Summon: Hog-wild Lucky Pig
+2222709 Common Common Common Summon: Hog-wild Lucky Pig
+2222710 Common Common Common Summon: Slippery Lucky Pig
+2222711 Common Common Common Summon: Slippery Lucky Pig
+3333019 Common Common Common Summon Pet: Zero
+3333020 Common Common Common Summon Pet: Miss Katonic
+3333021 Common Common Common Summon Pet: Pinkie
+3333022 Common Common Common Summon Pet: Bonzai
+3333023 Common Common Common Summon Pet: Addams
+3333024 Common Common Common UNK
+3333025 Common Common Common UNK
+3333026 Common Common Common UNK
+3333027 Common Common Common UNK
+3333028 Common Common Common UNK
+3333029 Common Common Common UNK
+6001000 Common Common Common Summon Pet: Miss Kitty
+6002000 Common Common Common Summon Pet: Willoe
+6003000 Common Common Common Summon Pet: Dundee
+6004000 Common Common Common Summon Pet: Chef
+6005000 Common Common Common Summon Pet: Rocky
+6006000 Common Common Common Summon Pet: Madmartigan
+6007000 Common Common Common Summon Pet: Bam Bam
+6008000 Common Common Common Summon Pet: Bonzai
+6009000 Common Common Common Summon Pet: Addams
+6010000 Common Common Common Summon Pet: Clawd
+6011000 Common Common Common Summon Pet: Juicy
+6012000 Common Common Common Summon Pet: Flaps
+7001000 Common Common Common Summon Pet: Zero (1-Day)
+7001001 Common Common Common Summon Pet: Miss Katonic (1-Day)
+7001002 Common Common Common Summon Pet: Pinkie (1-Day)
+7001003 Common Common Common Summon Pet: Rusty (1-Day)
+7001004 Common Common Common Summon Pet: Rainie (1-Day)
+7001005 Common Common Common Summon Pet: Pinkie
+7001006 Common Common Common Summon Pet: Rusty
+7001007 Common Common Common Summon Pet: Rainie
+8400020 Common Common Common Summon: Fortuna
+8400030 Common Common Common Summon: Fides
+8400040 Common Common Common Summon: Virtus
+8500000 Common Common Common Summon: Brave Black Lion
+8500001 Common Common Common Summon: Loyal Black Lion
+8500002 Common Common Common Summon: Brave Black Steed
+8500003 Common Common Common Summon: Loyal Black Steed
+8500004 Common Common Common Summon: Glorious Black Lion
+8500005 Common Common Common Summon: Glorious Black Steed
+8500006 Common Common Common Summon: Brave White Lion
+8500007 Common Common Common Summon: Loyal White Lion
+8500008 Common Common Common Summon: Brave White Steed
+8500009 Common Common Common Summon: Loyal White Steed
+8500010 Common Common Common Summon: Glorious White Lion
+8500011 Common Common Common Summon: Glorious White Steed
+9010100 Popori Common Archer UNK
+9010100 Popori Common Berserker UNK
+9010100 Aman Common Common Kaiator's Drums
+9010100 Castanic Common Common Kaiator's Drums
+9010100 Highelf Common Common Core's Resonance
+9010100 Human Common Common Velik's Horn
+9010100 Baraka Male Common UNK
+9010100 Popori Common Mystic UNK
+9010100 Popori Common Lancer UNK
+9010100 Popori Common Priest UNK
+9010100 Popori Common Slayer UNK
+9010100 Popori Common Sorcerer UNK
+9010100 Popori Common Warrior UNK
+9010100 Popori Common Reaper UNK
+9020100 Aman Common Common Last Aman Standing
+9020100 Castanic Common Common Skirmish Running
+9020100 Highelf Common Common Core Infusion
+9020100 Human Common Common Deft Footwork
+9020100 Popori Common Common Soothing Presence
+9020100 Baraka Male Common UNK
+9030100 Popori Common Common Horizon Run
+11117100 Common Common Common Summon Regulus
+14000001 Common Common Common UNK
+14000002 Common Common Common UNK
+14000003 Common Common Common UNK
+14000004 Common Common Common UNK
+14000005 Common Common Common Summon: Ebonwing
+14000006 Common Common Common Summon: Mythical Ebonwing
+14000007 Common Common Common Summon: Fabled Ebonwing
+14000008 Common Common Common Summon: Legendary Ebonwing
+14000009 Common Common Common Summon: Silverwing
+14000010 Common Common Common Summon: Mythical Silverwing
+14000011 Common Common Common Summon: Fabled Silverwing
+14000012 Common Common Common Summon: Legendary Silverwing
+14100001 Common Common Common UNK
+14100002 Common Common Common UNK
+14100003 Common Common Common UNK
+14100004 Common Common Common UNK
+14100005 Common Common Common UNK
+14100006 Common Common Common UNK
+14100007 Common Common Common UNK
+14100008 Common Common Common UNK
+14100009 Common Common Common Summon: Ebonwing
+14100010 Common Common Common Summon: Ebonwing
+14100011 Common Common Common Summon: Mythical Ebonwing
+14100012 Common Common Common Summon: Mythical Ebonwing
+14100013 Common Common Common Summon: Fabled Ebonwing
+14100014 Common Common Common Summon: Fabled Ebonwing
+14100015 Common Common Common Summon: Legendary Ebonwing
+14100016 Common Common Common Summon: Legendary Ebonwing
+14100017 Common Common Common Summon: Silverwing
+14100018 Common Common Common Summon: Silverwing
+14100019 Common Common Common Summon: Mythical Silverwing
+14100020 Common Common Common Summon: Mythical Silverwing
+14100021 Common Common Common Summon: Fabled Silverwing
+14100022 Common Common Common Summon: Fabled Silverwing
+14100023 Common Common Common Summon: Legendary Silverwing
+14100024 Common Common Common Summon: Legendary Silverwing
+14100025 Common Common Common Summon: Lupus Argentum
+14100026 Common Common Common Summon: Lupus Argentum
+14100027 Common Common Common Summon: Lupus Obscurus
+14100028 Common Common Common Summon: Lupus Obscurus
+14100029 Common Common Common Summon: Lupus Noctus
+14100030 Common Common Common Summon: Lupus Noctus
+14100031 Common Common Common Summon: Lupus Aeris
+14100032 Common Common Common Summon: Lupus Aeris
+14100033 Common Common Common Summon: Lupus Aeris
+14100034 Common Common Common Summon: Lupus Aurum
+14100035 Common Common Common Summon: Lupus Aurum
+14100036 Common Common Common Summon: Lupus Aurum
+14300002 Common Common Common Summon: Truffles
+14300003 Common Common Common Summon: Truffles
+14300004 Common Common Common Summon: Truffles
+14300005 Common Common Common Summon: Truffles
+14300006 Common Common Common Summon: Truffles
+60193025 Common Common Common Kick
+60193026 Common Common Common Pig Pheromone
+60193027 Common Common Common Drum Beat
+60950510 Common Common Common Mutate (Balder's Gift)
+60950511 Common Common Common Stun (Balder's Gift)
+60950512 Common Common Common Fear (Balder's Gift)
+60950513 Common Common Common Light (Balder's Gift)
+60950514 Common Common Common Punish (Balder's Gift)
+60950515 Common Common Common Quake (Balder's Gift)
+61000100 Common Common Common Collectivist
+61000200 Common Common Common Adiar's Request
+61000300 Common Common Common Union Mission
+61000400 Common Common Common Derene's Request
+61000500 Common Common Common Hard Core
+61000600 Common Common Common Frateko's Request
+61001300 Common Common Common Summon: Quartermaster Shop
+61001400 Common Common Common Summon: Infiltration Beacon
+61001500 Common Common Common Summon: Guard
+61001510 Common Common Common Summon: Free Traders Guard
+61001520 Common Common Common Summon: Enlightened Union Guard
+61001530 Common Common Common Summon: Iron Order Guard
+61001600 Common Common Common Summon: Barricade
+61001700 Common Common Common Summon: Cannon
+61001800 Common Common Common Tenacious Aura
+61001900 Common Common Common Enduring Aura
+61002000 Common Common Common Wholehearted Aura
+61900007 Common Common Common Transformation: Green Wintera Snowman
+61900008 Common Common Common Transformation: Yellow Wintera Snowman
+61900009 Common Common Common Transformation: Blue Wintera Snowman
+61900010 Common Common Common Transformation: Red Wintera Snowman
+61901000 Common Common Common Snow Barrage
+61902000 Common Common Common Set Us Up, Da Bomb
+61903023 Common Common Common Summon Pet: Carnivorous Plant
+61903024 Common Common Common Summon Pet: Prince
+61903026 Common Common Common Summon Pet: Totes
+61905001 Common Common Common Summon Pet: Candyspinner
+61905002 Common Common Common Summon Pet: Fetch
+61905003 Common Common Common Summon Pet: Dragonette
+61905004 Common Common Common Summon Pet: Rambo
+61905005 Common Common Common Summon Pet: Popolin
+61905006 Common Common Common Summon Pet: Boo
+61905007 Common Common Common Summon Pet: Boo
+61905008 Common Common Common Summon Pet: Ser Picks-a-lot
+61905009 Common Common Common Summon Pet: Popolin
+61905010 Common Common Common Summon Pet: Peddit
+61905011 Common Common Common Summon Pet: Caddy
+61905012 Common Common Common Summon Pet: Ser Picks-a-lot
+61906001 Common Common Common Summon Pet: Candyspinner
+61906003 Common Common Common Summon Pet: Dragonette
+61906004 Common Common Common Summon Pet: Rambo
+61906023 Common Common Common Summon Pet: Carnivorous Plant
+61906024 Common Common Common Summon Pet: Prince
+61906025 Common Common Common Summon Pet: Boo
+62000100 Common Common Common Battle Standard
+62000110 Common Common Common Battle Standard
+62000120 Common Common Common Battle Standard
+62000200 Common Common Common Fortification
+62000210 Common Common Common Fortification
+62000220 Common Common Common Fortification
+62000300 Common Common Common Mad Dash
+62000310 Common Common Common Mad Dash
+62000320 Common Common Common Mad Dash
+62000400 Common Common Common Battle Prayer
+62000410 Common Common Common Battle Prayer
+62000420 Common Common Common Battle Prayer
+63000100 Common Common Common Exarch's XP Boost
+63000112 Common Common Common Exarch's XP Boost I
+63000120 Common Common Common Exarch's XP Boost II
+63000130 Common Common Common Exarch's XP Boost III
+63000140 Common Common Common Exarch's XP Boost IV
+63000150 Common Common Common Exarch's XP Boost V
+63000160 Common Common Common Exarch's XP Boost VI
+63000200 Common Common Common Exarch's PvP Bolster
+63000210 Common Common Common Exarch's PvP Bolster I
+63000220 Common Common Common Exarch's PvP Bolster II
+63000230 Common Common Common Exarch's PvP Bolster III
+63000240 Common Common Common Exarch's PvP Bolster IV
+63000250 Common Common Common Exarch's PvP Bolster V
+63000260 Common Common Common Exarch's PvP Bolster VI
+63000300 Common Common Common Exarch's Fortitude
+63000310 Common Common Common Exarch's Fortitude I
+63000320 Common Common Common Exarch's Fortitude II
+63000330 Common Common Common Exarch's Fortitude III
+63000340 Common Common Common Exarch's Fortitude IV
+63000350 Common Common Common Exarch's Fortitude V
+63000360 Common Common Common Exarch's Fortitude VI

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using PacketDotNet;
 using PacketDotNet.Utils;
 using SharpPcap;
@@ -11,10 +9,13 @@ using SharpPcap.WinPcap;
 
 namespace NetworkSniffer
 {
+    // Only works when WinPcap is installed
     public class IpSnifferWinPcap : IpSniffer
     {
         private readonly string _filter;
         private WinPcapDeviceList _devices;
+        private volatile uint _droppedPackets;
+        private volatile uint _interfaceDroppedPackets;
 
         public IpSnifferWinPcap(string filter)
         {
@@ -53,13 +54,11 @@ namespace NetworkSniffer
             }
         }
 
-        private volatile uint droppedPackets;
-        private volatile uint interfaceDroppedPackets;
         void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             if (e.Device.LinkType != LinkLayers.Ethernet)
                 return;
-            EthernetPacket ethernetPacket = new EthernetPacket(new ByteArraySegment(e.Packet.Data));
+            var ethernetPacket = new EthernetPacket(new ByteArraySegment(e.Packet.Data));
 
             var ipPacket = ethernetPacket.PayloadPacket as IpPacket;
             if (ipPacket == null)
@@ -71,10 +70,10 @@ namespace NetworkSniffer
             OnPacketReceived(ipData2);
 
             var device = (WinPcapDevice)sender;
-            if (device.Statistics.DroppedPackets != droppedPackets || device.Statistics.InterfaceDroppedPackets != interfaceDroppedPackets)
+            if (device.Statistics.DroppedPackets != _droppedPackets || device.Statistics.InterfaceDroppedPackets != _interfaceDroppedPackets)
             {
-                droppedPackets = device.Statistics.DroppedPackets;
-                interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
+                _droppedPackets = device.Statistics.DroppedPackets;
+                _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
                 File.AppendAllText("TCP", string.Format("DroppedPackets {0}, InterfaceDroppedPackets {1}", device.Statistics.DroppedPackets, device.Statistics.InterfaceDroppedPackets));
             }
         }

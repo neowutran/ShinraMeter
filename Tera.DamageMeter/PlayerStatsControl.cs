@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -16,18 +15,18 @@ namespace Tera.DamageMeter
             InitializeComponent();
         }
 
-        public void Fetch(PlayerStats playerStats, long totalDamage)
+        public void Fetch(PlayerInfo playerStats, long totalDamage)
         {
             PlayerNameLabel.Text = playerStats.Name;
             PlayerClassLabel.Text = playerStats.Class.ToString();
             DamageLabel.Text = Helpers.FormatValue(playerStats.Dealt.Damage);
             HealLabel.Text = Helpers.FormatValue(playerStats.Dealt.Heal);
-            InfoLabel.Text = string.Format("Critrate {0:f1}% Hits {1} Received {2}",
-                                           (playerStats.Dealt.Crits * 100.0 / playerStats.Dealt.Hits),
+            InfoLabel.Text = string.Format("Critrate {0} Hits {1} Received {2}",
+                                           Helpers.FormatPercent((double)playerStats.Dealt.Crits / playerStats.Dealt.Hits),
                                            playerStats.Dealt.Hits,
-                                           Helpers.FormatValue(playerStats.Received.Damage));
-            DamagePercentLabel.Text = (playerStats.Dealt.Damage * 100.0 / totalDamage).ToString("f1") + "%";
-
+                                           Helpers.FormatValue(playerStats.Dealt.Damage));
+            DamagePercentLabel.Text = Helpers.FormatPercent((double)playerStats.Dealt.Damage / totalDamage);
+            DamagePercentBar.Width = (int)(((double)playerStats.Dealt.Damage / totalDamage) * Width);
 
             HealLabel.Visible = playerStats.Dealt.Heal != 0;
             DamageHealSeparator.Visible = HealLabel.Visible;

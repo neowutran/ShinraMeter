@@ -34,25 +34,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TeraData.cs" />
+    <Compile Include="BasicTeraData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TeraData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tera.Protocol\Tera.Protocol.csproj">
+    <ProjectReference Include="..\Tera.Core\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
-      <Name>Tera.Protocol</Name>
+      <Name>Tera.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="opcodefile.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ServerIPs.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="user_skills.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

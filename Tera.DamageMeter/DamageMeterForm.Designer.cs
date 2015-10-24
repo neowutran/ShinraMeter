@@ -31,10 +31,17 @@
             this.components = new System.ComponentModel.Container();
             this.RefershTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.MenuButton = new System.Windows.Forms.Button();
             this.TotalDamageLabel = new System.Windows.Forms.Label();
             this.ResetButton = new System.Windows.Forms.Button();
             this.ListPanel = new System.Windows.Forms.Panel();
+            this.MainMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.OpenPacketLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ResetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenPacketLogFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.HeaderPanel.SuspendLayout();
+            this.MainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // RefershTimer
@@ -45,6 +52,7 @@
             // 
             // HeaderPanel
             // 
+            this.HeaderPanel.Controls.Add(this.MenuButton);
             this.HeaderPanel.Controls.Add(this.TotalDamageLabel);
             this.HeaderPanel.Controls.Add(this.ResetButton);
             this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -52,6 +60,16 @@
             this.HeaderPanel.Name = "HeaderPanel";
             this.HeaderPanel.Size = new System.Drawing.Size(284, 33);
             this.HeaderPanel.TabIndex = 1;
+            // 
+            // MenuButton
+            // 
+            this.MenuButton.Location = new System.Drawing.Point(4, 4);
+            this.MenuButton.Name = "MenuButton";
+            this.MenuButton.Size = new System.Drawing.Size(51, 23);
+            this.MenuButton.TabIndex = 2;
+            this.MenuButton.Text = "Menu";
+            this.MenuButton.UseVisualStyleBackColor = true;
+            this.MenuButton.Click += new System.EventHandler(this.MenuButton_Click);
             // 
             // TotalDamageLabel
             // 
@@ -65,9 +83,9 @@
             // 
             // ResetButton
             // 
-            this.ResetButton.Location = new System.Drawing.Point(4, 4);
+            this.ResetButton.Location = new System.Drawing.Point(61, 4);
             this.ResetButton.Name = "ResetButton";
-            this.ResetButton.Size = new System.Drawing.Size(75, 23);
+            this.ResetButton.Size = new System.Drawing.Size(51, 23);
             this.ResetButton.TabIndex = 0;
             this.ResetButton.Text = "Reset";
             this.ResetButton.UseVisualStyleBackColor = true;
@@ -80,6 +98,41 @@
             this.ListPanel.Name = "ListPanel";
             this.ListPanel.Size = new System.Drawing.Size(284, 229);
             this.ListPanel.TabIndex = 2;
+            // 
+            // MainMenu
+            // 
+            this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenPacketLogMenuItem,
+            this.ResetMenuItem,
+            this.ExitMenuItem});
+            this.MainMenu.Name = "MainMenu";
+            this.MainMenu.Size = new System.Drawing.Size(153, 92);
+            // 
+            // OpenPacketLogMenuItem
+            // 
+            this.OpenPacketLogMenuItem.Name = "OpenPacketLogMenuItem";
+            this.OpenPacketLogMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OpenPacketLogMenuItem.Text = "Open";
+            this.OpenPacketLogMenuItem.Click += new System.EventHandler(this.OpenPacketLogMenuItem_Click);
+            // 
+            // ResetMenuItem
+            // 
+            this.ResetMenuItem.Name = "ResetMenuItem";
+            this.ResetMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ResetMenuItem.Text = "Reset";
+            this.ResetMenuItem.Click += new System.EventHandler(this.ResetButton_Click);
+            // 
+            // ExitMenuItem
+            // 
+            this.ExitMenuItem.Name = "ExitMenuItem";
+            this.ExitMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ExitMenuItem.Text = "E&xit";
+            this.ExitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
+            // 
+            // OpenPacketLogFileDialog
+            // 
+            this.OpenPacketLogFileDialog.Filter = "Tera Packet Logs|*.TeraLog|All files|*.*";
+            this.OpenPacketLogFileDialog.Title = "Open Tera Packet Log";
             // 
             // DamageMeterForm
             // 
@@ -94,6 +147,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.HeaderPanel.ResumeLayout(false);
             this.HeaderPanel.PerformLayout();
+            this.MainMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -105,6 +159,12 @@
         private System.Windows.Forms.Button ResetButton;
         private System.Windows.Forms.Label TotalDamageLabel;
         private System.Windows.Forms.Panel ListPanel;
+        private System.Windows.Forms.Button MenuButton;
+        private System.Windows.Forms.ContextMenuStrip MainMenu;
+        private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ResetMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenPacketLogMenuItem;
+        private System.Windows.Forms.OpenFileDialog OpenPacketLogFileDialog;
     }
 }
 

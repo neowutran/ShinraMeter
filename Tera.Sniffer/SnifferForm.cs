@@ -5,16 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Tera.Data;
-using Tera.Protocol;
-using Tera.Protocol.Game;
+using Tera.Game;
+using Tera.PacketLog;
+using Tera.Sniffing;
 
 namespace Tera.Sniffer
 {
     public partial class SnifferForm : Form
     {
-        private TeraSniffer _teraSniffer;
-        private LogWriter _logWriter;
-        private readonly TeraData _teraData=new TeraData();
+        private ITeraSniffer _teraSniffer;
+        private PacketLogWriter _logWriter;
+        private readonly BasicTeraData _basicTeraData = new BasicTeraData();
+        private TeraData _teraData;
         private long _clientMessages = 0;
         private long _serverMessages = 0;
 
@@ -30,30 +32,32 @@ namespace Tera.Sniffer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            _teraSniffer = new TeraSniffer(_teraData.ServerIps);
+            _teraSniffer = new TeraSniffer(_basicTeraData.Servers);
             _teraSniffer.MessageReceived += teraSniffer_MessageReceived;
             _teraSniffer.NewConnection += _teraSniffer_NewConnection;
 
             _teraSniffer.Enabled = true;
         }
 
-        void _teraSniffer_NewConnection()
+        void _teraSniffer_NewConnection(Server server)
         {
             InvokeAction(() =>
                 {
-                    _logWriter = new LogWriter(string.Format("{0}.TeraLog", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)));
+                    var header = new LogHeader { Region = server.Region };
+                    _logWriter = new PacketLogWriter(string.Format("{0}.TeraLog", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)), header);
                     ConnectionList.Items.Clear();
-                    ConnectionList.Items.Add("New connection started...");
+                    ConnectionList.Items.Add(string.Format("New connection to {0}started...", server.Name));
+                    _teraData = _basicTeraData.DataForRegion(server.Region);
                 });
         }
 
-        void teraSniffer_MessageReceived(Protocol.Message message)
+        void teraSniffer_MessageReceived(Message message)
         {
             InvokeAction(() =>
             {
                 Write(string.Format("{0} {1} {2}",
-                    message.Direction==MessageDirection.ClientToServer?">":"<",
-                    GetOpcodeName(message.OpCode), 
+                    message.Direction == MessageDirection.ClientToServer ? ">" : "<",
+                    GetOpcodeName(message.OpCode),
                     message.Data.Count));
                 _logWriter.Append(message);
 
