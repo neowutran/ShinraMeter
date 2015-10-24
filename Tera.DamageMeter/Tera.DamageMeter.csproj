@@ -47,18 +47,12 @@
       <DependentUpon>DamageMeterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PlayerStatsControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PlayerStatsControl.Designer.cs">
-      <DependentUpon>PlayerStatsControl.cs</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="DamageMeterForm.resx">
       <DependentUpon>DamageMeterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PlayerStatsControl.resx">
-      <DependentUpon>PlayerStatsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

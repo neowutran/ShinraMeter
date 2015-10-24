@@ -19,19 +19,10 @@ namespace Tera.DamageMeter
         public Skill Skill { get; private set; }
         public int Damage { get { return IsHeal ? 0 : Amount; } }
         public int Heal { get { return IsHeal ? Amount : 0; } }
-        public User SourceUser
-        {
-            get
-            {
-                var source = Source;
 
-                var sourceProjectile = source as Projectile;
-                if (sourceProjectile != null)
-                    source = sourceProjectile.Owner;
-
-                return source as User;
-            }
-        }
+        // Attribute damage dealt by owned entities to the owner
+        public User SourceUser { get { return User.ForEntity(Source); } }
+        // But don't attribute damage received by owned entities to the owner
         public User TargetUser { get { return Target as User; } }
 
         public SkillResult(EachSkillResultServerMessage message, EntityRegistry entityRegistry, SkillDatabase skillDatabase)

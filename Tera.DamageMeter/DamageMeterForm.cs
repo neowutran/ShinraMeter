@@ -20,6 +20,7 @@ namespace Tera.DamageMeter
         private MessageFactory _messageFactory;
         private EntityRegistry _entityRegistry;
         private DamageTracker _damageTracker;
+        private Server _server;
 
         public DamageMeterForm()
         {
@@ -53,25 +54,6 @@ namespace Tera.DamageMeter
             }
         }
 
-        private static IEnumerable<PlayerInfo> DummyPlayers()
-        {
-            {
-                var user = new User(new EntityId()) { Name = "Player1" };
-                var player = new PlayerInfo(user);
-                player.Dealt.Damage = 100000;
-                player.Dealt.Heal = 1000;
-                player.Dealt.Hits = 100;
-                player.Dealt.Crits = 23;
-                yield return player;
-            }
-            {
-                var user = new User(new EntityId()) { Name = "Player2" };
-                var player = new PlayerInfo(user);
-                player.Dealt.Damage = 200000;
-                yield return player;
-            }
-        }
-
         public void Fetch(IEnumerable<PlayerInfo> playerStatsSequence)
         {
             //playerStatsSequence = DummyPlayers();
@@ -92,13 +74,16 @@ namespace Tera.DamageMeter
                 if (playerStatsControl == null)
                 {
                     playerStatsControl = new PlayerStatsControl();
-                    playerStatsControl.Width = ListPanel.Width;
+                    playerStatsControl.PlayerInfo = playerStats;
+                    playerStatsControl.Height = 40;
                     _controls.Add(playerStats, playerStatsControl);
                     playerStatsControl.Parent = ListPanel;
                 }
                 playerStatsControl.Top = pos;
+                playerStatsControl.Width = ListPanel.Width;
                 pos += playerStatsControl.Height + 2;
-                playerStatsControl.Fetch(playerStats, totalDamage);
+                playerStatsControl.TotalDamage = totalDamage;
+                playerStatsControl.Invalidate();
             }
 
             var invisibleControls = _controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -111,8 +96,8 @@ namespace Tera.DamageMeter
 
         private void HandleNewConnection(Server server)
         {
-            if (!Text.Contains("connected"))
-                Text += string.Format(" connected to {0}", server.Name);
+            Text = string.Format("Damage Meter connected to {0}", server.Name);
+            _server = server;
             _teraData = _basicTeraData.DataForRegion(server.Region);
             _entityRegistry = new EntityRegistry();
             _damageTracker = new DamageTracker(_entityRegistry, _teraData.SkillDatabase);
@@ -138,6 +123,8 @@ namespace Tera.DamageMeter
 
         private void ResetButton_Click(object sender, EventArgs e)
         {
+            if (_server == null)
+                return;
             _damageTracker = new DamageTracker(_entityRegistry, _teraData.SkillDatabase);
             Fetch();
         }
@@ -164,7 +151,7 @@ namespace Tera.DamageMeter
 
             var server = new Server("Packet Log", "EU", null);
             HandleNewConnection(server);
-            foreach (var message in PacketLogReader.ReadMessages(OpenPacketLogFileDialog.SafeFileName))
+            foreach (var message in PacketLogReader.ReadMessages(OpenPacketLogFileDialog.FileName))
             {
                 HandleMessageReceived(message);
             }

@@ -32,24 +32,18 @@ namespace Tera.DamageMeter
 
         public void Update(EachSkillResultServerMessage message)
         {
-            var source = _entityRegistry.Get(message.Source) as User;
-            if (source != null)
+            var skillResult = new SkillResult(message, _entityRegistry, _skillDatabase);
+            if (skillResult.SourceUser != null)
             {
-                var playerStats = GetOrCreate(source);
-                UpdateStats(playerStats.Dealt, message);
+                var playerStats = GetOrCreate(skillResult.SourceUser);
+                UpdateStats(playerStats.Dealt, skillResult);
             }
 
-            var target = _entityRegistry.Get(message.Target) as User;
-            if (target != null)
+            if (skillResult.TargetUser != null)
             {
-                var playerStats = GetOrCreate(target);
-                UpdateStats(playerStats.Received, message);
+                var playerStats = GetOrCreate(skillResult.TargetUser);
+                UpdateStats(playerStats.Received, skillResult);
             }
-        }
-
-        private void UpdateStats(SkillStats stats, EachSkillResultServerMessage message)
-        {
-            UpdateStats(stats, new SkillResult(message, _entityRegistry, _skillDatabase));
         }
 
         private void UpdateStats(SkillStats stats, SkillResult message)

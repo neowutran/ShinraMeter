@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -8,49 +7,71 @@ using System.Windows.Forms;
 
 namespace Tera.DamageMeter
 {
-    public partial class PlayerStatsControl : UserControl
+    public class PlayerStatsControl : Control
     {
-        public PlayerStatsControl()
+        public PlayerInfo PlayerInfo { get; set; }
+        public long TotalDamage { get; set; }
+        public Color HighlightColor { get; set; }
+
+        private static float DrawStringRightToLeft(Graphics graphics, string s, Font font, Brush brush, float x, float y)
         {
-            InitializeComponent();
+            x -= graphics.MeasureString(s, font).Width;
+            graphics.DrawString(s, font, brush, x, y);
+            return x;
         }
 
-        public void Fetch(PlayerInfo playerStats, long totalDamage)
+        protected override void OnPaint(PaintEventArgs e)
         {
-            PlayerNameLabel.Text = playerStats.Name;
-            PlayerClassLabel.Text = playerStats.Class.ToString();
-            DamageLabel.Text = Helpers.FormatValue(playerStats.Dealt.Damage);
-            HealLabel.Text = Helpers.FormatValue(playerStats.Dealt.Heal);
-            InfoLabel.Text = string.Format("Critrate {0} Hits {1} Received {2}",
-                                           Helpers.FormatPercent((double)playerStats.Dealt.Crits / playerStats.Dealt.Hits),
-                                           playerStats.Dealt.Hits,
-                                           Helpers.FormatValue(playerStats.Dealt.Damage));
-            DamagePercentLabel.Text = Helpers.FormatPercent((double)playerStats.Dealt.Damage / totalDamage);
-            DamagePercentBar.Width = (int)(((double)playerStats.Dealt.Damage / totalDamage) * Width);
+            var graphics = e.Graphics;
+            var rect = ClientRectangle;
 
-            HealLabel.Visible = playerStats.Dealt.Heal != 0;
-            DamageHealSeparator.Visible = HealLabel.Visible;
+            using (var backBrush = new SolidBrush(BackColor))
+            {
+                graphics.FillRectangle(backBrush, rect);
+            }
 
-            // Positioning
-            PlayerNameLabel.Left = PlayerClassLabel.Right;
-            DamagePercentLabel.Left = Width - 4 - DamagePercentLabel.Width;
+            if (PlayerInfo == null)
+                return;
 
-            int pos = Width - 4;
-            if (DamageLabel.Visible)
+            var damageFraction = (double)PlayerInfo.Dealt.Damage / TotalDamage;
+            var highlightRect = new Rectangle(rect.Left, rect.Top, (int)Math.Round(rect.Width * damageFraction), rect.Height);
+
+            using (var highlightBrush = new SolidBrush(HighlightColor))
             {
-                pos -= DamageLabel.Width;
-                DamageLabel.Left = pos;
+                graphics.FillRectangle(highlightBrush, highlightRect);
             }
-            if (DamageHealSeparator.Visible)
+
+            var textRect = rect;
+            using (var bigFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.45), GraphicsUnit.Pixel))
+            using (var smallFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.35), GraphicsUnit.Pixel))
+            using (var textBrush = new SolidBrush(ForeColor))
             {
-                pos -= DamageHealSeparator.Width;
-                DamageHealSeparator.Left = pos;
+                graphics.DrawString(PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
+                var row2Y = (float)Math.Round(textRect.Top + 0.55 * textRect.Height);
+                var infoText = string.Format("crit {0} hits {1} hurt {2}",
+                                             Helpers.FormatPercent((double)PlayerInfo.Dealt.Crits / PlayerInfo.Dealt.Hits),
+                                             PlayerInfo.Dealt.Hits,
+                                             Helpers.FormatValue(PlayerInfo.Received.Damage));
+                graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);
+
+                float x = textRect.Right;
+                x = DrawStringRightToLeft(graphics, Helpers.FormatPercent(damageFraction), bigFont, textBrush, x, textRect.Top);
+
+                x = textRect.Right;
+                x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerInfo.Dealt.Damage), smallFont, Brushes.Red, x, row2Y);
+                if (PlayerInfo.Dealt.Heal != 0)
+                {
+                    x = DrawStringRightToLeft(graphics, "+", smallFont, textBrush, x, row2Y);
+                    x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont,Brushes.LawnGreen, x, row2Y);
+                }
             }
-            if (HealLabel.Visible)
-            {
-                pos -= HealLabel.Width;
-                HealLabel.Left = pos;
-            }
+        }
+
+        public PlayerStatsControl()
+        {
+            HighlightColor = Color.DodgerBlue;
+            BackColor = Color.DimGray;
+            ForeColor = Color.White;
         }
     }
 }

@@ -96,7 +96,7 @@
             this.ListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ListPanel.Location = new System.Drawing.Point(0, 33);
             this.ListPanel.Name = "ListPanel";
-            this.ListPanel.Size = new System.Drawing.Size(284, 229);
+            this.ListPanel.Size = new System.Drawing.Size(284, 556);
             this.ListPanel.TabIndex = 2;
             // 
             // MainMenu
@@ -106,26 +106,26 @@
             this.ResetMenuItem,
             this.ExitMenuItem});
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(153, 92);
+            this.MainMenu.Size = new System.Drawing.Size(104, 70);
             // 
             // OpenPacketLogMenuItem
             // 
             this.OpenPacketLogMenuItem.Name = "OpenPacketLogMenuItem";
-            this.OpenPacketLogMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OpenPacketLogMenuItem.Size = new System.Drawing.Size(103, 22);
             this.OpenPacketLogMenuItem.Text = "Open";
             this.OpenPacketLogMenuItem.Click += new System.EventHandler(this.OpenPacketLogMenuItem_Click);
             // 
             // ResetMenuItem
             // 
             this.ResetMenuItem.Name = "ResetMenuItem";
-            this.ResetMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ResetMenuItem.Size = new System.Drawing.Size(103, 22);
             this.ResetMenuItem.Text = "Reset";
             this.ResetMenuItem.Click += new System.EventHandler(this.ResetButton_Click);
             // 
             // ExitMenuItem
             // 
             this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ExitMenuItem.Size = new System.Drawing.Size(103, 22);
             this.ExitMenuItem.Text = "E&xit";
             this.ExitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
             // 
@@ -138,7 +138,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(284, 589);
             this.Controls.Add(this.ListPanel);
             this.Controls.Add(this.HeaderPanel);
             this.Name = "DamageMeterForm";

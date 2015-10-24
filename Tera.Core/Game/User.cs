@@ -36,5 +36,14 @@ namespace Tera.Game
         {
             return string.Format("{0}: {1} [{2}]", Class, Name, GuildName);
         }
+
+        public static User ForEntity(Entity entity)
+        {
+            var projectile = entity as Projectile;
+            if (projectile != null)
+                entity = projectile.Owner;
+
+            return entity as User;
+        }
     }
 }
