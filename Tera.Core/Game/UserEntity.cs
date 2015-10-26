@@ -3,47 +3,48 @@
 namespace Tera.Game
 {
     // A player character, including your own
-    public class User : Entity
+    public class UserEntity : Entity
     {
         public string Name { get; set; }
         public string GuildName { get; set; }
         public RaceGenderClass RaceGenderClass { get; set; }
+        public uint PlayerId { get; set; }
 
-        public PlayerClass Class { get { return RaceGenderClass.Class; } }
-
-        public User(EntityId id)
+        public UserEntity(EntityId id)
             : base(id)
         {
         }
 
-        internal User(SpawnUserServerMessage message)
+        internal UserEntity(SpawnUserServerMessage message)
             : this(message.Id)
         {
             Name = message.Name;
             GuildName = message.GuildName;
             RaceGenderClass = message.RaceGenderClass;
+            PlayerId = message.PlayerId;
         }
 
-        internal User(LoginServerMessage message)
+        internal UserEntity(LoginServerMessage message)
             : this(message.Id)
         {
             Name = message.Name;
             GuildName = message.GuildName;
             RaceGenderClass = message.RaceGenderClass;
+            PlayerId = message.PlayerId;
         }
 
         public override string ToString()
         {
-            return string.Format("{0}: {1} [{2}]", Class, Name, GuildName);
+            return string.Format("{0} [{1}]", Name, GuildName);
         }
 
-        public static User ForEntity(Entity entity)
+        public static UserEntity ForEntity(Entity entity)
         {
-            var projectile = entity as Projectile;
+            var projectile = entity as ProjectileEntity;
             if (projectile != null)
                 entity = projectile.Owner;
 
-            return entity as User;
+            return entity as UserEntity;
         }
     }
 }

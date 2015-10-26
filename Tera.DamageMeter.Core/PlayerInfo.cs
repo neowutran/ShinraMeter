@@ -5,17 +5,17 @@ namespace Tera.DamageMeter
 {
     public class PlayerInfo : INotifyPropertyChanged
     {
-        public User User { get; private set; }
+        public Player Player { get; private set; }
 
-        public string Name { get { return User.Name; } }
-        public PlayerClass Class { get { return User.Class; } }
+        public string Name { get { return Player.Name; } }
+        public PlayerClass Class { get { return Player.Class; } }
 
         public SkillStats Received { get; private set; }
         public SkillStats Dealt { get; private set; }
 
-        public PlayerInfo(User user)
+        public PlayerInfo(Player user)
         {
-            User = user;
+            Player = user;
             Received = new SkillStats();
             Dealt = new SkillStats();
         }

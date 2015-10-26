@@ -5,7 +5,7 @@ using System.Net.Sockets;
 
 namespace NetworkSniffer
 {
-    // Doesn't work since Microsoft cripled raw sockets on the Desktop variants of Windows.
+    // Doesn't work since Microsoft crippled raw sockets on the Desktop variants of Windows.
     // In particular it doesn't receive incoming TCP packets
     // Might work on Server variants of Windows, but I didn't test that
     public class IpSnifferRawSocketSingleInterface : IpSniffer

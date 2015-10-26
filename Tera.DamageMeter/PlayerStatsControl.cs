@@ -12,6 +12,7 @@ namespace Tera.DamageMeter
         public PlayerInfo PlayerInfo { get; set; }
         public long TotalDamage { get; set; }
         public Color HighlightColor { get; set; }
+        public ClassIcons ClassIcons { get; set; }
 
         private static float DrawStringRightToLeft(Graphics graphics, string s, Font font, Brush brush, float x, float y)
         {
@@ -41,7 +42,10 @@ namespace Tera.DamageMeter
                 graphics.FillRectangle(highlightBrush, highlightRect);
             }
 
-            var textRect = rect;
+            var iconWidth = rect.Height;
+            graphics.DrawImage(ClassIcons.GetImage(PlayerInfo.Class), (iconWidth - ClassIcons.Size) / 2, (rect.Height - ClassIcons.Size) / 2);
+            var textRect = Rectangle.FromLTRB(rect.Left + iconWidth, rect.Top, rect.Right, rect.Bottom);
+
             using (var bigFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.45), GraphicsUnit.Pixel))
             using (var smallFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.35), GraphicsUnit.Pixel))
             using (var textBrush = new SolidBrush(ForeColor))
@@ -62,13 +66,15 @@ namespace Tera.DamageMeter
                 if (PlayerInfo.Dealt.Heal != 0)
                 {
                     x = DrawStringRightToLeft(graphics, "+", smallFont, textBrush, x, row2Y);
-                    x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont,Brushes.LawnGreen, x, row2Y);
+                    x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont, Brushes.LawnGreen, x, row2Y);
                 }
             }
         }
 
         public PlayerStatsControl()
         {
+            DoubleBuffered = true;
+
             HighlightColor = Color.DodgerBlue;
             BackColor = Color.DimGray;
             ForeColor = Color.White;

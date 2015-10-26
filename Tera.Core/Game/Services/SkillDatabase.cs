@@ -25,7 +25,7 @@ namespace Tera.Game
         }
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
-        public UserSkill Get(User user, int skillId)
+        public UserSkill Get(UserEntity user, int skillId)
         {
             var raceGenderClass = user.RaceGenderClass;
             var comparer = new Helpers.ProjectingEqualityComparer<Skill, int>(x => x.Id);
@@ -48,7 +48,7 @@ namespace Tera.Game
             return null;
         }
 
-        public UserSkill GetOrPlaceholder(User user, int skillId)
+        public UserSkill GetOrPlaceholder(UserEntity user, int skillId)
         {
             if (user == null)
                 throw new ArgumentNullException("user");
@@ -60,7 +60,7 @@ namespace Tera.Game
             return new UserSkill(skillId, user.RaceGenderClass, "Unknown " + skillId);
         }
 
-        public string GetName(User user, int skillId)
+        public string GetName(UserEntity user, int skillId)
         {
             return GetOrPlaceholder(user, skillId).Name;
         }

@@ -55,9 +55,10 @@ namespace Tera.Sniffer
         {
             InvokeAction(() =>
             {
-                Write(string.Format("{0} {1} {2}",
+                Write(string.Format("{0} {1}({2}) {3}",
                     message.Direction == MessageDirection.ClientToServer ? ">" : "<",
                     GetOpcodeName(message.OpCode),
+                    message.OpCode,
                     message.Data.Count));
                 _logWriter.Append(message);
 
@@ -83,6 +84,7 @@ namespace Tera.Sniffer
         {
             ConnectionList.Items.Add(s);
             ConnectionList.TopIndex = ConnectionList.Items.Count - 1;
+            File.AppendAllLines("OpCode Log.txt", new[] { s });
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)

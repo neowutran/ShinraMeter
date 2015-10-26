@@ -15,10 +15,11 @@ namespace Tera.DamageMeter
     {
         private TeraSniffer _teraSniffer;
         private static readonly BasicTeraData _basicTeraData = new BasicTeraData();
+        private ClassIcons _classIcons;
         private static TeraData _teraData;
         private readonly Dictionary<PlayerInfo, PlayerStatsControl> _controls = new Dictionary<PlayerInfo, PlayerStatsControl>();
         private MessageFactory _messageFactory;
-        private EntityRegistry _entityRegistry;
+        private EntityTracker _entityRegistry;
         private DamageTracker _damageTracker;
         private Server _server;
 
@@ -29,6 +30,7 @@ namespace Tera.DamageMeter
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            _classIcons = new ClassIcons(_basicTeraData.ResourceDirectory + @"class-icons\", 36);
             _teraSniffer = new TeraSniffer(_basicTeraData.Servers);
             _teraSniffer.MessageReceived += message => InvokeAction(() => HandleMessageReceived(message));
             _teraSniffer.NewConnection += server => InvokeAction(() => HandleNewConnection(server));
@@ -56,7 +58,6 @@ namespace Tera.DamageMeter
 
         public void Fetch(IEnumerable<PlayerInfo> playerStatsSequence)
         {
-            //playerStatsSequence = DummyPlayers();
             playerStatsSequence = playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
             var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
             TotalDamageLabel.Text = Helpers.FormatValue(totalDamage);
@@ -78,6 +79,7 @@ namespace Tera.DamageMeter
                     playerStatsControl.Height = 40;
                     _controls.Add(playerStats, playerStatsControl);
                     playerStatsControl.Parent = ListPanel;
+                    playerStatsControl.ClassIcons = _classIcons;
                 }
                 playerStatsControl.Top = pos;
                 playerStatsControl.Width = ListPanel.Width;
@@ -99,7 +101,7 @@ namespace Tera.DamageMeter
             Text = string.Format("Damage Meter connected to {0}", server.Name);
             _server = server;
             _teraData = _basicTeraData.DataForRegion(server.Region);
-            _entityRegistry = new EntityRegistry();
+            _entityRegistry = new EntityTracker();
             _damageTracker = new DamageTracker(_entityRegistry, _teraData.SkillDatabase);
             _messageFactory = new MessageFactory(_teraData.OpCodeNamer);
         }
@@ -149,6 +151,7 @@ namespace Tera.DamageMeter
             if (OpenPacketLogFileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
+            _teraSniffer.Enabled = false;
             var server = new Server("Packet Log", "EU", null);
             HandleNewConnection(server);
             foreach (var message in PacketLogReader.ReadMessages(OpenPacketLogFileDialog.FileName))
