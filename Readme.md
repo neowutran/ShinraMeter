@@ -1,3 +1,10 @@
+Just playing with this https://github.com/gothos-folly/TeraDamageMeter
+
+
+Original Readme
+================
+
+
 TeraSniffer and Damage Meter by Gothos.
 
 * Packet encryption code, the opcode file and the list of server IPs are from
