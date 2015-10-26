@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Tera.Data;
-using Tera.Protocol.Game;
-using Tera.Sniffer;
-using Message = Tera.Protocol.Message;
+using Tera.Game;
+using Tera.Game.Messages;
+using Tera.PacketLog;
+using Tera.Sniffing;
+using Message = Tera.Message;
 
 namespace Tera.DamageMeter
 {
     public partial class DamageMeterForm : Form
     {
         private TeraSniffer _teraSniffer;
-        private static readonly TeraData _teraData = new TeraData();
-        private readonly Dictionary<PlayerStats, PlayerStatsControl> _controls = new Dictionary<PlayerStats, PlayerStatsControl>();
-        private readonly MessageFactory _messageFactory = new MessageFactory(_teraData.OpCodeNamer);
+        private static readonly BasicTeraData _basicTeraData = new BasicTeraData();
+        private static TeraData _teraData;
+        private readonly Dictionary<PlayerInfo, PlayerStatsControl> _controls = new Dictionary<PlayerInfo, PlayerStatsControl>();
+        private MessageFactory _messageFactory;
         private EntityRegistry _entityRegistry;
         private DamageTracker _damageTracker;
+        private Server _server;
 
         public DamageMeterForm()
         {
@@ -25,9 +29,9 @@ namespace Tera.DamageMeter
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            _teraSniffer = new TeraSniffer(_teraData.ServerIps);
-            _teraSniffer.MessageReceived += teraSniffer_MessageReceived;
-            _teraSniffer.NewConnection += _teraSniffer_NewConnection;
+            _teraSniffer = new TeraSniffer(_basicTeraData.Servers);
+            _teraSniffer.MessageReceived += message => InvokeAction(() => HandleMessageReceived(message));
+            _teraSniffer.NewConnection += server => InvokeAction(() => HandleNewConnection(server));
 
             _teraSniffer.Enabled = true;
         }
@@ -50,14 +54,15 @@ namespace Tera.DamageMeter
             }
         }
 
-        public void Fetch(IEnumerable<PlayerStats> playerStatsSequence)
+        public void Fetch(IEnumerable<PlayerInfo> playerStatsSequence)
         {
+            //playerStatsSequence = DummyPlayers();
             playerStatsSequence = playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
             var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
             TotalDamageLabel.Text = Helpers.FormatValue(totalDamage);
             TotalDamageLabel.Left = HeaderPanel.Width - TotalDamageLabel.Width;
             int pos = 0;
-            var visiblePlayerStats = new HashSet<PlayerStats>();
+            var visiblePlayerStats = new HashSet<PlayerInfo>();
             foreach (var playerStats in playerStatsSequence)
             {
                 if (pos > ListPanel.Height)
@@ -69,13 +74,16 @@ namespace Tera.DamageMeter
                 if (playerStatsControl == null)
                 {
                     playerStatsControl = new PlayerStatsControl();
-                    playerStatsControl.Width = ListPanel.Width;
+                    playerStatsControl.PlayerInfo = playerStats;
+                    playerStatsControl.Height = 40;
                     _controls.Add(playerStats, playerStatsControl);
                     playerStatsControl.Parent = ListPanel;
                 }
                 playerStatsControl.Top = pos;
-                pos += playerStatsControl.Height;
-                playerStatsControl.Fetch(playerStats, totalDamage);
+                playerStatsControl.Width = ListPanel.Width;
+                pos += playerStatsControl.Height + 2;
+                playerStatsControl.TotalDamage = totalDamage;
+                playerStatsControl.Invalidate();
             }
 
             var invisibleControls = _controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -86,46 +94,67 @@ namespace Tera.DamageMeter
             }
         }
 
-        private void _teraSniffer_NewConnection()
+        private void HandleNewConnection(Server server)
         {
-            InvokeAction(() =>
-                {
-                    if (!Text.Contains("connected"))
-                        Text += " connected";
-                    _entityRegistry = new EntityRegistry();
-                    _damageTracker = new DamageTracker(_entityRegistry);
-                });
+            Text = string.Format("Damage Meter connected to {0}", server.Name);
+            _server = server;
+            _teraData = _basicTeraData.DataForRegion(server.Region);
+            _entityRegistry = new EntityRegistry();
+            _damageTracker = new DamageTracker(_entityRegistry, _teraData.SkillDatabase);
+            _messageFactory = new MessageFactory(_teraData.OpCodeNamer);
         }
 
-        private void teraSniffer_MessageReceived(Message obj)
+        private void HandleMessageReceived(Message obj)
         {
-            InvokeAction(() =>
-                {
-                    var message = _messageFactory.Create(obj);
-                    _entityRegistry.Update(message);
+            var message = _messageFactory.Create(obj);
+            _entityRegistry.Update(message);
 
-                    var skillResultMessage = message as EachSkillResultServerMessage;
-                    if (skillResultMessage != null)
-                    {
-                        _damageTracker.Update(skillResultMessage);
-                    }
-                });
+            var skillResultMessage = message as EachSkillResultServerMessage;
+            if (skillResultMessage != null)
+            {
+                _damageTracker.Update(skillResultMessage);
+            }
         }
 
         private void DamageMeterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             _teraSniffer.Enabled = false;
         }
-        
+
         private void ResetButton_Click(object sender, EventArgs e)
         {
-            _damageTracker = new DamageTracker(_entityRegistry);
+            if (_server == null)
+                return;
+            _damageTracker = new DamageTracker(_entityRegistry, _teraData.SkillDatabase);
             Fetch();
         }
 
         private void RefershTimer_Tick(object sender, EventArgs e)
         {
             Fetch();
+        }
+
+        private void ExitMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void MenuButton_Click(object sender, EventArgs e)
+        {
+            MainMenu.Show(MenuButton, 0, MenuButton.Height);
+        }
+
+        private void OpenPacketLogMenuItem_Click(object sender, EventArgs e)
+        {
+            if (OpenPacketLogFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var server = new Server("Packet Log", "EU", null);
+            HandleNewConnection(server);
+            foreach (var message in PacketLogReader.ReadMessages(OpenPacketLogFileDialog.FileName))
+            {
+                HandleMessageReceived(message);
+            }
         }
     }
 }

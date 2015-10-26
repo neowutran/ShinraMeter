@@ -6,7 +6,7 @@ namespace NetworkSniffer
 {
     internal struct EndpointIpv4 : IEquatable<EndpointIpv4>
     {
-        private readonly uint _ip;
+        private readonly string _ip;
         private readonly ushort _port;
 
         public static bool operator ==(EndpointIpv4 x, EndpointIpv4 y)
@@ -34,34 +34,24 @@ namespace NetworkSniffer
 
         public override int GetHashCode()
         {
-            return unchecked((int)(_ip + (uint)_port * 1397));
+            return unchecked((int)(_ip.GetHashCode() + (uint)_port * 1397));
         }
 
-        public EndpointIpv4(uint ip, ushort port)
+        public EndpointIpv4(string ip, ushort port)
         {
             _ip = ip;
             _port = port;
         }
 
-        private static IPAddress ToIpAddress(uint ip)
-        {
-            var bytes = new byte[4];
-            bytes[0] = (byte)(ip >> 24);
-            bytes[1] = (byte)(ip >> 16);
-            bytes[2] = (byte)(ip >> 8);
-            bytes[3] = (byte)(ip >> 0);
-            return new IPAddress(bytes);
-        }
-
         [Pure]
         public IPEndPoint ToIpEndpoint()
         {
-            return new IPEndPoint(ToIpAddress(_ip), _port);
+            return new IPEndPoint(IPAddress.Parse(_ip), _port);
         }
 
         public override string ToString()
         {
-            return string.Format("{0}:{1}", ToIpAddress(_ip), _port);
+            return string.Format("{0}:{1}", _ip, _port);
         }
     }
 }

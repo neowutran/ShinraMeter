@@ -43,13 +43,7 @@
     <Compile Include="ConnectionId.cs" />
     <Compile Include="EndpointIpv4.cs" />
     <Compile Include="IpSniffer.cs" />
-    <Compile Include="IpSnifferRawSocketMultipleInterfaces.cs" />
-    <Compile Include="IpSnifferRawSocketSingleInterface.cs" />
     <Compile Include="IpSnifferWinPcap.cs" />
-    <Compile Include="Packets\IpPacket.cs" />
-    <Compile Include="Packets\TcpPacket.cs" />
-    <Compile Include="Packets\ParserHelpers.cs" />
-    <Compile Include="Packets\TcpFlags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TcpConnection.cs" />
     <Compile Include="TcpSniffer.cs" />

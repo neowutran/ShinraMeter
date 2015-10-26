@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Sniffer", "Tera.Sniffer\Tera.Sniffer.csproj", "{AB53A885-EA95-4ABC-8D65-32E8E80485B5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Protocol", "Tera.Protocol\Tera.Protocol.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Core", "Tera.Core\Tera.Core.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60571443-038A-4337-9ED2-D4164D35B0F3}"
 EndProject
@@ -13,16 +13,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter", "Tera.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Data", "Tera.Data\Tera.Data.csproj", "{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Sniffing", "Tera.Sniffing\Tera.Sniffing.csproj", "{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.Core", "Tera.DamageMeter.Core\Tera.DamageMeter.Core.csproj", "{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AB53A885-EA95-4ABC-8D65-32E8E80485B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB53A885-EA95-4ABC-8D65-32E8E80485B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB53A885-EA95-4ABC-8D65-32E8E80485B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB53A885-EA95-4ABC-8D65-32E8E80485B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +39,14 @@ Global
 		{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

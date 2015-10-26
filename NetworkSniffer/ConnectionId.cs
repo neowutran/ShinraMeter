@@ -7,7 +7,7 @@ namespace NetworkSniffer
         public readonly EndpointIpv4 Source;
         public readonly EndpointIpv4 Destination;
 
-        public ConnectionId(uint sourceIp, ushort sourcePort, uint destinationIp, ushort destinationPort)
+        public ConnectionId(string sourceIp, ushort sourcePort, string destinationIp, ushort destinationPort)
         {
             Source = new EndpointIpv4(sourceIp, sourcePort);
             Destination = new EndpointIpv4(destinationIp, destinationPort);
@@ -43,7 +43,7 @@ namespace NetworkSniffer
 
         public override string ToString()
         {
-            return string.Format("{0} -> {1}", Source, Destination);
+            return $"{Source} -> {Destination}";
         }
     }
 }

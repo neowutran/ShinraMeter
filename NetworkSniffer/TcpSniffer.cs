@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using NetworkSniffer.Packets;
+using System.Net;
+using PacketDotNet;
+using PacketDotNet.Utils;
 
 namespace NetworkSniffer
 {
@@ -22,16 +24,28 @@ namespace NetworkSniffer
 
         private readonly Dictionary<ConnectionId, TcpConnection> _connections = new Dictionary<ConnectionId, TcpConnection>();
 
-        private void Receive(ArraySegment<byte> ipData)
+        private void Receive(IpPacket ipPacket)
         {
-            var ipPacket = new Ip4Packet(ipData);
             var protocol = ipPacket.Protocol;
-            if (protocol != IpProtocol.Tcp)
+            if (protocol != IPProtocolType.TCP)
                 return;
-            var tcpPacket = new TcpPacket(ipPacket.Payload);
+            if (ipPacket.PayloadPacket == null)
+            {
+                Console.WriteLine(ipPacket);
+                return;
+            }
+            var tcpPacket = new TcpPacket(new ByteArraySegment(ipPacket.PayloadPacket.BytesHighPerformance));
 
-            bool isFirstPacket = (tcpPacket.Flags & TcpFlags.Syn) != 0;
-            var connectionId = new ConnectionId(ipPacket.SourceIp, tcpPacket.SourcePort, ipPacket.DestinationIp, tcpPacket.DestinationPort);
+            bool isFirstPacket = tcpPacket.Syn;
+            var source = ipPacket.SourceAddress.GetAddressBytes();
+            string sourceIp = new IPAddress(source).ToString();
+            Console.WriteLine(sourceIp);
+
+            var destination = ipPacket.DestinationAddress.GetAddressBytes();
+            string destinationIp = new IPAddress(destination).ToString();
+            Console.WriteLine(destinationIp);
+
+            var connectionId = new ConnectionId(sourceIp, tcpPacket.SourcePort, destinationIp, tcpPacket.DestinationPort);
 
             lock (_lock)
             {
@@ -45,7 +59,7 @@ namespace NetworkSniffer
                     if (!isInterestingConnection)
                         return;
                     _connections[connectionId] = connection;
-                    Debug.Assert(tcpPacket.Payload.Count == 0);
+                    Debug.Assert(ipPacket.PayloadPacket.PayloadData.Length == 0);
                 }
                 else
                 {
@@ -54,8 +68,8 @@ namespace NetworkSniffer
                         return;
 
                     if (!string.IsNullOrEmpty(TcpLogFile))
-                        File.AppendAllText(TcpLogFile, string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n", connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived, connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber), tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber, connection.BufferedPacketDescription));
-                    connection.HandleTcpReceived(tcpPacket.SequenceNumber, tcpPacket.Payload);
+                        File.AppendAllText(TcpLogFile, string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n", connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived, connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber), ipPacket.PayloadLength, tcpPacket.AcknowledgmentNumber, connection.BufferedPacketDescription));
+                    connection.HandleTcpReceived(tcpPacket.SequenceNumber, new ByteArraySegment(ipPacket.PayloadPacket.PayloadData));
                 }
             }
         }

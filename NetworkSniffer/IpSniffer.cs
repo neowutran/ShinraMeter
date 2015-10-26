@@ -1,16 +1,16 @@
 ﻿using System;
+using PacketDotNet;
 
 namespace NetworkSniffer
 {
     public abstract class IpSniffer
     {
-        public event Action<ArraySegment<byte>> PacketReceived;
+        public event Action<IpPacket> PacketReceived;
 
-        protected void OnPacketReceived(ArraySegment<byte> data)
+        protected void OnPacketReceived(IpPacket data)
         {
             var packetReceived = PacketReceived;
-            if (packetReceived != null)
-                packetReceived(data);
+            packetReceived?.Invoke(data);
         }
 
         private bool _enabled;
@@ -19,11 +19,9 @@ namespace NetworkSniffer
             get { return _enabled; }
             set
             {
-                if (_enabled != value)
-                {
-                    _enabled = value;
-                    SetEnabled(value);
-                }
+                if (_enabled == value) return;
+                _enabled = value;
+                SetEnabled(value);
             }
         }
 
