@@ -1,6 +1,7 @@
 ﻿// Unknown Author and License
 
 using System;
+using System.Security.Cryptography;
 
 namespace Tera.Sniffing.Crypt
 {
@@ -35,9 +36,10 @@ namespace Tera.Sniffing.Crypt
         private void GenerateKey(byte[] src)
         {
             byte[] buf = FillKey(src);
+            var shaAlgorithm = SHA1Cng.Create();
             for (int i = 0; i < 680; i += 20)
             {
-                uint[] sha = Sha.Digest(buf);
+                byte[] sha = shaAlgorithm.ComputeHash(buf);
                 for (int j = 0; j < 5; j++)
                     Buffer.BlockCopy(BitConverter.GetBytes(sha[j]), 0, buf, i + j * 4, 4);
             }
