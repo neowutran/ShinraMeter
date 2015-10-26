@@ -11,7 +11,7 @@ namespace Tera.Sniffing
         private MemoryStream _client = new MemoryStream();
         private MemoryStream _server = new MemoryStream();
         private Session _session;
-        private bool Initialized { get { return _session != null; } }
+        private bool Initialized => _session != null;
 
         public event Action<byte[]> ClientToServerDecrypted;
         public event Action<byte[]> ServerToClientDecrypted;
@@ -19,15 +19,13 @@ namespace Tera.Sniffing
         protected void OnClientToServerDecrypted(byte[] data)
         {
             var action = ClientToServerDecrypted;
-            if (action != null)
-                action(data);
+            action?.Invoke(data);
         }
 
         protected void OnServerToClientDecrypted(byte[] data)
         {
             var action = ServerToClientDecrypted;
-            if (action != null)
-                action(data);
+            action?.Invoke(data);
         }
 
         private static Session CreateSession(byte[] clientKey1, byte[] clientKey2, byte[] serverKey1, byte[] serverKey2)

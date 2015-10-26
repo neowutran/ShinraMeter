@@ -17,13 +17,13 @@ namespace Tera.DamageMeter
 
         public int SkillId { get; private set; }
         public Skill Skill { get; private set; }
-        public int Damage { get { return IsHeal ? 0 : Amount; } }
-        public int Heal { get { return IsHeal ? Amount : 0; } }
+        public int Damage => IsHeal ? 0 : Amount;
+        public int Heal => IsHeal ? Amount : 0;
 
         // Attribute damage dealt by owned entities to the owner
-        public User SourceUser { get { return User.ForEntity(Source); } }
+        public User SourceUser => User.ForEntity(Source);
         // But don't attribute damage received by owned entities to the owner
-        public User TargetUser { get { return Target as User; } }
+        public User TargetUser => Target as User;
 
         public SkillResult(EachSkillResultServerMessage message, EntityRegistry entityRegistry, SkillDatabase skillDatabase)
         {
@@ -35,7 +35,9 @@ namespace Tera.DamageMeter
             SkillId = message.SkillId;
 
             if (SourceUser != null)
+            {
                 Skill = skillDatabase.Get(SourceUser, message.SkillId);
+            }
         }
     }
 }

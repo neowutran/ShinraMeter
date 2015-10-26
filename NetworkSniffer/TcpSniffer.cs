@@ -51,7 +51,9 @@ namespace NetworkSniffer
                     OnNewConnection(connection);
                     isInterestingConnection = connection.HasSubscribers;
                     if (!isInterestingConnection)
+                    {
                         return;
+                    }
                     _connections[connectionId] = connection;
                     Debug.Assert(ipPacket.PayloadPacket.PayloadData.Length == 0);
                 }
@@ -59,10 +61,19 @@ namespace NetworkSniffer
                 {
                     isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
                     if (!isInterestingConnection)
+                    {
                         return;
+                    }
 
                     if (!string.IsNullOrEmpty(TcpLogFile))
-                        File.AppendAllText(TcpLogFile, string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n", connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived, connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber), ipPacket.PayloadLength, tcpPacket.AcknowledgmentNumber, connection.BufferedPacketDescription));
+                    {
+                        File.AppendAllText(TcpLogFile,
+                            string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
+                                connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived,
+                                connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber),
+                                ipPacket.PayloadLength, tcpPacket.AcknowledgmentNumber,
+                                connection.BufferedPacketDescription));
+                    }
                     connection.HandleTcpReceived(tcpPacket.SequenceNumber, new ByteArraySegment(ipPacket.PayloadPacket.PayloadData));
                 }
             }

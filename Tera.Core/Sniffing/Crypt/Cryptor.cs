@@ -7,10 +7,12 @@ namespace Tera.Sniffing.Crypt
 {
     internal class Cryptor
     {
-        private int ChangeData;
-        private int ChangeLen;
+        private int _changeData;
+        private int _changeLen;
 
-        private CryptorKey[] Key = {
+        //No fucking idea where that come from, will search later
+        //TODO
+        private readonly CryptorKey[] _key = {
                                          new CryptorKey(55, 31),
                                          new CryptorKey(57, 50),
                                          new CryptorKey(58, 39)
@@ -36,7 +38,7 @@ namespace Tera.Sniffing.Crypt
         private void GenerateKey(byte[] src)
         {
             byte[] buf = FillKey(src);
-            var shaAlgorithm = SHA1Cng.Create();
+            var shaAlgorithm = SHA1.Create();
             for (int i = 0; i < 680; i += 20)
             {
                 byte[] sha = shaAlgorithm.ComputeHash(buf);
@@ -45,34 +47,34 @@ namespace Tera.Sniffing.Crypt
             }
 
             for (int i = 0; i < 220; i += 4)
-                Key[0].Buffer[i / 4] = BitConverter.ToUInt32(buf, i);
+                _key[0].Buffer[i / 4] = BitConverter.ToUInt32(buf, i);
 
             for (int i = 0; i < 228; i += 4)
-                Key[1].Buffer[i / 4] = BitConverter.ToUInt32(buf, 220 + i);
+                _key[1].Buffer[i / 4] = BitConverter.ToUInt32(buf, 220 + i);
 
             for (int i = 0; i < 232; i += 4)
-                Key[2].Buffer[i / 4] = BitConverter.ToUInt32(buf, 448 + i);
+                _key[2].Buffer[i / 4] = BitConverter.ToUInt32(buf, 448 + i);
         }
 
         public void ApplyCryptor(byte[] buf, int size)
         {
-            int pre = (size < ChangeLen) ? size : ChangeLen;
+            int pre = (size < _changeLen) ? size : _changeLen;
             if (pre != 0)
             {
                 for (int j = 0; j < pre; j++)
-                    buf[j] ^= (byte)(ChangeData >> (8 * (4 - ChangeLen + j)));
+                    buf[j] ^= (byte)(_changeData >> (8 * (4 - _changeLen + j)));
 
-                ChangeLen -= pre;
+                _changeLen -= pre;
                 size -= pre;
             }
 
             for (int i = pre; i < buf.Length - 3; i += 4)
             {
-                int result = Key[0].Key & Key[1].Key | Key[2].Key & (Key[0].Key | Key[1].Key);
+                int result = _key[0].Key & _key[1].Key | _key[2].Key & (_key[0].Key | _key[1].Key);
 
                 for (int j = 0; j < 3; j++)
                 {
-                    CryptorKey k = Key[j];
+                    CryptorKey k = _key[j];
                     if (result == k.Key)
                     {
                         uint t1 = k.Buffer[k.Pos1];
@@ -93,11 +95,11 @@ namespace Tera.Sniffing.Crypt
             int remain = size & 3;
             if (remain != 0)
             {
-                int result = Key[0].Key & Key[1].Key | Key[2].Key & (Key[0].Key | Key[1].Key);
-                ChangeData = 0;
+                int result = _key[0].Key & _key[1].Key | _key[2].Key & (_key[0].Key | _key[1].Key);
+                _changeData = 0;
                 for (int j = 0; j < 3; j++)
                 {
-                    CryptorKey k = Key[j];
+                    CryptorKey k = _key[j];
                     if (result == k.Key)
                     {
                         uint t1 = k.Buffer[k.Pos1];
@@ -108,13 +110,13 @@ namespace Tera.Sniffing.Crypt
                         k.Pos1 = (k.Pos1 + 1) % k.Size;
                         k.Pos2 = (k.Pos2 + 1) % k.Size;
                     }
-                    ChangeData ^= (int)k.Sum;
+                    _changeData ^= (int)k.Sum;
                 }
 
                 for (int j = 0; j < remain; j++)
-                    buf[size + pre - remain + j] ^= (byte)(ChangeData >> (j * 8));
+                    buf[size + pre - remain + j] ^= (byte)(_changeData >> (j * 8));
 
-                ChangeLen = 4 - remain;
+                _changeLen = 4 - remain;
             }
         }
     }
