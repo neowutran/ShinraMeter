@@ -1,21 +1,22 @@
 ﻿using System;
+using System.Net;
 
 namespace NetworkSniffer
 {
     internal struct ConnectionId : IEquatable<ConnectionId>
     {
-        public readonly EndpointIpv4 Source;
-        public readonly EndpointIpv4 Destination;
+        public readonly IPEndPoint Source;
+        public readonly IPEndPoint Destination;
 
         public ConnectionId(string sourceIp, ushort sourcePort, string destinationIp, ushort destinationPort)
         {
-            Source = new EndpointIpv4(sourceIp, sourcePort);
-            Destination = new EndpointIpv4(destinationIp, destinationPort);
+            Source = new IPEndPoint(IPAddress.Parse(sourceIp), sourcePort);
+            Destination = new IPEndPoint(IPAddress.Parse(destinationIp), destinationPort);
         }
 
         public static bool operator ==(ConnectionId x, ConnectionId y)
         {
-            return (x.Source == y.Source) && (x.Destination == y.Destination);
+            return (x.Source.Equals(y.Source)) && (x.Destination.Equals(y.Destination));
         }
 
         public static bool operator !=(ConnectionId x, ConnectionId y)

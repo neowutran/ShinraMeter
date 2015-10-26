@@ -69,10 +69,8 @@ namespace NetworkSniffer
 
         internal TcpConnection(ConnectionId connectionId, uint sequenceNumber)
         {
-            Source = connectionId.Source.ToIpEndpoint();
-            Destination = connectionId.Destination.ToIpEndpoint();
-            Console.WriteLine(Source);
-            Console.WriteLine(Destination);
+            Source = connectionId.Source;
+            Destination = connectionId.Destination;
             InitialSequenceNumber = sequenceNumber;
         }
 
