@@ -22,6 +22,7 @@ namespace Tera.DamageMeter
         private EntityTracker _entityRegistry;
         private DamageTracker _damageTracker;
         private Server _server;
+        private PlayerTracker _playerTracker;
 
         public DamageMeterForm()
         {
@@ -102,7 +103,8 @@ namespace Tera.DamageMeter
             _server = server;
             _teraData = _basicTeraData.DataForRegion(server.Region);
             _entityRegistry = new EntityTracker();
-            _damageTracker = new DamageTracker(_entityRegistry, _teraData.SkillDatabase);
+            _playerTracker = new PlayerTracker(_entityRegistry);
+            _damageTracker = new DamageTracker(_entityRegistry, _playerTracker, _teraData.SkillDatabase);
             _messageFactory = new MessageFactory(_teraData.OpCodeNamer);
         }
 
@@ -127,7 +129,7 @@ namespace Tera.DamageMeter
         {
             if (_server == null)
                 return;
-            _damageTracker = new DamageTracker(_entityRegistry, _teraData.SkillDatabase);
+            _damageTracker = new DamageTracker(_entityRegistry, _playerTracker, _teraData.SkillDatabase);
             Fetch();
         }
 

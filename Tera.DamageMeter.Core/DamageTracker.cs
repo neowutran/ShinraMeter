@@ -13,11 +13,11 @@ namespace Tera.DamageMeter
         private readonly PlayerTracker _playerTracker;
         private readonly SkillDatabase _skillDatabase;
 
-        public DamageTracker(EntityTracker entityRegistry, SkillDatabase skillDatabase)
+        public DamageTracker(EntityTracker entityRegistry, PlayerTracker playerTracker, SkillDatabase skillDatabase)
         {
             _entityTracker = entityRegistry;
-            _playerTracker = new PlayerTracker(entityRegistry);
             _skillDatabase = skillDatabase;
+            _playerTracker = playerTracker;
         }
 
         private PlayerInfo GetOrCreate(Player player)
