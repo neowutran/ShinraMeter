@@ -73,7 +73,6 @@
     <Compile Include="Sniffing\Crypt\Cryptor.cs" />
     <Compile Include="Sniffing\Crypt\CryptorKey.cs" />
     <Compile Include="Sniffing\Crypt\Session.cs" />
-    <Compile Include="Sniffing\Crypt\Sha.cs" />
     <Compile Include="Sniffing\Crypt\Utils.cs" />
     <Compile Include="MessageDirection.cs" />
     <Compile Include="Message.cs" />

@@ -41,7 +41,7 @@ namespace Tera.Sniffing.Crypt
             {
                 byte[] sha = shaAlgorithm.ComputeHash(buf);
                 for (int j = 0; j < 5; j++)
-                    Buffer.BlockCopy(BitConverter.GetBytes(sha[j]), 0, buf, i + j * 4, 4);
+                    Buffer.BlockCopy(sha, 0, buf, i + j * 4, 4);
             }
 
             for (int i = 0; i < 220; i += 4)
