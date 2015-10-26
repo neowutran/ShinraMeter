@@ -19,17 +19,17 @@ namespace Tera.Sniffing
         private TcpConnection _serverToClient;
         private ConnectionDecrypter _decrypter;
         private MessageSplitter _messageSplitter;
-        private readonly IpSnifferWinPcap _ipSniffer;
+        private readonly IpSniffer _ipSniffer;
 
         public TeraSniffer(IEnumerable<Server> servers)
         {
             _serversByIp = servers.ToDictionary(x => x.Ip);
             var netmasks =
                 _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct().ToArray();
-            string filter = string.Join(" or ", netmasks.Select(x => string.Format("(net {0})", x)));
+            var filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
             filter = "tcp and (" + filter + ")";
 
-            _ipSniffer = new IpSnifferWinPcap(filter);
+            _ipSniffer = new IpSniffer(filter);
             var tcpSniffer = new TcpSniffer(_ipSniffer);
             tcpSniffer.NewConnection += HandleNewConnection;
         }
@@ -53,13 +53,13 @@ namespace Tera.Sniffing
         protected virtual void OnNewConnection(Server server)
         {
             var handler = NewConnection;
-            if (handler != null) handler(server);
+            handler?.Invoke(server);
         }
 
         protected virtual void OnMessageReceived(Message message)
         {
             var handler = MessageReceived;
-            if (handler != null) handler(message);
+            handler?.Invoke(message);
         }
 
         // called from the tcp sniffer, so it needs to lock

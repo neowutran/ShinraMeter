@@ -60,12 +60,10 @@ namespace NetworkSniffer
                 var alreadyReceivedBytes = BytesReceived - firstBufferedPosition;
                 Debug.Assert(alreadyReceivedBytes >= 0);
 
-                if (alreadyReceivedBytes < dataArray.Length)
-                {
-                    var count = dataArray.Length - alreadyReceivedBytes;
-                    OnDataReceived(new ByteArraySegment(dataArray, (int)alreadyReceivedBytes, (int)count));
-                    BytesReceived += count;
-                }
+                if (alreadyReceivedBytes >= dataArray.Length) continue;
+                var count = dataArray.Length - alreadyReceivedBytes;
+                OnDataReceived(new ByteArraySegment(dataArray, (int)alreadyReceivedBytes, (int)count));
+                BytesReceived += count;
             }
         }
 

@@ -18,8 +18,7 @@ namespace NetworkSniffer
         protected void OnNewConnection(TcpConnection connection)
         {
             var handler = NewConnection;
-            if (handler != null)
-                handler(connection);
+            handler?.Invoke(connection);
         }
 
         private readonly Dictionary<ConnectionId, TcpConnection> _connections = new Dictionary<ConnectionId, TcpConnection>();
@@ -28,23 +27,18 @@ namespace NetworkSniffer
         {
             var protocol = ipPacket.Protocol;
             if (protocol != IPProtocolType.TCP)
+            {
                 return;
+            }
             if (ipPacket.PayloadPacket == null)
             {
-                Console.WriteLine(ipPacket);
                 return;
             }
             var tcpPacket = new TcpPacket(new ByteArraySegment(ipPacket.PayloadPacket.BytesHighPerformance));
 
-            bool isFirstPacket = tcpPacket.Syn;
-            var source = ipPacket.SourceAddress.GetAddressBytes();
-            string sourceIp = new IPAddress(source).ToString();
-            Console.WriteLine(sourceIp);
-
-            var destination = ipPacket.DestinationAddress.GetAddressBytes();
-            string destinationIp = new IPAddress(destination).ToString();
-            Console.WriteLine(destinationIp);
-
+            var isFirstPacket = tcpPacket.Syn;
+            var sourceIp = new IPAddress(ipPacket.SourceAddress.GetAddressBytes()).ToString();
+            var destinationIp = new IPAddress(ipPacket.DestinationAddress.GetAddressBytes()).ToString();
             var connectionId = new ConnectionId(sourceIp, tcpPacket.SourcePort, destinationIp, tcpPacket.DestinationPort);
 
             lock (_lock)
