@@ -37,6 +37,7 @@ namespace Tera.DamageMeter
             _teraSniffer.NewConnection += server => InvokeAction(() => HandleNewConnection(server));
 
             _teraSniffer.Enabled = true;
+            UpdateSettingsUi();
         }
 
         private void InvokeAction(Action action)
@@ -95,6 +96,12 @@ namespace Tera.DamageMeter
                 invisibleControl.Value.Dispose();
                 _controls.Remove(invisibleControl.Key);
             }
+        }
+
+        public void UpdateSettingsUi()
+        {
+            alwaysOnTopToolStripMenuItem.Checked = TopMost;
+            CaptureMenuItem.Checked = _teraSniffer.Enabled;
         }
 
         private void HandleNewConnection(Server server)
@@ -160,6 +167,18 @@ namespace Tera.DamageMeter
             {
                 HandleMessageReceived(message);
             }
+        }
+
+        private void alwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TopMost = !TopMost;
+            UpdateSettingsUi();
+        }
+
+        private void CaptureMenuItem_Click(object sender, EventArgs e)
+        {
+            _teraSniffer.Enabled = !_teraSniffer.Enabled;
+            UpdateSettingsUi();
         }
     }
 }
