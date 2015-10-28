@@ -45,7 +45,7 @@ namespace Tera.PacketLog
                         direction = MessageDirection.ServerToClient;
                         return new Message(_time, direction, new ArraySegment<byte>(data));
                     default:
-                        throw new FormatException(string.Format("Unexpected blocktype {0}", blockType));
+                        throw new FormatException($"Unexpected blocktype {blockType}");
                 }
             }
             return null;

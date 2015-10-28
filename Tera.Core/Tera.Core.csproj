@@ -34,14 +34,18 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\Messages\StartUserProjectileServerMessage.cs" />
+    <Compile Include="Game\PlaceHolderEntity.cs" />
+    <Compile Include="Game\Player.cs" />
     <Compile Include="Game\Region.cs" />
     <Compile Include="Game\Server.cs" />
     <Compile Include="Game\Services\Helpers.cs" />
+    <Compile Include="Game\Services\PlayerTracker.cs" />
     <Compile Include="Game\Skill.cs" />
     <Compile Include="Game\Gender.cs" />
     <Compile Include="Game\Messages\Server\LoginServerMessage.cs" />
     <Compile Include="Game\PlayerClass.cs" />
-    <Compile Include="Game\Projectile.cs" />
+    <Compile Include="Game\ProjectileEntity.cs" />
     <Compile Include="Game\Entity.cs" />
     <Compile Include="Game\Messages\Server\EachSkillResultServerMessage.cs" />
     <Compile Include="Game\Services\MessageFactory.cs" />
@@ -50,7 +54,7 @@
     <Compile Include="Game\Messages\Server\SpawnProjectileServerMessage.cs" />
     <Compile Include="Game\Messages\Server\SpawnUserServerMessage.cs" />
     <Compile Include="Game\EntityId.cs" />
-    <Compile Include="Game\Npc.cs" />
+    <Compile Include="Game\NpcEntity.cs" />
     <Compile Include="Game\Services\OpCodeNamer.cs" />
     <Compile Include="Game\Messages\ParsedMessage.cs" />
     <Compile Include="Game\Race.cs" />
@@ -58,8 +62,8 @@
     <Compile Include="Game\Services\SkillDatabase.cs" />
     <Compile Include="Game\Services\TeraMessageReader.cs" />
     <Compile Include="Game\Messages\UnknownMessage.cs" />
-    <Compile Include="Game\User.cs" />
-    <Compile Include="Game\Services\EntityRegistry.cs" />
+    <Compile Include="Game\UserEntity.cs" />
+    <Compile Include="Game\Services\EntityTracker.cs" />
     <Compile Include="PacketLog\LogHeader.cs" />
     <Compile Include="PacketLog\Parsing\BlockHelper.cs" />
     <Compile Include="PacketLog\Parsing\BlockSplitter.cs" />

@@ -8,23 +8,25 @@ namespace Tera.DamageMeter
 {
     public class DamageTracker : IEnumerable<PlayerInfo>
     {
-        readonly Dictionary<User, PlayerInfo> _statsByUser = new Dictionary<User, PlayerInfo>();
-        private readonly EntityRegistry _entityRegistry;
+        readonly Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
+        private readonly EntityTracker _entityTracker;
+        private readonly PlayerTracker _playerTracker;
         private readonly SkillDatabase _skillDatabase;
 
-        public DamageTracker(EntityRegistry entityRegistry, SkillDatabase skillDatabase)
+        public DamageTracker(EntityTracker entityRegistry, PlayerTracker playerTracker, SkillDatabase skillDatabase)
         {
-            _entityRegistry = entityRegistry;
+            _entityTracker = entityRegistry;
             _skillDatabase = skillDatabase;
+            _playerTracker = playerTracker;
         }
 
-        private PlayerInfo GetOrCreate(User user)
+        private PlayerInfo GetOrCreate(Player player)
         {
             PlayerInfo playerStats;
-            if (!_statsByUser.TryGetValue(user, out playerStats))
+            if (!_statsByUser.TryGetValue(player, out playerStats))
             {
-                playerStats = new PlayerInfo(user);
-                _statsByUser.Add(user, playerStats);
+                playerStats = new PlayerInfo(player);
+                _statsByUser.Add(player, playerStats);
             }
 
             return playerStats;
@@ -32,16 +34,16 @@ namespace Tera.DamageMeter
 
         public void Update(EachSkillResultServerMessage message)
         {
-            var skillResult = new SkillResult(message, _entityRegistry, _skillDatabase);
-            if (skillResult.SourceUser != null)
+            var skillResult = new SkillResult(message, _entityTracker, _playerTracker, _skillDatabase);
+            if (skillResult.SourcePlayer != null)
             {
-                var playerStats = GetOrCreate(skillResult.SourceUser);
+                var playerStats = GetOrCreate(skillResult.SourcePlayer);
                 UpdateStats(playerStats.Dealt, skillResult);
             }
 
-            if (skillResult.TargetUser != null)
+            if (skillResult.TargetPlayer != null)
             {
-                var playerStats = GetOrCreate(skillResult.TargetUser);
+                var playerStats = GetOrCreate(skillResult.TargetPlayer);
                 UpdateStats(playerStats.Received, skillResult);
             }
         }

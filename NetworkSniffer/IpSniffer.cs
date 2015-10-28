@@ -74,6 +74,7 @@ namespace NetworkSniffer
                 device.StopCapture();
                 device.Close();
             }
+            _devices = null;
         }
 
         void device_OnPacketArrival(object sender, CaptureEventArgs e)
