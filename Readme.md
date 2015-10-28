@@ -1,6 +1,8 @@
 Just playing with this https://github.com/gothos-folly/TeraDamageMeter
 Added a copy/paste functionnality & simplification of the network part
 
+Tomorrow => Basic HotKey integration
+
 Original Readme
 ================
 

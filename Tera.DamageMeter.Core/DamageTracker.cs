@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Tera.Game;
 using Tera.Game.Messages;
@@ -8,16 +7,26 @@ namespace Tera.DamageMeter
 {
     public class DamageTracker : IEnumerable<PlayerInfo>
     {
-        readonly Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
         private readonly EntityTracker _entityTracker;
         private readonly PlayerTracker _playerTracker;
         private readonly SkillDatabase _skillDatabase;
+        private readonly Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
 
         public DamageTracker(EntityTracker entityRegistry, PlayerTracker playerTracker, SkillDatabase skillDatabase)
         {
             _entityTracker = entityRegistry;
             _skillDatabase = skillDatabase;
             _playerTracker = playerTracker;
+        }
+
+        public IEnumerator<PlayerInfo> GetEnumerator()
+        {
+            return _statsByUser.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         private PlayerInfo GetOrCreate(Player player)
@@ -58,16 +67,6 @@ namespace Tera.DamageMeter
             stats.Hits++;
             if (message.IsCritical)
                 stats.Crits++;
-        }
-
-        public IEnumerator<PlayerInfo> GetEnumerator()
-        {
-            return _statsByUser.Values.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }
