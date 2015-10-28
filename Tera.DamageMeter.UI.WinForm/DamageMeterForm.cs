@@ -82,6 +82,8 @@ namespace Tera.DamageMeter
             var visiblePlayerStats = new HashSet<PlayerInfo>();
             foreach (var playerStats in playerStatsSequence)
             {
+                Console.WriteLine("has data");
+                Console.WriteLine("totalDamage" + totalDamage);
                 if (pos > ListPanel.Height)
                     break;
 
@@ -92,6 +94,7 @@ namespace Tera.DamageMeter
                 {
                     playerStatsControl = new PlayerStatsControl();
                     playerStatsControl.PlayerInfo = playerStats;
+                    Console.WriteLine(playerStats);
                     playerStatsControl.Height = 40;
                     _controls.Add(playerStats, playerStatsControl);
                     playerStatsControl.Parent = ListPanel;
@@ -127,10 +130,13 @@ namespace Tera.DamageMeter
             _playerTracker = new PlayerTracker(_entityRegistry);
             _damageTracker = new DamageTracker(_entityRegistry, _playerTracker, _teraData.SkillDatabase);
             _messageFactory = new MessageFactory(_teraData.OpCodeNamer);
+            Console.WriteLine("connected");
+
         }
 
         private void HandleMessageReceived(Message obj)
         {
+            Console.WriteLine("has message");
             Console.WriteLine(obj);
             var message = _messageFactory.Create(obj);
             _entityRegistry.Update(message);
@@ -139,7 +145,13 @@ namespace Tera.DamageMeter
             if (skillResultMessage != null)
             {
                 _damageTracker.Update(skillResultMessage);
+                Console.WriteLine("has infos");
             }
+            else
+            {
+                Console.WriteLine("Has no infos");
+            }
+            Console.WriteLine(skillResultMessage);
         }
 
         private void DamageMeterForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -224,18 +236,18 @@ namespace Tera.DamageMeter
             const int cr = 13;
             const int lf = 10;
 
-            //this char cause trouble with the game
-            const int percentage = '%';
-
-            char[] specialChars = {'{', '}', '(', ')', '+', '^'};
-            foreach (var c in text.Where(c => (int) c != lf && (int) c != cr && (int) c != percentage))
+    
+            char[] specialChars = {'{', '}', '(', ')', '+', '^', '%', '~', '[',']'};
+            foreach (char c in text.Where(c => (int) c != lf && (int) c != cr))
             {
                 if (specialChars.Contains(c))
                 {
-                    Console.WriteLine("#### SPE ###");
-                    Console.WriteLine(c);
-                    Console.WriteLine((int) c);
-                    SendKeys.SendWait("{" + c + "}");
+         
+                        Console.WriteLine("#### SPE ###");
+                        Console.WriteLine(c);
+                        Console.WriteLine((int) c);
+                        SendKeys.SendWait("{" + c + "}");
+                    
                 }
                 else
                 {
@@ -244,6 +256,9 @@ namespace Tera.DamageMeter
                     Console.WriteLine((int) c);
                     SendKeys.SendWait(c + "");
                 }
+                SendKeys.SendWait("{%}");
+                SendKeys.Send("{%}");
+                SendKeys.Flush();
                 Thread.Sleep(10);
             }
         }

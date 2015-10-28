@@ -39,12 +39,11 @@ namespace Tera.Sniffing.Crypt
         private void GenerateKey(byte[] src)
         {
             var buf = FillKey(src);
-            var shaAlgorithm = SHA1.Create();
             for (var i = 0; i < 680; i += 20)
             {
-                var sha = shaAlgorithm.ComputeHash(buf);
+                var sha = Sha.Digest(buf);
                 for (var j = 0; j < 5; j++)
-                    Buffer.BlockCopy(sha, 0, buf, i + j*4, 4);
+                    Buffer.BlockCopy(BitConverter.GetBytes(sha[j]), 0, buf, i + j*4, 4);
             }
 
             for (var i = 0; i < 220; i += 4)

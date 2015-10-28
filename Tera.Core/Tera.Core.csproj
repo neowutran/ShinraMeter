@@ -72,6 +72,7 @@
     <Compile Include="PacketLog\Parsing\LogHelper.cs" />
     <Compile Include="PacketLog\PacketLogReader.cs" />
     <Compile Include="PacketLog\PacketLogWriter.cs" />
+    <Compile Include="Sniffing\Crypt\Sha.cs" />
     <Compile Include="Sniffing\ITeraSniffer.cs" />
     <Compile Include="Sniffing\MessageSplitter.cs" />
     <Compile Include="Sniffing\Crypt\Cryptor.cs" />
