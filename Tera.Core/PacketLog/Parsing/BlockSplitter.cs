@@ -5,8 +5,8 @@ namespace Tera.PacketLog
 {
     internal class BlockSplitter
     {
+        private readonly MemoryStream buffer = new MemoryStream();
         public event Action<byte[]> BlockFinished;
-        MemoryStream buffer = new MemoryStream();
 
         protected virtual void OnBlockFinished(byte[] block)
         {
@@ -36,7 +36,7 @@ namespace Tera.PacketLog
 
         public byte[] PopBlock()
         {
-            byte[] block = PopBlock(buffer);
+            var block = PopBlock(buffer);
             if (block != null)
             {
                 OnBlockFinished(block);

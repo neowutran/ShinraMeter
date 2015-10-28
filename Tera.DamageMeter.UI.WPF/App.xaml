@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Tera.DamageMeter.UI.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

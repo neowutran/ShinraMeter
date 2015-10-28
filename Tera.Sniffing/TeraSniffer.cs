@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetworkSniffer;
-using Tera.Game;
 using PacketDotNet.Utils;
+using Tera.Game;
 
 namespace Tera.Sniffing
 {
@@ -12,14 +12,14 @@ namespace Tera.Sniffing
         // Only take this lock in callbacks from tcp sniffing, not in code that can be called by the user.
         // Otherwise this could cause a deadlock if the user calls such a method from a callback that already holds a lock
         private readonly object _eventLock = new object();
+        private readonly IpSniffer _ipSniffer;
+        private readonly HashSet<TcpConnection> _isNew = new HashSet<TcpConnection>();
 
         private readonly Dictionary<string, Server> _serversByIp;
-        private readonly HashSet<TcpConnection> _isNew = new HashSet<TcpConnection>();
         private TcpConnection _clientToServer;
-        private TcpConnection _serverToClient;
         private ConnectionDecrypter _decrypter;
         private MessageSplitter _messageSplitter;
-        private readonly IpSniffer _ipSniffer;
+        private TcpConnection _serverToClient;
 
         public TeraSniffer(IEnumerable<Server> servers)
         {
@@ -37,14 +37,8 @@ namespace Tera.Sniffing
         // IpSniffer has its own locking, so we need no lock here.
         public bool Enabled
         {
-            get
-            {
-                return _ipSniffer.Enabled;
-            }
-            set
-            {
-                _ipSniffer.Enabled = value;
-            }
+            get { return _ipSniffer.Enabled; }
+            set { _ipSniffer.Enabled = value; }
         }
 
         public event Action<Message> MessageReceived;
@@ -63,7 +57,7 @@ namespace Tera.Sniffing
         }
 
         // called from the tcp sniffer, so it needs to lock
-        void HandleNewConnection(TcpConnection connection)
+        private void HandleNewConnection(TcpConnection connection)
         {
             lock (_eventLock)
             {
@@ -77,7 +71,7 @@ namespace Tera.Sniffing
         }
 
         // called from the tcp sniffer, so it needs to lock
-        void HandleTcpDataReceived(TcpConnection connection, ByteArraySegment data)
+        private void HandleTcpDataReceived(TcpConnection connection, ByteArraySegment data)
         {
             lock (_eventLock)
             {
@@ -87,7 +81,7 @@ namespace Tera.Sniffing
                 {
                     _isNew.Remove(connection);
                     if (_serversByIp.ContainsKey(connection.Source.Address.ToString()) &&
-                        data.Bytes.Skip(data.Offset).Take(4).SequenceEqual(new byte[] { 1, 0, 0, 0 }))
+                        data.Bytes.Skip(data.Offset).Take(4).SequenceEqual(new byte[] {1, 0, 0, 0}))
                     {
                         var server = _serversByIp[connection.Source.Address.ToString()];
                         _serverToClient = connection;
@@ -128,13 +122,13 @@ namespace Tera.Sniffing
         }
 
         // called indirectly from HandleTcpDataReceived, so the current thread already holds the lock
-        void HandleServerToClientDecrypted(byte[] data)
+        private void HandleServerToClientDecrypted(byte[] data)
         {
             _messageSplitter.ServerToClient(DateTime.UtcNow, data);
         }
 
         // called indirectly from HandleTcpDataReceived, so the current thread already holds the lock
-        void HandleClientToServerDecrypted(byte[] data)
+        private void HandleClientToServerDecrypted(byte[] data)
         {
             _messageSplitter.ClientToServer(DateTime.UtcNow, data);
         }

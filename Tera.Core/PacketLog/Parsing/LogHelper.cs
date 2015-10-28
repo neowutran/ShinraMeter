@@ -11,18 +11,18 @@ namespace Tera.PacketLog
             if (dateTime.Kind != DateTimeKind.Utc)
                 throw new ArgumentException();
 
-            var value = (long)Math.Round((dateTime - TimeOrigin).TotalMilliseconds);
+            var value = (long) Math.Round((dateTime - TimeOrigin).TotalMilliseconds);
 
-            int byteCount = 0;
-            while ((value >> byteCount * 8) != 0)
+            var byteCount = 0;
+            while ((value >> byteCount*8) != 0)
             {
                 byteCount++;
             }
 
             var result = new byte[byteCount];
-            for (int i = 0; i < byteCount; i++)
+            for (var i = 0; i < byteCount; i++)
             {
-                result[i] = unchecked((byte)(value >> i * 8));
+                result[i] = unchecked((byte) (value >> i*8));
             }
             return result;
         }
@@ -30,9 +30,9 @@ namespace Tera.PacketLog
         public static DateTime BytesToTimeSpan(byte[] data)
         {
             ulong value = 0;
-            for (int i = 0; i < data.Length; i++)
+            for (var i = 0; i < data.Length; i++)
             {
-                value |= (ulong)data[i] << i * 8;
+                value |= (ulong) data[i] << i*8;
             }
             return TimeOrigin + TimeSpan.FromMilliseconds(value);
         }

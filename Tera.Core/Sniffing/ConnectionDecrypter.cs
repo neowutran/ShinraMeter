@@ -53,7 +53,7 @@ namespace Tera.Sniffing
             _client.Position = 0;
 
             var magicBytes = _server.ReadBytes(4);
-            if (!magicBytes.SequenceEqual(new byte[] { 1, 0, 0, 0 }))
+            if (!magicBytes.SequenceEqual(new byte[] {1, 0, 0, 0}))
                 throw new FormatException("Not a Tera connection");
 
             var clientKey1 = _client.ReadBytes(128);
@@ -62,8 +62,8 @@ namespace Tera.Sniffing
             var serverKey2 = _server.ReadBytes(128);
             _session = CreateSession(clientKey1, clientKey2, serverKey1, serverKey2);
 
-            ClientToServer(_client.ReadBytes((int)(_client.Length - _client.Position)));
-            ServerToClient(_server.ReadBytes((int)(_server.Length - _server.Position)));
+            ClientToServer(_client.ReadBytes((int) (_client.Length - _client.Position)));
+            ServerToClient(_server.ReadBytes((int) (_server.Length - _server.Position)));
             _client = null;
             _server = null;
         }

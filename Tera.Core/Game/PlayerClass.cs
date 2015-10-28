@@ -13,6 +13,6 @@
         Reaper = 9,
         Gunner = 10,
 
-        Common = 255,
+        Common = 255
     }
 }

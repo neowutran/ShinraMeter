@@ -5,10 +5,10 @@ namespace Tera.DamageMeter
 {
     public class SkillStats : INotifyPropertyChanged
     {
+        private int _crits;
         private long _damage;
         private long _heal;
         private int _hits;
-        private int _crits;
 
         public long Damage
         {
@@ -59,7 +59,7 @@ namespace Tera.DamageMeter
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }

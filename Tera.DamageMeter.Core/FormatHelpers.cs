@@ -6,15 +6,15 @@ namespace Tera.DamageMeter
     {
         public static string FormatValue(long value)
         {
-            int exponent = 0;
+            var exponent = 0;
             decimal decimalValue = value;
             decimal rounded;
-            while (Math.Abs(rounded = (long)Decimal.Round(decimalValue)) >= 1000)
+            while (Math.Abs(rounded = (long) decimal.Round(decimalValue)) >= 1000)
             {
                 decimalValue /= 10;
                 exponent++;
             }
-            while (exponent % 3 != 0)
+            while (exponent%3 != 0)
             {
                 rounded *= 0.1m;
                 exponent++;

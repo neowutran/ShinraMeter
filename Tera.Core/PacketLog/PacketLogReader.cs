@@ -6,8 +6,8 @@ namespace Tera.PacketLog
 {
     public class PacketLogReader
     {
-        private DateTime _time;
         private readonly Stream _stream;
+        private DateTime _time;
 
         internal PacketLogReader(Stream stream)
         {

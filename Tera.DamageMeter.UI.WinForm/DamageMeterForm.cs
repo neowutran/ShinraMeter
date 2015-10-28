@@ -1,45 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using Tera.Data;
 using Tera.Game;
 using Tera.Game.Messages;
 using Tera.PacketLog;
 using Tera.Sniffing;
-using Message = Tera.Message;
-using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Drawing.Text;
 
 namespace Tera.DamageMeter
 {
     public partial class DamageMeterForm : Form
     {
+        private static readonly BasicTeraData _basicTeraData = new BasicTeraData();
+        private static TeraData _teraData;
 
-        // Registers a hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-        // Unregisters the hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        private readonly Dictionary<PlayerInfo, PlayerStatsControl> _controls =
+            new Dictionary<PlayerInfo, PlayerStatsControl>();
+
+        private ClassIcons _classIcons;
+        private DamageTracker _damageTracker;
+        private EntityTracker _entityRegistry;
+        private MessageFactory _messageFactory;
+        private PlayerTracker _playerTracker;
+        private Server _server;
 
         private TeraSniffer _teraSniffer;
-        private static readonly BasicTeraData _basicTeraData = new BasicTeraData();
-        private ClassIcons _classIcons;
-        private static TeraData _teraData;
-        private readonly Dictionary<PlayerInfo, PlayerStatsControl> _controls = new Dictionary<PlayerInfo, PlayerStatsControl>();
-        private MessageFactory _messageFactory;
-        private EntityTracker _entityRegistry;
-        private DamageTracker _damageTracker;
-        private Server _server;
-        private PlayerTracker _playerTracker;
 
         public DamageMeterForm()
         {
             InitializeComponent();
         }
+
+        // Registers a hot key with Windows.
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        // Unregisters the hot key with Windows.
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -72,12 +73,12 @@ namespace Tera.DamageMeter
 
         public void Fetch(IEnumerable<PlayerInfo> playerStatsSequence)
         {
-             
-            playerStatsSequence = playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
+            playerStatsSequence =
+                playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
             var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
             TotalDamageLabel.Text = Helpers.FormatValue(totalDamage);
             TotalDamageLabel.Left = HeaderPanel.Width - TotalDamageLabel.Width;
-            int pos = 0;
+            var pos = 0;
             var visiblePlayerStats = new HashSet<PlayerInfo>();
             foreach (var playerStats in playerStatsSequence)
             {
@@ -130,6 +131,7 @@ namespace Tera.DamageMeter
 
         private void HandleMessageReceived(Message obj)
         {
+            Console.WriteLine(obj);
             var message = _messageFactory.Create(obj);
             _entityRegistry.Update(message);
 
@@ -201,33 +203,13 @@ namespace Tera.DamageMeter
         public static extern IntPtr FindWindow(string lpClassName,
             string lpWindowName);
 
-     
-        [DllImport("user32.dll", EntryPoint = "FindWindowEx")]
-        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
-        [DllImport("User32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int uMsg, int wParam, string lParam);
-
-        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
-
-        public static extern IntPtr FindWindow(IntPtr ZeroOnly, string lpWindowName);
-
-
-
         [DllImport("user32.dll")]
-
-        public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, IntPtr dwExtraInfo);
-
-
-
-        [DllImport("user32.dll")]
-
         [return: MarshalAs(UnmanagedType.Bool)]
-
-        static extern bool SetForegroundWindow(IntPtr hWnd);
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         private void PasteButton_Click(object sender, EventArgs e)
         {
-            IntPtr teraHandle = FindWindow(null, "TERA");
+            var teraHandle = FindWindow(null, "TERA");
             if (teraHandle == IntPtr.Zero)
             {
                 MessageBox.Show("TERA is not running.");
@@ -238,57 +220,55 @@ namespace Tera.DamageMeter
             SetForegroundWindow(teraHandle);
 
             SendKeys.SendWait("{ENTER}");
-            System.Threading.Thread.Sleep(300);
+            Thread.Sleep(300);
             const int cr = 13;
             const int lf = 10;
 
             //this char cause trouble with the game
             const int percentage = '%';
 
-            char[] specialChars = { '{', '}', '(', ')', '+', '^'};
-            foreach (char c in text.Where(c => (int) c != lf && (int) c != cr && (int) c != percentage))
+            char[] specialChars = {'{', '}', '(', ')', '+', '^'};
+            foreach (var c in text.Where(c => (int) c != lf && (int) c != cr && (int) c != percentage))
             {
                 if (specialChars.Contains(c))
                 {
                     Console.WriteLine("#### SPE ###");
                     Console.WriteLine(c);
-                    Console.WriteLine((int)c);
+                    Console.WriteLine((int) c);
                     SendKeys.SendWait("{" + c + "}");
                 }
                 else
                 {
                     Console.WriteLine("#### NOR ###");
                     Console.WriteLine(c);
-                    Console.WriteLine((int)c);
+                    Console.WriteLine((int) c);
                     SendKeys.SendWait(c + "");
                 }
-                System.Threading.Thread.Sleep(10);
-           
+                Thread.Sleep(10);
             }
-       
         }
 
         //COPY TO CLIPBOARD FUNCTION
         private void button1_Click(object sender, EventArgs e)
         {
-           //stop if nothing to paste
+            //stop if nothing to paste
             if (_damageTracker == null) return;
 
             IEnumerable<PlayerInfo> playerStatsSequence = _damageTracker;
-            playerStatsSequence = playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
+            playerStatsSequence =
+                playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
             var dpsString = "";
             foreach (var playerStats in playerStatsSequence)
             {
                 PlayerStatsControl playerStatsControl;
                 _controls.TryGetValue(playerStats, out playerStatsControl);
-                var damageFraction = (double)playerStats.Dealt.Damage / playerStatsControl.TotalDamage;
-                var dpsResult = String.Format("|{0}| {1}{{%}} {{(}}{2}{{)}}; ", playerStats.Name, Math.Round(damageFraction * 100.0, 2), Helpers.FormatValue(playerStats.Dealt.Damage));
+                var damageFraction = (double) playerStats.Dealt.Damage/playerStatsControl.TotalDamage;
+                var dpsResult = string.Format("|{0}| {1}{{%}} {{(}}{2}{{)}}; ", playerStats.Name,
+                    Math.Round(damageFraction*100.0, 2), Helpers.FormatValue(playerStats.Dealt.Damage));
                 dpsString += dpsResult;
             }
             Console.WriteLine(dpsString);
             Clipboard.SetText(dpsString);
-
         }
-
     }
 }

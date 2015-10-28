@@ -9,7 +9,7 @@ namespace Tera.Game
         {
             if (obj is T)
             {
-                var castObject = (T)obj;
+                var castObject = (T) obj;
                 callback(castObject);
             }
         }

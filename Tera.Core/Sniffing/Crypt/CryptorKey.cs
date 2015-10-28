@@ -4,12 +4,12 @@ namespace Tera.Sniffing.Crypt
 {
     internal class CryptorKey
     {
-        public int Size;
+        public uint[] Buffer;
+        public int Key;
+        public int MaxPos;
         public int Pos1;
         public int Pos2;
-        public int MaxPos;
-        public int Key;
-        public uint[] Buffer;
+        public int Size;
         public uint Sum;
 
         public CryptorKey(int size, int maxPos)

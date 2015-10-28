@@ -9,21 +9,37 @@ namespace NetworkSniffer
 {
     public class TcpConnection
     {
-        public readonly IPEndPoint Source;
-        public readonly IPEndPoint Destination;
         private readonly SortedDictionary<long, byte[]> _bufferedPackets = new SortedDictionary<long, byte[]>();
+        public readonly IPEndPoint Destination;
+        public readonly IPEndPoint Source;
+
+        internal TcpConnection(ConnectionId connectionId, uint sequenceNumber)
+        {
+            Source = connectionId.Source;
+            Destination = connectionId.Destination;
+            InitialSequenceNumber = sequenceNumber;
+        }
+
         public long BytesReceived { get; private set; }
         public uint InitialSequenceNumber { get; }
 
-        public event Action<TcpConnection, ByteArraySegment> DataReceived;
-
         public bool HasSubscribers => DataReceived != null;
-        internal string BufferedPacketDescription { get { return string.Join(", ", _bufferedPackets.OrderBy(x => x.Key).Select(x => x.Key + "+" + x.Value.Length)); } }
+
+        internal string BufferedPacketDescription
+        {
+            get
+            {
+                return string.Join(", ", _bufferedPackets.OrderBy(x => x.Key).Select(x => x.Key + "+" + x.Value.Length));
+            }
+        }
+
         public uint CurrentSequenceNumber => unchecked((uint) (InitialSequenceNumber + 1 + BytesReceived));
+
+        public event Action<TcpConnection, ByteArraySegment> DataReceived;
 
         public long SequenceNumberToBytesReceived(uint sequenceNumber)
         {
-            var offsetToCurrent = unchecked((int)(sequenceNumber - CurrentSequenceNumber));
+            var offsetToCurrent = unchecked((int) (sequenceNumber - CurrentSequenceNumber));
             return BytesReceived + offsetToCurrent;
         }
 
@@ -45,7 +61,8 @@ namespace NetworkSniffer
             {
                 var dataArray = new byte[data.Length];
                 Array.Copy(data.Bytes, data.Offset, dataArray, 0, data.Length);
-                if (!_bufferedPackets.ContainsKey(dataPosition) || _bufferedPackets[dataPosition].Length < dataArray.Length)
+                if (!_bufferedPackets.ContainsKey(dataPosition) ||
+                    _bufferedPackets[dataPosition].Length < dataArray.Length)
                 {
                     _bufferedPackets[dataPosition] = dataArray;
                 }
@@ -62,16 +79,9 @@ namespace NetworkSniffer
 
                 if (alreadyReceivedBytes >= dataArray.Length) continue;
                 var count = dataArray.Length - alreadyReceivedBytes;
-                OnDataReceived(new ByteArraySegment(dataArray, (int)alreadyReceivedBytes, (int)count));
+                OnDataReceived(new ByteArraySegment(dataArray, (int) alreadyReceivedBytes, (int) count));
                 BytesReceived += count;
             }
-        }
-
-        internal TcpConnection(ConnectionId connectionId, uint sequenceNumber)
-        {
-            Source = connectionId.Source;
-            Destination = connectionId.Destination;
-            InitialSequenceNumber = sequenceNumber;
         }
 
         public override string ToString()

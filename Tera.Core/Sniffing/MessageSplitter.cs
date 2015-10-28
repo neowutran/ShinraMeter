@@ -5,7 +5,6 @@ namespace Tera.Sniffing
 {
     public class MessageSplitter
     {
-        public event Action<Message> MessageReceived;
         private readonly BlockSplitter _clientSplitter = new BlockSplitter();
         private readonly BlockSplitter _serverSplitter = new BlockSplitter();
         private DateTime _time;
@@ -16,19 +15,21 @@ namespace Tera.Sniffing
             _serverSplitter.BlockFinished += ServerBlockFinished;
         }
 
-        void ClientBlockFinished(byte[] block)
+        public event Action<Message> MessageReceived;
+
+        private void ClientBlockFinished(byte[] block)
         {
             OnMessageReceived(new Message(_time, MessageDirection.ClientToServer, new ArraySegment<byte>(block)));
         }
 
-        void ServerBlockFinished(byte[] block)
+        private void ServerBlockFinished(byte[] block)
         {
             OnMessageReceived(new Message(_time, MessageDirection.ServerToClient, new ArraySegment<byte>(block)));
         }
 
         protected void OnMessageReceived(Message message)
         {
-            Action<Message> handler = MessageReceived;
+            var handler = MessageReceived;
             if (handler != null)
                 handler(message);
         }

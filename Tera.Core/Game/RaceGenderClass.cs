@@ -15,24 +15,24 @@ namespace Tera.Game
         {
             get
             {
-                if ((byte)Race >= 50 || (byte)Gender >= 2 || (byte)Class >= 100)
+                if ((byte) Race >= 50 || (byte) Gender >= 2 || (byte) Class >= 100)
                     throw new InvalidOperationException();
-                return 10000 + 200 * (int)Race + 100 * (int)Gender + (int)Class;
+                return 10000 + 200*(int) Race + 100*(int) Gender + (int) Class;
             }
             private set
             {
-                if (value / 10000 != 1)
+                if (value/10000 != 1)
                     throw new ArgumentException(string.Format("Unexpected raw value for RaceGenderClass {0}", value));
-                Race = (Race)(value / 200 % 50);
-                Gender = (Gender)(value / 100 % 2);
-                Class = (PlayerClass)(value % 100);
+                Race = (Race) (value/200%50);
+                Gender = (Gender) (value/100%2);
+                Class = (PlayerClass) (value%100);
                 Debug.Assert(Raw == value);
             }
         }
 
         private static T ParseEnum<T>(string s)
         {
-            return (T)Enum.Parse(typeof(T), s);
+            return (T) Enum.Parse(typeof (T), s);
         }
 
         public RaceGenderClass(string race, string gender, string @class)
@@ -66,16 +66,15 @@ namespace Tera.Game
 
         public override bool Equals(object obj)
         {
-
             if (!(obj is RaceGenderClass))
                 return false;
-            var other = (RaceGenderClass)obj;
+            var other = (RaceGenderClass) obj;
             return (Race == other.Race) && (Gender == other.Gender) && (Class == other.Class);
         }
 
         public override int GetHashCode()
         {
-            return (int)Race << 16 | (int)Gender << 8 | (int)Class;
+            return (int) Race << 16 | (int) Gender << 8 | (int) Class;
         }
 
         public override string ToString()

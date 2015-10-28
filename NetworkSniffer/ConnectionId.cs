@@ -32,14 +32,13 @@ namespace NetworkSniffer
         public override bool Equals(object obj)
         {
             if (obj is ConnectionId)
-                return Equals((ConnectionId)obj);
-            else
-                return false;
+                return Equals((ConnectionId) obj);
+            return false;
         }
 
         public override int GetHashCode()
         {
-            return Source.GetHashCode() * 37 + Destination.GetHashCode();
+            return Source.GetHashCode()*37 + Destination.GetHashCode();
         }
 
         public override string ToString()

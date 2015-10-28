@@ -10,24 +10,20 @@ using SharpPcap.WinPcap;
 namespace NetworkSniffer
 {
     // Only works when WinPcap is installed
-    public class IpSniffer 
+    public class IpSniffer
     {
-       
-
         private readonly string _filter;
         private WinPcapDeviceList _devices;
         private volatile uint _droppedPackets;
-        private volatile uint _interfaceDroppedPackets;
-
-        public event Action<IpPacket> PacketReceived;
-
-        protected void OnPacketReceived(IpPacket data)
-        {
-            var packetReceived = PacketReceived;
-            packetReceived?.Invoke(data);
-        }
 
         private bool _enabled;
+        private volatile uint _interfaceDroppedPackets;
+
+        public IpSniffer(string filter)
+        {
+            _filter = filter;
+        }
+
         public bool Enabled
         {
             get { return _enabled; }
@@ -39,9 +35,12 @@ namespace NetworkSniffer
             }
         }
 
-        public IpSniffer(string filter)
+        public event Action<IpPacket> PacketReceived;
+
+        protected void OnPacketReceived(IpPacket data)
         {
-            _filter = filter;
+            var packetReceived = PacketReceived;
+            packetReceived?.Invoke(data);
         }
 
         protected void SetEnabled(bool value)
@@ -77,7 +76,7 @@ namespace NetworkSniffer
             _devices = null;
         }
 
-        void device_OnPacketArrival(object sender, CaptureEventArgs e)
+        private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             if (e.Device.LinkType != LinkLayers.Ethernet)
                 return;
@@ -87,9 +86,9 @@ namespace NetworkSniffer
             if (ipPacket == null)
                 return;
 
-       OnPacketReceived(ipPacket);
+            OnPacketReceived(ipPacket);
 
-            var device = (WinPcapDevice)sender;
+            var device = (WinPcapDevice) sender;
             if (device.Statistics.DroppedPackets == _droppedPackets &&
                 device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets) return;
             _droppedPackets = device.Statistics.DroppedPackets;

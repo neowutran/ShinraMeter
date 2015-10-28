@@ -12,6 +12,6 @@
             <Button>Reset</Button>
             <Button>Paste</Button>
         </Menu>
-        
+
     </Grid>
 </Window>

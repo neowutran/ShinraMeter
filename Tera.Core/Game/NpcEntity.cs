@@ -1,5 +1,4 @@
-﻿
-using Tera.Game.Messages;
+﻿using Tera.Game.Messages;
 
 namespace Tera.Game
 {

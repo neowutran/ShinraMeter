@@ -10,8 +10,17 @@ namespace NetworkSniffer
 {
     public class TcpSniffer
     {
-        public string TcpLogFile { get; set; }
+        private readonly Dictionary<ConnectionId, TcpConnection> _connections =
+            new Dictionary<ConnectionId, TcpConnection>();
+
         private readonly object _lock = new object();
+
+        public TcpSniffer(IpSniffer ipSniffer)
+        {
+            ipSniffer.PacketReceived += Receive;
+        }
+
+        public string TcpLogFile { get; set; }
 
         public event Action<TcpConnection> NewConnection;
 
@@ -20,8 +29,6 @@ namespace NetworkSniffer
             var handler = NewConnection;
             handler?.Invoke(connection);
         }
-
-        private readonly Dictionary<ConnectionId, TcpConnection> _connections = new Dictionary<ConnectionId, TcpConnection>();
 
         private void Receive(IpPacket ipPacket)
         {
@@ -74,14 +81,10 @@ namespace NetworkSniffer
                                 ipPacket.PayloadLength, tcpPacket.AcknowledgmentNumber,
                                 connection.BufferedPacketDescription));
                     }
-                    connection.HandleTcpReceived(tcpPacket.SequenceNumber, new ByteArraySegment(ipPacket.PayloadPacket.PayloadData));
+                    connection.HandleTcpReceived(tcpPacket.SequenceNumber,
+                        new ByteArraySegment(ipPacket.PayloadPacket.PayloadData));
                 }
             }
-        }
-
-        public TcpSniffer(IpSniffer ipSniffer)
-        {
-            ipSniffer.PacketReceived += Receive;
         }
     }
 }

@@ -2,13 +2,6 @@
 {
     public class LoginServerMessage : ParsedMessage
     {
-        public EntityId Id { get; private set; }
-        public uint PlayerId { get; private set; }
-        public string Name { get; private set; }
-        public string GuildName { get; private set; }
-        public PlayerClass Class { get { return RaceGenderClass.Class; } }
-        public RaceGenderClass RaceGenderClass { get; private set; }
-
         internal LoginServerMessage(TeraMessageReader reader)
             : base(reader)
         {
@@ -20,5 +13,17 @@
             reader.Skip(260);
             Name = reader.ReadTeraString();
         }
+
+        public EntityId Id { get; private set; }
+        public uint PlayerId { get; private set; }
+        public string Name { get; private set; }
+        public string GuildName { get; private set; }
+
+        public PlayerClass Class
+        {
+            get { return RaceGenderClass.Class; }
+        }
+
+        public RaceGenderClass RaceGenderClass { get; }
     }
 }

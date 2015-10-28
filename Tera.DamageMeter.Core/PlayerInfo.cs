@@ -5,14 +5,6 @@ namespace Tera.DamageMeter
 {
     public class PlayerInfo : INotifyPropertyChanged
     {
-        public Player Player { get; private set; }
-
-        public string Name { get { return Player.Name; } }
-        public PlayerClass Class { get { return Player.Class; } }
-
-        public SkillStats Received { get; private set; }
-        public SkillStats Dealt { get; private set; }
-
         public PlayerInfo(Player user)
         {
             Player = user;
@@ -20,11 +12,26 @@ namespace Tera.DamageMeter
             Dealt = new SkillStats();
         }
 
+        public Player Player { get; }
+
+        public string Name
+        {
+            get { return Player.Name; }
+        }
+
+        public PlayerClass Class
+        {
+            get { return Player.Class; }
+        }
+
+        public SkillStats Received { get; private set; }
+        public SkillStats Dealt { get; private set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }

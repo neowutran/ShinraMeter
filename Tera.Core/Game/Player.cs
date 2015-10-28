@@ -5,11 +5,36 @@ namespace Tera.Game
     public class Player
     {
         private UserEntity _user;
-        public uint PlayerId { get { return User.PlayerId; } }
-        public string Name { get { return User.Name; } }
-        public string GuildName { get { return User.GuildName; } }
-        public RaceGenderClass RaceGenderClass { get { return User.RaceGenderClass; } }
-        public PlayerClass Class { get { return RaceGenderClass.Class; } }
+
+        public Player(UserEntity user)
+        {
+            _user = user;
+        }
+
+        public uint PlayerId
+        {
+            get { return User.PlayerId; }
+        }
+
+        public string Name
+        {
+            get { return User.Name; }
+        }
+
+        public string GuildName
+        {
+            get { return User.GuildName; }
+        }
+
+        public RaceGenderClass RaceGenderClass
+        {
+            get { return User.RaceGenderClass; }
+        }
+
+        public PlayerClass Class
+        {
+            get { return RaceGenderClass.Class; }
+        }
 
         public UserEntity User
         {
@@ -20,11 +45,6 @@ namespace Tera.Game
                     throw new ArgumentException("Users must represent the same Player");
                 _user = value;
             }
-        }
-
-        public Player(UserEntity user)
-        {
-            _user = user;
         }
 
         public override string ToString()
