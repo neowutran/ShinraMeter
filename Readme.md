@@ -1,7 +1,8 @@
 Just playing with this https://github.com/gothos-folly/TeraDamageMeter
-Added a copy/paste functionnality & simplification of the network part
+- Added a copy/paste functionnality & simplification of the network part
+- Added non configurable hotkey => Home: paste clipboard. End: copy dps to clipboard; Del: Reset 
 
-Tomorrow => Basic HotKey integration
+Tomorrow => Hotkey with config file
 
 Original Readme
 ================

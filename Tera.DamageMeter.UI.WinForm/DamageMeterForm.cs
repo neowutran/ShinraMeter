@@ -4,11 +4,13 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using Tera.DamageMeter.UI.Handler;
 using Tera.Data;
 using Tera.Game;
 using Tera.Game.Messages;
 using Tera.PacketLog;
 using Tera.Sniffing;
+
 
 namespace Tera.DamageMeter
 {
@@ -19,7 +21,7 @@ namespace Tera.DamageMeter
 
         private readonly Dictionary<PlayerInfo, PlayerStatsControl> _controls =
             new Dictionary<PlayerInfo, PlayerStatsControl>();
-
+        private KeyboardHook hook = new KeyboardHook();
         private ClassIcons _classIcons;
         private DamageTracker _damageTracker;
         private EntityTracker _entityRegistry;
@@ -32,16 +34,31 @@ namespace Tera.DamageMeter
         public DamageMeterForm()
         {
             InitializeComponent();
+            // register the event that is fired after the key press.
+            hook.KeyPressed +=
+                new EventHandler<KeyPressedEventArgs>(hook_KeyPressed);
+            // register the control + alt + F12 combination as hot key.
+            hook.RegisterHotKey(UI.Handler.ModifierKeys.None,Keys.Home);
+            hook.RegisterHotKey(UI.Handler.ModifierKeys.None, Keys.End);
+            hook.RegisterHotKey(UI.Handler.ModifierKeys.None, Keys.Delete);
+
+
+        }
+        void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (e.Key == Keys.Home)
+            {
+                CopyPaste.Paste();
+            }else if (e.Key == Keys.End)
+            {
+                Copy();
+            }else if (e.Key == Keys.Delete)
+            {
+                Reset();
+            }
         }
 
-        // Registers a hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
-        // Unregisters the hot key with Windows.
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
+    
         private void Form1_Load(object sender, EventArgs e)
         {
             _classIcons = new ClassIcons(_basicTeraData.ResourceDirectory + @"class-icons\", 36);
@@ -82,8 +99,7 @@ namespace Tera.DamageMeter
             var visiblePlayerStats = new HashSet<PlayerInfo>();
             foreach (var playerStats in playerStatsSequence)
             {
-                Console.WriteLine("has data");
-                Console.WriteLine("totalDamage" + totalDamage);
+            
                 if (pos > ListPanel.Height)
                     break;
 
@@ -136,8 +152,6 @@ namespace Tera.DamageMeter
 
         private void HandleMessageReceived(Message obj)
         {
-            Console.WriteLine("has message");
-            Console.WriteLine(obj);
             var message = _messageFactory.Create(obj);
             _entityRegistry.Update(message);
 
@@ -145,14 +159,8 @@ namespace Tera.DamageMeter
             if (skillResultMessage != null)
             {
                 _damageTracker.Update(skillResultMessage);
-                Console.WriteLine("has infos");
             }
-            else
-            {
-                Console.WriteLine("Has no infos");
-            }
-            Console.WriteLine(skillResultMessage);
-        }
+                }
 
         private void DamageMeterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -160,6 +168,11 @@ namespace Tera.DamageMeter
         }
 
         private void ResetButton_Click(object sender, EventArgs e)
+        {
+         Reset();
+        }
+
+        private void Reset()
         {
             if (_server == null)
                 return;
@@ -227,44 +240,18 @@ namespace Tera.DamageMeter
                 MessageBox.Show("TERA is not running.");
                 return;
             }
-            var text = Clipboard.GetText();
-
             SetForegroundWindow(teraHandle);
+            CopyPaste.Paste();
 
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(300);
-            const int cr = 13;
-            const int lf = 10;
-
-    
-            char[] specialChars = {'{', '}', '(', ')', '+', '^', '%', '~', '[',']'};
-            foreach (char c in text.Where(c => (int) c != lf && (int) c != cr))
-            {
-                if (specialChars.Contains(c))
-                {
-         
-                        Console.WriteLine("#### SPE ###");
-                        Console.WriteLine(c);
-                        Console.WriteLine((int) c);
-                        SendKeys.SendWait("{" + c + "}");
-                    
-                }
-                else
-                {
-                    Console.WriteLine("#### NOR ###");
-                    Console.WriteLine(c);
-                    Console.WriteLine((int) c);
-                    SendKeys.SendWait(c + "");
-                }
-                SendKeys.SendWait("{%}");
-                SendKeys.Send("{%}");
-                SendKeys.Flush();
-                Thread.Sleep(10);
-            }
         }
 
         //COPY TO CLIPBOARD FUNCTION
         private void button1_Click(object sender, EventArgs e)
+        {
+         Copy();
+        }
+
+        private void Copy()
         {
             //stop if nothing to paste
             if (_damageTracker == null) return;
@@ -277,9 +264,9 @@ namespace Tera.DamageMeter
             {
                 PlayerStatsControl playerStatsControl;
                 _controls.TryGetValue(playerStats, out playerStatsControl);
-                var damageFraction = (double) playerStats.Dealt.Damage/playerStatsControl.TotalDamage;
-                var dpsResult = string.Format("|{0}| {1}{{%}} {{(}}{2}{{)}}; ", playerStats.Name,
-                    Math.Round(damageFraction*100.0, 2), Helpers.FormatValue(playerStats.Dealt.Damage));
+                var damageFraction = (double)playerStats.Dealt.Damage / playerStatsControl.TotalDamage;
+                var dpsResult =
+                    $"|{playerStats.Name}: {Math.Round(damageFraction * 100.0, 2)}/100 ({Helpers.FormatValue(playerStats.Dealt.Damage)}) ";
                 dpsString += dpsResult;
             }
             Console.WriteLine(dpsString);
