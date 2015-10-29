@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hotkeys>
+	<paste>
+		<shift>0</shift>
+		<ctrl>0</ctrl>
+		<alt>0</alt>
+		<window>0</window>
+		<key>Home</key>
+	</paste>
+	<copy>
+		<shift>0</shift>
+		<ctrl>0</ctrl>
+		<alt>0</alt>
+		<window>0</window>
+		<key>End</key>
+	</copy>
+	<reset>
+		<shift>0</shift>
+		<ctrl>0</ctrl>
+		<alt>0</alt>
+		<window>0</window>
+		<key>Delete</key>
+	</reset>
+</hotkeys>

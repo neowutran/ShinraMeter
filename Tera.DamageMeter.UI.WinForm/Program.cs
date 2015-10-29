@@ -11,6 +11,7 @@ namespace Tera.DamageMeter
         [STAThread]
         private static void Main()
         {
+            Console.WriteLine(Keys.Delete);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new DamageMeterForm());

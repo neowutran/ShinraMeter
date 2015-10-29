@@ -19,11 +19,14 @@ namespace Tera.Data
         public BasicTeraData(string resourceDirectory)
         {
             ResourceDirectory = resourceDirectory;
+            HotkeysData = new HotkeysData(this);
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
             Servers = GetServers(Path.Combine(ResourceDirectory, "servers.txt")).ToList();
             Regions = GetRegions(Path.Combine(ResourceDirectory, "regions.txt")).ToList();
         }
 
+
+        public HotkeysData HotkeysData { get; }
         public string ResourceDirectory { get; }
         public IEnumerable<Server> Servers { get; private set; }
         public IEnumerable<Region> Regions { get; private set; }

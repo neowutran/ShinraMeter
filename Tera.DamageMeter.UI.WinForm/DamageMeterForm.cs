@@ -27,6 +27,10 @@ namespace Tera.DamageMeter
         private PlayerTracker _playerTracker;
         private Server _server;
         private TeraSniffer _teraSniffer;
+        private UI.Handler.ModifierKeys copyModifier = UI.Handler.ModifierKeys.None;
+        private UI.Handler.ModifierKeys pasteModifier = UI.Handler.ModifierKeys.None;
+        private UI.Handler.ModifierKeys resetModifier = UI.Handler.ModifierKeys.None;
+
 
         private readonly KeyboardHook _hook = new KeyboardHook();
 
@@ -38,18 +42,17 @@ namespace Tera.DamageMeter
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-            switch (e.Key)
+            if (e.Key == BasicTeraData.HotkeysData.Copy.Key && e.Modifier == copyModifier)
             {
-                case Keys.Home:
-                    CopyPaste.Paste();
-                    break;
-                case Keys.End:
-                    CopyPaste.Copy(PlayerData());
-                    break;
-                case Keys.Delete:
-                    Reset();
-                    break;
+                CopyPaste.Copy(PlayerData());
+            }else if (e.Key == BasicTeraData.HotkeysData.Paste.Key && e.Modifier == pasteModifier)
+            {
+                CopyPaste.Paste();
+            }else if (e.Key == BasicTeraData.HotkeysData.Reset.Key && e.Modifier == resetModifier)
+            {
+                Reset();
             }
+           
         }
 
         private void RegisterKeyboardHook()
@@ -58,9 +61,20 @@ namespace Tera.DamageMeter
             _hook.KeyPressed +=
                 hook_KeyPressed;
             // register the control + alt + F12 combination as hot key.
+            bool shift, alt, window, ctrl;
+
             try
             {
-                _hook.RegisterHotKey(UI.Handler.ModifierKeys.None, Keys.Home);
+                var modifierDictionary = BasicTeraData.HotkeysData.Copy.Value;
+                modifierDictionary.TryGetValue("shift", out shift);
+                modifierDictionary.TryGetValue("alt", out alt);
+                modifierDictionary.TryGetValue("window", out window);
+                modifierDictionary.TryGetValue("ctrl", out ctrl);
+                if (ctrl){copyModifier |= UI.Handler.ModifierKeys.Control;}
+                if (alt){copyModifier |= UI.Handler.ModifierKeys.Alt;}
+                if (shift){copyModifier |= UI.Handler.ModifierKeys.Shift;}
+                if (window){copyModifier |= UI.Handler.ModifierKeys.Win;}
+                _hook.RegisterHotKey(copyModifier, BasicTeraData.HotkeysData.Copy.Key);
             }
             catch
             {
@@ -68,7 +82,16 @@ namespace Tera.DamageMeter
             }
             try
             {
-                _hook.RegisterHotKey(UI.Handler.ModifierKeys.None, Keys.End);
+                var modifierDictionary = BasicTeraData.HotkeysData.Paste.Value;
+                modifierDictionary.TryGetValue("shift", out shift);
+                modifierDictionary.TryGetValue("alt", out alt);
+                modifierDictionary.TryGetValue("window", out window);
+                modifierDictionary.TryGetValue("ctrl", out ctrl);
+                if (ctrl) { pasteModifier |= UI.Handler.ModifierKeys.Control; }
+                if (alt) { pasteModifier |= UI.Handler.ModifierKeys.Alt; }
+                if (shift) { pasteModifier |= UI.Handler.ModifierKeys.Shift; }
+                if (window) { pasteModifier |= UI.Handler.ModifierKeys.Win; }
+                _hook.RegisterHotKey(pasteModifier, BasicTeraData.HotkeysData.Paste.Key);
             }
             catch
             {
@@ -76,7 +99,16 @@ namespace Tera.DamageMeter
             }
             try
             {
-                _hook.RegisterHotKey(UI.Handler.ModifierKeys.None, Keys.Delete);
+                var modifierDictionary = BasicTeraData.HotkeysData.Reset.Value;
+                modifierDictionary.TryGetValue("shift", out shift);
+                modifierDictionary.TryGetValue("alt", out alt);
+                modifierDictionary.TryGetValue("window", out window);
+                modifierDictionary.TryGetValue("ctrl", out ctrl);
+                if (ctrl) { resetModifier |= UI.Handler.ModifierKeys.Control; }
+                if (alt) { resetModifier |= UI.Handler.ModifierKeys.Alt; }
+                if (shift) { resetModifier |= UI.Handler.ModifierKeys.Shift; }
+                if (window) { resetModifier |= UI.Handler.ModifierKeys.Win; }
+                _hook.RegisterHotKey(resetModifier, BasicTeraData.HotkeysData.Reset.Key);
             }
             catch
             {

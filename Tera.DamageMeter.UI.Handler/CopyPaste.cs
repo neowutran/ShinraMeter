@@ -87,7 +87,7 @@ namespace Tera.DamageMeter.UI.Handler
                     damageFraction = (double) playerStats.PlayerInfo.Dealt.Damage/playerStats.TotalDamage;
                 }
                 var dpsResult =
-                    $"|{playerStats.PlayerInfo.Name}: {Math.Round(damageFraction*100.0, 2)}% ({Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage)}) ";
+                    $"|{playerStats.PlayerInfo.Name}: {Math.Round(damageFraction*100.0, 2)}% ({Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage)}) - damage {Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage)}";
                 dpsString += dpsResult;
             }
             if (dpsString != "")
