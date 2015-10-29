@@ -1,9 +1,10 @@
 Just playing with this https://github.com/gothos-folly/TeraDamageMeter
 - Added a copy/paste functionnality & simplification of the network part
-- Added non configurable hotkey => Home: paste clipboard. End: copy dps to clipboard; Del: Reset 
+- Added hotkey configurable with xml file => Home: paste clipboard. End: copy dps to clipboard; Del: Reset 
 - Added Overlay
+- Added damage per second display
 
-TODO LIST => Hotkey with config file, Logger for debugging, Code refactor
+TODO LIST => Logger for debugging, UI ... 
 A friend is working on the UI on another fork
 
 Original Readme
