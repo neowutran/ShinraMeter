@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Tera.DamageMeter.Annotations;
 
@@ -9,13 +10,34 @@ namespace Tera.DamageMeter
         private long _damage;
         private long _heal;
         private int _hits;
+        private readonly PlayerInfo _playerInfo;
 
+        public SkillStats()
+        {
+            
+        }
+        public SkillStats(PlayerInfo playerInfo)
+        {
+            _playerInfo = playerInfo;
+        }
         public long Damage
         {
             get { return _damage; }
             set
             {
                 if (value == _damage) return;
+                if (_playerInfo != null)
+                {
+                    if (value != 0)
+                    {
+                        if (_playerInfo.FirstHit == 0)
+                        {
+                            _playerInfo.FirstHit = DateTime.UtcNow.Ticks / 10000000;
+                            
+                        }
+                        _playerInfo.LastHit = DateTime.UtcNow.Ticks / 10000000;
+                    }
+                }
                 _damage = value;
                 OnPropertyChanged("Damage");
             }

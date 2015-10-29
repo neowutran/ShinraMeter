@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Tera.Game;
 
 namespace Tera.DamageMeter
@@ -7,9 +8,11 @@ namespace Tera.DamageMeter
     {
         public PlayerInfo(Player user)
         {
+            FirstHit = 0;
+            LastHit = 0;
             Player = user;
             Received = new SkillStats();
-            Dealt = new SkillStats();
+            Dealt = new SkillStats(this);
         }
 
         public Player Player { get; }
@@ -19,10 +22,10 @@ namespace Tera.DamageMeter
             get { return Player.Name; }
         }
 
-        public PlayerClass Class
-        {
-            get { return Player.Class; }
-        }
+        public PlayerClass Class => Player.Class;
+
+        public long FirstHit { get; set; }
+        public long LastHit { get; set; }
 
         public SkillStats Received { get; private set; }
         public SkillStats Dealt { get; private set; }

@@ -61,7 +61,6 @@ namespace Tera.Sniffing
         {
             lock (_eventLock)
             {
-                Console.WriteLine(connection.Destination.Address.ToString());
                 if (!_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
                     !_serversByIp.ContainsKey(connection.Source.Address.ToString()))
                     return;

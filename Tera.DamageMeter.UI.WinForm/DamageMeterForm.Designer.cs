@@ -92,12 +92,13 @@
             // 
             // MenuButton
             // 
+            this.MenuButton.BackColor = System.Drawing.Color.Transparent;
             this.MenuButton.Location = new System.Drawing.Point(4, 4);
             this.MenuButton.Name = "MenuButton";
             this.MenuButton.Size = new System.Drawing.Size(51, 23);
             this.MenuButton.TabIndex = 2;
             this.MenuButton.Text = "Menu";
-            this.MenuButton.UseVisualStyleBackColor = true;
+            this.MenuButton.UseVisualStyleBackColor = false;
             this.MenuButton.Click += new System.EventHandler(this.MenuButton_Click);
             // 
             // TotalDamageLabel
@@ -122,6 +123,7 @@
             // 
             // ListPanel
             // 
+            this.ListPanel.BackColor = System.Drawing.Color.Transparent;
             this.ListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ListPanel.Location = new System.Drawing.Point(0, 33);
             this.ListPanel.Name = "ListPanel";
@@ -151,14 +153,14 @@
             // CaptureMenuItem
             // 
             this.CaptureMenuItem.Name = "CaptureMenuItem";
-            this.CaptureMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.CaptureMenuItem.Size = new System.Drawing.Size(113, 22);
             this.CaptureMenuItem.Text = "Capture";
             this.CaptureMenuItem.Click += new System.EventHandler(this.CaptureMenuItem_Click);
             // 
             // OpenFileMenuItem
             // 
             this.OpenFileMenuItem.Name = "OpenFileMenuItem";
-            this.OpenFileMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OpenFileMenuItem.Size = new System.Drawing.Size(113, 22);
             this.OpenFileMenuItem.Text = "File...";
             this.OpenFileMenuItem.Click += new System.EventHandler(this.OpenPacketLogMenuItem_Click);
             // 
@@ -205,6 +207,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(284, 589);
             this.Controls.Add(this.ListPanel);
             this.Controls.Add(this.HeaderPanel);

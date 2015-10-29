@@ -27,9 +27,9 @@ namespace Tera.DamageMeter
         private PlayerTracker _playerTracker;
         private Server _server;
         private TeraSniffer _teraSniffer;
-        private UI.Handler.ModifierKeys copyModifier = UI.Handler.ModifierKeys.None;
-        private UI.Handler.ModifierKeys pasteModifier = UI.Handler.ModifierKeys.None;
-        private UI.Handler.ModifierKeys resetModifier = UI.Handler.ModifierKeys.None;
+        private ModifierKeys _copyModifier = UI.Handler.ModifierKeys.None;
+        private ModifierKeys _pasteModifier = UI.Handler.ModifierKeys.None;
+        private ModifierKeys _resetModifier = UI.Handler.ModifierKeys.None;
 
 
         private readonly KeyboardHook _hook = new KeyboardHook();
@@ -37,18 +37,19 @@ namespace Tera.DamageMeter
         public DamageMeterForm()
         {
             InitializeComponent();
+            Opacity = 0.6;
             RegisterKeyboardHook();
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-            if (e.Key == BasicTeraData.HotkeysData.Copy.Key && e.Modifier == copyModifier)
+            if (e.Key == BasicTeraData.HotkeysData.Copy.Key && e.Modifier == _copyModifier)
             {
                 CopyPaste.Copy(PlayerData());
-            }else if (e.Key == BasicTeraData.HotkeysData.Paste.Key && e.Modifier == pasteModifier)
+            }else if (e.Key == BasicTeraData.HotkeysData.Paste.Key && e.Modifier == _pasteModifier)
             {
                 CopyPaste.Paste();
-            }else if (e.Key == BasicTeraData.HotkeysData.Reset.Key && e.Modifier == resetModifier)
+            }else if (e.Key == BasicTeraData.HotkeysData.Reset.Key && e.Modifier == _resetModifier)
             {
                 Reset();
             }
@@ -70,11 +71,11 @@ namespace Tera.DamageMeter
                 modifierDictionary.TryGetValue("alt", out alt);
                 modifierDictionary.TryGetValue("window", out window);
                 modifierDictionary.TryGetValue("ctrl", out ctrl);
-                if (ctrl){copyModifier |= UI.Handler.ModifierKeys.Control;}
-                if (alt){copyModifier |= UI.Handler.ModifierKeys.Alt;}
-                if (shift){copyModifier |= UI.Handler.ModifierKeys.Shift;}
-                if (window){copyModifier |= UI.Handler.ModifierKeys.Win;}
-                _hook.RegisterHotKey(copyModifier, BasicTeraData.HotkeysData.Copy.Key);
+                if (ctrl){_copyModifier |= UI.Handler.ModifierKeys.Control;}
+                if (alt){_copyModifier |= UI.Handler.ModifierKeys.Alt;}
+                if (shift){_copyModifier |= UI.Handler.ModifierKeys.Shift;}
+                if (window){_copyModifier |= UI.Handler.ModifierKeys.Win;}
+                _hook.RegisterHotKey(_copyModifier, BasicTeraData.HotkeysData.Copy.Key);
             }
             catch
             {
@@ -87,11 +88,11 @@ namespace Tera.DamageMeter
                 modifierDictionary.TryGetValue("alt", out alt);
                 modifierDictionary.TryGetValue("window", out window);
                 modifierDictionary.TryGetValue("ctrl", out ctrl);
-                if (ctrl) { pasteModifier |= UI.Handler.ModifierKeys.Control; }
-                if (alt) { pasteModifier |= UI.Handler.ModifierKeys.Alt; }
-                if (shift) { pasteModifier |= UI.Handler.ModifierKeys.Shift; }
-                if (window) { pasteModifier |= UI.Handler.ModifierKeys.Win; }
-                _hook.RegisterHotKey(pasteModifier, BasicTeraData.HotkeysData.Paste.Key);
+                if (ctrl) { _pasteModifier |= UI.Handler.ModifierKeys.Control; }
+                if (alt) { _pasteModifier |= UI.Handler.ModifierKeys.Alt; }
+                if (shift) { _pasteModifier |= UI.Handler.ModifierKeys.Shift; }
+                if (window) { _pasteModifier |= UI.Handler.ModifierKeys.Win; }
+                _hook.RegisterHotKey(_pasteModifier, BasicTeraData.HotkeysData.Paste.Key);
             }
             catch
             {
@@ -104,11 +105,11 @@ namespace Tera.DamageMeter
                 modifierDictionary.TryGetValue("alt", out alt);
                 modifierDictionary.TryGetValue("window", out window);
                 modifierDictionary.TryGetValue("ctrl", out ctrl);
-                if (ctrl) { resetModifier |= UI.Handler.ModifierKeys.Control; }
-                if (alt) { resetModifier |= UI.Handler.ModifierKeys.Alt; }
-                if (shift) { resetModifier |= UI.Handler.ModifierKeys.Shift; }
-                if (window) { resetModifier |= UI.Handler.ModifierKeys.Win; }
-                _hook.RegisterHotKey(resetModifier, BasicTeraData.HotkeysData.Reset.Key);
+                if (ctrl) { _resetModifier |= UI.Handler.ModifierKeys.Control; }
+                if (alt) { _resetModifier |= UI.Handler.ModifierKeys.Alt; }
+                if (shift) { _resetModifier |= UI.Handler.ModifierKeys.Shift; }
+                if (window) { _resetModifier |= UI.Handler.ModifierKeys.Win; }
+                _hook.RegisterHotKey(_resetModifier, BasicTeraData.HotkeysData.Reset.Key);
             }
             catch
             {
@@ -225,8 +226,9 @@ namespace Tera.DamageMeter
 
         private void DamageMeterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //_teraSniffer.Enabled = false;
-            Application.Exit();
+            _teraSniffer.Enabled = false;
+          
+
         }
 
         private void ResetButton_Click(object sender, EventArgs e)

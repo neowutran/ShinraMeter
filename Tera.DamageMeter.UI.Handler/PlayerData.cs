@@ -1,4 +1,6 @@
-﻿namespace Tera.DamageMeter.UI.Handler
+﻿using System;
+
+namespace Tera.DamageMeter.UI.Handler
 {
     public class PlayerData
     {
@@ -7,7 +9,9 @@
             PlayerInfo = playerInfo;
         }
 
-        public long TotalDamage { get; set; }
+     
+        public long TotalDamage{get;set;}
+
         public PlayerInfo PlayerInfo { get; }
     }
 }

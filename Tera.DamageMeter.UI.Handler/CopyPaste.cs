@@ -70,7 +70,7 @@ namespace Tera.DamageMeter.UI.Handler
         public static void Copy(List<PlayerData> playerDatas)
         {
             //stop if nothing to paste
-            if (playerDatas == null || playerDatas.Count == 0) return;
+            if (playerDatas == null) return;
             IEnumerable<PlayerData> playerDatasOrdered =
                 playerDatas.OrderByDescending(
                     playerData => playerData.PlayerInfo.Dealt.Damage + playerData.PlayerInfo.Dealt.Heal);
@@ -86,8 +86,23 @@ namespace Tera.DamageMeter.UI.Handler
                 {
                     damageFraction = (double) playerStats.PlayerInfo.Dealt.Damage/playerStats.TotalDamage;
                 }
+                string dps = "0";
+                long interval = 0;
+                if (playerStats.PlayerInfo.LastHit != 0 && playerStats.PlayerInfo.FirstHit != 0)
+                {
+                    interval = playerStats.PlayerInfo.LastHit - playerStats.PlayerInfo.FirstHit;
+                    Console.WriteLine("interval "+interval);
+                    if(interval != 0)
+                    {
+                        dps =
+                            Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage/interval);
+                    }
+                }
                 var dpsResult =
-                    $"|{playerStats.PlayerInfo.Name}: {Math.Round(damageFraction*100.0, 2)}% ({Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage)}) - damage {Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage)}";
+                    $"|{playerStats.PlayerInfo.Name}: {Math.Round(damageFraction*100.0, 1)}% ({Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage)} " +
+                    $"- {dps}/s) " +
+                    $"FH: {interval}s" +
+                    $" - damage {Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage)}";
                 dpsString += dpsResult;
             }
             if (dpsString != "")

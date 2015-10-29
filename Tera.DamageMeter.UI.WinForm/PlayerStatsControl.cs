@@ -58,10 +58,24 @@ namespace Tera.DamageMeter
             {
                 graphics.DrawString(PlayerData.PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
                 var row2Y = (float) Math.Round(textRect.Top + 0.55*textRect.Height);
-                var infoText = string.Format("crit {0} hits {1} hurt {2}",
+                long dps = 0;
+                long interval = 0;
+                if (PlayerData.PlayerInfo.LastHit != 0 && PlayerData.PlayerInfo.FirstHit != 0)
+                {
+                    interval =
+                        PlayerData.PlayerInfo.LastHit - PlayerData.PlayerInfo.FirstHit;
+                    if (interval != 0)
+                    {
+                        dps = PlayerData.PlayerInfo.Dealt.Damage/interval;
+                    }
+                }
+                var infoText = string.Format("crit:{0} hit:{1} hurt:{2} dps:{3} since:{4}s",
                     Helpers.FormatPercent((double) PlayerData.PlayerInfo.Dealt.Crits/PlayerData.PlayerInfo.Dealt.Hits),
                     PlayerData.PlayerInfo.Dealt.Hits,
-                    Helpers.FormatValue(PlayerData.PlayerInfo.Received.Damage));
+                    Helpers.FormatValue(PlayerData.PlayerInfo.Received.Damage),
+                    Helpers.FormatValue(dps),
+                    interval
+                    );
                 graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);
 
                 float x = textRect.Right;
