@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.RefershTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
+            this.copy = new System.Windows.Forms.Button();
             this.PasteButton = new System.Windows.Forms.Button();
             this.MenuButton = new System.Windows.Forms.Button();
             this.TotalDamageLabel = new System.Windows.Forms.Label();
@@ -45,7 +46,7 @@
             this.ResetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenPacketLogFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.copy = new System.Windows.Forms.Button();
+            this.overlay_timer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.SuspendLayout();
@@ -53,7 +54,7 @@
             // RefershTimer
             // 
             this.RefershTimer.Enabled = true;
-            this.RefershTimer.Interval = 500;
+            this.RefershTimer.Interval = 250;
             this.RefershTimer.Tick += new System.EventHandler(this.RefershTimer_Tick);
             // 
             // HeaderPanel
@@ -68,6 +69,16 @@
             this.HeaderPanel.Name = "HeaderPanel";
             this.HeaderPanel.Size = new System.Drawing.Size(284, 33);
             this.HeaderPanel.TabIndex = 1;
+            // 
+            // copy
+            // 
+            this.copy.Location = new System.Drawing.Point(175, 3);
+            this.copy.Name = "copy";
+            this.copy.Size = new System.Drawing.Size(43, 23);
+            this.copy.TabIndex = 4;
+            this.copy.Text = "copy";
+            this.copy.UseVisualStyleBackColor = true;
+            this.copy.Click += new System.EventHandler(this.button1_Click);
             // 
             // PasteButton
             // 
@@ -116,6 +127,7 @@
             this.ListPanel.Name = "ListPanel";
             this.ListPanel.Size = new System.Drawing.Size(284, 556);
             this.ListPanel.TabIndex = 2;
+            this.ListPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.ListPanel_Paint);
             // 
             // MainMenu
             // 
@@ -139,14 +151,14 @@
             // CaptureMenuItem
             // 
             this.CaptureMenuItem.Name = "CaptureMenuItem";
-            this.CaptureMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.CaptureMenuItem.Size = new System.Drawing.Size(152, 22);
             this.CaptureMenuItem.Text = "Capture";
             this.CaptureMenuItem.Click += new System.EventHandler(this.CaptureMenuItem_Click);
             // 
             // OpenFileMenuItem
             // 
             this.OpenFileMenuItem.Name = "OpenFileMenuItem";
-            this.OpenFileMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.OpenFileMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenFileMenuItem.Text = "File...";
             this.OpenFileMenuItem.Click += new System.EventHandler(this.OpenPacketLogMenuItem_Click);
             // 
@@ -184,15 +196,10 @@
             this.OpenPacketLogFileDialog.Filter = "Tera Packet Logs|*.TeraLog|All files|*.*";
             this.OpenPacketLogFileDialog.Title = "Open Tera Packet Log";
             // 
-            // copy
+            // overlay_timer
             // 
-            this.copy.Location = new System.Drawing.Point(175, 3);
-            this.copy.Name = "copy";
-            this.copy.Size = new System.Drawing.Size(43, 23);
-            this.copy.TabIndex = 4;
-            this.copy.Text = "copy";
-            this.copy.UseVisualStyleBackColor = true;
-            this.copy.Click += new System.EventHandler(this.button1_Click);
+            this.overlay_timer.Enabled = true;
+            this.overlay_timer.Interval = 250;
             // 
             // DamageMeterForm
             // 
@@ -203,6 +210,7 @@
             this.Controls.Add(this.HeaderPanel);
             this.Name = "DamageMeterForm";
             this.Text = "Damage Meter";
+            this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DamageMeterForm_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.HeaderPanel.ResumeLayout(false);
@@ -231,5 +239,6 @@
         private System.Windows.Forms.ToolStripMenuItem CaptureMenuItem;
         private System.Windows.Forms.Button PasteButton;
         private System.Windows.Forms.Button copy;
+        private System.Windows.Forms.Timer overlay_timer;
     }
 }

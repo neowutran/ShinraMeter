@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -30,6 +31,18 @@ namespace Tera.DamageMeter
         private Server _server;
 
         private TeraSniffer _teraSniffer;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Rect
+        {
+            public int X;
+            public int Y;
+            public int Width;
+            public int Height;
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
 
         public DamageMeterForm()
         {
@@ -160,11 +173,13 @@ namespace Tera.DamageMeter
             {
                 _damageTracker.Update(skillResultMessage);
             }
-                }
+        }
 
         private void DamageMeterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _teraSniffer.Enabled = false;
+            
+            //_teraSniffer.Enabled = false;
+            Application.Exit();
         }
 
         private void ResetButton_Click(object sender, EventArgs e)
@@ -182,6 +197,19 @@ namespace Tera.DamageMeter
 
         private void RefershTimer_Tick(object sender, EventArgs e)
         {
+            IntPtr hWnd = FindWindow(null, "TERA");
+            Rect rect;
+            GetWindowRect(hWnd, out rect);
+            if (rect.X == -32000)
+            {
+                // the game is minimized
+                this.WindowState = FormWindowState.Minimized;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+            //    this.Location = new Point(rect.X + 10, rect.Y + 10);
+            }
             Fetch();
         }
 
@@ -264,13 +292,26 @@ namespace Tera.DamageMeter
             {
                 PlayerStatsControl playerStatsControl;
                 _controls.TryGetValue(playerStats, out playerStatsControl);
-                var damageFraction = (double)playerStats.Dealt.Damage / playerStatsControl.TotalDamage;
+                double damageFraction;
+                if (playerStatsControl.TotalDamage == 0)
+                {
+                    damageFraction = 0;
+                }else { 
+                    damageFraction =  (double)playerStats.Dealt.Damage / playerStatsControl.TotalDamage;
+                }
                 var dpsResult =
                     $"|{playerStats.Name}: {Math.Round(damageFraction * 100.0, 2)}/100 ({Helpers.FormatValue(playerStats.Dealt.Damage)}) ";
                 dpsString += dpsResult;
             }
-            Console.WriteLine(dpsString);
-            Clipboard.SetText(dpsString);
+            if (dpsString != "")
+            {
+                Clipboard.SetText(dpsString);
+            }
+        }
+
+        private void ListPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
