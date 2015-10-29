@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Tera.DamageMeter.UI.Handler;
 
 namespace Tera.DamageMeter
 {
     public class PlayerStatsControl : Control
     {
-        public PlayerStatsControl()
+        public PlayerStatsControl(PlayerInfo playerInfo)
         {
+            PlayerData = new PlayerData(playerInfo);
             DoubleBuffered = true;
-
             HighlightColor = Color.DodgerBlue;
             BackColor = Color.DimGray;
             ForeColor = Color.White;
         }
 
-        public PlayerInfo PlayerInfo { get; set; }
-        public long TotalDamage { get; set; }
+        public PlayerData PlayerData { get; }
+
         public Color HighlightColor { get; set; }
         public ClassIcons ClassIcons { get; set; }
 
@@ -37,10 +38,7 @@ namespace Tera.DamageMeter
                 graphics.FillRectangle(backBrush, rect);
             }
 
-            if (PlayerInfo == null)
-                return;
-
-            var damageFraction = (double) PlayerInfo.Dealt.Damage/TotalDamage;
+            var damageFraction = (double) PlayerData.PlayerInfo.Dealt.Damage/PlayerData.TotalDamage;
             var highlightRect = new Rectangle(rect.Left, rect.Top, (int) Math.Round(rect.Width*damageFraction),
                 rect.Height);
 
@@ -50,7 +48,7 @@ namespace Tera.DamageMeter
             }
 
             var iconWidth = rect.Height;
-            graphics.DrawImage(ClassIcons.GetImage(PlayerInfo.Class), (iconWidth - ClassIcons.Size)/2,
+            graphics.DrawImage(ClassIcons.GetImage(PlayerData.PlayerInfo.Class), (iconWidth - ClassIcons.Size)/2,
                 (rect.Height - ClassIcons.Size)/2);
             var textRect = Rectangle.FromLTRB(rect.Left + iconWidth, rect.Top, rect.Right, rect.Bottom);
 
@@ -58,12 +56,12 @@ namespace Tera.DamageMeter
             using (var smallFont = new Font(Font.FontFamily, (int) Math.Round(rect.Height*0.35), GraphicsUnit.Pixel))
             using (var textBrush = new SolidBrush(ForeColor))
             {
-                graphics.DrawString(PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
+                graphics.DrawString(PlayerData.PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
                 var row2Y = (float) Math.Round(textRect.Top + 0.55*textRect.Height);
                 var infoText = string.Format("crit {0} hits {1} hurt {2}",
-                    Helpers.FormatPercent((double) PlayerInfo.Dealt.Crits/PlayerInfo.Dealt.Hits),
-                    PlayerInfo.Dealt.Hits,
-                    Helpers.FormatValue(PlayerInfo.Received.Damage));
+                    Helpers.FormatPercent((double) PlayerData.PlayerInfo.Dealt.Crits/PlayerData.PlayerInfo.Dealt.Hits),
+                    PlayerData.PlayerInfo.Dealt.Hits,
+                    Helpers.FormatValue(PlayerData.PlayerInfo.Received.Damage));
                 graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);
 
                 float x = textRect.Right;
@@ -71,12 +69,13 @@ namespace Tera.DamageMeter
                     textRect.Top);
 
                 x = textRect.Right;
-                x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerInfo.Dealt.Damage), smallFont, Brushes.Red,
+                x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerData.PlayerInfo.Dealt.Damage), smallFont,
+                    Brushes.Red,
                     x, row2Y);
-                if (PlayerInfo.Dealt.Heal != 0)
+                if (PlayerData.PlayerInfo.Dealt.Heal != 0)
                 {
                     x = DrawStringRightToLeft(graphics, "+", smallFont, textBrush, x, row2Y);
-                    x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont,
+                    x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerData.PlayerInfo.Dealt.Heal), smallFont,
                         Brushes.LawnGreen, x, row2Y);
                 }
             }

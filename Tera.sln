@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Sniffing", "Tera.Sniff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.Core", "Tera.DamageMeter.Core\Tera.DamageMeter.Core.csproj", "{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.WPF", "Tera.DamageMeter.UI.WPF\Tera.DamageMeter.UI.WPF.csproj", "{3E846788-2457-4B22-A41D-65940816E034}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.Handler", "Tera.DamageMeter.UI.Handler\Tera.DamageMeter.UI.Handler.csproj", "{53E2C9C3-BEAD-41AD-8C67-CE2FDED819DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.WinForm", "Tera.DamageMeter.UI.WinForm\Tera.DamageMeter.UI.WinForm.csproj", "{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}"
@@ -48,10 +46,6 @@ Global
 		{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E846788-2457-4B22-A41D-65940816E034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E846788-2457-4B22-A41D-65940816E034}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E846788-2457-4B22-A41D-65940816E034}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E846788-2457-4B22-A41D-65940816E034}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53E2C9C3-BEAD-41AD-8C67-CE2FDED819DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53E2C9C3-BEAD-41AD-8C67-CE2FDED819DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53E2C9C3-BEAD-41AD-8C67-CE2FDED819DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
