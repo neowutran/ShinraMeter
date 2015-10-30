@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hotkeys>
 	<paste>
-		<shift>0</shift>
-		<ctrl>0</ctrl>
-		<alt>0</alt>
-		<window>0</window>
+		<shift>false</shift>
+		<ctrl>false</ctrl>
+		<alt>false</alt>
+		<window>false</window>
 		<key>Home</key>
 	</paste>
 	<copys>
@@ -35,10 +35,10 @@
 		</copy>
 	</copys>
 	<reset>
-		<shift>0</shift>
-		<ctrl>0</ctrl>
-		<alt>0</alt>
-		<window>0</window>
+		<shift>false</shift>
+		<ctrl>false</ctrl>
+		<alt>false</alt>
+		<window>false</window>
 		<key>Delete</key>
 	</reset>
 </hotkeys>
