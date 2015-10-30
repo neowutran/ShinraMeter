@@ -6,7 +6,9 @@ Tera Damage Meter by Gothos & neowutran
 * Install WinPcap from https://www.winpcap.org/install/default.htm
 * Launch the Damage Meter before connecting to Tera, or it won't detect the connection.
 
-Hotkey: 
+Hotkeys & data paste to the game are configurable with a xml file. => resources/hotkeys.xml
+
+Default Hotkey: 
 Paste => Home
-Copy => End
+Copy => Ctrl + End & Alt + End
 Reset => Suppr/Del

@@ -38,12 +38,12 @@ namespace Tera.DamageMeter
             BackColor = Color.White;
             TransparencyKey = Color.White;
             FormBorderStyle = FormBorderStyle.Sizable;
+           
             RegisterKeyboardHook();
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-            Console.WriteLine("Heokeys: "+e.Key+" : "+e.Modifier);
             if (e.Key == BasicTeraData.HotkeysData.Paste.Key && e.Modifier == BasicTeraData.HotkeysData.Paste.Value)
             {
                 CopyPaste.Paste();
@@ -51,15 +51,10 @@ namespace Tera.DamageMeter
             {
                 Reset();
             }
-            foreach (var copy in BasicTeraData.HotkeysData.Copy)
+            foreach (var copy in BasicTeraData.HotkeysData.Copy.Where(copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
-                if (e.Key == copy.Key && e.Modifier == copy.Modifier)
-                {
-                   
-                    CopyPaste.Copy(PlayerData(), copy.Header,copy.Content,copy.Footer);
-                }
+                CopyPaste.Copy(PlayerData(), copy.Header,copy.Content,copy.Footer);
             }
-           
         }
 
         private void RegisterKeyboardHook()
