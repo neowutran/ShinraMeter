@@ -58,6 +58,10 @@
       <Project>{d1ed4752-f2fc-44c3-97b2-580bc79f4af1}</Project>
       <Name>Tera.DamageMeter.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tera.Data\Tera.Data.csproj">
+      <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
+      <Name>Tera.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,13 +7,33 @@
 		<window>0</window>
 		<key>Home</key>
 	</paste>
-	<copy>
-		<shift>0</shift>
-		<ctrl>0</ctrl>
-		<alt>0</alt>
-		<window>0</window>
-		<key>End</key>
-	</copy>
+	<copys>
+
+		<copy>
+			<shift>false</shift>
+			<ctrl>true</ctrl>
+			<alt>false</alt>
+			<window>false</window>
+			<key>End</key>
+			<string>
+				<header>OSEF meter:</header>
+				<content>|{name} {damage_received}|</content>
+				<footer></footer>				
+			</string>
+		</copy>
+		<copy>
+			<shift>false</shift>
+			<ctrl>false</ctrl>
+			<alt>true</alt>
+			<window>false</window>
+			<key>End</key>
+			<string>
+				<header>DPS meter:</header>
+				<content>|{name} {percentage} {damage_dealt} {dps}|</content>
+				<footer></footer>
+			</string>
+		</copy>
+	</copys>
 	<reset>
 		<shift>0</shift>
 		<ctrl>0</ctrl>

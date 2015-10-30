@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -27,31 +28,36 @@ namespace Tera.DamageMeter
         private PlayerTracker _playerTracker;
         private Server _server;
         private TeraSniffer _teraSniffer;
-        private ModifierKeys _copyModifier = UI.Handler.ModifierKeys.None;
-        private ModifierKeys _pasteModifier = UI.Handler.ModifierKeys.None;
-        private ModifierKeys _resetModifier = UI.Handler.ModifierKeys.None;
-
-
+      
         private readonly KeyboardHook _hook = new KeyboardHook();
 
         public DamageMeterForm()
         {
             InitializeComponent();
             Opacity = 0.6;
+            BackColor = Color.White;
+            TransparencyKey = Color.White;
+            FormBorderStyle = FormBorderStyle.Sizable;
             RegisterKeyboardHook();
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-            if (e.Key == BasicTeraData.HotkeysData.Copy.Key && e.Modifier == _copyModifier)
-            {
-                CopyPaste.Copy(PlayerData());
-            }else if (e.Key == BasicTeraData.HotkeysData.Paste.Key && e.Modifier == _pasteModifier)
+            Console.WriteLine("Heokeys: "+e.Key+" : "+e.Modifier);
+            if (e.Key == BasicTeraData.HotkeysData.Paste.Key && e.Modifier == BasicTeraData.HotkeysData.Paste.Value)
             {
                 CopyPaste.Paste();
-            }else if (e.Key == BasicTeraData.HotkeysData.Reset.Key && e.Modifier == _resetModifier)
+            }else if (e.Key == BasicTeraData.HotkeysData.Reset.Key && e.Modifier == BasicTeraData.HotkeysData.Reset.Value)
             {
                 Reset();
+            }
+            foreach (var copy in BasicTeraData.HotkeysData.Copy)
+            {
+                if (e.Key == copy.Key && e.Modifier == copy.Modifier)
+                {
+                   
+                    CopyPaste.Copy(PlayerData(), copy.Header,copy.Content,copy.Footer);
+                }
             }
            
         }
@@ -59,66 +65,33 @@ namespace Tera.DamageMeter
         private void RegisterKeyboardHook()
         {
             // register the event that is fired after the key press.
-            _hook.KeyPressed +=
-                hook_KeyPressed;
+            _hook.KeyPressed += hook_KeyPressed;
             // register the control + alt + F12 combination as hot key.
-            bool shift, alt, window, ctrl;
+            try
+            {
+                _hook.RegisterHotKey(BasicTeraData.HotkeysData.Paste.Value, BasicTeraData.HotkeysData.Paste.Key);
+                _hook.RegisterHotKey(BasicTeraData.HotkeysData.Reset.Value, BasicTeraData.HotkeysData.Reset.Key);
+              
+            }
+            catch
+            {
+                MessageBox.Show("Cannot bind paste/reset keys");
+            }
 
             try
             {
-                var modifierDictionary = BasicTeraData.HotkeysData.Copy.Value;
-                modifierDictionary.TryGetValue("shift", out shift);
-                modifierDictionary.TryGetValue("alt", out alt);
-                modifierDictionary.TryGetValue("window", out window);
-                modifierDictionary.TryGetValue("ctrl", out ctrl);
-                if (ctrl){_copyModifier |= UI.Handler.ModifierKeys.Control;}
-                if (alt){_copyModifier |= UI.Handler.ModifierKeys.Alt;}
-                if (shift){_copyModifier |= UI.Handler.ModifierKeys.Shift;}
-                if (window){_copyModifier |= UI.Handler.ModifierKeys.Win;}
-                _hook.RegisterHotKey(_copyModifier, BasicTeraData.HotkeysData.Copy.Key);
+                foreach (var copy in BasicTeraData.HotkeysData.Copy)
+                {
+                    Console.WriteLine("modifier:" + copy.Modifier);
+                    _hook.RegisterHotKey(copy.Modifier, copy.Key);
+                }
             }
             catch
             {
-                MessageBox.Show("Cannot bind Paste function on key Home");
-            }
-            try
-            {
-                var modifierDictionary = BasicTeraData.HotkeysData.Paste.Value;
-                modifierDictionary.TryGetValue("shift", out shift);
-                modifierDictionary.TryGetValue("alt", out alt);
-                modifierDictionary.TryGetValue("window", out window);
-                modifierDictionary.TryGetValue("ctrl", out ctrl);
-                if (ctrl) { _pasteModifier |= UI.Handler.ModifierKeys.Control; }
-                if (alt) { _pasteModifier |= UI.Handler.ModifierKeys.Alt; }
-                if (shift) { _pasteModifier |= UI.Handler.ModifierKeys.Shift; }
-                if (window) { _pasteModifier |= UI.Handler.ModifierKeys.Win; }
-                _hook.RegisterHotKey(_pasteModifier, BasicTeraData.HotkeysData.Paste.Key);
-            }
-            catch
-            {
-                MessageBox.Show("Cannot bind Copy function on key End");
-            }
-            try
-            {
-                var modifierDictionary = BasicTeraData.HotkeysData.Reset.Value;
-                modifierDictionary.TryGetValue("shift", out shift);
-                modifierDictionary.TryGetValue("alt", out alt);
-                modifierDictionary.TryGetValue("window", out window);
-                modifierDictionary.TryGetValue("ctrl", out ctrl);
-                if (ctrl) { _resetModifier |= UI.Handler.ModifierKeys.Control; }
-                if (alt) { _resetModifier |= UI.Handler.ModifierKeys.Alt; }
-                if (shift) { _resetModifier |= UI.Handler.ModifierKeys.Shift; }
-                if (window) { _resetModifier |= UI.Handler.ModifierKeys.Win; }
-                _hook.RegisterHotKey(_resetModifier, BasicTeraData.HotkeysData.Reset.Key);
-            }
-            catch
-            {
-                MessageBox.Show("Cannot bind Reset function on key Delete");
+                MessageBox.Show("Cannot bind copy keys");
+
             }
         }
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
 
         public List<PlayerData> PlayerData()
         {
@@ -246,10 +219,6 @@ namespace Tera.DamageMeter
 
         private void RefershTimer_Tick(object sender, EventArgs e)
         {
-            var hWnd = FindWindow(null, "TERA");
-            Rect rect;
-            GetWindowRect(hWnd, out rect);
-            WindowState = rect.X == -32000 ? FormWindowState.Minimized : FormWindowState.Normal;
             Fetch();
         }
 
@@ -312,24 +281,9 @@ namespace Tera.DamageMeter
             CopyPaste.Paste();
         }
 
-        //COPY TO CLIPBOARD FUNCTION
-        private void button1_Click(object sender, EventArgs e)
-        {
-            CopyPaste.Copy(PlayerData());
-        }
-
-
-        private void ListPanel_Paint(object sender, PaintEventArgs e)
+  private void ListPanel_Paint(object sender, PaintEventArgs e)
         {
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct Rect
-        {
-            public int X;
-            public int Y;
-            public int Width;
-            public int Height;
-        }
     }
 }

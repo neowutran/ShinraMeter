@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.RefershTimer = new System.Windows.Forms.Timer(this.components);
             this.HeaderPanel = new System.Windows.Forms.Panel();
-            this.copy = new System.Windows.Forms.Button();
             this.PasteButton = new System.Windows.Forms.Button();
             this.MenuButton = new System.Windows.Forms.Button();
             this.TotalDamageLabel = new System.Windows.Forms.Label();
@@ -59,7 +58,6 @@
             // 
             // HeaderPanel
             // 
-            this.HeaderPanel.Controls.Add(this.copy);
             this.HeaderPanel.Controls.Add(this.PasteButton);
             this.HeaderPanel.Controls.Add(this.MenuButton);
             this.HeaderPanel.Controls.Add(this.TotalDamageLabel);
@@ -70,16 +68,6 @@
             this.HeaderPanel.Size = new System.Drawing.Size(284, 33);
             this.HeaderPanel.TabIndex = 1;
             // 
-            // copy
-            // 
-            this.copy.Location = new System.Drawing.Point(175, 3);
-            this.copy.Name = "copy";
-            this.copy.Size = new System.Drawing.Size(43, 23);
-            this.copy.TabIndex = 4;
-            this.copy.Text = "copy";
-            this.copy.UseVisualStyleBackColor = true;
-            this.copy.Click += new System.EventHandler(this.button1_Click);
-            // 
             // PasteButton
             // 
             this.PasteButton.Location = new System.Drawing.Point(118, 4);
@@ -88,6 +76,7 @@
             this.PasteButton.TabIndex = 3;
             this.PasteButton.Text = "Paste";
             this.PasteButton.UseVisualStyleBackColor = true;
+            this.PasteButton.Visible = false;
             this.PasteButton.Click += new System.EventHandler(this.PasteButton_Click);
             // 
             // MenuButton
@@ -99,6 +88,7 @@
             this.MenuButton.TabIndex = 2;
             this.MenuButton.Text = "Menu";
             this.MenuButton.UseVisualStyleBackColor = false;
+            this.MenuButton.Visible = false;
             this.MenuButton.Click += new System.EventHandler(this.MenuButton_Click);
             // 
             // TotalDamageLabel
@@ -119,6 +109,7 @@
             this.ResetButton.TabIndex = 0;
             this.ResetButton.Text = "Reset";
             this.ResetButton.UseVisualStyleBackColor = true;
+            this.ResetButton.Visible = false;
             this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
             // 
             // ListPanel
@@ -241,7 +232,6 @@
         private System.Windows.Forms.ToolStripMenuItem OpenFileMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CaptureMenuItem;
         private System.Windows.Forms.Button PasteButton;
-        private System.Windows.Forms.Button copy;
         private System.Windows.Forms.Timer overlay_timer;
     }
 }

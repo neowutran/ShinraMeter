@@ -3,15 +3,67 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Tera.Data
 {
     public class HotkeysData
     {
-        public  KeyValuePair<Keys, Dictionary<string, bool>> Copy { get; }
-        public  KeyValuePair<Keys, Dictionary<string, bool>> Reset { get; }
-        public  KeyValuePair<Keys, Dictionary<string, bool>> Paste { get; }
+        public  List<CopyKey> Copy { get; }
+        public  KeyValuePair<Keys, ModifierKeys> Reset { get; }
+        public  KeyValuePair<Keys, ModifierKeys> Paste { get; }
+
+
+        /// <summary>
+        ///     The enumeration of possible modifiers.
+        /// </summary>
+        [Flags]
+        public enum ModifierKeys : uint
+        {
+            Alt = 1,
+            Control = 2,
+            Shift = 4,
+            Win = 8,
+            None = 0
+        }
+
+        private void CopyData(XDocument xml)
+        {
+
+            foreach (var copy in xml.Root.Elements("copys").Elements("copy"))
+            {
+                bool ctrl, alt, shift, window;
+                bool.TryParse(copy.Element("ctrl").Value, out ctrl);
+                bool.TryParse(copy.Element("alt").Value, out alt);
+                bool.TryParse(copy.Element("shift").Value, out shift);
+                bool.TryParse(copy.Element("window").Value, out window);
+                string header = copy.Element("string").Element("header").Value;
+                string footer = copy.Element("string").Element("footer").Value;
+                string content = copy.Element("string").Element("content").Value;
+                Keys key;
+                if (!Enum.TryParse(copy.Element("key").Value, out key))
+                {
+                    Console.WriteLine("Unable to convert string {0} to key", copy.Element("key").Value);
+                    throw new Exception("Unable to convert string "+ copy.Element("key").Value + " to key");
+                }
+
+                var modifier = ConvertToModifierKey(ctrl, alt, shift, window);
+                Copy.Add(new CopyKey(header,footer,content, modifier, key));
+            }
+
+        }
+
+        private ModifierKeys ConvertToModifierKey(bool ctrl, bool alt, bool shift, bool window)
+        {
+            ModifierKeys modifier = ModifierKeys.None;
+            if (ctrl) { modifier |= ModifierKeys.Control; }
+            if (alt) { modifier |= ModifierKeys.Alt; }
+            if (shift) { modifier |= ModifierKeys.Shift; }
+            if (window) { modifier |= ModifierKeys.Win; }
+            return modifier;
+        }
+
 
         public HotkeysData(BasicTeraData basicData)
         {
@@ -21,23 +73,18 @@ namespace Tera.Data
             // Get Keys
             var pasteQuery = from hotkeys in xml.Root.Descendants("paste")
                 select hotkeys.Element("key");
-            var copyQuery = from hotkeys in xml.Root.Descendants("copy")
-                        select hotkeys.Element("key");
             var resetQuery = from hotkeys in xml.Root.Descendants("reset")
                         select hotkeys.Element("key");
 
-            Keys copyKey, resetKey, pasteKey;
-            if (!Enum.TryParse(copyQuery.First().Value, out copyKey))
-            {
-                Console.WriteLine("Unable to convert string {0} to key", Copy);
-            }
+            Keys resetKey, pasteKey;
+          
             if (!Enum.TryParse(resetQuery.First().Value, out resetKey))
             {
-                Console.WriteLine("Unable to convert string {0} to key", Reset);
+                Console.WriteLine("Unable to convert string {0} to key", resetQuery.First().Value);
             }
             if (!Enum.TryParse(pasteQuery.First().Value, out pasteKey))
             {
-                Console.WriteLine("Unable to convert string {0} to key", Paste);
+                Console.WriteLine("Unable to convert string {0} to key", pasteQuery.First().Value);
             }
 
             
@@ -51,16 +98,6 @@ namespace Tera.Data
             var pasteAltQuery = from hotkeys in xml.Root.Descendants("paste")
                              select hotkeys.Element("alt");
 
-            var copyShiftQuery = from hotkeys in xml.Root.Descendants("copy")
-                                  select hotkeys.Element("shift");
-            var copyCtrlQuery = from hotkeys in xml.Root.Descendants("copy")
-                                 select hotkeys.Element("ctrl");
-            var copyWindowQuery = from hotkeys in xml.Root.Descendants("copy")
-                                   select hotkeys.Element("window");
-            var copyAltQuery = from hotkeys in xml.Root.Descendants("copy")
-                                select hotkeys.Element("alt");
-
-
             var resetShiftQuery = from hotkeys in xml.Root.Descendants("reset")
                                   select hotkeys.Element("shift");
             var resetCtrlQuery = from hotkeys in xml.Root.Descendants("reset")
@@ -71,51 +108,26 @@ namespace Tera.Data
                                 select hotkeys.Element("alt");
 
          
-            bool pasteShift, pasteCtrl, pasteWindow, pasteAlt, copyShift, copyCtrl, copyWindow, copyAlt, resetShift, resetCtrl, resetWindow, resetAlt;
+            bool pasteShift, pasteCtrl, pasteWindow, pasteAlt, resetShift, resetCtrl, resetWindow, resetAlt;
             bool.TryParse(pasteShiftQuery.First().Value, out pasteShift);
             bool.TryParse(pasteCtrlQuery.First().Value, out pasteCtrl);
             bool.TryParse(pasteWindowQuery.First().Value, out pasteWindow);
             bool.TryParse(pasteAltQuery.First().Value, out pasteAlt);
 
-            bool.TryParse(copyShiftQuery.First().Value, out copyShift);
-            bool.TryParse(copyCtrlQuery.First().Value, out copyCtrl);
-            bool.TryParse(copyWindowQuery.First().Value, out copyWindow);
-            bool.TryParse(copyAltQuery.First().Value, out copyAlt);
-
+         
             bool.TryParse(resetShiftQuery.First().Value, out resetShift);
             bool.TryParse(resetCtrlQuery.First().Value, out resetCtrl);
             bool.TryParse(resetWindowQuery.First().Value, out resetWindow);
             bool.TryParse(resetAltQuery.First().Value, out resetAlt);
 
-            //Format modifier
-            var pasteModifier = new Dictionary<string, bool>
-            {
-                {"shift", pasteShift},
-                {"ctrl", pasteCtrl},
-                {"alt", pasteAlt},
-                {"window", pasteWindow}
-            };
+            var pasteModifier = ConvertToModifierKey(pasteCtrl, pasteAlt, pasteShift, pasteWindow);
+            var resetModifier = ConvertToModifierKey(resetCtrl, resetAlt, resetShift, resetWindow);
 
-            var copyModifier = new Dictionary<string, bool>
-            {
-                {"shift", copyShift},
-                {"ctrl", copyCtrl},
-                {"alt", copyAlt},
-                {"window", copyWindow}
-            };
+            Paste = new KeyValuePair<Keys, ModifierKeys>(pasteKey, pasteModifier);
+            Reset = new KeyValuePair<Keys, ModifierKeys>(resetKey, resetModifier);
+            Copy = new List<CopyKey>();
 
-            var resetModifier = new Dictionary<string, bool>
-            {
-                {"shift", resetShift},
-                {"ctrl", resetCtrl},
-                {"alt", resetAlt},
-                {"window", resetWindow}
-            };
-
-            Copy = new KeyValuePair<Keys, Dictionary<string, bool>>(copyKey, copyModifier);
-            Paste = new KeyValuePair<Keys, Dictionary<string, bool>>(pasteKey, pasteModifier);
-            Reset = new KeyValuePair<Keys, Dictionary<string, bool>>(resetKey, resetModifier);
-
+            CopyData(xml);
         }
     }
 }

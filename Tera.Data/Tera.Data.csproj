@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicTeraData.cs" />
+    <Compile Include="CopyKey.cs" />
     <Compile Include="HotkeysData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeraData.cs" />

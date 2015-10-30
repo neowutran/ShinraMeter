@@ -67,14 +67,14 @@ namespace Tera.DamageMeter.UI.Handler
             }
         }
 
-        public static void Copy(List<PlayerData> playerDatas)
+        public static void Copy(List<PlayerData> playerDatas, string header, string content, string footer)
         {
             //stop if nothing to paste
             if (playerDatas == null) return;
             IEnumerable<PlayerData> playerDatasOrdered =
                 playerDatas.OrderByDescending(
                     playerData => playerData.PlayerInfo.Dealt.Damage + playerData.PlayerInfo.Dealt.Heal);
-            var dpsString = "";
+            var dpsString = header;
             foreach (var playerStats in playerDatasOrdered)
             {
                 double damageFraction;
@@ -91,20 +91,23 @@ namespace Tera.DamageMeter.UI.Handler
                 if (playerStats.PlayerInfo.LastHit != 0 && playerStats.PlayerInfo.FirstHit != 0)
                 {
                     interval = playerStats.PlayerInfo.LastHit - playerStats.PlayerInfo.FirstHit;
-                    Console.WriteLine("interval "+interval);
                     if(interval != 0)
                     {
                         dps =
                             Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage/interval);
                     }
                 }
-                var dpsResult =
-                    $"|{playerStats.PlayerInfo.Name}: {Math.Round(damageFraction*100.0, 1)}% ({Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage)} " +
-                    $"- {dps}/s) " +
-                    $"FH: {interval}s" +
-                    $" - damage {Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage)}";
-                dpsString += dpsResult;
+
+                var currentContent = content;
+               currentContent =  currentContent.Replace("{dps}", dps+"/s");
+               currentContent = currentContent.Replace("{interval}", interval+"s");
+               currentContent = currentContent.Replace("{damage_dealt}", Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
+               currentContent = currentContent.Replace("{name}", playerStats.PlayerInfo.Name);
+                currentContent = currentContent.Replace("{percentage}", Math.Round(damageFraction * 100.0, 1)+"%");
+                currentContent = currentContent.Replace("{damage_received}", Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage));
+             dpsString += currentContent;
             }
+            dpsString += footer;
             if (dpsString != "")
             {
                 Clipboard.SetText(dpsString);

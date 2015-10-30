@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Tera.Data;
 
 namespace Tera.DamageMeter.UI.Handler
 {
@@ -44,7 +45,7 @@ namespace Tera.DamageMeter.UI.Handler
         /// </summary>
         /// <param name="modifier">The modifiers that are associated with the hot key.</param>
         /// <param name="key">The key itself that is associated with the hot key.</param>
-        public void RegisterHotKey(ModifierKeys modifier, Keys key)
+        public void RegisterHotKey(HotkeysData.ModifierKeys modifier, Keys key)
         {
             // increment the counter.
             _currentId = _currentId + 1;
@@ -94,7 +95,7 @@ namespace Tera.DamageMeter.UI.Handler
                 {
                     // get the keys.
                     var key = (Keys) (((int) m.LParam >> 16) & 0xFFFF);
-                    var modifier = (ModifierKeys) ((int) m.LParam & 0xFFFF);
+                    var modifier = (HotkeysData.ModifierKeys) ((int) m.LParam & 0xFFFF);
 
                     // invoke the event to notify the parent.
                     KeyPressed?.Invoke(this, new KeyPressedEventArgs(modifier, key));
@@ -110,27 +111,15 @@ namespace Tera.DamageMeter.UI.Handler
     /// </summary>
     public class KeyPressedEventArgs : EventArgs
     {
-        internal KeyPressedEventArgs(ModifierKeys modifier, Keys key)
+        internal KeyPressedEventArgs(HotkeysData.ModifierKeys modifier, Keys key)
         {
             Modifier = modifier;
             Key = key;
         }
 
-        public ModifierKeys Modifier { get; }
+        public HotkeysData.ModifierKeys Modifier { get; }
 
         public Keys Key { get; }
     }
 
-    /// <summary>
-    ///     The enumeration of possible modifiers.
-    /// </summary>
-    [Flags]
-    public enum ModifierKeys : uint
-    {
-        Alt = 1,
-        Control = 2,
-        Shift = 4,
-        Win = 8,
-        None = 0
-    }
 }
