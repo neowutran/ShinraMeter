@@ -1,4 +1,5 @@
-﻿using Tera.Game.Messages;
+﻿using System;
+using Tera.Game.Messages;
 
 namespace Tera.Game
 {
@@ -8,6 +9,23 @@ namespace Tera.Game
         public NpcEntity(SpawnNpcServerMessage message)
             : base(message.Id)
         {
+            Console.WriteLine("identifiant:"+message.Id);
+            Console.WriteLine("### Data ###");
+            byte[] data = message.Data.Array;
+            foreach (var partdata in data)
+            {
+                Console.Write(partdata+"-");
+            }
+            Console.WriteLine("### Payload ###");
+            data = message.Payload.Array;
+            foreach (var partdata in data)
+            {
+                Console.Write(partdata+"-");
+            }
+            Console.WriteLine("########");
+            Console.WriteLine(message.OpCode);
+            Console.WriteLine(message.OpCodeName);
+            
         }
     }
 }

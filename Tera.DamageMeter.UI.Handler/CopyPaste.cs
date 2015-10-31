@@ -10,33 +10,33 @@ namespace Tera.DamageMeter.UI.Handler
 {
     public static class CopyPaste
     {
-        const int KL_NAMELENGTH = 9;
+        private const int KL_NAMELENGTH = 9;
 
         [DllImport("user32.dll")]
         private static extern long GetKeyboardLayoutName(
-              System.Text.StringBuilder pwszKLID);
+            StringBuilder pwszKLID);
 
 
         // SOME BULLSHIT GOING ON HERE => if you want to send "%" with SendKey, SendKey will you use the keyboard shortcut "SHIFT + 5" => meaning "%" with a QUERTY keyboard
         // So that doesn't work with a french keyboard (AZERTY), so => hack here
         private static string Percentage()
         {
-            StringBuilder name = new StringBuilder(KL_NAMELENGTH);
+            var name = new StringBuilder(KL_NAMELENGTH);
             GetKeyboardLayoutName(name);
-            String keyBoardLayout = name.ToString();
+            var keyBoardLayout = name.ToString();
             keyBoardLayout = keyBoardLayout.ToLower();
-            Console.WriteLine("Your keyboard layout is: "+keyBoardLayout);
+            Console.WriteLine("Your keyboard layout is: " + keyBoardLayout);
             //AZERTY
             if (keyBoardLayout == "0000040c" || keyBoardLayout == "0000080c")
             {
                 Console.WriteLine("French detected");
                 return "+ù";
             }
-            
+
             //QUERTY & OTHER
             return "{%}";
-       
         }
+
         public static void Paste()
         {
             var text = Clipboard.GetText();
@@ -46,15 +46,16 @@ namespace Tera.DamageMeter.UI.Handler
             const int lf = 10;
 
             char[] specialChars = {'{', '}', '(', ')', '+', '^', '%', '~', '[', ']'};
-            foreach (var c in text.Where(c => (int) c != lf && (int) c != cr))
+            foreach (var c in text.Where(c => c != lf && c != cr))
             {
                 if (specialChars.Contains(c))
                 {
                     if (c == '%')
                     {
                         SendKeys.SendWait(Percentage());
-
-                    }else{
+                    }
+                    else
+                    {
                         SendKeys.SendWait("{" + c + "}");
                     }
                 }
@@ -63,7 +64,7 @@ namespace Tera.DamageMeter.UI.Handler
                     SendKeys.SendWait(c + "");
                 }
                 SendKeys.Flush();
-                Thread.Sleep(20);
+                Thread.Sleep(1);
             }
         }
 
@@ -86,12 +87,12 @@ namespace Tera.DamageMeter.UI.Handler
                 {
                     damageFraction = (double) playerStats.PlayerInfo.Dealt.Damage/playerStats.TotalDamage;
                 }
-                string dps = "0";
+                var dps = "0";
                 long interval = 0;
                 if (playerStats.PlayerInfo.LastHit != 0 && playerStats.PlayerInfo.FirstHit != 0)
                 {
                     interval = playerStats.PlayerInfo.LastHit - playerStats.PlayerInfo.FirstHit;
-                    if(interval != 0)
+                    if (interval != 0)
                     {
                         dps =
                             Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage/interval);
@@ -99,13 +100,15 @@ namespace Tera.DamageMeter.UI.Handler
                 }
 
                 var currentContent = content;
-               currentContent =  currentContent.Replace("{dps}", dps+"/s");
-               currentContent = currentContent.Replace("{interval}", interval+"s");
-               currentContent = currentContent.Replace("{damage_dealt}", Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
-               currentContent = currentContent.Replace("{name}", playerStats.PlayerInfo.Name);
-                currentContent = currentContent.Replace("{percentage}", Math.Round(damageFraction * 100.0, 1)+"%");
-                currentContent = currentContent.Replace("{damage_received}", Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage));
-             dpsString += currentContent;
+                currentContent = currentContent.Replace("{dps}", dps + "/s");
+                currentContent = currentContent.Replace("{interval}", interval + "s");
+                currentContent = currentContent.Replace("{damage_dealt}",
+                    Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
+                currentContent = currentContent.Replace("{name}", playerStats.PlayerInfo.Name);
+                currentContent = currentContent.Replace("{percentage}", Math.Round(damageFraction*100.0, 1) + "%");
+                currentContent = currentContent.Replace("{damage_received}",
+                    Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage));
+                dpsString += currentContent;
             }
             dpsString += footer;
             if (dpsString != "")

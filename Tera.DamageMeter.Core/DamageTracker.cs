@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Tera.Game;
 using Tera.Game.Messages;
@@ -62,11 +63,40 @@ namespace Tera.DamageMeter
             if (message.Amount == 0)
                 return;
 
+
+            //Without that, a "death from above" is show as 225 damage points
+            if (message.SourcePlayer == message.TargetPlayer && message.Skill.Name.Contains("Death From Above"))
+            {
+                return;
+            }
+
+            /**
+            Lol, debug hard TODO remove when debugging end
+            */
+            Console.WriteLine("source:" + message.SourcePlayer);
+            Console.WriteLine(";source_id:" + message.Source);
+            if (message.Skill != null)
+            {
+                Console.WriteLine(";skill:" + message.Skill.Name);
+            }
+            Console.WriteLine(
+                ";skill_id:" + message.SkillId +
+                ";damage:" + message.Damage +
+                "; target:" + message.TargetPlayer);
+            Console.WriteLine(
+                "; heal:"+message.Heal+
+                ";amout:"+message.Amount
+                );
+
+
+
             stats.Damage += message.Damage;
             stats.Heal += message.Heal;
             stats.Hits++;
             if (message.IsCritical)
+            {
                 stats.Crits++;
+            }
         }
     }
 }

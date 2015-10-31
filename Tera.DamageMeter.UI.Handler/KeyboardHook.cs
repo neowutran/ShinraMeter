@@ -121,5 +121,4 @@ namespace Tera.DamageMeter.UI.Handler
 
         public Keys Key { get; }
     }
-
 }

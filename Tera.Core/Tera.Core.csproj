@@ -34,6 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\Messages\Server\SpawnGunnerTurrel.cs" />
     <Compile Include="Game\Messages\StartUserProjectileServerMessage.cs" />
     <Compile Include="Game\PlaceHolderEntity.cs" />
     <Compile Include="Game\Player.cs" />

@@ -1,7 +1,6 @@
 ﻿// Unknown Author and License
 
 using System;
-using System.Security.Cryptography;
 
 namespace Tera.Sniffing.Crypt
 {

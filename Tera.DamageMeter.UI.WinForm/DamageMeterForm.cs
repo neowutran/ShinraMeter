@@ -21,6 +21,8 @@ namespace Tera.DamageMeter
         private readonly Dictionary<PlayerInfo, PlayerStatsControl> _controls =
             new Dictionary<PlayerInfo, PlayerStatsControl>();
 
+        private readonly KeyboardHook _hook = new KeyboardHook();
+
         private ClassIcons _classIcons;
         private DamageTracker _damageTracker;
         private EntityTracker _entityRegistry;
@@ -28,8 +30,6 @@ namespace Tera.DamageMeter
         private PlayerTracker _playerTracker;
         private Server _server;
         private TeraSniffer _teraSniffer;
-      
-        private readonly KeyboardHook _hook = new KeyboardHook();
 
         public DamageMeterForm()
         {
@@ -42,22 +42,17 @@ namespace Tera.DamageMeter
             Activated += ActionActivate;
             Deactivate += ActionDeactivate;
             RegisterKeyboardHook();
-
         }
 
-        void ActionActivate(object sender, EventArgs e)
+        private void ActionActivate(object sender, EventArgs e)
         {
             FormBorderStyle = FormBorderStyle.Sizable;
-
         }
 
-        void ActionDeactivate(object sender, EventArgs e)
+        private void ActionDeactivate(object sender, EventArgs e)
         {
             FormBorderStyle = FormBorderStyle.None;
-
         }
-
-
 
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -65,13 +60,16 @@ namespace Tera.DamageMeter
             if (e.Key == BasicTeraData.HotkeysData.Paste.Key && e.Modifier == BasicTeraData.HotkeysData.Paste.Value)
             {
                 CopyPaste.Paste();
-            }else if (e.Key == BasicTeraData.HotkeysData.Reset.Key && e.Modifier == BasicTeraData.HotkeysData.Reset.Value)
+            }
+            else if (e.Key == BasicTeraData.HotkeysData.Reset.Key && e.Modifier == BasicTeraData.HotkeysData.Reset.Value)
             {
                 Reset();
             }
-            foreach (var copy in BasicTeraData.HotkeysData.Copy.Where(copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
+            foreach (
+                var copy in
+                    BasicTeraData.HotkeysData.Copy.Where(copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
-                CopyPaste.Copy(PlayerData(), copy.Header,copy.Content,copy.Footer);
+                CopyPaste.Copy(PlayerData(), copy.Header, copy.Content, copy.Footer);
             }
         }
 
@@ -84,7 +82,6 @@ namespace Tera.DamageMeter
             {
                 _hook.RegisterHotKey(BasicTeraData.HotkeysData.Paste.Value, BasicTeraData.HotkeysData.Paste.Key);
                 _hook.RegisterHotKey(BasicTeraData.HotkeysData.Reset.Value, BasicTeraData.HotkeysData.Reset.Key);
-              
             }
             catch
             {
@@ -102,7 +99,6 @@ namespace Tera.DamageMeter
             catch
             {
                 MessageBox.Show("Cannot bind copy keys");
-
             }
         }
 
@@ -145,7 +141,7 @@ namespace Tera.DamageMeter
             playerStatsSequence =
                 playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
             var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
-         
+
             var pos = 0;
             var visiblePlayerStats = new HashSet<PlayerInfo>();
             foreach (var playerStats in playerStatsSequence)
@@ -212,8 +208,7 @@ namespace Tera.DamageMeter
         private void DamageMeterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             _teraSniffer.Enabled = false;
-          Application.Exit();
-
+            Application.Exit();
         }
 
         private void ResetButton_Click(object sender, EventArgs e)
@@ -288,9 +283,8 @@ namespace Tera.DamageMeter
             CopyPaste.Paste();
         }
 
-  private void ListPanel_Paint(object sender, PaintEventArgs e)
+        private void ListPanel_Paint(object sender, PaintEventArgs e)
         {
         }
-
     }
 }

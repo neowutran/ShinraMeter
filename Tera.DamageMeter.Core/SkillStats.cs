@@ -6,20 +6,21 @@ namespace Tera.DamageMeter
 {
     public class SkillStats : INotifyPropertyChanged
     {
+        private readonly PlayerInfo _playerInfo;
         private int _crits;
         private long _damage;
         private long _heal;
         private int _hits;
-        private readonly PlayerInfo _playerInfo;
 
         public SkillStats()
         {
-            
         }
+
         public SkillStats(PlayerInfo playerInfo)
         {
             _playerInfo = playerInfo;
         }
+
         public long Damage
         {
             get { return _damage; }
@@ -32,10 +33,9 @@ namespace Tera.DamageMeter
                     {
                         if (_playerInfo.FirstHit == 0)
                         {
-                            _playerInfo.FirstHit = DateTime.UtcNow.Ticks / 10000000;
-                            
+                            _playerInfo.FirstHit = DateTime.UtcNow.Ticks/10000000;
                         }
-                        _playerInfo.LastHit = DateTime.UtcNow.Ticks / 10000000;
+                        _playerInfo.LastHit = DateTime.UtcNow.Ticks/10000000;
                     }
                 }
                 _damage = value;
