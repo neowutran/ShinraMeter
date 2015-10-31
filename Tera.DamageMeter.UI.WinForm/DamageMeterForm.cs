@@ -37,10 +37,28 @@ namespace Tera.DamageMeter
             Opacity = 0.6;
             BackColor = Color.White;
             TransparencyKey = Color.White;
-            FormBorderStyle = FormBorderStyle.Sizable;
-           
+            FormBorderStyle = FormBorderStyle.None;
+
+            Activated += ActionActivate;
+            Deactivate += ActionDeactivate;
             RegisterKeyboardHook();
+
         }
+
+        void ActionActivate(object sender, EventArgs e)
+        {
+            FormBorderStyle = FormBorderStyle.Sizable;
+
+        }
+
+        void ActionDeactivate(object sender, EventArgs e)
+        {
+            FormBorderStyle = FormBorderStyle.None;
+
+        }
+
+
+
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
@@ -127,8 +145,7 @@ namespace Tera.DamageMeter
             playerStatsSequence =
                 playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
             var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
-            TotalDamageLabel.Text = Helpers.FormatValue(totalDamage);
-            TotalDamageLabel.Left = HeaderPanel.Width - TotalDamageLabel.Width;
+         
             var pos = 0;
             var visiblePlayerStats = new HashSet<PlayerInfo>();
             foreach (var playerStats in playerStatsSequence)
@@ -220,11 +237,6 @@ namespace Tera.DamageMeter
         private void ExitMenuItem_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void MenuButton_Click(object sender, EventArgs e)
-        {
-            MainMenu.Show(MenuButton, 0, MenuButton.Height);
         }
 
         private void OpenPacketLogMenuItem_Click(object sender, EventArgs e)

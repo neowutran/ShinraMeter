@@ -16,8 +16,8 @@
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>OSEF meter:</header>
-				<content>|{name} {damage_received}|</content>
+				<header>OSEF:</header>
+				<content>|{name} {damage_received}</content>
 				<footer></footer>				
 			</string>
 		</copy>
@@ -28,8 +28,8 @@
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>DPS meter:</header>
-				<content>|{name} {percentage} {damage_dealt} {dps}|</content>
+				<header>DPS:</header>
+				<content>|{name} {percentage} {damage_dealt} {dps}</content>
 				<footer></footer>
 			</string>
 		</copy>

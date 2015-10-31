@@ -30,12 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.RefershTimer = new System.Windows.Forms.Timer(this.components);
-            this.HeaderPanel = new System.Windows.Forms.Panel();
-            this.PasteButton = new System.Windows.Forms.Button();
-            this.MenuButton = new System.Windows.Forms.Button();
-            this.TotalDamageLabel = new System.Windows.Forms.Label();
-            this.ResetButton = new System.Windows.Forms.Button();
-            this.ListPanel = new System.Windows.Forms.Panel();
             this.MainMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenPacketLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CaptureMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,7 +40,7 @@
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenPacketLogFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.overlay_timer = new System.Windows.Forms.Timer(this.components);
-            this.HeaderPanel.SuspendLayout();
+            this.ListPanel = new System.Windows.Forms.Panel();
             this.MainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,72 +49,6 @@
             this.RefershTimer.Enabled = true;
             this.RefershTimer.Interval = 250;
             this.RefershTimer.Tick += new System.EventHandler(this.RefershTimer_Tick);
-            // 
-            // HeaderPanel
-            // 
-            this.HeaderPanel.Controls.Add(this.PasteButton);
-            this.HeaderPanel.Controls.Add(this.MenuButton);
-            this.HeaderPanel.Controls.Add(this.TotalDamageLabel);
-            this.HeaderPanel.Controls.Add(this.ResetButton);
-            this.HeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.HeaderPanel.Location = new System.Drawing.Point(0, 0);
-            this.HeaderPanel.Name = "HeaderPanel";
-            this.HeaderPanel.Size = new System.Drawing.Size(284, 33);
-            this.HeaderPanel.TabIndex = 1;
-            // 
-            // PasteButton
-            // 
-            this.PasteButton.Location = new System.Drawing.Point(118, 4);
-            this.PasteButton.Name = "PasteButton";
-            this.PasteButton.Size = new System.Drawing.Size(51, 23);
-            this.PasteButton.TabIndex = 3;
-            this.PasteButton.Text = "Paste";
-            this.PasteButton.UseVisualStyleBackColor = true;
-            this.PasteButton.Visible = false;
-            this.PasteButton.Click += new System.EventHandler(this.PasteButton_Click);
-            // 
-            // MenuButton
-            // 
-            this.MenuButton.BackColor = System.Drawing.Color.Transparent;
-            this.MenuButton.Location = new System.Drawing.Point(4, 4);
-            this.MenuButton.Name = "MenuButton";
-            this.MenuButton.Size = new System.Drawing.Size(51, 23);
-            this.MenuButton.TabIndex = 2;
-            this.MenuButton.Text = "Menu";
-            this.MenuButton.UseVisualStyleBackColor = false;
-            this.MenuButton.Visible = false;
-            this.MenuButton.Click += new System.EventHandler(this.MenuButton_Click);
-            // 
-            // TotalDamageLabel
-            // 
-            this.TotalDamageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.TotalDamageLabel.AutoSize = true;
-            this.TotalDamageLabel.Location = new System.Drawing.Point(210, 9);
-            this.TotalDamageLabel.Name = "TotalDamageLabel";
-            this.TotalDamageLabel.Size = new System.Drawing.Size(71, 13);
-            this.TotalDamageLabel.TabIndex = 1;
-            this.TotalDamageLabel.Text = "TotalDamage";
-            // 
-            // ResetButton
-            // 
-            this.ResetButton.Location = new System.Drawing.Point(61, 4);
-            this.ResetButton.Name = "ResetButton";
-            this.ResetButton.Size = new System.Drawing.Size(51, 23);
-            this.ResetButton.TabIndex = 0;
-            this.ResetButton.Text = "Reset";
-            this.ResetButton.UseVisualStyleBackColor = true;
-            this.ResetButton.Visible = false;
-            this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
-            // 
-            // ListPanel
-            // 
-            this.ListPanel.BackColor = System.Drawing.Color.Transparent;
-            this.ListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ListPanel.Location = new System.Drawing.Point(0, 33);
-            this.ListPanel.Name = "ListPanel";
-            this.ListPanel.Size = new System.Drawing.Size(284, 556);
-            this.ListPanel.TabIndex = 2;
-            this.ListPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.ListPanel_Paint);
             // 
             // MainMenu
             // 
@@ -194,6 +122,16 @@
             this.overlay_timer.Enabled = true;
             this.overlay_timer.Interval = 250;
             // 
+            // ListPanel
+            // 
+            this.ListPanel.BackColor = System.Drawing.Color.Transparent;
+            this.ListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ListPanel.Location = new System.Drawing.Point(0, 0);
+            this.ListPanel.Name = "ListPanel";
+            this.ListPanel.Size = new System.Drawing.Size(284, 589);
+            this.ListPanel.TabIndex = 2;
+            this.ListPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.ListPanel_Paint);
+            // 
             // DamageMeterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -201,14 +139,11 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(284, 589);
             this.Controls.Add(this.ListPanel);
-            this.Controls.Add(this.HeaderPanel);
             this.Name = "DamageMeterForm";
             this.Text = "Damage Meter";
             this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DamageMeterForm_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.HeaderPanel.ResumeLayout(false);
-            this.HeaderPanel.PerformLayout();
             this.MainMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -217,11 +152,6 @@
         #endregion
 
         private System.Windows.Forms.Timer RefershTimer;
-        private System.Windows.Forms.Panel HeaderPanel;
-        private System.Windows.Forms.Button ResetButton;
-        private System.Windows.Forms.Label TotalDamageLabel;
-        private System.Windows.Forms.Panel ListPanel;
-        private System.Windows.Forms.Button MenuButton;
         private System.Windows.Forms.ContextMenuStrip MainMenu;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ResetMenuItem;
@@ -231,7 +161,7 @@
         private System.Windows.Forms.ToolStripMenuItem alwaysOnTopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenFileMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CaptureMenuItem;
-        private System.Windows.Forms.Button PasteButton;
         private System.Windows.Forms.Timer overlay_timer;
+        private System.Windows.Forms.Panel ListPanel;
     }
 }

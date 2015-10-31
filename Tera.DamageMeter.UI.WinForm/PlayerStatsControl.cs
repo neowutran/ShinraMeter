@@ -21,12 +21,6 @@ namespace Tera.DamageMeter
         public Color HighlightColor { get; set; }
         public ClassIcons ClassIcons { get; set; }
 
-        private static float DrawStringRightToLeft(Graphics graphics, string s, Font font, Brush brush, float x, float y)
-        {
-            x -= graphics.MeasureString(s, font).Width;
-            graphics.DrawString(s, font, brush, x, y);
-            return x;
-        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -69,29 +63,14 @@ namespace Tera.DamageMeter
                         dps = PlayerData.PlayerInfo.Dealt.Damage/interval;
                     }
                 }
-                var infoText = string.Format("crit:{0} hit:{1} hurt:{2} dps:{3} since:{4}s",
-                    Helpers.FormatPercent((double) PlayerData.PlayerInfo.Dealt.Crits/PlayerData.PlayerInfo.Dealt.Hits),
-                    PlayerData.PlayerInfo.Dealt.Hits,
-                    Helpers.FormatValue(PlayerData.PlayerInfo.Received.Damage),
+
+                var infoText = string.Format("{0} {1}/s {2} {3}",
+                    Helpers.FormatPercent(damageFraction),
                     Helpers.FormatValue(dps),
-                    interval
+                    Helpers.FormatValue(PlayerData.PlayerInfo.Dealt.Damage),
+                    Helpers.FormatPercent((double) PlayerData.PlayerInfo.Dealt.Crits/PlayerData.PlayerInfo.Dealt.Hits)
                     );
                 graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);
-
-                float x = textRect.Right;
-                x = DrawStringRightToLeft(graphics, Helpers.FormatPercent(damageFraction), bigFont, textBrush, x,
-                    textRect.Top);
-
-                x = textRect.Right;
-                x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerData.PlayerInfo.Dealt.Damage), smallFont,
-                    Brushes.Red,
-                    x, row2Y);
-                if (PlayerData.PlayerInfo.Dealt.Heal != 0)
-                {
-                    x = DrawStringRightToLeft(graphics, "+", smallFont, textBrush, x, row2Y);
-                    x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerData.PlayerInfo.Dealt.Heal), smallFont,
-                        Brushes.LawnGreen, x, row2Y);
-                }
             }
         }
     }
