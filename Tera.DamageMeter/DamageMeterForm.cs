@@ -83,9 +83,14 @@ namespace Tera.DamageMeter
         public void Fetch(IEnumerable<PlayerInfo> playerStatsSequence)
         {
             playerStatsSequence = playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
-            var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
-            TotalDamageLabel.Text = FormatHelpers.FormatValue(totalDamage);
-            TotalDamageLabel.Left = HeaderPanel.Width - TotalDamageLabel.Width;
+
+            TotalDamageLabel.Text = string.Format("Total damage: {0}", FormatHelpers.FormatValue(_damageTracker.TotalDealt.Damage));
+            TotalTimeLabel.Text = string.Format("Total time: {0}", FormatHelpers.FormatTimeSpan(_damageTracker.Duration) ?? "-");
+            TotalDpsLabel.Text = string.Format("Total DPS: {0}/s", FormatHelpers.FormatValue(_damageTracker.Dps(_damageTracker.TotalDealt.Damage)) ?? "-");
+
+            TotalDpsLabel.Left = FooterPanel.Width - TotalDpsLabel.Width;
+            TotalTimeLabel.Left = FooterPanel.Width - TotalTimeLabel.Width;
+
             int pos = 0;
             var visiblePlayerStats = new HashSet<PlayerInfo>();
             foreach (var playerStats in playerStatsSequence)
@@ -108,7 +113,6 @@ namespace Tera.DamageMeter
                 playerStatsControl.Top = pos;
                 playerStatsControl.Width = ListPanel.Width;
                 pos += playerStatsControl.Height + 2;
-                playerStatsControl.TotalDamage = totalDamage;
                 playerStatsControl.Invalidate();
             }
 
@@ -245,7 +249,6 @@ namespace Tera.DamageMeter
                 return;
 
             var playerStatsSequence = _damageTracker.OrderByDescending(playerStats => playerStats.Dealt.Damage).TakeWhile(x => x.Dealt.Damage > 0);
-            var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
             const int maxLength = 300;
 
             var sb = new StringBuilder();
@@ -255,8 +258,7 @@ namespace Tera.DamageMeter
             {
                 var playerText = first ? "" : ", ";
 
-                var damageFraction = (double)playerInfo.Dealt.Damage / totalDamage;
-                playerText += string.Format("{0} {1} {2}", playerInfo.Name, FormatHelpers.FormatValue(playerInfo.Dealt.Damage), FormatHelpers.FormatPercent(damageFraction));
+                playerText += string.Format("{0} {1} {2}", playerInfo.Name, FormatHelpers.FormatValue(playerInfo.Dealt.Damage), FormatHelpers.FormatPercent(playerInfo.DamageFraction) ?? "-");
 
                 if (sb.Length + playerText.Length > maxLength)
                     break;

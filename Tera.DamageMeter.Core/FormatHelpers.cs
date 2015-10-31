@@ -7,6 +7,30 @@ namespace Tera.DamageMeter
 {
     public class FormatHelpers
     {
+        public static string FormatTimeSpan(TimeSpan? timeSpan)
+        {
+            if (timeSpan == null)
+                return null;
+
+            return FormatTimeSpan(timeSpan.Value);
+        }
+
+        public static string FormatTimeSpan(TimeSpan timeSpan)
+        {
+            if (timeSpan.Hours != 0 || timeSpan.Days != 0)
+                return timeSpan.ToString("g");
+            else
+                return timeSpan.ToString(@"mm\:ss");
+        }
+
+        public static string FormatValue(long? value)
+        {
+            if (value == null)
+                return null;
+
+            return FormatValue(value.Value);
+        }
+
         public static string FormatValue(long value)
         {
             int exponent = 0;
@@ -48,7 +72,7 @@ namespace Tera.DamageMeter
         public static string FormatPercent(double fraction)
         {
             if (double.IsNaN(fraction))
-                return "-";
+                return null;
 
             return fraction.ToString("P1");
         }

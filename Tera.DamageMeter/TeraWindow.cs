@@ -12,10 +12,10 @@ namespace Tera.DamageMeter
     {
         private const int WM_CHAR = 0x0102;
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
         [DllImport("user32.dll")]

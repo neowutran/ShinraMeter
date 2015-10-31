@@ -8,6 +8,7 @@ namespace Tera.DamageMeter
 {
     public class PlayerInfo : INotifyPropertyChanged
     {
+        private readonly DamageTracker _tracker;
         public Player Player { get; private set; }
 
         public string Name { get { return Player.Name; } }
@@ -16,8 +17,12 @@ namespace Tera.DamageMeter
         public SkillStats Received { get; private set; }
         public SkillStats Dealt { get; private set; }
 
-        public PlayerInfo(Player user)
+        public double DamageFraction { get { return (double)Dealt.Damage / _tracker.TotalDealt.Damage; } }
+        public long? Dps { get { return _tracker.Dps(Dealt.Damage); } }
+
+        public PlayerInfo(Player user, DamageTracker tracker)
         {
+            _tracker = tracker;
             Player = user;
             Received = new SkillStats();
             Dealt = new SkillStats();

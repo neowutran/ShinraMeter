@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Tera.Game;
 using Tera.Game.Messages;
 
@@ -15,12 +16,25 @@ namespace Tera.DamageMeter
         private readonly EntityTracker _entityTracker;
         private readonly PlayerTracker _playerTracker;
         private readonly SkillDatabase _skillDatabase;
+        public DateTime? FirstAttack { get; private set; }
+        public DateTime? LastAttack { get; private set; }
+        public TimeSpan? Duration { get { return LastAttack - FirstAttack; } }
+
+        public SkillStats TotalDealt { get; private set; }
+        public SkillStats TotalReceived { get; private set; }
+
+        public void UpdateTotal()
+        {
+
+        }
 
         public DamageTracker(EntityTracker entityRegistry, PlayerTracker playerTracker, SkillDatabase skillDatabase)
         {
             _entityTracker = entityRegistry;
             _skillDatabase = skillDatabase;
             _playerTracker = playerTracker;
+            TotalDealt = new SkillStats();
+            TotalReceived = new SkillStats();
         }
 
         private PlayerInfo GetOrCreate(Player player)
@@ -28,7 +42,7 @@ namespace Tera.DamageMeter
             PlayerInfo playerStats;
             if (!_statsByUser.TryGetValue(player, out playerStats))
             {
-                playerStats = new PlayerInfo(player);
+                playerStats = new PlayerInfo(player, this);
                 _statsByUser.Add(player, playerStats);
             }
 
@@ -41,26 +55,41 @@ namespace Tera.DamageMeter
             if (skillResult.SourcePlayer != null)
             {
                 var playerStats = GetOrCreate(skillResult.SourcePlayer);
-                UpdateStats(playerStats.Dealt, skillResult);
+                var statsChange = StatsChange(skillResult);
+                playerStats.Dealt.Add(statsChange);
+                TotalDealt.Add(statsChange);
             }
 
             if (skillResult.TargetPlayer != null)
             {
                 var playerStats = GetOrCreate(skillResult.TargetPlayer);
-                UpdateStats(playerStats.Received, skillResult);
+                var statsChange = StatsChange(skillResult);
+                playerStats.Received.Add(statsChange);
+                TotalReceived.Add(statsChange);
+            }
+
+            if (skillResult.SourcePlayer != null && (skillResult.Damage > 0) && (skillResult.Source.Id != skillResult.Target.Id))
+            {
+                LastAttack = skillResult.Time;
+
+                if (FirstAttack == null)
+                    FirstAttack = skillResult.Time;
             }
         }
 
-        private void UpdateStats(SkillStats stats, SkillResult message)
+        private SkillStats StatsChange(SkillResult message)
         {
+            var result = new SkillStats();
             if (message.Amount == 0)
-                return;
+                return result;
 
-            stats.Damage += message.Damage;
-            stats.Heal += message.Heal;
-            stats.Hits++;
+            result.Damage = message.Damage;
+            result.Heal = message.Heal;
+            result.Hits++;
             if (message.IsCritical)
-                stats.Crits++;
+                result.Crits++;
+
+            return result;
         }
 
         public IEnumerator<PlayerInfo> GetEnumerator()
@@ -71,6 +100,22 @@ namespace Tera.DamageMeter
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public long? Dps(long damage)
+        {
+            return Dps(damage, Duration);
+        }
+
+        public static long? Dps(long damage, TimeSpan? duration)
+        {
+            var durationInSeconds = (duration ?? TimeSpan.Zero).TotalSeconds;
+            if (durationInSeconds < 1)
+                durationInSeconds = 1;
+            var dps = damage / durationInSeconds;
+            if (Math.Abs(dps) > long.MaxValue)
+                return null;
+            return (long)dps;
         }
     }
 }

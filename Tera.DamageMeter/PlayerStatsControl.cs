@@ -13,7 +13,6 @@ namespace Tera.DamageMeter
     public class PlayerStatsControl : Control
     {
         public PlayerInfo PlayerInfo { get; set; }
-        public long TotalDamage { get; set; }
         public Color HighlightColor { get; set; }
         public ClassIcons ClassIcons { get; set; }
 
@@ -37,8 +36,7 @@ namespace Tera.DamageMeter
             if (PlayerInfo == null)
                 return;
 
-            var damageFraction = (double)PlayerInfo.Dealt.Damage / TotalDamage;
-            var highlightRect = new Rectangle(rect.Left, rect.Top, (int)Math.Round(rect.Width * damageFraction), rect.Height);
+            var highlightRect = new Rectangle(rect.Left, rect.Top, (int)Math.Round(rect.Width * PlayerInfo.DamageFraction), rect.Height);
 
             using (var highlightBrush = new SolidBrush(HighlightColor))
             {
@@ -56,13 +54,13 @@ namespace Tera.DamageMeter
                 graphics.DrawString(PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
                 var row2Y = (float)Math.Round(textRect.Top + 0.55 * textRect.Height);
                 var infoText = string.Format("crit {0} hits {1} hurt {2}",
-                                             FormatHelpers.FormatPercent((double)PlayerInfo.Dealt.Crits / PlayerInfo.Dealt.Hits),
+                                             FormatHelpers.FormatPercent((double)PlayerInfo.Dealt.Crits / PlayerInfo.Dealt.Hits) ?? "-",
                                              PlayerInfo.Dealt.Hits,
                                              FormatHelpers.FormatValue(PlayerInfo.Received.Damage));
                 graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);
 
                 float x = textRect.Right;
-                x = DrawStringRightToLeft(graphics, FormatHelpers.FormatPercent(damageFraction), bigFont, textBrush, x, textRect.Top);
+                x = DrawStringRightToLeft(graphics, FormatHelpers.FormatPercent(PlayerInfo.DamageFraction) ?? "-", bigFont, textBrush, x, textRect.Top);
 
                 x = textRect.Right;
                 x = DrawStringRightToLeft(graphics, FormatHelpers.FormatValue(PlayerInfo.Dealt.Damage), smallFont, Brushes.Red, x, row2Y);

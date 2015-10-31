@@ -8,7 +8,7 @@ namespace Tera.Game
 {
     // Identifies an entity
     // It might be a good idea to split this into two 32 bit words, since one of them seems to be the actual Id, the other consisting of flags.
-    public struct EntityId
+    public struct EntityId:IEquatable<EntityId>
     {
         private readonly ulong _id;
 
@@ -21,6 +21,33 @@ namespace Tera.Game
         {
             // fixme: uses native endian instead of little endian
             return BitConverter.ToString(BitConverter.GetBytes(_id).ToArray());
+        }
+
+        public static bool operator ==(EntityId x, EntityId y)
+        {
+            return x._id == y._id;
+        }
+
+        public static bool operator !=(EntityId x, EntityId y)
+        {
+            return !(x == y);
+        }
+
+        public bool Equals(EntityId other)
+        {
+            return this == other;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is EntityId))
+                return false;
+            return this == (EntityId)obj;
+        }
+
+        public override int GetHashCode()
+        {
+            return _id.GetHashCode();
         }
     }
 }
