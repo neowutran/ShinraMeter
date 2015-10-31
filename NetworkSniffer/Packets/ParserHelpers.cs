@@ -1,4 +1,7 @@
-﻿namespace NetworkSniffer.Packets
+﻿// Copyright (c) CodesInChaos
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+namespace NetworkSniffer.Packets
 {
     internal static class ParserHelpers
     {
