@@ -1,7 +1,7 @@
 @echo off
 set output=.\release
 set source=.
-set variant=Release
+set variant=Debug
 rmdir /Q /S "%output%"
 md "%output%
 md "%output%\resources"

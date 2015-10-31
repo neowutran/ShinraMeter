@@ -46,9 +46,14 @@ namespace NetworkSniffer
         protected void SetEnabled(bool value)
         {
             if (value)
+            {
                 Start();
+            }
             else
+            {
                 Finish();
+                Environment.Exit(0);
+            }
         }
 
         private void Start()
@@ -67,7 +72,7 @@ namespace NetworkSniffer
 
         private void Finish()
         {
-            Debug.Assert(_devices != null);
+            return;
             foreach (var device in _devices.Where(device => device.Opened))
             {
                 device.StopCapture();

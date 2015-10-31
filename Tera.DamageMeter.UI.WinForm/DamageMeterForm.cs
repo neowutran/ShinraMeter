@@ -35,8 +35,8 @@ namespace Tera.DamageMeter
         {
             InitializeComponent();
             Opacity = 0.6;
-            BackColor = Color.White;
-            TransparencyKey = Color.White;
+            BackColor = Color.Green;
+            TransparencyKey = Color.Green;
             FormBorderStyle = FormBorderStyle.None;
 
             Activated += ActionActivate;
@@ -212,7 +212,7 @@ namespace Tera.DamageMeter
         private void DamageMeterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             _teraSniffer.Enabled = false;
-          
+          Application.Exit();
 
         }
 
