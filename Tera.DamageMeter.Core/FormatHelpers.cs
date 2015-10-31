@@ -2,7 +2,7 @@
 
 namespace Tera.DamageMeter
 {
-    public class Helpers
+    public class FormatHelpers
     {
         public static string FormatValue(long value)
         {

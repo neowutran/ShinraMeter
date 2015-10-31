@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PacketDotNet">
-      <HintPath>..\SharpPcap\PacketDotNet.dll</HintPath>
+      <HintPath>..\Libs\SharpPcap\PacketDotNet.dll</HintPath>
     </Reference>
     <Reference Include="SharpPcap">
-      <HintPath>..\SharpPcap\SharpPcap.dll</HintPath>
+      <HintPath>..\Libs\SharpPcap\SharpPcap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

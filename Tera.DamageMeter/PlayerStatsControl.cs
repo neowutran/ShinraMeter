@@ -53,20 +53,20 @@ namespace Tera.DamageMeter
                 graphics.DrawString(PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
                 var row2Y = (float)Math.Round(textRect.Top + 0.55 * textRect.Height);
                 var infoText = string.Format("crit {0} hits {1} hurt {2}",
-                                             Helpers.FormatPercent((double)PlayerInfo.Dealt.Crits / PlayerInfo.Dealt.Hits),
+                                             FormatHelpers.FormatPercent((double)PlayerInfo.Dealt.Crits / PlayerInfo.Dealt.Hits),
                                              PlayerInfo.Dealt.Hits,
-                                             Helpers.FormatValue(PlayerInfo.Received.Damage));
+                                             FormatHelpers.FormatValue(PlayerInfo.Received.Damage));
                 graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);
 
                 float x = textRect.Right;
-                x = DrawStringRightToLeft(graphics, Helpers.FormatPercent(damageFraction), bigFont, textBrush, x, textRect.Top);
+                x = DrawStringRightToLeft(graphics, FormatHelpers.FormatPercent(damageFraction), bigFont, textBrush, x, textRect.Top);
 
                 x = textRect.Right;
-                x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerInfo.Dealt.Damage), smallFont, Brushes.Red, x, row2Y);
+                x = DrawStringRightToLeft(graphics, FormatHelpers.FormatValue(PlayerInfo.Dealt.Damage), smallFont, Brushes.Red, x, row2Y);
                 if (PlayerInfo.Dealt.Heal != 0)
                 {
                     x = DrawStringRightToLeft(graphics, "+", smallFont, textBrush, x, row2Y);
-                    x = DrawStringRightToLeft(graphics, Helpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont, Brushes.LawnGreen, x, row2Y);
+                    x = DrawStringRightToLeft(graphics, FormatHelpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont, Brushes.LawnGreen, x, row2Y);
                 }
             }
         }

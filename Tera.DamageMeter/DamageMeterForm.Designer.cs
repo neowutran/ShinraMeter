@@ -37,13 +37,15 @@
             this.ListPanel = new System.Windows.Forms.Panel();
             this.MainMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenPacketLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CaptureMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alwaysOnTopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ResetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenPacketLogFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.CaptureMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PasteStatsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HeaderPanel.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.SuspendLayout();
@@ -107,11 +109,13 @@
             // 
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenPacketLogMenuItem,
-            this.optionsToolStripMenuItem,
+            this.PasteStatsMenuItem,
             this.ResetMenuItem,
+            this.optionsToolStripMenuItem,
+            this.SettingsMenuItem,
             this.ExitMenuItem});
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(117, 92);
+            this.MainMenu.Size = new System.Drawing.Size(153, 158);
             // 
             // OpenPacketLogMenuItem
             // 
@@ -119,13 +123,20 @@
             this.CaptureMenuItem,
             this.OpenFileMenuItem});
             this.OpenPacketLogMenuItem.Name = "OpenPacketLogMenuItem";
-            this.OpenPacketLogMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.OpenPacketLogMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenPacketLogMenuItem.Text = "Open";
+            // 
+            // CaptureMenuItem
+            // 
+            this.CaptureMenuItem.Name = "CaptureMenuItem";
+            this.CaptureMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.CaptureMenuItem.Text = "Capture";
+            this.CaptureMenuItem.Click += new System.EventHandler(this.CaptureMenuItem_Click);
             // 
             // OpenFileMenuItem
             // 
             this.OpenFileMenuItem.Name = "OpenFileMenuItem";
-            this.OpenFileMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OpenFileMenuItem.Size = new System.Drawing.Size(116, 22);
             this.OpenFileMenuItem.Text = "File...";
             this.OpenFileMenuItem.Click += new System.EventHandler(this.OpenPacketLogMenuItem_Click);
             // 
@@ -134,7 +145,7 @@
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.alwaysOnTopToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             // 
             // alwaysOnTopToolStripMenuItem
@@ -147,28 +158,35 @@
             // ResetMenuItem
             // 
             this.ResetMenuItem.Name = "ResetMenuItem";
-            this.ResetMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.ResetMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ResetMenuItem.Text = "Reset";
             this.ResetMenuItem.Click += new System.EventHandler(this.ResetButton_Click);
             // 
             // ExitMenuItem
             // 
             this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.ExitMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ExitMenuItem.Text = "E&xit";
             this.ExitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
+            // 
+            // SettingsMenuItem
+            // 
+            this.SettingsMenuItem.Name = "SettingsMenuItem";
+            this.SettingsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.SettingsMenuItem.Text = "Settings...";
+            this.SettingsMenuItem.Click += new System.EventHandler(this.SettingsMenuItem_Click);
             // 
             // OpenPacketLogFileDialog
             // 
             this.OpenPacketLogFileDialog.Filter = "Tera Packet Logs|*.TeraLog|All files|*.*";
             this.OpenPacketLogFileDialog.Title = "Open Tera Packet Log";
             // 
-            // CaptureMenuItem
+            // PasteStatsMenuItem
             // 
-            this.CaptureMenuItem.Name = "CaptureMenuItem";
-            this.CaptureMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.CaptureMenuItem.Text = "Capture";
-            this.CaptureMenuItem.Click += new System.EventHandler(this.CaptureMenuItem_Click);
+            this.PasteStatsMenuItem.Name = "PasteStatsMenuItem";
+            this.PasteStatsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.PasteStatsMenuItem.Text = "Paste damage";
+            this.PasteStatsMenuItem.Click += new System.EventHandler(this.PasteStatsMenuItem_Click);
             // 
             // DamageMeterForm
             // 
@@ -205,6 +223,8 @@
         private System.Windows.Forms.ToolStripMenuItem alwaysOnTopToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenFileMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CaptureMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SettingsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem PasteStatsMenuItem;
     }
 }
 
