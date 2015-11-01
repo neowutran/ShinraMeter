@@ -18,6 +18,7 @@
 208.67.49.84 NA [NA] Ascension Valley
 208.67.49.92 NA [NA] Mount Tyrannas
 208.67.49.100 NA [NA] Valley of Titans
+208.67.49.60 NA [NA] Highwatch
 
 91.225.237.5 RU [RU] Arun
 91.225.237.6 RU [RU] Kaitor
