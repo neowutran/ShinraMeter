@@ -78,34 +78,13 @@ namespace Tera.DamageMeter.UI.Handler
             var dpsString = header;
             foreach (var playerStats in playerDatasOrdered)
             {
-                double damageFraction;
-                if (playerStats.TotalDamage == 0)
-                {
-                    damageFraction = 0;
-                }
-                else
-                {
-                    damageFraction = (double) playerStats.PlayerInfo.Dealt.Damage/playerStats.TotalDamage;
-                }
-                var dps = "0";
-                long interval = 0;
-                if (playerStats.PlayerInfo.LastHit != 0 && playerStats.PlayerInfo.FirstHit != 0)
-                {
-                    interval = playerStats.PlayerInfo.LastHit - playerStats.PlayerInfo.FirstHit;
-                    if (interval != 0)
-                    {
-                        dps =
-                            Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage/interval);
-                    }
-                }
-
                 var currentContent = content;
-                currentContent = currentContent.Replace("{dps}", dps + "/s");
-                currentContent = currentContent.Replace("{interval}", interval + "s");
+                currentContent = currentContent.Replace("{dps}", playerStats.PlayerInfo.Dps + "/s");
+                currentContent = currentContent.Replace("{interval}", playerStats.PlayerInfo.Interval + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
                     Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
                 currentContent = currentContent.Replace("{name}", playerStats.PlayerInfo.Name);
-                currentContent = currentContent.Replace("{percentage}", Math.Round(damageFraction*100.0, 1) + "%");
+                currentContent = currentContent.Replace("{percentage}", Math.Round(playerStats.DamageFraction*100.0, 1) + "%");
                 currentContent = currentContent.Replace("{damage_received}",
                     Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage));
                 dpsString += currentContent;
