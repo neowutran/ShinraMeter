@@ -32,8 +32,7 @@ namespace Tera.DamageMeter
                 graphics.FillRectangle(backBrush, rect);
             }
 
-            var damageFraction = (double) PlayerData.PlayerInfo.Dealt.Damage/PlayerData.TotalDamage;
-            var highlightRect = new Rectangle(rect.Left, rect.Top, (int) Math.Round(rect.Width*damageFraction),
+            var highlightRect = new Rectangle(rect.Left, rect.Top, (int) Math.Round(rect.Width*PlayerData.DamageFraction),
                 rect.Height);
 
             using (var highlightBrush = new SolidBrush(HighlightColor))
@@ -52,23 +51,12 @@ namespace Tera.DamageMeter
             {
                 graphics.DrawString(PlayerData.PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
                 var row2Y = (float) Math.Round(textRect.Top + 0.55*textRect.Height);
-                long dps = 0;
-                long interval = 0;
-                if (PlayerData.PlayerInfo.LastHit != 0 && PlayerData.PlayerInfo.FirstHit != 0)
-                {
-                    interval =
-                        PlayerData.PlayerInfo.LastHit - PlayerData.PlayerInfo.FirstHit;
-                    if (interval != 0)
-                    {
-                        dps = PlayerData.PlayerInfo.Dealt.Damage/interval;
-                    }
-                }
-
+              
                 var infoText = string.Format("{0} {1}/s {2} {3}",
-                    Helpers.FormatPercent(damageFraction),
-                    Helpers.FormatValue(dps),
+                    Helpers.FormatPercent(PlayerData.DamageFraction),
+                    Helpers.FormatValue(PlayerData.PlayerInfo.Dps),
                     Helpers.FormatValue(PlayerData.PlayerInfo.Dealt.Damage),
-                    Helpers.FormatPercent((double) PlayerData.PlayerInfo.Dealt.Crits/PlayerData.PlayerInfo.Dealt.Hits)
+                    Helpers.FormatPercent(PlayerData.PlayerInfo.Dealt.CritRate)
                     );
                 graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);
             }

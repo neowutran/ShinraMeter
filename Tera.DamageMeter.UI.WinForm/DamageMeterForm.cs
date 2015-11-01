@@ -8,7 +8,6 @@ using Tera.DamageMeter.UI.Handler;
 using Tera.Data;
 using Tera.Game;
 using Tera.Game.Messages;
-using Tera.PacketLog;
 using Tera.Sniffing;
 
 namespace Tera.DamageMeter
@@ -92,7 +91,6 @@ namespace Tera.DamageMeter
             {
                 foreach (var copy in BasicTeraData.HotkeysData.Copy)
                 {
-                    Console.WriteLine("modifier:" + copy.Modifier);
                     _hook.RegisterHotKey(copy.Modifier, copy.Key);
                 }
             }
@@ -115,7 +113,6 @@ namespace Tera.DamageMeter
             _teraSniffer.NewConnection += server => InvokeAction(() => HandleNewConnection(server));
 
             _teraSniffer.Enabled = true;
-            UpdateSettingsUi();
         }
 
         private void InvokeAction(Action action)
@@ -139,7 +136,7 @@ namespace Tera.DamageMeter
         public void Fetch(IEnumerable<PlayerInfo> playerStatsSequence)
         {
             playerStatsSequence =
-                playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
+                playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage);
             var totalDamage = playerStatsSequence.Sum(playerStats => playerStats.Dealt.Damage);
 
             var pos = 0;
@@ -176,12 +173,6 @@ namespace Tera.DamageMeter
             }
         }
 
-        public void UpdateSettingsUi()
-        {
-            alwaysOnTopToolStripMenuItem.Checked = TopMost;
-            CaptureMenuItem.Checked = _teraSniffer.Enabled;
-        }
-
         private void HandleNewConnection(Server server)
         {
             Text = $"Damage Meter connected to {server.Name}";
@@ -211,11 +202,6 @@ namespace Tera.DamageMeter
             Application.Exit();
         }
 
-        private void ResetButton_Click(object sender, EventArgs e)
-        {
-            Reset();
-        }
-
         private void Reset()
         {
             if (_server == null)
@@ -234,54 +220,11 @@ namespace Tera.DamageMeter
             Close();
         }
 
-        private void OpenPacketLogMenuItem_Click(object sender, EventArgs e)
-        {
-            if (OpenPacketLogFileDialog.ShowDialog() != DialogResult.OK)
-                return;
-
-            _teraSniffer.Enabled = false;
-            var server = new Server("Packet Log", "EU", null);
-            HandleNewConnection(server);
-            foreach (var message in PacketLogReader.ReadMessages(OpenPacketLogFileDialog.FileName))
-            {
-                HandleMessageReceived(message);
-            }
-        }
-
-        private void alwaysOnTopToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TopMost = !TopMost;
-            UpdateSettingsUi();
-        }
-
-        private void CaptureMenuItem_Click(object sender, EventArgs e)
-        {
-            _teraSniffer.Enabled = !_teraSniffer.Enabled;
-            UpdateSettingsUi();
-        }
-
-
         //https://msdn.microsoft.com/en-us/library/ms171548(v=vs.110).aspx
         // Get a handle to an application window.
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
         public static extern IntPtr FindWindow(string lpClassName,
             string lpWindowName);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        private void PasteButton_Click(object sender, EventArgs e)
-        {
-            var teraHandle = FindWindow(null, "TERA");
-            if (teraHandle == IntPtr.Zero)
-            {
-                MessageBox.Show("TERA is not running.");
-                return;
-            }
-            SetForegroundWindow(teraHandle);
-            CopyPaste.Paste();
-        }
 
         private void ListPanel_Paint(object sender, PaintEventArgs e)
         {

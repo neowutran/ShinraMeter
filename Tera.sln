@@ -22,10 +22,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.Handler
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.WinForm", "Tera.DamageMeter.UI.WinForm\Tera.DamageMeter.UI.WinForm.csproj", "{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.WPF", "Tera.DamageMeter.UI.WPF\Tera.DamageMeter.UI.WPF.csproj", "{3E846788-2457-4B22-A41D-65940816E034}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -60,6 +59,10 @@ Global
 		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E846788-2457-4B22-A41D-65940816E034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E846788-2457-4B22-A41D-65940816E034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E846788-2457-4B22-A41D-65940816E034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E846788-2457-4B22-A41D-65940816E034}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

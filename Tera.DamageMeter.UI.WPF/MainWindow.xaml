@@ -1,0 +1,31 @@
+﻿<Window x:Name="Dps_Meter" x:Class="Tera.DamageMeter.UI.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tera.DamageMeter.UI.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" MinHeight="150" MinWidth="250" Height="228.667" Width="572.001" Background="#FF1C339B" Visibility="Visible" >
+
+    <Grid x:Name="grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="1.5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        
+        <Image x:Name="image" Grid.Column="0"  HorizontalAlignment="Center" />
+        <Label x:Name="lDps" Grid.Column="1" Background="#FF9C4398" HorizontalAlignment="Center" VerticalAlignment="Center" >Dps %</Label>
+        <Label x:Name="lTotalDps" Grid.Column="2" Background="#FFADB243"  Width="69" HorizontalAlignment="Center" VerticalAlignment="Center">Total DPS</Label>
+        <Label x:Name="lCritique" Grid.Column="3" Background="#FFB60F0F"  Width="58" VerticalAlignment="Center">Critique</Label>
+        <Label x:Name="lDpsSec" Grid.Column="3" Background="#FF4E9724" HorizontalAlignment="Center" VerticalAlignment="Bottom">DPS /s</Label>
+
+
+
+    </Grid>
+
+</Window>

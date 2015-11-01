@@ -26,7 +26,18 @@ namespace Tera.DamageMeter
         public long FirstHit { get; set; }
         public long LastHit { get; set; }
 
-        public SkillStats Received { get; private set; }
+        public long Interval => LastHit - FirstHit;
+
+        public long Dps
+        {
+            get
+            {
+                if (Interval == 0) { return 0;}
+                return Dealt.Damage/Interval;
+            }
+        }
+
+public SkillStats Received { get; private set; }
         public SkillStats Dealt { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;

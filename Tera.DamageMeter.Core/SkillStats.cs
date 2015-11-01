@@ -16,6 +16,8 @@ namespace Tera.DamageMeter
         {
         }
 
+        public double CritRate => Crits/Hits;
+
         public SkillStats(PlayerInfo playerInfo)
         {
             _playerInfo = playerInfo;
