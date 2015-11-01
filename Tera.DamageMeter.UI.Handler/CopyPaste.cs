@@ -79,12 +79,12 @@ namespace Tera.DamageMeter.UI.Handler
             foreach (var playerStats in playerDatasOrdered)
             {
                 var currentContent = content;
-                currentContent = currentContent.Replace("{dps}", playerStats.PlayerInfo.Dps + "/s");
+                currentContent = currentContent.Replace("{dps}", Helpers.FormatValue(playerStats.PlayerInfo.Dps) + "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.PlayerInfo.Interval + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
                     Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
                 currentContent = currentContent.Replace("{name}", playerStats.PlayerInfo.Name);
-                currentContent = currentContent.Replace("{percentage}", Math.Round(playerStats.DamageFraction*100.0, 1) + "%");
+                currentContent = currentContent.Replace("{percentage}",playerStats.DamageFraction+"%");
                 currentContent = currentContent.Replace("{damage_received}",
                     Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage));
                 dpsString += currentContent;

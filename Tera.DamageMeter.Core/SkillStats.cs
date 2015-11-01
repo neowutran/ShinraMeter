@@ -16,12 +16,22 @@ namespace Tera.DamageMeter
         {
         }
 
-        public double CritRate => Crits/Hits;
-
         public SkillStats(PlayerInfo playerInfo)
         {
             _playerInfo = playerInfo;
         }
+
+        public double CritRate
+        {
+            get
+            {
+                if (Hits == 0)
+                {
+                    return 0;
+                }
+                return Math.Round((double)Crits*100/Hits, 1);
+            }
+        } 
 
         public long Damage
         {

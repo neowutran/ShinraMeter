@@ -84,10 +84,9 @@ namespace Tera.DamageMeter
                 ";damage:" + message.Damage +
                 "; target:" + message.TargetPlayer);
             Console.WriteLine(
-                "; heal:"+message.Heal+
-                ";amout:"+message.Amount
+                "; heal:" + message.Heal +
+                ";amout:" + message.Amount
                 );
-
 
 
             stats.Damage += message.Damage;

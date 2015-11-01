@@ -32,13 +32,16 @@ namespace Tera.DamageMeter
         {
             get
             {
-                if (Interval == 0) { return 0;}
+                if (Interval == 0)
+                {
+                    return 0;
+                }
                 return Dealt.Damage/Interval;
             }
         }
 
-public SkillStats Received { get; private set; }
-        public SkillStats Dealt { get; private set; }
+        public SkillStats Received { get; private set; }
+        public SkillStats Dealt { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

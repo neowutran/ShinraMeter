@@ -11,10 +11,10 @@ namespace Tera.Game.Messages
             Id = reader.ReadEntityId();
             reader.Skip(67);
             OwnerId = reader.ReadEntityId();
-            Console.WriteLine("gunner turrel:"+OwnerId);
-            
+            Console.WriteLine("gunner turrel:" + OwnerId);
         }
-        public EntityId OwnerId { get; private set; }
+
+        public EntityId OwnerId { get; }
 
         public EntityId Id { get; private set; }
     }

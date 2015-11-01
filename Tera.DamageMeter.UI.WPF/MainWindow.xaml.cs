@@ -13,14 +13,12 @@ namespace Tera.DamageMeter.UI.WPF
             lDps.Content = "112k/s";
         }
 
-        private void button_Menu_click(object sender, RoutedEventArgs e)          
+        private void button_Menu_click(object sender, RoutedEventArgs e)
         {
         }
 
         private void button_Reset_Click(object sender, RoutedEventArgs e)
         {
-            
         }
-
     }
 }

@@ -152,7 +152,6 @@ namespace Tera.DamageMeter
                 if (playerStatsControl == null)
                 {
                     playerStatsControl = new PlayerStatsControl(playerStats);
-                    Console.WriteLine(playerStats);
                     playerStatsControl.Height = 40;
                     _controls.Add(playerStats, playerStatsControl);
                     playerStatsControl.Parent = ListPanel;
@@ -213,11 +212,6 @@ namespace Tera.DamageMeter
         private void RefershTimer_Tick(object sender, EventArgs e)
         {
             Fetch();
-        }
-
-        private void ExitMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         //https://msdn.microsoft.com/en-us/library/ms171548(v=vs.110).aspx
