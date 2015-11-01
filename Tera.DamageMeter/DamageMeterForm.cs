@@ -105,7 +105,7 @@ namespace Tera.DamageMeter
                 {
                     playerStatsControl = new PlayerStatsControl();
                     playerStatsControl.PlayerInfo = playerStats;
-                    playerStatsControl.Height = 40;
+                    playerStatsControl.Height = 50;
                     _controls.Add(playerStats, playerStatsControl);
                     playerStatsControl.Parent = ListPanel;
                     playerStatsControl.ClassIcons = _classIcons;

@@ -22,7 +22,7 @@ namespace Tera.DamageMeter
             graphics.DrawString(s, font, brush, x, y);
             return x;
         }
-
+        
         protected override void OnPaint(PaintEventArgs e)
         {
             var graphics = e.Graphics;
@@ -43,21 +43,27 @@ namespace Tera.DamageMeter
                 graphics.FillRectangle(highlightBrush, highlightRect);
             }
 
-            var iconWidth = rect.Height;
+            var iconWidth = (int)(rect.Height * 0.8);
             graphics.DrawImage(ClassIcons.GetImage(PlayerInfo.Class), (iconWidth - ClassIcons.Size) / 2, (rect.Height - ClassIcons.Size) / 2);
             var textRect = Rectangle.FromLTRB(rect.Left + iconWidth, rect.Top, rect.Right, rect.Bottom);
 
-            using (var bigFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.45), GraphicsUnit.Pixel))
-            using (var smallFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.35), GraphicsUnit.Pixel))
+            using (var bigFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.34), GraphicsUnit.Pixel))
+            using (var smallFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.25), GraphicsUnit.Pixel))
             using (var textBrush = new SolidBrush(ForeColor))
             {
+                var row2LeftText = string.Format("crit {0} hits {1}",
+                             FormatHelpers.FormatPercent((double)PlayerInfo.Dealt.Crits / PlayerInfo.Dealt.Hits) ?? "-",
+                             PlayerInfo.Dealt.Hits);
+                var row3LeftText = string.Format("hurt {0}",
+                                              FormatHelpers.FormatValue(PlayerInfo.Received.Damage));
+                var row3RightText = string.Format("{0}/s",FormatHelpers.FormatValue(PlayerInfo.Dps));
+
                 graphics.DrawString(PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
-                var row2Y = (float)Math.Round(textRect.Top + 0.55 * textRect.Height);
-                var infoText = string.Format("crit {0} hits {1} hurt {2}",
-                                             FormatHelpers.FormatPercent((double)PlayerInfo.Dealt.Crits / PlayerInfo.Dealt.Hits) ?? "-",
-                                             PlayerInfo.Dealt.Hits,
-                                             FormatHelpers.FormatValue(PlayerInfo.Received.Damage));
-                graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);
+                var row2Y = (float)Math.Round(textRect.Top + 0.36 * textRect.Height);
+                var row3Y = (float)Math.Round(textRect.Top + 0.64 * textRect.Height);
+                
+                graphics.DrawString(row2LeftText, smallFont, textBrush, textRect.Left, row2Y);
+                graphics.DrawString(row3LeftText, smallFont, textBrush, textRect.Left, row3Y);
 
                 float x = textRect.Right;
                 x = DrawStringRightToLeft(graphics, FormatHelpers.FormatPercent(PlayerInfo.DamageFraction) ?? "-", bigFont, textBrush, x, textRect.Top);
@@ -69,6 +75,9 @@ namespace Tera.DamageMeter
                     x = DrawStringRightToLeft(graphics, "+", smallFont, textBrush, x, row2Y);
                     x = DrawStringRightToLeft(graphics, FormatHelpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont, Brushes.LawnGreen, x, row2Y);
                 }
+
+                x = textRect.Right;
+                x = DrawStringRightToLeft(graphics, row3RightText, smallFont, textBrush, x, row3Y);
             }
         }
 
@@ -76,8 +85,8 @@ namespace Tera.DamageMeter
         {
             DoubleBuffered = true;
 
-            HighlightColor = Color.DodgerBlue;
-            BackColor = Color.DimGray;
+            HighlightColor = Color.RoyalBlue;
+            BackColor = Color.Navy;
             ForeColor = Color.White;
         }
     }
