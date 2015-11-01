@@ -25,4 +25,5 @@
 91.225.237.7 RU [RU] Arborea
 91.225.237.8 RU [RU] Lorkada
 91.225.237.9 RU [RU] Baldera
+91.225.237.11 RU [RU] Essenia
 91.225.237.12 RU [RU] Westonia
