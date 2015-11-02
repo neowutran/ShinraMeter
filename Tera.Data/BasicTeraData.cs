@@ -20,12 +20,13 @@ namespace Tera.Data
         {
             ResourceDirectory = resourceDirectory;
             HotkeysData = new HotkeysData(this);
+            WindowData = new WindowData(this);
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
             Servers = GetServers(Path.Combine(ResourceDirectory, "servers.txt")).ToList();
             Regions = GetRegions(Path.Combine(ResourceDirectory, "regions.txt")).ToList();
         }
 
-
+        public WindowData WindowData { get; }
         public HotkeysData HotkeysData { get; }
         public string ResourceDirectory { get; }
         public IEnumerable<Server> Servers { get; private set; }

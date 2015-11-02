@@ -52,11 +52,11 @@ namespace Tera.DamageMeter
             {
                 graphics.DrawString(PlayerData.PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
                 var row2Y = (float) Math.Round(textRect.Top + 0.55*textRect.Height);
-
+                var format  = new FormatHelpers();
                 var infoText = string.Format("{0} {1}/s {2} {3}",
                     PlayerData.DamageFraction+"%",
-                    Helpers.FormatValue(PlayerData.PlayerInfo.Dps),
-                    Helpers.FormatValue(PlayerData.PlayerInfo.Dealt.Damage),
+                    format.FormatValue(PlayerData.PlayerInfo.Dps),
+                    format.FormatValue(PlayerData.PlayerInfo.Dealt.Damage),
                     PlayerData.PlayerInfo.Dealt.CritRate+"%"
                     );
                 graphics.DrawString(infoText, smallFont, textBrush, textRect.Left, row2Y);

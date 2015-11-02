@@ -68,25 +68,75 @@ namespace Tera.DamageMeter.UI.Handler
             }
         }
 
-        public static void Copy(List<PlayerData> playerDatas, string header, string content, string footer)
+        public static void Copy(List<PlayerData> playerDatas, string header, string content, string footer, string orderby, string order)
         {
             //stop if nothing to paste
             if (playerDatas == null) return;
-            IEnumerable<PlayerData> playerDatasOrdered =
-                playerDatas.OrderByDescending(
-                    playerData => playerData.PlayerInfo.Dealt.Damage + playerData.PlayerInfo.Dealt.Heal);
+            IEnumerable<PlayerData> playerDatasOrdered;
+            if (order == "ascending")
+            {
+                switch (orderby)
+                {
+                    case "damage_received":
+                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Received.Damage);
+                        break;
+                    case "name":
+                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Name);
+                        break;
+                    case "percentage":
+                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.DamageFraction);
+                        break;
+                    case "damage_dealt":
+                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Dealt.Damage);
+                        break;
+                    case "dps":
+                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Dps);
+                        break;
+                    default:
+                        Console.WriteLine("wrong value for orderby");
+                        throw new Exception("wrong value for orderby");
+                }
+
+            }
+            else
+            {
+                switch (orderby)
+                {
+                    case "damage_received":
+                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Received.Damage);
+                        break;
+                    case "name":
+                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Name);
+                        break;
+                    case "percentage":
+                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.DamageFraction);
+                        break;
+                    case "damage_dealt":
+                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dealt.Damage);
+                        break;
+                    case "dps":
+                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dps);
+                        break;
+                    default:
+                        Console.WriteLine("wrong value for orderby");
+                        throw new Exception("wrong value for orderby");
+                }
+
+            }
+
             var dpsString = header;
             foreach (var playerStats in playerDatasOrdered)
             {
                 var currentContent = content;
-                currentContent = currentContent.Replace("{dps}", Helpers.FormatValue(playerStats.PlayerInfo.Dps) + "/s");
+                var format = new FormatHelpers();
+                currentContent = currentContent.Replace("{dps}", format.FormatValue(playerStats.PlayerInfo.Dps) + "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.PlayerInfo.Interval + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
-                    Helpers.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
+                    format.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
                 currentContent = currentContent.Replace("{name}", playerStats.PlayerInfo.Name);
                 currentContent = currentContent.Replace("{percentage}",playerStats.DamageFraction+"%");
                 currentContent = currentContent.Replace("{damage_received}",
-                    Helpers.FormatValue(playerStats.PlayerInfo.Received.Damage));
+                    format.FormatValue(playerStats.PlayerInfo.Received.Damage));
                 dpsString += currentContent;
             }
             dpsString += footer;

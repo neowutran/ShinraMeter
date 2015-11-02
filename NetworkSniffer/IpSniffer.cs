@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) CodesInChaos
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,8 +19,6 @@ namespace NetworkSniffer
         private readonly string _filter;
         private WinPcapDeviceList _devices;
         private volatile uint _droppedPackets;
-
-        private bool _enabled;
         private volatile uint _interfaceDroppedPackets;
 
         public IpSniffer(string filter)
@@ -24,23 +26,9 @@ namespace NetworkSniffer
             _filter = filter;
         }
 
-        public bool Enabled
+        public IEnumerable<string> Status()
         {
-            get { return _enabled; }
-            set
-            {
-                if (_enabled == value) return;
-                _enabled = value;
-                SetEnabled(value);
-            }
-        }
-
-        public event Action<IpPacket> PacketReceived;
-
-        protected void OnPacketReceived(IpPacket data)
-        {
-            var packetReceived = PacketReceived;
-            packetReceived?.Invoke(data);
+            return _devices.Select(device => string.Format("Device {0} {1} {2}\r\n{3}", device.LinkType, device.Opened ? "Open" : "Closed", device.LastError, device));
         }
 
         protected void SetEnabled(bool value)
@@ -56,11 +44,16 @@ namespace NetworkSniffer
             }
         }
 
+        private static bool IsInteresting(WinPcapDevice device)
+        {
+            return true;
+        }
+
         private void Start()
         {
             Debug.Assert(_devices == null);
             _devices = WinPcapDeviceList.New();
-            var interestingDevices = _devices;
+            var interestingDevices = _devices.Where(IsInteresting);
             foreach (var device in interestingDevices)
             {
                 device.OnPacketArrival += device_OnPacketArrival;
@@ -72,7 +65,7 @@ namespace NetworkSniffer
 
         private void Finish()
         {
-            return;
+            Debug.Assert(_devices != null);
             foreach (var device in _devices.Where(device => device.Opened))
             {
                 device.StopCapture();
@@ -81,6 +74,35 @@ namespace NetworkSniffer
             _devices = null;
         }
 
+        public event Action<string> Warning;
+
+        protected virtual void OnWarning(string obj)
+        {
+            Action<string> handler = Warning;
+            if (handler != null) handler(obj);
+        }
+        public event Action<IpPacket> PacketReceived;
+
+        protected void OnPacketReceived(IpPacket data)
+        {
+            var packetReceived = PacketReceived;
+            if (packetReceived != null)
+                packetReceived(data);
+        }
+
+        private bool _enabled;
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    SetEnabled(value);
+                }
+            }
+        }
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             if (e.Device.LinkType != LinkLayers.Ethernet)
@@ -93,9 +115,10 @@ namespace NetworkSniffer
 
             OnPacketReceived(ipPacket);
 
-            var device = (WinPcapDevice) sender;
+            var device = (WinPcapDevice)sender;
             if (device.Statistics.DroppedPackets == _droppedPackets &&
-                device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets) return;
+                device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets)
+                return;
             _droppedPackets = device.Statistics.DroppedPackets;
             _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
             File.AppendAllText("TCP",

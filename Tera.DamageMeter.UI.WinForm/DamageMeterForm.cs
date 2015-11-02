@@ -32,15 +32,22 @@ namespace Tera.DamageMeter
 
         public DamageMeterForm()
         {
+ 
             InitializeComponent();
             Opacity = 0.6;
             BackColor = Color.Green;
             TransparencyKey = Color.Green;
             FormBorderStyle = FormBorderStyle.None;
-
             Activated += ActionActivate;
             Deactivate += ActionDeactivate;
             RegisterKeyboardHook();
+
+        }
+
+        private void ActionResize(object sender, EventArgs e)
+        {
+            BasicTeraData.WindowData.Location = DesktopLocation;
+            BasicTeraData.WindowData.Size = Size;
         }
 
         private void ActionActivate(object sender, EventArgs e)
@@ -68,7 +75,7 @@ namespace Tera.DamageMeter
                 var copy in
                     BasicTeraData.HotkeysData.Copy.Where(copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
-                CopyPaste.Copy(PlayerData(), copy.Header, copy.Content, copy.Footer);
+                CopyPaste.Copy(PlayerData(), copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             }
         }
 
@@ -111,7 +118,10 @@ namespace Tera.DamageMeter
             _teraSniffer = new TeraSniffer(BasicTeraData.Servers);
             _teraSniffer.MessageReceived += message => InvokeAction(() => HandleMessageReceived(message));
             _teraSniffer.NewConnection += server => InvokeAction(() => HandleNewConnection(server));
-
+            DesktopLocation = BasicTeraData.WindowData.Location;
+            Size = BasicTeraData.WindowData.Size;
+            Resize += ActionResize;
+            Move += ActionResize;
             _teraSniffer.Enabled = true;
         }
 
@@ -197,6 +207,7 @@ namespace Tera.DamageMeter
 
         private void DamageMeterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            BasicTeraData.WindowData.Save();
             _teraSniffer.Enabled = false;
             Application.Exit();
         }

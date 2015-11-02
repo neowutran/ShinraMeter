@@ -110,9 +110,10 @@ namespace Tera.Data
                     Console.WriteLine("Unable to convert string {0} to key", copy.Element("key").Value);
                     throw new Exception("Unable to convert string " + copy.Element("key").Value + " to key");
                 }
-
+                var order = copy.Element("string").Element("order").Value;
+                var orderBy = copy.Element("string").Element("order_by").Value;
                 var modifier = ConvertToModifierKey(ctrl, alt, shift, window);
-                Copy.Add(new CopyKey(header, footer, content, modifier, key));
+                Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order));
             }
         }
 

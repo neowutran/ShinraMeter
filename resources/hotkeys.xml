@@ -18,7 +18,9 @@
 			<string>
 				<header>OSEF:</header>
 				<content>|{name} {damage_received}</content>
-				<footer></footer>				
+				<footer></footer>
+				<order_by>damage_received</order_by>
+				<order>descending</order>
 			</string>
 		</copy>
 		<copy>
@@ -31,6 +33,8 @@
 				<header>DPS:</header>
 				<content>|{name} {percentage} {damage_dealt} {dps}</content>
 				<footer></footer>
+				<order_by>percentage</order_by>
+				<order>descending</order>
 			</string>
 		</copy>
 	</copys>
