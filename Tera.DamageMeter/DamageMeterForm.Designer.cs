@@ -52,6 +52,7 @@ namespace Tera.DamageMeter
             this.TotalTimeLabel = new System.Windows.Forms.Label();
             this.TotalDpsLabel = new System.Windows.Forms.Label();
             this.TotalDamageLabel = new System.Windows.Forms.Label();
+            this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HeaderPanel.SuspendLayout();
             this.MainMenu.SuspendLayout();
             this.FooterPanel.SuspendLayout();
@@ -108,10 +109,11 @@ namespace Tera.DamageMeter
             this.PasteStatsMenuItem,
             this.ResetMenuItem,
             this.optionsToolStripMenuItem,
+            this.showLogToolStripMenuItem,
             this.SettingsMenuItem,
             this.ExitMenuItem});
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(149, 136);
+            this.MainMenu.Size = new System.Drawing.Size(153, 180);
             // 
             // OpenPacketLogMenuItem
             // 
@@ -224,6 +226,13 @@ namespace Tera.DamageMeter
             this.TotalDamageLabel.TabIndex = 2;
             this.TotalDamageLabel.Text = "TotalDamage";
             // 
+            // showLogToolStripMenuItem
+            // 
+            this.showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
+            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showLogToolStripMenuItem.Text = "Show Log";
+            this.showLogToolStripMenuItem.Click += new System.EventHandler(this.showLogToolStripMenuItem_Click);
+            // 
             // DamageMeterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -266,6 +275,7 @@ namespace Tera.DamageMeter
         private System.Windows.Forms.Label TotalTimeLabel;
         private System.Windows.Forms.Label TotalDpsLabel;
         private System.Windows.Forms.Label TotalDamageLabel;
+        private System.Windows.Forms.ToolStripMenuItem showLogToolStripMenuItem;
     }
 }
 

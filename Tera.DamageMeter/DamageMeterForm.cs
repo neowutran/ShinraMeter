@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -53,11 +54,28 @@ namespace Tera.DamageMeter
             _teraSniffer = new TeraSniffer(_basicTeraData.Servers);
             _teraSniffer.MessageReceived += message => InvokeAction(() => HandleMessageReceived(message));
             _teraSniffer.NewConnection += server => InvokeAction(() => HandleNewConnection(server));
+            _teraSniffer.Warning += LogWarning;
 
             SettingsChanged();
 
+            StartSniffing();
+        }
+
+        void LogWarning(string message)
+        {
+            Logger.Log(message);
+        }
+
+        private void StartSniffing()
+        {
+            if (_teraSniffer.Enabled)
+                return;
             Logger.Log("Starting sniffing...");
             _teraSniffer.Enabled = true;
+            foreach (string line in _teraSniffer.SnifferStatus())
+            {
+                Logger.Log(line);
+            }
             Logger.Log("Sniffing started");
         }
 
@@ -82,11 +100,12 @@ namespace Tera.DamageMeter
 
         public void Fetch(IEnumerable<PlayerInfo> playerStatsSequence)
         {
+            var formatHelpers = FormatHelpers.Pretty;
             playerStatsSequence = playerStatsSequence.OrderByDescending(playerStats => playerStats.Dealt.Damage + playerStats.Dealt.Heal);
 
-            TotalDamageLabel.Text = string.Format("Total damage: {0}", FormatHelpers.FormatValue(_damageTracker.TotalDealt.Damage));
-            TotalTimeLabel.Text = string.Format("Total time: {0}", FormatHelpers.FormatTimeSpan(_damageTracker.Duration) ?? "-");
-            TotalDpsLabel.Text = string.Format("Total DPS: {0}/s", FormatHelpers.FormatValue(_damageTracker.Dps(_damageTracker.TotalDealt.Damage)) ?? "-");
+            TotalDamageLabel.Text = string.Format("Total damage: {0}", formatHelpers.FormatValue(_damageTracker.TotalDealt.Damage));
+            TotalTimeLabel.Text = string.Format("Total time: {0}", formatHelpers.FormatTimeSpan(_damageTracker.Duration) ?? "-");
+            TotalDpsLabel.Text = string.Format("Total DPS: {0}/s", formatHelpers.FormatValue(_damageTracker.Dps(_damageTracker.TotalDealt.Damage)) ?? "-");
 
             TotalDpsLabel.Left = FooterPanel.Width - TotalDpsLabel.Width;
             TotalTimeLabel.Left = FooterPanel.Width - TotalTimeLabel.Width;
@@ -256,9 +275,10 @@ namespace Tera.DamageMeter
 
             foreach (var playerInfo in playerStatsSequence)
             {
-                var playerText = first ? "" : ", ";
+                var placeHolder = DamagePlaceHolders.FromPlayerInfo(playerInfo, FormatHelpers.Invariant);
+                var playerText = first ? "" : " | ";
 
-                playerText += string.Format("{0} {1} {2}", playerInfo.Name, FormatHelpers.FormatValue(playerInfo.Dealt.Damage), FormatHelpers.FormatPercent(playerInfo.DamageFraction) ?? "-");
+                playerText += placeHolder.Replace("{Name} {Damage} {DamageFraction}");
 
                 if (sb.Length + playerText.Length > maxLength)
                     break;
@@ -269,6 +289,11 @@ namespace Tera.DamageMeter
 
             var text = sb.ToString();
             TeraWindow.SendString(text);
+        }
+
+        private void showLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Logger.LogFile);
         }
     }
 }

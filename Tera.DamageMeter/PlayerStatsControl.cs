@@ -22,9 +22,12 @@ namespace Tera.DamageMeter
             graphics.DrawString(s, font, brush, x, y);
             return x;
         }
-        
+
         protected override void OnPaint(PaintEventArgs e)
         {
+            var formatHelpers = FormatHelpers.Pretty;
+            var placeHolder = DamagePlaceHolders.FromPlayerInfo(PlayerInfo, formatHelpers);
+
             var graphics = e.Graphics;
             var rect = ClientRectangle;
 
@@ -51,29 +54,29 @@ namespace Tera.DamageMeter
             using (var smallFont = new Font(Font.FontFamily, (int)Math.Round(rect.Height * 0.25), GraphicsUnit.Pixel))
             using (var textBrush = new SolidBrush(ForeColor))
             {
-                var row2LeftText = string.Format("crit {0} hits {1}",
-                             FormatHelpers.FormatPercent((double)PlayerInfo.Dealt.Crits / PlayerInfo.Dealt.Hits) ?? "-",
-                             PlayerInfo.Dealt.Hits);
-                var row3LeftText = string.Format("hurt {0}",
-                                              FormatHelpers.FormatValue(PlayerInfo.Received.Damage));
-                var row3RightText = string.Format("{0}/s",FormatHelpers.FormatValue(PlayerInfo.Dps));
+                var row1LeftText = placeHolder.Replace(Strings.PlayerBoxLeftLine1);
+                var row2RightText = placeHolder.Replace(Strings.PlayerBoxRightLine1);
+                var row2LeftText = placeHolder.Replace(Strings.PlayerBoxLeftLine2);
+                var row3LeftText = placeHolder.Replace(Strings.PlayerBoxLeftLine3);
+                var row3RightText = placeHolder.Replace(Strings.PlayerBoxRightLine3);
 
-                graphics.DrawString(PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
+                var row1Y = (float)Math.Round(textRect.Top + 0.00 * textRect.Height);
                 var row2Y = (float)Math.Round(textRect.Top + 0.36 * textRect.Height);
                 var row3Y = (float)Math.Round(textRect.Top + 0.64 * textRect.Height);
-                
+
+                graphics.DrawString(row1LeftText, bigFont, textBrush, textRect.Left, row1Y);
                 graphics.DrawString(row2LeftText, smallFont, textBrush, textRect.Left, row2Y);
                 graphics.DrawString(row3LeftText, smallFont, textBrush, textRect.Left, row3Y);
 
                 float x = textRect.Right;
-                x = DrawStringRightToLeft(graphics, FormatHelpers.FormatPercent(PlayerInfo.DamageFraction) ?? "-", bigFont, textBrush, x, textRect.Top);
+                x = DrawStringRightToLeft(graphics, row2RightText, bigFont, textBrush, x, textRect.Top);
 
                 x = textRect.Right;
-                x = DrawStringRightToLeft(graphics, FormatHelpers.FormatValue(PlayerInfo.Dealt.Damage), smallFont, Brushes.Red, x, row2Y);
+                x = DrawStringRightToLeft(graphics, formatHelpers.FormatValue(PlayerInfo.Dealt.Damage), smallFont, Brushes.Red, x, row2Y);
                 if (PlayerInfo.Dealt.Heal != 0)
                 {
                     x = DrawStringRightToLeft(graphics, "+", smallFont, textBrush, x, row2Y);
-                    x = DrawStringRightToLeft(graphics, FormatHelpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont, Brushes.LawnGreen, x, row2Y);
+                    x = DrawStringRightToLeft(graphics, formatHelpers.FormatValue(PlayerInfo.Dealt.Heal), smallFont, Brushes.LawnGreen, x, row2Y);
                 }
 
                 x = textRect.Right;

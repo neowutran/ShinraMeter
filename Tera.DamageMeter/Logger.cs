@@ -4,6 +4,7 @@
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 
 namespace Tera.DamageMeter
 {
@@ -21,7 +22,10 @@ namespace Tera.DamageMeter
         public static void Log(string s)
         {
             Directory.CreateDirectory(LogDirectory);
-            File.AppendAllLines(LogFile, new[] { DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture) + " " + s });
+            var lines = s.Replace("\r\n", "\r").Replace("\n", "\r").Split('\r');
+            var prefix = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture) + " ";
+            var prefix2 = new string(Enumerable.Repeat(' ', prefix.Length).ToArray());
+            File.AppendAllLines(LogFile, lines.Select((line, i) => (i == 0 ? prefix : prefix2) + line));
         }
     }
 }
