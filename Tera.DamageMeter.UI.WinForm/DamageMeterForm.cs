@@ -174,7 +174,7 @@ namespace Tera.DamageMeter
 
         private void HandleNewConnection(Server server)
         {
-            Text = $"Damage Meter connected to {server.Name}";
+            Text = $"{server.Name}";
             _server = server;
             _teraData = BasicTeraData.DataForRegion(server.Region);
             _entityRegistry = new EntityTracker();

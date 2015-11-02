@@ -82,8 +82,8 @@ namespace Tera.DamageMeter
             Console.WriteLine(
                 ";skill_id:" + message.SkillId +
                 ";damage:" + message.Damage +
-                "; target:" + message.TargetPlayer);
-            Console.WriteLine(
+                ";target:" + message.TargetPlayer+
+                ";target_id: "+message.Target+
                 "; heal:" + message.Heal +
                 ";amout:" + message.Amount
                 );

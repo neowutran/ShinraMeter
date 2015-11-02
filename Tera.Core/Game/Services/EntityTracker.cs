@@ -43,6 +43,13 @@ namespace Tera.Game
 
             if (newEntity != null)
             {
+                byte[] data = message.Data.Array;
+                Console.WriteLine("######");
+                foreach (var b in data)
+                {
+                    Console.Write(b+"-");
+                }
+                Console.WriteLine("######");
                 _dictionary[newEntity.Id] = newEntity;
                 OnEntityUpdated(newEntity);
             }

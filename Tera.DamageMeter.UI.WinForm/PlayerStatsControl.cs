@@ -33,7 +33,7 @@ namespace Tera.DamageMeter
             }
 
             var highlightRect = new Rectangle(rect.Left, rect.Top,
-                (int) Math.Round(rect.Width*PlayerData.DamageFraction),
+                (int) Math.Round(rect.Width*(PlayerData.DamageFraction/100)),
                 rect.Height);
 
             using (var highlightBrush = new SolidBrush(HighlightColor))
@@ -52,8 +52,7 @@ namespace Tera.DamageMeter
             {
                 graphics.DrawString(PlayerData.PlayerInfo.Name, bigFont, textBrush, textRect.Left, textRect.Top);
                 var row2Y = (float) Math.Round(textRect.Top + 0.55*textRect.Height);
-                
-                Console.WriteLine(PlayerData.DamageFraction);
+
                 var infoText = string.Format("{0} {1}/s {2} {3}",
                     PlayerData.DamageFraction+"%",
                     Helpers.FormatValue(PlayerData.PlayerInfo.Dps),
