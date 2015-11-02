@@ -55,7 +55,11 @@ namespace Tera.DamageMeter
             _teraSniffer.MessageReceived += message => InvokeAction(() => HandleMessageReceived(message));
             _teraSniffer.NewConnection += server => InvokeAction(() => HandleNewConnection(server));
             _teraSniffer.Warning += LogWarning;
-
+            if (_settings.BufferSize != null)
+            {
+                Logger.Log(string.Format("Setting buffer size to {0}B", FormatHelpers.Invariant.FormatValue(_settings.BufferSize)));
+                _teraSniffer.BufferSize = _settings.BufferSize.Value;
+            }
             SettingsChanged();
 
             StartSniffing();

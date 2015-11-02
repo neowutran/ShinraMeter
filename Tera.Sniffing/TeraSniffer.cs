@@ -50,6 +50,18 @@ namespace Tera.Sniffing
             }
         }
 
+        public int BufferSize
+        {
+            get
+            {
+                return _ipSniffer.BufferSize;
+            }
+            set
+            {
+                _ipSniffer.BufferSize = value;
+            }
+        }
+
         public IEnumerable<string> SnifferStatus()
         {
             return _ipSniffer.Status();

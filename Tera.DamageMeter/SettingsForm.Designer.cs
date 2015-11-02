@@ -39,12 +39,14 @@ namespace Tera.DamageMeter
             this.OkButton = new System.Windows.Forms.Button();
             this.SettingsTabs = new System.Windows.Forms.TabControl();
             this.GeneralTab = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
+            this.BufferSizeComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.OpacityTrackBar = new System.Windows.Forms.TrackBar();
             this.AlwaysOnTopCheckbox = new System.Windows.Forms.CheckBox();
             this.HotkeysTab = new System.Windows.Forms.TabPage();
-            this.PasteStatsHotKeyBox = new Tera.DamageMeter.HotKeyControl();
             this.ResetHotKeyBox = new Tera.DamageMeter.HotKeyControl();
+            this.PasteStatsHotKeyBox = new Tera.DamageMeter.HotKeyControl();
             label1 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -62,6 +64,15 @@ namespace Tera.DamageMeter
             label1.Size = new System.Drawing.Size(61, 13);
             label1.TabIndex = 1;
             label1.Text = "Paste Stats";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(8, 55);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(35, 13);
+            label3.TabIndex = 3;
+            label3.Text = "Reset";
             // 
             // panel1
             // 
@@ -117,6 +128,8 @@ namespace Tera.DamageMeter
             // 
             // GeneralTab
             // 
+            this.GeneralTab.Controls.Add(this.label4);
+            this.GeneralTab.Controls.Add(this.BufferSizeComboBox);
             this.GeneralTab.Controls.Add(this.label2);
             this.GeneralTab.Controls.Add(this.OpacityTrackBar);
             this.GeneralTab.Controls.Add(this.AlwaysOnTopCheckbox);
@@ -127,6 +140,26 @@ namespace Tera.DamageMeter
             this.GeneralTab.TabIndex = 1;
             this.GeneralTab.Text = "General";
             this.GeneralTab.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(24, 127);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Buffer size:";
+            // 
+            // BufferSizeComboBox
+            // 
+            this.BufferSizeComboBox.DisplayMember = "Value";
+            this.BufferSizeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.BufferSizeComboBox.FormattingEnabled = true;
+            this.BufferSizeComboBox.Location = new System.Drawing.Point(92, 124);
+            this.BufferSizeComboBox.Name = "BufferSizeComboBox";
+            this.BufferSizeComboBox.Size = new System.Drawing.Size(177, 21);
+            this.BufferSizeComboBox.TabIndex = 3;
+            this.BufferSizeComboBox.ValueMember = "Text";
             // 
             // label2
             // 
@@ -163,8 +196,8 @@ namespace Tera.DamageMeter
             // HotkeysTab
             // 
             this.HotkeysTab.Controls.Add(label3);
-            this.HotkeysTab.Controls.Add(this.ResetHotKeyBox);
             this.HotkeysTab.Controls.Add(label1);
+            this.HotkeysTab.Controls.Add(this.ResetHotKeyBox);
             this.HotkeysTab.Controls.Add(this.PasteStatsHotKeyBox);
             this.HotkeysTab.Location = new System.Drawing.Point(4, 22);
             this.HotkeysTab.Name = "HotkeysTab";
@@ -173,26 +206,6 @@ namespace Tera.DamageMeter
             this.HotkeysTab.TabIndex = 0;
             this.HotkeysTab.Text = "Hotkeys";
             this.HotkeysTab.UseVisualStyleBackColor = true;
-            // 
-            // PasteStatsHotKeyBox
-            // 
-            this.PasteStatsHotKeyBox.CancelKey = System.Windows.Forms.Keys.Escape;
-            this.PasteStatsHotKeyBox.Key = System.Windows.Forms.Keys.None;
-            this.PasteStatsHotKeyBox.Location = new System.Drawing.Point(92, 18);
-            this.PasteStatsHotKeyBox.Name = "PasteStatsHotKeyBox";
-            this.PasteStatsHotKeyBox.ShortcutsEnabled = false;
-            this.PasteStatsHotKeyBox.Size = new System.Drawing.Size(100, 20);
-            this.PasteStatsHotKeyBox.TabIndex = 0;
-            this.PasteStatsHotKeyBox.Text = "None";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(8, 55);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(35, 13);
-            label3.TabIndex = 3;
-            label3.Text = "Reset";
             // 
             // ResetHotKeyBox
             // 
@@ -204,6 +217,17 @@ namespace Tera.DamageMeter
             this.ResetHotKeyBox.Size = new System.Drawing.Size(100, 20);
             this.ResetHotKeyBox.TabIndex = 2;
             this.ResetHotKeyBox.Text = "None";
+            // 
+            // PasteStatsHotKeyBox
+            // 
+            this.PasteStatsHotKeyBox.CancelKey = System.Windows.Forms.Keys.Escape;
+            this.PasteStatsHotKeyBox.Key = System.Windows.Forms.Keys.None;
+            this.PasteStatsHotKeyBox.Location = new System.Drawing.Point(92, 18);
+            this.PasteStatsHotKeyBox.Name = "PasteStatsHotKeyBox";
+            this.PasteStatsHotKeyBox.ShortcutsEnabled = false;
+            this.PasteStatsHotKeyBox.Size = new System.Drawing.Size(100, 20);
+            this.PasteStatsHotKeyBox.TabIndex = 0;
+            this.PasteStatsHotKeyBox.Text = "None";
             // 
             // SettingsForm
             // 
@@ -241,5 +265,7 @@ namespace Tera.DamageMeter
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar OpacityTrackBar;
         private HotKeyControl ResetHotKeyBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox BufferSizeComboBox;
     }
 }

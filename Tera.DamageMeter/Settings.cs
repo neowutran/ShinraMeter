@@ -21,6 +21,7 @@ namespace Tera.DamageMeter
         public HotKeySettings HotKeys { get; private set; }
         public bool AlwaysOnTop { get; set; }
         public double Opacity { get; set; }
+        public int? BufferSize { get; set; }
 
         public Settings()
         {

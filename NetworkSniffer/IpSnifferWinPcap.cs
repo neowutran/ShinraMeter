@@ -18,6 +18,7 @@ namespace NetworkSniffer
         private WinPcapDeviceList _devices;
         private volatile uint _droppedPackets;
         private volatile uint _interfaceDroppedPackets;
+        private int _bufferSize;
 
         public IpSnifferWinPcap(string filter)
         {
@@ -28,6 +29,8 @@ namespace NetworkSniffer
         {
             return _devices.Select(device => string.Format("Device {0} {1} {2}\r\n{3}", device.LinkType, device.Opened ? "Open" : "Closed", device.LastError, device));
         }
+
+        public int BufferSize { get; set; }
 
         protected override void SetEnabled(bool value)
         {
@@ -52,6 +55,7 @@ namespace NetworkSniffer
                 device.OnPacketArrival += device_OnPacketArrival;
                 device.Open(DeviceMode.Promiscuous, 1000);
                 device.Filter = _filter;
+                device.KernelBufferSize = (uint)BufferSize;
                 device.StartCapture();
             }
         }

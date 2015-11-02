@@ -33,6 +33,7 @@ namespace Tera.DamageMeter
             Settings.Opacity = (double)OpacityTrackBar.Value / OpacityTrackBar.Maximum;
             Settings.HotKeys.PasteStats = HotKeyHelpers.ToString(PasteStatsHotKeyBox.Key);
             Settings.HotKeys.Reset = HotKeyHelpers.ToString(ResetHotKeyBox.Key);
+            Settings.BufferSize = ((KeyValuePair<int?, string>)BufferSizeComboBox.SelectedItem).Key;
             Settings.OnSettingsChanged();
         }
 
@@ -43,10 +44,15 @@ namespace Tera.DamageMeter
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
+            var bufferSizes = new[] { null, Settings.BufferSize }.Concat(new int?[] { 1, 2, 5, 10, 20, 50 }.Select(x => x * 1000000)).Distinct();
+            var items = bufferSizes.Select(bufferSize => new KeyValuePair<int?, string>(bufferSize, bufferSize != null ? FormatHelpers.Pretty.FormatValue(bufferSize) + "B" : "Default")).ToList();
+            BufferSizeComboBox.Items.AddRange(items.Cast<object>().ToArray());
+
             AlwaysOnTopCheckbox.Checked = Settings.AlwaysOnTop;
             OpacityTrackBar.Value = (int)Math.Round(Settings.Opacity * OpacityTrackBar.Maximum);
             PasteStatsHotKeyBox.Key = HotKeyHelpers.FromString(Settings.HotKeys.PasteStats);
             ResetHotKeyBox.Key = HotKeyHelpers.FromString(Settings.HotKeys.Reset);
+            BufferSizeComboBox.SelectedItem = items.Single(x => x.Key == Settings.BufferSize);
         }
     }
 }
