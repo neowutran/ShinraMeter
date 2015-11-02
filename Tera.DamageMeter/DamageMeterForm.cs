@@ -278,7 +278,7 @@ namespace Tera.DamageMeter
                 var placeHolder = DamagePlaceHolders.FromPlayerInfo(playerInfo, FormatHelpers.Invariant);
                 var playerText = first ? "" : " | ";
 
-                playerText += placeHolder.Replace("{Name} {Damage} {DamageFraction}");
+                playerText += placeHolder.Replace("{Name} {Damage} {DamagePercent}");
 
                 if (sb.Length + playerText.Length > maxLength)
                     break;
