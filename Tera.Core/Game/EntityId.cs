@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Gothos
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Linq;
 
 namespace Tera.Game
@@ -39,12 +42,14 @@ namespace Tera.Game
         {
             if (!(obj is EntityId))
                 return false;
-            return this == (EntityId) obj;
+            return this == (EntityId)obj;
         }
 
         public override int GetHashCode()
         {
             return _id.GetHashCode();
         }
+
+        public static readonly EntityId Empty = new EntityId(0);
     }
 }

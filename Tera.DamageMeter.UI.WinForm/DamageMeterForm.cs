@@ -24,7 +24,7 @@ namespace Tera.DamageMeter
 
         private ClassIcons _classIcons;
         private DamageTracker _damageTracker;
-        private EntityTracker _entityRegistry;
+        private EntityTracker _entityTracker;
         private MessageFactory _messageFactory;
         private PlayerTracker _playerTracker;
         private Server _server;
@@ -187,21 +187,52 @@ namespace Tera.DamageMeter
             Text = $"{server.Name}";
             _server = server;
             _teraData = BasicTeraData.DataForRegion(server.Region);
-            _entityRegistry = new EntityTracker();
-            _playerTracker = new PlayerTracker(_entityRegistry);
-            _damageTracker = new DamageTracker(_entityRegistry, _playerTracker, _teraData.SkillDatabase);
+
+            _entityTracker = new EntityTracker();
+            _playerTracker = new PlayerTracker(_entityTracker);
+            _damageTracker = new DamageTracker();
             _messageFactory = new MessageFactory(_teraData.OpCodeNamer);
         }
 
         private void HandleMessageReceived(Message obj)
         {
             var message = _messageFactory.Create(obj);
-            _entityRegistry.Update(message);
+            _entityTracker.Update(message);
 
+         
+          //  Console.WriteLine(message.OpCodeName);
+            if (message.OpCodeName == "S_ABNORMALITY_BEGIN")
+            {
+                // CAN SEE DOT HERE
+                // target of the dot: 19eme byte, just after that: owner of the dot
+                /*
+                   var data = message.Data;
+                    foreach (var partdata in data)
+                    {
+                        var str = String.Format("{0:x}", partdata);
+                        Console.Write(str+"-");
+                    }
+                    Console.WriteLine("something");
+                    */
+                   
+            }
+          /*  if (message.OpCodeName == "S_NPC_STATUS")
+            {
+             
+                var data = message.Data;
+                foreach (var partdata in data)
+                 {
+                     Console.Write(partdata+"-");
+                 }
+                 Console.WriteLine("some");
+            }
+            */
             var skillResultMessage = message as EachSkillResultServerMessage;
             if (skillResultMessage != null)
             {
-                _damageTracker.Update(skillResultMessage);
+                //DOT doesn't go here
+                var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker, _teraData.SkillDatabase);
+                _damageTracker.Update(skillResult);
             }
         }
 
@@ -216,7 +247,7 @@ namespace Tera.DamageMeter
         {
             if (_server == null)
                 return;
-            _damageTracker = new DamageTracker(_entityRegistry, _playerTracker, _teraData.SkillDatabase);
+            _damageTracker = new DamageTracker();
             Fetch();
         }
 

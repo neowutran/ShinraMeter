@@ -8,16 +8,15 @@ namespace Tera.DamageMeter
 {
     public class DamageTracker : IEnumerable<PlayerInfo>
     {
-        private readonly EntityTracker _entityTracker;
-        private readonly PlayerTracker _playerTracker;
-        private readonly SkillDatabase _skillDatabase;
         private readonly Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
 
-        public DamageTracker(EntityTracker entityRegistry, PlayerTracker playerTracker, SkillDatabase skillDatabase)
+        public SkillStats TotalDealt { get; private set; }
+        public SkillStats TotalReceived { get; private set; }
+
+        public DamageTracker()
         {
-            _entityTracker = entityRegistry;
-            _skillDatabase = skillDatabase;
-            _playerTracker = playerTracker;
+            TotalDealt = new SkillStats();
+            TotalReceived = new SkillStats();
         }
 
         public IEnumerator<PlayerInfo> GetEnumerator()
@@ -42,9 +41,8 @@ namespace Tera.DamageMeter
             return playerStats;
         }
 
-        public void Update(EachSkillResultServerMessage message)
+        public void Update(SkillResult skillResult)
         {
-            var skillResult = new SkillResult(message, _entityTracker, _playerTracker, _skillDatabase);
             if (skillResult.SourcePlayer != null)
             {
                 var playerStats = GetOrCreate(skillResult.SourcePlayer);
@@ -61,11 +59,16 @@ namespace Tera.DamageMeter
         private void UpdateStats(SkillStats stats, SkillResult message)
         {
             if (message.Amount == 0)
+            {
+                var str = String.Format("{0:x}", message.SkillId);
+                Console.WriteLine("nothing"+ str);
                 return;
+            }
+               
 
 
             //Without that, a "death from above" is show as 225 damage points
-            if (message.SourcePlayer == message.TargetPlayer && message.Skill.Name.Contains("Death From Above"))
+            if (message.SourcePlayer == message.TargetPlayer && message.Damage != 0)
             {
                 return;
             }
@@ -74,7 +77,7 @@ namespace Tera.DamageMeter
             Lol, debug hard TODO remove when debugging end
             */
             Console.WriteLine("source:" + message.SourcePlayer);
-            Console.WriteLine(";source_id:" + message.Source);
+            Console.WriteLine(";source_id:" + message.Source.Id);
             if (message.Skill != null)
             {
                 Console.WriteLine(";skill:" + message.Skill.Name);
@@ -83,7 +86,7 @@ namespace Tera.DamageMeter
                 ";skill_id:" + message.SkillId +
                 ";damage:" + message.Damage +
                 ";target:" + message.TargetPlayer+
-                ";target_id: "+message.Target+
+                ";target_id: "+message.Target.Id+
                 "; heal:" + message.Heal +
                 ";amout:" + message.Amount
                 );
