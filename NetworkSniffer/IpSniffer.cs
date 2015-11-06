@@ -66,6 +66,7 @@ namespace NetworkSniffer
 
         private void Finish()
         {
+            return;
             Debug.Assert(_devices != null);
             foreach (var device in _devices.Where(device => device.Opened))
             {

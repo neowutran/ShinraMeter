@@ -61,7 +61,17 @@ namespace Tera.DamageMeter.UI.Handler
                 }
                 else
                 {
-                    SendKeys.SendWait(c + "");
+                    if (c == '\\')
+                    {
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(300);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(300);
+                    }
+                    else
+                    {
+                        SendKeys.SendWait(c + "");
+                    }
                 }
                 SendKeys.Flush();
                 Thread.Sleep(1);

@@ -38,7 +38,6 @@
             this.RefershTimer.Enabled = true;
             this.RefershTimer.Interval = 250;
             this.RefershTimer.Tick += new System.EventHandler(this.RefershTimer_Tick);
-
             // 
             // ListPanel
             // 
@@ -55,9 +54,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(284, 589);
             this.Controls.Add(this.ListPanel);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DamageMeterForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Damage Meter";
             this.TopMost = true;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DamageMeterForm_FormClosed);

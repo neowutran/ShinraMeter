@@ -3,7 +3,6 @@
 	<paste>
 		<shift>false</shift>
 		<ctrl>false</ctrl>
-		<alt>false</alt>
 		<window>false</window>
 		<key>Home</key>
 	</paste>
@@ -12,26 +11,24 @@
 		<copy>
 			<shift>false</shift>
 			<ctrl>true</ctrl>
-			<alt>false</alt>
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>OSEF:</header>
-				<content>|{name} {damage_received}</content>
+				<header>OSEF:\</header>
+				<content>|{name} {damage_received}\</content>
 				<footer></footer>
 				<order_by>damage_received</order_by>
 				<order>descending</order>
 			</string>
 		</copy>
 		<copy>
-			<shift>false</shift>
+			<shift>true</shift>
 			<ctrl>false</ctrl>
-			<alt>true</alt>
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>DPS:</header>
-				<content>|{name} {percentage} {damage_dealt} {dps}</content>
+				<header>DPS:\</header>
+				<content>|{name} {percentage} {damage_dealt} {dps}\</content>
 				<footer></footer>
 				<order_by>percentage</order_by>
 				<order>descending</order>

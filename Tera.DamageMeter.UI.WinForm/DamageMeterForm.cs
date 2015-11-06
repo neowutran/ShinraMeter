@@ -41,11 +41,44 @@ namespace Tera.DamageMeter
             Activated += ActionActivate;
             Deactivate += ActionDeactivate;
             RegisterKeyboardHook();
+            ShowInactiveTopmost(this);
 
         }
 
+        protected override bool ShowWithoutActivation
+        {
+            get { return true; }
+        }
+
+ 
+        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
+        static extern bool SetWindowPos(
+     int hWnd,             // Window handle
+     int hWndInsertAfter,  // Placement-order handle
+     int X,                // Horizontal position
+     int Y,                // Vertical position
+     int cx,               // Width
+     int cy,               // Height
+     uint uFlags);         // Window positioning flags
+
+        private const int SW_SHOWNOACTIVATE = 4;
+        private const int HWND_TOPMOST = -1;
+        private const uint SWP_NOACTIVATE = 0x0010;
+
+        static void ShowInactiveTopmost(Form frm)
+        {
+            ShowWindow(frm.Handle, SW_SHOWNOACTIVATE);
+            SetWindowPos(frm.Handle.ToInt32(), HWND_TOPMOST,
+            frm.Left, frm.Top, frm.Width, frm.Height,
+            SWP_NOACTIVATE);
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindow(IntPtr handle, int flags);
+
         private void ActionResize(object sender, EventArgs e)
         {
+            
             BasicTeraData.WindowData.Location = DesktopLocation;
             BasicTeraData.WindowData.Size = Size;
         }
@@ -76,6 +109,7 @@ namespace Tera.DamageMeter
                     BasicTeraData.HotkeysData.Copy.Where(copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
                 CopyPaste.Copy(PlayerData(), copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+                CopyPaste.Paste();
             }
         }
 
@@ -123,6 +157,8 @@ namespace Tera.DamageMeter
             Resize += ActionResize;
             Move += ActionResize;
             _teraSniffer.Enabled = true;
+            ShowInactiveTopmost(this);
+
         }
 
         private void InvokeAction(Action action)
