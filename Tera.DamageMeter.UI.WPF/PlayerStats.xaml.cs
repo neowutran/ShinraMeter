@@ -13,12 +13,16 @@ namespace Tera.DamageMeter.UI.WPF
     public partial class PlayerStats : UserControl
     {
         public ImageSource Image;
+        private Skills _windowSkill;
 
         public PlayerStats(PlayerInfo playerInfo)
         {
             InitializeComponent();
             PlayerData = new PlayerData(playerInfo);
+        
             PlayerData.TotalDamageChanged += Repaint;
+            _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills);
+
             Image = ClassIcons.Instance.GetImage(PlayerData.PlayerInfo.Class).Source;
             Console.WriteLine(PlayerData.PlayerInfo.Class);
             Class.Source = Image;
@@ -45,13 +49,13 @@ namespace Tera.DamageMeter.UI.WPF
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;
+            _windowSkill.Update(PlayerData.PlayerInfo.Dealt.Skills);
         }
 
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
-            var skillsWindow = new Skills(PlayerData.PlayerInfo.Dealt.Skills);
-            skillsWindow.Show();
+            _windowSkill.Show();
         }
 
 
