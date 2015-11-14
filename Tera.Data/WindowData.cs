@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace Tera.Data
 {
     public class WindowData
     {
+        private readonly string _windowFile;
+        private readonly XDocument _xml;
 
         public WindowData(BasicTeraData basicData)
         {
@@ -25,29 +22,17 @@ namespace Tera.Data
             int.TryParse(_xml.Root.Element("location").Element("y").Value, out y);
 
             Size = new Size(width, height);
-            _location = new Point(x,y);
-            
+            Location = new Point(x, y);
         }
-
-        private string _windowFile;
-        private XDocument _xml;
 
         public Size Size { get; set; }
 
-        private Point _location;
-        public Point Location
-        {
-            get { return _location; }
-            set
-            {
-                _location = value;
-            }
-        }
+        public Point Location { get; set; }
 
         public void Save()
         {
-            _xml.Root.Element("location").Element("x").Value = _location.X.ToString();
-            _xml.Root.Element("location").Element("y").Value = _location.Y.ToString();
+            _xml.Root.Element("location").Element("x").Value = Location.X.ToString();
+            _xml.Root.Element("location").Element("y").Value = Location.Y.ToString();
             _xml.Root.Element("size").Element("height").Value = Size.Height.ToString();
             _xml.Root.Element("size").Element("width").Value = Size.Width.ToString();
 

@@ -4,6 +4,10 @@ namespace Tera.DamageMeter.UI.Handler
 {
     public class PlayerData
     {
+        public delegate void TotalDamageChangedHandler();
+
+        private long _totalDamage;
+
         public PlayerData(PlayerInfo playerInfo)
         {
             PlayerInfo = playerInfo;
@@ -17,12 +21,25 @@ namespace Tera.DamageMeter.UI.Handler
                 {
                     return 0;
                 }
-                return Math.Round(((double)PlayerInfo.Dealt.Damage*100/TotalDamage),1);
+                return Math.Round(((double) PlayerInfo.Dealt.Damage*100/TotalDamage), 1);
             }
         }
 
-        public long TotalDamage { get; set; }
+        public long TotalDamage
+        {
+            get { return _totalDamage; }
+            set
+            {
+                _totalDamage = value;
+                var handler = TotalDamageChanged;
+                if (handler != null)
+                {
+                    handler();
+                }
+            }
+        }
 
         public PlayerInfo PlayerInfo { get; }
+        public event TotalDamageChangedHandler TotalDamageChanged;
     }
 }

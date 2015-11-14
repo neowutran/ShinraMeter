@@ -15,7 +15,7 @@
 			<key>End</key>
 			<string>
 				<header>OSEF:\</header>
-				<content>|{name} {damage_received}\</content>
+				<content>{name}: {damage_received}\</content>
 				<footer></footer>
 				<order_by>damage_received</order_by>
 				<order>descending</order>
@@ -27,10 +27,10 @@
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>DPS:\</header>
-				<content>|{name} {percentage} {damage_dealt} {dps}\</content>
+				<header>% degats | % crit | dps:\</header>
+				<content>{name}: {damage_percentage} {crit_rate} {dps}\</content>
 				<footer></footer>
-				<order_by>percentage</order_by>
+				<order_by>damage_percentage</order_by>
 				<order>descending</order>
 			</string>
 		</copy>

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Tera.Game;
-using Tera.Game.Messages;
 
 namespace Tera.DamageMeter
 {
@@ -10,14 +9,14 @@ namespace Tera.DamageMeter
     {
         private readonly Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
 
-        public SkillStats TotalDealt { get; private set; }
-        public SkillStats TotalReceived { get; private set; }
-
         public DamageTracker()
         {
-            TotalDealt = new SkillStats();
-            TotalReceived = new SkillStats();
+            TotalDealt = new SkillsStats();
+            TotalReceived = new SkillsStats();
         }
+
+        public SkillsStats TotalDealt { get; private set; }
+        public SkillsStats TotalReceived { get; private set; }
 
         public IEnumerator<PlayerInfo> GetEnumerator()
         {
@@ -56,22 +55,20 @@ namespace Tera.DamageMeter
             }
         }
 
-        private void UpdateStats(SkillStats stats, SkillResult message)
+        private void UpdateStats(SkillsStats stats, SkillResult message)
         {
             if (message.Amount == 0)
             {
-                var str = String.Format("{0:x}", message.SkillId);
-                Console.WriteLine("nothing"+ str);
+                var str = string.Format("{0:x}", message.SkillId);
+                Console.WriteLine("nothing" + str);
                 return;
             }
-               
 
-
-            //Without that, a "death from above" is show as 225 damage points
-            if (message.SourcePlayer == message.TargetPlayer && message.Damage != 0)
+            if ((UserEntity.ForEntity(message.Source) == UserEntity.ForEntity(message.Target)) && (message.Damage > 0))
             {
                 return;
             }
+
 
             /**
             Lol, debug hard TODO remove when debugging end
@@ -85,20 +82,39 @@ namespace Tera.DamageMeter
             Console.WriteLine(
                 ";skill_id:" + message.SkillId +
                 ";damage:" + message.Damage +
-                ";target:" + message.TargetPlayer+
-                ";target_id: "+message.Target.Id+
+                ";target:" + message.TargetPlayer +
+                ";target_id: " + message.Target.Id +
                 "; heal:" + message.Heal +
                 ";amout:" + message.Amount
                 );
-
-
-            stats.Damage += message.Damage;
-            stats.Heal += message.Heal;
-            stats.Hits++;
-            if (message.IsCritical)
+            var skillName = "";
+            if (message.Skill != null)
             {
-                stats.Crits++;
+                skillName = message.Skill.Name;
             }
+            SkillStats skillStats;
+            var skillKey = new KeyValuePair<int, string>(message.SkillId, skillName);
+            if (stats.Skills.ContainsKey(skillKey))
+            {
+                stats.Skills.TryGetValue(skillKey, out skillStats);
+            }
+            else
+            {
+                skillStats = new SkillStats(stats.PlayerInfo);
+            }
+
+            if (message.IsHeal)
+            {
+                skillStats.AddData(message.Heal, message.IsCritical, message.IsHeal);
+            }
+            else
+            {
+                skillStats.AddData(message.Damage, message.IsCritical, message.IsHeal);
+            }
+
+            stats.Skills[skillKey] = skillStats;
+
+            Console.WriteLine("number of skills:" + stats.Skills.Count);
         }
     }
 }

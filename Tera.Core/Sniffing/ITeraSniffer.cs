@@ -1,5 +1,5 @@
 ﻿using System;
-using Tera.Game;
+using Tera.Data;
 
 namespace Tera.Sniffing
 {

@@ -42,7 +42,7 @@ namespace Tera.Game
         {
             if (!(obj is EntityId))
                 return false;
-            return this == (EntityId)obj;
+            return this == (EntityId) obj;
         }
 
         public override int GetHashCode()

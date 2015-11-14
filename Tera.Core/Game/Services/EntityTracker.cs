@@ -12,11 +12,22 @@ namespace Tera.Game
     public class EntityTracker : IEnumerable<Entity>
     {
         private readonly Dictionary<EntityId, Entity> _dictionary = new Dictionary<EntityId, Entity>();
+
+        public IEnumerator<Entity> GetEnumerator()
+        {
+            return _dictionary.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public event Action<Entity> EntityUpdated;
 
         protected virtual void OnEntityUpdated(Entity entity)
         {
-            Action<Entity> handler = EntityUpdated;
+            var handler = EntityUpdated;
             if (handler != null) handler(entity);
         }
 
@@ -25,9 +36,12 @@ namespace Tera.Game
             Entity newEntity = null;
             message.On<SpawnUserServerMessage>(m => newEntity = new UserEntity(m));
             message.On<LoginServerMessage>(m => newEntity = new UserEntity(m));
-            message.On<SpawnNpcServerMessage>(m => newEntity = new NpcEntity(m.Id, m.OwnerId, GetOrPlaceholder(m.OwnerId)));
-            message.On<SpawnProjectileServerMessage>(m => newEntity = new ProjectileEntity(m.Id, m.OwnerId, GetOrPlaceholder(m.OwnerId)));
-            message.On<StartUserProjectileServerMessage>(m => newEntity = new ProjectileEntity(m.Id, m.OwnerId, GetOrPlaceholder(m.OwnerId)));
+            message.On<SpawnNpcServerMessage>(
+                m => newEntity = new NpcEntity(m.Id, m.OwnerId, GetOrPlaceholder(m.OwnerId)));
+            message.On<SpawnProjectileServerMessage>(
+                m => newEntity = new ProjectileEntity(m.Id, m.OwnerId, GetOrPlaceholder(m.OwnerId)));
+            message.On<StartUserProjectileServerMessage>(
+                m => newEntity = new ProjectileEntity(m.Id, m.OwnerId, GetOrPlaceholder(m.OwnerId)));
             if (newEntity != null)
             {
                 _dictionary[newEntity.Id] = newEntity;
@@ -49,18 +63,7 @@ namespace Tera.Game
             var entity = GetOrNull(id);
             if (entity != null)
                 return entity;
-            else
-                return new PlaceHolderEntity(id);
-        }
-
-        public IEnumerator<Entity> GetEnumerator()
-        {
-            return _dictionary.Values.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            return new PlaceHolderEntity(id);
         }
     }
 }

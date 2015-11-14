@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Tera.Data;
@@ -7,13 +8,30 @@ namespace Tera.DamageMeter.UI.Handler
 {
     public sealed class KeyboardHook : IDisposable
     {
+        private static KeyboardHook instance;
+
+
         private readonly Window _window = new Window();
         private int _currentId;
 
-        public KeyboardHook()
+        private IDpsWindow _dpswindow;
+
+        private KeyboardHook()
         {
             // register the event of the inner native window.
             _window.KeyPressed += delegate(object sender, KeyPressedEventArgs args) { KeyPressed?.Invoke(this, args); };
+        }
+
+        public static KeyboardHook Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new KeyboardHook();
+                }
+                return instance;
+            }
         }
 
         #region IDisposable Members
@@ -31,6 +49,59 @@ namespace Tera.DamageMeter.UI.Handler
         }
 
         #endregion
+
+        private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+        {
+            if (e.Key == BasicTeraData.Instance.HotkeysData.Paste.Key &&
+                e.Modifier == BasicTeraData.Instance.HotkeysData.Paste.Value)
+            {
+                CopyPaste.Paste();
+            }
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.Reset.Key &&
+                     e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Value)
+            {
+                UiModel.Instance.Reset();
+            }
+            foreach (
+                var copy in
+                    BasicTeraData.Instance.HotkeysData.Copy.Where(
+                        copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
+            {
+                CopyPaste.Copy(_dpswindow.PlayerData(), copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+                CopyPaste.Paste();
+            }
+        }
+
+        public void RegisterKeyboardHook(IDpsWindow window)
+        {
+            _dpswindow = window;
+            // register the event that is fired after the key press.
+            Instance.KeyPressed += hook_KeyPressed;
+            // register the control + alt + F12 combination as hot key.
+            try
+            {
+                Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value,
+                    BasicTeraData.Instance.HotkeysData.Paste.Key);
+                Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value,
+                    BasicTeraData.Instance.HotkeysData.Reset.Key);
+            }
+            catch
+            {
+                MessageBox.Show("Cannot bind paste/reset keys");
+            }
+
+            try
+            {
+                foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy)
+                {
+                    Instance.RegisterHotKey(copy.Modifier, copy.Key);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Cannot bind copy keys");
+            }
+        }
 
         // Registers a hot key with Windows.
         [DllImport("user32.dll")]
@@ -86,7 +157,7 @@ namespace Tera.DamageMeter.UI.Handler
             ///     Overridden to get the notifications.
             /// </summary>
             /// <param name="m"></param>
-            protected override void WndProc(ref Message m)
+            protected override void WndProc(ref System.Windows.Forms.Message m)
             {
                 base.WndProc(ref m);
 

@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Core", "Tera.Core\Tera.Core.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{60571443-038A-4337-9ED2-D4164D35B0F3}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
 EndProject
@@ -20,9 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.Core", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.Handler", "Tera.DamageMeter.UI.Handler\Tera.DamageMeter.UI.Handler.csproj", "{53E2C9C3-BEAD-41AD-8C67-CE2FDED819DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.WinForm", "Tera.DamageMeter.UI.WinForm\Tera.DamageMeter.UI.WinForm.csproj", "{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI.WPF", "Tera.DamageMeter.UI.WPF\Tera.DamageMeter.UI.WPF.csproj", "{3E846788-2457-4B22-A41D-65940816E034}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI", "Tera.DamageMeter.UI.WPF\Tera.DamageMeter.UI.csproj", "{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,14 +50,10 @@ Global
 		{53E2C9C3-BEAD-41AD-8C67-CE2FDED819DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53E2C9C3-BEAD-41AD-8C67-CE2FDED819DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53E2C9C3-BEAD-41AD-8C67-CE2FDED819DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F95A8E5-0D27-4F16-A3F3-A1EC130A85EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E846788-2457-4B22-A41D-65940816E034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E846788-2457-4B22-A41D-65940816E034}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E846788-2457-4B22-A41D-65940816E034}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E846788-2457-4B22-A41D-65940816E034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

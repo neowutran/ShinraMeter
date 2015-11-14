@@ -10,16 +10,13 @@ namespace Tera.DamageMeter
             FirstHit = 0;
             LastHit = 0;
             Player = user;
-            Received = new SkillStats();
-            Dealt = new SkillStats(this);
+            Received = new SkillsStats();
+            Dealt = new SkillsStats(this);
         }
 
         public Player Player { get; }
 
-        public string Name
-        {
-            get { return Player.Name; }
-        }
+        public string Name => Player.Name;
 
         public PlayerClass Class => Player.Class;
 
@@ -40,8 +37,8 @@ namespace Tera.DamageMeter
             }
         }
 
-        public SkillStats Received { get; private set; }
-        public SkillStats Dealt { get; }
+        public SkillsStats Received { get; private set; }
+        public SkillsStats Dealt { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

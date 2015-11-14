@@ -4,7 +4,8 @@ namespace Tera.Data
 {
     public class CopyKey
     {
-        public CopyKey(string header, string footer, string content, HotkeysData.ModifierKeys modifier, Keys key, string orderBy, string order)
+        public CopyKey(string header, string footer, string content, HotkeysData.ModifierKeys modifier, Keys key,
+            string orderBy, string order)
         {
             Content = content;
             Header = header;

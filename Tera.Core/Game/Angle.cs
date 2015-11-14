@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Tera.Game
 {
@@ -9,7 +6,7 @@ namespace Tera.Game
     {
         private readonly ushort _raw;
 
-        public Angle(ushort raw) 
+        public Angle(ushort raw)
             : this()
         {
             _raw = raw;
@@ -17,7 +14,7 @@ namespace Tera.Game
 
         public double Radians
         {
-            get { return _raw * (2 * Math.PI / 0x10000); }
+            get { return _raw*(2*Math.PI/0x10000); }
         }
     }
 }

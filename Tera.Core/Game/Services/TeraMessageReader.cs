@@ -40,7 +40,8 @@ namespace Tera.Game
         {
             return new Angle(ReadUInt16());
         }
-public void Skip(int count)
+
+        public void Skip(int count)
         {
             ReadBytes(count);
         }

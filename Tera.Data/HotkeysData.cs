@@ -53,7 +53,7 @@ namespace Tera.Data
                 select hotkeys.Element("ctrl");
             var pasteWindowQuery = from hotkeys in xml.Root.Descendants("paste")
                 select hotkeys.Element("window");
-          
+
             var resetShiftQuery = from hotkeys in xml.Root.Descendants("reset")
                 select hotkeys.Element("shift");
             var resetCtrlQuery = from hotkeys in xml.Root.Descendants("reset")

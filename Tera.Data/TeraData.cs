@@ -8,8 +8,8 @@ namespace Tera.Data
     {
         internal TeraData(BasicTeraData basicData, string region)
         {
+            SkillDatabase = new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "user_skills.txt"));
             Region = basicData.Regions.Single(x => x.Key == region);
-            SkillDatabase = new SkillDatabase(Path.Combine(basicData.ResourceDirectory, "user_skills.txt"));
             OpCodeNamer =
                 new OpCodeNamer(Path.Combine(basicData.ResourceDirectory,
                     string.Format("opcodes-{0}.txt", Region.Version)));

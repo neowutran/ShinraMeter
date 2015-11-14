@@ -8,11 +8,6 @@ namespace Tera.Game
     // A player character, including your own
     public class UserEntity : Entity
     {
-        public string Name { get; set; }
-        public string GuildName { get; set; }
-        public RaceGenderClass RaceGenderClass { get; set; }
-        public uint PlayerId { get; set; }
-
         public UserEntity(EntityId id)
             : base(id)
         {
@@ -35,6 +30,11 @@ namespace Tera.Game
             RaceGenderClass = message.RaceGenderClass;
             PlayerId = message.PlayerId;
         }
+
+        public string Name { get; set; }
+        public string GuildName { get; set; }
+        public RaceGenderClass RaceGenderClass { get; set; }
+        public uint PlayerId { get; set; }
 
         public override string ToString()
         {

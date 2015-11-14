@@ -8,13 +8,36 @@ namespace Tera.DamageMeter
 {
     public class FormatHelpers
     {
+        public const string Thinspace = "\u2009";
+
+        public static readonly FormatHelpers Pretty = new FormatHelpers {UnitSeparator = Thinspace};
+
+        public static readonly FormatHelpers Invariant = new FormatHelpers
+        {
+            UnitSeparator = "",
+            CultureInfo = CultureInfo.InvariantCulture
+        };
+
+        private static FormatHelpers instance;
+
+        private FormatHelpers()
+        {
+        }
+
         public CultureInfo CultureInfo { get; set; }
         public string UnitSeparator { get; set; }
 
-        public const string Thinspace = "\u2009";
-
-        public static readonly FormatHelpers Pretty = new FormatHelpers { UnitSeparator = Thinspace };
-        public static readonly FormatHelpers Invariant = new FormatHelpers { UnitSeparator = "", CultureInfo = CultureInfo.InvariantCulture };
+        public static FormatHelpers Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new FormatHelpers();
+                }
+                return instance;
+            }
+        }
 
         public string FormatTimeSpan(TimeSpan? timeSpan)
         {
@@ -28,8 +51,7 @@ namespace Tera.DamageMeter
         {
             if (timeSpan.Hours != 0 || timeSpan.Days != 0)
                 return timeSpan.ToString("g", CultureInfo);
-            else
-                return timeSpan.ToString(@"mm\:ss");
+            return timeSpan.ToString(@"mm\:ss");
         }
 
         public string FormatValue(long? value)
@@ -42,15 +64,15 @@ namespace Tera.DamageMeter
 
         public string FormatValue(long value)
         {
-            int exponent = 0;
+            var exponent = 0;
             decimal decimalValue = value;
             decimal rounded;
-            while (Math.Abs(rounded = (long)Decimal.Round(decimalValue)) >= 1000)
+            while (Math.Abs(rounded = (long) decimal.Round(decimalValue)) >= 1000)
             {
                 decimalValue /= 10;
                 exponent++;
             }
-            while (exponent % 3 != 0)
+            while (exponent%3 != 0)
             {
                 rounded *= 0.1m;
                 exponent++;

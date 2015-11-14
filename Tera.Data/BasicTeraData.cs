@@ -3,20 +3,19 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Tera.Game;
 
 namespace Tera.Data
 {
     public class BasicTeraData
     {
+        private static BasicTeraData instance;
         private readonly Func<string, TeraData> _dataForRegion;
 
-        public BasicTeraData()
-            : this(FindResourceDirectory())
+        private BasicTeraData() : this(FindResourceDirectory())
         {
         }
 
-        public BasicTeraData(string resourceDirectory)
+        private BasicTeraData(string resourceDirectory)
         {
             ResourceDirectory = resourceDirectory;
             HotkeysData = new HotkeysData(this);
@@ -24,6 +23,18 @@ namespace Tera.Data
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
             Servers = GetServers(Path.Combine(ResourceDirectory, "servers.txt")).ToList();
             Regions = GetRegions(Path.Combine(ResourceDirectory, "regions.txt")).ToList();
+        }
+
+        public static BasicTeraData Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new BasicTeraData();
+                }
+                return instance;
+            }
         }
 
         public WindowData WindowData { get; }

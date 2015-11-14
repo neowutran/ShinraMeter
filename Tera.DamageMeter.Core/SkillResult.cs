@@ -1,5 +1,4 @@
-﻿using System;
-using Tera.Game;
+﻿using Tera.Game;
 using Tera.Game.Messages;
 
 namespace Tera.DamageMeter
@@ -38,7 +37,7 @@ namespace Tera.DamageMeter
         public bool IsHeal { get; }
 
         public int SkillId { get; private set; }
-        public Skill Skill { get; private set; }
+        public UserSkill Skill { get; private set; }
 
         public int Damage
         {

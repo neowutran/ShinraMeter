@@ -1,4 +1,4 @@
-﻿namespace Tera.Game
+﻿namespace Tera.Data
 {
     public class Region
     {

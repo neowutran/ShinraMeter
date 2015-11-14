@@ -42,7 +42,9 @@
     <Compile Include="Game\Region.cs" />
     <Compile Include="Game\Server.cs" />
     <Compile Include="Game\Services\Helpers.cs" />
+    <Compile Include="Game\Services\OpCodeNamer.cs" />
     <Compile Include="Game\Services\PlayerTracker.cs" />
+    <Compile Include="Game\Services\SkillDatabase.cs" />
     <Compile Include="Game\Skill.cs" />
     <Compile Include="Game\Gender.cs" />
     <Compile Include="Game\Messages\Server\LoginServerMessage.cs" />
@@ -57,11 +59,9 @@
     <Compile Include="Game\Messages\Server\SpawnUserServerMessage.cs" />
     <Compile Include="Game\EntityId.cs" />
     <Compile Include="Game\NpcEntity.cs" />
-    <Compile Include="Game\Services\OpCodeNamer.cs" />
     <Compile Include="Game\Messages\ParsedMessage.cs" />
     <Compile Include="Game\Race.cs" />
     <Compile Include="Game\RaceGenderClass.cs" />
-    <Compile Include="Game\Services\SkillDatabase.cs" />
     <Compile Include="Game\Services\TeraMessageReader.cs" />
     <Compile Include="Game\Messages\UnknownMessage.cs" />
     <Compile Include="Game\UserEntity.cs" />

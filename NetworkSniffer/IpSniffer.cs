@@ -19,6 +19,8 @@ namespace NetworkSniffer
         private readonly string _filter;
         private WinPcapDeviceList _devices;
         private volatile uint _droppedPackets;
+
+        private bool _enabled;
         private volatile uint _interfaceDroppedPackets;
 
         public IpSniffer(string filter)
@@ -26,9 +28,26 @@ namespace NetworkSniffer
             _filter = filter;
         }
 
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    SetEnabled(value);
+                }
+            }
+        }
+
         public IEnumerable<string> Status()
         {
-            return _devices.Select(device => string.Format("Device {0} {1} {2}\r\n{3}", device.LinkType, device.Opened ? "Open" : "Closed", device.LastError, device));
+            return
+                _devices.Select(
+                    device =>
+                        string.Format("Device {0} {1} {2}\r\n{3}", device.LinkType, device.Opened ? "Open" : "Closed",
+                            device.LastError, device));
         }
 
         protected void SetEnabled(bool value)
@@ -80,9 +99,10 @@ namespace NetworkSniffer
 
         protected virtual void OnWarning(string obj)
         {
-            Action<string> handler = Warning;
+            var handler = Warning;
             if (handler != null) handler(obj);
         }
+
         public event Action<IpPacket> PacketReceived;
 
         protected void OnPacketReceived(IpPacket data)
@@ -92,19 +112,6 @@ namespace NetworkSniffer
                 packetReceived(data);
         }
 
-        private bool _enabled;
-        public bool Enabled
-        {
-            get { return _enabled; }
-            set
-            {
-                if (_enabled != value)
-                {
-                    _enabled = value;
-                    SetEnabled(value);
-                }
-            }
-        }
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             if (e.Device.LinkType != LinkLayers.Ethernet)
@@ -117,7 +124,7 @@ namespace NetworkSniffer
 
             OnPacketReceived(ipPacket);
 
-            var device = (WinPcapDevice)sender;
+            var device = (WinPcapDevice) sender;
             if (device.Statistics.DroppedPackets == _droppedPackets &&
                 device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets)
                 return;

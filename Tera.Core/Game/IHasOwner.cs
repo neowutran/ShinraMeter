@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Tera.Game
+﻿namespace Tera.Game
 {
-    interface IHasOwner
+    internal interface IHasOwner
     {
         EntityId OwnerId { get; }
         Entity Owner { get; }

@@ -1,33 +1,26 @@
-﻿<Window x:Class="Tera.DamageMeter.UI.WPF.MainWindow"
+﻿<Window x:Class="Tera.DamageMeter.UI.WPF.Skills"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tera.DamageMeter.UI.WPF"
         mc:Ignorable="d"
-        Title="Shinra Meter" Height="Auto" Width="500"
         Background="Transparent"
         WindowStyle="None"
-        Topmost="True"
         AllowsTransparency="True"
         Focusable="False"
         ResizeMode="CanResizeWithGrip"
         BorderThickness="0"
+
         Icon="shinra.jpg"
-        Loaded="MainWindow_OnLoaded"
-        Closed="MainWindow_OnClosed">
+        Title="Skills" Height="300" Width="1000">
     <Grid>
-        <ToolBar x:Name="toolBar" Background="Transparent" HorizontalAlignment="Left" Margin="10,0,0,0"
-                 VerticalAlignment="Top" Width="490">
+        <ToolBar x:Name="toolBar" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top"
+                 Width="115">
             <Button x:Name="button" Content="X" Foreground="White" Click="Button_OnClick" HorizontalAlignment="Left"
                     Margin="10,0,0,0" VerticalAlignment="Top" Width="75" />
         </ToolBar>
-        <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
-                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                      HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=ListPlayer}"
-                      IsTextSearchEnabled="False" Margin="0,25,0,0" />
-
-
+        <ItemsControl x:Name="SkillsList" Background="Transparent" BorderThickness="0" Focusable="False"
+                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,27,0,0" />
     </Grid>
 </Window>

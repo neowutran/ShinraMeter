@@ -5,14 +5,14 @@ namespace Tera.Game
 {
     public class ProjectileEntity : Entity, IHasOwner
     {
-        public EntityId OwnerId { get; private set; }
-        public Entity Owner { get; private set; }
-
         public ProjectileEntity(EntityId id, EntityId ownerId, Entity owner)
             : base(id)
         {
             OwnerId = ownerId;
             Owner = owner;
         }
+
+        public EntityId OwnerId { get; }
+        public Entity Owner { get; }
     }
 }

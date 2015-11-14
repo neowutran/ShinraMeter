@@ -48,7 +48,6 @@ namespace Tera.Game
 
         public ParsedMessage Create(Message message)
         {
-       
             var reader = new TeraMessageReader(message, _opCodeNamer);
             var opCodeName = _opCodeNamer.GetName(message.OpCode);
             return Instantiate(opCodeName, reader);

@@ -63,6 +63,7 @@ namespace Tera.DamageMeter.UI.Handler
                 {
                     if (c == '\\')
                     {
+                        Thread.Sleep(300);
                         SendKeys.SendWait("{ENTER}");
                         Thread.Sleep(300);
                         SendKeys.SendWait("{ENTER}");
@@ -74,11 +75,12 @@ namespace Tera.DamageMeter.UI.Handler
                     }
                 }
                 SendKeys.Flush();
-                Thread.Sleep(1);
+                Thread.Sleep(5);
             }
         }
 
-        public static void Copy(List<PlayerData> playerDatas, string header, string content, string footer, string orderby, string order)
+        public static void Copy(List<PlayerData> playerDatas, string header, string content, string footer,
+            string orderby, string order)
         {
             //stop if nothing to paste
             if (playerDatas == null) return;
@@ -93,7 +95,7 @@ namespace Tera.DamageMeter.UI.Handler
                     case "name":
                         playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Name);
                         break;
-                    case "percentage":
+                    case "damage_percentage":
                         playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.DamageFraction);
                         break;
                     case "damage_dealt":
@@ -102,51 +104,59 @@ namespace Tera.DamageMeter.UI.Handler
                     case "dps":
                         playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Dps);
                         break;
+                    case "crit_rate":
+                        playerDatasOrdered = playerDatas.OrderBy(PlayerData => PlayerData.PlayerInfo.Dealt.CritRate);
+                        break;
                     default:
                         Console.WriteLine("wrong value for orderby");
                         throw new Exception("wrong value for orderby");
                 }
-
             }
             else
             {
                 switch (orderby)
                 {
                     case "damage_received":
-                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Received.Damage);
+                        playerDatasOrdered =
+                            playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Received.Damage);
                         break;
                     case "name":
                         playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Name);
                         break;
-                    case "percentage":
+                    case "damage_percentage":
                         playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.DamageFraction);
                         break;
                     case "damage_dealt":
-                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dealt.Damage);
+                        playerDatasOrdered =
+                            playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dealt.Damage);
                         break;
                     case "dps":
                         playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dps);
+                        break;
+                    case "crit_rate":
+                        playerDatasOrdered =
+                            playerDatas.OrderByDescending(PlayerData => PlayerData.PlayerInfo.Dealt.CritRate);
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
                         throw new Exception("wrong value for orderby");
                 }
-
             }
 
             var dpsString = header;
             foreach (var playerStats in playerDatasOrdered)
             {
                 var currentContent = content;
-                var format = new FormatHelpers();
-                currentContent = currentContent.Replace("{dps}", format.FormatValue(playerStats.PlayerInfo.Dps) + "/s");
+                currentContent = currentContent.Replace("{dps}",
+                    FormatHelpers.Instance.FormatValue(playerStats.PlayerInfo.Dps) + "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.PlayerInfo.Interval + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
-                    format.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
+                    FormatHelpers.Instance.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
                 currentContent = currentContent.Replace("{name}", playerStats.PlayerInfo.Name);
-                currentContent = currentContent.Replace("{percentage}",playerStats.DamageFraction+"%");
+                currentContent = currentContent.Replace("{damage_percentage}", playerStats.DamageFraction + "%");
+                currentContent = currentContent.Replace("{crit_rate}", playerStats.PlayerInfo.Dealt.CritRate + "%");
                 currentContent = currentContent.Replace("{damage_received}",
-                    format.FormatValue(playerStats.PlayerInfo.Received.Damage));
+                    FormatHelpers.Instance.FormatValue(playerStats.PlayerInfo.Received.Damage));
                 dpsString += currentContent;
             }
             dpsString += footer;
