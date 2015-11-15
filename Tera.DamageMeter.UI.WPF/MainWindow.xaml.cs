@@ -19,6 +19,7 @@ namespace Tera.DamageMeter.UI.WPF
         public MainWindow()
         {
             InitializeComponent();
+
             TeraSniffer.Instance.Enabled = true;
             UiModel.Instance.Connected += HandleConnected;
             UiModel.Instance.DataUpdated += Update;
@@ -27,6 +28,8 @@ namespace Tera.DamageMeter.UI.WPF
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+
+
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -89,6 +92,7 @@ namespace Tera.DamageMeter.UI.WPF
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
                 foreach (var invisibleControl in invisibleControls)
                 {
+                    Controls[invisibleControl.Key].CloseSkills();
                     Controls.Remove(invisibleControl.Key);
                 }
             };
@@ -118,11 +122,30 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DragMove();
+            try
+            {
+                DragMove();
+            }
+            catch
+            {
+                Console.WriteLine("Exception Move");
+            }
         }
 
         private delegate void ChangeTitle(string servername);
 
         private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
+
+        private void ToggleTopMost_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (Topmost)
+            {
+                Topmost = false;
+                ToggleTopMost.Content = "ALWAYS ON TOP: OFF";
+                return;
+            }
+            Topmost = true;
+            ToggleTopMost.Content = "ALWAYS ON TOP: ON";
+        }
     }
 }

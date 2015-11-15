@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace Tera.DamageMeter.UI.WPF
@@ -43,6 +44,18 @@ namespace Tera.DamageMeter.UI.WPF
         private void Button_OnClick(object sender, RoutedEventArgs e)
         {
             Hide();
+        }
+
+        private void Skills_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch
+            {
+                Console.WriteLine("Exception move");
+            }
         }
     }
 }

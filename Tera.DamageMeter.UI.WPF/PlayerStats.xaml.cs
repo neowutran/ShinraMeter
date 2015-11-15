@@ -51,16 +51,28 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
-            _windowSkill.Show();
-            _windowSkill.Topmost = true;
-            _windowSkill.Topmost = false;
+            
+                _windowSkill.Show();
+           
+        }
+
+        public void CloseSkills()
+        {
+            _windowSkill.Close();
         }
 
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
             var w = Window.GetWindow(this);
-            w?.DragMove();
+            try
+            {
+                w?.DragMove();
+            }
+            catch
+            {
+                Console.WriteLine("Exception move");
+            }
         }
     }
 }

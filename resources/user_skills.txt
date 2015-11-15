@@ -1,8 +1,7 @@
 61190100;Common;Common;Common;Arun's Tears
 67044430;Common;Common;Gunner;HB-7 Heal
+130202;Common;Common;Gunner;Balder
 67044429;Common;Common;Mystic;Warding Totem II
-67044430;Common;Common;Mystic;Thrall of Life XIII
-67044431;Common;Common;Mystic;Thrall of Life XIII
 420120;Common;Common;Mystic;Boomerang Pulse
 290730;Common;Common;Warrior;Blade Draw VII
 290700;Common;Common;Warrior;Blade Draw VII
@@ -42,8 +41,8 @@
 291102;Common;Common;Priest;Triple Nemesis XI
 420120;Common;Common;Mystic;Boomerang Pulse - Damage
 67044429;Common;Common;Mystic;Thrall of Protection XVI
-67044430;Common;Common;Mystic;Thrall of Something
-67044431;Common;Common;Mystic;Thrall of Wrath VII
+67044430;Common;Common;Mystic;Thrall of Wrath
+67044431;Common;Common;Mystic;Thrall of Bullshit 
 67044432;Common;Common;Mystic;Thrall of Vengeance XIV
 131130;Common;Common;Lancer;Spring Attack XI;Chained
 131100;Common;Common;Lancer;Spring Attack XI;Unchained

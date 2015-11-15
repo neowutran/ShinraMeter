@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using Tera.Data;
 
@@ -45,7 +46,9 @@ namespace Tera.DamageMeter.UI.Handler
             if (e.Key == BasicTeraData.Instance.HotkeysData.Paste.Key &&
                 e.Modifier == BasicTeraData.Instance.HotkeysData.Paste.Value)
             {
-                CopyPaste.Paste();
+                var text = Clipboard.GetText();
+                Thread pasteThread = new Thread(() => CopyPaste.Paste(text));
+                pasteThread.Start();
             }
             else if (e.Key == BasicTeraData.Instance.HotkeysData.Reset.Key &&
                      e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Value)
@@ -58,7 +61,10 @@ namespace Tera.DamageMeter.UI.Handler
                         copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
                 CopyPaste.Copy(_dpswindow.PlayerData(), copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
-                CopyPaste.Paste();
+                var text = Clipboard.GetText();
+                Console.WriteLine(text);
+                Thread pasteThread = new Thread(() => CopyPaste.Paste(text));
+                pasteThread.Start();
             }
         }
 
