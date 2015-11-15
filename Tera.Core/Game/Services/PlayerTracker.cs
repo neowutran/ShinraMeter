@@ -33,7 +33,7 @@ namespace Tera.Game
         public void Update(UserEntity user)
         {
             if (user == null)
-                throw new ArgumentNullException("user");
+                throw new ArgumentNullException(nameof(user));
 
             Player player;
             if (!_playerById.TryGetValue(user.PlayerId, out player))

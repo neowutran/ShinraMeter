@@ -12,7 +12,7 @@ namespace Tera.DamageMeter.UI.Handler
 
         public delegate void DataUpdatedHandler(IEnumerable<PlayerInfo> data);
 
-        private static UiModel instance;
+        private static UiModel _instance;
         private static TeraData _teraData;
 
         private DamageTracker _damageTracker;
@@ -26,17 +26,7 @@ namespace Tera.DamageMeter.UI.Handler
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
         }
 
-        public static UiModel Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new UiModel();
-                }
-                return instance;
-            }
-        }
+        public static UiModel Instance => _instance ?? (_instance = new UiModel());
 
         public event DataUpdatedHandler DataUpdated;
         public event ConnectedHandler Connected;
@@ -54,20 +44,14 @@ namespace Tera.DamageMeter.UI.Handler
 
             var handler = Connected;
 
-            if (handler != null)
-            {
-                handler(server.Name);
-            }
+            handler?.Invoke(server.Name);
         }
 
         public void Reset()
         {
             _damageTracker = new DamageTracker();
             var handler = DataUpdated;
-            if (handler != null)
-            {
-                handler(_damageTracker);
-            }
+            handler?.Invoke(_damageTracker);
         }
 
         private void HandleMessageReceived(Message obj)
@@ -112,10 +96,7 @@ namespace Tera.DamageMeter.UI.Handler
 
 
                 var handler = DataUpdated;
-                if (handler != null)
-                {
-                    handler(_damageTracker);
-                }
+                handler?.Invoke(_damageTracker);
             }
         }
     }

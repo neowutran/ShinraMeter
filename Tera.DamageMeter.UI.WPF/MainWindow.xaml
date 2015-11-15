@@ -1,10 +1,8 @@
-﻿
-    <Window x:Class="Tera.DamageMeter.UI.WPF.MainWindow"
+﻿<Window x:Class="Tera.DamageMeter.UI.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Tera.DamageMeter.UI.WPF"
         mc:Ignorable="d"
         Title="Shinra Meter" Height="Auto" Width="500"
         WindowStyle="None"
@@ -19,22 +17,22 @@
         MinHeight="275"
         MaxHeight="525"
         MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
-        Loaded="MainWindow_OnLoaded"         
+        Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
 
     <Window.Resources>
         <Style x:Key="ShinraButtonStyle" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Margin" Value="5" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
-                            BorderThickness="0"
-                            Padding="4,2" 
-                            BorderBrush="Transparent" 
-                            CornerRadius="0" 
-                            Background="Black">
+                        <Border Name="border"
+                                BorderThickness="0"
+                                Padding="4,2"
+                                BorderBrush="Transparent"
+                                CornerRadius="0"
+                                Background="Black">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -51,9 +49,11 @@
         <SolidColorBrush Color="Black" Opacity="0.2" />
     </Window.Background>
     <Grid>
-     <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter" Content="CLOSE SHINRA METER" Foreground="White" BorderThickness="0" Click="Button_OnClick" HorizontalAlignment="Left"
-                    Margin="0,0,0,0" VerticalAlignment="Top" Width="490" />
-        
+        <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
+                Content="CLOSE SHINRA METER" Foreground="White" BorderThickness="0" Click="Button_OnClick"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,0" VerticalAlignment="Top" Width="490" />
+
         <ItemsControl MinHeight="250" Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"

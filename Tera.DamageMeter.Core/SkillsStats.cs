@@ -6,9 +6,6 @@ namespace Tera.DamageMeter
 {
     public class SkillsStats
     {
-        private Dictionary<KeyValuePair<int, string>, SkillStats> _skills =
-            new Dictionary<KeyValuePair<int, string>, SkillStats>();
-
         public SkillsStats()
         {
         }
@@ -19,11 +16,8 @@ namespace Tera.DamageMeter
             PlayerInfo = playerInfo;
         }
 
-        public Dictionary<KeyValuePair<int, string>, SkillStats> Skills
-        {
-            get { return _skills; }
-            set { _skills = value; }
-        }
+        public Dictionary<KeyValuePair<int, string>, SkillStats> Skills { get; set; } =
+            new Dictionary<KeyValuePair<int, string>, SkillStats>();
 
         public PlayerInfo PlayerInfo { get; }
 

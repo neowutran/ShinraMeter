@@ -45,7 +45,7 @@ namespace Tera.Game
             ushort code;
             if (_opCodeCodes.TryGetValue(name, out code))
                 return code;
-            throw new ArgumentException(string.Format("Unknown name '{0}'", name));
+            throw new ArgumentException($"Unknown name '{name}'");
         }
     }
 }

@@ -32,10 +32,7 @@ namespace Tera.DamageMeter.UI.Handler
             {
                 _totalDamage = value;
                 var handler = TotalDamageChanged;
-                if (handler != null)
-                {
-                    handler();
-                }
+                handler?.Invoke();
             }
         }
 

@@ -59,7 +59,7 @@ namespace Tera.DamageMeter
         {
             if (message.Amount == 0)
             {
-                var str = string.Format("{0:x}", message.SkillId);
+                var str = $"{message.SkillId:x}";
                 Console.WriteLine("nothing" + str);
                 return;
             }
@@ -94,27 +94,16 @@ namespace Tera.DamageMeter
             }
             SkillStats skillStats;
             var skillKey = new KeyValuePair<int, string>(message.SkillId, skillName);
-            if (stats.Skills.ContainsKey(skillKey))
-            {
-                stats.Skills.TryGetValue(skillKey, out skillStats);
-            }
-            else
+
+            stats.Skills.TryGetValue(skillKey, out skillStats);
+            if (skillStats == null)
             {
                 skillStats = new SkillStats(stats.PlayerInfo);
             }
 
-            if (message.IsHeal)
-            {
-                skillStats.AddData(message.Heal, message.IsCritical, message.IsHeal);
-            }
-            else
-            {
-                skillStats.AddData(message.Damage, message.IsCritical, message.IsHeal);
-            }
+            skillStats.AddData(message.IsHeal ? message.Heal : message.Damage, message.IsCritical, message.IsHeal);
 
             stats.Skills[skillKey] = skillStats;
-
-            Console.WriteLine("number of skills:" + stats.Skills.Count);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Tera.Sniffing
             _serversByIp = servers.ToDictionary(x => x.Ip);
             var netmasks =
                 _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct().ToArray();
-            var filter = string.Join(" or ", netmasks.Select(x => string.Format("(net {0})", x)));
+            var filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
             filter = "tcp and (" + filter + ")";
 
             _ipSniffer = new IpSniffer(filter);
@@ -42,17 +42,7 @@ namespace Tera.Sniffing
         }
 
 
-        public static TeraSniffer Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new TeraSniffer();
-                }
-                return _instance;
-            }
-        }
+        public static TeraSniffer Instance => _instance ?? (_instance = new TeraSniffer());
 
         // IpSniffer has its own locking, so we need no lock here.
         public bool Enabled
@@ -74,19 +64,19 @@ namespace Tera.Sniffing
         protected virtual void OnNewConnection(Server server)
         {
             var handler = NewConnection;
-            if (handler != null) handler(server);
+            handler?.Invoke(server);
         }
 
         protected virtual void OnMessageReceived(Message message)
         {
             var handler = MessageReceived;
-            if (handler != null) handler(message);
+            handler?.Invoke(message);
         }
 
         protected virtual void OnWarning(string obj)
         {
             var handler = Warning;
-            if (handler != null) handler(obj);
+            handler?.Invoke(obj);
         }
 
 

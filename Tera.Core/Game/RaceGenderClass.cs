@@ -22,7 +22,7 @@ namespace Tera.Game
             private set
             {
                 if (value/10000 != 1)
-                    throw new ArgumentException(string.Format("Unexpected raw value for RaceGenderClass {0}", value));
+                    throw new ArgumentException($"Unexpected raw value for RaceGenderClass {value}");
                 Race = (Race) (value/200%50);
                 Gender = (Gender) (value/100%2);
                 Class = (PlayerClass) (value%100);
@@ -79,7 +79,7 @@ namespace Tera.Game
 
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", Race, Gender, Class);
+            return $"{Race} {Gender} {Class}";
         }
     }
 }

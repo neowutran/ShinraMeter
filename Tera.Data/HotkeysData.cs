@@ -36,13 +36,15 @@ namespace Tera.Data
 
             Keys resetKey, pasteKey;
 
-            if (!Enum.TryParse(resetQuery.First().Value, out resetKey))
+            var xElements = resetQuery as XElement[] ?? resetQuery.ToArray();
+            if (!Enum.TryParse(xElements.First().Value, out resetKey))
             {
-                Console.WriteLine("Unable to convert string {0} to key", resetQuery.First().Value);
+                Console.WriteLine("Unable to convert string {0} to key", xElements.First().Value);
             }
-            if (!Enum.TryParse(pasteQuery.First().Value, out pasteKey))
+            var enumerable = pasteQuery as XElement[] ?? pasteQuery.ToArray();
+            if (!Enum.TryParse(enumerable.First().Value, out pasteKey))
             {
-                Console.WriteLine("Unable to convert string {0} to key", pasteQuery.First().Value);
+                Console.WriteLine("Unable to convert string {0} to key", enumerable.First().Value);
             }
 
 

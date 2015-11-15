@@ -27,17 +27,7 @@ namespace Tera.DamageMeter
         public CultureInfo CultureInfo { get; set; }
         public string UnitSeparator { get; set; }
 
-        public static FormatHelpers Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new FormatHelpers();
-                }
-                return _instance;
-            }
-        }
+        public static FormatHelpers Instance => _instance ?? (_instance = new FormatHelpers());
 
         public string FormatTimeSpan(TimeSpan? timeSpan)
         {

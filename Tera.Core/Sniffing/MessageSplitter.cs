@@ -30,8 +30,7 @@ namespace Tera.Sniffing
         protected void OnMessageReceived(Message message)
         {
             var handler = MessageReceived;
-            if (handler != null)
-                handler(message);
+            handler?.Invoke(message);
         }
 
         public void ClientToServer(DateTime time, byte[] data)

@@ -24,10 +24,6 @@ namespace Tera.Data
         public string Header { get; }
         public string Footer { get; }
         public string Content { get; }
-        public bool Alt { get; }
-        public bool Ctrl { get; }
-        public bool Shift { get; }
-        public bool Window { get; }
         public HotkeysData.ModifierKeys Modifier { get; }
     }
 }

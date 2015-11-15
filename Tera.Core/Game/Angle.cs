@@ -12,9 +12,6 @@ namespace Tera.Game
             _raw = raw;
         }
 
-        public double Radians
-        {
-            get { return _raw*(2*Math.PI/0x10000); }
-        }
+        public double Radians => _raw*(2*Math.PI/0x10000);
     }
 }

@@ -11,7 +11,7 @@ namespace Tera.PacketLog
         protected virtual void OnBlockFinished(byte[] block)
         {
             var handler = BlockFinished;
-            if (handler != null) handler(block);
+            handler?.Invoke(block);
         }
 
         private static void RemoveFront(MemoryStream stream, int count)

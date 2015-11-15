@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Xml.Linq;
@@ -20,7 +20,7 @@ namespace Tera.Data
             int.TryParse(_xml.Root.Element("location").Element("x").Value, out x);
             int.TryParse(_xml.Root.Element("location").Element("y").Value, out y);
 
-            Height =  height;
+            Height = height;
             Location = new Point(x, y);
         }
 
@@ -30,8 +30,8 @@ namespace Tera.Data
 
         public void Save()
         {
-            _xml.Root.Element("location").Element("x").Value = Location.X.ToString();
-            _xml.Root.Element("location").Element("y").Value = Location.Y.ToString();
+            _xml.Root.Element("location").Element("x").Value = Location.X.ToString(CultureInfo.InvariantCulture);
+            _xml.Root.Element("location").Element("y").Value = Location.Y.ToString(CultureInfo.InvariantCulture);
             _xml.Root.Element("size").Element("height").Value = Height.ToString();
             _xml.Save(_windowFile);
         }

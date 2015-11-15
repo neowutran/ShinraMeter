@@ -10,18 +10,18 @@ namespace Tera.DamageMeter.UI.Handler
 {
     public static class CopyPaste
     {
-        private const int KL_NAMELENGTH = 9;
+        private const int KlNamelength = 9;
 
         [DllImport("user32.dll")]
         private static extern long GetKeyboardLayoutName(
-            StringBuilder pwszKLID);
+            StringBuilder pwszKlid);
 
 
         // SOME BULLSHIT GOING ON HERE => if you want to send "%" with SendKey, SendKey will you use the keyboard shortcut "SHIFT + 5" => meaning "%" with a QUERTY keyboard
         // So that doesn't work with a french keyboard (AZERTY), so => hack here
         private static string Percentage()
         {
-            var name = new StringBuilder(KL_NAMELENGTH);
+            var name = new StringBuilder(KlNamelength);
             GetKeyboardLayoutName(name);
             var keyBoardLayout = name.ToString();
             keyBoardLayout = keyBoardLayout.ToLower();
@@ -105,7 +105,7 @@ namespace Tera.DamageMeter.UI.Handler
                         playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Dps);
                         break;
                     case "crit_rate":
-                        playerDatasOrdered = playerDatas.OrderBy(PlayerData => PlayerData.PlayerInfo.Dealt.CritRate);
+                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Dealt.CritRate);
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -135,7 +135,7 @@ namespace Tera.DamageMeter.UI.Handler
                         break;
                     case "crit_rate":
                         playerDatasOrdered =
-                            playerDatas.OrderByDescending(PlayerData => PlayerData.PlayerInfo.Dealt.CritRate);
+                            playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dealt.CritRate);
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");

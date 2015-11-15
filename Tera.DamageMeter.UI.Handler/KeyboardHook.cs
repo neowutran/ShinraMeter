@@ -8,7 +8,7 @@ namespace Tera.DamageMeter.UI.Handler
 {
     public sealed class KeyboardHook : IDisposable
     {
-        private static KeyboardHook instance;
+        private static KeyboardHook _instance;
 
 
         private readonly Window _window = new Window();
@@ -22,17 +22,7 @@ namespace Tera.DamageMeter.UI.Handler
             _window.KeyPressed += delegate(object sender, KeyPressedEventArgs args) { KeyPressed?.Invoke(this, args); };
         }
 
-        public static KeyboardHook Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new KeyboardHook();
-                }
-                return instance;
-            }
-        }
+        public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
 
         #region IDisposable Members
 
@@ -136,7 +126,7 @@ namespace Tera.DamageMeter.UI.Handler
         /// </summary>
         private sealed class Window : NativeWindow, IDisposable
         {
-            private static readonly int WM_HOTKEY = 0x0312;
+            private static readonly int WmHotkey = 0x0312;
 
             public Window()
             {
@@ -162,7 +152,7 @@ namespace Tera.DamageMeter.UI.Handler
                 base.WndProc(ref m);
 
                 // check if we got a hot key pressed.
-                if (m.Msg == WM_HOTKEY)
+                if (m.Msg == WmHotkey)
                 {
                     // get the keys.
                     var key = (Keys) (((int) m.LParam >> 16) & 0xFFFF);

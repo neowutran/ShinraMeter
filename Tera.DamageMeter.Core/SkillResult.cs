@@ -39,15 +39,9 @@ namespace Tera.DamageMeter
         public int SkillId { get; private set; }
         public UserSkill Skill { get; private set; }
 
-        public int Damage
-        {
-            get { return IsHeal ? 0 : Amount; }
-        }
+        public int Damage => IsHeal ? 0 : Amount;
 
-        public int Heal
-        {
-            get { return IsHeal ? Amount : 0; }
-        }
+        public int Heal => IsHeal ? Amount : 0;
 
 
         public Player SourcePlayer { get; private set; }

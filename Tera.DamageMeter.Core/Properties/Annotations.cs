@@ -55,7 +55,7 @@ namespace Tera.DamageMeter.Properties
         ///     <value><c>true</c> if a element should be localized; otherwise, <c>false</c>.</value>
         /// </summary>
         [UsedImplicitly]
-        public bool Required { get; private set; }
+        public bool Required { get; }
 
         /// <summary>
         ///     Returns whether the value of the given object is equal to the current <see cref="LocalizationRequiredAttribute" />.
@@ -531,21 +531,6 @@ namespace Tera.DamageMeter.Properties
     }
 
     /// <summary>
-    ///     This attribute is intended to mark publicly available API which should not be removed and so is treated as used.
-    /// </summary>
-    [MeansImplicitUse]
-    public sealed class PublicApiAttribute : Attribute
-    {
-        public PublicApiAttribute()
-        {
-        }
-
-        public PublicApiAttribute(string comment)
-        {
-        }
-    }
-
-    /// <summary>
     ///     Tells code analysis engine if the parameter is completely handled when the invoked method is on stack.
     ///     If the parameter is a delegate, indicates that delegate is executed while the method is executed.
     ///     If the parameter is an enumerable, indicates that it is enumerated while the method is executed.
@@ -607,7 +592,9 @@ namespace Tera.DamageMeter.Properties
     ///     ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter is an MVC action.
     ///     If applied to a method, the MVC action name is calculated implicitly from the context.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
     public sealed class AspMvcActionAttribute : Attribute
@@ -628,7 +615,9 @@ namespace Tera.DamageMeter.Properties
     /// <summary>
     ///     ASP.NET MVC attribute. Indicates that a parameter is an MVC araa.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class AspMvcAreaAttribute : PathReferenceAttribute
@@ -651,7 +640,9 @@ namespace Tera.DamageMeter.Properties
     ///     ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter is an MVC controller.
     ///     If applied to a method, the MVC controller name is calculated implicitly from the context.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String, String)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Html.ChildActionExtensions.RenderAction(HtmlHelper, String, String)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
     public sealed class AspMvcControllerAttribute : Attribute
@@ -672,7 +663,9 @@ namespace Tera.DamageMeter.Properties
     /// <summary>
     ///     ASP.NET MVC attribute. Indicates that a parameter is an MVC Master.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Controller.View(String, String)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Controller.View(String, String)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class AspMvcMasterAttribute : Attribute
@@ -682,7 +675,9 @@ namespace Tera.DamageMeter.Properties
     /// <summary>
     ///     ASP.NET MVC attribute. Indicates that a parameter is an MVC model type.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Controller.View(String, Object)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Controller.View(String, Object)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class AspMvcModelTypeAttribute : Attribute
@@ -693,7 +688,9 @@ namespace Tera.DamageMeter.Properties
     ///     ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter is an MVC partial view.
     ///     If applied to a method, the MVC partial view name is calculated implicitly from the context.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(HtmlHelper, String)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Html.RenderPartialExtensions.RenderPartial(HtmlHelper, String)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
     public sealed class AspMvcPartialViewAttribute : PathReferenceAttribute
@@ -711,7 +708,9 @@ namespace Tera.DamageMeter.Properties
     /// <summary>
     ///     ASP.NET MVC attribute. Indicates that a parameter is an MVC display template.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Html.DisplayExtensions.DisplayForModel(HtmlHelper, String)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Html.DisplayExtensions.DisplayForModel(HtmlHelper, String)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class AspMvcDisplayTemplateAttribute : Attribute
@@ -721,7 +720,9 @@ namespace Tera.DamageMeter.Properties
     /// <summary>
     ///     ASP.NET MVC attribute. Indicates that a parameter is an MVC editor template.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Html.EditorExtensions.EditorForModel(HtmlHelper, String)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Html.EditorExtensions.EditorForModel(HtmlHelper, String)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class AspMvcEditorTemplateAttribute : Attribute
@@ -732,7 +733,9 @@ namespace Tera.DamageMeter.Properties
     ///     ASP.NET MVC attribute. If applied to a parameter, indicates that the parameter is an MVC view.
     ///     If applied to a method, the MVC view name is calculated implicitly from the context.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.Mvc.Controller.View(Object)" />
+    ///     <see>
+    ///         <cref>System.Web.Mvc.Controller.View(Object)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
     public sealed class AspMvcViewAttribute : PathReferenceAttribute
@@ -763,7 +766,9 @@ namespace Tera.DamageMeter.Properties
     /// <summary>
     ///     Razor attribute. Indicates that a parameter or a method is a Razor section.
     ///     Use this attribute for custom wrappers similar to
-    ///     <see cref="System.Web.WebPages.WebPageBase.RenderSection(String)" />
+    ///     <see>
+    ///         <cref>System.Web.WebPages.WebPageBase.RenderSection(String)</cref>
+    ///     </see>
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
     public sealed class RazorSectionAttribute : Attribute

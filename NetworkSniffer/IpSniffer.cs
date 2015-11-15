@@ -46,8 +46,7 @@ namespace NetworkSniffer
             return
                 _devices.Select(
                     device =>
-                        string.Format("Device {0} {1} {2}\r\n{3}", device.LinkType, device.Opened ? "Open" : "Closed",
-                            device.LastError, device));
+                        $"Device {device.LinkType} {(device.Opened ? "Open" : "Closed")} {device.LastError}\r\n{device}");
         }
 
         protected void SetEnabled(bool value)
@@ -58,7 +57,6 @@ namespace NetworkSniffer
             }
             else
             {
-                Finish();
                 Environment.Exit(0);
             }
         }
@@ -83,24 +81,12 @@ namespace NetworkSniffer
             }
         }
 
-        private void Finish()
-        {
-            return;
-            Debug.Assert(_devices != null);
-            foreach (var device in _devices.Where(device => device.Opened))
-            {
-                device.StopCapture();
-                device.Close();
-            }
-            _devices = null;
-        }
-
         public event Action<string> Warning;
 
         protected virtual void OnWarning(string obj)
         {
             var handler = Warning;
-            if (handler != null) handler(obj);
+            handler?.Invoke(obj);
         }
 
         public event Action<IpPacket> PacketReceived;
@@ -108,8 +94,7 @@ namespace NetworkSniffer
         protected void OnPacketReceived(IpPacket data)
         {
             var packetReceived = PacketReceived;
-            if (packetReceived != null)
-                packetReceived(data);
+            packetReceived?.Invoke(data);
         }
 
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)

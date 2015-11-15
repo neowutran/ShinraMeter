@@ -12,7 +12,7 @@ namespace Tera.Data
             Region = basicData.Regions.Single(x => x.Key == region);
             OpCodeNamer =
                 new OpCodeNamer(Path.Combine(basicData.ResourceDirectory,
-                    string.Format("opcodes-{0}.txt", Region.Version)));
+                    $"opcodes-{Region.Version}.txt"));
         }
 
         public Region Region { get; }

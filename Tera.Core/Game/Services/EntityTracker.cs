@@ -28,7 +28,7 @@ namespace Tera.Game
         protected virtual void OnEntityUpdated(Entity entity)
         {
             var handler = EntityUpdated;
-            if (handler != null) handler(entity);
+            handler?.Invoke(entity);
         }
 
         public void Update(ParsedMessage message)

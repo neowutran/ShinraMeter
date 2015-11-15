@@ -35,9 +35,6 @@ namespace Tera.Game.Messages
         public SkillResultFlags Flags { get; }
         public bool IsCritical { get; private set; }
 
-        public bool IsHeal
-        {
-            get { return (Flags & SkillResultFlags.Heal) != 0; }
-        }
+        public bool IsHeal => (Flags & SkillResultFlags.Heal) != 0;
     }
 }

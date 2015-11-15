@@ -11,30 +11,15 @@ namespace Tera.Game
             _user = user;
         }
 
-        public uint PlayerId
-        {
-            get { return User.PlayerId; }
-        }
+        public uint PlayerId => User.PlayerId;
 
-        public string Name
-        {
-            get { return User.Name; }
-        }
+        public string Name => User.Name;
 
-        public string GuildName
-        {
-            get { return User.GuildName; }
-        }
+        public string GuildName => User.GuildName;
 
-        public RaceGenderClass RaceGenderClass
-        {
-            get { return User.RaceGenderClass; }
-        }
+        public RaceGenderClass RaceGenderClass => User.RaceGenderClass;
 
-        public PlayerClass Class
-        {
-            get { return RaceGenderClass.Class; }
-        }
+        public PlayerClass Class => RaceGenderClass.Class;
 
         public UserEntity User
         {
@@ -49,7 +34,7 @@ namespace Tera.Game
 
         public override string ToString()
         {
-            return string.Format("{0} {1} [{2}]", Class, Name, GuildName);
+            return $"{Class} {Name} [{GuildName}]";
         }
     }
 }

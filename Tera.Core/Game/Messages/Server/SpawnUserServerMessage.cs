@@ -20,10 +20,7 @@
         public string Name { get; private set; }
         public string GuildName { get; private set; }
 
-        public PlayerClass Class
-        {
-            get { return RaceGenderClass.Class; }
-        }
+        public PlayerClass Class => RaceGenderClass.Class;
 
         public RaceGenderClass RaceGenderClass { get; }
     }

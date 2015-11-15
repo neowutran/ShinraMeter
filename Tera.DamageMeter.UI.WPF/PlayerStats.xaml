@@ -3,11 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Tera.DamageMeter.UI.WPF"
              mc:Ignorable="d"
              d:DesignHeight="50">
     <Grid>
-       
+
         <Rectangle MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator" Fill="Blue"
                    Opacity="0.3" HorizontalAlignment="Left" Height="50" Stroke="Transparent" VerticalAlignment="Top"
                    Width="Auto" />
@@ -28,10 +27,11 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" FontSize="18" VerticalAlignment="Center" x:Name="LabelName" Foreground="White" />
             <Label Grid.Column="1" FontSize="18" x:Name="LabelDamagePart" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="2" FontSize="18" x:Name="LabelDPS" VerticalAlignment="Center" Foreground="White" />
+            <Label Grid.Column="2" FontSize="18" x:Name="LabelDps" VerticalAlignment="Center" Foreground="White" />
             <Label Grid.Column="3" FontSize="18" x:Name="LabelDamage" VerticalAlignment="Center" Foreground="White" />
             <Label Grid.Column="4" FontSize="18" x:Name="LabelCritRate" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="5" FontSize="18" x:Name="LabelDamageReceived" VerticalAlignment="Center" Foreground="White" />
+            <Label Grid.Column="5" FontSize="18" x:Name="LabelDamageReceived" VerticalAlignment="Center"
+                   Foreground="White" />
 
         </Grid>
 

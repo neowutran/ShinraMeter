@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Tera.DamageMeter.UI.Handler;
@@ -10,16 +9,16 @@ namespace Tera.DamageMeter.UI.WPF
     /// <summary>
     ///     Logique d'interaction pour PlayerStats.xaml
     /// </summary>
-    public partial class PlayerStats : UserControl
+    public partial class PlayerStats
     {
-        public ImageSource Image;
         private readonly Skills _windowSkill;
+        public ImageSource Image;
 
         public PlayerStats(PlayerInfo playerInfo)
         {
             InitializeComponent();
             PlayerData = new PlayerData(playerInfo);
-           _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills);
+            _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills);
             Image = ClassIcons.Instance.GetImage(PlayerData.PlayerInfo.Class).Source;
             Class.Source = Image;
             LabelName.Content = PlayerName;
@@ -27,7 +26,7 @@ namespace Tera.DamageMeter.UI.WPF
 
         public PlayerData PlayerData { get; set; }
 
-        public string DPS => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Dps) + "/s";
+        public string Dps => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Dps) + "/s";
 
         public string DamagePart => Math.Round(PlayerData.DamageFraction) + "%";
 
@@ -41,26 +40,27 @@ namespace Tera.DamageMeter.UI.WPF
 
         public void Repaint()
         {
-            DpsIndicator.Width = ActualWidth * (PlayerData.DamageFraction / 100);
-            LabelDPS.Content = DPS;
+            DpsIndicator.Width = ActualWidth*(PlayerData.DamageFraction/100);
+            LabelDps.Content = Dps;
             LabelDamage.Content = Damage;
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;
             _windowSkill.Update(PlayerData.PlayerInfo.Dealt.Skills);
         }
-     
+
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
             _windowSkill.Show();
-            _windowSkill.Topmost=true;
+            _windowSkill.Topmost = true;
             _windowSkill.Topmost = false;
         }
 
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
-            Window.GetWindow(this).DragMove();
+            var w = Window.GetWindow(this);
+            w?.DragMove();
         }
     }
 }

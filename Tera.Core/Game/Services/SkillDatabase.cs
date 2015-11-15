@@ -19,6 +19,7 @@ namespace Tera.Game
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
+                if (line == null) continue;
                 var values = line.Split(';');
 
                 var skill = new UserSkill(int.Parse(values[0]), new RaceGenderClass(values[1], values[2], values[3]),
@@ -75,21 +76,13 @@ namespace Tera.Game
                 allSkills = allSkills.Union(skillsSpecific).ToList();
             }
 
-            foreach (var skill in allSkills)
-            {
-                if (skill.Id == skillId)
-                {
-                    return skill;
-                }
-            }
-
-            return null;
+            return allSkills.FirstOrDefault(skill => skill.Id == skillId);
         }
 
         public UserSkill GetOrPlaceholder(UserEntity user, int skillId)
         {
             if (user == null)
-                throw new ArgumentNullException("user");
+                throw new ArgumentNullException(nameof(user));
 
             var existing = Get(user, skillId);
             if (existing != null)

@@ -38,13 +38,13 @@ namespace Tera.Game
 
         public override string ToString()
         {
-            return string.Format("{0} [{1}]", Name, GuildName);
+            return $"{Name} [{GuildName}]";
         }
 
         public static UserEntity ForEntity(Entity entity)
         {
             var ownedEntity = entity as IHasOwner;
-            while (ownedEntity != null && ownedEntity.Owner != null)
+            while (ownedEntity?.Owner != null)
             {
                 entity = ownedEntity.Owner;
                 ownedEntity = entity as IHasOwner;

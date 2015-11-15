@@ -9,7 +9,7 @@ namespace Tera.Data
 {
     public class BasicTeraData
     {
-        private static BasicTeraData instance;
+        private static BasicTeraData _instance;
         private readonly Func<string, TeraData> _dataForRegion;
 
         private BasicTeraData() : this(FindResourceDirectory())
@@ -26,17 +26,7 @@ namespace Tera.Data
             Regions = GetRegions(Path.Combine(ResourceDirectory, "regions.txt")).ToList();
         }
 
-        public static BasicTeraData Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new BasicTeraData();
-                }
-                return instance;
-            }
-        }
+        public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
 
         public WindowData WindowData { get; }
         public HotkeysData HotkeysData { get; }

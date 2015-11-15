@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Tera.DamageMeter.UI.WPF
 {
     /// <summary>
     ///     Logique d'interaction pour Skills.xaml
     /// </summary>
-    public partial class Skills : Window
+    public partial class Skills
     {
         private Dictionary<KeyValuePair<int, string>, SkillStats> _skills;
+
         public Skills(Dictionary<KeyValuePair<int, string>, SkillStats> skills)
         {
             InitializeComponent();
             _skills = skills;
-            System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += Repaint;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();

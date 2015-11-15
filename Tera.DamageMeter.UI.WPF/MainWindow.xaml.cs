@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Tera.DamageMeter.UI.Handler;
 using Tera.Data;
 using Tera.Sniffing;
@@ -14,7 +14,7 @@ namespace Tera.DamageMeter.UI.WPF
     /// <summary>
     ///     Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IDpsWindow
+    public partial class MainWindow : IDpsWindow
     {
         public MainWindow()
         {
@@ -23,13 +23,18 @@ namespace Tera.DamageMeter.UI.WPF
             UiModel.Instance.Connected += HandleConnected;
             UiModel.Instance.DataUpdated += Update;
             KeyboardHook.Instance.RegisterKeyboardHook(this);
-            System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
+
+        public List<PlayerData> PlayerData()
+        {
+            return Controls.Select(keyValue => keyValue.Value.PlayerData).ToList();
+        }
 
         public void Update(object sender, EventArgs e)
         {
@@ -41,24 +46,20 @@ namespace Tera.DamageMeter.UI.WPF
                 }
 
                 Players.Items.Clear();
-                var sortedDict = from entry in Controls orderby entry.Value.PlayerData.DamageFraction descending select entry;
+                var sortedDict = from entry in Controls
+                    orderby entry.Value.PlayerData.DamageFraction descending
+                    select entry;
                 foreach (var item in sortedDict)
                 {
                     Players.Items.Add(item.Value);
                 }
             }
-         
-        }
-
-        public List<PlayerData> PlayerData()
-        {
-            return Controls.Select(keyValue => keyValue.Value.PlayerData).ToList();
         }
 
 
         public void HandleConnected(string serverName)
         {
-            ChangeTitle changeTitle = delegate(string _serverName) { Title = _serverName; };
+            ChangeTitle changeTitle = delegate(string newServerName) { Title = newServerName; };
             Dispatcher.Invoke(changeTitle, serverName);
         }
 
@@ -115,13 +116,13 @@ namespace Tera.DamageMeter.UI.WPF
             Close();
         }
 
-        private delegate void ChangeTitle(string servername);
-
-        private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
-
         private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
         }
+
+        private delegate void ChangeTitle(string servername);
+
+        private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
     }
 }

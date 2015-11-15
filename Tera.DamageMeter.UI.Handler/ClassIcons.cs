@@ -26,17 +26,7 @@ namespace Tera.DamageMeter.UI.Handler
         }
 
 
-        public static ClassIcons Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new ClassIcons();
-                }
-                return _instance;
-            }
-        }
+        public static ClassIcons Instance => _instance ?? (_instance = new ClassIcons());
 
         public Image GetImage(PlayerClass race)
         {
