@@ -16,7 +16,7 @@
 
 using System;
 
-namespace Tera.DamageMeter.Annotations
+namespace Tera.DamageMeter.Properties
 {
     /// <summary>
     ///     Indicates that marked element should be localized or not.
@@ -323,11 +323,11 @@ namespace Tera.DamageMeter.Annotations
 
         public ContractAnnotationAttribute([NotNull] string fdt, bool forceFullStates)
         {
-            FDT = fdt;
+            Fdt = fdt;
             ForceFullStates = forceFullStates;
         }
 
-        public string FDT { get; private set; }
+        public string Fdt { get; private set; }
         public bool ForceFullStates { get; private set; }
     }
 
@@ -534,13 +534,13 @@ namespace Tera.DamageMeter.Annotations
     ///     This attribute is intended to mark publicly available API which should not be removed and so is treated as used.
     /// </summary>
     [MeansImplicitUse]
-    public sealed class PublicAPIAttribute : Attribute
+    public sealed class PublicApiAttribute : Attribute
     {
-        public PublicAPIAttribute()
+        public PublicApiAttribute()
         {
         }
 
-        public PublicAPIAttribute(string comment)
+        public PublicApiAttribute(string comment)
         {
         }
     }

@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tera.DamageMeter
 {
     public class SkillsStats
     {
-        public Dictionary<KeyValuePair<int, string>, SkillStats> _skills =
+        private Dictionary<KeyValuePair<int, string>, SkillStats> _skills =
             new Dictionary<KeyValuePair<int, string>, SkillStats>();
 
         public SkillsStats()
@@ -32,9 +33,9 @@ namespace Tera.DamageMeter
             get
             {
                 long damage = 0;
-                foreach (var skill in Skills)
+                lock (Skills)
                 {
-                    damage += skill.Value.Damage;
+                    damage += Skills.Sum(skill => skill.Value.Damage);
                 }
                 return damage;
             }

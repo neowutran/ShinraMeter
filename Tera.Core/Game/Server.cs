@@ -1,4 +1,4 @@
-﻿namespace Tera.Data
+﻿namespace Tera.Game
 {
     public class Server
     {

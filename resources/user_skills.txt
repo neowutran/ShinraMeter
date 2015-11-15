@@ -1,3 +1,78 @@
+61190100;Common;Common;Common;Arun's Tears
+67044430;Common;Common;Gunner;HB-7 Heal
+67044429;Common;Common;Mystic;Warding Totem II
+67044430;Common;Common;Mystic;Thrall of Life XIII
+67044431;Common;Common;Mystic;Thrall of Life XIII
+420120;Common;Common;Mystic;Boomerang Pulse
+290730;Common;Common;Warrior;Blade Draw VII
+290700;Common;Common;Warrior;Blade Draw VII
+41130;Common;Common;Warrior;Rain of Blows XI
+41100;Common;Common;Warrior;Rain of Blows XI
+280730;Common;Common;Warrior;Traverse Cut VII
+280700;Common;Common;Warrior;Traverse Cut VII
+310930;Common;Common;Warrior;Reaping Slash IX
+310900;Common;Common;Warrior;Reaping Slash IX
+300230;Common;Common;Warrior;Scythe II
+300200;Common;Common;Warrior;Scythe II
+67044431;Common;Common;Warrior;Smoke Aggressor
+80900;Common;Common;Slayer;Overhand Strike IX
+80930;Common;Common;Slayer;Overhand Strike IX
+230200;Common;Common;Slayer;Measured Slice II
+230230;Common;Common;Slayer;Measured Slice II
+240100;Common;Common;Slayer;Eviscerate
+240130;Common;Common;Slayer;Eviscerate
+250100;Common;Common;Slayer;Ultimate Overhand Strike I
+250130;Common;Common;Slayer;Ultimate Overhand Strike I
+40220;Common;Common;Reaper;Sundering Strike III (2)
+40120;Common;Common;Reaper;Sundering Strike III (2)
+40300;Common;Common;Reaper;Sundering Strike III (1)
+40330;Common;Common;Reaper;Sundering Strike III (1)
+30330;Common;Common;Reaper;Double Shear III
+30300;Common;Common;Reaper;Double Shear III
+50330;Common;Common;Reaper;Grim Strike III
+50300;Common;Common;Reaper;Grim Strike III
+80230;Common;Common;Reaper;Whipsaw II
+80200;Common;Common;Reaper;Whipsaw II
+120200;Common;Common;Reaper;Shadow Burst II (1)
+120201;Common;Common;Reaper;Shadow Burst II (2)
+271000;Common;Common;Priest;Final Reprisal X;Unchained
+271030;Common;Common;Priest;Final Reprisal X;Unchained
+291100;Common;Common;Priest;Triple Nemesis XI
+291101;Common;Common;Priest;Triple Nemesis XI
+291102;Common;Common;Priest;Triple Nemesis XI
+420120;Common;Common;Mystic;Boomerang Pulse - Damage
+67044429;Common;Common;Mystic;Thrall of Protection XVI
+67044430;Common;Common;Mystic;Thrall of Something
+67044431;Common;Common;Mystic;Thrall of Wrath VII
+67044432;Common;Common;Mystic;Thrall of Vengeance XIV
+131130;Common;Common;Lancer;Spring Attack XI;Chained
+131100;Common;Common;Lancer;Spring Attack XI;Unchained
+250730;Common;Common;Lancer;Wallop VII;Chained
+250700;Common;Common;Lancer;Wallop VII;Unchained
+30830;Common;Common;Lancer;Onslaught VIII;Chained
+30800;Common;Common;Lancer;Onslaught VIII;Unchained
+67044435;Common;Common;Gunner;Command: Self-Destruct
+67044430;Common;Common;Gunner;ST-4 Attack
+70820;Common;Common;Gunner;Arcane Barrage VIII (1)
+70821;Common;Common;Gunner;Arcane Barrage VIII (2)
+110900;Common;Common;Gunner;Rocket Jump IX;Unchained
+110901;Common;Common;Gunner;Rocket Jump IX;Unchained
+110902;Common;Common;Gunner;Rocket Jump IX;Unchained
+110930;Common;Common;Gunner;Rocket Jump IX;Chained
+110931;Common;Common;Gunner;Rocket Jump IX;Chained
+110932;Common;Common;Gunner;Rocket Jump IX;Chained
+31100;Common;Common;Gunner;Scattershot XI;Unchained
+31101;Common;Common;Gunner;Scattershot XI;Unchained
+31102;Common;Common;Gunner;Scattershot XI;Unchained
+31130;Common;Common;Gunner;Scattershot XI;Chained
+31131;Common;Common;Gunner;Scattershot XI;Chained
+31132;Common;Common;Gunner;Scattershot XI;Chained
+150900;Common;Common;Gunner;Replenishment IX;Unchained
+150901;Common;Common;Gunner;Replenishment IX;Unchained
+150902;Common;Common;Gunner;Replenishment IX;Unchained
+150930;Common;Common;Gunner;Replenishment IX;Chained
+150931;Common;Common;Gunner;Replenishment IX;Chained
+150932;Common;Common;Gunner;Replenishment IX;Chained
 10100;Common;Common;Archer;Arrow I
 10200;Common;Common;Archer;Arrow II
 10300;Common;Common;Archer;Arrow III

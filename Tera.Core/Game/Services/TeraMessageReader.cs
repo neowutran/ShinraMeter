@@ -27,9 +27,9 @@ namespace Tera.Game
             return new EntityId(id);
         }
 
-        public Vector3f ReadVector3f()
+        public Vector3F ReadVector3F()
         {
-            Vector3f result;
+            Vector3F result;
             result.X = ReadSingle();
             result.Y = ReadSingle();
             result.Z = ReadSingle();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using Tera.DamageMeter.Annotations;
+using Tera.DamageMeter.Properties;
 
 namespace Tera.DamageMeter
 {
@@ -12,10 +12,7 @@ namespace Tera.DamageMeter
 
         private long _biggestCrit;
         private long _biggestHit;
-        private int _crits;
         private long _damage;
-        private long _heal;
-        private int _hits;
         private long _lowestCrit;
         private long _lowestHit;
 
@@ -129,42 +126,14 @@ namespace Tera.DamageMeter
                     }
                 }
                 _damage = value;
-                OnPropertyChanged("Damage");
             }
         }
 
-        public long Heal
-        {
-            get { return _heal; }
-            private set
-            {
-                if (value == _heal) return;
-                _heal = value;
-                OnPropertyChanged("Heal");
-            }
-        }
+        public long Heal { get; private set; }
 
-        public int Hits
-        {
-            get { return _hits; }
-            set
-            {
-                if (value == _hits) return;
-                _hits = value;
-                OnPropertyChanged("Hits");
-            }
-        }
+        public int Hits { get; set; }
 
-        public int Crits
-        {
-            get { return _crits; }
-            private set
-            {
-                if (value == _crits) return;
-                _crits = value;
-                OnPropertyChanged("Crits");
-            }
-        }
+        public int Crits { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

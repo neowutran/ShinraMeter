@@ -11,7 +11,7 @@ namespace Tera.Game.Messages
             reader.Skip(6);
             Id = reader.ReadEntityId();
             TargetId = reader.ReadEntityId();
-            Position = reader.ReadVector3f();
+            Position = reader.ReadVector3F();
             Heading = reader.ReadAngle();
             reader.Skip(4);
             NpcId = reader.ReadUInt32();
@@ -24,7 +24,7 @@ namespace Tera.Game.Messages
         public EntityId Id { get; private set; }
         public EntityId OwnerId { get; private set; }
         public EntityId TargetId { get; private set; }
-        public Vector3f Position { get; private set; }
+        public Vector3F Position { get; private set; }
         public Angle Heading { get; private set; }
         public uint NpcId { get; private set; }
         public ushort NpcType { get; private set; }

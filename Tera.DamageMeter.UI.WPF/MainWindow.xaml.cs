@@ -22,22 +22,31 @@ namespace Tera.DamageMeter.UI.WPF
             UiModel.Instance.Connected += HandleConnected;
             UiModel.Instance.DataUpdated += Update;
             KeyboardHook.Instance.RegisterKeyboardHook(this);
+            System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += Update;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
-        public ObservableCollection<PlayerStats> ListPlayer
+        public void Update(object sender, EventArgs e)
         {
-            get
+            lock (Controls)
             {
-                var listPlayer = new ObservableCollection<PlayerStats>();
-                foreach (var item in Controls)
+                foreach (var player in Controls)
                 {
-                    listPlayer.Add(item.Value);
+                    player.Value.Repaint();
                 }
 
-                return listPlayer;
+                Players.Items.Clear();
+                var sortedDict = from entry in Controls orderby entry.Value.PlayerData.DamageFraction descending select entry;
+                foreach (var item in sortedDict)
+                {
+                    Players.Items.Add(item.Value);
+                }
             }
+         
         }
 
         public List<PlayerData> PlayerData()
@@ -70,7 +79,6 @@ namespace Tera.DamageMeter.UI.WPF
                     {
                         playerStatsControl = new PlayerStats(playerStats);
                         Controls.Add(playerStats, playerStatsControl);
-                        UpdateLayout();
                     }
 
                     playerStatsControl.PlayerData.TotalDamage = totalDamage;
@@ -81,7 +89,6 @@ namespace Tera.DamageMeter.UI.WPF
                 {
                     Controls.Remove(invisibleControl.Key);
                 }
-                Players.ItemsSource = ListPlayer;
             };
             Dispatcher.Invoke(changeData, playerStatsSequence);
         }
@@ -111,5 +118,6 @@ namespace Tera.DamageMeter.UI.WPF
         private delegate void ChangeTitle(string servername);
 
         private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
+
     }
 }

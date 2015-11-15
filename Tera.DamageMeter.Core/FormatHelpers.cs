@@ -18,7 +18,7 @@ namespace Tera.DamageMeter
             CultureInfo = CultureInfo.InvariantCulture
         };
 
-        private static FormatHelpers instance;
+        private static FormatHelpers _instance;
 
         private FormatHelpers()
         {
@@ -31,11 +31,11 @@ namespace Tera.DamageMeter
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new FormatHelpers();
+                    _instance = new FormatHelpers();
                 }
-                return instance;
+                return _instance;
             }
         }
 

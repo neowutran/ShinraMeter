@@ -14,19 +14,18 @@
         ResizeMode="CanResizeWithGrip"
         BorderThickness="0"
         Icon="shinra.jpg"
-        Loaded="MainWindow_OnLoaded"
+        Loaded="MainWindow_OnLoaded"         
         Closed="MainWindow_OnClosed">
     <Grid>
-        <ToolBar x:Name="toolBar" Background="Transparent" HorizontalAlignment="Left" Margin="10,0,0,0"
-                 VerticalAlignment="Top" Width="490">
-            <Button x:Name="button" Content="X" Foreground="White" Click="Button_OnClick" HorizontalAlignment="Left"
-                    Margin="10,0,0,0" VerticalAlignment="Top" Width="75" />
+        <ToolBar x:Name="ToolBar" Background="Transparent" HorizontalAlignment="Left" Margin="0,0,0,0"
+                 VerticalAlignment="Top" Width="500">
+            <Button x:Name="button" Content="X" Foreground="White" BorderThickness="0" Click="Button_OnClick" HorizontalAlignment="Left"
+                    Margin="0,0,0,0" VerticalAlignment="Top" Width="385" />
         </ToolBar>
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                      HorizontalContentAlignment="Stretch" ItemsSource="{Binding Path=ListPlayer}"
-                      IsTextSearchEnabled="False" Margin="0,25,0,0" />
+                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,25,0,0" />
 
 
     </Grid>

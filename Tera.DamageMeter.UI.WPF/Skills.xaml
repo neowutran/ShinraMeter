@@ -11,14 +11,13 @@
         Focusable="False"
         ResizeMode="CanResizeWithGrip"
         BorderThickness="0"
-        Topmost="True"
+        Topmost="False"
         Icon="shinra.jpg"
         Title="Skills" Height="300" Width="1000">
     <Grid>
         <ToolBar x:Name="toolBar" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Width="115">
-            <Button x:Name="button" Content="X" Foreground="White" Click="Button_OnClick" HorizontalAlignment="Left"
-                    Margin="10,0,0,0" VerticalAlignment="Top" Width="75" />
+                 Width="1000">
+            <Button x:Name="button" Content="X" Foreground="White" Click="Button_OnClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="963" />
         </ToolBar>
         <ItemsControl x:Name="SkillsList" Background="Transparent" BorderThickness="0" Focusable="False"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,27,0,0" />

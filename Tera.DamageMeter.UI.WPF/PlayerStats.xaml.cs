@@ -19,12 +19,8 @@ namespace Tera.DamageMeter.UI.WPF
         {
             InitializeComponent();
             PlayerData = new PlayerData(playerInfo);
-        
-            PlayerData.TotalDamageChanged += Repaint;
-            _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills);
-
+           _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills);
             Image = ClassIcons.Instance.GetImage(PlayerData.PlayerInfo.Class).Source;
-            Console.WriteLine(PlayerData.PlayerInfo.Class);
             Class.Source = Image;
             LabelName.Content = PlayerName;
         }
@@ -44,25 +40,25 @@ namespace Tera.DamageMeter.UI.WPF
         public void Repaint()
         {
             BackgroundCache.Width = ActualWidth;
-            DpsIndicator.Width = ActualWidth*(PlayerData.DamageFraction/100);
+            DpsIndicator.Width = ActualWidth * (PlayerData.DamageFraction / 100);
             LabelDPS.Content = DPS;
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;
             _windowSkill.Update(PlayerData.PlayerInfo.Dealt.Skills);
         }
-
-
+     
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
             _windowSkill.Show();
+            _windowSkill.Topmost=true;
+            _windowSkill.Topmost = false;
         }
 
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
-            var w = Window.GetWindow(this);
-            w.DragMove();
+            Window.GetWindow(this).DragMove();
         }
     }
 }

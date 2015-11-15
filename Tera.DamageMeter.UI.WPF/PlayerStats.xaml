@@ -8,10 +8,10 @@
              d:DesignHeight="50">
     <Grid>
         <Rectangle x:Name="BackgroundCache" MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow"
-                   Fill="Black" Opacity="0.2" HorizontalAlignment="Left" Height="50" Stroke="Transparent"
+                   Fill="Black" Opacity="0.1" HorizontalAlignment="Left" Height="50" Stroke="Transparent"
                    VerticalAlignment="Top" Width="Auto" />
         <Rectangle MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator" Fill="Blue"
-                   Opacity="0.2" HorizontalAlignment="Left" Height="50" Stroke="Transparent" VerticalAlignment="Top"
+                   Opacity="0.3" HorizontalAlignment="Left" Height="50" Stroke="Transparent" VerticalAlignment="Top"
                    Width="Auto" />
 
         <Image MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class" Focusable="False"

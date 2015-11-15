@@ -7,6 +7,7 @@ using System.Linq;
 using NetworkSniffer;
 using PacketDotNet.Utils;
 using Tera.Data;
+using Tera.Game;
 
 namespace Tera.Sniffing
 {
