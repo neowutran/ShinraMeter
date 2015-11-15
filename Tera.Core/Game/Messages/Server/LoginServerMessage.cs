@@ -2,10 +2,9 @@
 {
     public class LoginServerMessage : ParsedMessage
     {
-        internal LoginServerMessage(TeraMessageReader reader, string guildName)
+        internal LoginServerMessage(TeraMessageReader reader)
             : base(reader)
         {
-            GuildName = guildName;
             reader.Skip(10);
             RaceGenderClass = new RaceGenderClass(reader.ReadInt32());
             Id = reader.ReadEntityId();
