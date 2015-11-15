@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Tera.DamageMeter.UI.Handler;
 using Tera.Data;
 using Tera.Sniffing;
@@ -96,7 +97,7 @@ namespace Tera.DamageMeter.UI.WPF
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             BasicTeraData.Instance.WindowData.Location = SystemParameters.WorkArea.Location;
-            BasicTeraData.Instance.WindowData.Size = RenderSize;
+            BasicTeraData.Instance.WindowData.Height = Convert.ToInt32(Height);
             BasicTeraData.Instance.WindowData.Save();
             TeraSniffer.Instance.Enabled = false;
             Application.Exit();
@@ -104,8 +105,7 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Width = BasicTeraData.Instance.WindowData.Size.Width;
-            Height = BasicTeraData.Instance.WindowData.Size.Height;
+            Height = BasicTeraData.Instance.WindowData.Height;
             Top = BasicTeraData.Instance.WindowData.Location.Y;
             Left = BasicTeraData.Instance.WindowData.Location.X;
         }
@@ -119,5 +119,9 @@ namespace Tera.DamageMeter.UI.WPF
 
         private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
 
+        private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
     }
 }

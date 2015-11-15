@@ -5,46 +5,34 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Tera.DamageMeter.UI.WPF"
              mc:Ignorable="d"
-
-             d:DesignHeight="50" d:DesignWidth="1300">
+             MinHeight="29"
+             MaxHeight="29"
+             d:DesignHeight="29" d:DesignWidth="720">
     <Grid>
-        <Viewbox Stretch="Uniform">
-            <Rectangle MouseLeftButtonDown="MoveWindow" Fill="Black" Opacity="0.5" HorizontalAlignment="Left"
-                       Height="50" Stroke="Transparent" VerticalAlignment="Top" Width="1300" />
-        </Viewbox>
-        <Grid MouseLeftButtonDown="MoveWindow" Width="Auto" Margin="50,0,0,0">
+        <Grid MouseLeftButtonDown="MoveWindow" Width="720" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" FontSize="14" VerticalAlignment="Center" x:Name="LabelName" Foreground="White" />
-            <Label Grid.Column="1" FontSize="14" x:Name="LabelId" VerticalAlignment="Center" Foreground="White" />
-
-
-            <Label Grid.Column="2" FontSize="14" x:Name="LabelTotalDamage" VerticalAlignment="Center"
+            <Label Grid.Column="0" FontSize="14" VerticalAlignment="Top" x:Name="LabelName" Foreground="White" />
+            <Label Grid.Column="1" FontSize="14" x:Name="LabelId" VerticalAlignment="Top" Foreground="White" />
+            <Label Grid.Column="2" FontSize="14" x:Name="LabelTotalDamage" VerticalAlignment="Top"
                    Foreground="White" />
-            <Label Grid.Column="3" FontSize="14" x:Name="LabelCritRate" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="4" FontSize="14" x:Name="LabelBiggestCrit" VerticalAlignment="Center"
+            <Label Grid.Column="3" FontSize="14" x:Name="LabelCritRate" VerticalAlignment="Top" Foreground="White" />
+            <Label Grid.Column="4" FontSize="14" x:Name="LabelBiggestCrit" VerticalAlignment="Top"
                    Foreground="White" />
-            <Label Grid.Column="5" FontSize="14" x:Name="LabelAverageCrit" VerticalAlignment="Center"
+            <Label Grid.Column="5" FontSize="14" x:Name="LabelAverageCrit" VerticalAlignment="Top"
                    Foreground="White" />
-            <Label Grid.Column="6" FontSize="14" x:Name="LabelLowestCrit" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="7" FontSize="14" x:Name="LabelBiggestHit" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="8" FontSize="14" x:Name="LabelAverageHit" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="9" FontSize="14" x:Name="LabelLowestHit" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="10" FontSize="14" x:Name="LabelNumberHit" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="11" FontSize="14" x:Name="LabelNumberCrit" VerticalAlignment="Center"
-                   Foreground="White" />
+            <Label Grid.Column="6" FontSize="14" x:Name="LabelLowestCrit" VerticalAlignment="Top" Foreground="White" />
+            <Label Grid.Column="7" FontSize="14" x:Name="LabelAverageHit" VerticalAlignment="Top" Foreground="White" />
+            <Label Grid.Column="8" FontSize="14" x:Name="LabelNumberHit" VerticalAlignment="Top" Foreground="White" />
 
         </Grid>
 

@@ -13,7 +13,7 @@ namespace Tera.DamageMeter.UI.WPF
     public partial class PlayerStats : UserControl
     {
         public ImageSource Image;
-        private Skills _windowSkill;
+        private readonly Skills _windowSkill;
 
         public PlayerStats(PlayerInfo playerInfo)
         {
@@ -29,19 +29,21 @@ namespace Tera.DamageMeter.UI.WPF
 
         public string DPS => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Dps) + "/s";
 
-        public string DamagePart => PlayerData.DamageFraction + "%";
+        public string DamagePart => Math.Round(PlayerData.DamageFraction) + "%";
 
-        public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Received.Damage) + "";
+        public string Damage => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Dealt.Damage);
 
-        public string CritRate => PlayerData.PlayerInfo.Dealt.CritRate + "%";
+        public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Received.Damage);
+
+        public string CritRate => Math.Round(PlayerData.PlayerInfo.Dealt.CritRate) + "%";
 
         public string PlayerName => PlayerData.PlayerInfo.Name;
 
         public void Repaint()
         {
-            BackgroundCache.Width = ActualWidth;
             DpsIndicator.Width = ActualWidth * (PlayerData.DamageFraction / 100);
             LabelDPS.Content = DPS;
+            LabelDamage.Content = Damage;
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;

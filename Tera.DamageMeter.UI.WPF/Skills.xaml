@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tera.DamageMeter.UI.WPF"
         mc:Ignorable="d"
-        Background="Transparent"
         WindowStyle="None"
         AllowsTransparency="True"
         Focusable="False"
@@ -13,13 +12,43 @@
         BorderThickness="0"
         Topmost="False"
         Icon="shinra.jpg"
-        Title="Skills" Height="300" Width="1000">
+        MinWidth="720"
+        MaxWidth="720"
+        MinHeight="50"
+        Title="Skills" Height="300" Width="720">
+    <Window.Background>
+        <SolidColorBrush Color="Black" Opacity="0.3" />
+    </Window.Background>
+    <Window.Resources>
+        <Style x:Key="ShinraButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                            BorderThickness="0"
+                            Padding="4,2" 
+                            BorderBrush="Transparent" 
+                            CornerRadius="0" 
+                            Background="Black">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <ToolBar x:Name="toolBar" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Width="1000">
-            <Button x:Name="button" Content="X" Foreground="White" Click="Button_OnClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="963" />
-        </ToolBar>
+        <Button x:Name="CloseMeter" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5" Content="X" Foreground="White" Click="Button_OnClick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="720" Margin="0" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
         <ItemsControl x:Name="SkillsList" Background="Transparent" BorderThickness="0" Focusable="False"
-                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,27,0,0" />
+                      HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False" Height="270" />
+            </ScrollViewer>
     </Grid>
 </Window>

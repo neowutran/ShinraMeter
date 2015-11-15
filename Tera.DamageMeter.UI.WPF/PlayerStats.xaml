@@ -7,9 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="50">
     <Grid>
-        <Rectangle x:Name="BackgroundCache" MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow"
-                   Fill="Black" Opacity="0.1" HorizontalAlignment="Left" Height="50" Stroke="Transparent"
-                   VerticalAlignment="Top" Width="Auto" />
+       
         <Rectangle MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator" Fill="Blue"
                    Opacity="0.3" HorizontalAlignment="Left" Height="50" Stroke="Transparent" VerticalAlignment="Top"
                    Width="Auto" />
@@ -22,21 +20,18 @@
               Margin="50,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="130" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" FontSize="18" VerticalAlignment="Center" x:Name="LabelName" Content="{Binding Name}"
-                   Foreground="White" />
-            <Label Grid.Column="1" FontSize="18" x:Name="LabelDamagePart" VerticalAlignment="Center" Foreground="White"
-                   Content="{Binding DamagePart}" />
-            <Label Grid.Column="2" FontSize="18" x:Name="LabelDPS" VerticalAlignment="Center" Foreground="White"
-                   Content="{Binding DPS}" />
-            <Label Grid.Column="3" FontSize="18" x:Name="LabelDamageReceived" VerticalAlignment="Center"
-                   Foreground="White" Content="{Binding DamageReceived}" />
-            <Label Grid.Column="4" FontSize="18" x:Name="LabelCritRate" VerticalAlignment="Center" Foreground="White"
-                   Content="{Binding CritRate}" />
+            <Label Grid.Column="0" FontSize="18" VerticalAlignment="Center" x:Name="LabelName" Foreground="White" />
+            <Label Grid.Column="1" FontSize="18" x:Name="LabelDamagePart" VerticalAlignment="Center" Foreground="White" />
+            <Label Grid.Column="2" FontSize="18" x:Name="LabelDPS" VerticalAlignment="Center" Foreground="White" />
+            <Label Grid.Column="3" FontSize="18" x:Name="LabelDamage" VerticalAlignment="Center" Foreground="White" />
+            <Label Grid.Column="4" FontSize="18" x:Name="LabelCritRate" VerticalAlignment="Center" Foreground="White" />
+            <Label Grid.Column="5" FontSize="18" x:Name="LabelDamageReceived" VerticalAlignment="Center" Foreground="White" />
 
         </Grid>
 
