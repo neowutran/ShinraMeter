@@ -21,15 +21,12 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelId.Content = "Skill Id";
                 LabelCritRate.Content = "CritRate";
                 LabelTotalDamage.Content = "Damage";
-                //  LabelNumberCrit.Content = "Crits";
                 LabelNumberHit.Content = "Hits";
                 LabelAverageCrit.Content = "Avg Crit";
                 LabelBiggestCrit.Content = "Big Crit";
                 LabelLowestCrit.Content = "Low Crit";
                 LabelAverageHit.Content = "Avg Blank";
-                //   LabelBiggestHit.Content = "Big NCrit";
-                //   LabelLowestHit.Content = "Low NCrit";
-
+           
                 LabelName.Foreground = Brushes.Red;
                 LabelId.Foreground = Brushes.Red;
                 LabelCritRate.Foreground = Brushes.Red;

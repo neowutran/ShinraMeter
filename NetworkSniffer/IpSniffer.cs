@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using PacketDotNet;
 using PacketDotNet.Utils;
 using SharpPcap;
@@ -70,13 +71,21 @@ namespace NetworkSniffer
         {
             Debug.Assert(_devices == null);
             _devices = WinPcapDeviceList.New();
+
             var interestingDevices = _devices.Where(IsInteresting);
+
             foreach (var device in interestingDevices)
             {
                 device.OnPacketArrival += device_OnPacketArrival;
                 device.Open(DeviceMode.Promiscuous, 1000);
                 device.Filter = _filter;
-                device.KernelBufferSize = 2000000000;
+                try
+                {
+                    device.KernelBufferSize = 2000000000;
+                }
+                catch
+                {
+                }
                 device.StartCapture();
             }
         }

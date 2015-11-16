@@ -13,18 +13,16 @@ namespace Tera.DamageMeter.UI.WPF
     public partial class Skills
     {
         private Dictionary<KeyValuePair<int, string>, SkillStats> _skills;
+        private PlayerStats _parent;
 
-        public Skills(Dictionary<KeyValuePair<int, string>, SkillStats> skills)
+        public Skills(Dictionary<KeyValuePair<int, string>, SkillStats> skills, PlayerStats parent )
         {
             InitializeComponent();
             _skills = skills;
-            var dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += Repaint;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Start();
+            _parent = parent;
         }
 
-        private void Repaint(object sender, EventArgs e)
+        private void Repaint()
         {
             SkillsList.Items.Clear();
             var sortedDict = from entry in _skills orderby entry.Value.Damage descending select entry;
@@ -39,11 +37,12 @@ namespace Tera.DamageMeter.UI.WPF
         public void Update(Dictionary<KeyValuePair<int, string>, SkillStats> skills)
         {
             _skills = skills;
+            Repaint();
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)
         {
-            Hide();
+            _parent.CloseSkills();
         }
 
         private void Skills_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
