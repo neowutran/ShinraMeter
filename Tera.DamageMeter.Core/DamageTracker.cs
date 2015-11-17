@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Tera.Game;
 
 namespace Tera.DamageMeter
@@ -59,8 +60,6 @@ namespace Tera.DamageMeter
         {
             if (message.Amount == 0)
             {
-                var str = $"{message.SkillId:x}";
-                Console.WriteLine("nothing" + str);
                 return;
             }
 
@@ -69,31 +68,13 @@ namespace Tera.DamageMeter
                 return;
             }
 
-
-            /**
-            Lol, debug hard TODO remove when debugging end
-            */
-            Console.WriteLine("source:" + message.SourcePlayer);
-            Console.WriteLine(";source_id:" + message.Source.Id);
-            if (message.Skill != null)
-            {
-                Console.WriteLine(";skill:" + message.Skill.Name);
-            }
-            Console.WriteLine(
-                ";skill_id:" + message.SkillId +
-                ";damage:" + message.Damage +
-                ";target:" + message.TargetPlayer +
-                ";target_id: " + message.Target.Id +
-                "; heal:" + message.Heal +
-                ";amout:" + message.Amount
-                );
-            var skillName = "";
+            var skillName = message.SkillId+"";
             if (message.Skill != null)
             {
                 skillName = message.Skill.Name;
             }
             SkillStats skillStats;
-            var skillKey = new KeyValuePair<int, string>(message.SkillId, skillName);
+            var skillKey = new Skill(skillName, new List<int>{ message.SkillId });
 
             stats.Skills.TryGetValue(skillKey, out skillStats);
             if (skillStats == null)
@@ -102,8 +83,17 @@ namespace Tera.DamageMeter
             }
 
             skillStats.AddData(message.IsHeal ? message.Heal : message.Damage, message.IsCritical, message.IsHeal);
-
-            stats.Skills[skillKey] = skillStats;
+            List<Skill> skill = stats.Skills.Keys.ToList();
+            int indexSkill = skill.IndexOf(skillKey);
+            if (indexSkill != -1)
+            {
+                foreach (var skillid in skill[indexSkill].SkillId.Where(skillid => !skillKey.SkillId.Contains(skillid)))
+                {
+                    skillKey.SkillId.Add(skillid);
+                }
+            }
+            stats.Skills.Remove(skillKey);
+            stats.Skills.Add(skillKey,skillStats);
         }
     }
 }

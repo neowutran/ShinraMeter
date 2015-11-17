@@ -61,7 +61,7 @@ namespace Tera.DamageMeter.UI.WPF
 
         public void CloseSkills()
         {
-            _windowSkill.Close();
+            _windowSkill?.Close();
             _windowSkill = null;
         }
 

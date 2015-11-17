@@ -11,7 +11,7 @@ namespace Tera.DamageMeter.UI.WPF
     /// </summary>
     public partial class Skill
     {
-        public Skill(KeyValuePair<int, string> skill, SkillStats stats, bool template = false)
+        public Skill(DamageMeter.Skill skill, SkillStats stats, bool template = false)
         {
             InitializeComponent();
 
@@ -39,8 +39,19 @@ namespace Tera.DamageMeter.UI.WPF
             }
             else
             {
-                LabelName.Content = skill.Value;
-                LabelId.Content = skill.Key;
+                LabelName.Content = skill.SkillName;
+
+                string skillsId = "";
+                for (int i = 0; i < skill.SkillId.Count; i++)
+                {
+                    skillsId += + skill.SkillId[i];
+                    if (i < skill.SkillId.Count - 1)
+                    {
+                        skillsId += ",";
+                    }
+                }
+
+                LabelId.Content = skillsId;
                 LabelCritRate.Content = stats.CritRate + "%";
                 LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(stats.Damage);
                 LabelNumberHit.Content = stats.Hits;

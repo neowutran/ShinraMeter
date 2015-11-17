@@ -12,10 +12,10 @@ namespace Tera.DamageMeter.UI.WPF
     /// </summary>
     public partial class Skills
     {
-        private Dictionary<KeyValuePair<int, string>, SkillStats> _skills;
-        private PlayerStats _parent;
+        private Dictionary<DamageMeter.Skill, SkillStats> _skills;
+        private readonly PlayerStats _parent;
 
-        public Skills(Dictionary<KeyValuePair<int, string>, SkillStats> skills, PlayerStats parent )
+        public Skills(Dictionary<DamageMeter.Skill, SkillStats> skills, PlayerStats parent )
         {
             InitializeComponent();
             _skills = skills;
@@ -25,16 +25,19 @@ namespace Tera.DamageMeter.UI.WPF
         private void Repaint()
         {
             SkillsList.Items.Clear();
+         
+                SkillsList.Items.Add(new Skill(new DamageMeter.Skill("", new List<int>()), null, true));
             var sortedDict = from entry in _skills orderby entry.Value.Damage descending select entry;
-            SkillsList.Items.Add(new Skill(new KeyValuePair<int, string>(0, ""), null, true));
-            foreach (var skill in sortedDict)
-            {
-                SkillsList.Items.Add(new Skill(skill.Key, skill.Value));
-            }
+        foreach (var skill in sortedDict)
+                {
+                            SkillsList.Items.Add(new Skill(skill.Key, skill.Value));
+
+                }
+
         }
 
 
-        public void Update(Dictionary<KeyValuePair<int, string>, SkillStats> skills)
+        public void Update(Dictionary<DamageMeter.Skill, SkillStats> skills)
         {
             _skills = skills;
             Repaint();

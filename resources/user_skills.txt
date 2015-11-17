@@ -1,6 +1,26 @@
+31013;Common;Common;Berserker;Thunder Strike X
+250101;Common;Common;Berserker;Raze
+250130;Common;Common;Berserker;Raze
+180613;Common;Common;Berserker;Lethal Strive VI
+150913;Common;Common;Berserker;Vampiric Blow IX 
+310101;Common;Common;Berserker;Overwhelm
+240213;Common;Common;Berserker;Evasive Smash
+260120;Common;Common;Berserker;Tackle
+101113;Common;Common;Berserker;Cyclone
+320101;Common;Common;Berserker;Punishing Strike
+300130;Common;Common;Berserker;Axe counter
+400120;Common;Common;Priest;Zenobia's vortex
+11220;Common;Common;Priest;Divine Radiance
+101124;Common;Common;Gunner;Arc Bomb
+20620;Common;Common;Gunner;Bombardement
+180722;Common;Common;Gunner;HB-7
+11220;Common;Common;Gunner;Blast 
+61120;Common;Common;Gunner;Time bomb
+91020;Common;Common;Gunner;Mana Missiles
 61190100;Common;Common;Common;Arun's Tears
-67044430;Common;Common;Gunner;HB-7 Heal
+67044430;Common;Common;Gunner;ST-4
 130202;Common;Common;Gunner;Balder
+50910;Common;Common;Mystic;Titanic Favor
 67044429;Common;Common;Mystic;Warding Totem II
 420120;Common;Common;Mystic;Boomerang Pulse
 290730;Common;Common;Warrior;Blade Draw VII
@@ -32,8 +52,7 @@
 50300;Common;Common;Reaper;Grim Strike III
 80230;Common;Common;Reaper;Whipsaw II
 80200;Common;Common;Reaper;Whipsaw II
-120200;Common;Common;Reaper;Shadow Burst II (1)
-120201;Common;Common;Reaper;Shadow Burst II (2)
+120200;Common;Common;Reaper;Shadow Burst II
 271000;Common;Common;Priest;Final Reprisal X;Unchained
 271030;Common;Common;Priest;Final Reprisal X;Unchained
 291100;Common;Common;Priest;Triple Nemesis XI
@@ -52,8 +71,7 @@
 30800;Common;Common;Lancer;Onslaught VIII;Unchained
 67044435;Common;Common;Gunner;Command: Self-Destruct
 67044430;Common;Common;Gunner;ST-4 Attack
-70820;Common;Common;Gunner;Arcane Barrage VIII (1)
-70821;Common;Common;Gunner;Arcane Barrage VIII (2)
+70820;Common;Common;Gunner;Arcane Barrage VIII
 110900;Common;Common;Gunner;Rocket Jump IX;Unchained
 110901;Common;Common;Gunner;Rocket Jump IX;Unchained
 110902;Common;Common;Gunner;Rocket Jump IX;Unchained

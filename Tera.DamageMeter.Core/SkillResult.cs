@@ -20,7 +20,23 @@ namespace Tera.DamageMeter
 
             if (sourceUser != null)
             {
+
                 Skill = skillDatabase.Get(sourceUser, message.SkillId);
+                
+                if (Skill == null)
+                {
+                    var skillid = message.SkillId/10;
+                    skillid = skillid*10;
+                    for (var i = 0; i < 10; i++)
+                    {
+                        Skill = skillDatabase.Get(sourceUser, skillid+i);
+                        if (Skill != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+                
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
             }
 

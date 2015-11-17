@@ -16,8 +16,8 @@ namespace Tera.DamageMeter
             PlayerInfo = playerInfo;
         }
 
-        public Dictionary<KeyValuePair<int, string>, SkillStats> Skills { get; set; } =
-            new Dictionary<KeyValuePair<int, string>, SkillStats>();
+        public Dictionary<Skill, SkillStats> Skills { get; set; } =
+            new Dictionary<Skill, SkillStats>();
 
         public PlayerInfo PlayerInfo { get; }
 

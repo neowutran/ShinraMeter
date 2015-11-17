@@ -43,6 +43,7 @@
     <Compile Include="PlayerInfo.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Skill.cs" />
     <Compile Include="SkillResult.cs" />
     <Compile Include="SkillsStats.cs" />
     <Compile Include="SkillStats.cs" />

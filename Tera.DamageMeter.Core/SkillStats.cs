@@ -4,7 +4,7 @@ using Tera.DamageMeter.Properties;
 
 namespace Tera.DamageMeter
 {
-    public class SkillStats : INotifyPropertyChanged
+    public class SkillStats
     {
         private readonly PlayerInfo _playerInfo;
         private long _averageCrit;
@@ -22,17 +22,23 @@ namespace Tera.DamageMeter
             _playerInfo = playerInfo;
         }
 
-        public double CritRate
+        public void Add(SkillStats skillStats)
         {
-            get
+            if (_playerInfo != skillStats._playerInfo)
             {
-                if (Hits == 0)
-                {
-                    return 0;
-                }
-                return Math.Round((double) Crits*100/Hits, 1);
+                return;
             }
+            LowestCrit = skillStats.LowestCrit;
+            BiggestHit = skillStats.BiggestCrit;
+            _averageCrit = (_averageCrit + skillStats._averageCrit)/(skillStats.Crits+ Crits);
+            _averageHit = (_averageHit + skillStats._averageHit)/(skillStats.Hits + Hits - Crits - skillStats.Crits);
+            LowestHit = skillStats.LowestHit;
+            BiggestHit = skillStats.BiggestHit;
+            _damage += skillStats._damage;
+            Heal += skillStats.Heal;
         }
+
+        public double CritRate => Hits == 0 ? 0 : Math.Round((double) Crits*100/Hits, 1);
 
         public long BiggestCrit
         {
@@ -87,11 +93,11 @@ namespace Tera.DamageMeter
         {
             get
             {
-                if (Hits == 0)
+                if (Hits == 0 || Crits == Hits)
                 {
                     return 0;
                 }
-                return _averageHit/Hits;
+                return _averageHit/(Hits - Crits);
             }
             private set { _averageHit += value; }
         }
@@ -135,8 +141,6 @@ namespace Tera.DamageMeter
 
         public int Crits { get; private set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public void AddData(long damage, bool isCrit, bool isHeal)
         {
             Hits++;
@@ -169,13 +173,6 @@ namespace Tera.DamageMeter
                     LowestHit = damage;
                 }
             }
-        }
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

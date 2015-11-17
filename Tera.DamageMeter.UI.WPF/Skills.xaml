@@ -48,10 +48,9 @@
         <Button x:Name="CloseMeter" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
                 Content="X" Foreground="White" Click="Button_OnClick" HorizontalAlignment="Left"
                 VerticalAlignment="Top" Width="720" Margin="0" />
-        <ScrollViewer   VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-            <ItemsControl MouseLeftButtonDown="Skills_OnMouseLeftButtonDown" x:Name="SkillsList" Background="Transparent" BorderThickness="0" Focusable="False"
-                          HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False"
-                          Height="270" />
+        <ScrollViewer MinHeight="275"   VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
+            <ItemsControl MinHeight="275" MouseLeftButtonDown="Skills_OnMouseLeftButtonDown" x:Name="SkillsList" Background="Transparent" BorderThickness="0" Focusable="False"
+                          HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False"/>
         </ScrollViewer>
     </Grid>
 </Window>
