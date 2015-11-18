@@ -56,6 +56,7 @@ namespace Tera.DamageMeter.UI.WPF
             }
           
             _windowSkill.Show();
+            _windowSkill.Update(PlayerData.PlayerInfo.Dealt.Skills);
 
         }
 

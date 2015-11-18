@@ -38,6 +38,9 @@ namespace Tera.DamageMeter
             Heal += skillStats.Heal;
         }
 
+        public double DamagePercentage
+            => _playerInfo.Dealt.Damage == 0 ? 0 : Math.Round((double) Damage*100/_playerInfo.Dealt.Damage,1);
+
         public double CritRate => Hits == 0 ? 0 : Math.Round((double) Crits*100/Hits, 1);
 
         public long BiggestCrit

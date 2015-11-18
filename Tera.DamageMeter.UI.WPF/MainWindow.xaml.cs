@@ -66,11 +66,23 @@ namespace Tera.DamageMeter.UI.WPF
             Dispatcher.Invoke(changeTitle, serverName);
         }
 
+        private void StayTopMost()
+        {
+            if (Topmost)
+            {
+               
+                Topmost = false; // important
+                Topmost = true; // important
+                //Focus(); // important
+            }
+        }
 
         public void Update(IEnumerable<PlayerInfo> playerStatsSequence)
         {
             UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats)
             {
+                
+                StayTopMost();
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
                 var totalDamage = stats.Sum(playerStats => playerStats.Dealt.Damage);
 
@@ -135,6 +147,7 @@ namespace Tera.DamageMeter.UI.WPF
         private delegate void ChangeTitle(string servername);
 
         private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
+
 
         private void ToggleTopMost_OnClick(object sender, RoutedEventArgs e)
         {

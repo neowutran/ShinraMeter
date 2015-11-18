@@ -1,3 +1,21 @@
+120620;Common;Common;Sorcerer;Void Pulse VI
+21020;Common;Common;Sorcerer;Ice Needle X
+170620;Common;Common;Sorcerer;Painful Trap VI
+30320;Common;Common;Sorcerer;Lightning trap III
+270420;Common;Common;Sorcerer;Hail Storm IV
+40923;Common;Common;Sorcerer;Arcane Pulse IX
+200510;Common;Common;Sorcerer;Flaming Barrage V
+190110;Common;Common;Sorcerer;Mana Syphon
+220410;Common;Common;Sorcerer;Mana Voley II
+41213;Common;Common;Archer;Penetrating Arrow VII
+50220;Common;Common;Archer;Arrow rain II
+30913;Common;Common;Archer;Radiant Arrow IV
+90620;Common;Common;Archer;Slow Trap VI
+100420;Common;Common;Archer;Stunning Trap IV
+150720;Common;Common;Archer;Incendiary Trap VII
+230220;Common;Common;Archer;Concussion Trap II
+240220;Common;Common;Archer;Ensnaring Trap II
+250220;Common;Common;Archer;Explosion Trap II
 31013;Common;Common;Berserker;Thunder Strike X
 250101;Common;Common;Berserker;Raze
 250130;Common;Common;Berserker;Raze
@@ -42,10 +60,10 @@
 240130;Common;Common;Slayer;Eviscerate
 250100;Common;Common;Slayer;Ultimate Overhand Strike I
 250130;Common;Common;Slayer;Ultimate Overhand Strike I
-40220;Common;Common;Reaper;Sundering Strike III (2)
-40120;Common;Common;Reaper;Sundering Strike III (2)
-40300;Common;Common;Reaper;Sundering Strike III (1)
-40330;Common;Common;Reaper;Sundering Strike III (1)
+40220;Common;Common;Reaper;Sundering Strike III
+40120;Common;Common;Reaper;Sundering Strike III
+40300;Common;Common;Reaper;Sundering Strike III
+40330;Common;Common;Reaper;Sundering Strike III
 30330;Common;Common;Reaper;Double Shear III
 30300;Common;Common;Reaper;Double Shear III
 50330;Common;Common;Reaper;Grim Strike III
