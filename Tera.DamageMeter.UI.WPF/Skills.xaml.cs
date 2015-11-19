@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -12,10 +11,10 @@ namespace Tera.DamageMeter.UI.WPF
     /// </summary>
     public partial class Skills
     {
-        private Dictionary<DamageMeter.Skill, SkillStats> _skills;
         private readonly PlayerStats _parent;
+        private Dictionary<DamageMeter.Skill, SkillStats> _skills;
 
-        public Skills(Dictionary<DamageMeter.Skill, SkillStats> skills, PlayerStats parent )
+        public Skills(Dictionary<DamageMeter.Skill, SkillStats> skills, PlayerStats parent)
         {
             InitializeComponent();
             _skills = skills;
@@ -25,15 +24,13 @@ namespace Tera.DamageMeter.UI.WPF
         private void Repaint()
         {
             SkillsList.Items.Clear();
-         
-                SkillsList.Items.Add(new Skill(new DamageMeter.Skill("", new List<int>()), null, true));
+
+            SkillsList.Items.Add(new Skill(new DamageMeter.Skill("", new List<int>()), null, true));
             var sortedDict = from entry in _skills orderby entry.Value.Damage descending select entry;
-        foreach (var skill in sortedDict)
-                {
-                            SkillsList.Items.Add(new Skill(skill.Key, skill.Value));
-
-                }
-
+            foreach (var skill in sortedDict)
+            {
+                SkillsList.Items.Add(new Skill(skill.Key, skill.Value));
+            }
         }
 
 

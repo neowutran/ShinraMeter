@@ -28,6 +28,9 @@ namespace Tera.DamageMeter.UI.WPF
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+            Boss.Items.Add("test");
+            Boss.Items.Add("test2");
+            Boss.Items.Add("test3");
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -68,7 +71,6 @@ namespace Tera.DamageMeter.UI.WPF
         {
             if (Topmost)
             {
-               
                 Topmost = false; // important
                 Topmost = true; // important
                 //Focus(); // important
@@ -79,7 +81,6 @@ namespace Tera.DamageMeter.UI.WPF
         {
             UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats)
             {
-                
                 StayTopMost();
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
                 var totalDamage = stats.Sum(playerStats => playerStats.Dealt.Damage);
@@ -111,7 +112,7 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            BasicTeraData.Instance.WindowData.Location = new Point(Left,Top);
+            BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
             BasicTeraData.Instance.WindowData.Height = Convert.ToInt32(Height);
             BasicTeraData.Instance.WindowData.Save();
             TeraSniffer.Instance.Enabled = false;
@@ -142,10 +143,6 @@ namespace Tera.DamageMeter.UI.WPF
             }
         }
 
-        private delegate void ChangeTitle(string servername);
-
-        private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
-
 
         private void ToggleTopMost_OnClick(object sender, RoutedEventArgs e)
         {
@@ -158,5 +155,9 @@ namespace Tera.DamageMeter.UI.WPF
             Topmost = true;
             ToggleTopMost.Content = "ALWAYS ON TOP: ON";
         }
+
+        private delegate void ChangeTitle(string servername);
+
+        private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
     }
 }

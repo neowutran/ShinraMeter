@@ -1,3 +1,5 @@
+130230;Common;Common;Gunner;Balder's Vengeance II
+120720;Common;Common;Gunner;HB-7: Arcane Barrage
 120620;Common;Common;Sorcerer;Void Pulse VI
 21020;Common;Common;Sorcerer;Ice Needle X
 170620;Common;Common;Sorcerer;Painful Trap VI
@@ -32,12 +34,13 @@
 101124;Common;Common;Gunner;Arc Bomb
 20620;Common;Common;Gunner;Bombardement
 180722;Common;Common;Gunner;HB-7
-11220;Common;Common;Gunner;Blast 
-61120;Common;Common;Gunner;Time bomb
+11220;Common;Common;Gunner;Blast XII
+61120;Common;Common;Gunner;Time bomb XI (1)
+61122;Common;Common;Gunner;Time bomb XI (2)
 91020;Common;Common;Gunner;Mana Missiles
 61190100;Common;Common;Common;Arun's Tears
 67044430;Common;Common;Gunner;ST-4
-130202;Common;Common;Gunner;Balder
+130202;Common;Common;Gunner;Balder's Vengeance II
 50910;Common;Common;Mystic;Titanic Favor
 67044429;Common;Common;Mystic;Warding Totem II
 420120;Common;Common;Mystic;Boomerang Pulse
@@ -60,17 +63,16 @@
 240130;Common;Common;Slayer;Eviscerate
 250100;Common;Common;Slayer;Ultimate Overhand Strike I
 250130;Common;Common;Slayer;Ultimate Overhand Strike I
-40220;Common;Common;Reaper;Sundering Strike III
-40120;Common;Common;Reaper;Sundering Strike III
-40300;Common;Common;Reaper;Sundering Strike III
-40330;Common;Common;Reaper;Sundering Strike III
+40220;Common;Common;Reaper;Sundering Strike III (2)
+40300;Common;Common;Reaper;Sundering Strike III (1)
 30330;Common;Common;Reaper;Double Shear III
 30300;Common;Common;Reaper;Double Shear III
 50330;Common;Common;Reaper;Grim Strike III
 50300;Common;Common;Reaper;Grim Strike III
 80230;Common;Common;Reaper;Whipsaw II
 80200;Common;Common;Reaper;Whipsaw II
-120200;Common;Common;Reaper;Shadow Burst II
+120200;Common;Common;Reaper;Shadow Burst II (1)
+120201;Common;Common;Reaper;Shadow Burst II (2)
 271000;Common;Common;Priest;Final Reprisal X;Unchained
 271030;Common;Common;Priest;Final Reprisal X;Unchained
 291100;Common;Common;Priest;Triple Nemesis XI
@@ -89,7 +91,8 @@
 30800;Common;Common;Lancer;Onslaught VIII;Unchained
 67044435;Common;Common;Gunner;Command: Self-Destruct
 67044430;Common;Common;Gunner;ST-4 Attack
-70820;Common;Common;Gunner;Arcane Barrage VIII
+70820;Common;Common;Gunner;Arcane Barrage VIII (1)
+70821;Common;Common;Gunner;Arcane Barrage VIII (2)
 110900;Common;Common;Gunner;Rocket Jump IX;Unchained
 110901;Common;Common;Gunner;Rocket Jump IX;Unchained
 110902;Common;Common;Gunner;Rocket Jump IX;Unchained
@@ -1765,15 +1768,15 @@
 100130;Common;Common;Reaper;Pendulum Strike I
 100200;Common;Common;Reaper;Pendulum Strike II
 100230;Common;Common;Reaper;Pendulum Strike II
-110100;Common;Common;Reaper;Shadow Lash I
-110101;Common;Common;Reaper;Shadow Lash I
-110102;Common;Common;Reaper;Shadow Lash I
-110103;Common;Common;Reaper;Shadow Lash I
+110100;Common;Common;Reaper;Shadow Lash I (1)
+110101;Common;Common;Reaper;Shadow Lash I (2)
+110102;Common;Common;Reaper;Shadow Lash I (3)
+110103;Common;Common;Reaper;Shadow Lash I (4)
 110190;Common;Common;Reaper;Shadow Lash I
-110200;Common;Common;Reaper;Shadow Lash II
-110201;Common;Common;Reaper;Shadow Lash II
-110202;Common;Common;Reaper;Shadow Lash II
-110203;Common;Common;Reaper;Shadow Lash II
+110200;Common;Common;Reaper;Shadow Lash II (1)
+110201;Common;Common;Reaper;Shadow Lash II (2)
+110202;Common;Common;Reaper;Shadow Lash II (3)
+110203;Common;Common;Reaper;Shadow Lash II (4)
 110290;Common;Common;Reaper;Shadow Lash II
 120100;Common;Common;Reaper;Shadow Burst I
 120101;Common;Common;Reaper;Shadow Burst I

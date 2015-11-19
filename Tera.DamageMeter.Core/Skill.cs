@@ -1,39 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Tera.DamageMeter
 {
-    public class Skill : IEquatable<Object>
+    public class Skill : IEquatable<object>
     {
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Skill) obj);
-        }
-
-        private readonly string _skill;
         public List<int> SkillId;
 
         public Skill(string skill, List<int> skillId)
         {
             SkillId = skillId;
-            _skill = skill;
+            SkillName = skill;
         }
 
-        public string SkillName => _skill;
+        public string SkillName { get; }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Skill) obj);
+        }
 
         public bool Equals(Skill other)
         {
-            return _skill.Equals(other._skill);
+            return SkillName.Equals(other.SkillName);
         }
 
         public static bool operator ==(Skill a, Skill b)
         {
-            if (System.Object.ReferenceEquals(a, b))
+            if (ReferenceEquals(a, b))
             {
                 return true;
             }
@@ -45,8 +42,6 @@ namespace Tera.DamageMeter
             }
 
             return a.Equals(b);
-
-
         }
 
         public static bool operator !=(Skill a, Skill b)
@@ -56,7 +51,7 @@ namespace Tera.DamageMeter
 
         public override int GetHashCode()
         {
-            return _skill.GetHashCode();
+            return SkillName.GetHashCode();
         }
     }
 }

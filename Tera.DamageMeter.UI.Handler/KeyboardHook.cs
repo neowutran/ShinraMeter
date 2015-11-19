@@ -47,7 +47,7 @@ namespace Tera.DamageMeter.UI.Handler
                 e.Modifier == BasicTeraData.Instance.HotkeysData.Paste.Value)
             {
                 var text = Clipboard.GetText();
-                Thread pasteThread = new Thread(() => CopyPaste.Paste(text));
+                var pasteThread = new Thread(() => CopyPaste.Paste(text));
                 pasteThread.Start();
             }
             else if (e.Key == BasicTeraData.Instance.HotkeysData.Reset.Key &&
@@ -63,7 +63,7 @@ namespace Tera.DamageMeter.UI.Handler
                 CopyPaste.Copy(_dpswindow.PlayerData(), copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
                 var text = Clipboard.GetText();
                 Console.WriteLine(text);
-                Thread pasteThread = new Thread(() => CopyPaste.Paste(text));
+                var pasteThread = new Thread(() => CopyPaste.Paste(text));
                 pasteThread.Start();
             }
         }

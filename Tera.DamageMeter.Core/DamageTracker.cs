@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Tera.Game;
@@ -68,13 +67,13 @@ namespace Tera.DamageMeter
                 return;
             }
 
-            var skillName = message.SkillId+"";
+            var skillName = message.SkillId + "";
             if (message.Skill != null)
             {
                 skillName = message.Skill.Name;
             }
             SkillStats skillStats;
-            var skillKey = new Skill(skillName, new List<int>{ message.SkillId });
+            var skillKey = new Skill(skillName, new List<int> {message.SkillId});
 
             stats.Skills.TryGetValue(skillKey, out skillStats);
             if (skillStats == null)
@@ -83,8 +82,8 @@ namespace Tera.DamageMeter
             }
 
             skillStats.AddData(message.IsHeal ? message.Heal : message.Damage, message.IsCritical, message.IsHeal);
-            List<Skill> skill = stats.Skills.Keys.ToList();
-            int indexSkill = skill.IndexOf(skillKey);
+            var skill = stats.Skills.Keys.ToList();
+            var indexSkill = skill.IndexOf(skillKey);
             if (indexSkill != -1)
             {
                 foreach (var skillid in skill[indexSkill].SkillId.Where(skillid => !skillKey.SkillId.Contains(skillid)))
@@ -93,7 +92,7 @@ namespace Tera.DamageMeter
                 }
             }
             stats.Skills.Remove(skillKey);
-            stats.Skills.Add(skillKey,skillStats);
+            stats.Skills.Add(skillKey, skillStats);
         }
     }
 }

@@ -54,10 +54,9 @@ namespace Tera.DamageMeter.UI.WPF
             {
                 _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills, this);
             }
-          
+
             _windowSkill.Show();
             _windowSkill.Update(PlayerData.PlayerInfo.Dealt.Skills);
-
         }
 
         public void CloseSkills()

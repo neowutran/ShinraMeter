@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using Tera.DamageMeter.Properties;
 
 namespace Tera.DamageMeter
 {
@@ -22,24 +20,8 @@ namespace Tera.DamageMeter
             _playerInfo = playerInfo;
         }
 
-        public void Add(SkillStats skillStats)
-        {
-            if (_playerInfo != skillStats._playerInfo)
-            {
-                return;
-            }
-            LowestCrit = skillStats.LowestCrit;
-            BiggestHit = skillStats.BiggestCrit;
-            _averageCrit = (_averageCrit + skillStats._averageCrit)/(skillStats.Crits+ Crits);
-            _averageHit = (_averageHit + skillStats._averageHit)/(skillStats.Hits + Hits - Crits - skillStats.Crits);
-            LowestHit = skillStats.LowestHit;
-            BiggestHit = skillStats.BiggestHit;
-            _damage += skillStats._damage;
-            Heal += skillStats.Heal;
-        }
-
         public double DamagePercentage
-            => _playerInfo.Dealt.Damage == 0 ? 0 : Math.Round((double) Damage*100/_playerInfo.Dealt.Damage,1);
+            => _playerInfo.Dealt.Damage == 0 ? 0 : Math.Round((double) Damage*100/_playerInfo.Dealt.Damage, 1);
 
         public double CritRate => Hits == 0 ? 0 : Math.Round((double) Crits*100/Hits, 1);
 
@@ -143,6 +125,22 @@ namespace Tera.DamageMeter
         public int Hits { get; set; }
 
         public int Crits { get; private set; }
+
+        public void Add(SkillStats skillStats)
+        {
+            if (_playerInfo != skillStats._playerInfo)
+            {
+                return;
+            }
+            LowestCrit = skillStats.LowestCrit;
+            BiggestHit = skillStats.BiggestCrit;
+            _averageCrit = (_averageCrit + skillStats._averageCrit)/(skillStats.Crits + Crits);
+            _averageHit = (_averageHit + skillStats._averageHit)/(skillStats.Hits + Hits - Crits - skillStats.Crits);
+            LowestHit = skillStats.LowestHit;
+            BiggestHit = skillStats.BiggestHit;
+            _damage += skillStats._damage;
+            Heal += skillStats.Heal;
+        }
 
         public void AddData(long damage, bool isCrit, bool isHeal)
         {

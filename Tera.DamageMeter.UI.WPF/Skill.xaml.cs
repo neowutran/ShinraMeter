@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -27,7 +26,7 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelBiggestCrit.Content = "Big Crit";
                 LabelLowestCrit.Content = "Low Crit";
                 LabelAverageHit.Content = "Avg Blk";
-           
+
                 LabelName.Foreground = Brushes.Red;
                 LabelDamagePercentage.Foreground = Brushes.Red;
                 LabelId.Foreground = Brushes.Red;
@@ -43,10 +42,10 @@ namespace Tera.DamageMeter.UI.WPF
             {
                 LabelName.Content = skill.SkillName;
 
-                string skillsId = "";
-                for (int i = 0; i < skill.SkillId.Count; i++)
+                var skillsId = "";
+                for (var i = 0; i < skill.SkillId.Count; i++)
                 {
-                    skillsId += + skill.SkillId[i];
+                    skillsId += +skill.SkillId[i];
                     if (i < skill.SkillId.Count - 1)
                     {
                         skillsId += ",";

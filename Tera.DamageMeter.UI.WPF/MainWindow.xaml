@@ -44,6 +44,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+      
     </Window.Resources>
     <Window.Background>
         <SolidColorBrush Color="Black" Opacity="0.2" />
@@ -52,8 +53,10 @@
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
                 Content="CLOSE SHINRA METER" Foreground="White" BorderThickness="0" Click="Button_OnClick"
                 HorizontalAlignment="Left"
-                Margin="245,0,0,0" VerticalAlignment="Top" Width="245" />
-        <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" Foreground="White" BorderThickness="0" x:Name="ToggleTopMost" Click="ToggleTopMost_OnClick" Content="ALWAYS ON TOP: ON" HorizontalAlignment="Left" VerticalAlignment="Top" Width="245" Margin="0"/>
+                Margin="250,0,0,0" VerticalAlignment="Top" Width="240" />
+        <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" Foreground="White"
+                BorderThickness="0" x:Name="ToggleTopMost" Click="ToggleTopMost_OnClick" Content="ALWAYS ON TOP: ON"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Width="245" Margin="0" />
 
         <ItemsControl MinHeight="250" Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"

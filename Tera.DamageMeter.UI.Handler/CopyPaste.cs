@@ -43,14 +43,13 @@ namespace Tera.DamageMeter.UI.Handler
             Thread.Sleep(300);
             const int cr = 13;
             const int lf = 10;
-            
+
 
             char[] specialChars = {'{', '}', '(', ')', '+', '^', '%', '~', '[', ']'};
             foreach (var c in text.Where(c => c != lf && c != cr))
             {
                 if (specialChars.Contains(c))
                 {
-
                     if (c == '%')
                     {
                         SendKeys.SendWait(Percentage());
@@ -165,7 +164,6 @@ namespace Tera.DamageMeter.UI.Handler
             {
                 Clipboard.SetText(dpsString);
             }
-            
         }
     }
 }
