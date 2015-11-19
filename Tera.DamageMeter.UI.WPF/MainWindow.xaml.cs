@@ -28,8 +28,6 @@ namespace Tera.DamageMeter.UI.WPF
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-
-
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -113,7 +111,7 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            BasicTeraData.Instance.WindowData.Location = SystemParameters.WorkArea.Location;
+            BasicTeraData.Instance.WindowData.Location = new Point(Left,Top);
             BasicTeraData.Instance.WindowData.Height = Convert.ToInt32(Height);
             BasicTeraData.Instance.WindowData.Save();
             TeraSniffer.Instance.Enabled = false;
