@@ -28,9 +28,7 @@ namespace Tera.DamageMeter.UI.WPF
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-            Boss.Items.Add("test");
-            Boss.Items.Add("test2");
-            Boss.Items.Add("test3");
+        
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -93,8 +91,15 @@ namespace Tera.DamageMeter.UI.WPF
                     Controls.TryGetValue(playerStats, out playerStatsControl);
                     if (playerStatsControl == null)
                     {
-                        playerStatsControl = new PlayerStats(playerStats);
-                        Controls.Add(playerStats, playerStatsControl);
+                        if (playerStats.Dealt.Damage != 0)
+                        {
+                            playerStatsControl = new PlayerStats(playerStats);
+                            Controls.Add(playerStats, playerStatsControl);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
 
                     playerStatsControl.PlayerData.TotalDamage = totalDamage;

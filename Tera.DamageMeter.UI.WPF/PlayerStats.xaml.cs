@@ -52,7 +52,12 @@ namespace Tera.DamageMeter.UI.WPF
         {
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills, this);
+                _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills, this)
+                {
+                    Title = PlayerName,
+                    CloseMeter = {Content = PlayerData.PlayerInfo.Class +" "+ PlayerName + ": CLOSE"}
+                };
+
             }
 
             _windowSkill.Show();

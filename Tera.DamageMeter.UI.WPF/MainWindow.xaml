@@ -56,7 +56,7 @@
                 Margin="250,0,0,0" VerticalAlignment="Top" Width="240" />
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" Foreground="White"
                 BorderThickness="0" x:Name="ToggleTopMost" Click="ToggleTopMost_OnClick" Content="ALWAYS ON TOP: ON"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Width="245" Margin="0" />
+                HorizontalAlignment="Left" VerticalAlignment="Top" Width="250" Margin="0" />
 
         <ItemsControl MinHeight="250" Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"

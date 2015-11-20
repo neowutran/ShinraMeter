@@ -1,3 +1,4 @@
+120830;Common;Common;Berserker;Unchained Anger VIII
 130230;Common;Common;Gunner;Balder's Vengeance II
 120720;Common;Common;Gunner;HB-7: Arcane Barrage
 120620;Common;Common;Sorcerer;Void Pulse VI
@@ -8,7 +9,7 @@
 40923;Common;Common;Sorcerer;Arcane Pulse IX
 200510;Common;Common;Sorcerer;Flaming Barrage V
 190110;Common;Common;Sorcerer;Mana Syphon
-220410;Common;Common;Sorcerer;Mana Voley II
+220410;Common;Common;Sorcerer;Mana Volley II
 41213;Common;Common;Archer;Penetrating Arrow VII
 50220;Common;Common;Archer;Arrow rain II
 30913;Common;Common;Archer;Radiant Arrow IV
