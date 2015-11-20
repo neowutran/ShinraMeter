@@ -18,5 +18,7 @@ namespace Tera.Data
         public Region Region { get; }
         public OpCodeNamer OpCodeNamer { get; private set; }
         public SkillDatabase SkillDatabase { get; private set; }
+
+        public MonsterDatabase MonsterDatabase { get; private set; }
     }
 }

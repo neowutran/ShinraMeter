@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DamageTracker.cs" />
+    <Compile Include="Entities.cs" />
     <Compile Include="FormatHelpers.cs" />
     <Compile Include="PlayerInfo.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -47,11 +48,16 @@
     <Compile Include="SkillResult.cs" />
     <Compile Include="SkillsStats.cs" />
     <Compile Include="SkillStats.cs" />
+    <Compile Include="Entity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tera.Core\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
       <Name>Tera.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tera.Data\Tera.Data.csproj">
+      <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
+      <Name>Tera.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

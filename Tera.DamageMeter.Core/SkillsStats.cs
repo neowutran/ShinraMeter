@@ -21,8 +21,33 @@ namespace Tera.DamageMeter
 
         public PlayerInfo PlayerInfo { get; }
 
+        public static SkillsStats operator +(SkillsStats c1, SkillsStats c2)
+        {
+            if (c1.PlayerInfo != c2.PlayerInfo)
+            {
+                throw new Exception("cannot add skillstats");
+            }
 
-        public long Damage
+            SkillsStats skills = new SkillsStats(c1.PlayerInfo);
+            skills.Skills = skills.Skills.Concat(c1.Skills).ToDictionary(x => x.Key, x => x.Value);
+            foreach (var skill in c2.Skills)
+            {
+                if (skills.Skills.ContainsKey(skill.Key))
+                {
+                    skills.Skills[skill.Key] += skill.Value;
+                }
+                else
+                {
+                    skills.Skills[skill.Key] = skill.Value;
+                }
+            }
+
+            return skills;
+
+        }
+
+
+    public long Damage
         {
             get
             {
@@ -39,20 +64,22 @@ namespace Tera.DamageMeter
         {
             get
             {
-                var crit = 0;
-                var hits = 0;
-                foreach (var skill in Skills)
-                {
-                    crit += skill.Value.Crits;
-                    hits += skill.Value.Hits;
-                }
-
-                if (hits == 0)
-                {
-                    return 0;
-                }
-                return Math.Round((double) crit*100/hits, 1);
+                var hits = Hits;
+             return hits == 0 ? 0 : Math.Round((double) Crits*100/ hits, 1);
             }
+        }
+
+        public int Crits
+        {
+            get
+            {
+                return Skills.Sum(skill => skill.Value.Crits);
+            }
+        }
+
+        public int Hits
+        {
+            get { return Skills.Sum(skill => skill.Value.Hits); }
         }
     }
 }

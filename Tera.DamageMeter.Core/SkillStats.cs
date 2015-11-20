@@ -122,25 +122,53 @@ namespace Tera.DamageMeter
 
         public long Heal { get; private set; }
 
-        public int Hits { get; set; }
+        public int Hits { get; private set; }
 
         public int Crits { get; private set; }
 
-        public void Add(SkillStats skillStats)
+        public static SkillStats operator +(SkillStats c1, SkillStats c2)
         {
-            if (_playerInfo != skillStats._playerInfo)
+            if (c1._playerInfo != c2._playerInfo)
             {
-                return;
+                throw new Exception();
             }
-            LowestCrit = skillStats.LowestCrit;
-            BiggestHit = skillStats.BiggestCrit;
-            _averageCrit = (_averageCrit + skillStats._averageCrit)/(skillStats.Crits + Crits);
-            _averageHit = (_averageHit + skillStats._averageHit)/(skillStats.Hits + Hits - Crits - skillStats.Crits);
-            LowestHit = skillStats.LowestHit;
-            BiggestHit = skillStats.BiggestHit;
-            _damage += skillStats._damage;
-            Heal += skillStats.Heal;
+            SkillStats skill = new SkillStats(c1._playerInfo);
+            skill.LowestCrit = c1.LowestCrit;
+            skill.LowestCrit = c2.LowestCrit;
+
+            skill.BiggestHit = c1.BiggestCrit;
+            skill.BiggestHit = c2.BiggestCrit;
+
+            if (c1.Crits + c2.Crits == 0)
+            {
+                skill._averageCrit = 0;
+            }
+            else
+            {
+                skill._averageCrit = (c1._averageCrit + c2._averageCrit)/(c1.Crits + c2.Crits);
+            }
+            if (c1.Hits + c2.Hits - c1.Crits - c2.Crits == 0)
+            {
+                skill._averageHit = 0;
+            }
+            else
+            {
+                skill._averageHit = (c1._averageHit + c2._averageHit)/(c1.Hits + c2.Hits - c1.Crits - c2.Crits);
+            }
+
+            skill.LowestHit = c1.LowestHit;
+            skill.LowestHit = c2.LowestHit;
+
+
+            skill.BiggestHit = c1.BiggestHit;
+            skill.BiggestHit = c2.BiggestHit;
+
+
+            skill._damage = c1._damage + c2._damage;
+            skill.Heal = c1.Heal + c2.Heal;
+            return skill;
         }
+
 
         public void AddData(long damage, bool isCrit, bool isHeal)
         {

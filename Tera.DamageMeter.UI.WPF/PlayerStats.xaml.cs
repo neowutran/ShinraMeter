@@ -45,14 +45,14 @@ namespace Tera.DamageMeter.UI.WPF
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;
-            _windowSkill?.Update(PlayerData.PlayerInfo.Dealt.Skills);
+            _windowSkill?.Update(PlayerData.PlayerInfo.Dealt.AllSkills);
         }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.Skills, this)
+                _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.AllSkills, this)
                 {
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerData.PlayerInfo.Class +" "+ PlayerName + ": CLOSE"}
@@ -61,7 +61,7 @@ namespace Tera.DamageMeter.UI.WPF
             }
 
             _windowSkill.Show();
-            _windowSkill.Update(PlayerData.PlayerInfo.Dealt.Skills);
+            _windowSkill.Update(PlayerData.PlayerInfo.Dealt.AllSkills);
         }
 
         public void CloseSkills()

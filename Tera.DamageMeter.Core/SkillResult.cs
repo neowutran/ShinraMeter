@@ -46,8 +46,8 @@ namespace Tera.DamageMeter
         }
 
         public int Amount { get; }
-        public Entity Source { get; }
-        public Entity Target { get; }
+        public Game.Entity Source { get; }
+        public Game.Entity Target { get; }
         public bool IsCritical { get; private set; }
         public bool IsHeal { get; }
 

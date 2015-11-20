@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using Tera.Game;
 
 namespace Tera.DamageMeter
@@ -11,7 +12,7 @@ namespace Tera.DamageMeter
             LastHit = 0;
             Player = user;
             Received = new SkillsStats();
-            Dealt = new SkillsStats(this);
+            Dealt = new Entities();
         }
 
         public Player Player { get; }
@@ -38,7 +39,7 @@ namespace Tera.DamageMeter
         }
 
         public SkillsStats Received { get; private set; }
-        public SkillsStats Dealt { get; }
+        public Entities Dealt { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

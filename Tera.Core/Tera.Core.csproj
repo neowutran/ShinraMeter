@@ -42,6 +42,7 @@
     <Compile Include="Game\Region.cs" />
     <Compile Include="Game\Server.cs" />
     <Compile Include="Game\Services\Helpers.cs" />
+    <Compile Include="Game\Services\MonsterDatabase.cs" />
     <Compile Include="Game\Services\OpCodeNamer.cs" />
     <Compile Include="Game\Services\PlayerTracker.cs" />
     <Compile Include="Game\Services\SkillDatabase.cs" />

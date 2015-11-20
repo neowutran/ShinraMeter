@@ -36,8 +36,8 @@
 20620;Common;Common;Gunner;Bombardement
 180722;Common;Common;Gunner;HB-7
 11220;Common;Common;Gunner;Blast XII
-61120;Common;Common;Gunner;Time bomb XI (1)
-61122;Common;Common;Gunner;Time bomb XI (2)
+61120;Common;Common;Gunner;Time bomb XI;(1)
+61122;Common;Common;Gunner;Time bomb XI;(2)
 91020;Common;Common;Gunner;Mana Missiles
 61190100;Common;Common;Common;Arun's Tears
 67044430;Common;Common;Gunner;ST-4
@@ -64,16 +64,17 @@
 240130;Common;Common;Slayer;Eviscerate
 250100;Common;Common;Slayer;Ultimate Overhand Strike I
 250130;Common;Common;Slayer;Ultimate Overhand Strike I
-40220;Common;Common;Reaper;Sundering Strike III (2)
-40300;Common;Common;Reaper;Sundering Strike III (1)
+40220;Common;Common;Reaper;Sundering Strike III;(2)
+40300;Common;Common;Reaper;Sundering Strike III;(1)
+40120;Common;Common;Reaper;Sunder strike III;(2)
 30330;Common;Common;Reaper;Double Shear III
 30300;Common;Common;Reaper;Double Shear III
 50330;Common;Common;Reaper;Grim Strike III
 50300;Common;Common;Reaper;Grim Strike III
 80230;Common;Common;Reaper;Whipsaw II
 80200;Common;Common;Reaper;Whipsaw II
-120200;Common;Common;Reaper;Shadow Burst II (1)
-120201;Common;Common;Reaper;Shadow Burst II (2)
+120200;Common;Common;Reaper;Shadow Burst II;(1)
+120201;Common;Common;Reaper;Shadow Burst II;(2)
 271000;Common;Common;Priest;Final Reprisal X;Unchained
 271030;Common;Common;Priest;Final Reprisal X;Unchained
 291100;Common;Common;Priest;Triple Nemesis XI
