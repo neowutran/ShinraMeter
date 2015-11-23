@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Tera.DamageMeter.UI.Handler
+namespace Tera.DamageMeter
 {
     public static class CopyPaste
     {
@@ -79,33 +79,33 @@ namespace Tera.DamageMeter.UI.Handler
             }
         }
 
-        public static void Copy(List<PlayerData> playerDatas, string header, string content, string footer,
+        public static void Copy(IEnumerable<PlayerInfo> playerInfos, string header, string content, string footer,
             string orderby, string order)
         {
             //stop if nothing to paste
-            if (playerDatas == null) return;
-            IEnumerable<PlayerData> playerDatasOrdered;
+            if (playerInfos == null) return;
+            IEnumerable<PlayerInfo> playerInfosOrdered;
             if (order == "ascending")
             {
                 switch (orderby)
                 {
                     case "damage_received":
-                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Received.Damage);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Received.Damage);
                         break;
                     case "name":
-                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Name);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Name);
                         break;
                     case "damage_percentage":
-                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.DamageFraction);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.DamageFraction);
                         break;
                     case "damage_dealt":
-                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Dealt.Damage);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Damage);
                         break;
                     case "dps":
-                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Dps);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Dps);
                         break;
                     case "crit_rate":
-                        playerDatasOrdered = playerDatas.OrderBy(playerData => playerData.PlayerInfo.Dealt.CritRate);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.CritRate);
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -117,25 +117,25 @@ namespace Tera.DamageMeter.UI.Handler
                 switch (orderby)
                 {
                     case "damage_received":
-                        playerDatasOrdered =
-                            playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Received.Damage);
+                        playerInfosOrdered =
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Received.Damage);
                         break;
                     case "name":
-                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Name);
+                        playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Name);
                         break;
                     case "damage_percentage":
-                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.DamageFraction);
+                        playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.DamageFraction);
                         break;
                     case "damage_dealt":
-                        playerDatasOrdered =
-                            playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dealt.Damage);
+                        playerInfosOrdered =
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.Damage);
                         break;
                     case "dps":
-                        playerDatasOrdered = playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dps);
+                        playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.Dps);
                         break;
                     case "crit_rate":
-                        playerDatasOrdered =
-                            playerDatas.OrderByDescending(playerData => playerData.PlayerInfo.Dealt.CritRate);
+                        playerInfosOrdered =
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.CritRate);
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -144,19 +144,19 @@ namespace Tera.DamageMeter.UI.Handler
             }
 
             var dpsString = header;
-            foreach (var playerStats in playerDatasOrdered)
+            foreach (var playerStats in playerInfosOrdered)
             {
                 var currentContent = content;
                 currentContent = currentContent.Replace("{dps}",
-                    FormatHelpers.Instance.FormatValue(playerStats.PlayerInfo.Dps) + "/s");
-                currentContent = currentContent.Replace("{interval}", playerStats.PlayerInfo.Interval + "s");
+                    FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps) + "/s");
+                currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
-                    FormatHelpers.Instance.FormatValue(playerStats.PlayerInfo.Dealt.Damage));
-                currentContent = currentContent.Replace("{name}", playerStats.PlayerInfo.Name);
-                currentContent = currentContent.Replace("{damage_percentage}", playerStats.DamageFraction + "%");
-                currentContent = currentContent.Replace("{crit_rate}", playerStats.PlayerInfo.Dealt.CritRate + "%");
+                    FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage));
+                currentContent = currentContent.Replace("{name}", playerStats.Name);
+                currentContent = currentContent.Replace("{damage_percentage}", playerStats.Dealt.DamageFraction + "%");
+                currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate + "%");
                 currentContent = currentContent.Replace("{damage_received}",
-                    FormatHelpers.Instance.FormatValue(playerStats.PlayerInfo.Received.Damage));
+                    FormatHelpers.Instance.FormatValue(playerStats.Received.Damage));
                 dpsString += currentContent;
             }
             dpsString += footer;

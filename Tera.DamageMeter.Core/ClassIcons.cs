@@ -5,12 +5,10 @@ using System.Windows.Media.Imaging;
 using Tera.Data;
 using Tera.Game;
 
-namespace Tera.DamageMeter.UI.Handler
+namespace Tera.DamageMeter
 {
     public class ClassIcons
     {
-        public const int Size = 32;
-
         private static ClassIcons _instance;
         private readonly Dictionary<PlayerClass, Image> _images = new Dictionary<PlayerClass, Image>();
 

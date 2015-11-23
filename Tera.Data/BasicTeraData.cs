@@ -22,9 +22,8 @@ namespace Tera.Data
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
-            Servers = GetServers(Path.Combine(ResourceDirectory, "servers.txt")).ToList();
-            Regions = GetRegions(Path.Combine(ResourceDirectory, "regions.txt")).ToList();
-            MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "monsters.txt"));
+            Servers = GetServers(Path.Combine(ResourceDirectory, "data/servers.txt")).ToList();
+            MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters.csv"));
         }
 
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
@@ -58,14 +57,6 @@ namespace Tera.Data
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the resource directory");
-        }
-
-        private static IEnumerable<Region> GetRegions(string filename)
-        {
-            return File.ReadAllLines(filename)
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s => s.Split(' '))
-                .Select(parts => new Region(parts[0], parts[1]));
         }
 
         private static IEnumerable<Server> GetServers(string filename)

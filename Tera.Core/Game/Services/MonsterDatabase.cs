@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Tera.Game
 {
@@ -15,7 +13,6 @@ namespace Tera.Game
 
         public MonsterDatabase(string filename)
         {
-
             var reader = new StreamReader(File.OpenRead(filename));
             while (!reader.EndOfStream)
             {
@@ -24,14 +21,13 @@ namespace Tera.Game
                 var values = line.Split(';');
 
                 _monsterData.Add(int.Parse(values[0]), values[1]);
-                
             }
         }
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
-        public String Get(int monsterId)
+        public string Get(int monsterId)
         {
-            String monsterName;
+            string monsterName;
             _monsterData.TryGetValue(monsterId, out monsterName);
             if (monsterName == null)
             {

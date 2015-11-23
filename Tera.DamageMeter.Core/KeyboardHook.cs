@@ -5,7 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Tera.Data;
 
-namespace Tera.DamageMeter.UI.Handler
+namespace Tera.DamageMeter
 {
     public sealed class KeyboardHook : IDisposable
     {
@@ -15,7 +15,7 @@ namespace Tera.DamageMeter.UI.Handler
         private readonly Window _window = new Window();
         private int _currentId;
 
-        private IDpsWindow _dpswindow;
+        private System.Windows.Window _dpswindow;
 
         private KeyboardHook()
         {
@@ -60,15 +60,14 @@ namespace Tera.DamageMeter.UI.Handler
                     BasicTeraData.Instance.HotkeysData.Copy.Where(
                         copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
-                CopyPaste.Copy(_dpswindow.PlayerData(), copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+                CopyPaste.Copy(DamageTracker.Instance, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
                 var text = Clipboard.GetText();
-                Console.WriteLine(text);
                 var pasteThread = new Thread(() => CopyPaste.Paste(text));
                 pasteThread.Start();
             }
         }
 
-        public void RegisterKeyboardHook(IDpsWindow window)
+        public void RegisterKeyboardHook(System.Windows.Window window)
         {
             _dpswindow = window;
             // register the event that is fired after the key press.

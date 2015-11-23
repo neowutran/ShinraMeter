@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Tera.DamageMeter.UI.Handler;
 using Tera.Data;
 using Tera.Sniffing;
 using Application = System.Windows.Forms.Application;
@@ -14,8 +15,10 @@ namespace Tera.DamageMeter.UI.WPF
     /// <summary>
     ///     Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : IDpsWindow
+    public partial class MainWindow
     {
+        public ObservableCollection<Entity> Encounter = new ObservableCollection<Entity>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -28,15 +31,10 @@ namespace Tera.DamageMeter.UI.WPF
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-        
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
-        public List<PlayerData> PlayerData()
-        {
-            return Controls.Select(keyValue => keyValue.Value.PlayerData).ToList();
-        }
 
         public void Update(object sender, EventArgs e)
         {
@@ -49,12 +47,18 @@ namespace Tera.DamageMeter.UI.WPF
 
                 Players.Items.Clear();
                 var sortedDict = from entry in Controls
-                    orderby entry.Value.PlayerData.DamageFraction descending
+                    orderby entry.Value.PlayerInfo.Dealt.DamageFraction descending
                     select entry;
                 foreach (var item in sortedDict)
                 {
                     Players.Items.Add(item.Value);
                 }
+                var numberPlayer = Controls.Count;
+                if (Controls.Count > 10)
+                {
+                    numberPlayer = 10;
+                }
+                Height = (numberPlayer)*25 + CloseMeter.ActualHeight;
             }
         }
 
@@ -63,46 +67,35 @@ namespace Tera.DamageMeter.UI.WPF
         {
             ChangeTitle changeTitle = delegate(string newServerName) { Title = newServerName; };
             Dispatcher.Invoke(changeTitle, serverName);
+            UiModel.Instance.Dispatcher = Dispatcher;
         }
 
         private void StayTopMost()
         {
-            if (Topmost)
-            {
-                Topmost = false; // important
-                Topmost = true; // important
-                //Focus(); // important
-            }
+            if (!Topmost) return;
+            Topmost = false;
+            Topmost = true;
         }
 
-        public void Update(IEnumerable<PlayerInfo> playerStatsSequence)
+        public void Update(IEnumerable<PlayerInfo> playerStatsSequence, ObservableCollection<Entity> newentities)
         {
-            UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats)
+            UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats, ObservableCollection<Entity> entities)
             {
                 StayTopMost();
+                Encounter = entities;
+                ListEncounter.ItemsSource = Encounter;
+                Console.WriteLine(Encounter.Count);
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
-                var totalDamage = stats.Sum(playerStats => playerStats.Dealt.Damage);
-
                 var visiblePlayerStats = new HashSet<PlayerInfo>();
                 foreach (var playerStats in stats)
                 {
                     visiblePlayerStats.Add(playerStats);
                     PlayerStats playerStatsControl;
                     Controls.TryGetValue(playerStats, out playerStatsControl);
-                    if (playerStatsControl == null)
-                    {
-                        if (playerStats.Dealt.Damage != 0)
-                        {
-                            playerStatsControl = new PlayerStats(playerStats);
-                            Controls.Add(playerStats, playerStatsControl);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-
-                    playerStatsControl.PlayerData.TotalDamage = totalDamage;
+                    if (playerStatsControl != null) continue;
+                    if (playerStats.Dealt.Damage == 0) continue;
+                    playerStatsControl = new PlayerStats(playerStats);
+                    Controls.Add(playerStats, playerStatsControl);
                 }
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -112,13 +105,12 @@ namespace Tera.DamageMeter.UI.WPF
                     Controls.Remove(invisibleControl.Key);
                 }
             };
-            Dispatcher.Invoke(changeData, playerStatsSequence);
+            Dispatcher.Invoke(changeData, playerStatsSequence, newentities);
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
-            BasicTeraData.Instance.WindowData.Height = Convert.ToInt32(Height);
             BasicTeraData.Instance.WindowData.Save();
             TeraSniffer.Instance.Enabled = false;
             Application.Exit();
@@ -126,7 +118,6 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Height = BasicTeraData.Instance.WindowData.Height;
             Top = BasicTeraData.Instance.WindowData.Location.Y;
             Left = BasicTeraData.Instance.WindowData.Location.X;
         }
@@ -154,15 +145,27 @@ namespace Tera.DamageMeter.UI.WPF
             if (Topmost)
             {
                 Topmost = false;
-                ToggleTopMost.Content = "ALWAYS ON TOP: OFF";
+                ToggleTopMost.Content = "PIN";
                 return;
             }
             Topmost = true;
-            ToggleTopMost.Content = "ALWAYS ON TOP: ON";
+            ToggleTopMost.Content = "UNPIN";
+        }
+
+
+        private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count != 1) return;
+            var encounter = (Entity) e.AddedItems[0];
+            if (encounter.Name.Equals(""))
+            {
+                encounter = null;
+            }
+            UiModel.Instance.Encounter = encounter;
         }
 
         private delegate void ChangeTitle(string servername);
 
-        private delegate void UpdateData(IEnumerable<PlayerInfo> stats);
+        private delegate void UpdateData(IEnumerable<PlayerInfo> stats, ObservableCollection<Entity> entities);
     }
 }

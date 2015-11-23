@@ -1,41 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Tera.Data;
 using Tera.Game;
 
 namespace Tera.DamageMeter
 {
-    public class Entity : IEquatable<Object>
+    public class Entity : IEquatable<object>
     {
-        private readonly uint _modelId;
-        private readonly EntityId _id;
         private readonly uint _npcId;
         private readonly ushort _npcType;
-        private string _name;
 
-        public string Name => _name;
 
-        private void setName()
+        public Entity(uint modelId, EntityId id, uint npcId, ushort npcType)
         {
-            _name = BasicTeraData.Instance.MonsterDatabase.Get(_modelId);
+            ModelId = modelId;
+            Id = id;
+            _npcId = npcId;
+            _npcType = npcType;
+            SetName();
+            DebugPrint();
         }
 
-        public uint ModelId => _modelId;
-        public EntityId Id => _id;
+        public Entity(string name)
+        {
+            Name = name;
+            DebugPrint();
+        }
+
+        public string Name { get; private set; }
+
+        public uint ModelId { get; }
+
+        public EntityId Id { get; }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Entity)obj);
+            return obj.GetType() == GetType() && Equals((Entity) obj);
+        }
+
+        private void SetName()
+        {
+            Name = BasicTeraData.Instance.MonsterDatabase.Get(ModelId);
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
 
         public bool Equals(Entity other)
         {
-            return _modelId == other._modelId && _id == other._id && _name == other._name;
+            return Name.Equals(other.Name);
         }
 
         public static bool operator ==(Entity a, Entity b)
@@ -46,7 +62,7 @@ namespace Tera.DamageMeter
             }
 
             // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null))
+            if (((object) a == null) || ((object) b == null))
             {
                 return false;
             }
@@ -61,28 +77,13 @@ namespace Tera.DamageMeter
 
         public override int GetHashCode()
         {
-            return _modelId.GetHashCode() ^ _id.GetHashCode() ^ _name.GetHashCode();
-        }
-
-        public Entity(uint modelId, EntityId id,  uint npcId, ushort npcType)
-        {
-            _modelId = modelId;
-            _id = id;
-            _npcId = npcId;
-            _npcType = npcType;
-            setName();
-            DebugPrint();
+            return Name.GetHashCode();
         }
 
         private void DebugPrint()
         {
-            Console.WriteLine("name:" + _name + ";id:" + _id + ";npcid:" + _npcId +";npctype:"+_npcType+";modelId:"+_modelId);
-        }
-
-        public Entity(string name)
-        {
-          _name = name;
-            DebugPrint();
+            Console.WriteLine("name:" + Name + ";id:" + Id + ";npcid:" + _npcId + ";npctype:" + _npcType + ";modelId:" +
+                              ModelId);
         }
     }
 }

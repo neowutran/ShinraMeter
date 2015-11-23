@@ -1,23 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Threading;
 using Tera.Game;
 
 namespace Tera.DamageMeter
 {
     public class DamageTracker : IEnumerable<PlayerInfo>
     {
-        private readonly Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
+        private static DamageTracker _instance;
+        private Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
+        public ObservableCollection<Entity> Entities = new ObservableCollection<Entity> {new Entity("")};
 
-        public DamageTracker()
+        private DamageTracker()
         {
-            TotalDealt = new SkillsStats();
-            TotalReceived = new SkillsStats();
         }
 
-        public SkillsStats TotalDealt { get; private set; }
-        public SkillsStats TotalReceived { get; private set; }
+        public Dispatcher Dispatcher { get; set; } = null;
+
+        public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
+
 
         public IEnumerator<PlayerInfo> GetEnumerator()
         {
@@ -29,14 +33,18 @@ namespace Tera.DamageMeter
             return GetEnumerator();
         }
 
+        public void Reset()
+        {
+            _statsByUser = new Dictionary<Player, PlayerInfo>();
+            Entities = new ObservableCollection<Entity> {new Entity("")};
+        }
+
         private PlayerInfo GetOrCreate(Player player)
         {
             PlayerInfo playerStats;
-            if (!_statsByUser.TryGetValue(player, out playerStats))
-            {
-                playerStats = new PlayerInfo(player);
-                _statsByUser.Add(player, playerStats);
-            }
+            if (_statsByUser.TryGetValue(player, out playerStats)) return playerStats;
+            playerStats = new PlayerInfo(player);
+            _statsByUser.Add(player, playerStats);
 
             return playerStats;
         }
@@ -46,23 +54,24 @@ namespace Tera.DamageMeter
             if (skillResult.SourcePlayer != null)
             {
                 var playerStats = GetOrCreate(skillResult.SourcePlayer);
-                
+
                 Entity entityTarget;
                 if (skillResult.Target is NpcEntity)
                 {
-                    NpcEntity target = (NpcEntity)skillResult.Target;
+                    var target = (NpcEntity) skillResult.Target;
                     entityTarget = new Entity(target.ModelId, target.Id, target.NpcId, target.NpcType);
-
                 }
                 else if (skillResult.Target is UserEntity)
                 {
-                    UserEntity target = (UserEntity)skillResult.Target;
+                    var target = (UserEntity) skillResult.Target;
                     entityTarget = new Entity(target.Name);
                 }
                 else
                 {
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
+
+
                 UpdateStatsDealt(playerStats, skillResult, entityTarget);
             }
 
@@ -88,24 +97,35 @@ namespace Tera.DamageMeter
             return true;
         }
 
+        private void UpdateEncounter(Entity entityTarget, SkillResult message)
+        {
+            ChangedEncounter changeEncounter = delegate(Entity entity, SkillResult msg)
+            {
+                if (!Entities.Contains(entity) && !msg.IsHeal)
+                {
+                    Entities.Add(entity);
+                }
+            };
+            Dispatcher.Invoke(changeEncounter, entityTarget, message);
+        }
+
         private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget)
         {
-
             if (!IsValidAttack(message))
             {
                 return;
             }
 
-            Entities entities = playerInfo.Dealt;
+            UpdateEncounter(entityTarget, message);
+            var entities = playerInfo.Dealt;
 
             if (!entities.EntitiesStats.ContainsKey(entityTarget))
             {
                 entities.EntitiesStats[entityTarget] = new SkillsStats(playerInfo);
-                
             }
-          
 
-            var skillName = message.SkillId + "";
+
+            var skillName = message.SkillId.ToString();
             if (message.Skill != null)
             {
                 skillName = message.Skill.Name;
@@ -118,9 +138,8 @@ namespace Tera.DamageMeter
                 entities.EntitiesStats[entityTarget].Skills.TryGetValue(skillKey, out skillStats);
                 if (skillStats == null)
                 {
-                    skillStats = new SkillStats(playerInfo);
+                    skillStats = new SkillStats(playerInfo, entityTarget);
                 }
-
                 skillStats.AddData(message.IsHeal ? message.Heal : message.Damage, message.IsCritical, message.IsHeal);
                 var skill = entities.EntitiesStats[entityTarget].Skills.Keys.ToList();
                 var indexSkill = skill.IndexOf(skillKey);
@@ -155,7 +174,7 @@ namespace Tera.DamageMeter
                 skillName = message.Skill.Name;
             }
             SkillStats skillStats;
-            var skillKey = new Skill(skillName, new List<int> { message.SkillId });
+            var skillKey = new Skill(skillName, new List<int> {message.SkillId});
 
             stats.Skills.TryGetValue(skillKey, out skillStats);
             if (skillStats == null)
@@ -176,5 +195,7 @@ namespace Tera.DamageMeter
             stats.Skills.Remove(skillKey);
             stats.Skills.Add(skillKey, skillStats);
         }
+
+        private delegate void ChangedEncounter(Entity entity, SkillResult msg);
     }
 }

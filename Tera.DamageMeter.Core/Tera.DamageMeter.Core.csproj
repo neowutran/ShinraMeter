@@ -30,17 +30,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Presentation" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassIcons.cs" />
+    <Compile Include="CopyPaste.cs" />
     <Compile Include="DamageTracker.cs" />
     <Compile Include="Entities.cs" />
     <Compile Include="FormatHelpers.cs" />
+    <Compile Include="KeyboardHook.cs" />
     <Compile Include="PlayerInfo.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -49,6 +58,7 @@
     <Compile Include="SkillsStats.cs" />
     <Compile Include="SkillStats.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="UIModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tera.Core\Tera.Core.csproj">
@@ -58,6 +68,10 @@
     <ProjectReference Include="..\Tera.Data\Tera.Data.csproj">
       <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
       <Name>Tera.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tera.Sniffing\Tera.Sniffing.csproj">
+      <Project>{66bb1685-8ff5-4431-b77f-7f80c92a5da4}</Project>
+      <Name>Tera.Sniffing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

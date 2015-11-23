@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             MinHeight="29"
-             MaxHeight="29"
-             d:DesignHeight="29" d:DesignWidth="780">
+             MinHeight="25"
+             MaxHeight="25"
+             d:DesignHeight="25" d:DesignWidth="780">
     <Grid>
         <Grid MouseLeftButtonDown="MoveWindow" Width="780" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
@@ -21,22 +21,21 @@
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="60" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" FontSize="14" VerticalAlignment="Top" x:Name="LabelName" Foreground="White" />
-            <Label Grid.Column="1" FontSize="14" x:Name="LabelId" VerticalAlignment="Top" Foreground="White" />
-            <Label Grid.Column="2" FontSize="14" x:Name="LabelTotalDamage" VerticalAlignment="Top"
+            <Label Grid.Column="0" FontSize="14" VerticalAlignment="Center" x:Name="LabelName" Foreground="White" MinHeight="25"/>
+            <Label Grid.Column="1" FontSize="14" x:Name="LabelId" VerticalAlignment="Center" Foreground="White" MinHeight="25" />
+            <Label Grid.Column="2" FontSize="14" x:Name="LabelTotalDamage" VerticalAlignment="Center" MinHeight="25" Foreground="White" />
+
+            <Label Grid.Column="3" FontSize="14" x:Name="LabelDamagePercentage" VerticalAlignment="Center" MinHeight="25"
                    Foreground="White" />
 
-            <Label Grid.Column="3" FontSize="14" x:Name="LabelDamagePercentage" VerticalAlignment="Top"
+            <Label Grid.Column="4" FontSize="14" x:Name="LabelCritRate" VerticalAlignment="Center" MinHeight="25" Foreground="White" />
+            <Label Grid.Column="5" FontSize="14" x:Name="LabelBiggestCrit" VerticalAlignment="Center" MinHeight="25"
                    Foreground="White" />
-
-            <Label Grid.Column="4" FontSize="14" x:Name="LabelCritRate" VerticalAlignment="Top" Foreground="White" />
-            <Label Grid.Column="5" FontSize="14" x:Name="LabelBiggestCrit" VerticalAlignment="Top"
+            <Label Grid.Column="6" FontSize="14" x:Name="LabelAverageCrit" VerticalAlignment="Center" MinHeight="25"
                    Foreground="White" />
-            <Label Grid.Column="6" FontSize="14" x:Name="LabelAverageCrit" VerticalAlignment="Top"
-                   Foreground="White" />
-            <Label Grid.Column="7" FontSize="14" x:Name="LabelLowestCrit" VerticalAlignment="Top" Foreground="White" />
-            <Label Grid.Column="8" FontSize="14" x:Name="LabelAverageHit" VerticalAlignment="Top" Foreground="White" />
-            <Label Grid.Column="9" FontSize="14" x:Name="LabelNumberHit" VerticalAlignment="Top" Foreground="White" />
+            <Label Grid.Column="7" FontSize="14" x:Name="LabelLowestCrit" VerticalAlignment="Center" MinHeight="25" Foreground="White" />
+            <Label Grid.Column="8" FontSize="14" x:Name="LabelAverageHit" VerticalAlignment="Center" MinHeight="25" Foreground="White" />
+            <Label Grid.Column="9" FontSize="14" x:Name="LabelNumberHit" VerticalAlignment="Center" MinHeight="25" Foreground="White" />
 
         </Grid>
 

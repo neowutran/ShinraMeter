@@ -4,34 +4,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="50">
+             d:DesignHeight="25"
+             MinHeight="25"
+             MaxHeight="25"
+             Height="25">
     <Grid>
 
-        <Rectangle MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator" Fill="Blue"
-                   Opacity="0.3" HorizontalAlignment="Left" Height="50" Stroke="Transparent" VerticalAlignment="Top"
+        <Rectangle MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator" Fill="Tomato"
+                   Opacity="0.3" HorizontalAlignment="Left" Height="25" Stroke="Transparent" VerticalAlignment="Top"
                    Width="Auto" />
 
         <Image MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class" Focusable="False"
                Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
-               Height="50" VerticalAlignment="Top" Width="50" Margin="0,0,0,0" />
+               Height="25" VerticalAlignment="Top" Width="25" Margin="0,0,0,0" />
 
         <Grid MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="GridStats" Width="Auto"
-              Margin="50,0,0,0">
+              Margin="25,0,0,0" VerticalAlignment="Top" Height="25" MinHeight="25" MaxHeight="25">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="130" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="45" />
                 <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="70" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="45" />
+                <ColumnDefinition Width="50" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" FontSize="18" VerticalAlignment="Center" x:Name="LabelName" Foreground="White" />
-            <Label Grid.Column="1" FontSize="18" x:Name="LabelDamagePart" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="2" FontSize="18" x:Name="LabelDps" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="3" FontSize="18" x:Name="LabelDamage" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="4" FontSize="18" x:Name="LabelCritRate" VerticalAlignment="Center" Foreground="White" />
-            <Label Grid.Column="5" FontSize="18" x:Name="LabelDamageReceived" VerticalAlignment="Center"
-                   Foreground="White" />
+            <Label Grid.Column="0" FontSize="14" VerticalAlignment="Center" x:Name="LabelName" Foreground="White"
+                   MinHeight="25" />
+            <Label Grid.Column="1" FontSize="14" x:Name="LabelDamagePart" VerticalAlignment="Center" Foreground="White"
+                   MinHeight="25" />
+            <Label Grid.Column="2" FontSize="14" x:Name="LabelDps" VerticalAlignment="Center" Foreground="White"
+                   MinHeight="25" />
+            <Label Grid.Column="3" FontSize="14" x:Name="LabelDamage" VerticalAlignment="Center" Foreground="White"
+                   MinHeight="25" />
+            <Label Grid.Column="4" FontSize="14" x:Name="LabelCritRate" VerticalAlignment="Center" Foreground="White"
+                   MinHeight="25" />
+            <Label Grid.Column="5" FontSize="14" x:Name="LabelDamageReceived" VerticalAlignment="Bottom"
+                   Foreground="White" MinHeight="25" />
 
         </Grid>
 

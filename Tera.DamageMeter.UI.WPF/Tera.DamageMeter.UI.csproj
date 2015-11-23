@@ -130,10 +130,6 @@
       <Project>{d1ed4752-f2fc-44c3-97b2-580bc79f4af1}</Project>
       <Name>Tera.DamageMeter.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tera.DamageMeter.UI.Handler\Tera.DamageMeter.UI.Handler.csproj">
-      <Project>{53e2c9c3-bead-41ad-8c67-ce2fded819dc}</Project>
-      <Name>Tera.DamageMeter.UI.Handler</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tera.Data\Tera.Data.csproj">
       <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
       <Name>Tera.Data</Name>

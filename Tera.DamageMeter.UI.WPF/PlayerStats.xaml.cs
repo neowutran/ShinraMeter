@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Tera.DamageMeter.UI.Handler;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -17,51 +16,56 @@ namespace Tera.DamageMeter.UI.WPF
         public PlayerStats(PlayerInfo playerInfo)
         {
             InitializeComponent();
-            PlayerData = new PlayerData(playerInfo);
-            Image = ClassIcons.Instance.GetImage(PlayerData.PlayerInfo.Class).Source;
+            PlayerInfo = playerInfo;
+            Image = ClassIcons.Instance.GetImage(PlayerInfo.Class).Source;
             Class.Source = Image;
             LabelName.Content = PlayerName;
         }
 
-        public PlayerData PlayerData { get; set; }
+        public PlayerInfo PlayerInfo { get; set; }
 
-        public string Dps => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Dps) + "/s";
+        public string Dps => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Dps) + "/s";
 
-        public string DamagePart => Math.Round(PlayerData.DamageFraction) + "%";
 
-        public string Damage => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Dealt.Damage);
+        public string DamagePart => Math.Round(PlayerInfo.Dealt.DamageFraction) + "%";
 
-        public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerData.PlayerInfo.Received.Damage);
+        public string Damage => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Damage);
 
-        public string CritRate => Math.Round(PlayerData.PlayerInfo.Dealt.CritRate) + "%";
 
-        public string PlayerName => PlayerData.PlayerInfo.Name;
+        public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerInfo.Received.Damage);
+
+        public string CritRate => Math.Round(PlayerInfo.Dealt.CritRate) + "%";
+
+
+        public string PlayerName => PlayerInfo.Name;
 
         public void Repaint()
         {
-            DpsIndicator.Width = ActualWidth*(PlayerData.DamageFraction/100);
+            DpsIndicator.Width = ActualWidth*(PlayerInfo.Dealt.DamageFraction/100);
             LabelDps.Content = Dps;
             LabelDamage.Content = Damage;
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;
-            _windowSkill?.Update(PlayerData.PlayerInfo.Dealt.AllSkills);
+
+            _windowSkill?.Update(UiModel.Instance.Encounter == null
+                ? PlayerInfo.Dealt.AllSkills
+                : PlayerInfo.Dealt.EntitiesStats[UiModel.Instance.Encounter].Skills);
         }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(PlayerData.PlayerInfo.Dealt.AllSkills, this)
+                _windowSkill = new Skills(PlayerInfo.Dealt.AllSkills, this)
                 {
                     Title = PlayerName,
-                    CloseMeter = {Content = PlayerData.PlayerInfo.Class +" "+ PlayerName + ": CLOSE"}
+                    CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}
                 };
-
             }
 
             _windowSkill.Show();
-            _windowSkill.Update(PlayerData.PlayerInfo.Dealt.AllSkills);
+            _windowSkill.Update(PlayerInfo.Dealt.AllSkills);
         }
 
         public void CloseSkills()

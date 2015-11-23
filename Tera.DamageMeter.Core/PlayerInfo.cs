@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Tera.Game;
 
 namespace Tera.DamageMeter
@@ -8,8 +7,6 @@ namespace Tera.DamageMeter
     {
         public PlayerInfo(Player user)
         {
-            FirstHit = 0;
-            LastHit = 0;
             Player = user;
             Received = new SkillsStats();
             Dealt = new Entities();
@@ -20,23 +17,6 @@ namespace Tera.DamageMeter
         public string Name => Player.Name;
 
         public PlayerClass Class => Player.Class;
-
-        public long FirstHit { get; set; }
-        public long LastHit { get; set; }
-
-        public long Interval => LastHit - FirstHit;
-
-        public long Dps
-        {
-            get
-            {
-                if (Interval == 0)
-                {
-                    return 0;
-                }
-                return Dealt.Damage/Interval;
-            }
-        }
 
         public SkillsStats Received { get; private set; }
         public Entities Dealt { get; }

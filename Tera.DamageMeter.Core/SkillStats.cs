@@ -4,6 +4,7 @@ namespace Tera.DamageMeter
 {
     public class SkillStats
     {
+        private readonly Entity _entityTarget;
         private readonly PlayerInfo _playerInfo;
         private long _averageCrit;
         private long _averageHit;
@@ -14,6 +15,11 @@ namespace Tera.DamageMeter
         private long _lowestCrit;
         private long _lowestHit;
 
+        public SkillStats(PlayerInfo playerInfo, Entity entityTarget)
+        {
+            _playerInfo = playerInfo;
+            _entityTarget = entityTarget;
+        }
 
         public SkillStats(PlayerInfo playerInfo)
         {
@@ -99,6 +105,9 @@ namespace Tera.DamageMeter
             }
         }
 
+        public long FirstHit { get; set; }
+        public long LastHit { get; set; }
+
         public long Damage
         {
             get { return _damage; }
@@ -109,11 +118,11 @@ namespace Tera.DamageMeter
                 {
                     if (value != 0)
                     {
-                        if (_playerInfo.FirstHit == 0)
+                        if (FirstHit == 0)
                         {
-                            _playerInfo.FirstHit = DateTime.UtcNow.Ticks/10000000;
+                            FirstHit = DateTime.UtcNow.Ticks/10000000;
                         }
-                        _playerInfo.LastHit = DateTime.UtcNow.Ticks/10000000;
+                        LastHit = DateTime.UtcNow.Ticks/10000000;
                     }
                 }
                 _damage = value;
@@ -128,11 +137,19 @@ namespace Tera.DamageMeter
 
         public static SkillStats operator +(SkillStats c1, SkillStats c2)
         {
+            SkillStats skill;
             if (c1._playerInfo != c2._playerInfo)
             {
                 throw new Exception();
             }
-            SkillStats skill = new SkillStats(c1._playerInfo);
+            if (c1._entityTarget != c2._entityTarget)
+            {
+                skill = new SkillStats(c1._playerInfo, null);
+            }
+            else
+            {
+                skill = new SkillStats(c1._playerInfo, c1._entityTarget);
+            }
             skill.LowestCrit = c1.LowestCrit;
             skill.LowestCrit = c2.LowestCrit;
 
@@ -163,6 +180,9 @@ namespace Tera.DamageMeter
             skill.BiggestHit = c1.BiggestHit;
             skill.BiggestHit = c2.BiggestHit;
 
+            skill.FirstHit = c1.FirstHit > c2.FirstHit ? c2.FirstHit : c1.FirstHit;
+            skill.LastHit = c1.LastHit > c2.LastHit ? c1.LastHit : c2.LastHit;
+
 
             skill._damage = c1._damage + c2._damage;
             skill.Heal = c1.Heal + c2.Heal;
@@ -186,6 +206,17 @@ namespace Tera.DamageMeter
                     BiggestCrit = damage;
                     AverageCrit = damage;
                     LowestCrit = damage;
+                    if (_entityTarget != null)
+                    {
+                        if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
+                        {
+                            Entities.TotalDamageEntity[_entityTarget] += damage;
+                        }
+                        else
+                        {
+                            Entities.TotalDamageEntity[_entityTarget] = damage;
+                        }
+                    }
                 }
             }
             else
@@ -197,6 +228,17 @@ namespace Tera.DamageMeter
                 else
                 {
                     Damage += damage;
+                    if (_entityTarget != null)
+                    {
+                        if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
+                        {
+                            Entities.TotalDamageEntity[_entityTarget] += damage;
+                        }
+                        else
+                        {
+                            Entities.TotalDamageEntity[_entityTarget] = damage;
+                        }
+                    }
                     BiggestHit = damage;
                     AverageHit = damage;
                     LowestHit = damage;

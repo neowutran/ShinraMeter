@@ -33,11 +33,9 @@ namespace NetworkSniffer
             get { return _enabled; }
             set
             {
-                if (_enabled != value)
-                {
-                    _enabled = value;
-                    SetEnabled(value);
-                }
+                if (_enabled == value) return;
+                _enabled = value;
+                SetEnabled(value);
             }
         }
 

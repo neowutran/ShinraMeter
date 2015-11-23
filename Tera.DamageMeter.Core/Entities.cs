@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Tera.DamageMeter
 {
@@ -9,42 +8,142 @@ namespace Tera.DamageMeter
     {
         public Dictionary<Entity, SkillsStats> EntitiesStats = new Dictionary<Entity, SkillsStats>();
 
+        public static Dictionary<Entity, long> TotalDamageEntity { get; set; } = new Dictionary<Entity, long>();
+
+        public static long TotalDamage
+        {
+            get
+            {
+                lock (TotalDamageEntity)
+                {
+                    if (UiModel.Instance.Encounter == null)
+                    {
+                        return TotalDamageEntity.Sum(totalDamageEntity => totalDamageEntity.Value);
+                    }
+                    return TotalDamageEntity[UiModel.Instance.Encounter];
+                }
+            }
+        }
+
+        public double DamageFraction
+        {
+            get
+            {
+                if (TotalDamage == 0)
+                {
+                    return 0;
+                }
+                return Math.Round(((double) Damage*100/TotalDamage), 1);
+            }
+        }
+
+        public long FirstHit
+        {
+            get
+            {
+                lock (EntitiesStats)
+                {
+                    if (UiModel.Instance.Encounter != null && EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+                        return EntitiesStats[UiModel.Instance.Encounter].FirstHit;
+                    if (UiModel.Instance.Encounter != null) return 0;
+                    long firsthit = 0;
+                    foreach (var entityStats in EntitiesStats)
+                    {
+                        if (firsthit == 0)
+                        {
+                            firsthit = entityStats.Value.FirstHit;
+                        }
+                        else if (entityStats.Value.FirstHit < firsthit && entityStats.Value.FirstHit != 0)
+                        {
+                            firsthit = entityStats.Value.FirstHit;
+                        }
+                    }
+                    return firsthit;
+                }
+            }
+        }
+
+        public long LastHit
+        {
+            get
+            {
+                lock (EntitiesStats)
+                {
+                    if (UiModel.Instance.Encounter != null && EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+                        return EntitiesStats[UiModel.Instance.Encounter].LastHit;
+                    if (UiModel.Instance.Encounter != null) return 0;
+                    long lasthit = 0;
+                    foreach (var entityStats in EntitiesStats)
+                    {
+                        if (lasthit == 0)
+                        {
+                            lasthit = entityStats.Value.LastHit;
+                        }
+                        else if (entityStats.Value.LastHit > lasthit)
+                        {
+                            lasthit = entityStats.Value.LastHit;
+                        }
+                    }
+                    return lasthit;
+                }
+            }
+        }
+
+        public long Interval => LastHit - FirstHit;
+
+        public long Dps
+        {
+            get
+            {
+                if (Interval == 0)
+                {
+                    return 0;
+                }
+                return Damage/Interval;
+            }
+        }
+
+
         public long Damage
         {
             get
             {
                 lock (EntitiesStats)
                 {
-                    return EntitiesStats.Sum(entityStats => entityStats.Value.Damage);
+                    if (UiModel.Instance.Encounter == null)
+                    {
+                        return EntitiesStats.Sum(entityStats => entityStats.Value.Damage);
+                    }
+                    if (EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+                    {
+                        return EntitiesStats[UiModel.Instance.Encounter].Damage;
+                    }
+                    return 0;
                 }
             }
         }
 
-        public Dictionary<Skill,SkillStats> AllSkills
+        public Dictionary<Skill, SkillStats> AllSkills
         {
             get
             {
-                Dictionary<Skill, SkillStats> skills = new Dictionary<Skill, SkillStats>();
+                var skills = new Dictionary<Skill, SkillStats>();
 
                 lock (EntitiesStats)
                 {
-                    foreach (var entities in EntitiesStats)
+                    foreach (var skill in EntitiesStats.SelectMany(entities => entities.Value.Skills))
                     {
-                        foreach (var skill in entities.Value.Skills)
+                        if (skills.ContainsKey(skill.Key))
                         {
-                            if (skills.ContainsKey(skill.Key))
-                            {
-                                skills[skill.Key] += skill.Value;
-                            }
-                            else
-                            {
-                                skills[skill.Key] = skill.Value;
-                            }
+                            skills[skill.Key] += skill.Value;
+                        }
+                        else
+                        {
+                            skills[skill.Key] = skill.Value;
                         }
                     }
                 }
                 return skills;
-
             }
         }
 
@@ -53,16 +152,25 @@ namespace Tera.DamageMeter
             get
             {
                 var hits = Hits;
-                return hits == 0 ? 0 : Math.Round((double)Crits * 100 / hits, 1);
+                return hits == 0 ? 0 : Math.Round((double) Crits*100/hits, 1);
             }
         }
+
         public int Crits
         {
             get
             {
                 lock (EntitiesStats)
                 {
-                    return EntitiesStats.Sum(skills => skills.Value.Crits);
+                    if (UiModel.Instance.Encounter == null)
+                    {
+                        return EntitiesStats.Sum(skills => skills.Value.Crits);
+                    }
+                    if (EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+                    {
+                        return EntitiesStats[UiModel.Instance.Encounter].Crits;
+                    }
+                    return 0;
                 }
             }
         }
@@ -73,7 +181,15 @@ namespace Tera.DamageMeter
             {
                 lock (EntitiesStats)
                 {
-                    return EntitiesStats.Sum(skills => skills.Value.Hits);
+                    if (UiModel.Instance.Encounter == null)
+                    {
+                        return EntitiesStats.Sum(skills => skills.Value.Hits);
+                    }
+                    if (EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+                    {
+                        return EntitiesStats[UiModel.Instance.Encounter].Hits;
+                    }
+                    return 0;
                 }
             }
         }
