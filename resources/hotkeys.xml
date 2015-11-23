@@ -14,7 +14,7 @@
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>OSEF:\</header>
+				<header>Dégats reçu:\</header>
 				<content>{name}: {damage_received}\</content>
 				<footer></footer>
 				<order_by>damage_received</order_by>

@@ -206,16 +206,14 @@ namespace Tera.DamageMeter
                     BiggestCrit = damage;
                     AverageCrit = damage;
                     LowestCrit = damage;
-                    if (_entityTarget != null)
+                    if (_entityTarget == null) return;
+                    if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
                     {
-                        if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
-                        {
-                            Entities.TotalDamageEntity[_entityTarget] += damage;
-                        }
-                        else
-                        {
-                            Entities.TotalDamageEntity[_entityTarget] = damage;
-                        }
+                        Entities.TotalDamageEntity[_entityTarget] += damage;
+                    }
+                    else
+                    {
+                        Entities.TotalDamageEntity[_entityTarget] = damage;
                     }
                 }
             }
@@ -228,20 +226,18 @@ namespace Tera.DamageMeter
                 else
                 {
                     Damage += damage;
-                    if (_entityTarget != null)
-                    {
-                        if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
-                        {
-                            Entities.TotalDamageEntity[_entityTarget] += damage;
-                        }
-                        else
-                        {
-                            Entities.TotalDamageEntity[_entityTarget] = damage;
-                        }
-                    }
                     BiggestHit = damage;
                     AverageHit = damage;
                     LowestHit = damage;
+                    if (_entityTarget == null) return;
+                    if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
+                    {
+                        Entities.TotalDamageEntity[_entityTarget] += damage;
+                    }
+                    else
+                    {
+                        Entities.TotalDamageEntity[_entityTarget] = damage;
+                    }
                 }
             }
         }

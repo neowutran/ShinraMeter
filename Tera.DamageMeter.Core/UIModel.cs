@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using Tera.Data;
@@ -58,7 +59,7 @@ namespace Tera.DamageMeter
         public void Reset()
         {
             DamageTracker.Instance.Reset();
-            Entities.TotalDamageEntity = new Dictionary<Entity, long>();
+            Entities.TotalDamageEntity = new ConcurrentDictionary<Entity, long>();
             var handler = DataUpdated;
             handler?.Invoke(DamageTracker.Instance, DamageTracker.Instance.Entities);
         }

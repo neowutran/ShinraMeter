@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Tera.Data
@@ -7,8 +8,8 @@ namespace Tera.Data
     // Currently this is limited to the name of the skill
     public class MonsterDatabase
     {
-        private readonly Dictionary<uint, string> _monsterData =
-            new Dictionary<uint, string>();
+        private readonly ConcurrentDictionary<string, string> _monsterData =
+            new ConcurrentDictionary<string, string>();
 
 
         public MonsterDatabase(string filename)
@@ -20,18 +21,18 @@ namespace Tera.Data
                 if (line == null) continue;
                 var values = line.Split(';');
 
-                _monsterData.Add(uint.Parse(values[0]), values[1]);
+                _monsterData.TryAdd(values[0], values[1]);
             }
         }
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
-        public string Get(uint monsterId)
+        public string Get(string monsterId)
         {
             string monsterName;
             _monsterData.TryGetValue(monsterId, out monsterName);
             if (monsterName == null)
             {
-                monsterName = monsterId.ToString();
+                monsterName = monsterId;
             }
             return monsterName;
         }

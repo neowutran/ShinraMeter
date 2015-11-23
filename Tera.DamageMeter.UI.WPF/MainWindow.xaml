@@ -216,7 +216,7 @@
                 BorderThickness="0" x:Name="ToggleTopMost" Click="ToggleTopMost_OnClick" Content="UNPIN"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="0" />
         <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged" DisplayMemberPath="Name" SelectedValuePath="Name"
-                  ItemsSource="{Binding Path=Encounter}" x:Name="ListEncounter" HorizontalAlignment="Left"
+                  x:Name="ListEncounter" HorizontalAlignment="Left"
                   Margin="100,0,0,0" VerticalAlignment="Top" Width="155" Height="20" />
 
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"

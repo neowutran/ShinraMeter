@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace Tera.DamageMeter
     public class DamageTracker : IEnumerable<PlayerInfo>
     {
         private static DamageTracker _instance;
-        private Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
-        public ObservableCollection<Entity> Entities = new ObservableCollection<Entity> {new Entity("")};
+        private ConcurrentDictionary<Player, PlayerInfo> _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
+        public ObservableCollection<Entity> Entities = new ObservableCollection<Entity>();
 
         private DamageTracker()
         {
@@ -35,8 +36,8 @@ namespace Tera.DamageMeter
 
         public void Reset()
         {
-            _statsByUser = new Dictionary<Player, PlayerInfo>();
-            Entities = new ObservableCollection<Entity> {new Entity("")};
+            _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
+            Entities = new ObservableCollection<Entity>();
         }
 
         private PlayerInfo GetOrCreate(Player player)
@@ -44,7 +45,7 @@ namespace Tera.DamageMeter
             PlayerInfo playerStats;
             if (_statsByUser.TryGetValue(player, out playerStats)) return playerStats;
             playerStats = new PlayerInfo(player);
-            _statsByUser.Add(player, playerStats);
+            _statsByUser.TryAdd(player, playerStats);
 
             return playerStats;
         }
@@ -151,8 +152,9 @@ namespace Tera.DamageMeter
                         skillKey.SkillId.Add(skillid);
                     }
                 }
-                entities.EntitiesStats[entityTarget].Skills.Remove(skillKey);
-                entities.EntitiesStats[entityTarget].Skills.Add(skillKey, skillStats);
+                SkillStats trash;
+                entities.EntitiesStats[entityTarget].Skills.TryRemove(skillKey, out trash);
+                entities.EntitiesStats[entityTarget].Skills.TryAdd(skillKey, skillStats);
             }
         }
 
@@ -192,8 +194,9 @@ namespace Tera.DamageMeter
                     skillKey.SkillId.Add(skillid);
                 }
             }
-            stats.Skills.Remove(skillKey);
-            stats.Skills.Add(skillKey, skillStats);
+            SkillStats trash;
+            stats.Skills.TryRemove(skillKey, out trash);
+            stats.Skills.TryAdd(skillKey, skillStats);
         }
 
         private delegate void ChangedEncounter(Entity entity, SkillResult msg);

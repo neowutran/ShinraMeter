@@ -17,8 +17,6 @@ namespace Tera.DamageMeter.UI.WPF
     /// </summary>
     public partial class MainWindow
     {
-        public ObservableCollection<Entity> Encounter = new ObservableCollection<Entity>();
-
         public MainWindow()
         {
             InitializeComponent();
@@ -31,6 +29,7 @@ namespace Tera.DamageMeter.UI.WPF
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+            ListEncounter.Items.Add(new Entity(""));
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -52,13 +51,8 @@ namespace Tera.DamageMeter.UI.WPF
                 foreach (var item in sortedDict)
                 {
                     Players.Items.Add(item.Value);
-                }
-                var numberPlayer = Controls.Count;
-                if (Controls.Count > 10)
-                {
-                    numberPlayer = 10;
-                }
-                Height = (numberPlayer)*25 + CloseMeter.ActualHeight;
+                }               
+                Height = (Controls.Count) * 29 + CloseMeter.ActualHeight;
             }
         }
 
@@ -70,21 +64,36 @@ namespace Tera.DamageMeter.UI.WPF
             UiModel.Instance.Dispatcher = Dispatcher;
         }
 
-        private void StayTopMost()
+        private void EmptyEncounter()
         {
-            if (!Topmost) return;
-            Topmost = false;
-            Topmost = true;
+            
+            ListEncounter.Items.Clear();
+            ListEncounter.Items.Add(new Entity(""));
+            ListEncounter.SelectedIndex = 0;
+        }
+
+        private void AddEncounter(ObservableCollection<Entity> entities)
+        {
+            if ((ListEncounter.Items.Count -1) > entities.Count) return;
+            foreach (var entity in entities.Where(entity => !ListEncounter.Items.Contains(entity)))
+            {
+                ListEncounter.Items.Add(entity);
+            }
         }
 
         public void Update(IEnumerable<PlayerInfo> playerStatsSequence, ObservableCollection<Entity> newentities)
         {
             UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats, ObservableCollection<Entity> entities)
             {
-                StayTopMost();
-                Encounter = entities;
-                ListEncounter.ItemsSource = Encounter;
-                Console.WriteLine(Encounter.Count);
+                if (entities.Count == 0)
+                {
+                    EmptyEncounter();
+                }
+                else
+                {
+                  AddEncounter(entities);
+                }
+
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
                 var visiblePlayerStats = new HashSet<PlayerInfo>();
                 foreach (var playerStats in stats)

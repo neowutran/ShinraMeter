@@ -39,12 +39,8 @@ namespace Tera.DamageMeter
 
         public static void Paste(string text)
         {
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(300);
             const int cr = 13;
             const int lf = 10;
-
-
             char[] specialChars = {'{', '}', '(', ')', '+', '^', '%', '~', '[', ']'};
             foreach (var c in text.Where(c => c != lf && c != cr))
             {
@@ -146,6 +142,7 @@ namespace Tera.DamageMeter
             var dpsString = header;
             foreach (var playerStats in playerInfosOrdered)
             {
+                
                 var currentContent = content;
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps) + "/s");

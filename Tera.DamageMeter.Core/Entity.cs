@@ -41,7 +41,7 @@ namespace Tera.DamageMeter
 
         private void SetName()
         {
-            Name = BasicTeraData.Instance.MonsterDatabase.Get(ModelId);
+            Name = BasicTeraData.Instance.MonsterDatabase.Get(_npcType+""+_npcId);
         }
 
         public override string ToString()

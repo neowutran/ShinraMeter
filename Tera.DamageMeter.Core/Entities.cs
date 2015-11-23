@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,9 +7,9 @@ namespace Tera.DamageMeter
 {
     public class Entities
     {
-        public Dictionary<Entity, SkillsStats> EntitiesStats = new Dictionary<Entity, SkillsStats>();
+        public ConcurrentDictionary<Entity, SkillsStats> EntitiesStats = new ConcurrentDictionary<Entity, SkillsStats>();
 
-        public static Dictionary<Entity, long> TotalDamageEntity { get; set; } = new Dictionary<Entity, long>();
+        public static ConcurrentDictionary<Entity, long> TotalDamageEntity { get; set; } = new ConcurrentDictionary<Entity, long>();
 
         public static long TotalDamage
         {
@@ -123,11 +124,11 @@ namespace Tera.DamageMeter
             }
         }
 
-        public Dictionary<Skill, SkillStats> AllSkills
+        public ConcurrentDictionary<Skill, SkillStats> AllSkills
         {
             get
             {
-                var skills = new Dictionary<Skill, SkillStats>();
+                var skills = new ConcurrentDictionary<Skill, SkillStats>();
 
                 lock (EntitiesStats)
                 {

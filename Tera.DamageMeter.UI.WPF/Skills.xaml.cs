@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -12,9 +13,9 @@ namespace Tera.DamageMeter.UI.WPF
     public partial class Skills
     {
         private readonly PlayerStats _parent;
-        private Dictionary<DamageMeter.Skill, SkillStats> _skills;
+        private ConcurrentDictionary<DamageMeter.Skill, SkillStats> _skills;
 
-        public Skills(Dictionary<DamageMeter.Skill, SkillStats> skills, PlayerStats parent)
+        public Skills(ConcurrentDictionary<DamageMeter.Skill, SkillStats> skills, PlayerStats parent)
         {
             InitializeComponent();
             _skills = skills;
@@ -34,7 +35,7 @@ namespace Tera.DamageMeter.UI.WPF
         }
 
 
-        public void Update(Dictionary<DamageMeter.Skill, SkillStats> skills)
+        public void Update(ConcurrentDictionary<DamageMeter.Skill, SkillStats> skills)
         {
             _skills = skills;
             Repaint();
