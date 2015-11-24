@@ -147,8 +147,8 @@ namespace Tera.DamageMeter
             skill.LowestCrit = c1.LowestCrit;
             skill.LowestCrit = c2.LowestCrit;
 
-            skill.BiggestHit = c1.BiggestCrit;
-            skill.BiggestHit = c2.BiggestCrit;
+            skill.BiggestCrit = c1.BiggestCrit;
+            skill.BiggestCrit = c2.BiggestCrit;
             skill.Hits = c1.Hits + c2.Hits;
             skill.Crits = c1.Crits + c2.Crits;
 
@@ -158,7 +158,7 @@ namespace Tera.DamageMeter
             }
             else
             {
-                skill._averageCrit = (c1._averageCrit + c2._averageCrit)/(skill.Crits);
+                skill._averageCrit = (c1._averageCrit*c1.Crits + c2._averageCrit*c2.Crits)/(skill.Crits);
             }
             if (skill.Hits - skill.Crits == 0)
             {
@@ -166,7 +166,7 @@ namespace Tera.DamageMeter
             }
             else
             {
-                skill._averageHit = (c1._averageHit + c2._averageHit)/(skill.Hits - skill.Crits);
+                skill._averageHit = (c1._averageHit*(c1.Hits - c1.Crits) + c2._averageHit*(c2.Hits - c2.Crits))/(skill.Hits - skill.Crits);
             }
 
             skill.LowestHit = c1.LowestHit;

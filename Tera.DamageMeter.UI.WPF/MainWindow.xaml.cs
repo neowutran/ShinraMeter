@@ -44,6 +44,7 @@ namespace Tera.DamageMeter.UI.WPF
         {
             lock (Controls)
             {
+                TotalDamage.Content = FormatHelpers.Instance.FormatValue(Entities.TotalDamage);
                 foreach (var player in Controls)
                 {
                     player.Value.Repaint();
@@ -78,7 +79,7 @@ namespace Tera.DamageMeter.UI.WPF
         private void AddEncounter(IReadOnlyCollection<Entity> entities)
         {
             if ((ListEncounter.Items.Count - 1) > entities.Count) return;
-            foreach (var entity in entities.Where(entity => !ListEncounter.Items.Contains(entity)))
+            foreach (var entity in entities.Where(entity => !ListEncounter.Items.Contains(entity)).Where(entity => !entity.Name.Equals("")))
             {
                 ListEncounter.Items.Add(entity);
             }
@@ -105,7 +106,6 @@ namespace Tera.DamageMeter.UI.WPF
                     AddEncounter(entities);
                 }
                 StayTopMost();
-                TotalDamage.Content = FormatHelpers.Instance.FormatValue(Entities.TotalDamage);
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
                 var visiblePlayerStats = new HashSet<PlayerInfo>();
                 foreach (var playerStats in stats)
