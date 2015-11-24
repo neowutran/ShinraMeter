@@ -37,6 +37,11 @@ namespace Tera.DamageMeter.UI.WPF
 
         public void Update(object sender, EventArgs e)
         {
+            Repaint();
+        }
+
+        private void Repaint()
+        {
             lock (Controls)
             {
                 foreach (var player in Controls)
@@ -46,16 +51,15 @@ namespace Tera.DamageMeter.UI.WPF
 
                 Players.Items.Clear();
                 var sortedDict = from entry in Controls
-                    orderby entry.Value.PlayerInfo.Dealt.DamageFraction descending
-                    select entry;
+                                 orderby entry.Value.PlayerInfo.Dealt.DamageFraction descending
+                                 select entry;
                 foreach (var item in sortedDict)
                 {
                     Players.Items.Add(item.Value);
                 }
-                Height = (Controls.Count)*29 + CloseMeter.ActualHeight;
+                Height = (Controls.Count) * 29 + CloseMeter.ActualHeight;
             }
         }
-
 
         public void HandleConnected(string serverName)
         {
@@ -120,6 +124,11 @@ namespace Tera.DamageMeter.UI.WPF
                     Controls[invisibleControl.Key].CloseSkills();
                     Controls.Remove(invisibleControl.Key);
                 }
+
+                if (entities.Count == 0)
+                {
+                    Repaint();
+                }
             };
             Dispatcher.Invoke(changeData, playerStatsSequence, newentities);
         }
@@ -178,6 +187,7 @@ namespace Tera.DamageMeter.UI.WPF
                 encounter = null;
             }
             UiModel.Instance.Encounter = encounter;
+            Repaint();
         }
 
         private delegate void ChangeTitle(string servername);

@@ -49,25 +49,32 @@ namespace Tera.DamageMeter.UI.WPF
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;
 
+
+            _windowSkill?.Update(Skills());
+            
+        }
+
+        private ConcurrentDictionary<DamageMeter.Skill, SkillStats> Skills()
+        {
+
             if (UiModel.Instance.Encounter == null)
             {
-                _windowSkill?.Update(PlayerInfo.Dealt.AllSkills);
+                return PlayerInfo.Dealt.AllSkills;
             }
-            else if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+            if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
             {
-                _windowSkill?.Update(PlayerInfo.Dealt.EntitiesStats[UiModel.Instance.Encounter].Skills);
+                return PlayerInfo.Dealt.EntitiesStats[UiModel.Instance.Encounter].Skills;
             }
-            else
-            {
-                _windowSkill?.Update(new ConcurrentDictionary<DamageMeter.Skill, SkillStats>());
-            }
+           
+            return new ConcurrentDictionary<DamageMeter.Skill, SkillStats>();
+            
         }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(PlayerInfo.Dealt.AllSkills, this)
+                _windowSkill = new Skills(Skills(), this)
                 {
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}
@@ -75,7 +82,7 @@ namespace Tera.DamageMeter.UI.WPF
             }
 
             _windowSkill.Show();
-            _windowSkill.Update(PlayerInfo.Dealt.AllSkills);
+            _windowSkill.Update(Skills());
         }
 
         public void CloseSkills()

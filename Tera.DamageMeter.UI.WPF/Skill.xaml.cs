@@ -10,22 +10,33 @@ namespace Tera.DamageMeter.UI.WPF
     /// </summary>
     public partial class Skill
     {
+        public static readonly string SkillName = "Skill name";
+        public static readonly string SkillId = "Skill Id";
+        public static readonly string CritRate = "CritRate";
+        public static readonly string TotalDamage = "Dmg";
+        public static readonly string DamagePercentage = "% Dmg";
+        public static readonly string AverageCrit = "Avg Crit";
+        public static readonly string BiggestCrit = "Big Crit";
+        public static readonly string LowestCrit = "Low Crit";
+        public static readonly string AverageHit = "Avg Blk";
+        public static readonly string Hits = "Hits";
+
         public Skill(DamageMeter.Skill skill, SkillStats stats, bool template = false)
         {
             InitializeComponent();
 
             if (template)
             {
-                LabelName.Content = "Skill name";
-                LabelId.Content = "Skill Id";
-                LabelCritRate.Content = "CritRate";
-                LabelTotalDamage.Content = "Dmg";
-                LabelDamagePercentage.Content = "% Dmg";
-                LabelNumberHit.Content = "Hits";
-                LabelAverageCrit.Content = "Avg Crit";
-                LabelBiggestCrit.Content = "Big Crit";
-                LabelLowestCrit.Content = "Low Crit";
-                LabelAverageHit.Content = "Avg Blk";
+                LabelName.Content = SkillName;
+                LabelId.Content = SkillId;
+                LabelCritRate.Content = CritRate;
+                LabelTotalDamage.Content = TotalDamage+ "↓";
+                LabelDamagePercentage.Content = DamagePercentage;
+                LabelNumberHit.Content = Hits;
+                LabelAverageCrit.Content = AverageCrit;
+                LabelBiggestCrit.Content = BiggestCrit;
+                LabelLowestCrit.Content = LowestCrit;
+                LabelAverageHit.Content = AverageHit;
 
                 LabelName.Foreground = Brushes.Red;
                 LabelDamagePercentage.Foreground = Brushes.Red;
@@ -37,6 +48,8 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelBiggestCrit.Foreground = Brushes.Red;
                 LabelLowestCrit.Foreground = Brushes.Red;
                 LabelAverageHit.Foreground = Brushes.Red;
+
+                
             }
             else
             {
