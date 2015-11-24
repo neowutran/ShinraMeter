@@ -39,7 +39,7 @@ namespace Tera.Game
             message.On<SpawnNpcServerMessage>(
                 m =>
                     newEntity =
-                        new NpcEntity(m.Id, m.OwnerId, m.ModelId, m.NpcId, m.NpcType, GetOrPlaceholder(m.OwnerId)));
+                        new NpcEntity(m.Id, m.OwnerId, m.CategoryId, m.NpcId, m.NpcArea, GetOrPlaceholder(m.OwnerId)));
             message.On<SpawnProjectileServerMessage>(
                 m => newEntity = new ProjectileEntity(m.Id, m.OwnerId, GetOrPlaceholder(m.OwnerId)));
             message.On<StartUserProjectileServerMessage>(

@@ -2,7 +2,6 @@
 <hotkeys>
 	<paste>
 		<shift>false</shift>
-		<ctrl>false</ctrl>
 		<window>false</window>
 		<key>Home</key>
 	</paste>
@@ -10,7 +9,6 @@
 
 		<copy>
 			<shift>false</shift>
-			<ctrl>true</ctrl>
 			<window>false</window>
 			<key>End</key>
 			<string>
@@ -23,7 +21,6 @@
 		</copy>
 		<copy>
 			<shift>true</shift>
-			<ctrl>false</ctrl>
 			<window>false</window>
 			<key>End</key>
 			<string>

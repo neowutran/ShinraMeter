@@ -6,19 +6,19 @@ namespace Tera.Game
     // NPCs and Mosters - Tera doesn't distinguish these
     public class NpcEntity : Entity, IHasOwner
     {
-        public NpcEntity(EntityId id, EntityId ownerId, uint modelId, uint npcId, ushort npcType, Entity owner)
+        public NpcEntity(EntityId id, EntityId ownerId, uint categoryId, uint npcId, ushort npcArea, Entity owner)
             : base(id)
         {
             OwnerId = ownerId;
             Owner = owner;
-            ModelId = modelId;
+            CategoryId = categoryId;
             NpcId = npcId;
-            NpcType = npcType;
+            NpcArea = npcArea;
         }
 
-        public uint ModelId { get; }
+        public uint CategoryId { get; }
         public uint NpcId { get; }
-        public ushort NpcType { get; }
+        public ushort NpcArea { get; }
 
         public EntityId OwnerId { get; }
         public Entity Owner { get; }

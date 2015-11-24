@@ -105,6 +105,7 @@ namespace Tera.DamageMeter.UI.WPF
                     AddEncounter(entities);
                 }
                 StayTopMost();
+                TotalDamage.Content = FormatHelpers.Instance.FormatValue(Entities.TotalDamage);
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
                 var visiblePlayerStats = new HashSet<PlayerInfo>();
                 foreach (var playerStats in stats)

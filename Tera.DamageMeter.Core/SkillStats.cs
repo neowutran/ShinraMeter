@@ -149,27 +149,28 @@ namespace Tera.DamageMeter
 
             skill.BiggestHit = c1.BiggestCrit;
             skill.BiggestHit = c2.BiggestCrit;
+            skill.Hits = c1.Hits + c2.Hits;
+            skill.Crits = c1.Crits + c2.Crits;
 
-            if (c1.Crits + c2.Crits == 0)
+            if (skill.Crits == 0)
             {
                 skill._averageCrit = 0;
             }
             else
             {
-                skill._averageCrit = (c1._averageCrit + c2._averageCrit)/(c1.Crits + c2.Crits);
+                skill._averageCrit = (c1._averageCrit + c2._averageCrit)/(skill.Crits);
             }
-            if (c1.Hits + c2.Hits - c1.Crits - c2.Crits == 0)
+            if (skill.Hits - skill.Crits == 0)
             {
                 skill._averageHit = 0;
             }
             else
             {
-                skill._averageHit = (c1._averageHit + c2._averageHit)/(c1.Hits + c2.Hits - c1.Crits - c2.Crits);
+                skill._averageHit = (c1._averageHit + c2._averageHit)/(skill.Hits - skill.Crits);
             }
 
             skill.LowestHit = c1.LowestHit;
             skill.LowestHit = c2.LowestHit;
-
 
             skill.BiggestHit = c1.BiggestHit;
             skill.BiggestHit = c2.BiggestHit;
@@ -183,7 +184,18 @@ namespace Tera.DamageMeter
             return skill;
         }
 
-
+        private void SetTotalDamage(long damage)
+        {
+            if (_entityTarget == null) return;
+            if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
+            {
+                Entities.TotalDamageEntity[_entityTarget] += damage;
+            }
+            else
+            {
+                Entities.TotalDamageEntity[_entityTarget] = damage;
+            }
+        }
         public void AddData(long damage, bool isCrit, bool isHeal)
         {
             Hits++;
@@ -200,15 +212,7 @@ namespace Tera.DamageMeter
                     BiggestCrit = damage;
                     AverageCrit = damage;
                     LowestCrit = damage;
-                    if (_entityTarget == null) return;
-                    if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
-                    {
-                        Entities.TotalDamageEntity[_entityTarget] += damage;
-                    }
-                    else
-                    {
-                        Entities.TotalDamageEntity[_entityTarget] = damage;
-                    }
+                    SetTotalDamage(damage);
                 }
             }
             else
@@ -223,15 +227,7 @@ namespace Tera.DamageMeter
                     BiggestHit = damage;
                     AverageHit = damage;
                     LowestHit = damage;
-                    if (_entityTarget == null) return;
-                    if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
-                    {
-                        Entities.TotalDamageEntity[_entityTarget] += damage;
-                    }
-                    else
-                    {
-                        Entities.TotalDamageEntity[_entityTarget] = damage;
-                    }
+                    SetTotalDamage(damage);
                 }
             }
         }

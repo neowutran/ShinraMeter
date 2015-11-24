@@ -60,7 +60,7 @@ namespace Tera.DamageMeter
                 if (skillResult.Target is NpcEntity)
                 {
                     var target = (NpcEntity) skillResult.Target;
-                    entityTarget = new Entity(target.ModelId, target.Id, target.NpcId, target.NpcType);
+                    entityTarget = new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
                 }
                 else if (skillResult.Target is UserEntity)
                 {

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Shinra Meter"
-        Height="50"
-        MinHeight="50"
+        Height="60"
+        MinHeight="60"
         WindowStyle="None"
         Topmost="True"
         AllowsTransparency="True"
@@ -206,22 +206,21 @@
     </Window.Background>
     <Grid HorizontalAlignment="Left" Width="355">
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
-                Content="CLOSE" Foreground="White" BorderThickness="0" Click="Button_OnClick"
-                HorizontalAlignment="Left"
-                Margin="255,0,0,0" VerticalAlignment="Top" Width="100" />
+                Content="X" Foreground="White" BorderThickness="0" Click="Button_OnClick"
+                HorizontalAlignment="Left" Height="29" MinHeight="29"
+                Margin="336,0,0,0" VerticalAlignment="Top" Width="19" />
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" Foreground="White"
-                BorderThickness="0" x:Name="ToggleTopMost" Click="ToggleTopMost_OnClick" Content="UNPIN"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="0" />
+                BorderThickness="0" x:Name="ToggleTopMost" Click="ToggleTopMost_OnClick" Content="UNPIN" MinHeight="29"
+                HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="46" Margin="0" />
         <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged" DisplayMemberPath="Name" SelectedValuePath="Name"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="100,0,0,0" VerticalAlignment="Top" Width="155" Height="20" />
+                  Margin="46,0,0,0" VerticalAlignment="Top" Width="237" MinHeight="29" Height="29" />
 
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,20,0,0"
-                      HorizontalAlignment="Left" Width="355" Grid.ColumnSpan="2" />
-
-
+                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,28,0,0"
+                      HorizontalAlignment="Left" Width="355" />
+        <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="286,0,0,0" FontSize="14" Foreground="White" VerticalAlignment="Top" MinHeight="29" Height="29" Width="50"/>
     </Grid>
 </Window>
