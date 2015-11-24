@@ -137,19 +137,13 @@ namespace Tera.DamageMeter
 
         public static SkillStats operator +(SkillStats c1, SkillStats c2)
         {
-            SkillStats skill;
             if (c1._playerInfo != c2._playerInfo)
             {
                 throw new Exception();
             }
-            if (c1._entityTarget != c2._entityTarget)
-            {
-                skill = new SkillStats(c1._playerInfo, null);
-            }
-            else
-            {
-                skill = new SkillStats(c1._playerInfo, c1._entityTarget);
-            }
+            var skill = c1._entityTarget != c2._entityTarget
+                ? new SkillStats(c1._playerInfo, null)
+                : new SkillStats(c1._playerInfo, c1._entityTarget);
             skill.LowestCrit = c1.LowestCrit;
             skill.LowestCrit = c2.LowestCrit;
 

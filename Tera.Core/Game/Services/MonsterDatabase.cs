@@ -29,11 +29,7 @@ namespace Tera.Game
         {
             string monsterName;
             _monsterData.TryGetValue(monsterId, out monsterName);
-            if (monsterName == null)
-            {
-                monsterName = monsterId.ToString();
-            }
-            return monsterName;
+            return monsterName ?? (monsterId.ToString());
         }
     }
 }

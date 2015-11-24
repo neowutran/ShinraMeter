@@ -15,8 +15,6 @@ namespace Tera.DamageMeter
         private readonly Window _window = new Window();
         private int _currentId;
 
-        private System.Windows.Window _dpswindow;
-
         private KeyboardHook()
         {
             // register the event of the inner native window.
@@ -67,9 +65,8 @@ namespace Tera.DamageMeter
             }
         }
 
-        public void RegisterKeyboardHook(System.Windows.Window window)
+        public void RegisterKeyboardHook()
         {
-            _dpswindow = window;
             // register the event that is fired after the key press.
             Instance.KeyPressed += hook_KeyPressed;
             // register the control + alt + F12 combination as hot key.

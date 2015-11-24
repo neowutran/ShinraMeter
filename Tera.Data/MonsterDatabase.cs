@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Tera.Data
@@ -30,11 +29,7 @@ namespace Tera.Data
         {
             string monsterName;
             _monsterData.TryGetValue(monsterId, out monsterName);
-            if (monsterName == null)
-            {
-                monsterName = monsterId;
-            }
-            return monsterName;
+            return monsterName ?? (monsterId);
         }
     }
 }

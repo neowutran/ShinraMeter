@@ -33,7 +33,6 @@ namespace Tera.Data
         public HotkeysData HotkeysData { get; }
         public string ResourceDirectory { get; }
         public IEnumerable<Server> Servers { get; private set; }
-        public IEnumerable<Region> Regions { get; private set; }
 
         private static Func<T, TResult> Memoize<T, TResult>(Func<T, TResult> func)
         {

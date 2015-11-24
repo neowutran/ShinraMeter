@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using Tera.Game;
 
 namespace Tera.Data
@@ -16,7 +15,5 @@ namespace Tera.Data
 
         public OpCodeNamer OpCodeNamer { get; private set; }
         public SkillDatabase SkillDatabase { get; private set; }
-
-        public MonsterDatabase MonsterDatabase { get; private set; }
     }
 }

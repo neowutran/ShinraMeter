@@ -24,7 +24,7 @@ namespace Tera.DamageMeter.UI.WPF
             TeraSniffer.Instance.Enabled = true;
             UiModel.Instance.Connected += HandleConnected;
             UiModel.Instance.DataUpdated += Update;
-            KeyboardHook.Instance.RegisterKeyboardHook(this);
+            KeyboardHook.Instance.RegisterKeyboardHook();
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -51,8 +51,8 @@ namespace Tera.DamageMeter.UI.WPF
                 foreach (var item in sortedDict)
                 {
                     Players.Items.Add(item.Value);
-                }               
-                Height = (Controls.Count) * 29 + CloseMeter.ActualHeight;
+                }
+                Height = (Controls.Count)*29 + CloseMeter.ActualHeight;
             }
         }
 
@@ -66,19 +66,26 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void EmptyEncounter()
         {
-            
             ListEncounter.Items.Clear();
             ListEncounter.Items.Add(new Entity(""));
             ListEncounter.SelectedIndex = 0;
         }
 
-        private void AddEncounter(ObservableCollection<Entity> entities)
+        private void AddEncounter(IReadOnlyCollection<Entity> entities)
         {
-            if ((ListEncounter.Items.Count -1) > entities.Count) return;
+            if ((ListEncounter.Items.Count - 1) > entities.Count) return;
             foreach (var entity in entities.Where(entity => !ListEncounter.Items.Contains(entity)))
             {
                 ListEncounter.Items.Add(entity);
             }
+        }
+
+        private void StayTopMost()
+
+        {
+            if (!Topmost) return;
+            Topmost = false;
+            Topmost = true;
         }
 
         public void Update(IEnumerable<PlayerInfo> playerStatsSequence, ObservableCollection<Entity> newentities)
@@ -91,9 +98,9 @@ namespace Tera.DamageMeter.UI.WPF
                 }
                 else
                 {
-                  AddEncounter(entities);
+                    AddEncounter(entities);
                 }
-
+                StayTopMost();
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
                 var visiblePlayerStats = new HashSet<PlayerInfo>();
                 foreach (var playerStats in stats)
@@ -144,7 +151,7 @@ namespace Tera.DamageMeter.UI.WPF
             }
             catch
             {
-                Console.WriteLine("Exception Move");
+                Console.WriteLine(@"Exception Move");
             }
         }
 

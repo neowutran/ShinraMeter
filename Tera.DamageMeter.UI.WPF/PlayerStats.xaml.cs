@@ -52,7 +52,8 @@ namespace Tera.DamageMeter.UI.WPF
             if (UiModel.Instance.Encounter == null)
             {
                 _windowSkill?.Update(PlayerInfo.Dealt.AllSkills);
-            }else if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+            }
+            else if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
             {
                 _windowSkill?.Update(PlayerInfo.Dealt.EntitiesStats[UiModel.Instance.Encounter].Skills);
             }
@@ -60,7 +61,6 @@ namespace Tera.DamageMeter.UI.WPF
             {
                 _windowSkill?.Update(new ConcurrentDictionary<DamageMeter.Skill, SkillStats>());
             }
-
         }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
@@ -94,7 +94,7 @@ namespace Tera.DamageMeter.UI.WPF
             }
             catch
             {
-                Console.WriteLine("Exception move");
+                Console.WriteLine(@"Exception move");
             }
         }
     }

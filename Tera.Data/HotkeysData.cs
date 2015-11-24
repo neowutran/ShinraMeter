@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -29,6 +30,7 @@ namespace Tera.Data
             var xml = XDocument.Load(Path.Combine(basicData.ResourceDirectory, "hotkeys.xml"));
 
             // Get Keys
+            Debug.Assert(xml.Root != null, "xml.Root != null");
             var pasteQuery = from hotkeys in xml.Root.Descendants("paste")
                 select hotkeys.Element("key");
             var resetQuery = from hotkeys in xml.Root.Descendants("reset")
@@ -93,9 +95,11 @@ namespace Tera.Data
 
         private void CopyData(XDocument xml)
         {
+            Debug.Assert(xml.Root != null, "xml.Root != null");
             foreach (var copy in xml.Root.Elements("copys").Elements("copy"))
             {
                 bool ctrl, shift, window;
+
                 bool.TryParse(copy.Element("ctrl").Value, out ctrl);
                 bool.TryParse(copy.Element("shift").Value, out shift);
                 bool.TryParse(copy.Element("window").Value, out window);

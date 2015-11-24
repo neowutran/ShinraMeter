@@ -10,8 +10,10 @@
              Height="29">
     <Grid>
 
-        <Rectangle MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator" Fill="Tomato"
-                   Opacity="0.3" HorizontalAlignment="Left" MinHeight="32" MaxHeight="32" Height="32" Stroke="Transparent" VerticalAlignment="Center"
+        <Rectangle MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator"
+                   Fill="Tomato"
+                   Opacity="0.3" HorizontalAlignment="Left" MinHeight="32" MaxHeight="32" Height="32"
+                   Stroke="Transparent" VerticalAlignment="Center"
                    Width="Auto" />
 
         <Image MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class" Focusable="False"

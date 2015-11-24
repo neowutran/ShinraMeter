@@ -54,7 +54,7 @@ namespace Tera.DamageMeter.UI.WPF
             }
             catch
             {
-                Console.WriteLine("Exception move");
+                Console.WriteLine(@"Exception move");
             }
         }
     }

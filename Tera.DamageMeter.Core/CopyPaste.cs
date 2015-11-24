@@ -142,7 +142,6 @@ namespace Tera.DamageMeter
             var dpsString = header;
             foreach (var playerStats in playerInfosOrdered)
             {
-                
                 var currentContent = content;
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps) + "/s");

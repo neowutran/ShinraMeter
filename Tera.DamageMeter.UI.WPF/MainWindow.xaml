@@ -73,12 +73,9 @@
                     Data="M 0 0 L 4 4 L 8 0 Z" />
             </Grid>
             <ControlTemplate.Triggers>
-                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                </Trigger>
-                <Trigger Property="ToggleButton.IsChecked" Value="true">
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                </Trigger>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true" />
+                <Trigger Property="ToggleButton.IsChecked" Value="true" />
+                <Trigger Property="IsEnabled" Value="False" />
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
@@ -92,7 +89,7 @@
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="White" />
             <Setter Property="MinWidth" Value="120" />
             <Setter Property="MinHeight" Value="20" />
             <Setter Property="Template">
@@ -193,7 +190,7 @@
                             <Trigger Property="IsHighlighted" Value="true">
                                 <Setter TargetName="Border" Property="Background" Value="Black" />
                                 <Setter Property="BorderBrush" Value="White" />
-                                <Setter Property="BorderThickness" Value="1"></Setter>
+                                <Setter Property="BorderThickness" Value="1" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Foreground" Value="White" />

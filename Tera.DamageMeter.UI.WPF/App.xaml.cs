@@ -5,10 +5,5 @@
     /// </summary>
     public partial class App
     {
-
-        public App()
-        {
-            
-        }
     }
 }

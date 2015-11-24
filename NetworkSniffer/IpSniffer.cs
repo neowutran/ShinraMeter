@@ -82,6 +82,7 @@ namespace NetworkSniffer
                 }
                 catch
                 {
+                    // ignored
                 }
                 device.StartCapture();
             }
