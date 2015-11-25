@@ -15,6 +15,46 @@ namespace Tera.DamageMeter
         private ConcurrentDictionary<Player, PlayerInfo> _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
         public ObservableCollection<Entity> Entities = new ObservableCollection<Entity>();
 
+        private long FirstHit
+        {
+            get
+            {
+                lock (_statsByUser)
+                {
+                    long firsthit = 0;
+                    foreach (var userstat in _statsByUser)
+                    {
+                        if (firsthit == 0 || userstat.Value.Dealt.FirstHit < firsthit)
+                        {
+                            firsthit = userstat.Value.Dealt.FirstHit;
+                        }
+                    }
+                    return firsthit;
+                }
+            }
+        }
+
+        public long Interval => LastHit - FirstHit;
+
+        private long LastHit
+        {
+            get
+            {
+                lock (_statsByUser)
+                {
+                    long lasthit = 0;
+                    foreach (var userstat in _statsByUser)
+                    {
+                        if (lasthit == 0 || userstat.Value.Dealt.LastHit > lasthit)
+                        {
+                            lasthit = userstat.Value.Dealt.LastHit;
+                        }
+                    }
+                    return lasthit;
+                }
+            }
+        }
+
         private DamageTracker()
         {
         }

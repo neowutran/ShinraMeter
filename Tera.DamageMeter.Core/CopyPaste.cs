@@ -140,9 +140,13 @@ namespace Tera.DamageMeter
             }
 
             var dpsString = header;
+            dpsString = dpsString.Replace("{encounter}", UiModel.Instance.Encounter.Name);
+
             foreach (var playerStats in playerInfosOrdered)
             {
                 var currentContent = content;
+                if (playerStats.Dealt.Damage == 0) continue;
+               
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps) + "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval + "s");

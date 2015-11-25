@@ -10,6 +10,7 @@ namespace Tera.DamageMeter
 
         public static ConcurrentDictionary<Entity, long> TotalDamageEntity { get; set; } =
             new ConcurrentDictionary<Entity, long>();
+    
 
         public static long TotalDamage
         {
