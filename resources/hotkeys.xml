@@ -24,7 +24,7 @@
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>{encounter}: {timer} => % degats | % crit | dps:\</header>
+				<header>{encounter} {timer} => % degats | % crit | dps:\</header>
 				<content>{name}: {damage_percentage} {crit_rate} {dps}\</content>
 				<footer></footer>
 				<order_by>damage_percentage</order_by>

@@ -79,7 +79,7 @@ namespace Tera.DamageMeter
             string orderby, string order)
         {
             //stop if nothing to paste
-            if (playerInfos == null) return;
+            if (playerInfos == null)return;
             IEnumerable<PlayerInfo> playerInfosOrdered;
             if (order == "ascending")
             {
@@ -140,9 +140,15 @@ namespace Tera.DamageMeter
             }
 
             var dpsString = header;
-            dpsString = dpsString.Replace("{encounter}", UiModel.Instance.Encounter.Name);
-            TimeSpan interval = TimeSpan.FromSeconds(DamageTracker.Instance.Interval);
-            dpsString = dpsString.Replace("{timer}", interval.Minutes+":"+interval.Seconds);
+            var name = "";
+            if (UiModel.Instance.Encounter != null)
+            {
+                name = UiModel.Instance.Encounter.Name+":";
+            }
+          
+            dpsString = dpsString.Replace("{encounter}", name);
+            var interval = TimeSpan.FromSeconds(DamageTracker.Instance.Interval);
+            dpsString = dpsString.Replace("{timer}", interval.ToString(@"mm\:ss"));
 
             foreach (var playerStats in playerInfosOrdered)
             {
