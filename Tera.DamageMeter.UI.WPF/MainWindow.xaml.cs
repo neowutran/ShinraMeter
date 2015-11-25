@@ -45,7 +45,9 @@ namespace Tera.DamageMeter.UI.WPF
             lock (Controls)
             {
                 TotalDamage.Content = FormatHelpers.Instance.FormatValue(Entities.TotalDamage);
-                Timer.Content = DamageTracker.Instance.Interval+"s";
+                TimeSpan interval = TimeSpan.FromSeconds(DamageTracker.Instance.Interval);
+                Timer.Content = interval.Minutes + ":" + interval.Seconds;
+
                 foreach (var player in Controls)
                 {
                     player.Value.Repaint();

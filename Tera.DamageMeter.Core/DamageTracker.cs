@@ -24,7 +24,7 @@ namespace Tera.DamageMeter
                     long firsthit = 0;
                     foreach (var userstat in _statsByUser)
                     {
-                        if (firsthit == 0 || userstat.Value.Dealt.FirstHit < firsthit)
+                        if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit < firsthit)) && userstat.Value.Dealt.FirstHit != 0)
                         {
                             firsthit = userstat.Value.Dealt.FirstHit;
                         }
@@ -45,7 +45,7 @@ namespace Tera.DamageMeter
                     long lasthit = 0;
                     foreach (var userstat in _statsByUser)
                     {
-                        if (lasthit == 0 || userstat.Value.Dealt.LastHit > lasthit)
+                        if (((lasthit == 0) || (userstat.Value.Dealt.LastHit > lasthit)) && userstat.Value.Dealt.LastHit != 0)
                         {
                             lasthit = userstat.Value.Dealt.LastHit;
                         }

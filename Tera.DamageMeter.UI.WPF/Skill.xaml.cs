@@ -74,6 +74,7 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.BiggestCrit);
                 LabelLowestCrit.Content = FormatHelpers.Instance.FormatValue(stats.LowestCrit);
                 LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.AverageHit);
+
             }
         }
 
