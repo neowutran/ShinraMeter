@@ -8,7 +8,7 @@ namespace Tera.DamageMeter
     {
         public ConcurrentDictionary<Entity, SkillsStats> EntitiesStats = new ConcurrentDictionary<Entity, SkillsStats>();
 
-    
+
         public double DamageFraction
         {
             get
@@ -17,7 +17,7 @@ namespace Tera.DamageMeter
                 {
                     return 0;
                 }
-                return Math.Round(((double) Damage*100/ DamageTracker.Instance.TotalDamage), 1);
+                return Math.Round(((double) Damage*100/DamageTracker.Instance.TotalDamage), 1);
             }
         }
 

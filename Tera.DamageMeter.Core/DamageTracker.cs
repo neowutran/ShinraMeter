@@ -15,8 +15,12 @@ namespace Tera.DamageMeter
         private ConcurrentDictionary<Player, PlayerInfo> _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
         public ObservableCollection<Entity> Entities = new ObservableCollection<Entity>();
 
+        private DamageTracker()
+        {
+        }
+
         public ConcurrentDictionary<Entity, long> TotalDamageEntity { get; set; } =
-        new ConcurrentDictionary<Entity, long>();
+            new ConcurrentDictionary<Entity, long>();
 
 
         public long TotalDamage
@@ -44,7 +48,8 @@ namespace Tera.DamageMeter
                     long firsthit = 0;
                     foreach (var userstat in _statsByUser)
                     {
-                        if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit < firsthit)) && userstat.Value.Dealt.FirstHit != 0)
+                        if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit < firsthit)) &&
+                            userstat.Value.Dealt.FirstHit != 0)
                         {
                             firsthit = userstat.Value.Dealt.FirstHit;
                         }
@@ -65,7 +70,8 @@ namespace Tera.DamageMeter
                     long lasthit = 0;
                     foreach (var userstat in _statsByUser)
                     {
-                        if (((lasthit == 0) || (userstat.Value.Dealt.LastHit > lasthit)) && userstat.Value.Dealt.LastHit != 0)
+                        if (((lasthit == 0) || (userstat.Value.Dealt.LastHit > lasthit)) &&
+                            userstat.Value.Dealt.LastHit != 0)
                         {
                             lasthit = userstat.Value.Dealt.LastHit;
                         }
@@ -73,10 +79,6 @@ namespace Tera.DamageMeter
                     return lasthit;
                 }
             }
-        }
-
-        private DamageTracker()
-        {
         }
 
         public Dispatcher Dispatcher { get; set; } = null;

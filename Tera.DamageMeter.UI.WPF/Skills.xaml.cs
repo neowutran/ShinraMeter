@@ -14,13 +14,10 @@ namespace Tera.DamageMeter.UI.WPF
     public partial class Skills
     {
         private readonly PlayerStats _parent;
-        private IEnumerable<KeyValuePair<DamageMeter.Skill, SkillStats>> _skills;
         private Label _currentSortedLabel;
+        private IEnumerable<KeyValuePair<DamageMeter.Skill, SkillStats>> _skills;
         private SortBy _sortBy = SortBy.Damage;
         private SortOrder _sortOrder = SortOrder.Descending;
-
-        private enum SortBy { Damage, Name, AvgCrit, BigCrit, LowCrit, DamagePercent, NumberHits, AvgHit, CritRate };
-        private enum SortOrder { Ascending, Descending };
 
 
         public Skills(ConcurrentDictionary<DamageMeter.Skill, SkillStats> skills, PlayerStats parent)
@@ -130,48 +127,47 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void LabelTotalDamageOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Damage, (Label)sender, Skill.TotalDamage);
+            ChangeSort(SortBy.Damage, (Label) sender, Skill.TotalDamage);
         }
 
         private void LabelNumberHitOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.NumberHits, (Label)sender, Skill.Hits);
+            ChangeSort(SortBy.NumberHits, (Label) sender, Skill.Hits);
         }
 
         private void LabelLowestCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.LowCrit, (Label)sender, Skill.LowestCrit);
+            ChangeSort(SortBy.LowCrit, (Label) sender, Skill.LowestCrit);
         }
 
         private void LabelDamagePercentageOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.DamagePercent, (Label)sender,Skill.DamagePercentage);
-
+            ChangeSort(SortBy.DamagePercent, (Label) sender, Skill.DamagePercentage);
         }
 
         private void LabelCritRateOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.CritRate, (Label)sender, Skill.CritRate);
+            ChangeSort(SortBy.CritRate, (Label) sender, Skill.CritRate);
         }
 
         private void LabelBiggestCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.BigCrit, (Label)sender, Skill.BiggestCrit);
+            ChangeSort(SortBy.BigCrit, (Label) sender, Skill.BiggestCrit);
         }
 
         private void LabelAverageHitOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.AvgHit, (Label)sender, Skill.AverageHit);
+            ChangeSort(SortBy.AvgHit, (Label) sender, Skill.AverageHit);
         }
 
         private void LabelAverageCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.AvgCrit, (Label)sender, Skill.AverageCrit);
+            ChangeSort(SortBy.AvgCrit, (Label) sender, Skill.AverageCrit);
         }
 
         private void LabelNameOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Name, (Label)sender, Skill.SkillName);
+            ChangeSort(SortBy.Name, (Label) sender, Skill.SkillName);
         }
 
         private void Clear()
@@ -214,5 +210,24 @@ namespace Tera.DamageMeter.UI.WPF
                 Console.WriteLine(@"Exception move");
             }
         }
+
+        private enum SortBy
+        {
+            Damage,
+            Name,
+            AvgCrit,
+            BigCrit,
+            LowCrit,
+            DamagePercent,
+            NumberHits,
+            AvgHit,
+            CritRate
+        };
+
+        private enum SortOrder
+        {
+            Ascending,
+            Descending
+        };
     }
 }

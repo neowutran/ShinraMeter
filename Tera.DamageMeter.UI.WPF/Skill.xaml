@@ -21,7 +21,7 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" FontSize="14" VerticalAlignment="Center" x:Name="LabelName" Foreground="White"
                    MinHeight="29" />
-         
+
             <Label Grid.Column="1" FontSize="14" x:Name="LabelTotalDamage" VerticalAlignment="Center" MinHeight="29"
                    Foreground="White" />
 
@@ -41,10 +41,10 @@
                    Foreground="White" />
             <Label Grid.Column="8" FontSize="14" x:Name="LabelNumberHit" VerticalAlignment="Center" MinHeight="29"
                    Foreground="White" />
-            
+
             <Label Grid.Column="9" FontSize="14" x:Name="LabelId" VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
         </Grid>
-    
+
     </Grid>
 </UserControl>

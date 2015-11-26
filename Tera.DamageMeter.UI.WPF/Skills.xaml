@@ -45,10 +45,10 @@
         </Style>
     </Window.Resources>
     <Grid MouseLeftButtonDown="Skills_OnMouseLeftButtonDown">
-        
+
         <Button x:Name="CloseMeter" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
                 Content="X" Foreground="White" Click="Button_OnClick" HorizontalContentAlignment="Stretch"
-                VerticalAlignment="Top"  Margin="0" />
+                VerticalAlignment="Top" Margin="0" />
         <ScrollViewer MinHeight="475" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
             <ItemsControl MouseLeftButtonDown="Skills_OnMouseLeftButtonDown" MinHeight="475" x:Name="SkillsList"
                           Background="Transparent" BorderThickness="0" Focusable="False"

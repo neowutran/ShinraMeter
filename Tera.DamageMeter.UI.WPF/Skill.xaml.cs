@@ -30,7 +30,7 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelName.Content = SkillName;
                 LabelId.Content = SkillId;
                 LabelCritRate.Content = CritRate;
-                LabelTotalDamage.Content = TotalDamage+ "↓";
+                LabelTotalDamage.Content = TotalDamage + "↓";
                 LabelDamagePercentage.Content = DamagePercentage;
                 LabelNumberHit.Content = Hits;
                 LabelAverageCrit.Content = AverageCrit;
@@ -48,8 +48,6 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelBiggestCrit.Foreground = Brushes.Red;
                 LabelLowestCrit.Foreground = Brushes.Red;
                 LabelAverageHit.Foreground = Brushes.Red;
-
-                
             }
             else
             {
@@ -74,7 +72,6 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.BiggestCrit);
                 LabelLowestCrit.Content = FormatHelpers.Instance.FormatValue(stats.LowestCrit);
                 LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.AverageHit);
-
             }
         }
 

@@ -24,6 +24,7 @@ namespace Tera.DamageMeter.UI.WPF
             TeraSniffer.Instance.Enabled = true;
             UiModel.Instance.Connected += HandleConnected;
             UiModel.Instance.DataUpdated += Update;
+            KeyboardHook.Instance.RegisterKeyboardHook();
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -36,7 +37,7 @@ namespace Tera.DamageMeter.UI.WPF
 
         public void Update(object sender, EventArgs e)
         {
-            KeyboardHook.Instance.setHotkeys(TeraWindow.IsTeraActive());
+            KeyboardHook.Instance.SetHotkeys(TeraWindow.IsTeraActive());
             Repaint();
         }
 
@@ -55,13 +56,13 @@ namespace Tera.DamageMeter.UI.WPF
 
                 Players.Items.Clear();
                 var sortedDict = from entry in Controls
-                                 orderby entry.Value.PlayerInfo.Dealt.DamageFraction descending
-                                 select entry;
+                    orderby entry.Value.PlayerInfo.Dealt.DamageFraction descending
+                    select entry;
                 foreach (var item in sortedDict)
                 {
                     Players.Items.Add(item.Value);
                 }
-                Height = (Controls.Count) * 29 + CloseMeter.ActualHeight;
+                Height = (Controls.Count)*29 + CloseMeter.ActualHeight;
             }
         }
 
@@ -82,7 +83,10 @@ namespace Tera.DamageMeter.UI.WPF
         private void AddEncounter(IReadOnlyCollection<Entity> entities)
         {
             if ((ListEncounter.Items.Count - 1) > entities.Count) return;
-            foreach (var entity in entities.Where(entity => !ListEncounter.Items.Contains(entity)).Where(entity => !entity.Name.Equals("")))
+            foreach (
+                var entity in
+                    entities.Where(entity => !ListEncounter.Items.Contains(entity))
+                        .Where(entity => !entity.Name.Equals("")))
             {
                 ListEncounter.Items.Add(entity);
             }

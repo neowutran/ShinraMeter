@@ -51,12 +51,10 @@ namespace Tera.DamageMeter.UI.WPF
 
 
             _windowSkill?.Update(Skills());
-            
         }
 
         private ConcurrentDictionary<DamageMeter.Skill, SkillStats> Skills()
         {
-
             if (UiModel.Instance.Encounter == null)
             {
                 return PlayerInfo.Dealt.AllSkills;
@@ -65,9 +63,8 @@ namespace Tera.DamageMeter.UI.WPF
             {
                 return PlayerInfo.Dealt.EntitiesStats[UiModel.Instance.Encounter].Skills;
             }
-           
+
             return new ConcurrentDictionary<DamageMeter.Skill, SkillStats>();
-            
         }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)

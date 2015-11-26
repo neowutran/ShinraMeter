@@ -166,7 +166,8 @@ namespace Tera.DamageMeter
             }
             else
             {
-                skill._averageHit = (c1._averageHit*(c1.Hits - c1.Crits) + c2._averageHit*(c2.Hits - c2.Crits))/(skill.Hits - skill.Crits);
+                skill._averageHit = (c1._averageHit*(c1.Hits - c1.Crits) + c2._averageHit*(c2.Hits - c2.Crits))/
+                                    (skill.Hits - skill.Crits);
             }
 
             skill.LowestHit = c1.LowestHit;
@@ -196,6 +197,7 @@ namespace Tera.DamageMeter
                 DamageTracker.Instance.TotalDamageEntity[_entityTarget] = damage;
             }
         }
+
         public void AddData(long damage, bool isCrit, bool isHeal)
         {
             Hits++;

@@ -15,6 +15,8 @@ namespace Tera.DamageMeter
         private readonly Window _window = new Window();
         private int _currentId;
 
+        private bool _isRegistered;
+
         private KeyboardHook()
         {
             // register the event of the inner native window.
@@ -24,39 +26,45 @@ namespace Tera.DamageMeter
 
         public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
 
-        private bool _isRegistered = false;
-
-        public void setHotkeys(bool value)
-        {
-            if (value && !_isRegistered)
-            {
-                _isRegistered = true;
-                RegisterKeyboardHook();
-                return;
-            }
-            if(!value && _isRegistered)
-            {
-                for (var i = _currentId; i > 0; i--)
-                {
-                    UnregisterHotKey(_window.Handle, i);
-                }
-                _isRegistered = false;
-                return;
-            }
-        }
-
         #region IDisposable Members
 
         public void Dispose()
         {
             // unregister all the registered hot keys.
-            setHotkeys(false);
+            ClearHotkeys();
 
             // dispose the inner native window.
             _window.Dispose();
         }
 
+        private void ClearHotkeys()
+        {
+            for (var i = _currentId; i > 0; i--)
+            {
+                UnregisterHotKey(_window.Handle, i);
+            }
+            _currentId = 0;
+            _isRegistered = false;
+
+        }
+
         #endregion
+
+        public void SetHotkeys(bool value)
+        {
+            
+               
+            if (value && !_isRegistered)
+            {
+                Register();
+                return;
+            }
+            if (!value && _isRegistered)
+            {
+                ClearHotkeys();
+            }
+            
+        }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
@@ -84,10 +92,15 @@ namespace Tera.DamageMeter
             }
         }
 
-        private void RegisterKeyboardHook()
+        public void RegisterKeyboardHook()
         {
             // register the event that is fired after the key press.
             Instance.KeyPressed += hook_KeyPressed;
+            Register();
+        }
+
+        private void Register()
+        {
             // register the control + alt + F12 combination as hot key.
             try
             {
@@ -112,6 +125,8 @@ namespace Tera.DamageMeter
             {
                 MessageBox.Show("Cannot bind copy keys");
             }
+            _isRegistered = true;
+
         }
 
         // Registers a hot key with Windows.
@@ -130,7 +145,7 @@ namespace Tera.DamageMeter
         public void RegisterHotKey(HotkeysData.ModifierKeys modifier, Keys key)
         {
             // increment the counter.
-            _currentId = _currentId + 1;
+            _currentId++;
 
             // register the hot key.
             if (!RegisterHotKey(_window.Handle, _currentId, (uint) modifier, (uint) key))

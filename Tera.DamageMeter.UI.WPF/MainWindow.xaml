@@ -221,7 +221,9 @@
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,28,0,0"
                       HorizontalAlignment="Left" Width="355" />
-        <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="286,0,0,0" FontSize="14" Foreground="White" VerticalAlignment="Top" MinHeight="29" Height="29" Width="50"/>
-        <Label x:Name="Timer" HorizontalAlignment="Left" Margin="236,0,0,0" FontSize="14" Foreground="White" VerticalAlignment="Top" MinHeight="29" Height="29" Width="50"/>
+        <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="286,0,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" />
+        <Label x:Name="Timer" HorizontalAlignment="Left" Margin="236,0,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" />
     </Grid>
 </Window>

@@ -79,7 +79,7 @@ namespace Tera.DamageMeter
             string orderby, string order)
         {
             //stop if nothing to paste
-            if (playerInfos == null)return;
+            if (playerInfos == null) return;
             IEnumerable<PlayerInfo> playerInfosOrdered;
             if (order == "ascending")
             {
@@ -143,9 +143,9 @@ namespace Tera.DamageMeter
             var name = "";
             if (UiModel.Instance.Encounter != null)
             {
-                name = UiModel.Instance.Encounter.Name+":";
+                name = UiModel.Instance.Encounter.Name + ":";
             }
-          
+
             dpsString = dpsString.Replace("{encounter}", name);
             var interval = TimeSpan.FromSeconds(DamageTracker.Instance.Interval);
             dpsString = dpsString.Replace("{timer}", interval.ToString(@"mm\:ss"));
@@ -154,7 +154,7 @@ namespace Tera.DamageMeter
             {
                 var currentContent = content;
                 if (playerStats.Dealt.Damage == 0) continue;
-                
+
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps) + "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval + "s");
