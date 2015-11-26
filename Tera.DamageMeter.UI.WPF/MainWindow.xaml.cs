@@ -24,7 +24,6 @@ namespace Tera.DamageMeter.UI.WPF
             TeraSniffer.Instance.Enabled = true;
             UiModel.Instance.Connected += HandleConnected;
             UiModel.Instance.DataUpdated += Update;
-            KeyboardHook.Instance.RegisterKeyboardHook();
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -37,6 +36,7 @@ namespace Tera.DamageMeter.UI.WPF
 
         public void Update(object sender, EventArgs e)
         {
+            KeyboardHook.Instance.setHotkeys(TeraWindow.IsTeraActive());
             Repaint();
         }
 
@@ -44,7 +44,7 @@ namespace Tera.DamageMeter.UI.WPF
         {
             lock (Controls)
             {
-                TotalDamage.Content = FormatHelpers.Instance.FormatValue(Entities.TotalDamage);
+                TotalDamage.Content = FormatHelpers.Instance.FormatValue(DamageTracker.Instance.TotalDamage);
                 var interval = TimeSpan.FromSeconds(DamageTracker.Instance.Interval);
                 Timer.Content = interval.ToString(@"mm\:ss");
 

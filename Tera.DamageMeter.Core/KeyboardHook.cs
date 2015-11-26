@@ -21,17 +21,36 @@ namespace Tera.DamageMeter
             _window.KeyPressed += delegate(object sender, KeyPressedEventArgs args) { KeyPressed?.Invoke(this, args); };
         }
 
+
         public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
+
+        private bool _isRegistered = false;
+
+        public void setHotkeys(bool value)
+        {
+            if (value && !_isRegistered)
+            {
+                _isRegistered = true;
+                RegisterKeyboardHook();
+                return;
+            }
+            if(!value && _isRegistered)
+            {
+                for (var i = _currentId; i > 0; i--)
+                {
+                    UnregisterHotKey(_window.Handle, i);
+                }
+                _isRegistered = false;
+                return;
+            }
+        }
 
         #region IDisposable Members
 
         public void Dispose()
         {
             // unregister all the registered hot keys.
-            for (var i = _currentId; i > 0; i--)
-            {
-                UnregisterHotKey(_window.Handle, i);
-            }
+            setHotkeys(false);
 
             // dispose the inner native window.
             _window.Dispose();
@@ -65,7 +84,7 @@ namespace Tera.DamageMeter
             }
         }
 
-        public void RegisterKeyboardHook()
+        private void RegisterKeyboardHook()
         {
             // register the event that is fired after the key press.
             Instance.KeyPressed += hook_KeyPressed;

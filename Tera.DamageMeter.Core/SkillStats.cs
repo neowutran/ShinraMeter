@@ -187,13 +187,13 @@ namespace Tera.DamageMeter
         private void SetTotalDamage(long damage)
         {
             if (_entityTarget == null) return;
-            if (Entities.TotalDamageEntity.ContainsKey(_entityTarget))
+            if (DamageTracker.Instance.TotalDamageEntity.ContainsKey(_entityTarget))
             {
-                Entities.TotalDamageEntity[_entityTarget] += damage;
+                DamageTracker.Instance.TotalDamageEntity[_entityTarget] += damage;
             }
             else
             {
-                Entities.TotalDamageEntity[_entityTarget] = damage;
+                DamageTracker.Instance.TotalDamageEntity[_entityTarget] = damage;
             }
         }
         public void AddData(long damage, bool isCrit, bool isHeal)

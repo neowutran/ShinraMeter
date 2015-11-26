@@ -58,6 +58,7 @@
     <Compile Include="SkillsStats.cs" />
     <Compile Include="SkillStats.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="TeraWindow.cs" />
     <Compile Include="UIModel.cs" />
   </ItemGroup>
   <ItemGroup>

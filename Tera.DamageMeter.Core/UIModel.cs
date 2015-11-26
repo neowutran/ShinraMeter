@@ -59,7 +59,7 @@ namespace Tera.DamageMeter
         public void Reset()
         {
             DamageTracker.Instance.Reset();
-            Entities.TotalDamageEntity = new ConcurrentDictionary<Entity, long>();
+            DamageTracker.Instance.TotalDamageEntity = new ConcurrentDictionary<Entity, long>();
             var handler = DataUpdated;
             handler?.Invoke(DamageTracker.Instance, DamageTracker.Instance.Entities);
         }

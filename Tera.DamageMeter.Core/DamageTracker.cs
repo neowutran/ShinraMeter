@@ -15,6 +15,26 @@ namespace Tera.DamageMeter
         private ConcurrentDictionary<Player, PlayerInfo> _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
         public ObservableCollection<Entity> Entities = new ObservableCollection<Entity>();
 
+        public ConcurrentDictionary<Entity, long> TotalDamageEntity { get; set; } =
+        new ConcurrentDictionary<Entity, long>();
+
+
+        public long TotalDamage
+        {
+            get
+            {
+                lock (TotalDamageEntity)
+                {
+                    if (UiModel.Instance.Encounter == null)
+                    {
+                        return TotalDamageEntity.Sum(totalDamageEntity => totalDamageEntity.Value);
+                    }
+                    return TotalDamageEntity[UiModel.Instance.Encounter];
+                }
+            }
+        }
+
+
         private long FirstHit
         {
             get

@@ -8,34 +8,16 @@ namespace Tera.DamageMeter
     {
         public ConcurrentDictionary<Entity, SkillsStats> EntitiesStats = new ConcurrentDictionary<Entity, SkillsStats>();
 
-        public static ConcurrentDictionary<Entity, long> TotalDamageEntity { get; set; } =
-            new ConcurrentDictionary<Entity, long>();
     
-
-        public static long TotalDamage
-        {
-            get
-            {
-                lock (TotalDamageEntity)
-                {
-                    if (UiModel.Instance.Encounter == null)
-                    {
-                        return TotalDamageEntity.Sum(totalDamageEntity => totalDamageEntity.Value);
-                    }
-                    return TotalDamageEntity[UiModel.Instance.Encounter];
-                }
-            }
-        }
-
         public double DamageFraction
         {
             get
             {
-                if (TotalDamage == 0)
+                if (DamageTracker.Instance.TotalDamage == 0)
                 {
                     return 0;
                 }
-                return Math.Round(((double) Damage*100/TotalDamage), 1);
+                return Math.Round(((double) Damage*100/ DamageTracker.Instance.TotalDamage), 1);
             }
         }
 
