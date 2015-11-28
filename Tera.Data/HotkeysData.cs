@@ -55,6 +55,8 @@ namespace Tera.Data
                 select hotkeys.Element("shift");
             var pasteWindowQuery = from hotkeys in xml.Root.Descendants("paste")
                 select hotkeys.Element("window");
+            var pasteCtrlQuery = from hotkeys in xml.Root.Descendants("paste")
+                                   select hotkeys.Element("ctrl");
 
             var resetShiftQuery = from hotkeys in xml.Root.Descendants("reset")
                 select hotkeys.Element("shift");
@@ -66,9 +68,10 @@ namespace Tera.Data
                 select hotkeys.Element("alt");
 
 
-            bool pasteShift, pasteWindow, resetShift, resetCtrl, resetWindow, resetAlt;
+            bool pasteShift, pasteWindow, resetShift, resetCtrl, resetWindow, resetAlt, pasteCtrl;
             bool.TryParse(pasteShiftQuery.First().Value, out pasteShift);
             bool.TryParse(pasteWindowQuery.First().Value, out pasteWindow);
+            bool.TryParse(pasteCtrlQuery.First().Value, out pasteCtrl);
 
 
             bool.TryParse(resetShiftQuery.First().Value, out resetShift);
@@ -76,7 +79,7 @@ namespace Tera.Data
             bool.TryParse(resetWindowQuery.First().Value, out resetWindow);
             bool.TryParse(resetAltQuery.First().Value, out resetAlt);
 
-            var pasteModifier = ConvertToModifierKey(false, false, pasteShift, pasteWindow);
+            var pasteModifier = ConvertToModifierKey(pasteCtrl, false, pasteShift, pasteWindow);
             var resetModifier = ConvertToModifierKey(resetCtrl, resetAlt, resetShift, resetWindow);
 
             Paste = new KeyValuePair<Keys, ModifierKeys>(pasteKey, pasteModifier);
@@ -95,10 +98,12 @@ namespace Tera.Data
             Debug.Assert(xml.Root != null, "xml.Root != null");
             foreach (var copy in xml.Root.Elements("copys").Elements("copy"))
             {
-                bool shift, window;
+                bool ctrl, shift, window;
 
                 bool.TryParse(copy.Element("shift").Value, out shift);
                 bool.TryParse(copy.Element("window").Value, out window);
+                bool.TryParse(copy.Element("ctrl").Value, out ctrl);
+
                 var header = copy.Element("string").Element("header").Value;
                 var footer = copy.Element("string").Element("footer").Value;
                 var content = copy.Element("string").Element("content").Value;
@@ -110,7 +115,7 @@ namespace Tera.Data
                 }
                 var order = copy.Element("string").Element("order").Value;
                 var orderBy = copy.Element("string").Element("order_by").Value;
-                var modifier = ConvertToModifierKey(false, false, shift, window);
+                var modifier = ConvertToModifierKey(ctrl, false, shift, window);
                 Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order));
             }
         }

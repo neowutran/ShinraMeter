@@ -98,6 +98,19 @@ namespace Tera.DamageMeter
             }
         }
 
+        public long Mana
+        {
+            get
+            {
+                long mana = 0;
+                lock (Skills)
+                {
+                    mana += Skills.Sum(skill => skill.Value.Mana);
+                }
+                return mana;
+            }
+        }
+
         public double CritRate
         {
             get

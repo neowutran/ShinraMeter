@@ -11,11 +11,11 @@
         BorderThickness="0"
         Topmost="True"
         Icon="shinra.jpg"
-        MinWidth="720"
-        MaxWidth="1020"
+        MinWidth="1155"
+        MaxWidth="1455"
         MinHeight="50"
         MouseLeftButtonDown="Skills_OnMouseLeftButtonDown"
-        Title="Skills" Height="500" Width="720">
+        Title="Skills" Height="500" Width="1155">
     <Window.Background>
         <SolidColorBrush Color="Black" Opacity="0.5" />
     </Window.Background>

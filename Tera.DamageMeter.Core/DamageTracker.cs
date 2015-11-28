@@ -203,7 +203,23 @@ namespace Tera.DamageMeter
                 {
                     skillStats = new SkillStats(playerInfo, entityTarget);
                 }
-                skillStats.AddData(message.IsHeal ? message.Heal : message.Damage, message.IsCritical, message.IsHeal);
+                if (message.IsHeal)
+                {
+                    skillStats.AddData(message.Heal, message.IsCritical, SkillStats.Type.Heal);
+
+
+                }
+                else if (message.IsMana)
+                {
+                    skillStats.AddData(message.Mana, message.IsCritical, SkillStats.Type.Mana);
+
+                }
+                else
+                {
+                    skillStats.AddData(message.Damage, message.IsCritical, SkillStats.Type.Damage);
+
+                }
+
                 var skill = entities.EntitiesStats[entityTarget].Skills.Keys.ToList();
                 var indexSkill = skill.IndexOf(skillKey);
                 if (indexSkill != -1)
@@ -246,7 +262,22 @@ namespace Tera.DamageMeter
                 skillStats = new SkillStats(stats.PlayerInfo);
             }
 
-            skillStats.AddData(message.IsHeal ? message.Heal : message.Damage, message.IsCritical, message.IsHeal);
+            if (message.IsHeal)
+            {
+                skillStats.AddData(message.Heal, message.IsCritical, SkillStats.Type.Heal);
+
+
+            }
+            else if (message.IsMana)
+            {
+                skillStats.AddData(message.Mana, message.IsCritical, SkillStats.Type.Mana);
+
+            }
+            else
+            {
+                skillStats.AddData(message.Damage, message.IsCritical, SkillStats.Type.Damage);
+
+            }
             var skill = stats.Skills.Keys.ToList();
             var indexSkill = skill.IndexOf(skillKey);
             if (indexSkill != -1)

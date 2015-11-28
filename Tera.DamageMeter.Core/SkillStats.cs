@@ -1,4 +1,5 @@
 ﻿using System;
+using Tera.Game;
 
 namespace Tera.DamageMeter
 {
@@ -15,6 +16,8 @@ namespace Tera.DamageMeter
         private long _lowestCrit;
         private long _lowestHit;
 
+        public enum Type { Damage, Heal, Mana };
+
         public SkillStats(PlayerInfo playerInfo, Entity entityTarget)
         {
             _playerInfo = playerInfo;
@@ -30,6 +33,9 @@ namespace Tera.DamageMeter
             => _playerInfo.Dealt.Damage == 0 ? 0 : Math.Round((double) Damage*100/_playerInfo.Dealt.Damage, 1);
 
         public double CritRate => Hits == 0 ? 0 : Math.Round((double) Crits*100/Hits, 1);
+
+        public double CritRateHeal => HitsHeal == 0 ? 0 : Math.Round((double) CritsHeal*100/HitsHeal, 1);
+        public double CritRateDmg => HitsDmg == 0 ? 0 : Math.Round((double) CritsDmg*100/HitsDmg, 1);
 
         public long BiggestCrit
         {
@@ -131,9 +137,24 @@ namespace Tera.DamageMeter
 
         public long Heal { get; private set; }
 
-        public int Hits { get; private set; }
+        public long Mana { get; private set; }
 
-        public int Crits { get; private set; }
+        public int HitsAll => HitsDmg + HitsHeal;
+
+        public int Hits => _playerInfo.IsHealer() ? HitsHeal : HitsDmg;
+
+        public int HitsDmg { get; private set; }
+
+        public int HitsMana { get; private set; }
+
+        public int HitsHeal { get; private set; }
+
+        public int CritsAll => CritsDmg + CritsHeal;
+
+        public int Crits => _playerInfo.IsHealer() ? CritsHeal : CritsDmg;
+
+        public int CritsHeal { get; private set; }
+        public int CritsDmg { get; private set; }
 
         public static SkillStats operator +(SkillStats c1, SkillStats c2)
         {
@@ -149,8 +170,13 @@ namespace Tera.DamageMeter
 
             skill.BiggestCrit = c1.BiggestCrit;
             skill.BiggestCrit = c2.BiggestCrit;
-            skill.Hits = c1.Hits + c2.Hits;
-            skill.Crits = c1.Crits + c2.Crits;
+            skill.HitsHeal = c1.HitsHeal + c2.HitsHeal;
+            skill.HitsDmg = c1.HitsDmg + c2.HitsDmg;
+            skill.Mana = c1.Mana + c2.Mana;
+            skill.HitsMana = c1.HitsMana + c2.HitsMana;
+
+            skill.CritsDmg = c1.CritsDmg + c2.CritsDmg;
+            skill.CritsHeal = c1.CritsHeal + c2.CritsHeal;
 
             if (skill.Crits == 0)
             {
@@ -198,38 +224,54 @@ namespace Tera.DamageMeter
             }
         }
 
-        public void AddData(long damage, bool isCrit, bool isHeal)
+     
+
+        public void AddData(long damage, bool isCrit, Type type)
         {
-            Hits++;
             if (isCrit)
             {
-                Crits++;
-                if (isHeal)
+                switch (type)
                 {
-                    Heal += damage;
-                }
-                else
-                {
-                    Damage += damage;
-                    BiggestCrit = damage;
-                    AverageCrit = damage;
-                    LowestCrit = damage;
-                    SetTotalDamage(damage);
+                    case Type.Heal:
+                        CritsHeal++;
+                        HitsHeal++;
+                        Heal += damage;
+                        break;
+                    case Type.Damage:
+                        HitsDmg++;
+                        CritsDmg++;
+                        Damage += damage;
+                        BiggestCrit = damage;
+                        AverageCrit = damage;
+                        LowestCrit = damage;
+                        SetTotalDamage(damage);
+                        break;
+                    case Type.Mana:
+                    default:
+                        throw new Exception("NO CRIT ON MANA");
                 }
             }
             else
             {
-                if (isHeal)
+                switch (type)
                 {
-                    Heal += damage;
-                }
-                else
-                {
-                    Damage += damage;
-                    BiggestHit = damage;
-                    AverageHit = damage;
-                    LowestHit = damage;
-                    SetTotalDamage(damage);
+                    case Type.Heal:
+                        HitsHeal++;
+                        Heal += damage;
+                        break;
+                    case Type.Damage:
+                        HitsDmg++;
+                        Damage += damage;
+                        BiggestHit = damage;
+                        AverageHit = damage;
+                        LowestHit = damage;
+                        SetTotalDamage(damage);
+                        break;
+                    case Type.Mana:
+                    default:
+                        HitsMana++;
+                        Mana += damage;
+                        break;
                 }
             }
         }

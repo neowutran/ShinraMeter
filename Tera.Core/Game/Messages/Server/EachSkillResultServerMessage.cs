@@ -24,9 +24,11 @@ namespace Tera.Game.Messages
             SkillId = reader.ReadInt32() & 0x3FFFFFF;
             reader.Skip(16);
             Amount = reader.ReadInt32();
-            Flags = (SkillResultFlags) reader.ReadInt32();
+            FlagsDebug = reader.ReadInt32();
+            Flags = (SkillResultFlags) FlagsDebug;
             IsCritical = (reader.ReadByte() & 1) != 0;
         }
+        public Int32 FlagsDebug { get; }
 
         public EntityId Source { get; private set; }
         public EntityId Target { get; private set; }
@@ -35,6 +37,8 @@ namespace Tera.Game.Messages
         public SkillResultFlags Flags { get; }
         public bool IsCritical { get; private set; }
 
-        public bool IsHeal => (Flags & SkillResultFlags.Heal) != 0;
+        public bool IsMana => ((Flags & SkillResultFlags.Bit0) != 0) && ((Flags & SkillResultFlags.Heal) != 0);
+
+        public bool IsHeal => ((Flags & SkillResultFlags.Heal) != 0) && ((Flags & SkillResultFlags.Heal) == 0);
     }
 }

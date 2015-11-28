@@ -3,76 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace Tera.DamageMeter
 {
     public static class CopyPaste
     {
-        private const int KlNamelength = 9;
-
-        [DllImport("user32.dll")]
-        private static extern long GetKeyboardLayoutName(
-            StringBuilder pwszKlid);
-
-
-        // SOME BULLSHIT GOING ON HERE => if you want to send "%" with SendKey, SendKey will you use the keyboard shortcut "SHIFT + 5" => meaning "%" with a QUERTY keyboard
-        // So that doesn't work with a french keyboard (AZERTY), so => hack here
-        private static string Percentage()
-        {
-            var name = new StringBuilder(KlNamelength);
-            GetKeyboardLayoutName(name);
-            var keyBoardLayout = name.ToString();
-            keyBoardLayout = keyBoardLayout.ToLower();
-            Console.WriteLine("Your keyboard layout is: " + keyBoardLayout);
-            //AZERTY
-            if (keyBoardLayout == "0000040c" || keyBoardLayout == "0000080c")
-            {
-                Console.WriteLine("French detected");
-                return "+ù";
-            }
-
-            //QUERTY & OTHER
-            return "{%}";
-        }
 
         public static void Paste(string text)
         {
-            const int cr = 13;
-            const int lf = 10;
-            char[] specialChars = {'{', '}', '(', ')', '+', '^', '%', '~', '[', ']'};
-            foreach (var c in text.Where(c => c != lf && c != cr))
-            {
-                if (specialChars.Contains(c))
-                {
-                    if (c == '%')
-                    {
-                        SendKeys.SendWait(Percentage());
-                    }
-                    else
-                    {
-                        SendKeys.SendWait("{" + c + "}");
-                    }
-                }
-                else
-                {
-                    if (c == '\\')
-                    {
-                        Thread.Sleep(300);
-                        SendKeys.SendWait("{ENTER}");
-                        Thread.Sleep(300);
-                        SendKeys.SendWait("{ENTER}");
-                        Thread.Sleep(300);
-                    }
-                    else
-                    {
-                        SendKeys.SendWait(c + "");
-                    }
-                }
-                SendKeys.Flush();
-                Thread.Sleep(5);
-            }
+            TeraWindow.SendString(text);
         }
 
         public static void Copy(IEnumerable<PlayerInfo> playerInfos, string header, string content, string footer,
@@ -143,7 +83,7 @@ namespace Tera.DamageMeter
             var name = "";
             if (UiModel.Instance.Encounter != null)
             {
-                name = UiModel.Instance.Encounter.Name + ":";
+                name = UiModel.Instance.Encounter.Name + "=";
             }
 
             dpsString = dpsString.Replace("{encounter}", name);

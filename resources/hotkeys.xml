@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hotkeys>
 	<paste>
+		<ctrl>false</ctrl>
 		<shift>false</shift>
 		<window>false</window>
 		<key>Home</key>
@@ -8,6 +9,7 @@
 	<copys>
 
 		<copy>
+			<ctrl>true</ctrl>
 			<shift>false</shift>
 			<window>false</window>
 			<key>End</key>
@@ -20,6 +22,7 @@
 			</string>
 		</copy>
 		<copy>
+			<ctrl>false</ctrl>
 			<shift>true</shift>
 			<window>false</window>
 			<key>End</key>

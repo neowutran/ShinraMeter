@@ -26,34 +26,8 @@ namespace Tera.DamageMeter
 
         public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
 
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            // unregister all the registered hot keys.
-            ClearHotkeys();
-
-            // dispose the inner native window.
-            _window.Dispose();
-        }
-
-        private void ClearHotkeys()
-        {
-            for (var i = _currentId; i > 0; i--)
-            {
-                UnregisterHotKey(_window.Handle, i);
-            }
-            _currentId = 0;
-            _isRegistered = false;
-
-        }
-
-        #endregion
-
         public void SetHotkeys(bool value)
         {
-            
-               
             if (value && !_isRegistered)
             {
                 Register();
@@ -63,7 +37,6 @@ namespace Tera.DamageMeter
             {
                 ClearHotkeys();
             }
-            
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -126,7 +99,6 @@ namespace Tera.DamageMeter
                 MessageBox.Show("Cannot bind copy keys");
             }
             _isRegistered = true;
-
         }
 
         // Registers a hot key with Windows.
@@ -201,6 +173,29 @@ namespace Tera.DamageMeter
 
             public event EventHandler<KeyPressedEventArgs> KeyPressed;
         }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            // unregister all the registered hot keys.
+            ClearHotkeys();
+
+            // dispose the inner native window.
+            _window.Dispose();
+        }
+
+        private void ClearHotkeys()
+        {
+            for (var i = _currentId; i > 0; i--)
+            {
+                UnregisterHotKey(_window.Handle, i);
+            }
+            _currentId = 0;
+            _isRegistered = false;
+        }
+
+        #endregion
     }
 
     /// <summary>

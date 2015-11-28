@@ -12,14 +12,17 @@ namespace Tera.DamageMeter.UI.WPF
     {
         public static readonly string SkillName = "Skill name";
         public static readonly string SkillId = "Skill Id";
-        public static readonly string CritRate = "CritRate";
+        public static readonly string CritRate = "CRdmg + CRheal";
         public static readonly string TotalDamage = "Dmg";
         public static readonly string DamagePercentage = "% Dmg";
         public static readonly string AverageCrit = "Avg Crit";
         public static readonly string BiggestCrit = "Big Crit";
         public static readonly string LowestCrit = "Low Crit";
         public static readonly string AverageHit = "Avg Blk";
-        public static readonly string Hits = "Hits";
+        public static readonly string Hits = "HDmg + HHeal + HMana";
+        public static readonly string Crits = "CritsDmg + CritsHeal";
+        public static readonly string Mana = "Mana";
+
 
         public Skill(DamageMeter.Skill skill, SkillStats stats, bool template = false)
         {
@@ -37,6 +40,8 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelBiggestCrit.Content = BiggestCrit;
                 LabelLowestCrit.Content = LowestCrit;
                 LabelAverageHit.Content = AverageHit;
+                LabelNumberCrit.Content = Crits;
+                LabelTotalMana.Content = Mana;
 
                 LabelName.Foreground = Brushes.Red;
                 LabelDamagePercentage.Foreground = Brushes.Red;
@@ -48,6 +53,8 @@ namespace Tera.DamageMeter.UI.WPF
                 LabelBiggestCrit.Foreground = Brushes.Red;
                 LabelLowestCrit.Foreground = Brushes.Red;
                 LabelAverageHit.Foreground = Brushes.Red;
+                LabelNumberCrit.Foreground = Brushes.Red;
+                LabelTotalMana.Foreground = Brushes.Red;
             }
             else
             {
@@ -64,10 +71,12 @@ namespace Tera.DamageMeter.UI.WPF
                 }
 
                 LabelId.Content = skillsId;
-                LabelCritRate.Content = stats.CritRate + "%";
+                LabelCritRate.Content = stats.CritRateDmg + "% + " + stats.CritRateHeal+"%"  ;
                 LabelDamagePercentage.Content = stats.DamagePercentage + "%";
                 LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(stats.Damage);
-                LabelNumberHit.Content = stats.Hits;
+                LabelNumberHit.Content = stats.HitsDmg + " + " + stats.HitsHeal + " + "+ stats.HitsMana;
+                LabelNumberCrit.Content = stats.CritsDmg + " + " + stats.CritsHeal;
+                LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(stats.Mana);
                 LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(stats.AverageCrit);
                 LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.BiggestCrit);
                 LabelLowestCrit.Content = FormatHelpers.Instance.FormatValue(stats.LowestCrit);

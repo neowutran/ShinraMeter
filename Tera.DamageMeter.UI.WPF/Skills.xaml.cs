@@ -34,12 +34,24 @@ namespace Tera.DamageMeter.UI.WPF
             header.LabelLowestCrit.MouseRightButtonUp += LabelLowestCritOnMouseRightButtonUp;
             header.LabelNumberHit.MouseRightButtonUp += LabelNumberHitOnMouseRightButtonUp;
             header.LabelTotalDamage.MouseRightButtonUp += LabelTotalDamageOnMouseRightButtonUp;
+            header.LabelNumberCrit.MouseRightButtonUp += LabelNumberCritOnMouseRightButtonUp;
+            header.LabelTotalMana.MouseRightButtonUp += LabelTotalManaOnMouseRightButtonUp;
             _currentSortedLabel = header.LabelTotalDamage;
             SkillsList.Items.Add(header);
 
             _skills = skills.ToDictionary(pair => pair.Key, pair => pair.Value);
             _parent = parent;
             Repaint();
+        }
+
+        private void LabelTotalManaOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.Mana, (Label)sender, Skill.Crits);
+        }
+
+        private void LabelNumberCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.NumberCrits, (Label)sender, Skill.Crits);
         }
 
         private IEnumerable<KeyValuePair<DamageMeter.Skill, SkillStats>> Sort()
@@ -67,6 +79,10 @@ namespace Tera.DamageMeter.UI.WPF
                             return from entry in _skills orderby entry.Value.Hits descending select entry;
                         case SortBy.CritRate:
                             return from entry in _skills orderby entry.Value.CritRate descending select entry;
+                        case SortBy.NumberCrits:
+                            return from entry in _skills orderby entry.Value.Crits descending select entry;
+                        case SortBy.Mana:
+                            return from entry in _skills orderby entry.Value.Mana descending select entry;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -91,6 +107,10 @@ namespace Tera.DamageMeter.UI.WPF
                             return from entry in _skills orderby entry.Value.Hits ascending select entry;
                         case SortBy.CritRate:
                             return from entry in _skills orderby entry.Value.CritRate ascending select entry;
+                        case SortBy.NumberCrits:
+                            return from entry in _skills orderby entry.Value.Crits ascending select entry;
+                        case SortBy.Mana:
+                            return from entry in _skills orderby entry.Value.Mana ascending select entry;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -215,11 +235,13 @@ namespace Tera.DamageMeter.UI.WPF
         {
             Damage,
             Name,
+            Mana,
             AvgCrit,
             BigCrit,
             LowCrit,
             DamagePercent,
             NumberHits,
+            NumberCrits,
             AvgHit,
             CritRate
         };

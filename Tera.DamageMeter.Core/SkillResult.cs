@@ -1,4 +1,5 @@
-﻿using Tera.Game;
+﻿using System;
+using Tera.Game;
 using Tera.Game.Messages;
 
 namespace Tera.DamageMeter
@@ -11,6 +12,7 @@ namespace Tera.DamageMeter
             Amount = message.Amount;
             IsCritical = message.IsCritical;
             IsHeal = message.IsHeal;
+            IsMana = message.IsMana;
             SkillId = message.SkillId;
 
             Source = entityRegistry.GetOrPlaceholder(message.Source);
@@ -37,6 +39,18 @@ namespace Tera.DamageMeter
                 }
 
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
+                if ((SourcePlayer.Name == "Yukikoo" || SourcePlayer.Name == "Javelot"))
+                {
+                    if (Skill != null)
+                    {
+                        Console.Write("skill name" + Skill.Name);
+                    }
+                    else
+                    {
+                        Console.Write("Skill id"+message.SkillId);
+                    }
+                    Console.WriteLine("Flags:"+message.Flags+";flags:"+Convert.ToString(message.FlagsDebug,2)+";isCrit:"+message.IsCritical+";Amount:"+message.Amount);
+                }
             }
 
             if (targetUser != null)
@@ -51,12 +65,26 @@ namespace Tera.DamageMeter
         public bool IsCritical { get; private set; }
         public bool IsHeal { get; }
 
+        public bool IsMana { get; }
+
         public int SkillId { get; private set; }
         public UserSkill Skill { get; }
 
-        public int Damage => IsHeal ? 0 : Amount;
+        public int Damage
+        {
+            get
+            {
+                if (!IsMana && !IsHeal)
+                {
+                    return Amount;
+                }
+                return 0;
+            }   
+        }
 
         public int Heal => IsHeal ? Amount : 0;
+
+        public int Mana => IsMana ? Amount : 0;
 
 
         public Player SourcePlayer { get; private set; }

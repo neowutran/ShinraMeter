@@ -9,7 +9,7 @@ namespace Tera.DamageMeter
         {
             Player = user;
             Received = new SkillsStats();
-            Dealt = new Entities();
+            Dealt = new Entities(this);
         }
 
         public Player Player { get; }
@@ -22,6 +22,12 @@ namespace Tera.DamageMeter
         public Entities Dealt { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+        public bool IsHealer()
+        {
+            return Class == PlayerClass.Mystic || Class == PlayerClass.Priest;
+        }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

@@ -17,13 +17,11 @@ namespace Tera.DamageMeter
             _npcId = npcId;
             _npcType = npcType;
             SetName();
-            DebugPrint();
         }
 
         public Entity(string name)
         {
             Name = name;
-            DebugPrint();
         }
 
         public string Name { get; private set; }
@@ -80,10 +78,5 @@ namespace Tera.DamageMeter
             return Name.GetHashCode();
         }
 
-        private void DebugPrint()
-        {
-            Console.WriteLine("name:" + Name + ";id:" + Id + ";npcid:" + _npcId + ";npctype:" + _npcType + ";modelId:" +
-                              ModelId);
-        }
     }
 }
