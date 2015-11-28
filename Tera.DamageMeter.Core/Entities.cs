@@ -113,6 +113,28 @@ namespace Tera.DamageMeter
             }
         }
 
+        public long Mana
+        {
+            get
+            {
+                lock (EntitiesStats)
+                {
+                    return EntitiesStats.Sum(entityStats => entityStats.Value.Mana);
+                }
+            }
+        }
+
+        public long Heal
+        {
+            get
+            {
+                lock (EntitiesStats)
+                {
+                    return EntitiesStats.Sum(entityStats => entityStats.Value.Heal);
+                }
+            }
+        }
+
         public ConcurrentDictionary<Skill, SkillStats> AllSkills
         {
             get

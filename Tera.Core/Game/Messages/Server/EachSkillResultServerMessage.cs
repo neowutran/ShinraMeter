@@ -39,6 +39,6 @@ namespace Tera.Game.Messages
 
         public bool IsMana => ((Flags & SkillResultFlags.Bit0) != 0) && ((Flags & SkillResultFlags.Heal) != 0);
 
-        public bool IsHeal => ((Flags & SkillResultFlags.Heal) != 0) && ((Flags & SkillResultFlags.Heal) == 0);
+        public bool IsHeal => ((Flags & SkillResultFlags.Bit0) == 0) && ((Flags & SkillResultFlags.Heal) != 0);
     }
 }

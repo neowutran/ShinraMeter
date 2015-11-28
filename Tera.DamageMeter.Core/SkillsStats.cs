@@ -111,6 +111,19 @@ namespace Tera.DamageMeter
             }
         }
 
+        public long Heal
+        {
+            get
+            {
+                long heal = 0;
+                lock (Skills)
+                {
+                    heal += Skills.Sum(skill => skill.Value.Heal);
+                }
+                return heal;
+            }
+        }
+
         public double CritRate
         {
             get
