@@ -10,17 +10,22 @@ namespace Tera.Data
         private readonly ConcurrentDictionary<string, string> _monsterData =
             new ConcurrentDictionary<string, string>();
 
+        private ZoneDatabase _zoneDatabase;
 
-        public MonsterDatabase(string filename)
+        public MonsterDatabase(string filename, string filenameZone)
         {
+            _zoneDatabase = new ZoneDatabase(filenameZone);
             var reader = new StreamReader(File.OpenRead(filename));
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
                 if (line == null) continue;
                 var values = line.Split(';');
-
-                _monsterData.TryAdd(values[0], values[1]);
+                var zone = values[0];
+                var id = zone + "" + values[1];
+                var name = values[2]+": "+_zoneDatabase.Get(zone);
+ 
+                _monsterData.TryAdd(id, name);
             }
         }
 

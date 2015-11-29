@@ -1,10 +1,16 @@
 ﻿using System;
-using Tera.Game;
 
 namespace Tera.DamageMeter
 {
     public class SkillStats
     {
+        public enum Type
+        {
+            Damage,
+            Heal,
+            Mana
+        };
+
         private readonly Entity _entityTarget;
         private readonly PlayerInfo _playerInfo;
         private long _averageCrit;
@@ -15,8 +21,6 @@ namespace Tera.DamageMeter
         private long _damage;
         private long _lowestCrit;
         private long _lowestHit;
-
-        public enum Type { Damage, Heal, Mana };
 
         public SkillStats(PlayerInfo playerInfo, Entity entityTarget)
         {
@@ -224,7 +228,6 @@ namespace Tera.DamageMeter
             }
         }
 
-     
 
         public void AddData(long damage, bool isCrit, Type type)
         {

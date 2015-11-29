@@ -23,7 +23,7 @@ namespace Tera.Data
             WindowData = new WindowData(this);
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
             Servers = GetServers(Path.Combine(ResourceDirectory, "data/servers.txt")).ToList();
-            MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters.csv"));
+            MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters.csv"), Path.Combine(ResourceDirectory, "data/zones.csv"));
         }
 
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());

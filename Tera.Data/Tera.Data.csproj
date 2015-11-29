@@ -48,6 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeraData.cs" />
     <Compile Include="WindowData.cs" />
+    <Compile Include="ZoneDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tera.Core\Tera.Core.csproj">

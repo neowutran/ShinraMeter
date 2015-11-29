@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Tera.DamageMeter
 {
     public static class CopyPaste
     {
-
         public static void Paste(string text)
         {
             TeraWindow.SendString(text);

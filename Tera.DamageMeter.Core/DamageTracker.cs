@@ -164,7 +164,7 @@ namespace Tera.DamageMeter
         {
             ChangedEncounter changeEncounter = delegate(Entity entity, SkillResult msg)
             {
-                if (!Entities.Contains(entity) && !msg.IsHeal)
+                if (!Entities.Contains(entity) && !msg.IsHeal && !msg.IsMana)
                 {
                     Entities.Add(entity);
                 }
@@ -206,18 +206,14 @@ namespace Tera.DamageMeter
                 if (message.IsHeal)
                 {
                     skillStats.AddData(message.Heal, message.IsCritical, SkillStats.Type.Heal);
-
-
                 }
                 else if (message.IsMana)
                 {
                     skillStats.AddData(message.Mana, message.IsCritical, SkillStats.Type.Mana);
-
                 }
                 else
                 {
                     skillStats.AddData(message.Damage, message.IsCritical, SkillStats.Type.Damage);
-
                 }
 
                 var skill = entities.EntitiesStats[entityTarget].Skills.Keys.ToList();
@@ -265,18 +261,14 @@ namespace Tera.DamageMeter
             if (message.IsHeal)
             {
                 skillStats.AddData(message.Heal, message.IsCritical, SkillStats.Type.Heal);
-
-
             }
             else if (message.IsMana)
             {
                 skillStats.AddData(message.Mana, message.IsCritical, SkillStats.Type.Mana);
-
             }
             else
             {
                 skillStats.AddData(message.Damage, message.IsCritical, SkillStats.Type.Damage);
-
             }
             var skill = stats.Skills.Keys.ToList();
             var indexSkill = skill.IndexOf(skillKey);

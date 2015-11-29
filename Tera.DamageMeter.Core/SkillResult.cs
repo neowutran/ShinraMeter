@@ -39,17 +39,33 @@ namespace Tera.DamageMeter
                 }
 
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
-                if ((SourcePlayer.Name == "Yukikoo" || SourcePlayer.Name == "Javelot"))
+                if ((SourcePlayer.Name == "Yukikoo" || SourcePlayer.Name == "Yukikoolol" || SourcePlayer.Name == "Gorkie"))
                 {
                     if (Skill != null)
                     {
-                        Console.Write("skill name" + Skill.Name);
+                        Console.Write("skill name" + message.SkillId);
                     }
                     else
                     {
-                        Console.Write("Skill id"+message.SkillId);
+                        Console.Write("Skill id" + message.SkillId);
                     }
-                    Console.WriteLine("Flags:"+message.Flags+";flags:"+Convert.ToString(message.FlagsDebug,2)+";isCrit:"+message.IsCritical+";Amount:"+message.Amount);
+                    if (targetUser != null)
+                    {
+                        Console.Write(";Target:" + targetUser.Name);
+                    }
+                    
+                    Console.WriteLine("Flags:" + message.Flags + ";flags:" + Convert.ToString(message.FlagsDebug, 2) +
+                                      ";isCrit:" + message.IsCritical + ";Amount:" + message.Amount+";HitId:"+message.HitId);
+                    foreach (var byt in message.Unknow1)
+                    {
+                        Console.Write(Convert.ToString(byt,16));
+                    }
+                    Console.WriteLine("-");
+                    foreach (var byt in message.Unknow2)
+                    {
+                        Console.Write(Convert.ToString(byt, 16));
+                    }
+                    Console.WriteLine("#");
                 }
             }
 
@@ -79,7 +95,7 @@ namespace Tera.DamageMeter
                     return Amount;
                 }
                 return 0;
-            }   
+            }
         }
 
         public int Heal => IsHeal ? Amount : 0;
@@ -87,7 +103,7 @@ namespace Tera.DamageMeter
         public int Mana => IsMana ? Amount : 0;
 
 
-        public Player SourcePlayer { get; private set; }
+        public Player SourcePlayer { get; }
         public Player TargetPlayer { get; private set; }
     }
 }

@@ -46,12 +46,12 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void LabelTotalManaOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Mana, (Label)sender, Skill.Crits);
+            ChangeSort(SortBy.Mana, (Label) sender, Skill.Crits);
         }
 
         private void LabelNumberCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.NumberCrits, (Label)sender, Skill.Crits);
+            ChangeSort(SortBy.NumberCrits, (Label) sender, Skill.Crits);
         }
 
         private IEnumerable<KeyValuePair<DamageMeter.Skill, SkillStats>> Sort()

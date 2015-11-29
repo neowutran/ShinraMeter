@@ -66,8 +66,8 @@ namespace Tera.DamageMeter
             {
                 if (character == '\\')
                 {
-                   SendEnter(hWnd);
-                   SendEnter(hWnd);
+                    SendEnter(hWnd);
+                    SendEnter(hWnd);
                 }
                 else
                 {

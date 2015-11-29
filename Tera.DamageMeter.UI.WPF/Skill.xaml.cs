@@ -71,10 +71,10 @@ namespace Tera.DamageMeter.UI.WPF
                 }
 
                 LabelId.Content = skillsId;
-                LabelCritRate.Content = stats.CritRateDmg + "% + " + stats.CritRateHeal+"%"  ;
+                LabelCritRate.Content = stats.CritRateDmg + "% + " + stats.CritRateHeal + "%";
                 LabelDamagePercentage.Content = stats.DamagePercentage + "%";
                 LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(stats.Damage);
-                LabelNumberHit.Content = stats.HitsDmg + " + " + stats.HitsHeal + " + "+ stats.HitsMana;
+                LabelNumberHit.Content = stats.HitsDmg + " + " + stats.HitsHeal + " + " + stats.HitsMana;
                 LabelNumberCrit.Content = stats.CritsDmg + " + " + stats.CritsHeal;
                 LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(stats.Mana);
                 LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(stats.AverageCrit);

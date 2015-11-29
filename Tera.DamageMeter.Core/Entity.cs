@@ -77,6 +77,5 @@ namespace Tera.DamageMeter
         {
             return Name.GetHashCode();
         }
-
     }
 }

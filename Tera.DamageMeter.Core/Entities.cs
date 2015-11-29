@@ -6,9 +6,8 @@ namespace Tera.DamageMeter
 {
     public class Entities
     {
-        public ConcurrentDictionary<Entity, SkillsStats> EntitiesStats = new ConcurrentDictionary<Entity, SkillsStats>();
-
         private readonly PlayerInfo _playerInfo;
+        public ConcurrentDictionary<Entity, SkillsStats> EntitiesStats = new ConcurrentDictionary<Entity, SkillsStats>();
 
         public Entities(PlayerInfo playerInfo)
         {
@@ -174,7 +173,6 @@ namespace Tera.DamageMeter
             {
                 lock (EntitiesStats)
                 {
-                
                     if (UiModel.Instance.Encounter == null || _playerInfo.IsHealer())
                     {
                         return EntitiesStats.Sum(skills => skills.Value.Crits);

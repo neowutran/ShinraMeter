@@ -121,7 +121,8 @@ namespace Tera.DamageMeter.UI.WPF
                     PlayerStats playerStatsControl;
                     Controls.TryGetValue(playerStats, out playerStatsControl);
                     if (playerStatsControl != null) continue;
-                    if (playerStats.Dealt.Damage == 0 && playerStats.Dealt.Heal == 0 && playerStats.Dealt.Mana == 0) continue;
+                    if (playerStats.Dealt.Damage == 0 && playerStats.Dealt.Heal == 0 && playerStats.Dealt.Mana == 0)
+                        continue;
                     playerStatsControl = new PlayerStats(playerStats);
                     Controls.Add(playerStats, playerStatsControl);
                 }

@@ -39,7 +39,6 @@
     <Compile Include="Game\Messages\StartUserProjectileServerMessage.cs" />
     <Compile Include="Game\PlaceHolderEntity.cs" />
     <Compile Include="Game\Player.cs" />
-    <Compile Include="Game\Region.cs" />
     <Compile Include="Game\Server.cs" />
     <Compile Include="Game\Services\Helpers.cs" />
     <Compile Include="Game\Services\MonsterDatabase.cs" />
