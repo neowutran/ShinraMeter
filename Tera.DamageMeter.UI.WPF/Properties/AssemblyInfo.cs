@@ -6,12 +6,12 @@ using System.Windows;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 
-[assembly: AssemblyTitle("Tera.DamageMeter.UI.WPF")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("ShinraMeter")]
+[assembly: AssemblyDescription("OpenSource Tera DPS Meter")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Tera.DamageMeter.UI.WPF")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyProduct("ShinraMeter")]
+[assembly: AssemblyCopyright("MIT license")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

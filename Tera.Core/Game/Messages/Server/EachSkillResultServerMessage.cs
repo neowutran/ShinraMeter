@@ -44,15 +44,15 @@ namespace Tera.Game.Messages
         //DEBUG
         public int FlagsDebug { get; }
 
-        
+
         public int HitId { get; }
 
         //DEBUG
-        public byte[] Unknow1 { get; } 
+        public byte[] Unknow1 { get; }
 
         //DEBUG
         public byte[] Unknow2 { get; }
-         
+
 
         public EntityId Source { get; private set; }
         public EntityId Target { get; private set; }

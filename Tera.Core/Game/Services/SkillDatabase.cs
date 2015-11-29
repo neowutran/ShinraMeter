@@ -9,67 +9,68 @@ namespace Tera.Game
     // Currently this is limited to the name of the skill
     public class SkillDatabase
     {
-        private readonly Dictionary<RaceGenderClass, List<UserSkill>> _userSkilldata =
-            new Dictionary<RaceGenderClass, List<UserSkill>>();
+        private readonly Dictionary<PlayerClass, List<UserSkill>> _userSkilldata =
+            new Dictionary<PlayerClass, List<UserSkill>>();
 
 
         public SkillDatabase(string filename)
         {
-            var reader = new StreamReader(File.OpenRead(filename));
+            var mystic = new StreamReader(File.OpenRead(filename+"mystic.csv"));
+            var common = new StreamReader(File.OpenRead(filename + "common.csv"));
+            var warrior = new StreamReader(File.OpenRead(filename + "warrior.csv"));
+            var gunner = new StreamReader(File.OpenRead(filename + "gunner.csv"));
+            var reaper = new StreamReader(File.OpenRead(filename + "reaper.csv"));
+            var archer = new StreamReader(File.OpenRead(filename + "archer.csv"));
+            var slayer = new StreamReader(File.OpenRead(filename + "slayer.csv"));
+            var berserker = new StreamReader(File.OpenRead(filename + "berserker.csv"));
+            var sorcerer = new StreamReader(File.OpenRead(filename + "sorcerer.csv"));
+            var lancer = new StreamReader(File.OpenRead(filename + "lancer.csv"));
+            var priest = new StreamReader(File.OpenRead(filename + "priest.csv"));
+            ParseFile(mystic, PlayerClass.Mystic);
+            ParseFile(common, PlayerClass.Common);
+            ParseFile(warrior, PlayerClass.Warrior);
+            ParseFile(gunner, PlayerClass.Gunner);
+            ParseFile(reaper, PlayerClass.Reaper);
+            ParseFile(archer, PlayerClass.Archer);
+            ParseFile(slayer, PlayerClass.Slayer);
+            ParseFile(berserker, PlayerClass.Berserker);
+            ParseFile(sorcerer, PlayerClass.Sorcerer);
+            ParseFile(lancer, PlayerClass.Lancer);
+            ParseFile(priest, PlayerClass.Priest);
+
+        }
+
+        private void ParseFile(StreamReader reader, PlayerClass playerClass)
+        {
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
                 if (line == null) continue;
-                var values = line.Split(';');
+                var values = line.Split('\t');
 
-                var skill = new UserSkill(int.Parse(values[0]), new RaceGenderClass(values[1], values[2], values[3]),
-                    values[4]);
-                if (!_userSkilldata.ContainsKey(skill.RaceGenderClass))
+                var skill = new UserSkill(int.Parse(values[0]),  playerClass, values[1]);
+                if (!_userSkilldata.ContainsKey(skill.PlayerClass))
                 {
-                    _userSkilldata[skill.RaceGenderClass] = new List<UserSkill>();
+                    _userSkilldata[skill.PlayerClass] = new List<UserSkill>();
                 }
-                _userSkilldata[skill.RaceGenderClass].Add(skill);
+                _userSkilldata[skill.PlayerClass].Add(skill);
             }
         }
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
         public UserSkill Get(UserEntity user, int skillId)
         {
-            List<UserSkill> skillsSpecific, skills1, skills2, skills3, skills4, skills5;
+            List<UserSkill> skillsSpecific, skillsCommon;
 
-            _userSkilldata.TryGetValue(user.RaceGenderClass, out skillsSpecific);
+            _userSkilldata.TryGetValue(user.RaceGenderClass.Class, out skillsSpecific);
 
-            _userSkilldata.TryGetValue(
-                new RaceGenderClass(Race.Common, user.RaceGenderClass.Gender, user.RaceGenderClass.Class), out skills1);
-            _userSkilldata.TryGetValue(new RaceGenderClass(Race.Common, Gender.Common, user.RaceGenderClass.Class),
-                out skills2);
-            _userSkilldata.TryGetValue(new RaceGenderClass(Race.Common, Gender.Common, PlayerClass.Common), out skills3);
-            _userSkilldata.TryGetValue(
-                new RaceGenderClass(Race.Common, user.RaceGenderClass.Gender, PlayerClass.Common), out skills4);
-            _userSkilldata.TryGetValue(
-                new RaceGenderClass(user.RaceGenderClass.Race, Gender.Common, user.RaceGenderClass.Class), out skills5);
+            _userSkilldata.TryGetValue(PlayerClass.Common, out skillsCommon);
+         
 
             var allSkills = new List<UserSkill>();
-
-            if (skills5 != null)
+            if (skillsCommon != null)
             {
-                allSkills = allSkills.Union(skills5).ToList();
-            }
-            if (skills4 != null)
-            {
-                allSkills = allSkills.Union(skills4).ToList();
-            }
-            if (skills3 != null)
-            {
-                allSkills = allSkills.Union(skills3).ToList();
-            }
-            if (skills2 != null)
-            {
-                allSkills = allSkills.Union(skills2).ToList();
-            }
-            if (skills1 != null)
-            {
-                allSkills = allSkills.Union(skills1).ToList();
+                allSkills = allSkills.Union(skillsCommon).ToList();
             }
             if (skillsSpecific != null)
             {
@@ -88,7 +89,7 @@ namespace Tera.Game
             if (existing != null)
                 return existing;
 
-            return new UserSkill(skillId, user.RaceGenderClass, "Unknown " + skillId);
+            return new UserSkill(skillId, user.RaceGenderClass.Class, "Unknown " + skillId);
         }
 
         public string GetName(UserEntity user, int skillId)

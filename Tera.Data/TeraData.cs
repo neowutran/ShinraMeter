@@ -7,7 +7,7 @@ namespace Tera.Data
     {
         internal TeraData(BasicTeraData basicData, string region)
         {
-            SkillDatabase = new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/skills.csv"));
+            SkillDatabase = new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/skills/"));
             OpCodeNamer =
                 new OpCodeNamer(Path.Combine(basicData.ResourceDirectory,
                     $"data/opcodes-{region}.txt"));

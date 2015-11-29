@@ -6,16 +6,16 @@ namespace Tera.DamageMeter
 {
     public class Entity : IEquatable<object>
     {
+        private readonly ushort _npcArea;
         private readonly uint _npcId;
-        private readonly ushort _npcType;
 
 
-        public Entity(uint modelId, EntityId id, uint npcId, ushort npcType)
+        public Entity(uint modelId, EntityId id, uint npcId, ushort npcArea)
         {
             ModelId = modelId;
             Id = id;
             _npcId = npcId;
-            _npcType = npcType;
+            _npcArea = npcArea;
             SetName();
         }
 
@@ -28,7 +28,7 @@ namespace Tera.DamageMeter
 
         public uint ModelId { get; }
 
-        public EntityId Id { get; }
+        public EntityId Id { get; private set; }
 
         public override bool Equals(object obj)
         {
@@ -39,8 +39,13 @@ namespace Tera.DamageMeter
 
         private void SetName()
         {
-            Name = BasicTeraData.Instance.MonsterDatabase.Get(_npcType + "" + _npcId);
+            Name = BasicTeraData.Instance.MonsterDatabase.Get(_npcArea + "" + _npcId);
+            if (!BasicTeraData.Instance.MonsterDatabase.IsBoss(_npcArea + "" + _npcId))
+            {
+                Id = new EntityId(0);
+            }
         }
+
 
         public override string ToString()
         {
@@ -49,7 +54,7 @@ namespace Tera.DamageMeter
 
         public bool Equals(Entity other)
         {
-            return Name.Equals(other.Name);
+            return Name.Equals(other.Name) && Id == other.Id;
         }
 
         public static bool operator ==(Entity a, Entity b)
@@ -75,7 +80,7 @@ namespace Tera.DamageMeter
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode();
+            return Name.GetHashCode() ^ Id.GetHashCode();
         }
     }
 }

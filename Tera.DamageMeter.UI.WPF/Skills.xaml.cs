@@ -23,18 +23,30 @@ namespace Tera.DamageMeter.UI.WPF
         public Skills(ConcurrentDictionary<DamageMeter.Skill, SkillStats> skills, PlayerStats parent)
         {
             InitializeComponent();
-            var header = new Skill(new DamageMeter.Skill("", new List<int>()), null, true);
+            var header = new SkillsHeader();
 
             header.LabelName.MouseRightButtonUp += LabelNameOnMouseRightButtonUp;
             header.LabelAverageCrit.MouseRightButtonUp += LabelAverageCritOnMouseRightButtonUp;
             header.LabelAverageHit.MouseRightButtonUp += LabelAverageHitOnMouseRightButtonUp;
             header.LabelBiggestCrit.MouseRightButtonUp += LabelBiggestCritOnMouseRightButtonUp;
-            header.LabelCritRate.MouseRightButtonUp += LabelCritRateOnMouseRightButtonUp;
+
+            header.LabelCritRateDmg.MouseRightButtonUp += LabelCritRateDmgOnMouseRightButtonUp;
+            header.LabelCritRateHeal.MouseRightButtonUp += LabelCritRateHealOnMouseRightButtonUp;
+
+
             header.LabelDamagePercentage.MouseRightButtonUp += LabelDamagePercentageOnMouseRightButtonUp;
-            header.LabelLowestCrit.MouseRightButtonUp += LabelLowestCritOnMouseRightButtonUp;
-            header.LabelNumberHit.MouseRightButtonUp += LabelNumberHitOnMouseRightButtonUp;
+
+            header.LabelNumberHitDmg.MouseRightButtonUp += LabelNumberHitDmgOnMouseRightButtonUp;
+            header.LabelNumberHitHeal.MouseRightButtonUp += LabelNumberHitHealOnMouseRightButtonUp;
+            header.LabelNumberHitMana.MouseRightButtonUp += LabelNumberHitManaOnMouseRightButtonUp;
+
+
             header.LabelTotalDamage.MouseRightButtonUp += LabelTotalDamageOnMouseRightButtonUp;
-            header.LabelNumberCrit.MouseRightButtonUp += LabelNumberCritOnMouseRightButtonUp;
+
+            header.LabelNumberCritDmg.MouseRightButtonUp += LabelNumberCritDmgOnMouseRightButtonUp;
+            header.LabelNumberCritHeal.MouseRightButtonUp += LabelNumberCritHealOnMouseRightButtonUp;
+
+            header.LabelTotalHeal.MouseRightButtonUp += LabelTotalHealOnMouseRightButtonUp;
             header.LabelTotalMana.MouseRightButtonUp += LabelTotalManaOnMouseRightButtonUp;
             _currentSortedLabel = header.LabelTotalDamage;
             SkillsList.Items.Add(header);
@@ -44,15 +56,51 @@ namespace Tera.DamageMeter.UI.WPF
             Repaint();
         }
 
-        private void LabelTotalManaOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void LabelTotalHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Mana, (Label) sender, Skill.Crits);
+            ChangeSort(SortBy.Heal, (Label)sender, SkillsHeader.Heal);
         }
 
-        private void LabelNumberCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void LabelNumberCritHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.NumberCrits, (Label) sender, Skill.Crits);
+            ChangeSort(SortBy.NumberCritsHeal, (Label) sender, SkillsHeader.CritsHeal);
         }
+
+        private void LabelNumberCritDmgOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.NumberCritsDmg, (Label) sender, SkillsHeader.CritsDmg);
+        }
+
+        private void LabelNumberHitManaOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.NumberHitsMana, (Label) sender, SkillsHeader.HitsMana);
+        }
+
+        private void LabelNumberHitHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.NumberHitsHeal, (Label) sender, SkillsHeader.HitsHeal);
+        }
+
+        private void LabelNumberHitDmgOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.NumberHitsDmg, (Label) sender, SkillsHeader.HitsDmg);
+        }
+
+        private void LabelCritRateHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.CritRateHeal, (Label) sender, SkillsHeader.CritRateHeal);
+        }
+
+        private void LabelCritRateDmgOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.CritRateDmg, (Label) sender, SkillsHeader.CritRateDmg);
+        }
+
+        private void LabelTotalManaOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.Mana, (Label) sender, SkillsHeader.Mana);
+        }
+
 
         private IEnumerable<KeyValuePair<DamageMeter.Skill, SkillStats>> Sort()
         {
@@ -73,16 +121,24 @@ namespace Tera.DamageMeter.UI.WPF
                             return from entry in _skills orderby entry.Value.DamagePercentage descending select entry;
                         case SortBy.Name:
                             return from entry in _skills orderby entry.Key.SkillName descending select entry;
-                        case SortBy.LowCrit:
-                            return from entry in _skills orderby entry.Value.LowestCrit descending select entry;
-                        case SortBy.NumberHits:
-                            return from entry in _skills orderby entry.Value.Hits descending select entry;
-                        case SortBy.CritRate:
-                            return from entry in _skills orderby entry.Value.CritRate descending select entry;
-                        case SortBy.NumberCrits:
-                            return from entry in _skills orderby entry.Value.Crits descending select entry;
                         case SortBy.Mana:
                             return from entry in _skills orderby entry.Value.Mana descending select entry;
+                        case SortBy.Heal:
+                            return from entry in _skills orderby entry.Value.Heal descending select entry;
+                        case SortBy.NumberHitsDmg:
+                            return from entry in _skills orderby entry.Value.HitsDmg descending select entry;
+                        case SortBy.NumberHitsHeal:
+                            return from entry in _skills orderby entry.Value.HitsHeal descending select entry;
+                        case SortBy.NumberHitsMana:
+                            return from entry in _skills orderby entry.Value.HitsMana descending select entry;
+                        case SortBy.NumberCritsDmg:
+                            return from entry in _skills orderby entry.Value.CritsDmg descending select entry;
+                        case SortBy.NumberCritsHeal:
+                            return from entry in _skills orderby entry.Value.CritsHeal descending select entry;
+                        case SortBy.CritRateDmg:
+                            return from entry in _skills orderby entry.Value.CritRateDmg descending select entry;
+                        case SortBy.CritRateHeal:
+                            return from entry in _skills orderby entry.Value.CritRateHeal descending select entry;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -101,16 +157,24 @@ namespace Tera.DamageMeter.UI.WPF
                             return from entry in _skills orderby entry.Value.DamagePercentage ascending select entry;
                         case SortBy.Name:
                             return from entry in _skills orderby entry.Key.SkillName ascending select entry;
-                        case SortBy.LowCrit:
-                            return from entry in _skills orderby entry.Value.LowestCrit ascending select entry;
-                        case SortBy.NumberHits:
-                            return from entry in _skills orderby entry.Value.Hits ascending select entry;
-                        case SortBy.CritRate:
-                            return from entry in _skills orderby entry.Value.CritRate ascending select entry;
-                        case SortBy.NumberCrits:
-                            return from entry in _skills orderby entry.Value.Crits ascending select entry;
                         case SortBy.Mana:
                             return from entry in _skills orderby entry.Value.Mana ascending select entry;
+                        case SortBy.Heal:
+                            return from entry in _skills orderby entry.Value.Heal ascending select entry;
+                        case SortBy.NumberHitsDmg:
+                            return from entry in _skills orderby entry.Value.HitsDmg ascending select entry;
+                        case SortBy.NumberHitsHeal:
+                            return from entry in _skills orderby entry.Value.HitsHeal ascending select entry;
+                        case SortBy.NumberHitsMana:
+                            return from entry in _skills orderby entry.Value.HitsMana ascending select entry;
+                        case SortBy.NumberCritsDmg:
+                            return from entry in _skills orderby entry.Value.CritsDmg ascending select entry;
+                        case SortBy.NumberCritsHeal:
+                            return from entry in _skills orderby entry.Value.CritsHeal ascending select entry;
+                        case SortBy.CritRateDmg:
+                            return from entry in _skills orderby entry.Value.CritRateDmg ascending select entry;
+                        case SortBy.CritRateHeal:
+                            return from entry in _skills orderby entry.Value.CritRateHeal ascending select entry;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -147,62 +211,69 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void LabelTotalDamageOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Damage, (Label) sender, Skill.TotalDamage);
-        }
-
-        private void LabelNumberHitOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
-        {
-            ChangeSort(SortBy.NumberHits, (Label) sender, Skill.Hits);
-        }
-
-        private void LabelLowestCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
-        {
-            ChangeSort(SortBy.LowCrit, (Label) sender, Skill.LowestCrit);
+            ChangeSort(SortBy.Damage, (Label) sender, SkillsHeader.TotalDamage);
         }
 
         private void LabelDamagePercentageOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.DamagePercent, (Label) sender, Skill.DamagePercentage);
-        }
-
-        private void LabelCritRateOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
-        {
-            ChangeSort(SortBy.CritRate, (Label) sender, Skill.CritRate);
+            ChangeSort(SortBy.DamagePercent, (Label) sender, SkillsHeader.DamagePercentage);
         }
 
         private void LabelBiggestCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.BigCrit, (Label) sender, Skill.BiggestCrit);
+            ChangeSort(SortBy.BigCrit, (Label) sender, SkillsHeader.BiggestCrit);
         }
 
         private void LabelAverageHitOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.AvgHit, (Label) sender, Skill.AverageHit);
+            ChangeSort(SortBy.AvgHit, (Label) sender, SkillsHeader.AverageHit);
         }
 
         private void LabelAverageCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.AvgCrit, (Label) sender, Skill.AverageCrit);
+            ChangeSort(SortBy.AvgCrit, (Label) sender, SkillsHeader.AverageCrit);
         }
 
         private void LabelNameOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Name, (Label) sender, Skill.SkillName);
+            ChangeSort(SortBy.Name, (Label) sender, SkillsHeader.SkillName);
         }
 
-        private void Clear()
+        private List<Skill> Clear()
         {
-            var header = (Skill) SkillsList.Items[0];
+            var skills = new List<Skill>();
+            var header = (SkillsHeader) SkillsList.Items[0];
+            for (var i = 1; i < SkillsList.Items.Count; i++)
+            {
+                skills.Add((Skill) SkillsList.Items[i]);
+            }
             SkillsList.Items.Clear();
             SkillsList.Items.Add(header);
+            return skills;
         }
 
         public void Repaint()
         {
-            Clear();
+            var oldSkills = Clear();
             var sortedDict = Sort();
             foreach (var skill in sortedDict)
             {
+                var updated = -1;
+                for (var i = 0; i < oldSkills.Count; i++)
+                {
+                    if (!skill.Key.SkillName.Equals(oldSkills[i].SkillNameIdent)) continue;
+                    oldSkills[i].Update(skill.Key, skill.Value);
+                    SkillsList.Items.Add(oldSkills[i]);
+                    updated = i;
+                    break;
+                }
+
+                if (updated != -1)
+                {
+                    oldSkills.RemoveAt(updated);
+                    continue;
+                }
+
                 SkillsList.Items.Add(new Skill(skill.Key, skill.Value));
             }
         }
@@ -235,15 +306,19 @@ namespace Tera.DamageMeter.UI.WPF
         {
             Damage,
             Name,
+            Heal,
             Mana,
             AvgCrit,
             BigCrit,
-            LowCrit,
             DamagePercent,
-            NumberHits,
-            NumberCrits,
+            NumberHitsDmg,
+            NumberHitsHeal,
+            NumberHitsMana,
+            NumberCritsDmg,
+            NumberCritsHeal,
             AvgHit,
-            CritRate
+            CritRateDmg,
+            CritRateHeal
         };
 
         private enum SortOrder

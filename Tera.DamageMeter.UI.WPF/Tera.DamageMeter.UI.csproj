@@ -40,6 +40,9 @@
   <PropertyGroup>
     <StartupObject>Tera.DamageMeter.UI.WPF.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>shinra.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -68,6 +71,9 @@
     <Compile Include="Skills.xaml.cs">
       <DependentUpon>Skills.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SkillsHeader.xaml.cs">
+      <DependentUpon>SkillsHeader.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -89,6 +95,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Skills.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SkillsHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -144,6 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="shinra.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="shinra.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

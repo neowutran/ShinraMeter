@@ -39,7 +39,8 @@ namespace Tera.DamageMeter
                 }
 
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
-                if ((SourcePlayer.Name == "Yukikoo" || SourcePlayer.Name == "Yukikoolol" || SourcePlayer.Name == "Gorkie"))
+                if ((SourcePlayer.Name == "Yukikoo" || SourcePlayer.Name == "Yukikoolol" ||
+                     SourcePlayer.Name == "Gorkie"))
                 {
                     if (Skill != null)
                     {
@@ -53,12 +54,13 @@ namespace Tera.DamageMeter
                     {
                         Console.Write(";Target:" + targetUser.Name);
                     }
-                    
+
                     Console.WriteLine("Flags:" + message.Flags + ";flags:" + Convert.ToString(message.FlagsDebug, 2) +
-                                      ";isCrit:" + message.IsCritical + ";Amount:" + message.Amount+";HitId:"+message.HitId);
+                                      ";isCrit:" + message.IsCritical + ";Amount:" + message.Amount + ";HitId:" +
+                                      message.HitId);
                     foreach (var byt in message.Unknow1)
                     {
-                        Console.Write(Convert.ToString(byt,16));
+                        Console.Write(Convert.ToString(byt, 16));
                     }
                     Console.WriteLine("-");
                     foreach (var byt in message.Unknow2)

@@ -39,6 +39,7 @@
     <Compile Include="Game\Messages\StartUserProjectileServerMessage.cs" />
     <Compile Include="Game\PlaceHolderEntity.cs" />
     <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\RaceGenderClass.cs" />
     <Compile Include="Game\Server.cs" />
     <Compile Include="Game\Services\Helpers.cs" />
     <Compile Include="Game\Services\MonsterDatabase.cs" />
@@ -61,7 +62,6 @@
     <Compile Include="Game\NpcEntity.cs" />
     <Compile Include="Game\Messages\ParsedMessage.cs" />
     <Compile Include="Game\Race.cs" />
-    <Compile Include="Game\RaceGenderClass.cs" />
     <Compile Include="Game\Services\TeraMessageReader.cs" />
     <Compile Include="Game\Messages\UnknownMessage.cs" />
     <Compile Include="Game\UserEntity.cs" />
