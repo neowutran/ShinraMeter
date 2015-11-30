@@ -1,5 +1,8 @@
-﻿namespace Tera.Game
+﻿using System;
+
+namespace Tera.Game
 {
+    [Flags]
     public enum PlayerClass
     {
         Warrior = 1,

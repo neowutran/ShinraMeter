@@ -44,11 +44,12 @@
     <Compile Include="BasicTeraData.cs" />
     <Compile Include="CopyKey.cs" />
     <Compile Include="HotkeysData.cs" />
+    <Compile Include="Monster.cs" />
     <Compile Include="MonsterDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeraData.cs" />
     <Compile Include="WindowData.cs" />
-    <Compile Include="ZoneDatabase.cs" />
+    <Compile Include="Zone.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tera.Core\Tera.Core.csproj">

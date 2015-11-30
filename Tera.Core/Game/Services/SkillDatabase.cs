@@ -15,29 +15,13 @@ namespace Tera.Game
 
         public SkillDatabase(string filename)
         {
-            var mystic = new StreamReader(File.OpenRead(filename+"mystic.tsv"));
-            var common = new StreamReader(File.OpenRead(filename + "common.tsv"));
-            var warrior = new StreamReader(File.OpenRead(filename + "warrior.tsv"));
-            var gunner = new StreamReader(File.OpenRead(filename + "gunner.tsv"));
-            var reaper = new StreamReader(File.OpenRead(filename + "reaper.tsv"));
-            var archer = new StreamReader(File.OpenRead(filename + "archer.tsv"));
-            var slayer = new StreamReader(File.OpenRead(filename + "slayer.tsv"));
-            var berserker = new StreamReader(File.OpenRead(filename + "berserker.tsv"));
-            var sorcerer = new StreamReader(File.OpenRead(filename + "sorcerer.tsv"));
-            var lancer = new StreamReader(File.OpenRead(filename + "lancer.tsv"));
-            var priest = new StreamReader(File.OpenRead(filename + "priest.tsv"));
-            ParseFile(mystic, PlayerClass.Mystic);
-            ParseFile(common, PlayerClass.Common);
-            ParseFile(warrior, PlayerClass.Warrior);
-            ParseFile(gunner, PlayerClass.Gunner);
-            ParseFile(reaper, PlayerClass.Reaper);
-            ParseFile(archer, PlayerClass.Archer);
-            ParseFile(slayer, PlayerClass.Slayer);
-            ParseFile(berserker, PlayerClass.Berserker);
-            ParseFile(sorcerer, PlayerClass.Sorcerer);
-            ParseFile(lancer, PlayerClass.Lancer);
-            ParseFile(priest, PlayerClass.Priest);
-
+            foreach (var file in Directory.EnumerateFiles(filename, "*.tsv"))
+            {
+                var name = Path.GetFileNameWithoutExtension(file);
+                var skills = new StreamReader(File.OpenRead(file));
+                PlayerClass playerClass = (PlayerClass)Enum.Parse(typeof(PlayerClass) , name);
+                ParseFile(skills, playerClass);
+            }
         }
 
         private void ParseFile(StreamReader reader, PlayerClass playerClass)

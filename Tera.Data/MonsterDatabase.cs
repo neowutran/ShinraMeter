@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Tera.Data
@@ -8,54 +9,71 @@ namespace Tera.Data
     // Currently this is limited to the name of the skill
     public class MonsterDatabase
     {
-        private readonly ConcurrentDictionary<string, bool> _isBossData = new ConcurrentDictionary<string, bool>();
+  
+        private readonly Dictionary<string, Zone> _zonesData = new Dictionary<string, Zone>();
 
-        private readonly ConcurrentDictionary<string, string> _monsterData =
-            new ConcurrentDictionary<string, string>();
-
-        private readonly ZoneDatabase _zoneDatabase;
-
-        public MonsterDatabase(string filename, string filenameZone)
+        public MonsterDatabase(string folder)
         {
-            _zoneDatabase = new ZoneDatabase(filenameZone);
-            var reader = new StreamReader(File.OpenRead(filename));
-            while (!reader.EndOfStream)
+
+            foreach (var file in Directory.EnumerateFiles(folder, "*.tsv"))
             {
-                var line = reader.ReadLine();
-                if (line == null) continue;
-                var values = line.Split(';');
-                var zone = values[0];
-                var id = zone + "" + values[1];
-                var name = values[2] + ": " + _zoneDatabase.Get(zone);
-
-                _monsterData.TryAdd(id, name);
-
-
-                if (values.Length <= 3)
+                var filename = Path.GetFileNameWithoutExtension(file);
+                var nameElements = filename.Split('-');
+                var area = nameElements[0];
+                var areaname = nameElements[1];
+                var monsters = new StreamReader(File.OpenRead(file));
+                var zone = new Zone(area, areaname);
+                 _zonesData.Add(area, zone);
+                
+                while (!monsters.EndOfStream)
                 {
-                    _isBossData.TryAdd(id, false);
+                    var line = monsters.ReadLine();
+                    if (line == null) continue;
+                    var values = line.Split('\t');
+                    zone.Monsters.Add(values[0], new Monster(values[0], values[1], bool.Parse(values[2])));
+
                 }
-                else
-                {
-                    var isBoss = Convert.ToBoolean(values[3]);
-                    _isBossData.TryAdd(id, isBoss);
-                }
+
+
             }
         }
 
-        public bool IsBoss(string monsterId)
+        public string GetAreaName(string areaId)
         {
-            bool isBoss;
-            _isBossData.TryGetValue(monsterId, out isBoss);
-            return isBoss;
+            Zone zone;
+            _zonesData.TryGetValue(areaId, out zone);
+            return zone == null ? areaId : zone.AreaName;
         }
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
-        public string Get(string monsterId)
+        public string GetMonsterName(string areaId, string monsterId)
         {
-            string monsterName;
-            _monsterData.TryGetValue(monsterId, out monsterName);
-            return monsterName ?? (monsterId);
+            Monster monster;
+            Zone zone;
+            _zonesData.TryGetValue(areaId, out zone);
+            if (zone == null)
+            {
+                return monsterId;
+            }
+            zone.Monsters.TryGetValue(monsterId, out monster);
+            if (monster == null)
+            {
+                return monsterId;
+            }
+            return string.IsNullOrEmpty(monster.Name) ? monsterId : monster.Name;
+        }
+
+        public bool IsBoss(string areaId, string monsterId)
+        {
+            Monster monster;
+            Zone zone;
+            _zonesData.TryGetValue(areaId, out zone);
+            if (zone == null)
+            {
+                return false;
+            }
+            zone.Monsters.TryGetValue(monsterId, out monster);
+            return monster != null && monster.Boss;
         }
     }
 }
