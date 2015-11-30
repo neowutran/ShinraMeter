@@ -19,6 +19,7 @@ namespace Tera.Game
             {
                 var name = Path.GetFileNameWithoutExtension(file);
                 var skills = new StreamReader(File.OpenRead(file));
+                name = char.ToUpper(name[0]) + name.Substring(1);
                 var playerClass = (PlayerClass) Enum.Parse(typeof (PlayerClass), name);
                 ParseFile(skills, playerClass);
             }

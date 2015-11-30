@@ -15,8 +15,19 @@ namespace Tera.DamageMeter
         private ConcurrentDictionary<Player, PlayerInfo> _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
         public ObservableCollection<Entity> Entities = new ObservableCollection<Entity>();
 
+        public delegate void CurrentBossChange(Entity entity);
+
+        public event CurrentBossChange CurrentBossUpdated;
+
+
         private DamageTracker()
         {
+        }
+
+        public void UpdateCurrentBoss(Entity entity)
+        {
+            var handler = CurrentBossUpdated;
+            handler?.Invoke(entity);
         }
 
         public ConcurrentDictionary<Entity, long> TotalDamageEntity { get; set; } =

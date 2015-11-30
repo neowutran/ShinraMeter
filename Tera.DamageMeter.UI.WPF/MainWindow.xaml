@@ -211,10 +211,10 @@
                 Margin="336,0,0,0" VerticalAlignment="Top" Width="19" />
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" Foreground="White"
                 BorderThickness="0" x:Name="ToggleTopMost" Click="ToggleTopMost_OnClick" Content="U" MinHeight="29"
-                HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="15" Margin="0" />
-        <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged" DisplayMemberPath="Name" SelectedValuePath="Name"
+                HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="19" Margin="0" />
+        <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="15,0,0,0" VerticalAlignment="Top" Width="220" MinHeight="29" Height="29" />
+                  Margin="20,0,0,0" VerticalAlignment="Top" Width="215" MinHeight="29" Height="29" />
 
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"

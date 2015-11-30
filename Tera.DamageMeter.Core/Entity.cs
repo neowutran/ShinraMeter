@@ -50,6 +50,11 @@ namespace Tera.DamageMeter
             return obj.GetType() == GetType() && Equals((Entity) obj);
         }
 
+        public bool IsBoss()
+        {
+            return BasicTeraData.Instance.MonsterDatabase.IsBoss(_npcArea.ToString(), _npcId.ToString());
+        }
+
         private void SetName()
         {
             Name = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(_npcArea.ToString(), _npcId.ToString()) + ": " +

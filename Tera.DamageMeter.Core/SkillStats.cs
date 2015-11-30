@@ -228,6 +228,7 @@ namespace Tera.DamageMeter
             }
             DamageTracker.Instance.SetFirstHit(_entityTarget);
             DamageTracker.Instance.SetLastHit(_entityTarget);
+            DamageTracker.Instance.UpdateCurrentBoss(_entityTarget);
         }
 
 
