@@ -14,7 +14,7 @@
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>Dégats reçu:\</header>
+				<header>Damage taken:\</header>
 				<content>{name}: {damage_received}\</content>
 				<footer></footer>
 				<order_by>damage_received</order_by>

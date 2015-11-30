@@ -202,7 +202,7 @@
         </Style>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush Color="Black" Opacity="0.2" />
+        <SolidColorBrush Color="Black" Opacity="0.3" />
     </Window.Background>
     <Grid HorizontalAlignment="Left" Width="355">
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -55,6 +56,7 @@ namespace Tera.DamageMeter.UI.WPF
             _parent = parent;
             Repaint();
         }
+
 
         private void LabelTotalHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {

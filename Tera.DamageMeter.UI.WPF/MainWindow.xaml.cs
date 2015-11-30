@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using Tera.Data;
 using Tera.Sniffing;
@@ -79,21 +80,28 @@ namespace Tera.DamageMeter.UI.WPF
         private void EmptyEncounter()
         {
             ListEncounter.Items.Clear();
-            var  item = new ComboBoxItem {Content = new Entity("")};
+            var  item = new ComboBoxItem {Content = new Entity("TOTAL")};
             ListEncounter.Items.Add(item);
             ListEncounter.SelectedIndex = 0;
         }
+        private delegate void UpdateEncounter(Entity entity);
+
 
         public void SelectEncounter(Entity entity)
         {
-            if (!entity.IsBoss()) return;
-            foreach (var item in ListEncounter.Items)
+            UpdateEncounter changeSelected = delegate(Entity newentity)
             {
-                var encounter = (Entity) ((ComboBoxItem) item).Content;
-                if (encounter != entity) continue;
-                ListEncounter.SelectedItem = item;
-                return;
-            }
+                if (!newentity.IsBoss()) return;
+                foreach (var item in ListEncounter.Items)
+                {
+                    var encounter = (Entity) ((ComboBoxItem) item).Content;
+                    if (encounter != newentity) continue;
+                    ListEncounter.SelectedItem = item;
+                    return;
+                }
+            };
+            Dispatcher.Invoke(changeSelected, entity);
+
         }
 
         private void AddEncounter(IReadOnlyCollection<Entity> entities)
@@ -222,7 +230,7 @@ namespace Tera.DamageMeter.UI.WPF
         {
             if (e.AddedItems.Count != 1) return;
             var encounter =(Entity) ((ComboBoxItem) e.AddedItems[0]).Content;
-            if (encounter.Name.Equals(""))
+            if (encounter.Name.Equals("TOTAL"))
             {
                 encounter = null;
             }
