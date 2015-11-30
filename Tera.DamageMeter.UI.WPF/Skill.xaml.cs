@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -24,7 +25,7 @@ namespace Tera.DamageMeter.UI.WPF
             var skillsId = "";
             for (var i = 0; i < skill.SkillId.Count; i++)
             {
-                skillsId += +skill.SkillId[i];
+                skillsId += skill.SkillId[i];
                 if (i < skill.SkillId.Count - 1)
                 {
                     skillsId += ",";
@@ -64,6 +65,16 @@ namespace Tera.DamageMeter.UI.WPF
             {
                 Console.WriteLine(@"Exception move");
             }
+        }
+
+        private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            Background = Brushes.Transparent;
+        }
+
+        private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            Background = Brushes.Black;
         }
     }
 }
