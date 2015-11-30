@@ -19,7 +19,7 @@ namespace Tera.Game
             {
                 var name = Path.GetFileNameWithoutExtension(file);
                 var skills = new StreamReader(File.OpenRead(file));
-                PlayerClass playerClass = (PlayerClass)Enum.Parse(typeof(PlayerClass) , name);
+                var playerClass = (PlayerClass) Enum.Parse(typeof (PlayerClass), name);
                 ParseFile(skills, playerClass);
             }
         }
@@ -32,7 +32,7 @@ namespace Tera.Game
                 if (line == null) continue;
                 var values = line.Split('\t');
 
-                var skill = new UserSkill(int.Parse(values[0]),  playerClass, values[1]);
+                var skill = new UserSkill(int.Parse(values[0]), playerClass, values[1]);
                 if (!_userSkilldata.ContainsKey(skill.PlayerClass))
                 {
                     _userSkilldata[skill.PlayerClass] = new List<UserSkill>();
@@ -49,7 +49,7 @@ namespace Tera.Game
             _userSkilldata.TryGetValue(user.RaceGenderClass.Class, out skillsSpecific);
 
             _userSkilldata.TryGetValue(PlayerClass.Common, out skillsCommon);
-         
+
 
             var allSkills = new List<UserSkill>();
             if (skillsCommon != null)

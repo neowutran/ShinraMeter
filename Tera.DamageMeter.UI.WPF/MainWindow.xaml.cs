@@ -90,6 +90,7 @@ namespace Tera.DamageMeter.UI.WPF
             {
                 ListEncounter.Items.Add(entity);
             }
+            ListEncounter.UpdateLayout();
         }
 
         private void StayTopMost()
@@ -181,11 +182,11 @@ namespace Tera.DamageMeter.UI.WPF
             if (Topmost)
             {
                 Topmost = false;
-                ToggleTopMost.Content = "PIN";
+                ToggleTopMost.Content = "P";
                 return;
             }
             Topmost = true;
-            ToggleTopMost.Content = "UNPIN";
+            ToggleTopMost.Content = "U";
         }
 
 

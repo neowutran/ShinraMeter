@@ -58,7 +58,7 @@ namespace Tera.DamageMeter.UI.WPF
 
         private void LabelTotalHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Heal, (Label)sender, SkillsHeader.Heal);
+            ChangeSort(SortBy.Heal, (Label) sender, SkillsHeader.Heal);
         }
 
         private void LabelNumberCritHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
