@@ -7,11 +7,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Tera.Data;
 using Tera.Sniffing;
 using Application = System.Windows.Forms.Application;
 using Brushes = System.Windows.Media.Brushes;
+using Image = System.Windows.Controls.Image;
 using Point = System.Windows.Point;
 
 namespace Tera.DamageMeter.UI.WPF
@@ -33,6 +36,7 @@ namespace Tera.DamageMeter.UI.WPF
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+            PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
             EmptyEncounter();
         }
 
@@ -218,11 +222,11 @@ namespace Tera.DamageMeter.UI.WPF
             if (Topmost)
             {
                 Topmost = false;
-                ToggleTopMost.Content = "P";
+                PinImage.Source = BasicTeraData.Instance.PinData.Pin.Source;
                 return;
             }
             Topmost = true;
-            ToggleTopMost.Content = "U";
+            PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
         }
 
 

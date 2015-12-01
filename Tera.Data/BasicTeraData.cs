@@ -24,10 +24,12 @@ namespace Tera.Data
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
             Servers = GetServers(Path.Combine(ResourceDirectory, "data/servers.txt")).ToList();
             MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters/"));
+            PinData = new PinData(Path.Combine(ResourceDirectory, "img/"));
         }
 
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
 
+        public PinData PinData { get; }
         public MonsterDatabase MonsterDatabase { get; }
         public WindowData WindowData { get; }
         public HotkeysData HotkeysData { get; }
