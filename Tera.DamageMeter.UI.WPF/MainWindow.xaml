@@ -202,7 +202,7 @@
         </Style>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush Color="Black" Opacity="0.3" />
+        <SolidColorBrush Color="Black" Opacity="0.6" />
     </Window.Background>
     <Grid HorizontalAlignment="Left" Width="355">
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
@@ -222,8 +222,8 @@
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,28,0,0"
                       HorizontalAlignment="Left" Width="355" />
         <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="286,0,0,0" FontSize="14" Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" />
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
         <Label x:Name="Timer" HorizontalAlignment="Left" Margin="236,0,0,0" FontSize="14" Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" />
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
     </Grid>
 </Window>
