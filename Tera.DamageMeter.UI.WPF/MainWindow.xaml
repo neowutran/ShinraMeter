@@ -209,7 +209,8 @@
                 Content="X" Foreground="White" BorderThickness="0" Click="Button_OnClick"
                 HorizontalAlignment="Left" Height="29" MinHeight="29"
                 Margin="336,0,0,0" VerticalAlignment="Top" Width="19" />
-        <Image x:Name="PinImage" MouseLeftButtonDown="ToggleTopMost_OnClick" Stretch="Fill" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="29"/>
+        <Image x:Name="PinImage" MouseLeftButtonDown="ToggleTopMost_OnClick" Stretch="Fill" HorizontalAlignment="Left"
+               Height="29" VerticalAlignment="Top" Width="29" />
 
 
         <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"

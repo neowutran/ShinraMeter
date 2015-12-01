@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Tera.DamageMeter.Skills.Skill;
+using Tera.DamageMeter.Skills.Skill.SkillDetail;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -10,7 +14,7 @@ namespace Tera.DamageMeter.UI.WPF
     /// </summary>
     public partial class Skill
     {
-        public Skill(DamageMeter.Skill skill, SkillStats stats)
+        public Skill(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
         {
             InitializeComponent();
 
@@ -20,8 +24,9 @@ namespace Tera.DamageMeter.UI.WPF
 
         public string SkillNameIdent => (string) LabelName.Content;
 
-        public void Update(DamageMeter.Skill skill, SkillStats stats)
+        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
         {
+    
             var skillsId = "";
             for (var i = 0; i < skill.SkillId.Count; i++)
             {
@@ -52,6 +57,17 @@ namespace Tera.DamageMeter.UI.WPF
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(stats.AverageCrit);
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.BiggestCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.AverageHit);
+
+
+            IEnumerable < KeyValuePair <int,SkillDetailStats>> listStats = stats.SkillDetails.ToList();
+            listStats = listStats.OrderByDescending(stat => stat.Value.Damage);
+            SkillsDetailList.Items.Clear();
+            foreach (var stat in listStats)
+            {
+                SkillsDetailList.Items.Add(new SkillDetail(stat.Value));
+            }
+
+
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

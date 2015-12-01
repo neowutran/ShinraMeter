@@ -43,6 +43,8 @@ namespace Tera.DamageMeter
             }
         }
 
+        public string AreaName { get; private set; }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -58,19 +60,22 @@ namespace Tera.DamageMeter
         private void SetName()
         {
             Name = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(_npcArea.ToString(), _npcId.ToString());
-               AreaName = BasicTeraData.Instance.MonsterDatabase.GetAreaName(_npcArea.ToString());
+            AreaName = BasicTeraData.Instance.MonsterDatabase.GetAreaName(_npcArea.ToString());
             if (!BasicTeraData.Instance.MonsterDatabase.IsBoss(_npcArea.ToString(), _npcId.ToString()))
             {
                 Id = new EntityId(0);
             }
         }
 
-        public string AreaName { get; private set; }
-
 
         public override string ToString()
         {
-            return Name + ": "+AreaName ;
+            var name = Name;
+            if (!string.IsNullOrEmpty(name))
+            {
+                name += ": " + AreaName;
+            }
+            return name+"";
         }
 
 

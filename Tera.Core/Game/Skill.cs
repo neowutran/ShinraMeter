@@ -14,11 +14,17 @@ namespace Tera.Game
 
     public class UserSkill : Skill
     {
-        public UserSkill(int id, PlayerClass playerClass, string name)
+        public UserSkill(int id, PlayerClass playerClass, string name, string hit, bool? ischained)
             : base(id, name)
         {
             PlayerClass = playerClass;
+            IsChained = ischained;
+            Hit = hit;
         }
+
+        public string Hit { get; }
+
+        public bool? IsChained { get; }
 
         public PlayerClass PlayerClass { get; }
 

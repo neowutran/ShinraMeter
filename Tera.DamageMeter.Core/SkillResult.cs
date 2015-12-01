@@ -1,4 +1,5 @@
 ﻿using System;
+using Tera.Data;
 using Tera.Game;
 using Tera.Game.Messages;
 
@@ -7,7 +8,7 @@ namespace Tera.DamageMeter
     public class SkillResult
     {
         public SkillResult(EachSkillResultServerMessage message, EntityTracker entityRegistry,
-            PlayerTracker playerTracker, SkillDatabase skillDatabase)
+            PlayerTracker playerTracker)
         {
             Amount = message.Amount;
             IsCritical = message.IsCritical;
@@ -22,12 +23,15 @@ namespace Tera.DamageMeter
 
             if (sourceUser != null)
             {
-                Skill = skillDatabase.Get(sourceUser, message.SkillId);
-
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
+                Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, message.SkillId);
+
+                /*
+               
                 if ((SourcePlayer.Name == "Yukikoo" || SourcePlayer.Name == "Yukikoolol" ||
                      SourcePlayer.Name == "Gorkie"))
                 {
+                    Console.Write("Source id:" + message.Source);
                     if (Skill != null)
                     {
                         Console.Write("skill name" + message.SkillId);
@@ -36,10 +40,9 @@ namespace Tera.DamageMeter
                     {
                         Console.Write("Skill id" + message.SkillId);
                     }
-                    if (targetUser != null)
-                    {
-                        Console.Write(";Target:" + targetUser.Name);
-                    }
+
+                    Console.Write(";Target:" + message.Target);
+
 
                     Console.WriteLine("Flags:" + message.Flags + ";flags:" + Convert.ToString(message.FlagsDebug, 2) +
                                       ";isCrit:" + message.IsCritical + ";Amount:" + message.Amount + ";HitId:" +
@@ -55,6 +58,7 @@ namespace Tera.DamageMeter
                     }
                     Console.WriteLine("#");
                 }
+                */
             }
 
             if (targetUser != null)

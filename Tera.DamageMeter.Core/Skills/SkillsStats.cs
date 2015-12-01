@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using Tera.DamageMeter.Skills.Skill;
 
-namespace Tera.DamageMeter
+namespace Tera.DamageMeter.Skills
 {
     public class SkillsStats
     {
@@ -79,8 +80,8 @@ namespace Tera.DamageMeter
             }
         }
 
-        public ConcurrentDictionary<Skill, SkillStats> Skills { get; set; } =
-            new ConcurrentDictionary<Skill, SkillStats>();
+        public ConcurrentDictionary<Skill.Skill, SkillStats> Skills { get; set; } =
+            new ConcurrentDictionary<Skill.Skill, SkillStats>();
 
         public PlayerInfo PlayerInfo { get; }
 
@@ -152,7 +153,7 @@ namespace Tera.DamageMeter
 
             var skills = new SkillsStats(c1.PlayerInfo);
             skills.Skills =
-                new ConcurrentDictionary<Skill, SkillStats>(skills.Skills.Concat(c1.Skills)
+                new ConcurrentDictionary<Skill.Skill, SkillStats>(skills.Skills.Concat(c1.Skills)
                     .ToDictionary(x => x.Key, x => x.Value));
             foreach (var skill in c2.Skills)
             {

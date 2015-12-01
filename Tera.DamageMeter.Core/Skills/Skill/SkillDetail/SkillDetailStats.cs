@@ -1,18 +1,10 @@
 ﻿using System;
 
-namespace Tera.DamageMeter
+namespace Tera.DamageMeter.Skills.Skill.SkillDetail
 {
-    public class SkillStats
+    public class SkillDetailStats
     {
-        public enum Type
-        {
-            Damage,
-            Heal,
-            Mana
-        };
-
         private readonly Entity _entityTarget;
-        private readonly PlayerInfo _playerInfo;
         private long _averageCrit;
         private long _averageHit;
 
@@ -22,19 +14,19 @@ namespace Tera.DamageMeter
         private long _lowestCrit;
         private long _lowestHit;
 
-        public SkillStats(PlayerInfo playerInfo, Entity entityTarget)
+        public SkillDetailStats(PlayerInfo playerInfo, Entity entityTarget, int skillId)
         {
-            _playerInfo = playerInfo;
+            PlayerInfo = playerInfo;
             _entityTarget = entityTarget;
+            Id = skillId;
         }
 
-        public SkillStats(PlayerInfo playerInfo)
-        {
-            _playerInfo = playerInfo;
-        }
+        public PlayerInfo PlayerInfo { get; }
+
+        public int Id { get; }
 
         public double DamagePercentage
-            => _playerInfo.Dealt.Damage == 0 ? 0 : Math.Round((double) Damage*100/_playerInfo.Dealt.Damage, 1);
+            => PlayerInfo.Dealt.Damage == 0 ? 0 : Math.Round((double) Damage*100/PlayerInfo.Dealt.Damage, 1);
 
         public double CritRate => Hits == 0 ? 0 : Math.Round((double) Crits*100/Hits, 1);
 
@@ -124,7 +116,7 @@ namespace Tera.DamageMeter
             private set
             {
                 if (value == _damage) return;
-                if (_playerInfo != null)
+                if (PlayerInfo != null)
                 {
                     if (value != 0)
                     {
@@ -145,7 +137,7 @@ namespace Tera.DamageMeter
 
         public int HitsAll => HitsDmg + HitsHeal;
 
-        public int Hits => _playerInfo.IsHealer() ? HitsHeal : HitsDmg;
+        public int Hits => PlayerInfo.IsHealer() ? HitsHeal : HitsDmg;
 
         public int HitsDmg { get; private set; }
 
@@ -155,20 +147,20 @@ namespace Tera.DamageMeter
 
         public int CritsAll => CritsDmg + CritsHeal;
 
-        public int Crits => _playerInfo.IsHealer() ? CritsHeal : CritsDmg;
+        public int Crits => PlayerInfo.IsHealer() ? CritsHeal : CritsDmg;
 
         public int CritsHeal { get; private set; }
         public int CritsDmg { get; private set; }
 
-        public static SkillStats operator +(SkillStats c1, SkillStats c2)
+        public static SkillDetailStats operator +(SkillDetailStats c1, SkillDetailStats c2)
         {
-            if (c1._playerInfo != c2._playerInfo)
+            if (c1.PlayerInfo != c2.PlayerInfo)
             {
                 throw new Exception();
             }
             var skill = c1._entityTarget != c2._entityTarget
-                ? new SkillStats(c1._playerInfo, null)
-                : new SkillStats(c1._playerInfo, c1._entityTarget);
+                ? new SkillDetailStats(c1.PlayerInfo, null, c1.Id)
+                : new SkillDetailStats(c1.PlayerInfo, c1._entityTarget, c1.Id);
             skill.LowestCrit = c1.LowestCrit;
             skill.LowestCrit = c2.LowestCrit;
 
@@ -218,13 +210,16 @@ namespace Tera.DamageMeter
         private void SetTotalDamage(long damage)
         {
             if (_entityTarget == null) return;
-            if (DamageTracker.Instance.TotalDamageEntity.ContainsKey(_entityTarget))
+            lock (DamageTracker.Instance.TotalDamageEntity)
             {
-                DamageTracker.Instance.TotalDamageEntity[_entityTarget] += damage;
-            }
-            else
-            {
-                DamageTracker.Instance.TotalDamageEntity[_entityTarget] = damage;
+                if (DamageTracker.Instance.TotalDamageEntity.ContainsKey(_entityTarget))
+                {
+                    DamageTracker.Instance.TotalDamageEntity[_entityTarget] += damage;
+                }
+                else
+                {
+                    DamageTracker.Instance.TotalDamageEntity[_entityTarget] = damage;
+                }
             }
             DamageTracker.Instance.SetFirstHit(_entityTarget);
             DamageTracker.Instance.SetLastHit(_entityTarget);
@@ -232,18 +227,18 @@ namespace Tera.DamageMeter
         }
 
 
-        public void AddData(long damage, bool isCrit, Type type)
+        public void AddData(long damage, bool isCrit, SkillStats.Type type)
         {
             if (isCrit)
             {
                 switch (type)
                 {
-                    case Type.Heal:
+                    case SkillStats.Type.Heal:
                         CritsHeal++;
                         HitsHeal++;
                         Heal += damage;
                         break;
-                    case Type.Damage:
+                    case SkillStats.Type.Damage:
                         HitsDmg++;
                         CritsDmg++;
                         Damage += damage;
@@ -252,7 +247,7 @@ namespace Tera.DamageMeter
                         LowestCrit = damage;
                         SetTotalDamage(damage);
                         break;
-                    case Type.Mana:
+                    case SkillStats.Type.Mana:
                     default:
                         throw new Exception("NO CRIT ON MANA");
                 }
@@ -261,11 +256,11 @@ namespace Tera.DamageMeter
             {
                 switch (type)
                 {
-                    case Type.Heal:
+                    case SkillStats.Type.Heal:
                         HitsHeal++;
                         Heal += damage;
                         break;
-                    case Type.Damage:
+                    case SkillStats.Type.Damage:
                         HitsDmg++;
                         Damage += damage;
                         BiggestHit = damage;
@@ -273,7 +268,7 @@ namespace Tera.DamageMeter
                         LowestHit = damage;
                         SetTotalDamage(damage);
                         break;
-                    case Type.Mana:
+                    case SkillStats.Type.Mana:
                     default:
                         HitsMana++;
                         Mana += damage;

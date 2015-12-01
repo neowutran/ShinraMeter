@@ -9,20 +9,20 @@ using Tera.Sniffing;
 
 namespace Tera.DamageMeter
 {
-    public class UiModel
+    public class NetworkController
     {
         public delegate void ConnectedHandler(string serverName);
 
         public delegate void DataUpdatedHandler(IEnumerable<PlayerInfo> data, ObservableCollection<Entity> entities);
 
-        private static UiModel _instance;
+        private static NetworkController _instance;
         private static TeraData _teraData;
         private Dispatcher _dispatcher;
         private EntityTracker _entityTracker;
         private MessageFactory _messageFactory;
         private PlayerTracker _playerTracker;
 
-        private UiModel()
+        private NetworkController()
         {
             TeraSniffer.Instance.MessageReceived += HandleMessageReceived;
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
@@ -40,7 +40,7 @@ namespace Tera.DamageMeter
 
         public Entity Encounter { get; set; }
 
-        public static UiModel Instance => _instance ?? (_instance = new UiModel());
+        public static NetworkController Instance => _instance ?? (_instance = new NetworkController());
 
         public event DataUpdatedHandler DataUpdated;
         public event ConnectedHandler Connected;
@@ -70,8 +70,7 @@ namespace Tera.DamageMeter
             _entityTracker.Update(message);
             var skillResultMessage = message as EachSkillResultServerMessage;
             if (skillResultMessage == null) return;
-            var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker,
-                _teraData.SkillDatabase);
+            var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker);
             DamageTracker.Instance.Update(skillResult);
 
             var handler = DataUpdated;

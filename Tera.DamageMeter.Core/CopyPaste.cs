@@ -78,9 +78,9 @@ namespace Tera.DamageMeter
 
             var dpsString = header;
             var name = "";
-            if (UiModel.Instance.Encounter != null)
+            if (NetworkController.Instance.Encounter != null)
             {
-                name = UiModel.Instance.Encounter.Name;
+                name = NetworkController.Instance.Encounter.Name;
             }
 
             dpsString = dpsString.Replace("{encounter}", name);

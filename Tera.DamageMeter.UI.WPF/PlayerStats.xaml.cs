@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Tera.DamageMeter.Skills.Skill;
+using Tera.Data;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -53,18 +55,18 @@ namespace Tera.DamageMeter.UI.WPF
             _windowSkill?.Update(Skills());
         }
 
-        private ConcurrentDictionary<DamageMeter.Skill, SkillStats> Skills()
+        private ConcurrentDictionary<DamageMeter.Skills.Skill.Skill, SkillStats> Skills()
         {
-            if (UiModel.Instance.Encounter == null)
+            if (NetworkController.Instance.Encounter == null)
             {
                 return PlayerInfo.Dealt.AllSkills;
             }
-            if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+            if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
             {
-                return PlayerInfo.Dealt.EntitiesStats[UiModel.Instance.Encounter].Skills;
+                return PlayerInfo.Dealt.EntitiesStats[NetworkController.Instance.Encounter].Skills;
             }
 
-            return new ConcurrentDictionary<DamageMeter.Skill, SkillStats>();
+            return new ConcurrentDictionary<DamageMeter.Skills.Skill.Skill, SkillStats>();
         }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)

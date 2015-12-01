@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Tera.Data;
 using Tera.Sniffing;
 using Application = System.Windows.Forms.Application;
-using Brushes = System.Windows.Media.Brushes;
-using Image = System.Windows.Controls.Image;
-using Point = System.Windows.Point;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -28,8 +22,8 @@ namespace Tera.DamageMeter.UI.WPF
         {
             InitializeComponent();
             TeraSniffer.Instance.Enabled = true;
-            UiModel.Instance.Connected += HandleConnected;
-            UiModel.Instance.DataUpdated += Update;
+            NetworkController.Instance.Connected += HandleConnected;
+            NetworkController.Instance.DataUpdated += Update;
             DamageTracker.Instance.CurrentBossUpdated += SelectEncounter;
             KeyboardHook.Instance.RegisterKeyboardHook();
             var dispatcherTimer = new DispatcherTimer();
@@ -78,17 +72,16 @@ namespace Tera.DamageMeter.UI.WPF
         {
             ChangeTitle changeTitle = delegate(string newServerName) { Title = newServerName; };
             Dispatcher.Invoke(changeTitle, serverName);
-            UiModel.Instance.Dispatcher = Dispatcher;
+            NetworkController.Instance.Dispatcher = Dispatcher;
         }
 
         private void EmptyEncounter()
         {
             ListEncounter.Items.Clear();
-            var  item = new ComboBoxItem {Content = new Entity("TOTAL")};
+            var item = new ComboBoxItem {Content = new Entity("TOTAL")};
             ListEncounter.Items.Add(item);
             ListEncounter.SelectedIndex = 0;
         }
-        private delegate void UpdateEncounter(Entity entity);
 
 
         public void SelectEncounter(Entity entity)
@@ -105,30 +98,29 @@ namespace Tera.DamageMeter.UI.WPF
                 }
             };
             Dispatcher.Invoke(changeSelected, entity);
-
         }
 
         private void AddEncounter(IReadOnlyCollection<Entity> entities)
         {
             if ((ListEncounter.Items.Count - 1) > entities.Count) return;
-                foreach (var entity in entities)
+            foreach (var entity in entities)
+            {
+                var added = false;
+                foreach (var entityItem in ListEncounter.Items)
                 {
-                    var added = false;
-                    foreach (var entityItem in ListEncounter.Items)
-                    {
-                        if (((Entity) ((ComboBoxItem) entityItem).Content) != entity) continue;
-                        added = true;
-                        break;
-                    }
-                    if (added) continue;
-
-                var item = new ComboBoxItem { Content = entity };
-                    if (entity.IsBoss())
-                    {
-                        item.Foreground = Brushes.Red;
-                    }
-                    ListEncounter.Items.Insert(1,item);  
+                    if (((Entity) ((ComboBoxItem) entityItem).Content) != entity) continue;
+                    added = true;
+                    break;
                 }
+                if (added) continue;
+
+                var item = new ComboBoxItem {Content = entity};
+                if (entity.IsBoss())
+                {
+                    item.Foreground = Brushes.Red;
+                }
+                ListEncounter.Items.Insert(1, item);
+            }
             ListEncounter.UpdateLayout();
         }
 
@@ -233,14 +225,16 @@ namespace Tera.DamageMeter.UI.WPF
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count != 1) return;
-            var encounter =(Entity) ((ComboBoxItem) e.AddedItems[0]).Content;
+            var encounter = (Entity) ((ComboBoxItem) e.AddedItems[0]).Content;
             if (encounter.Name.Equals("TOTAL"))
             {
                 encounter = null;
             }
-            UiModel.Instance.Encounter = encounter;
+            NetworkController.Instance.Encounter = encounter;
             Repaint();
         }
+
+        private delegate void UpdateEncounter(Entity entity);
 
         private delegate void ChangeTitle(string servername);
 

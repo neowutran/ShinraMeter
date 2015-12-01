@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
+using Tera.DamageMeter.Skills.Skill;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -16,12 +16,12 @@ namespace Tera.DamageMeter.UI.WPF
     {
         private readonly PlayerStats _parent;
         private Label _currentSortedLabel;
-        private IEnumerable<KeyValuePair<DamageMeter.Skill, SkillStats>> _skills;
+        private IEnumerable<KeyValuePair<DamageMeter.Skills.Skill.Skill, SkillStats>> _skills;
         private SortBy _sortBy = SortBy.Damage;
         private SortOrder _sortOrder = SortOrder.Descending;
 
 
-        public Skills(ConcurrentDictionary<DamageMeter.Skill, SkillStats> skills, PlayerStats parent)
+        public Skills(ConcurrentDictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, PlayerStats parent)
         {
             InitializeComponent();
             var header = new SkillsHeader();
@@ -104,7 +104,7 @@ namespace Tera.DamageMeter.UI.WPF
         }
 
 
-        private IEnumerable<KeyValuePair<DamageMeter.Skill, SkillStats>> Sort()
+        private IEnumerable<KeyValuePair<DamageMeter.Skills.Skill.Skill, SkillStats>> Sort()
         {
             switch (_sortOrder)
             {
@@ -281,7 +281,7 @@ namespace Tera.DamageMeter.UI.WPF
         }
 
 
-        public void Update(ConcurrentDictionary<DamageMeter.Skill, SkillStats> skills)
+        public void Update(ConcurrentDictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills)
         {
             _skills = skills.ToDictionary(pair => pair.Key, pair => pair.Value);
             Repaint();

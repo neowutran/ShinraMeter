@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using Tera.DamageMeter.Dealt;
+using Tera.DamageMeter.taken;
 using Tera.Game;
 
 namespace Tera.DamageMeter
@@ -8,8 +10,8 @@ namespace Tera.DamageMeter
         public PlayerInfo(Player user)
         {
             Player = user;
-            Received = new SkillsStats();
-            Dealt = new Entities(this);
+            Received = new EntitiesTaken();
+            Dealt = new EntitiesDealt(this);
         }
 
         public Player Player { get; }
@@ -18,8 +20,8 @@ namespace Tera.DamageMeter
 
         public PlayerClass Class => Player.Class;
 
-        public SkillsStats Received { get; private set; }
-        public Entities Dealt { get; }
+        public EntitiesTaken Received { get; }
+        public EntitiesDealt Dealt { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

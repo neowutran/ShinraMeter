@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Media.Animation;
+using Tera.Game;
 
-namespace Tera.Game
+namespace Tera.Data
 {
     // Contains information about skills
     // Currently this is limited to the name of the skill
@@ -32,8 +34,19 @@ namespace Tera.Game
                 var line = reader.ReadLine();
                 if (line == null) continue;
                 var values = line.Split('\t');
+                string hitnumber = null;
+                bool? isChained = null;
+                if (values.Length >= 3 && !string.IsNullOrEmpty(values[2]))
+                {
+                    hitnumber = values[2];
+                }
+                if (values.Length >= 4 && !string.IsNullOrEmpty(values[3]))
+                {
+                    isChained = bool.Parse(values[3]);
+                }
 
-                var skill = new UserSkill(int.Parse(values[0]), playerClass, values[1]);
+
+                var skill = new UserSkill(int.Parse(values[0]), playerClass, values[1], hitnumber, isChained);
                 if (!_userSkilldata.ContainsKey(skill.PlayerClass))
                 {
                     _userSkilldata[skill.PlayerClass] = new List<UserSkill>();
@@ -42,12 +55,14 @@ namespace Tera.Game
             }
         }
 
+    
+
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
-        public UserSkill Get(UserEntity user, int skillId)
+        public UserSkill Get(PlayerClass user, int skillId)
         {
             List<UserSkill> skillsSpecific, skillsCommon;
 
-            _userSkilldata.TryGetValue(user.RaceGenderClass.Class, out skillsSpecific);
+            _userSkilldata.TryGetValue(user, out skillsSpecific);
 
             _userSkilldata.TryGetValue(PlayerClass.Common, out skillsCommon);
 
@@ -65,21 +80,28 @@ namespace Tera.Game
             return allSkills.FirstOrDefault(skill => skill.Id == skillId);
         }
 
-        public UserSkill GetOrPlaceholder(UserEntity user, int skillId)
+        public UserSkill GetOrPlaceholder(PlayerClass user, int skillId)
         {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
-
             var existing = Get(user, skillId);
             if (existing != null)
                 return existing;
 
-            return new UserSkill(skillId, user.RaceGenderClass.Class, "Unknown " + skillId);
+            return new UserSkill(skillId, user, "Unknown " + skillId, null, null);
         }
 
-        public string GetName(UserEntity user, int skillId)
+        public string GetName(PlayerClass user, int skillId)
         {
             return GetOrPlaceholder(user, skillId).Name;
+        }
+
+        public bool? IsChained(PlayerClass user, int skillId)
+        {
+            return GetOrPlaceholder(user, skillId).IsChained;
+        }
+
+        public string Hit(PlayerClass user, int skillId)
+        {
+            return GetOrPlaceholder(user, skillId).Hit;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tera.DamageMeter
+namespace Tera.DamageMeter.Skills.Skill
 {
     public class Skill : IEquatable<object>
     {

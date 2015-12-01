@@ -99,10 +99,11 @@
                 </Grid>
             </Expander.Header>
             <Expander.Content>
-                <Label Grid.Column="11" FontSize="14" VerticalAlignment="Center" Foreground="White"
-                       MinHeight="29">
-                    Coming soon
-                </Label>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
+                    <ItemsControl MouseLeftButtonDown="MoveWindow" x:Name="SkillsDetailList"
+                          Background="Transparent" BorderThickness="0" Focusable="False"
+                          HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False" />
+                </ScrollViewer>
             </Expander.Content>
         </Expander>
 

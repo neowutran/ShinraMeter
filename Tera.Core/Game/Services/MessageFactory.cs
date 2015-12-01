@@ -18,7 +18,9 @@ namespace Tera.Game
             {"S_SPAWN_NPC", typeof (SpawnNpcServerMessage)},
             {"S_SPAWN_PROJECTILE", typeof (SpawnProjectileServerMessage)},
             {"S_LOGIN", typeof (LoginServerMessage)},
-            {"S_START_USER_PROJECTILE", typeof (StartUserProjectileServerMessage)}
+            {"S_TARGET_INFO", typeof (STargetInfo)},
+            {"S_START_USER_PROJECTILE", typeof (StartUserProjectileServerMessage)},
+            {"S_CREATURE_CHANGE_HP", typeof (SCreatureChangeHp)}
         };
 
         private readonly OpCodeNamer _opCodeNamer;

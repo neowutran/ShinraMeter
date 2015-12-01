@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using Tera.DamageMeter.Skills;
+using Tera.DamageMeter.Skills.Skill;
 
-namespace Tera.DamageMeter
+namespace Tera.DamageMeter.Dealt
 {
-    public class Entities
+    public class EntitiesDealt
     {
         private readonly PlayerInfo _playerInfo;
         public ConcurrentDictionary<Entity, SkillsStats> EntitiesStats = new ConcurrentDictionary<Entity, SkillsStats>();
 
-        public Entities(PlayerInfo playerInfo)
+        public EntitiesDealt(PlayerInfo playerInfo)
         {
             _playerInfo = playerInfo;
         }
@@ -32,9 +34,10 @@ namespace Tera.DamageMeter
             {
                 lock (EntitiesStats)
                 {
-                    if (UiModel.Instance.Encounter != null && EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
-                        return EntitiesStats[UiModel.Instance.Encounter].FirstHit;
-                    if (UiModel.Instance.Encounter != null) return 0;
+                    if (NetworkController.Instance.Encounter != null &&
+                        EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                        return EntitiesStats[NetworkController.Instance.Encounter].FirstHit;
+                    if (NetworkController.Instance.Encounter != null) return 0;
                     long firsthit = 0;
                     foreach (var entityStats in EntitiesStats)
                     {
@@ -58,9 +61,10 @@ namespace Tera.DamageMeter
             {
                 lock (EntitiesStats)
                 {
-                    if (UiModel.Instance.Encounter != null && EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
-                        return EntitiesStats[UiModel.Instance.Encounter].LastHit;
-                    if (UiModel.Instance.Encounter != null) return 0;
+                    if (NetworkController.Instance.Encounter != null &&
+                        EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                        return EntitiesStats[NetworkController.Instance.Encounter].LastHit;
+                    if (NetworkController.Instance.Encounter != null) return 0;
                     long lasthit = 0;
                     foreach (var entityStats in EntitiesStats)
                     {
@@ -99,13 +103,13 @@ namespace Tera.DamageMeter
             {
                 lock (EntitiesStats)
                 {
-                    if (UiModel.Instance.Encounter == null)
+                    if (NetworkController.Instance.Encounter == null)
                     {
                         return EntitiesStats.Sum(entityStats => entityStats.Value.Damage);
                     }
-                    if (EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+                    if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
                     {
-                        return EntitiesStats[UiModel.Instance.Encounter].Damage;
+                        return EntitiesStats[NetworkController.Instance.Encounter].Damage;
                     }
                     return 0;
                 }
@@ -173,13 +177,13 @@ namespace Tera.DamageMeter
             {
                 lock (EntitiesStats)
                 {
-                    if (UiModel.Instance.Encounter == null || _playerInfo.IsHealer())
+                    if (NetworkController.Instance.Encounter == null || _playerInfo.IsHealer())
                     {
                         return EntitiesStats.Sum(skills => skills.Value.Crits);
                     }
-                    if (EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+                    if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
                     {
-                        return EntitiesStats[UiModel.Instance.Encounter].Crits;
+                        return EntitiesStats[NetworkController.Instance.Encounter].Crits;
                     }
                     return 0;
                 }
@@ -192,13 +196,13 @@ namespace Tera.DamageMeter
             {
                 lock (EntitiesStats)
                 {
-                    if (UiModel.Instance.Encounter == null || _playerInfo.IsHealer())
+                    if (NetworkController.Instance.Encounter == null || _playerInfo.IsHealer())
                     {
                         return EntitiesStats.Sum(skills => skills.Value.Hits);
                     }
-                    if (EntitiesStats.ContainsKey(UiModel.Instance.Encounter))
+                    if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
                     {
-                        return EntitiesStats[UiModel.Instance.Encounter].Hits;
+                        return EntitiesStats[NetworkController.Instance.Encounter].Hits;
                     }
                     return 0;
                 }

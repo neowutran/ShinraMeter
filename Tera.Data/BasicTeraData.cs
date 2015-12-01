@@ -25,10 +25,12 @@ namespace Tera.Data
             Servers = GetServers(Path.Combine(ResourceDirectory, "data/servers.txt")).ToList();
             MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters/"));
             PinData = new PinData(Path.Combine(ResourceDirectory, "img/"));
+            SkillDatabase = new SkillDatabase(Path.Combine(ResourceDirectory, "data/skills/"));
         }
 
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
 
+        public SkillDatabase SkillDatabase { get; }
         public PinData PinData { get; }
         public MonsterDatabase MonsterDatabase { get; }
         public WindowData WindowData { get; }

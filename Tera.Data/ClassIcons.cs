@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Tera.Data;
 using Tera.Game;
 
-namespace Tera.DamageMeter
+namespace Tera.Data
 {
     public class ClassIcons
     {

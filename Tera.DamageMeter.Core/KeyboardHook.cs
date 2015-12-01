@@ -51,7 +51,7 @@ namespace Tera.DamageMeter
             else if (e.Key == BasicTeraData.Instance.HotkeysData.Reset.Key &&
                      e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Value)
             {
-                UiModel.Instance.Reset();
+                NetworkController.Instance.Reset();
             }
             foreach (
                 var copy in
@@ -74,7 +74,6 @@ namespace Tera.DamageMeter
 
         private void Register()
         {
-            // register the control + alt + F12 combination as hot key.
             try
             {
                 Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value,

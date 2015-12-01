@@ -68,6 +68,9 @@
     <Compile Include="Skill.xaml.cs">
       <DependentUpon>Skill.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SkillDetail.xaml.cs">
+      <DependentUpon>SkillDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Skills.xaml.cs">
       <DependentUpon>Skills.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Skill.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SkillDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
