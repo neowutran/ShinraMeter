@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Tera.Data
 {
     public class Zone
     {
-        public string Area { get; private set; }
-        public string AreaName { get; private set; }
-        public Dictionary<string, Monster> Monsters { get; private set; }  
         public Zone(string area, string areaName)
         {
             Area = area;
@@ -20,5 +14,9 @@ namespace Tera.Data
             }
             Monsters = new Dictionary<string, Monster>();
         }
+
+        public string Area { get; private set; }
+        public string AreaName { get; private set; }
+        public Dictionary<string, Monster> Monsters { get; private set; }
     }
 }

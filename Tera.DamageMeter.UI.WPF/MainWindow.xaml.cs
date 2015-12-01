@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Tera.Data;
 using Tera.Sniffing;
 using Application = System.Windows.Forms.Application;
+using Brushes = System.Windows.Media.Brushes;
+using Image = System.Windows.Controls.Image;
+using Point = System.Windows.Point;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -20,16 +27,17 @@ namespace Tera.DamageMeter.UI.WPF
         public MainWindow()
         {
             InitializeComponent();
-
             TeraSniffer.Instance.Enabled = true;
             UiModel.Instance.Connected += HandleConnected;
             UiModel.Instance.DataUpdated += Update;
+            DamageTracker.Instance.CurrentBossUpdated += SelectEncounter;
             KeyboardHook.Instance.RegisterKeyboardHook();
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += Update;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-            ListEncounter.Items.Add(new Entity(""));
+            PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
+            EmptyEncounter();
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -76,21 +84,54 @@ namespace Tera.DamageMeter.UI.WPF
         private void EmptyEncounter()
         {
             ListEncounter.Items.Clear();
-            ListEncounter.Items.Add(new Entity(""));
+            var  item = new ComboBoxItem {Content = new Entity("TOTAL")};
+            ListEncounter.Items.Add(item);
             ListEncounter.SelectedIndex = 0;
+        }
+        private delegate void UpdateEncounter(Entity entity);
+
+
+        public void SelectEncounter(Entity entity)
+        {
+            UpdateEncounter changeSelected = delegate(Entity newentity)
+            {
+                if (!newentity.IsBoss()) return;
+                foreach (var item in ListEncounter.Items)
+                {
+                    var encounter = (Entity) ((ComboBoxItem) item).Content;
+                    if (encounter != newentity) continue;
+                    ListEncounter.SelectedItem = item;
+                    return;
+                }
+            };
+            Dispatcher.Invoke(changeSelected, entity);
+
         }
 
         private void AddEncounter(IReadOnlyCollection<Entity> entities)
         {
             if ((ListEncounter.Items.Count - 1) > entities.Count) return;
-            foreach (
-                var entity in
-                    entities.Where(entity => !ListEncounter.Items.Contains(entity))
-                        .Where(entity => !entity.Name.Equals("")))
-            {
-                ListEncounter.Items.Add(entity);
-            }
+                foreach (var entity in entities)
+                {
+                    var added = false;
+                    foreach (var entityItem in ListEncounter.Items)
+                    {
+                        if (((Entity) ((ComboBoxItem) entityItem).Content) != entity) continue;
+                        added = true;
+                        break;
+                    }
+                    if (added) continue;
+
+                var item = new ComboBoxItem { Content = entity };
+                    if (entity.IsBoss())
+                    {
+                        item.Foreground = Brushes.Red;
+                    }
+                    ListEncounter.Items.Insert(1,item);  
+                }
+            ListEncounter.UpdateLayout();
         }
+
 
         private void StayTopMost()
 
@@ -181,19 +222,19 @@ namespace Tera.DamageMeter.UI.WPF
             if (Topmost)
             {
                 Topmost = false;
-                ToggleTopMost.Content = "PIN";
+                PinImage.Source = BasicTeraData.Instance.PinData.Pin.Source;
                 return;
             }
             Topmost = true;
-            ToggleTopMost.Content = "UNPIN";
+            PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
         }
 
 
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count != 1) return;
-            var encounter = (Entity) e.AddedItems[0];
-            if (encounter.Name.Equals(""))
+            var encounter =(Entity) ((ComboBoxItem) e.AddedItems[0]).Content;
+            if (encounter.Name.Equals("TOTAL"))
             {
                 encounter = null;
             }

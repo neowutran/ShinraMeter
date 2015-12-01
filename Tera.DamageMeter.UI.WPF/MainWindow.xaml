@@ -202,19 +202,19 @@
         </Style>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush Color="Black" Opacity="0.2" />
+        <SolidColorBrush Color="Black" Opacity="0.3" />
     </Window.Background>
     <Grid HorizontalAlignment="Left" Width="355">
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
                 Content="X" Foreground="White" BorderThickness="0" Click="Button_OnClick"
                 HorizontalAlignment="Left" Height="29" MinHeight="29"
                 Margin="336,0,0,0" VerticalAlignment="Top" Width="19" />
-        <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" Foreground="White"
-                BorderThickness="0" x:Name="ToggleTopMost" Click="ToggleTopMost_OnClick" Content="UNPIN" MinHeight="29"
-                HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="46" Margin="0" />
-        <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged" DisplayMemberPath="Name" SelectedValuePath="Name"
+        <Image x:Name="PinImage" MouseLeftButtonUp="ToggleTopMost_OnClick" Stretch="Fill" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="29"/>
+
+
+        <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="46,0,0,0" VerticalAlignment="Top" Width="189" MinHeight="29" Height="29" />
+                  Margin="30,0,0,0" VerticalAlignment="Top" Width="205" MinHeight="29" Height="29" />
 
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"

@@ -15,13 +15,28 @@ namespace Tera.DamageMeter
         private ConcurrentDictionary<Player, PlayerInfo> _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
         public ObservableCollection<Entity> Entities = new ObservableCollection<Entity>();
 
+        public delegate void CurrentBossChange(Entity entity);
+
+        public event CurrentBossChange CurrentBossUpdated;
+
+
         private DamageTracker()
         {
+        }
+
+        public void UpdateCurrentBoss(Entity entity)
+        {
+            var handler = CurrentBossUpdated;
+            handler?.Invoke(entity);
         }
 
         public ConcurrentDictionary<Entity, long> TotalDamageEntity { get; set; } =
             new ConcurrentDictionary<Entity, long>();
 
+        private ConcurrentDictionary<Entity, long> EntitiesFirstHit { get; } = new ConcurrentDictionary<Entity, long>()
+            ;
+
+        private ConcurrentDictionary<Entity, long> EntitiesLastHit { get; } = new ConcurrentDictionary<Entity, long>();
 
         public long TotalDamage
         {
@@ -94,6 +109,24 @@ namespace Tera.DamageMeter
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public void SetFirstHit(Entity entity)
+        {
+            if (!EntitiesFirstHit.ContainsKey(entity))
+            {
+                EntitiesFirstHit[entity] = DateTime.UtcNow.Ticks/10000000;
+            }
+        }
+
+        public void SetLastHit(Entity entity)
+        {
+            EntitiesLastHit[entity] = DateTime.UtcNow.Ticks/10000000;
+        }
+
+        public long GetInterval(Entity entity)
+        {
+            return EntitiesLastHit[entity] - EntitiesFirstHit[entity];
         }
 
         public void Reset()

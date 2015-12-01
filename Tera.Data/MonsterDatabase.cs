@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace Tera.Data
@@ -9,12 +7,10 @@ namespace Tera.Data
     // Currently this is limited to the name of the skill
     public class MonsterDatabase
     {
-  
         private readonly Dictionary<string, Zone> _zonesData = new Dictionary<string, Zone>();
 
         public MonsterDatabase(string folder)
         {
-
             foreach (var file in Directory.EnumerateFiles(folder, "*.tsv"))
             {
                 var filename = Path.GetFileNameWithoutExtension(file);
@@ -23,18 +19,15 @@ namespace Tera.Data
                 var areaname = nameElements[1];
                 var monsters = new StreamReader(File.OpenRead(file));
                 var zone = new Zone(area, areaname);
-                 _zonesData.Add(area, zone);
-                
+                _zonesData.Add(area, zone);
+
                 while (!monsters.EndOfStream)
                 {
                     var line = monsters.ReadLine();
                     if (line == null) continue;
                     var values = line.Split('\t');
                     zone.Monsters.Add(values[0], new Monster(values[0], values[1], bool.Parse(values[2])));
-
                 }
-
-
             }
         }
 

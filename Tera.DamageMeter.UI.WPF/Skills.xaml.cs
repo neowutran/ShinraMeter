@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace Tera.DamageMeter.UI.WPF
 {
@@ -56,9 +57,10 @@ namespace Tera.DamageMeter.UI.WPF
             Repaint();
         }
 
+
         private void LabelTotalHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Heal, (Label)sender, SkillsHeader.Heal);
+            ChangeSort(SortBy.Heal, (Label) sender, SkillsHeader.Heal);
         }
 
         private void LabelNumberCritHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
