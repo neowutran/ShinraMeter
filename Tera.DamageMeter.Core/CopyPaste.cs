@@ -80,7 +80,7 @@ namespace Tera.DamageMeter
             var name = "";
             if (UiModel.Instance.Encounter != null)
             {
-                name = UiModel.Instance.Encounter.Name + "=";
+                name = UiModel.Instance.Encounter.Name;
             }
 
             dpsString = dpsString.Replace("{encounter}", name);

@@ -14,7 +14,7 @@
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>Dégats reçu:\</header>
+				<header>Damage Taken @ {encounter}:\</header>
 				<content>{name}: {damage_received}\</content>
 				<footer></footer>
 				<order_by>damage_received</order_by>
@@ -27,8 +27,8 @@
 			<window>false</window>
 			<key>End</key>
 			<string>
-				<header>{encounter} {timer} => % degats | % crit | dps:\</header>
-				<content>{name}: {damage_percentage} {crit_rate} {dps}\</content>
+				<header>Damage Done @ {encounter} {timer}:\</header>
+				<content>{name}: {damage_percentage} | {crit_rate} Crit | {dps}\</content>
 				<footer></footer>
 				<order_by>damage_percentage</order_by>
 				<order>descending</order>
