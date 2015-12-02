@@ -142,6 +142,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Autoupdate\Autoupdate.csproj">
+      <Project>{87e95fb1-8b42-4f6f-b51a-d2e3e49cd242}</Project>
+      <Name>Autoupdate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tera.Core\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
       <Name>Tera.Core</Name>

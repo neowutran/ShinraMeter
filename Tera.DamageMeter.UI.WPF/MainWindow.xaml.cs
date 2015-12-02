@@ -10,6 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Autoupdate;
+using Tera.DamageMeter;
 using Tera.Data;
 using Tera.Sniffing;
 using Application = System.Windows.Forms.Application;
@@ -21,6 +23,9 @@ namespace Tera.DamageMeter.UI.WPF
     /// </summary>
     public partial class MainWindow
     {
+
+
+
         public MainWindow()
         {
             InitializeComponent();
