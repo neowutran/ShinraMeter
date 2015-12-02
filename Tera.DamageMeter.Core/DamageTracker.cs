@@ -212,9 +212,7 @@ namespace Tera.DamageMeter
                 {
                     Console.WriteLine("UNKNOW DAMAGE");
                     entitySource = new Entity("");
-                        
                 }
-
             }
             else
             {

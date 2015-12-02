@@ -101,8 +101,9 @@
             <Expander.Content>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
                     <ItemsControl MouseLeftButtonDown="MoveWindow" x:Name="SkillsDetailList"
-                          Background="Transparent" BorderThickness="0" Focusable="False"
-                          HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False" />
+                                  Background="Transparent" BorderThickness="0" Focusable="False"
+                                  HorizontalContentAlignment="Stretch" VerticalAlignment="Top"
+                                  IsTextSearchEnabled="False" />
                 </ScrollViewer>
             </Expander.Content>
         </Expander>

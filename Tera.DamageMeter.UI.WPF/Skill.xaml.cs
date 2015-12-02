@@ -26,7 +26,6 @@ namespace Tera.DamageMeter.UI.WPF
 
         public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
         {
-    
             var skillsId = "";
             for (var i = 0; i < skill.SkillId.Count; i++)
             {
@@ -59,15 +58,13 @@ namespace Tera.DamageMeter.UI.WPF
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.AverageHit);
 
 
-            IEnumerable < KeyValuePair <int,SkillDetailStats>> listStats = stats.SkillDetails.ToList();
+            IEnumerable<KeyValuePair<int, SkillDetailStats>> listStats = stats.SkillDetails.ToList();
             listStats = listStats.OrderByDescending(stat => stat.Value.Damage);
             SkillsDetailList.Items.Clear();
             foreach (var stat in listStats)
             {
                 SkillsDetailList.Items.Add(new SkillDetail(stat.Value));
             }
-
-
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

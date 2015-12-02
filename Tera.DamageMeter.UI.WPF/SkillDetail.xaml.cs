@@ -50,8 +50,6 @@ namespace Tera.DamageMeter.UI.WPF
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.AverageCrit);
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.BiggestCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.AverageHit);
-
-
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

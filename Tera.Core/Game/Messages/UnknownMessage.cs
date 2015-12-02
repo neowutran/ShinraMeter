@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     // Created when we want a parsed message, but don't know how to handle that OpCode
     public class UnknownMessage : ParsedMessage

@@ -75,7 +75,7 @@ namespace Tera.DamageMeter
             {
                 name += ": " + AreaName;
             }
-            return name+"";
+            return name + "";
         }
 
 

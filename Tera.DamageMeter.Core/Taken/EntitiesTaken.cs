@@ -11,17 +11,15 @@ namespace Tera.DamageMeter.taken
         {
             get
             {
-              
-                    if (NetworkController.Instance.Encounter == null)
-                    {
-                        return EntitiesStats.Sum(entityStats => entityStats.Value);
-                    }
-                    if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
-                    {
-                        return EntitiesStats[NetworkController.Instance.Encounter];
-                    }
-                    return 0;
-                
+                if (NetworkController.Instance.Encounter == null)
+                {
+                    return EntitiesStats.Sum(entityStats => entityStats.Value);
+                }
+                if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                {
+                    return EntitiesStats[NetworkController.Instance.Encounter];
+                }
+                return 0;
             }
         }
     }

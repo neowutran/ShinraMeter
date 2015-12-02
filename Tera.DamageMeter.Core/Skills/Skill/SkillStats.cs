@@ -24,7 +24,6 @@ namespace Tera.DamageMeter.Skills.Skill
         {
             _playerInfo = playerInfo;
             _entityTarget = entityTarget;
-            
         }
 
         public SkillStats(PlayerInfo playerInfo)
@@ -42,63 +41,49 @@ namespace Tera.DamageMeter.Skills.Skill
 
         public long BiggestCrit
         {
-            get
-            {
-               
-                    return SkillDetails.Select(skill => skill.Value.BiggestCrit).Concat(new long[] {0}).Max();
-                
-            }
+            get { return SkillDetails.Select(skill => skill.Value.BiggestCrit).Concat(new long[] {0}).Max(); }
         }
 
         public long AverageCrit
         {
             get
             {
-               
-                    long averageCrit = 0;
-                    var numberCrits = 0;
-                    foreach (var skill in SkillDetails)
-                    {
-                        numberCrits += skill.Value.Crits;
-                        averageCrit += skill.Value.AverageCrit*skill.Value.Crits;
-                    }
-                    if (numberCrits == 0)
-                    {
-                        return 0;
-                    }
-                    return averageCrit/numberCrits;
+                long averageCrit = 0;
+                var numberCrits = 0;
+                foreach (var skill in SkillDetails)
+                {
+                    numberCrits += skill.Value.Crits;
+                    averageCrit += skill.Value.AverageCrit*skill.Value.Crits;
                 }
-            
+                if (numberCrits == 0)
+                {
+                    return 0;
+                }
+                return averageCrit/numberCrits;
+            }
         }
 
         public long BiggestHit
         {
-            get
-            {
-              
-                    return SkillDetails.Select(skill => skill.Value.BiggestHit).Concat(new long[] {0}).Max();
-                
-            }
+            get { return SkillDetails.Select(skill => skill.Value.BiggestHit).Concat(new long[] {0}).Max(); }
         }
 
         public long AverageHit
         {
             get
             {
-               
-                    long averageHit = 0;
-                    var numberHits = 0;
-                    foreach (var skill in SkillDetails)
-                    {
-                        numberHits += skill.Value.Hits - skill.Value.Crits;
-                        averageHit += skill.Value.AverageHit*(skill.Value.Hits - skill.Value.Crits);
-                    }
-                    if (numberHits == 0)
-                    {
-                        return 0;
-                    }
-                    return averageHit/numberHits;
-                
+                long averageHit = 0;
+                var numberHits = 0;
+                foreach (var skill in SkillDetails)
+                {
+                    numberHits += skill.Value.Hits - skill.Value.Crits;
+                    averageHit += skill.Value.AverageHit*(skill.Value.Hits - skill.Value.Crits);
+                }
+                if (numberHits == 0)
+                {
+                    return 0;
+                }
+                return averageHit/numberHits;
             }
         }
 
@@ -106,58 +91,36 @@ namespace Tera.DamageMeter.Skills.Skill
         {
             get
             {
-               
-                    long firsthit = 0;
-                    foreach (var skill in SkillDetails)
+                long firsthit = 0;
+                foreach (var skill in SkillDetails)
+                {
+                    if ((skill.Value.FirstHit != 0 && skill.Value.FirstHit < firsthit) || firsthit == 0)
                     {
-                        if ((skill.Value.FirstHit != 0 && skill.Value.FirstHit < firsthit) || firsthit == 0)
-                        {
-                            firsthit = skill.Value.FirstHit;
-                        }
+                        firsthit = skill.Value.FirstHit;
                     }
-                    return firsthit;
-                
+                }
+                return firsthit;
             }
         }
 
         public long LastHit
         {
-            get
-            {
-              
-                    return SkillDetails.Select(skill => skill.Value.LastHit).Concat(new long[] {0}).Max();
-                
-            }
+            get { return SkillDetails.Select(skill => skill.Value.LastHit).Concat(new long[] {0}).Max(); }
         }
 
         public long Damage
         {
-            get
-            {
-                
-                    return SkillDetails.Sum(skill => skill.Value.Damage);
-                
-            }
+            get { return SkillDetails.Sum(skill => skill.Value.Damage); }
         }
 
         public long Heal
         {
-            get
-            {
-               
-                    return SkillDetails.Sum(skill => skill.Value.Heal);
-                }
-            
+            get { return SkillDetails.Sum(skill => skill.Value.Heal); }
         }
 
         public long Mana
         {
-            get
-            {
-              
-                    return SkillDetails.Sum(skill => skill.Value.Mana);
-                
-            }
+            get { return SkillDetails.Sum(skill => skill.Value.Mana); }
         }
 
         public int HitsAll => HitsDmg + HitsHeal;
@@ -166,32 +129,17 @@ namespace Tera.DamageMeter.Skills.Skill
 
         public int HitsDmg
         {
-            get
-            {
-               
-                    return SkillDetails.Sum(skill => skill.Value.HitsDmg);
-                
-            }
+            get { return SkillDetails.Sum(skill => skill.Value.HitsDmg); }
         }
 
         public int HitsMana
         {
-            get
-            {
-              
-                    return SkillDetails.Sum(skill => skill.Value.HitsMana);
-                
-            }
+            get { return SkillDetails.Sum(skill => skill.Value.HitsMana); }
         }
 
         public int HitsHeal
         {
-            get
-            {
-              
-                    return SkillDetails.Sum(skill => skill.Value.HitsHeal);
-                
-            }
+            get { return SkillDetails.Sum(skill => skill.Value.HitsHeal); }
         }
 
         public int CritsAll => CritsDmg + CritsHeal;
@@ -200,22 +148,12 @@ namespace Tera.DamageMeter.Skills.Skill
 
         public int CritsHeal
         {
-            get
-            {
-             
-                    return SkillDetails.Sum(skill => skill.Value.CritsHeal);
-                
-            }
+            get { return SkillDetails.Sum(skill => skill.Value.CritsHeal); }
         }
 
         public int CritsDmg
         {
-            get
-            {
-               
-                    return SkillDetails.Sum(skill => skill.Value.CritsDmg);
-                
-            }
+            get { return SkillDetails.Sum(skill => skill.Value.CritsDmg); }
         }
 
         public static SkillStats operator +(SkillStats c1, SkillStats c2)
@@ -227,34 +165,32 @@ namespace Tera.DamageMeter.Skills.Skill
             var skill = c1._entityTarget != c2._entityTarget
                 ? new SkillStats(c1._playerInfo, null)
                 : new SkillStats(c1._playerInfo, c1._entityTarget);
-            ConcurrentDictionary<int, SkillDetailStats>  skillsDetail = new ConcurrentDictionary<int, SkillDetailStats>();
-          
-                foreach (var skilldetail in c1.SkillDetails)
-                {
-                    skillsDetail.TryAdd(skilldetail.Key, skilldetail.Value);
-                }
-            
-          
-                foreach (var skilldetail in c2.SkillDetails)
-                {
-                    skillsDetail.TryAdd(skilldetail.Key, skilldetail.Value);
-                }
-            
+            var skillsDetail = new ConcurrentDictionary<int, SkillDetailStats>();
+
+            foreach (var skilldetail in c1.SkillDetails)
+            {
+                skillsDetail.TryAdd(skilldetail.Key, skilldetail.Value);
+            }
+
+
+            foreach (var skilldetail in c2.SkillDetails)
+            {
+                skillsDetail.TryAdd(skilldetail.Key, skilldetail.Value);
+            }
+
 
             skill.SkillDetails = skillsDetail;
-                
+
             return skill;
         }
 
         public void AddData(int skillId, long damage, bool isCrit, Type type)
         {
-           
-                if (!SkillDetails.ContainsKey(skillId))
-                {
-                    SkillDetails[skillId] = new SkillDetailStats(_playerInfo, _entityTarget, skillId);
-                }
-                SkillDetails[skillId].AddData(damage, isCrit, type);
-            
+            if (!SkillDetails.ContainsKey(skillId))
+            {
+                SkillDetails[skillId] = new SkillDetailStats(_playerInfo, _entityTarget, skillId);
+            }
+            SkillDetails[skillId].AddData(damage, isCrit, type);
         }
     }
 }

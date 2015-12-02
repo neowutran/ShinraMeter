@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Media.Animation;
 using Tera.Game;
 
 namespace Tera.Data
@@ -55,7 +54,6 @@ namespace Tera.Data
             }
         }
 
-    
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
         public UserSkill Get(PlayerClass user, int skillId)

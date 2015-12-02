@@ -1,5 +1,4 @@
-﻿using System;
-using Tera.Data;
+﻿using Tera.Data;
 using Tera.Game;
 using Tera.Game.Messages;
 
