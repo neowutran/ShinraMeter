@@ -20,7 +20,7 @@ namespace Autoupdate
     public class UpdateManager
     {
 
-        public static readonly string Version = "0.24";
+        public static readonly string Version = "0.28";
 
         public static async Task<bool> Update()
         {

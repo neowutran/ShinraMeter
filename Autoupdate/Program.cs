@@ -40,9 +40,11 @@ namespace Autoupdate
 
             }
             Thread.Sleep(1000);
-            Mutex _uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
+            var _uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             UpdateManager.DestroyRelease();
-            UpdateManager.Copy(UpdateManager.ExecutableDirectory + @"\..\release\", UpdateManager.ExecutableDirectory+@"\..\..\..\");
+
+            var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];
+            UpdateManager.Copy(source, UpdateManager.ExecutableDirectory+@"\..\..\");
             Console.WriteLine("New version installed");
             Process.Start(UpdateManager.ExecutableDirectory + @"\..\..\ShinraMeter.exe");
             Environment.Exit(0);

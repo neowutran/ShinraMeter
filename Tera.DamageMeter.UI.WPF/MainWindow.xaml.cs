@@ -164,14 +164,14 @@ namespace Tera.DamageMeter.UI.WPF
                 var visiblePlayerStats = new HashSet<PlayerInfo>();
                 foreach (var playerStats in stats)
                 {
-                    visiblePlayerStats.Add(playerStats);
                     PlayerStats playerStatsControl;
                     Controls.TryGetValue(playerStats, out playerStatsControl);
-                    if (playerStatsControl != null) continue;
                     if (playerStats.Dealt.Damage == 0)
                     {
                         continue;
                     }
+                    visiblePlayerStats.Add(playerStats);
+                    if (playerStatsControl != null) continue;
                     playerStatsControl = new PlayerStats(playerStats);
                     Controls.Add(playerStats, playerStatsControl);
                 }
