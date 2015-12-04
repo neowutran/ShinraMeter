@@ -47,17 +47,17 @@ namespace Tera.DamageMeter
 
         private static void SendEnter(IntPtr hWnd)
         {
-            Thread.Sleep(50);
+            Thread.Sleep(100);
             if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
             {
                 throw new Win32Exception();
             }
-            Thread.Sleep(1);
+            Thread.Sleep(50);
             if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
             {
                 throw new Win32Exception();
             }
-            Thread.Sleep(50);
+            Thread.Sleep(100);
         }
 
         private static void SendString(IntPtr hWnd, string s)
