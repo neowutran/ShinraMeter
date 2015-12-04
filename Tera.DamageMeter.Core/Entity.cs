@@ -71,7 +71,7 @@ namespace Tera.DamageMeter
         public override string ToString()
         {
             var name = Name;
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(AreaName))
             {
                 name += ": " + AreaName;
             }

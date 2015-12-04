@@ -39,6 +39,11 @@ namespace Tera.Game.Messages
             FlagsDebug = reader.ReadInt32();
             Flags = (SkillResultFlags) FlagsDebug;
             IsCritical = (reader.ReadByte() & 1) != 0;
+
+            if (IsMana)
+            {
+                Amount = Math.Abs(Amount);
+            }
         }
 
         //DEBUG

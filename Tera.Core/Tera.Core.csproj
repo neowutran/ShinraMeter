@@ -37,6 +37,8 @@
     <Compile Include="Game\Angle.cs" />
     <Compile Include="Game\IHasOwner.cs" />
     <Compile Include="Game\Messages\Server\SCreatureChangeHp.cs" />
+    <Compile Include="Game\Messages\Server\SNpcOccupierInfo.cs" />
+    <Compile Include="Game\Messages\Server\SNpcTargetUser.cs" />
     <Compile Include="Game\Messages\Server\STargetInfo.cs" />
     <Compile Include="Game\Messages\StartUserProjectileServerMessage.cs" />
     <Compile Include="Game\PlaceHolderEntity.cs" />

@@ -20,7 +20,9 @@ namespace Tera.Game
             {"S_LOGIN", typeof (LoginServerMessage)},
             {"S_TARGET_INFO", typeof (STargetInfo)},
             {"S_START_USER_PROJECTILE", typeof (StartUserProjectileServerMessage)},
-            {"S_CREATURE_CHANGE_HP", typeof (SCreatureChangeHp)}
+            {"S_CREATURE_CHANGE_HP", typeof (SCreatureChangeHp)},
+            {"S_NPC_TARGET_USER", typeof(SNpcTargetUser) },
+            {"S_NPC_OCCUPIER_INFO", typeof(SNpcOccupierInfo) }
         };
 
         private readonly OpCodeNamer _opCodeNamer;
