@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Autoupdate;
-using Tera.DamageMeter;
 using Tera.Data;
 using Tera.Sniffing;
 using Application = System.Windows.Forms.Application;
@@ -23,9 +19,6 @@ namespace Tera.DamageMeter.UI.WPF
     /// </summary>
     public partial class MainWindow
     {
-
-
-
         public MainWindow()
         {
             InitializeComponent();
@@ -42,13 +35,12 @@ namespace Tera.DamageMeter.UI.WPF
             EmptyEncounter();
         }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
 
 
         public void Update(object sender, EventArgs e)

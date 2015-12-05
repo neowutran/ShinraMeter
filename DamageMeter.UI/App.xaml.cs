@@ -9,21 +9,17 @@ using Autoupdate;
 
 namespace Tera.DamageMeter.UI.WPF
 {
-
-
     /// <summary>
     ///     Logique d'interaction pour App.xaml
     /// </summary>
-    /// 
     public partial class App
     {
+        private Mutex _unique;
 
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        private Mutex _unique;
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
@@ -53,7 +49,6 @@ namespace Tera.DamageMeter.UI.WPF
             if (!isWaitingUpdateEnd)
             {
                 SetForeground();
-                
             }
 
             while (isUpdating)
@@ -63,7 +58,6 @@ namespace Tera.DamageMeter.UI.WPF
             }
             updating.Close();
             waitUpdateEnd.Close();
-
         }
 
         private static void SetForeground()
@@ -93,6 +87,5 @@ namespace Tera.DamageMeter.UI.WPF
                 MessageBoxImage.Question) != MessageBoxResult.Yes) return false;
             return await UpdateManager.Update();
         }
-
     }
 }

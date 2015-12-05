@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Core", "Tera.Core\Tera.Core.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera", "Tera\Tera.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Data", "Tera.Data\Tera.Data.csproj", "{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Sniffing", "Tera.Sniffing\Tera.Sniffing.csproj", "{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.Sniffing", "DamageMeter.Sniffing\DamageMeter.Sniffing.csproj", "{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.Core", "Tera.DamageMeter.Core\Tera.DamageMeter.Core.csproj", "{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.Core", "DamageMeter.Core\DamageMeter.Core.csproj", "{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.DamageMeter.UI", "Tera.DamageMeter.UI.WPF\Tera.DamageMeter.UI.csproj", "{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.UI", "DamageMeter.UI\DamageMeter.UI.csproj", "{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autoupdate", "Autoupdate\Autoupdate.csproj", "{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.AutoUpdate", "DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj", "{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
