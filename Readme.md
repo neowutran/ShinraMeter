@@ -3,6 +3,7 @@ Shinra Meter
 ShinraMeter is a DPS Meter for TERA based off https://github.com/gothos-folly/TeraDamageMeter . 
 
 Wiki: https://github.com/neowutran/TeraDamageMeter/wiki
+
 Download: https://cloud.neowutran.ovh/index.php/s/e7arRRxkHEIkzU1
 
 This DPS meter has an autoupdate feature, download once, always stay up to date. 
