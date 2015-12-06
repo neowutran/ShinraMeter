@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Autoupdate;
+using DamageMeter.AutoUpdate;
 
-namespace Tera.DamageMeter.UI.WPF
+namespace DamageMeter.UI
 {
     /// <summary>
     ///     Logique d'interaction pour App.xaml

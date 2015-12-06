@@ -8,11 +8,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Tera.Data;
-using Tera.Sniffing;
+using DamageMeter.Sniffing;
+using Data;
 using Application = System.Windows.Forms.Application;
 
-namespace Tera.DamageMeter.UI.WPF
+namespace DamageMeter.UI
 {
     /// <summary>
     ///     Logique d'interaction pour MainWindow.xaml

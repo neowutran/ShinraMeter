@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
-using Tera.DamageMeter.Dealt;
-using Tera.DamageMeter.taken;
+using DamageMeter.Dealt;
+using DamageMeter.Taken;
 using Tera.Game;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public class PlayerInfo : INotifyPropertyChanged
     {

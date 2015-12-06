@@ -15,9 +15,9 @@
 			<key>End</key>
 			<string>
 				<header>Damage Taken @ {encounter}:\</header>
-				<content>{name}: {damage_received}\</content>
+				<content>{name}: Hits: {hits_received} = {damage_received}\</content>
 				<footer></footer>
-				<order_by>damage_received</order_by>
+				<order_by>hits_received</order_by>
 				<order>descending</order>
 			</string>
 		</copy>

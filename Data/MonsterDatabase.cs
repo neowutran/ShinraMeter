@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Tera.Data
+namespace Data
 {
     // Contains information about skills
     // Currently this is limited to the name of the skill

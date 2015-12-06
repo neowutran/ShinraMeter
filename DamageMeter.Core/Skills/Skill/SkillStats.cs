@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using Tera.DamageMeter.Skills.Skill.SkillDetail;
+using DamageMeter.Skills.Skill.SkillDetail;
 
-namespace Tera.DamageMeter.Skills.Skill
+namespace DamageMeter.Skills.Skill
 {
     public class SkillStats
     {

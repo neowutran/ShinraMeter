@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tera.DamageMeter.Skills.Skill.SkillDetail
+namespace DamageMeter.Skills.Skill.SkillDetail
 {
     public class SkillDetailStats
     {

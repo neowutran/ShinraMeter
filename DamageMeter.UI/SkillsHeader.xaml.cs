@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Tera.DamageMeter.UI.WPF
+namespace DamageMeter.UI
 {
     /// <summary>
     ///     Logique d'interaction pour Skill.xaml

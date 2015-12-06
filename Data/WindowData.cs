@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Xml.Linq;
 
-namespace Tera.Data
+namespace Data
 {
     public class WindowData
     {

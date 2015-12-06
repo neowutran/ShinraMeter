@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
-using Tera.DamageMeter.Skills;
-using Tera.DamageMeter.Skills.Skill;
+using DamageMeter.Skills;
+using DamageMeter.Skills.Skill;
+using DamageMeter.Taken;
 using Tera.Game;
-using Skill = Tera.DamageMeter.Skills.Skill.Skill;
+using Skill = DamageMeter.Skills.Skill.Skill;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public class DamageTracker : IEnumerable<PlayerInfo>
     {
@@ -324,12 +325,11 @@ namespace Tera.DamageMeter
 
             if (!playerInfo.Received.EntitiesStats.ContainsKey(entitySource))
             {
-                playerInfo.Received.EntitiesStats[entitySource] = message.Damage;
+                playerInfo.Received.EntitiesStats[entitySource] = new DamageTaken();
             }
-            else
-            {
-                playerInfo.Received.EntitiesStats[entitySource] += message.Damage;
-            }
+          
+            playerInfo.Received.EntitiesStats[entitySource].Damage += message.Damage;
+            
         }
 
         private delegate void ChangedEncounter(Entity entity, SkillResult msg);

@@ -3,10 +3,10 @@ using System.Collections.Concurrent;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Tera.DamageMeter.Skills.Skill;
-using Tera.Data;
+using DamageMeter.Skills.Skill;
+using Data;
 
-namespace Tera.DamageMeter.UI.WPF
+namespace DamageMeter.UI
 {
     /// <summary>
     ///     Logique d'interaction pour PlayerStats.xaml

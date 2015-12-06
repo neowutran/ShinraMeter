@@ -1,8 +1,8 @@
 ﻿using System;
-using Tera.Data;
+using Data;
 using Tera.Game;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public class Entity : IEquatable<object>
     {

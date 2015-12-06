@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public static class TeraWindow
     {
@@ -52,12 +52,12 @@ namespace Tera.DamageMeter
             {
                 throw new Win32Exception();
             }
-            Thread.Sleep(1);
+            Thread.Sleep(5);
             if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
             {
                 throw new Win32Exception();
             }
-            Thread.Sleep(50);
+            Thread.Sleep(100);
         }
 
         private static void SendString(IntPtr hWnd, string s)

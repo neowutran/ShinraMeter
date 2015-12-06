@@ -16,7 +16,7 @@
 
 using System;
 
-namespace Tera.DamageMeter.Properties
+namespace DamageMeter.Properties
 {
     /// <summary>
     ///     Indicates that marked element should be localized or not.

@@ -4,7 +4,7 @@
 using System;
 using System.Globalization;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public class FormatHelpers
     {

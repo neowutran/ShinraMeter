@@ -61,6 +61,7 @@
     <Compile Include="Skills\SkillsStats.cs" />
     <Compile Include="Skills\Skill\SkillStats.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="Taken\DamageTaken.cs" />
     <Compile Include="Taken\EntitiesTaken.cs" />
     <Compile Include="TeraWindow.cs" />
     <Compile Include="NetworkController.cs" />

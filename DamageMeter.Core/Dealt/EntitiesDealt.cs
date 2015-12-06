@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using Tera.DamageMeter.Skills;
-using Tera.DamageMeter.Skills.Skill;
+using DamageMeter.Skills;
+using DamageMeter.Skills.Skill;
 
-namespace Tera.DamageMeter.Dealt
+namespace DamageMeter.Dealt
 {
     public class EntitiesDealt
     {

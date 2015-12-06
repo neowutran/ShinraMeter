@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tera.Data
+namespace Data
 {
     public class Zone
     {

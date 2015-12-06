@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace Tera.Data
+namespace Data
 {
     public class HotkeysData
     {

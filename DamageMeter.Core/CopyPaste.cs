@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public static class CopyPaste
     {
@@ -40,6 +40,10 @@ namespace Tera.DamageMeter
                     case "crit_rate":
                         playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.CritRate);
                         break;
+                    case "hits_received":
+                        playerInfosOrdered =
+                            playerInfos.OrderBy(playerInfo => playerInfo.Received.Hits);
+                        break;
                     default:
                         Console.WriteLine("wrong value for orderby");
                         throw new Exception("wrong value for orderby");
@@ -52,6 +56,10 @@ namespace Tera.DamageMeter
                     case "damage_received":
                         playerInfosOrdered =
                             playerInfos.OrderByDescending(playerInfo => playerInfo.Received.Damage);
+                        break;
+                    case "hits_received":
+                        playerInfosOrdered =
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Received.Hits);
                         break;
                     case "name":
                         playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Name);
@@ -102,6 +110,9 @@ namespace Tera.DamageMeter
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate + "%");
                 currentContent = currentContent.Replace("{damage_received}",
                     FormatHelpers.Instance.FormatValue(playerStats.Received.Damage));
+                currentContent = currentContent.Replace("{hits_received}",
+                FormatHelpers.Instance.FormatValue(playerStats.Received.Hits));
+
                 dpsString += currentContent;
             }
             dpsString += footer;

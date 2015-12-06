@@ -2,10 +2,10 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Tera.DamageMeter.Skills.Skill.SkillDetail;
-using Tera.Data;
+using DamageMeter.Skills.Skill.SkillDetail;
+using Data;
 
-namespace Tera.DamageMeter.UI.WPF
+namespace DamageMeter.UI
 {
     /// <summary>
     ///     Logique d'interaction pour SkillContent.xaml

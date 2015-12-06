@@ -3,9 +3,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using Tera.Data;
+using Data;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public sealed class KeyboardHook : IDisposable
     {

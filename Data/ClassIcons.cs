@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Tera.Game;
 
-namespace Tera.Data
+namespace Data
 {
     public class ClassIcons
     {

@@ -4,12 +4,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using NetworkSniffer;
 using PacketDotNet.Utils;
-using Tera.Data;
+using Tera;
 using Tera.Game;
+using Tera.Sniffing;
 
-namespace Tera.Sniffing
+namespace DamageMeter.Sniffing
 {
     public class TeraSniffer : ITeraSniffer
     {

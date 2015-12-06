@@ -4,10 +4,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Tera.DamageMeter.Skills.Skill;
-using Tera.DamageMeter.Skills.Skill.SkillDetail;
+using DamageMeter.Skills.Skill;
+using DamageMeter.Skills.Skill.SkillDetail;
 
-namespace Tera.DamageMeter.UI.WPF
+namespace DamageMeter.UI
 {
     /// <summary>
     ///     Logique d'interaction pour Skill.xaml

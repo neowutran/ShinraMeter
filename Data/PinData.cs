@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace Tera.Data
+namespace Data
 {
     public class PinData
     {

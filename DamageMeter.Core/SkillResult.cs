@@ -1,9 +1,9 @@
 ﻿using System;
-using Tera.Data;
+using Data;
 using Tera.Game;
 using Tera.Game.Messages;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public class SkillResult
     {
@@ -66,8 +66,8 @@ namespace Tera.DamageMeter
         }
 
         public int Amount { get; }
-        public Game.Entity Source { get; }
-        public Game.Entity Target { get; }
+        public Tera.Game.Entity Source { get; }
+        public Tera.Game.Entity Target { get; }
         public bool IsCritical { get; private set; }
         public bool IsHeal { get; }
 

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Tera.Data
+namespace Data
 {
     public class CopyKey
     {

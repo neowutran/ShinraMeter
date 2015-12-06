@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
-using Tera.Data;
+using DamageMeter.Sniffing;
+using Data;
+using Tera;
 using Tera.Game;
 using Tera.Game.Messages;
-using Tera.Sniffing;
 
-namespace Tera.DamageMeter
+namespace DamageMeter
 {
     public class NetworkController
     {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Tera.Game;
 
-namespace Tera.Data
+namespace Data
 {
     public class TeraData
     {

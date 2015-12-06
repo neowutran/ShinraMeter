@@ -1,4 +1,4 @@
-﻿namespace Tera.Data
+﻿namespace Data
 {
     public class Monster
     {

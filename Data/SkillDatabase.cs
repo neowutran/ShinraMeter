@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Tera.Game;
 
-namespace Tera.Data
+namespace Data
 {
     // Contains information about skills
     // Currently this is limited to the name of the skill

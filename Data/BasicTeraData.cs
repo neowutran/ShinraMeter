@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using Tera.Game;
 
-namespace Tera.Data
+namespace Data
 {
     public class BasicTeraData
     {
