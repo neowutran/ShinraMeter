@@ -37,6 +37,8 @@ namespace DamageMeter.UI
 
         public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerInfo.Received.Damage);
 
+        public string HitReceived => PlayerInfo.Received.Hits.ToString();
+
         public string CritRate => Math.Round(PlayerInfo.Dealt.CritRate) + "%";
 
 
@@ -50,6 +52,7 @@ namespace DamageMeter.UI
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;
+            LabelHitsReceived.Content = HitReceived;
 
 
             _windowSkill?.Update(Skills());

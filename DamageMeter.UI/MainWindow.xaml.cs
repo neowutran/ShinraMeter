@@ -158,7 +158,7 @@ namespace DamageMeter.UI
                 {
                     PlayerStats playerStatsControl;
                     Controls.TryGetValue(playerStats, out playerStatsControl);
-                    if (playerStats.Dealt.Damage == 0)
+                    if (playerStats.Dealt.Damage == 0 && playerStats.Received.Hits == 0)
                     {
                         continue;
                     }

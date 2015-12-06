@@ -9,18 +9,7 @@ namespace DamageMeter.Taken
     public class DamageTaken
     {
 
-        public long Damage
-        {
-            get
-            {
-                return _damage;
-            }
-            set
-            {
-                _damage += value;
-                Hits++;
-            }
-        }
+        public long Damage { get; private set; } = 0;
 
         public int Hits { get; private set; }
 
@@ -29,6 +18,10 @@ namespace DamageMeter.Taken
             
         }
 
-        private long _damage = 0;
+        public void AddDamage(long damage)
+        {
+            Damage += damage;
+            Hits++;
+        }
     }
 }

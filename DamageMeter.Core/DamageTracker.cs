@@ -44,6 +44,10 @@ namespace DamageMeter
                     {
                         return TotalDamageEntity.Sum(totalDamageEntity => totalDamageEntity.Value);
                     }
+                    if (!TotalDamageEntity.ContainsKey(NetworkController.Instance.Encounter))
+                    {
+                        return 0;
+                    }
                     return TotalDamageEntity[NetworkController.Instance.Encounter];
                 }
             }
@@ -212,13 +216,13 @@ namespace DamageMeter
                 else
                 {
                     Console.WriteLine("UNKNOW DAMAGE");
-                    entitySource = new Entity("");
+                    entitySource = new Entity("UNKNOW");
                 }
             }
             else
             {
                 Console.WriteLine("UNKNOW DAMAGE");
-                entitySource = new Entity("");
+                entitySource = new Entity("UNKNOW");
             }
 
             UpdateStatsReceived(playerStats, skillResult, entitySource);
@@ -310,7 +314,7 @@ namespace DamageMeter
                 entities.EntitiesStats[entityTarget].Skills.TryAdd(skillKey, skillStats);
             }
         }
-
+            
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource)
         {
             if (message.Damage == 0)
@@ -327,9 +331,13 @@ namespace DamageMeter
             {
                 playerInfo.Received.EntitiesStats[entitySource] = new DamageTaken();
             }
-          
-            playerInfo.Received.EntitiesStats[entitySource].Damage += message.Damage;
             
+            playerInfo.Received.EntitiesStats[entitySource].AddDamage(message.Damage);
+            if (!Instance.Entities.Contains(entitySource))
+            {
+                Instance.Entities.Add(entitySource);
+                TotalDamageEntity.TryAdd(entitySource, 0);
+            }
         }
 
         private delegate void ChangedEncounter(Entity entity, SkillResult msg);
