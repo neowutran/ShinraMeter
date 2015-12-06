@@ -11,11 +11,5 @@ namespace Tera.Game.Messages
         }
 
         public EntityId Creature { get; }
-
-        public void PrintRaw()
-        {
-            base.PrintRaw();
-            Console.WriteLine();
-        }
     }
 }

@@ -30,7 +30,15 @@ namespace DamageMeter.UI
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             if (aIsNewInstance)
             {
-                var shutdown = await CheckUpdate();
+                bool shutdown = false;
+                try
+                {
+                    shutdown = await CheckUpdate();
+                }
+                catch
+                {
+                    MessageBox.Show("Unable to contact update server.");
+                }
                 if (shutdown)
                 {
                     Current.Shutdown();

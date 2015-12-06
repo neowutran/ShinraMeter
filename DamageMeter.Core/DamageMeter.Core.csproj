@@ -52,6 +52,7 @@
     <Compile Include="Dealt\EntitiesDealt.cs" />
     <Compile Include="FormatHelpers.cs" />
     <Compile Include="KeyboardHook.cs" />
+    <Compile Include="NpcOccupierResult.cs" />
     <Compile Include="PlayerInfo.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

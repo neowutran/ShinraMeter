@@ -69,6 +69,11 @@ namespace DamageMeter
         {
             var message = _messageFactory.Create(obj);
             _entityTracker.Update(message);
+            var npcOccupier = message as SNpcOccupierInfo;
+            if (npcOccupier != null)
+            {
+                
+            }
             var skillResultMessage = message as EachSkillResultServerMessage;
             if (skillResultMessage == null) return;
             var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker);

@@ -33,6 +33,8 @@ namespace Tera.Game
             return !(x == y);
         }
 
+
+
         public bool Equals(EntityId other)
         {
             return this == other;

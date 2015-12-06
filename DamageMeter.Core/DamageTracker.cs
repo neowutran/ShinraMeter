@@ -54,6 +54,38 @@ namespace DamageMeter
         }
 
 
+        public void UpdateEntities(NpcOccupierResult npcOccupierResult)
+        {
+           
+                lock (Instance.Entities)
+                {
+                    foreach (var entity in Entities)
+                    {
+                        if (entity.Id == npcOccupierResult.Npc && entity.IsBoss() && npcOccupierResult.HasReset)
+                        {
+                            DeleteEntity(entity);
+                        }
+                    }
+                }
+            
+        }
+
+
+        private void DeleteEntity(Entity entity)
+        {
+            long damage;
+            SkillsStats trash;
+            DamageTaken trash2;
+            Instance.TotalDamageEntity.TryRemove(entity, out damage);
+            Instance.EntitiesFirstHit.TryRemove(entity, out damage);
+            Instance.EntitiesLastHit.TryRemove(entity, out damage);
+            foreach (var stats in _statsByUser)
+            {
+                stats.Value.Dealt.EntitiesStats.TryRemove(entity, out trash);
+                stats.Value.Received.EntitiesStats.TryRemove(entity, out trash2);
+            }
+        }
+
         private long FirstHit
         {
             get
