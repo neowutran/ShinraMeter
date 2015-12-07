@@ -6,15 +6,17 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "0.31";
+        public static readonly string Version = "0.32";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -75,6 +77,12 @@ namespace DamageMeter.AutoUpdate
                     ".zip", ExecutableDirectory + @"\tmp\" + latestVersion + ".zip");
             }
             Console.WriteLine("Latest version downloaded");
+            Console.WriteLine("Checksum");
+            if (!(Checksum(latestVersion, latestVersion + ".zip").Result))
+            {
+                MessageBox.Show("Invalid checksum, abording upgrade");
+                return;
+            }
             Console.WriteLine("Decompressing");
             Decompress(latestVersion + ".zip");
             Console.WriteLine("Decompressed");
@@ -117,15 +125,39 @@ namespace DamageMeter.AutoUpdate
                     GetResponseText("https://cloud.neowutran.ovh/index.php/s/muOLoJjP8JJfqFR/download")
                         .ConfigureAwait(false);
             version = Regex.Replace(version, @"\r\n?|\n", "");
+          
             return version;
         }
+
+        private static async Task<bool> Checksum(string version, string file)
+        {
+            var checksum =
+               await
+                   GetResponseText("http://diclah.com/~yukikoo/" + version+".txt")
+                       .ConfigureAwait(false);
+            checksum = Regex.Replace(checksum, @"\r\n?|\n", "");
+            var hashString = "";
+            using (var stream = File.OpenRead(ExecutableDirectory + @"\tmp\" +file))
+            {
+                var sha512 = SHA512.Create();
+                var hash = sha512.ComputeHash(stream);
+                hashString = BitConverter.ToString(hash);
+                hashString = hashString.Replace("-", "");
+
+            }
+            checksum = checksum.ToLowerInvariant();
+            hashString = hashString.ToLowerInvariant();
+            Console.WriteLine("Online checksum:"+checksum);
+            Console.WriteLine("Computed checksum:"+hashString);
+            return hashString == checksum;
+        } 
 
         private static void SetCertificate()
         {
             var cloudCertificate = new X509Certificate2(ResourcesDirectory + @"cloud.neowutran.ovh.der");
             ServicePointManager.ServerCertificateValidationCallback =
                 (sender, certificate, chain, sslPolicyErrors) =>
-                    sslPolicyErrors == SslPolicyErrors.None || certificate.Equals(cloudCertificate);
+                    certificate.Equals(cloudCertificate);
         }
 
         private static async Task<string> GetResponseText(string address)
@@ -133,6 +165,7 @@ namespace DamageMeter.AutoUpdate
             SetCertificate();
             using (var client = new HttpClient())
             {
+                Console.WriteLine(address);
                 return await client.GetStringAsync(new Uri(address));
             }
         }
