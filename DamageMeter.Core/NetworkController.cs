@@ -72,7 +72,7 @@ namespace DamageMeter
             var npcOccupier = message as SNpcOccupierInfo;
             if (npcOccupier != null)
             {
-                
+                DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier));
             }
             var skillResultMessage = message as EachSkillResultServerMessage;
             if (skillResultMessage == null) return;

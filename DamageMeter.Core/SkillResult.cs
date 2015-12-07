@@ -26,7 +26,7 @@ namespace DamageMeter
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
                 Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, message.SkillId);
 
-
+                /*
                 if ((SourcePlayer.Name == "Diclah" || SourcePlayer.Name == "Yukikoolol" ||
                      SourcePlayer.Name == "Yukikoo"))
                 {
@@ -57,6 +57,7 @@ namespace DamageMeter
                     }
                     Console.WriteLine("#");
                 }
+                */
             }
 
             if (targetUser != null)
