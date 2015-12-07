@@ -42,9 +42,9 @@
             <Label Grid.Column="4" FontSize="14" x:Name="LabelCritRate" VerticalAlignment="Center" Foreground="White"
                    MinHeight="25" />
             <Label Grid.Column="5" FontSize="14" x:Name="LabelHitsReceived" VerticalAlignment="Bottom"
-                   Foreground="White" MinHeight="29" />
+                   Foreground="Yellow" MinHeight="29" />
             <Label Grid.Column="6" FontSize="14" x:Name="LabelDamageReceived" VerticalAlignment="Bottom"
-                   Foreground="White" MinHeight="29" />
+                   Foreground="Yellow" MinHeight="29" />
 
         </Grid>
 
