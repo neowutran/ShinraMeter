@@ -15,6 +15,7 @@ namespace Tera.Game
         Mystic = 8,
         Reaper = 9,
         Gunner = 10,
+        Brawler = 11,
 
         Common = 255
     }
