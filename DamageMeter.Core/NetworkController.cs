@@ -14,7 +14,7 @@ namespace DamageMeter
     {
         public delegate void ConnectedHandler(string serverName);
 
-        public delegate void DataUpdatedHandler(IEnumerable<PlayerInfo> data, ObservableCollection<Entity> entities);
+        public delegate void DataUpdatedHandler(IEnumerable<PlayerInfo> data, LinkedList<Entity> entities);
 
         private static NetworkController _instance;
         private static TeraData _teraData;

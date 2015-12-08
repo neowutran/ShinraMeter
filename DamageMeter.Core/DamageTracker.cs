@@ -19,7 +19,7 @@ namespace DamageMeter
 
         private static DamageTracker _instance;
         private ConcurrentDictionary<Player, PlayerInfo> _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
-        public ObservableCollection<Entity> Entities = new ObservableCollection<Entity>();
+        public LinkedList<Entity> Entities = new LinkedList<Entity>();
 
 
         private DamageTracker()
@@ -175,7 +175,7 @@ namespace DamageMeter
             {
                 _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
             }
-            Entities = new ObservableCollection<Entity>();
+            Entities = new LinkedList<Entity>();
         }
 
         private PlayerInfo GetOrCreate(Player player)
@@ -281,7 +281,7 @@ namespace DamageMeter
             {
                 if (!Entities.Contains(entity) && !msg.IsHeal && !msg.IsMana)
                 {
-                    Entities.Add(entity);
+                    Entities.AddFirst(entity);
                 }
             };
             Dispatcher.Invoke(changeEncounter, entityTarget, message);
@@ -359,17 +359,33 @@ namespace DamageMeter
                 return;
             }
 
-            if (!playerInfo.Received.EntitiesStats.ContainsKey(entitySource))
+            var entity = entitySource;
+
+            if (entitySource.IsBoss())
             {
-                playerInfo.Received.EntitiesStats[entitySource] = new DamageTaken();
+                foreach (var t in Entities.Where(t => t.Name == entitySource.Name))
+                {
+                    entity = t;
+                    break;
+                }
+
+                //Don't count damage taken if boss haven't taken any damage
+                if (entity == null)
+                {
+                    return;
+                }
+            }
+
+
+            if (!playerInfo.Received.EntitiesStats.ContainsKey(entity))
+            {
+                playerInfo.Received.EntitiesStats[entity] = new DamageTaken();
             }
             
-            playerInfo.Received.EntitiesStats[entitySource].AddDamage(message.Damage);
-            if (!Instance.Entities.Contains(entitySource))
-            {
-                Instance.Entities.Add(entitySource);
-                TotalDamageEntity.TryAdd(entitySource, 0);
-            }
+            playerInfo.Received.EntitiesStats[entity].AddDamage(message.Damage);
+            if (Instance.Entities.Contains(entity)) return;
+            Instance.Entities.AddFirst(entity);
+            TotalDamageEntity.TryAdd(entity, 0);
         }
 
         private delegate void ChangedEncounter(Entity entity, SkillResult msg);

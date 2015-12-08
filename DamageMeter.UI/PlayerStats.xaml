@@ -31,19 +31,19 @@
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="50" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" FontSize="14" VerticalAlignment="Center" x:Name="LabelName" Foreground="White"
+            <Label Grid.Column="0" FontSize="14" VerticalAlignment="Center" HorizontalContentAlignment="Center" x:Name="LabelName" Foreground="White"
                    MinHeight="29" />
-            <Label Grid.Column="1" FontSize="14" x:Name="LabelDamagePart" VerticalAlignment="Center" Foreground="White"
+            <Label Grid.Column="1" FontSize="14" x:Name="LabelDamagePart" HorizontalContentAlignment="Center" VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
             <Label Grid.Column="2" FontSize="14" x:Name="LabelDps" VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
-            <Label Grid.Column="3" FontSize="14" x:Name="LabelDamage" VerticalAlignment="Center" Foreground="White"
+            <Label Grid.Column="3" FontSize="14" x:Name="LabelDamage" HorizontalContentAlignment="Center" VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
-            <Label Grid.Column="4" FontSize="14" x:Name="LabelCritRate" VerticalAlignment="Center" Foreground="White"
+            <Label Grid.Column="4" FontSize="14" x:Name="LabelCritRate" HorizontalContentAlignment="Center" VerticalAlignment="Center" Foreground="White"
                    MinHeight="25" />
-            <Label Grid.Column="5" FontSize="14" x:Name="LabelHitsReceived" VerticalAlignment="Bottom"
+            <Label Grid.Column="5" FontSize="14" x:Name="LabelHitsReceived" HorizontalContentAlignment="Center" VerticalAlignment="Bottom"
                    Foreground="Yellow" MinHeight="29" />
-            <Label Grid.Column="6" FontSize="14" x:Name="LabelDamageReceived" VerticalAlignment="Bottom"
+            <Label Grid.Column="6" FontSize="14" x:Name="LabelDamageReceived" HorizontalContentAlignment="Center" VerticalAlignment="Bottom"
                    Foreground="Yellow" MinHeight="29" />
 
         </Grid>

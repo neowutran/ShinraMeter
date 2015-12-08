@@ -139,9 +139,9 @@ namespace DamageMeter.UI
             Topmost = true;
         }
 
-        public void Update(IEnumerable<PlayerInfo> playerStatsSequence, ObservableCollection<Entity> newentities)
+        public void Update(IEnumerable<PlayerInfo> playerStatsSequence, LinkedList<Entity> newentities)
         {
-            UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats, ObservableCollection<Entity> entities)
+            UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats, LinkedList<Entity> entities)
             {
                 if (entities.Count == 0)
                 {
@@ -244,6 +244,6 @@ namespace DamageMeter.UI
 
         private delegate void ChangeTitle(string servername);
 
-        private delegate void UpdateData(IEnumerable<PlayerInfo> stats, ObservableCollection<Entity> entities);
+        private delegate void UpdateData(IEnumerable<PlayerInfo> stats, LinkedList<Entity> entities);
     }
 }
