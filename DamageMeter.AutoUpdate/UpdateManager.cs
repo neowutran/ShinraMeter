@@ -4,7 +4,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
-using System.Net.Security;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -125,32 +124,31 @@ namespace DamageMeter.AutoUpdate
                     GetResponseText("https://cloud.neowutran.ovh/index.php/s/muOLoJjP8JJfqFR/download")
                         .ConfigureAwait(false);
             version = Regex.Replace(version, @"\r\n?|\n", "");
-          
+
             return version;
         }
 
         private static async Task<bool> Checksum(string version, string file)
         {
             var checksum =
-               await
-                   GetResponseText("http://diclah.com/~yukikoo/" + version+".txt")
-                       .ConfigureAwait(false);
+                await
+                    GetResponseText("http://diclah.com/~yukikoo/" + version + ".txt")
+                        .ConfigureAwait(false);
             checksum = Regex.Replace(checksum, @"\r\n?|\n", "");
-            var hashString = "";
-            using (var stream = File.OpenRead(ExecutableDirectory + @"\tmp\" +file))
+            string hashString;
+            using (var stream = File.OpenRead(ExecutableDirectory + @"\tmp\" + file))
             {
                 var sha512 = SHA512.Create();
                 var hash = sha512.ComputeHash(stream);
                 hashString = BitConverter.ToString(hash);
                 hashString = hashString.Replace("-", "");
-
             }
             checksum = checksum.ToLowerInvariant();
             hashString = hashString.ToLowerInvariant();
-            Console.WriteLine("Online checksum:"+checksum);
-            Console.WriteLine("Computed checksum:"+hashString);
+            Console.WriteLine("Online checksum:" + checksum);
+            Console.WriteLine("Computed checksum:" + hashString);
             return hashString == checksum;
-        } 
+        }
 
         private static void SetCertificate()
         {

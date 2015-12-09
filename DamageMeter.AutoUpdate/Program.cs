@@ -1,27 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace DamageMeter.AutoUpdate
 {
     public class Program
     {
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        private static IntPtr FindShinraMeterWindow()
-        {
-            var error0 = Marshal.GetLastWin32Error();
-            var result = FindWindow(null, "ShinraMeter");
-            var error = Marshal.GetLastWin32Error();
-            //if (result == IntPtr.Zero && (error != 0))
-            //    throw new Win32Exception();
-            return result;
-        }
-
-        private static void Main(string[] args)
+        private static void Main()
         {
             bool aIsNewInstance, isUpdating;
             Mutex _unique;
@@ -33,7 +19,7 @@ namespace DamageMeter.AutoUpdate
                 _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             }
             Thread.Sleep(1000);
-            var _uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
+            var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             UpdateManager.DestroyRelease();
 
             var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];

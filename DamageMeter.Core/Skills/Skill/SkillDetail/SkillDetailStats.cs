@@ -247,7 +247,6 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         LowestCrit = damage;
                         SetTotalDamage(damage);
                         break;
-                    case SkillStats.Type.Mana:
                     default:
                         throw new Exception("NO CRIT ON MANA");
                 }
@@ -268,7 +267,6 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         LowestHit = damage;
                         SetTotalDamage(damage);
                         break;
-                    case SkillStats.Type.Mana:
                     default:
                         HitsMana++;
                         Mana += damage;

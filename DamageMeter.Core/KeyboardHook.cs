@@ -154,7 +154,7 @@ namespace DamageMeter
             ///     Overridden to get the notifications.
             /// </summary>
             /// <param name="m"></param>
-            protected override void WndProc(ref System.Windows.Forms.Message m)
+            protected override void WndProc(ref Message m)
             {
                 base.WndProc(ref m);
 

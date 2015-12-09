@@ -61,10 +61,10 @@ namespace DamageMeter
         {
             Name = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(_npcArea.ToString(), _npcId.ToString());
             AreaName = BasicTeraData.Instance.MonsterDatabase.GetAreaName(_npcArea.ToString());
-           if (!IsBoss())
+            if (!IsBoss())
             {
                 Id = new EntityId(0);
-           }
+            }
         }
 
 

@@ -111,7 +111,7 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{damage_received}",
                     FormatHelpers.Instance.FormatValue(playerStats.Received.Damage));
                 currentContent = currentContent.Replace("{hits_received}",
-                FormatHelpers.Instance.FormatValue(playerStats.Received.Hits));
+                    FormatHelpers.Instance.FormatValue(playerStats.Received.Hits));
 
                 dpsString += currentContent;
             }

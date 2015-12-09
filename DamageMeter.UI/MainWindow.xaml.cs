@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -34,16 +33,11 @@ namespace DamageMeter.UI
             dispatcherTimer.Start();
             PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
             UpdateComboboxEncounter(new LinkedList<Entity>());
-            Title = "Shinra Meter V"+UpdateManager.Version;
+            Title = "Shinra Meter V" + UpdateManager.Version;
         }
 
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
 
         public void Update(object sender, EventArgs e)
         {
@@ -112,10 +106,11 @@ namespace DamageMeter.UI
             Entity selectedEntity = null;
             if (((ComboBoxItem) ListEncounter.SelectedItem) != null)
             {
-                selectedEntity =(Entity) ((ComboBoxItem)ListEncounter.SelectedItem).Content;
+                selectedEntity = (Entity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
             }
+
             ListEncounter.Items.Clear();
-            ListEncounter.Items.Add(new ComboBoxItem{Content = new Entity("TOTAL")});
+            ListEncounter.Items.Add(new ComboBoxItem {Content = new Entity("TOTAL")});
             var selected = false;
             foreach (var entity in entities)
             {
@@ -126,13 +121,12 @@ namespace DamageMeter.UI
                 }
                 ListEncounter.Items.Add(item);
                 if (entity != selectedEntity) continue;
-                ListEncounter.SelectedItem = ListEncounter.Items[ListEncounter.Items.Count -1];
+                ListEncounter.SelectedItem = ListEncounter.Items[ListEncounter.Items.Count - 1];
                 selected = true;
             }
             ListEncounter.UpdateLayout();
             if (selected) return;
             ListEncounter.SelectedItem = ListEncounter.Items[0];
-          
         }
 
         public void Update(IEnumerable<PlayerInfo> playerStatsSequence, LinkedList<Entity> newentities)

@@ -1,18 +1,16 @@
-﻿using System;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     public class SNpcOccupierInfo : ParsedMessage
 
     {
         internal SNpcOccupierInfo(TeraMessageReader reader) : base(reader)
         {
-            PrintRaw();
+            //  PrintRaw();
             NPC = reader.ReadEntityId();
             reader.Skip(8);
             Target = reader.ReadEntityId();
 
-            Console.WriteLine("NPC:" + NPC + ";Target:" + Target);
+            //  Console.WriteLine("NPC:" + NPC + ";Target:" + Target);
         }
 
         public EntityId NPC { get; }

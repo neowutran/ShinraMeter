@@ -10,7 +10,7 @@ namespace DamageMeter.UI
     /// <summary>
     ///     Logique d'interaction pour SkillContent.xaml
     /// </summary>
-    public partial class SkillDetail : UserControl
+    public partial class SkillDetail
     {
         public SkillDetail(SkillDetailStats skill)
         {

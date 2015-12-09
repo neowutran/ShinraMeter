@@ -5,7 +5,6 @@ namespace DamageMeter
 {
     public class NpcOccupierResult
     {
-
         public NpcOccupierResult(SNpcOccupierInfo message)
         {
             HasReset = message.Target == EntityId.Empty;

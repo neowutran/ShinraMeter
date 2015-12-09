@@ -47,17 +47,7 @@ namespace DamageMeter
 
         private static void NewLine(IntPtr hWnd)
         {
-            Thread.Sleep(100);
-            if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
-            {
-                throw new Win32Exception();
-            }
-            Thread.Sleep(1);
-            if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
-            {
-                throw new Win32Exception();
-            }
-            Thread.Sleep(20);
+            Thread.Sleep(150);
             if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
             {
                 throw new Win32Exception();
@@ -68,6 +58,16 @@ namespace DamageMeter
                 throw new Win32Exception();
             }
             Thread.Sleep(50);
+            if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
+            {
+                throw new Win32Exception();
+            }
+            Thread.Sleep(1);
+            if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
+            {
+                throw new Win32Exception();
+            }
+            Thread.Sleep(150);
         }
 
         private static void SendString(IntPtr hWnd, string s)

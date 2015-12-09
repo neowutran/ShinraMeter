@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
 using DamageMeter.Skills;
@@ -50,45 +49,6 @@ namespace DamageMeter
                     }
                     return TotalDamageEntity[NetworkController.Instance.Encounter];
                 }
-            }
-        }
-
-
-        public void UpdateEntities(NpcOccupierResult npcOccupierResult)
-        {
-           
-                lock (Instance.Entities)
-                {
-                    foreach (var entity in Entities)
-                    {
-                        if (entity.Id == npcOccupierResult.Npc && entity.IsBoss() && npcOccupierResult.HasReset)
-                        {
-                            DeleteEntity(entity);
-                            return;
-                        }
-                    }
-                }
-            
-        }
-
-
-        private void DeleteEntity(Entity entity)
-        {
-            long damage;
-            if (NetworkController.Instance.Encounter == entity)
-            {
-                NetworkController.Instance.Encounter = null;
-            }
-            Instance.Entities.Remove(entity);
-            Instance.TotalDamageEntity.TryRemove(entity, out damage);
-            Instance.EntitiesFirstHit.TryRemove(entity, out damage);
-            Instance.EntitiesLastHit.TryRemove(entity, out damage);
-            foreach (var stats in _statsByUser)
-            {
-                SkillsStats trash;
-                stats.Value.Dealt.EntitiesStats.TryRemove(entity, out trash);
-                DamageTaken trash2;
-                stats.Value.Received.EntitiesStats.TryRemove(entity, out trash2);
             }
         }
 
@@ -147,6 +107,43 @@ namespace DamageMeter
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+
+        public void UpdateEntities(NpcOccupierResult npcOccupierResult)
+        {
+            lock (Instance.Entities)
+            {
+                foreach (var entity in Entities)
+                {
+                    if (entity.Id == npcOccupierResult.Npc && entity.IsBoss() && npcOccupierResult.HasReset)
+                    {
+                        DeleteEntity(entity);
+                        return;
+                    }
+                }
+            }
+        }
+
+
+        private void DeleteEntity(Entity entity)
+        {
+            long damage;
+            if (NetworkController.Instance.Encounter == entity)
+            {
+                NetworkController.Instance.Encounter = null;
+            }
+            Instance.Entities.Remove(entity);
+            Instance.TotalDamageEntity.TryRemove(entity, out damage);
+            Instance.EntitiesFirstHit.TryRemove(entity, out damage);
+            Instance.EntitiesLastHit.TryRemove(entity, out damage);
+            foreach (var stats in _statsByUser)
+            {
+                SkillsStats trash;
+                stats.Value.Dealt.EntitiesStats.TryRemove(entity, out trash);
+                DamageTaken trash2;
+                stats.Value.Received.EntitiesStats.TryRemove(entity, out trash2);
+            }
         }
 
         public event CurrentBossChange CurrentBossUpdated;
@@ -352,7 +349,7 @@ namespace DamageMeter
                 entities.EntitiesStats[entityTarget].Skills.TryAdd(skillKey, skillStats);
             }
         }
-            
+
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource)
         {
             if (message.Damage == 0)
@@ -387,7 +384,7 @@ namespace DamageMeter
             {
                 playerInfo.Received.EntitiesStats[entity] = new DamageTaken();
             }
-            
+
             playerInfo.Received.EntitiesStats[entity].AddDamage(message.Damage);
             if (Instance.Entities.Contains(entity)) return;
             Instance.Entities.AddFirst(entity);

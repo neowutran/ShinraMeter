@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +23,7 @@ namespace DamageMeter.UI
 
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
-            var aIsNewInstance = false;
+            bool aIsNewInstance;
             bool isUpdating;
             var updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
@@ -33,7 +32,7 @@ namespace DamageMeter.UI
                 var shutdown = false;
                 try
                 {
-                   shutdown = await CheckUpdate();
+                    shutdown = await CheckUpdate();
                 }
                 catch
                 {
