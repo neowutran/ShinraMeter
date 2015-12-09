@@ -45,19 +45,29 @@ namespace DamageMeter
             return true;
         }
 
-        private static void SendEnter(IntPtr hWnd)
+        private static void NewLine(IntPtr hWnd)
         {
-            Thread.Sleep(50);
+            Thread.Sleep(100);
             if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
             {
                 throw new Win32Exception();
             }
-            Thread.Sleep(5);
+            Thread.Sleep(1);
             if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
             {
                 throw new Win32Exception();
             }
-            Thread.Sleep(100);
+            Thread.Sleep(20);
+            if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
+            {
+                throw new Win32Exception();
+            }
+            Thread.Sleep(1);
+            if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
+            {
+                throw new Win32Exception();
+            }
+            Thread.Sleep(50);
         }
 
         private static void SendString(IntPtr hWnd, string s)
@@ -66,8 +76,7 @@ namespace DamageMeter
             {
                 if (character == '\\')
                 {
-                    SendEnter(hWnd);
-                    SendEnter(hWnd);
+                    NewLine(hWnd);
                 }
                 else
                 {

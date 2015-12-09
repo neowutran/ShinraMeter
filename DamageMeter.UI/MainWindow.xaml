@@ -14,8 +14,8 @@
         ResizeMode="NoResize"
         BorderThickness="0"
         Icon="shinra.jpg"
-        MinWidth="405"
-        MaxWidth="405"
+        MinWidth="370"
+        MaxWidth="370"
         MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
@@ -202,29 +202,29 @@
         </Style>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush Color="Black" Opacity="0.6" />
+        <SolidColorBrush Color="Black" Opacity="0.5" />
     </Window.Background>
-    <Grid HorizontalAlignment="Left" Width="405">
+    <Grid HorizontalAlignment="Left" >
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
                 Content="X" Foreground="White" BorderThickness="0" Click="Button_OnClick"
                 HorizontalAlignment="Left" Height="29" MinHeight="29"
-                Margin="386,0,-50,0" VerticalAlignment="Top" Width="19" />
+                Margin="351,0,0,0" VerticalAlignment="Top" Width="19" />
         <Image x:Name="PinImage" MouseLeftButtonDown="ToggleTopMost_OnClick" Stretch="Fill" HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" />
 
 
         <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="30,0,0,0" VerticalAlignment="Top" Width="250" MinHeight="29" Height="29" />
+                  Margin="30,0,0,0" VerticalAlignment="Top" Width="218" MinHeight="29" Height="29" />
 
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,28,0,0"
-                      HorizontalAlignment="Left" Width="405" />
-        <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="335,1,0,0" FontSize="14" Foreground="White"
+                      HorizontalAlignment="Left" Width="370" />
+        <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="300,0,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-        <Label x:Name="Timer" HorizontalAlignment="Left" Margin="282,1,0,0" FontSize="14" Foreground="White"
+        <Label x:Name="Timer" HorizontalAlignment="Left" Margin="249,0,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
     </Grid>
 </Window>

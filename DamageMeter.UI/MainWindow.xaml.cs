@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using DamageMeter.AutoUpdate;
 using DamageMeter.Sniffing;
 using Data;
 using Application = System.Windows.Forms.Application;
@@ -32,7 +33,8 @@ namespace DamageMeter.UI
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
             PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
-            EmptyEncounter();
+            UpdateComboboxEncounter(new LinkedList<Entity>());
+            Title = "Shinra Meter V"+UpdateManager.Version;
         }
 
 
@@ -81,15 +83,6 @@ namespace DamageMeter.UI
             NetworkController.Instance.Dispatcher = Dispatcher;
         }
 
-        private void EmptyEncounter()
-        {
-            ListEncounter.Items.Clear();
-            var item = new ComboBoxItem {Content = new Entity("TOTAL")};
-            ListEncounter.Items.Add(item);
-            ListEncounter.SelectedIndex = 0;
-        }
-
-
         public void SelectEncounter(Entity entity)
         {
             UpdateEncounter changeSelected = delegate(Entity newentity)
@@ -106,31 +99,6 @@ namespace DamageMeter.UI
             Dispatcher.Invoke(changeSelected, entity);
         }
 
-        private void AddEncounter(IReadOnlyCollection<Entity> entities)
-        {
-            if ((ListEncounter.Items.Count - 1) > entities.Count) return;
-            foreach (var entity in entities)
-            {
-                var added = false;
-                foreach (var entityItem in ListEncounter.Items)
-                {
-                    if (((Entity) ((ComboBoxItem) entityItem).Content) != entity) continue;
-                    added = true;
-                    break;
-                }
-                if (added) continue;
-
-                var item = new ComboBoxItem {Content = entity};
-                if (entity.IsBoss())
-                {
-                    item.Foreground = Brushes.Red;
-                }
-                ListEncounter.Items.Insert(1, item);
-            }
-            ListEncounter.UpdateLayout();
-        }
-
-
         private void StayTopMost()
 
         {
@@ -139,18 +107,39 @@ namespace DamageMeter.UI
             Topmost = true;
         }
 
+        private void UpdateComboboxEncounter(IEnumerable<Entity> entities)
+        {
+            Entity selectedEntity = null;
+            if (((ComboBoxItem) ListEncounter.SelectedItem) != null)
+            {
+                selectedEntity =(Entity) ((ComboBoxItem)ListEncounter.SelectedItem).Content;
+            }
+            ListEncounter.Items.Clear();
+            ListEncounter.Items.Add(new ComboBoxItem{Content = new Entity("TOTAL")});
+            var selected = false;
+            foreach (var entity in entities)
+            {
+                var item = new ComboBoxItem {Content = entity};
+                if (entity.IsBoss())
+                {
+                    item.Foreground = Brushes.Red;
+                }
+                ListEncounter.Items.Add(item);
+                if (entity != selectedEntity) continue;
+                ListEncounter.SelectedItem = ListEncounter.Items[ListEncounter.Items.Count -1];
+                selected = true;
+            }
+            ListEncounter.UpdateLayout();
+            if (selected) return;
+            ListEncounter.SelectedItem = ListEncounter.Items[0];
+          
+        }
+
         public void Update(IEnumerable<PlayerInfo> playerStatsSequence, LinkedList<Entity> newentities)
         {
             UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats, LinkedList<Entity> entities)
             {
-                if (entities.Count == 0)
-                {
-                    EmptyEncounter();
-                }
-                else
-                {
-                    AddEncounter(entities);
-                }
+                UpdateComboboxEncounter(entities);
                 StayTopMost();
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
                 var visiblePlayerStats = new HashSet<PlayerInfo>();

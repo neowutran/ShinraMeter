@@ -48,7 +48,7 @@ namespace DamageMeter.UI
         {
             DpsIndicator.Width = ActualWidth*(PlayerInfo.Dealt.DamageFraction/100);
             LabelDps.Content = Dps;
-            LabelDamage.Content = Damage;
+            //LabelDamage.Content = Damage;
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart;
             LabelDamageReceived.Content = DamageReceived;

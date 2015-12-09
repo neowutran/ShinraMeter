@@ -64,6 +64,7 @@ namespace DamageMeter
                         if (entity.Id == npcOccupierResult.Npc && entity.IsBoss() && npcOccupierResult.HasReset)
                         {
                             DeleteEntity(entity);
+                            return;
                         }
                     }
                 }
@@ -74,14 +75,19 @@ namespace DamageMeter
         private void DeleteEntity(Entity entity)
         {
             long damage;
-            SkillsStats trash;
-            DamageTaken trash2;
+            if (NetworkController.Instance.Encounter == entity)
+            {
+                NetworkController.Instance.Encounter = null;
+            }
+            Instance.Entities.Remove(entity);
             Instance.TotalDamageEntity.TryRemove(entity, out damage);
             Instance.EntitiesFirstHit.TryRemove(entity, out damage);
             Instance.EntitiesLastHit.TryRemove(entity, out damage);
             foreach (var stats in _statsByUser)
             {
+                SkillsStats trash;
                 stats.Value.Dealt.EntitiesStats.TryRemove(entity, out trash);
+                DamageTaken trash2;
                 stats.Value.Received.EntitiesStats.TryRemove(entity, out trash2);
             }
         }
