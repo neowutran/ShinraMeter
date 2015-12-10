@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Threading;
 using DamageMeter.Sniffing;
 using Data;
@@ -13,7 +14,7 @@ namespace DamageMeter
     {
         public delegate void ConnectedHandler(string serverName);
 
-        public delegate void DataUpdatedHandler(IEnumerable<PlayerInfo> data, LinkedList<Entity> entities);
+        public delegate void DataUpdatedHandler(List<PlayerInfo> data, LinkedList<Entity> entities);
 
         private static NetworkController _instance;
         private static TeraData _teraData;
@@ -61,7 +62,7 @@ namespace DamageMeter
             DamageTracker.Instance.Reset();
             DamageTracker.Instance.TotalDamageEntity = new ConcurrentDictionary<Entity, long>();
             var handler = DataUpdated;
-            handler?.Invoke(DamageTracker.Instance, DamageTracker.Instance.Entities);
+            handler?.Invoke(DamageTracker.Instance.ToList(), DamageTracker.Instance.Entities);
         }
 
         private void HandleMessageReceived(Message obj)
@@ -79,7 +80,7 @@ namespace DamageMeter
             DamageTracker.Instance.Update(skillResult);
 
             var handler = DataUpdated;
-            handler?.Invoke(DamageTracker.Instance, DamageTracker.Instance.Entities);
+            handler?.Invoke(DamageTracker.Instance.ToList(), DamageTracker.Instance.Entities);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,6 +22,7 @@ namespace DamageMeter.UI
         public MainWindow()
         {
             InitializeComponent();
+            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
             NetworkController.Instance.DataUpdated += Update;
@@ -129,16 +130,19 @@ namespace DamageMeter.UI
             ListEncounter.SelectedItem = ListEncounter.Items[0];
         }
 
-        public void Update(IEnumerable<PlayerInfo> playerStatsSequence, LinkedList<Entity> newentities)
+        public void Update(List<PlayerInfo> playerStatsSequence, LinkedList<Entity> newentities)
         {
-            UpdateData changeData = delegate(IEnumerable<PlayerInfo> stats, LinkedList<Entity> entities)
+            UpdateData changeData = delegate(List<PlayerInfo> stats, LinkedList<Entity> entities)
             {
+                
                 UpdateComboboxEncounter(entities);
                 StayTopMost();
-                stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage);
+                stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage).ToList();
                 var visiblePlayerStats = new HashSet<PlayerInfo>();
+                var counter = 0;
                 foreach (var playerStats in stats)
                 {
+                    
                     PlayerStats playerStatsControl;
                     Controls.TryGetValue(playerStats, out playerStatsControl);
                     if (playerStats.Dealt.Damage == 0 && playerStats.Received.Hits == 0)
@@ -149,6 +153,13 @@ namespace DamageMeter.UI
                     if (playerStatsControl != null) continue;
                     playerStatsControl = new PlayerStats(playerStats);
                     Controls.Add(playerStats, playerStatsControl);
+
+                    if (counter == 9)
+                    {
+                        break;
+                    }
+                    counter++;
+
                 }
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -227,6 +238,6 @@ namespace DamageMeter.UI
 
         private delegate void ChangeTitle(string servername);
 
-        private delegate void UpdateData(IEnumerable<PlayerInfo> stats, LinkedList<Entity> entities);
+        private delegate void UpdateData(List<PlayerInfo> stats, LinkedList<Entity> entities);
     }
 }
