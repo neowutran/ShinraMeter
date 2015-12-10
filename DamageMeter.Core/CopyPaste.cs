@@ -105,7 +105,7 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage));
-                currentContent = currentContent.Replace("{name}", playerStats.Name);
+                currentContent = currentContent.Replace("{name}", "["+playerStats.Class + "] " + playerStats.Name);
                 currentContent = currentContent.Replace("{damage_percentage}", playerStats.Dealt.DamageFraction + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate + "%");
                 currentContent = currentContent.Replace("{damage_received}",
