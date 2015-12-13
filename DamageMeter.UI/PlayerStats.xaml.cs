@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -58,18 +59,18 @@ namespace DamageMeter.UI
             _windowSkill?.Update(Skills());
         }
 
-        private ConcurrentDictionary<DamageMeter.Skills.Skill.Skill, SkillStats> Skills()
+        private Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> Skills()
         {
             if (NetworkController.Instance.Encounter == null)
             {
-                return PlayerInfo.Dealt.AllSkills;
+                return new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(PlayerInfo.Dealt.AllSkills);
             }
             if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
             {
-                return PlayerInfo.Dealt.EntitiesStats[NetworkController.Instance.Encounter].Skills;
+                return new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(PlayerInfo.Dealt.EntitiesStats[NetworkController.Instance.Encounter].Skills);
             }
 
-            return new ConcurrentDictionary<DamageMeter.Skills.Skill.Skill, SkillStats>();
+            return new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>();
         }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)

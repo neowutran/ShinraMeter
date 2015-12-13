@@ -25,7 +25,6 @@ namespace DamageMeter.UI
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
-            NetworkController.Instance.DataUpdated += Update;
             DamageTracker.Instance.CurrentBossUpdated += SelectEncounter;
             KeyboardHook.Instance.RegisterKeyboardHook();
             var dispatcherTimer = new DispatcherTimer();
@@ -43,6 +42,7 @@ namespace DamageMeter.UI
         public void Update(object sender, EventArgs e)
         {
             KeyboardHook.Instance.SetHotkeys(TeraWindow.IsTeraActive());
+            Update();
             Repaint();
         }
 
@@ -125,16 +125,14 @@ namespace DamageMeter.UI
                 ListEncounter.SelectedItem = ListEncounter.Items[ListEncounter.Items.Count - 1];
                 selected = true;
             }
-            ListEncounter.UpdateLayout();
             if (selected) return;
             ListEncounter.SelectedItem = ListEncounter.Items[0];
         }
 
-        public void Update(List<PlayerInfo> playerStatsSequence, LinkedList<Entity> newentities)
+        public void Update()
         {
-            UpdateData changeData = delegate(List<PlayerInfo> stats, LinkedList<Entity> entities)
-            {
-                
+            var entities = DamageTracker.Instance.Entities;
+            var stats = DamageTracker.Instance.ToList();
                 UpdateComboboxEncounter(entities);
                 StayTopMost();
                 stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage).ToList();
@@ -168,13 +166,6 @@ namespace DamageMeter.UI
                     Controls[invisibleControl.Key].CloseSkills();
                     Controls.Remove(invisibleControl.Key);
                 }
-
-                if (entities.Count == 0)
-                {
-                    Repaint();
-                }
-            };
-            Dispatcher.Invoke(changeData, playerStatsSequence, newentities);
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)

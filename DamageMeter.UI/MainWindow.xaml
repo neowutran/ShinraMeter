@@ -101,7 +101,7 @@
                                 Name="ToggleButton"
                                 Template="{StaticResource ComboBoxToggleButton}"
                                 Focusable="false"
-                                IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                IsChecked="{Binding Path=IsDropDownOpen,RelativeSource={RelativeSource TemplatedParent}}"
                                 ClickMode="Press" />
                             <ContentPresenter
                                 Name="ContentSite"

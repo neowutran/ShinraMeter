@@ -37,7 +37,7 @@ namespace DamageMeter
         {
             get
             {
-                lock (TotalDamageEntity)
+                lock (_lockDamage)
                 {
                     if (NetworkController.Instance.Encounter == null)
                     {
@@ -56,7 +56,7 @@ namespace DamageMeter
         {
             get
             {
-                lock (_statsByUser)
+                lock (_lockStat)
                 {
                     long firsthit = 0;
                     foreach (var userstat in _statsByUser)
@@ -78,7 +78,7 @@ namespace DamageMeter
         {
             get
             {
-                lock (_statsByUser)
+                lock (_lockStat)
                 {
                     long lasthit = 0;
                     foreach (var userstat in _statsByUser)
@@ -112,7 +112,7 @@ namespace DamageMeter
 
         public void UpdateEntities(NpcOccupierResult npcOccupierResult)
         {
-            lock (Instance.Entities)
+            lock (_lockEntities)
             {
                 foreach (var entity in Entities)
                 {
@@ -174,17 +174,21 @@ namespace DamageMeter
 
         public void Reset()
         {
-            lock (_statsByUser)
+            lock (_lockStat)
             {
                 _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
             }
             Entities = new LinkedList<Entity>();
         }
 
+        private readonly object _lockStat = new object(); 
+        private readonly object _lockDamage = new object();
+        private readonly object _lockEntities = new object();
+
         private PlayerInfo GetOrCreate(Player player)
         {
             PlayerInfo playerStats;
-            lock (_statsByUser)
+            lock (_lockStat)
             {
                 if (_statsByUser.TryGetValue(player, out playerStats)) return playerStats;
 
@@ -313,7 +317,7 @@ namespace DamageMeter
             }
             var skillKey = new Skill(skillName, new List<int> {message.SkillId});
 
-            lock (entities.EntitiesStats[entityTarget])
+            lock (entities.Lock)
             {
                 SkillStats skillStats;
                 entities.EntitiesStats[entityTarget].Skills.TryGetValue(skillKey, out skillStats);

@@ -21,7 +21,7 @@ namespace DamageMeter.UI
         private SortOrder _sortOrder = SortOrder.Descending;
 
 
-        public Skills(ConcurrentDictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, PlayerStats parent)
+        public Skills(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, PlayerStats parent)
         {
             InitializeComponent();
             var header = new SkillsHeader();
@@ -52,7 +52,7 @@ namespace DamageMeter.UI
             _currentSortedLabel = header.LabelTotalDamage;
             SkillsList.Items.Add(header);
 
-            _skills = skills.ToDictionary(pair => pair.Key, pair => pair.Value);
+            _skills = skills;
             _parent = parent;
             Repaint();
         }
@@ -281,14 +281,15 @@ namespace DamageMeter.UI
         }
 
 
-        public void Update(ConcurrentDictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills)
+        public void Update(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills)
         {
-            _skills = skills.ToDictionary(pair => pair.Key, pair => pair.Value);
+            _skills = skills;
             Repaint();
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)
         {
+          
             _parent.CloseSkills();
         }
 

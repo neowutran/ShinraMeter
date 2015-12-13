@@ -10,6 +10,7 @@ namespace DamageMeter.Dealt
     {
         private readonly PlayerInfo _playerInfo;
         public ConcurrentDictionary<Entity, SkillsStats> EntitiesStats = new ConcurrentDictionary<Entity, SkillsStats>();
+        public readonly object Lock = new object();
 
         public EntitiesDealt(PlayerInfo playerInfo)
         {
@@ -32,7 +33,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                lock (EntitiesStats)
+                lock (Lock)
                 {
                     if (NetworkController.Instance.Encounter != null &&
                         EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
@@ -59,7 +60,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                lock (EntitiesStats)
+                lock (Lock)
                 {
                     if (NetworkController.Instance.Encounter != null &&
                         EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
@@ -101,7 +102,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                lock (EntitiesStats)
+                lock (Lock)
                 {
                     if (NetworkController.Instance.Encounter == null)
                     {
@@ -120,7 +121,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                lock (EntitiesStats)
+                lock (Lock)
                 {
                     return EntitiesStats.Sum(entityStats => entityStats.Value.Mana);
                 }
@@ -131,7 +132,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                lock (EntitiesStats)
+                lock (Lock)
                 {
                     return EntitiesStats.Sum(entityStats => entityStats.Value.Heal);
                 }
@@ -144,7 +145,7 @@ namespace DamageMeter.Dealt
             {
                 var skills = new ConcurrentDictionary<Skill, SkillStats>();
 
-                lock (EntitiesStats)
+                lock (Lock)
                 {
                     foreach (var skill in EntitiesStats.SelectMany(entities => entities.Value.Skills))
                     {
@@ -175,7 +176,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                lock (EntitiesStats)
+                lock (Lock)
                 {
                     if (NetworkController.Instance.Encounter == null || _playerInfo.IsHealer())
                     {
@@ -194,7 +195,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                lock (EntitiesStats)
+                lock (Lock)
                 {
                     if (NetworkController.Instance.Encounter == null || _playerInfo.IsHealer())
                     {

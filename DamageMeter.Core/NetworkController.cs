@@ -13,9 +13,6 @@ namespace DamageMeter
     public class NetworkController
     {
         public delegate void ConnectedHandler(string serverName);
-
-        public delegate void DataUpdatedHandler(List<PlayerInfo> data, LinkedList<Entity> entities);
-
         private static NetworkController _instance;
         private static TeraData _teraData;
         private Dispatcher _dispatcher;
@@ -43,7 +40,6 @@ namespace DamageMeter
 
         public static NetworkController Instance => _instance ?? (_instance = new NetworkController());
 
-        public event DataUpdatedHandler DataUpdated;
         public event ConnectedHandler Connected;
 
 
@@ -61,8 +57,6 @@ namespace DamageMeter
         {
             DamageTracker.Instance.Reset();
             DamageTracker.Instance.TotalDamageEntity = new ConcurrentDictionary<Entity, long>();
-            var handler = DataUpdated;
-            handler?.Invoke(DamageTracker.Instance.ToList(), DamageTracker.Instance.Entities);
         }
 
         private void HandleMessageReceived(Message obj)
@@ -78,9 +72,6 @@ namespace DamageMeter
             if (skillResultMessage == null) return;
             var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker);
             DamageTracker.Instance.Update(skillResult);
-
-            var handler = DataUpdated;
-            handler?.Invoke(DamageTracker.Instance.ToList(), DamageTracker.Instance.Entities);
         }
     }
 }
