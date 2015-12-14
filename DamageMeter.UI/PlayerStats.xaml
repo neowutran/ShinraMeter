@@ -26,6 +26,7 @@
                 <ColumnDefinition Width="90" />
                 <ColumnDefinition Width="45" />
                 <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="45" />
                 <ColumnDefinition Width="35" />
                 <ColumnDefinition Width="50" />
@@ -39,13 +40,16 @@
             <Label Grid.Column="2" FontSize="14" x:Name="LabelDps" HorizontalContentAlignment="Right"
                    VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
-            <Label Grid.Column="3" FontSize="14" x:Name="LabelCritRate" HorizontalContentAlignment="Right"
+                  <Label Grid.Column="3" FontSize="14" x:Name="LabelDamage" HorizontalContentAlignment="Right"
+                   VerticalAlignment="Center" Foreground="White"
+                   MinHeight="29" />
+            <Label Grid.Column="4" FontSize="14" x:Name="LabelCritRate" HorizontalContentAlignment="Right"
                    VerticalAlignment="Center" Foreground="LightCoral"
                    MinHeight="25" />
-            <Label Grid.Column="4" FontSize="14" x:Name="LabelHitsReceived" HorizontalContentAlignment="Right"
+            <Label Grid.Column="5" FontSize="14" x:Name="LabelHitsReceived" HorizontalContentAlignment="Right"
                    VerticalAlignment="Bottom"
                    Foreground="Yellow" MinHeight="29" />
-            <Label Grid.Column="5" FontSize="14" x:Name="LabelDamageReceived" HorizontalContentAlignment="Right"
+            <Label Grid.Column="6" FontSize="14" x:Name="LabelDamageReceived" HorizontalContentAlignment="Right"
                    VerticalAlignment="Bottom"
                    Foreground="Yellow" MinHeight="29" />
 

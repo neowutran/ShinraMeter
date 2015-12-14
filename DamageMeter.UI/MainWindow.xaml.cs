@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Sniffing;
 using Data;
@@ -26,10 +27,29 @@ namespace DamageMeter.UI
             NetworkController.Instance.Connected += HandleConnected;
             NetworkController.Instance.TickUpdated += Update;
             DamageTracker.Instance.CurrentBossUpdated += SelectEncounter;
-            KeyboardHook.Instance.RegisterKeyboardHook();
+            var dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += UpdateKeyboard;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
             PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
             UpdateComboboxEncounter(new LinkedList<Entity>());
             Title = "Shinra Meter V" + UpdateManager.Version;
+        }
+
+        private bool _keyboardInitialized;
+
+        public void UpdateKeyboard(object o, EventArgs args)
+        {
+            if (!_keyboardInitialized)
+            {
+                KeyboardHook.Instance.RegisterKeyboardHook();
+                _keyboardInitialized = true;
+            }
+            else
+            {
+                KeyboardHook.Instance.SetHotkeys(TeraWindow.IsTeraActive());
+            }
+
         }
 
 
@@ -41,7 +61,6 @@ namespace DamageMeter.UI
             UpdateUi changeUi =
                 delegate(long intervalvalue, long totalDamage, LinkedList<Entity> entities, List<PlayerInfo> stats)
                 {
-                    KeyboardHook.Instance.SetHotkeys(TeraWindow.IsTeraActive());
                     UpdateComboboxEncounter(entities);
                     StayTopMost();
                     var visiblePlayerStats = new HashSet<PlayerInfo>();

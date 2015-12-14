@@ -50,10 +50,9 @@ namespace DamageMeter.UI
         public void Repaint(PlayerInfo playerInfo, long totalDamage)
         {
             PlayerInfo = playerInfo;
-            Console.WriteLine(PlayerInfo.Dealt.DamageFraction(totalDamage));
             DpsIndicator.Width = ActualWidth*(PlayerInfo.Dealt.DamageFraction(totalDamage) /100);
             LabelDps.Content = Dps;
-            //LabelDamage.Content = Damage;
+            LabelDamage.Content = Damage;
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart(totalDamage);
             LabelDamageReceived.Content = DamageReceived;
