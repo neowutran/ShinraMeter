@@ -1,11 +1,12 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DamageMeter.Taken
 {
-    public class EntitiesTaken
+    public class EntitiesTaken : ICloneable
     {
-        public ConcurrentDictionary<Entity, DamageTaken> EntitiesStats = new ConcurrentDictionary<Entity, DamageTaken>();
+        public Dictionary<Entity, DamageTaken> EntitiesStats = new Dictionary<Entity, DamageTaken>();
 
         public long Damage
         {
@@ -37,6 +38,15 @@ namespace DamageMeter.Taken
                 }
                 return 0;
             }
+        }
+
+        public object Clone()
+        {
+            var clone = new EntitiesTaken
+            {
+                EntitiesStats = EntitiesStats.ToDictionary(i => i.Key, i => (DamageTaken) i.Value.Clone())
+            };
+            return clone;
         }
     }
 }

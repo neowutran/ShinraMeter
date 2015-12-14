@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using DamageMeter.Skills.Skill.SkillDetail;
 
 namespace DamageMeter.Skills.Skill
 {
-    public class SkillStats
+    public class SkillStats : ICloneable
     {
         public enum Type
         {
@@ -15,10 +15,19 @@ namespace DamageMeter.Skills.Skill
         };
 
         private readonly Entity _entityTarget;
-        private readonly PlayerInfo _playerInfo;
+        private PlayerInfo _playerInfo;
 
-        public ConcurrentDictionary<int, SkillDetailStats> SkillDetails =
-            new ConcurrentDictionary<int, SkillDetailStats>();
+        public void SetPlayerInfo(PlayerInfo playerInfo)
+        {
+            _playerInfo = playerInfo;
+            foreach (var skilldetail in SkillDetails)
+            {
+                skilldetail.Value.PlayerInfo = playerInfo;
+            }
+        }
+
+        public Dictionary<int, SkillDetailStats> SkillDetails =
+            new Dictionary<int, SkillDetailStats>();
 
         public SkillStats(PlayerInfo playerInfo, Entity entityTarget)
         {
@@ -156,6 +165,15 @@ namespace DamageMeter.Skills.Skill
             get { return SkillDetails.Sum(skill => skill.Value.CritsDmg); }
         }
 
+        public object Clone()
+        {
+            var clone = new SkillStats(_playerInfo, _entityTarget)
+            {
+                SkillDetails = SkillDetails.ToDictionary(i => i.Key, i => (SkillDetailStats) i.Value.Clone())
+            };
+            return clone;
+        }
+
         public static SkillStats operator +(SkillStats c1, SkillStats c2)
         {
             if (c1._playerInfo != c2._playerInfo)
@@ -165,17 +183,20 @@ namespace DamageMeter.Skills.Skill
             var skill = c1._entityTarget != c2._entityTarget
                 ? new SkillStats(c1._playerInfo, null)
                 : new SkillStats(c1._playerInfo, c1._entityTarget);
-            var skillsDetail = new ConcurrentDictionary<int, SkillDetailStats>();
-
-            foreach (var skilldetail in c1.SkillDetails)
-            {
-                skillsDetail.TryAdd(skilldetail.Key, skilldetail.Value);
-            }
+            var skillsDetail = c1.SkillDetails.ToDictionary(skilldetail => skilldetail.Key,
+                skilldetail => skilldetail.Value);
 
 
             foreach (var skilldetail in c2.SkillDetails)
             {
-                skillsDetail.TryAdd(skilldetail.Key, skilldetail.Value);
+                if (skillsDetail.ContainsKey(skilldetail.Key))
+                {
+                    skillsDetail[skilldetail.Key] += skilldetail.Value;
+                }
+                else
+                {
+                    skillsDetail.Add(skilldetail.Key, skilldetail.Value);
+                }
             }
 
 

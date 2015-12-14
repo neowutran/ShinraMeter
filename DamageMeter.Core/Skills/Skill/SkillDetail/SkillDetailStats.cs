@@ -2,15 +2,15 @@
 
 namespace DamageMeter.Skills.Skill.SkillDetail
 {
-    public class SkillDetailStats
+    public class SkillDetailStats : ICloneable
     {
-        private readonly Entity _entityTarget;
         private long _averageCrit;
         private long _averageHit;
 
         private long _biggestCrit;
         private long _biggestHit;
         private long _damage;
+        private readonly Entity _entityTarget;
         private long _lowestCrit;
         private long _lowestHit;
 
@@ -21,7 +21,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             Id = skillId;
         }
 
-        public PlayerInfo PlayerInfo { get; }
+        public PlayerInfo PlayerInfo { get; set; }
 
         public int Id { get; }
 
@@ -151,6 +151,53 @@ namespace DamageMeter.Skills.Skill.SkillDetail
 
         public int CritsHeal { get; private set; }
         public int CritsDmg { get; private set; }
+
+        public object Clone()
+        {
+            var newskill = new SkillDetailStats(PlayerInfo, _entityTarget, Id);
+            newskill.LowestCrit = LowestCrit;
+
+            newskill.BiggestCrit = BiggestCrit;
+            newskill.HitsHeal = HitsHeal;
+            newskill.HitsDmg = HitsDmg;
+            newskill.Mana = Mana;
+            newskill.HitsMana = HitsMana;
+
+            newskill.CritsDmg = CritsDmg;
+            newskill.CritsHeal = CritsHeal;
+
+            if (newskill.Crits == 0)
+            {
+                newskill._averageCrit = 0;
+            }
+            else
+            {
+                newskill._averageCrit = (_averageCrit*newskill.Crits)/(newskill.Crits);
+            }
+            if (newskill.Hits - newskill.Crits == 0)
+            {
+                newskill._averageHit = 0;
+            }
+            else
+            {
+                newskill._averageHit = (_averageHit*(Hits - Crits))/
+                                       (newskill.Hits - newskill.Crits);
+            }
+
+            newskill.LowestHit = LowestHit;
+
+            newskill.BiggestHit = BiggestHit;
+
+            newskill.FirstHit = FirstHit;
+            newskill.LastHit = LastHit;
+
+
+            newskill._damage = _damage;
+            newskill.Heal = Heal;
+
+           
+            return newskill;
+        }
 
         public static SkillDetailStats operator +(SkillDetailStats c1, SkillDetailStats c2)
         {

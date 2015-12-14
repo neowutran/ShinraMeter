@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
@@ -12,12 +10,12 @@ using Skill = DamageMeter.Skills.Skill.Skill;
 
 namespace DamageMeter
 {
-    public class DamageTracker : IEnumerable<PlayerInfo>
+    public class DamageTracker
     {
         public delegate void CurrentBossChange(Entity entity);
 
         private static DamageTracker _instance;
-        private ConcurrentDictionary<Player, PlayerInfo> _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
+        private Dictionary<Player, PlayerInfo> _statsByUser = new Dictionary<Player, PlayerInfo>();
         public LinkedList<Entity> Entities = new LinkedList<Entity>();
 
 
@@ -25,30 +23,27 @@ namespace DamageMeter
         {
         }
 
-        public ConcurrentDictionary<Entity, long> TotalDamageEntity { get; set; } =
-            new ConcurrentDictionary<Entity, long>();
+        public Dictionary<Entity, long> TotalDamageEntity { get; set; } =
+            new Dictionary<Entity, long>();
 
-        private ConcurrentDictionary<Entity, long> EntitiesFirstHit { get; } = new ConcurrentDictionary<Entity, long>()
+        private Dictionary<Entity, long> EntitiesFirstHit { get; } = new Dictionary<Entity, long>()
             ;
 
-        private ConcurrentDictionary<Entity, long> EntitiesLastHit { get; } = new ConcurrentDictionary<Entity, long>();
+        private Dictionary<Entity, long> EntitiesLastHit { get; } = new Dictionary<Entity, long>();
 
         public long TotalDamage
         {
             get
             {
-                lock (_lockDamage)
+                if (NetworkController.Instance.Encounter == null)
                 {
-                    if (NetworkController.Instance.Encounter == null)
-                    {
-                        return TotalDamageEntity.Sum(totalDamageEntity => totalDamageEntity.Value);
-                    }
-                    if (!TotalDamageEntity.ContainsKey(NetworkController.Instance.Encounter))
-                    {
-                        return 0;
-                    }
-                    return TotalDamageEntity[NetworkController.Instance.Encounter];
+                    return TotalDamageEntity.Sum(totalDamageEntity => totalDamageEntity.Value);
                 }
+                if (!TotalDamageEntity.ContainsKey(NetworkController.Instance.Encounter))
+                {
+                    return 0;
+                }
+                return TotalDamageEntity[NetworkController.Instance.Encounter];
             }
         }
 
@@ -56,19 +51,16 @@ namespace DamageMeter
         {
             get
             {
-                lock (_lockStat)
+                long firsthit = 0;
+                foreach (var userstat in _statsByUser)
                 {
-                    long firsthit = 0;
-                    foreach (var userstat in _statsByUser)
+                    if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit < firsthit)) &&
+                        userstat.Value.Dealt.FirstHit != 0)
                     {
-                        if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit < firsthit)) &&
-                            userstat.Value.Dealt.FirstHit != 0)
-                        {
-                            firsthit = userstat.Value.Dealt.FirstHit;
-                        }
+                        firsthit = userstat.Value.Dealt.FirstHit;
                     }
-                    return firsthit;
                 }
+                return firsthit;
             }
         }
 
@@ -78,71 +70,53 @@ namespace DamageMeter
         {
             get
             {
-                lock (_lockStat)
+                long lasthit = 0;
+                foreach (var userstat in _statsByUser)
                 {
-                    long lasthit = 0;
-                    foreach (var userstat in _statsByUser)
+                    if (((lasthit == 0) || (userstat.Value.Dealt.LastHit > lasthit)) &&
+                        userstat.Value.Dealt.LastHit != 0)
                     {
-                        if (((lasthit == 0) || (userstat.Value.Dealt.LastHit > lasthit)) &&
-                            userstat.Value.Dealt.LastHit != 0)
-                        {
-                            lasthit = userstat.Value.Dealt.LastHit;
-                        }
+                        lasthit = userstat.Value.Dealt.LastHit;
                     }
-                    return lasthit;
                 }
+                return lasthit;
             }
         }
-
-        public Dispatcher Dispatcher { get; set; } = null;
 
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
 
 
-        public IEnumerator<PlayerInfo> GetEnumerator()
+        public List<PlayerInfo> GetStats()
         {
-            return _statsByUser.Values.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            return _statsByUser.Select(stat => (PlayerInfo) stat.Value.Clone()).ToList();
         }
 
 
         public void UpdateEntities(NpcOccupierResult npcOccupierResult)
         {
-            lock (_lockEntities)
+            foreach (var entity in Entities)
             {
-                foreach (var entity in Entities)
-                {
-                    if (entity.Id == npcOccupierResult.Npc && entity.IsBoss() && npcOccupierResult.HasReset)
-                    {
-                        DeleteEntity(entity);
-                        return;
-                    }
-                }
+                if (entity.Id != npcOccupierResult.Npc || !entity.IsBoss() || !npcOccupierResult.HasReset) continue;
+                DeleteEntity(entity);
+                return;
             }
         }
 
 
         private void DeleteEntity(Entity entity)
         {
-            long damage;
             if (NetworkController.Instance.Encounter == entity)
             {
                 NetworkController.Instance.Encounter = null;
             }
             Instance.Entities.Remove(entity);
-            Instance.TotalDamageEntity.TryRemove(entity, out damage);
-            Instance.EntitiesFirstHit.TryRemove(entity, out damage);
-            Instance.EntitiesLastHit.TryRemove(entity, out damage);
+            Instance.TotalDamageEntity.Remove(entity);
+            Instance.EntitiesFirstHit.Remove(entity);
+            Instance.EntitiesLastHit.Remove(entity);
             foreach (var stats in _statsByUser)
             {
-                SkillsStats trash;
-                stats.Value.Dealt.EntitiesStats.TryRemove(entity, out trash);
-                DamageTaken trash2;
-                stats.Value.Received.EntitiesStats.TryRemove(entity, out trash2);
+                stats.Value.Dealt.EntitiesStats.Remove(entity);
+                stats.Value.Received.EntitiesStats.Remove(entity);
             }
         }
 
@@ -174,27 +148,26 @@ namespace DamageMeter
 
         public void Reset()
         {
-            lock (_lockStat)
-            {
-                _statsByUser = new ConcurrentDictionary<Player, PlayerInfo>();
-            }
+            _statsByUser = new Dictionary<Player, PlayerInfo>();
+
             Entities = new LinkedList<Entity>();
+
+            TotalDamageEntity = new Dictionary<Entity, long>();
         }
 
-        private readonly object _lockStat = new object(); 
-        private readonly object _lockDamage = new object();
-        private readonly object _lockEntities = new object();
 
         private PlayerInfo GetOrCreate(Player player)
         {
             PlayerInfo playerStats;
-            lock (_lockStat)
-            {
-                if (_statsByUser.TryGetValue(player, out playerStats)) return playerStats;
 
-                playerStats = new PlayerInfo(player);
-                _statsByUser.TryAdd(player, playerStats);
+            if (_statsByUser.TryGetValue(player, out playerStats))
+            {
+                return playerStats;
             }
+
+            playerStats = new PlayerInfo(player);
+            _statsByUser.Add(player, playerStats);
+
 
             return playerStats;
         }
@@ -282,16 +255,14 @@ namespace DamageMeter
             return true;
         }
 
-        private void UpdateEncounter(Entity entityTarget, SkillResult message)
+        private void UpdateEncounter(Entity entity, SkillResult msg)
         {
-            ChangedEncounter changeEncounter = delegate(Entity entity, SkillResult msg)
-            {
+          
                 if (!Entities.Contains(entity) && !msg.IsHeal && !msg.IsMana)
                 {
                     Entities.AddFirst(entity);
                 }
-            };
-            Dispatcher.Invoke(changeEncounter, entityTarget, message);
+            
         }
 
         private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget)
@@ -317,41 +288,38 @@ namespace DamageMeter
             }
             var skillKey = new Skill(skillName, new List<int> {message.SkillId});
 
-            lock (entities.Lock)
-            {
-                SkillStats skillStats;
-                entities.EntitiesStats[entityTarget].Skills.TryGetValue(skillKey, out skillStats);
-                if (skillStats == null)
-                {
-                    skillStats = new SkillStats(playerInfo, entityTarget);
-                }
-                if (message.IsHeal)
-                {
-                    skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal);
-                }
-                else if (message.IsMana)
-                {
-                    skillStats.AddData(message.SkillId, message.Mana, message.IsCritical, SkillStats.Type.Mana);
-                }
-                else
-                {
-                    skillStats.AddData(message.SkillId, message.Damage, message.IsCritical, SkillStats.Type.Damage);
-                }
 
-                var skill = entities.EntitiesStats[entityTarget].Skills.Keys.ToList();
-                var indexSkill = skill.IndexOf(skillKey);
-                if (indexSkill != -1)
-                {
-                    foreach (
-                        var skillid in skill[indexSkill].SkillId.Where(skillid => !skillKey.SkillId.Contains(skillid)))
-                    {
-                        skillKey.SkillId.Add(skillid);
-                    }
-                }
-                SkillStats trash;
-                entities.EntitiesStats[entityTarget].Skills.TryRemove(skillKey, out trash);
-                entities.EntitiesStats[entityTarget].Skills.TryAdd(skillKey, skillStats);
+            SkillStats skillStats;
+            entities.EntitiesStats[entityTarget].Skills.TryGetValue(skillKey, out skillStats);
+            if (skillStats == null)
+            {
+                skillStats = new SkillStats(playerInfo, entityTarget);
             }
+            if (message.IsHeal)
+            {
+                skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal);
+            }
+            else if (message.IsMana)
+            {
+                skillStats.AddData(message.SkillId, message.Mana, message.IsCritical, SkillStats.Type.Mana);
+            }
+            else
+            {
+                skillStats.AddData(message.SkillId, message.Damage, message.IsCritical, SkillStats.Type.Damage);
+            }
+
+            var skill = entities.EntitiesStats[entityTarget].Skills.Keys.ToList();
+            var indexSkill = skill.IndexOf(skillKey);
+            if (indexSkill != -1)
+            {
+                foreach (
+                    var skillid in skill[indexSkill].SkillId.Where(skillid => !skillKey.SkillId.Contains(skillid)))
+                {
+                    skillKey.SkillId.Add(skillid);
+                }
+            }
+            entities.EntitiesStats[entityTarget].Skills.Remove(skillKey);
+            entities.EntitiesStats[entityTarget].Skills.Add(skillKey, skillStats);
         }
 
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource)
@@ -392,9 +360,7 @@ namespace DamageMeter
             playerInfo.Received.EntitiesStats[entity].AddDamage(message.Damage);
             if (Instance.Entities.Contains(entity)) return;
             Instance.Entities.AddFirst(entity);
-            TotalDamageEntity.TryAdd(entity, 0);
+            TotalDamageEntity.Add(entity, 0);
         }
-
-        private delegate void ChangedEncounter(Entity entity, SkillResult msg);
     }
 }

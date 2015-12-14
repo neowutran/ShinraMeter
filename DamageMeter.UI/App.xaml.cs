@@ -34,9 +34,9 @@ namespace DamageMeter.UI
                 {
                     shutdown = await CheckUpdate();
                 }
-                catch
+                catch(Exception ex)
                 {
-                    MessageBox.Show("Unable to contact update server.");
+                    MessageBox.Show("Unable to contact update server, try again later: "+ex.Message);
                 }
                 if (!shutdown) return;
                 Current.Shutdown();

@@ -15,7 +15,7 @@
 			<key>End</key>
 			<string>
 				<header>Damage Taken @ {encounter}:\</header>
-				<content>{name}: Hits: {hits_received} = {damage_received}\</content>
+				<content>[{class}] {name}: Hits: {hits_received} = {damage_received}\</content>
 				<footer></footer>
 				<order_by>hits_received</order_by>
 				<order>descending</order>
@@ -28,7 +28,7 @@
 			<key>End</key>
 			<string>
 				<header>Damage Done @ {encounter} {timer}:\</header>
-				<content>{name}: {damage_percentage} | {crit_rate} Crit | {dps}\</content>
+				<content>[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {dps}\</content>
 				<footer></footer>
 				<order_by>damage_percentage</order_by>
 				<order>descending</order>

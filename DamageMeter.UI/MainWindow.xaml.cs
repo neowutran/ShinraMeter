@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Sniffing;
 using Data;
@@ -25,12 +24,9 @@ namespace DamageMeter.UI
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
+            NetworkController.Instance.TickUpdated += Update;
             DamageTracker.Instance.CurrentBossUpdated += SelectEncounter;
             KeyboardHook.Instance.RegisterKeyboardHook();
-            var dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += Update;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Start();
             PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
             UpdateComboboxEncounter(new LinkedList<Entity>());
             Title = "Shinra Meter V" + UpdateManager.Version;
@@ -39,43 +35,67 @@ namespace DamageMeter.UI
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
-        public void Update(object sender, EventArgs e)
+        public void Update(long nintervalvalue, long ntotalDamage, LinkedList<Entity> nentities, List<PlayerInfo> nstats)
         {
-            KeyboardHook.Instance.SetHotkeys(TeraWindow.IsTeraActive());
-            Update();
-            Repaint();
+
+            UpdateUi changeUi =
+                delegate(long intervalvalue, long totalDamage, LinkedList<Entity> entities, List<PlayerInfo> stats)
+                {
+                    KeyboardHook.Instance.SetHotkeys(TeraWindow.IsTeraActive());
+                    UpdateComboboxEncounter(entities);
+                    StayTopMost();
+                    var visiblePlayerStats = new HashSet<PlayerInfo>();
+                    var counter = 0;
+                    foreach (var playerStats in stats)
+                    {
+                        PlayerStats playerStatsControl;
+                        Controls.TryGetValue(playerStats, out playerStatsControl);
+                        if (playerStats.Dealt.Damage == 0 && playerStats.Received.Hits == 0){continue;}
+                        visiblePlayerStats.Add(playerStats);
+                        if (playerStatsControl != null) continue;
+                        playerStatsControl = new PlayerStats(playerStats);
+                        Controls.Add(playerStats, playerStatsControl);
+
+                        if (counter == 9)
+                        {
+                            break;
+                        }
+                        counter++;
+                    }
+
+                    var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
+                    foreach (var invisibleControl in invisibleControls)
+                    {
+                        Controls[invisibleControl.Key].CloseSkills();
+                        Controls.Remove(invisibleControl.Key);
+                    }
+
+                    TotalDamage.Content = FormatHelpers.Instance.FormatValue(totalDamage);
+                    var interval = TimeSpan.FromSeconds(intervalvalue);
+                    Timer.Content = interval.ToString(@"mm\:ss");
+                    foreach (var player in Controls)
+                    {
+                        var data = stats.IndexOf(player.Value.PlayerInfo);
+                        player.Value.Repaint(stats[data],totalDamage);
+                    }
+                    Players.Items.Clear();
+                    var sortedDict = from entry in Controls
+                        orderby entry.Value.PlayerInfo.Dealt.DamageFraction(totalDamage) descending
+                        select entry;
+                    foreach (var item in sortedDict)
+                    {
+                        Players.Items.Add(item.Value);
+                    }
+                    Height = (Controls.Count)*29 + CloseMeter.ActualHeight;
+                };
+            Dispatcher.Invoke(changeUi, nintervalvalue, ntotalDamage, nentities, nstats);
         }
 
-        private void Repaint()
-        {
-            lock (Controls)
-            {
-                TotalDamage.Content = FormatHelpers.Instance.FormatValue(DamageTracker.Instance.TotalDamage);
-                var interval = TimeSpan.FromSeconds(DamageTracker.Instance.Interval);
-                Timer.Content = interval.ToString(@"mm\:ss");
-
-                foreach (var player in Controls)
-                {
-                    player.Value.Repaint();
-                }
-
-                Players.Items.Clear();
-                var sortedDict = from entry in Controls
-                    orderby entry.Value.PlayerInfo.Dealt.DamageFraction descending
-                    select entry;
-                foreach (var item in sortedDict)
-                {
-                    Players.Items.Add(item.Value);
-                }
-                Height = (Controls.Count)*29 + CloseMeter.ActualHeight;
-            }
-        }
 
         public void HandleConnected(string serverName)
         {
             ChangeTitle changeTitle = delegate(string newServerName) { Title = newServerName; };
             Dispatcher.Invoke(changeTitle, serverName);
-            NetworkController.Instance.Dispatcher = Dispatcher;
         }
 
         public void SelectEncounter(Entity entity)
@@ -83,11 +103,13 @@ namespace DamageMeter.UI
             UpdateEncounter changeSelected = delegate(Entity newentity)
             {
                 if (!newentity.IsBoss()) return;
+
                 foreach (var item in ListEncounter.Items)
                 {
                     var encounter = (Entity) ((ComboBoxItem) item).Content;
                     if (encounter != newentity) continue;
                     ListEncounter.SelectedItem = item;
+                    NetworkController.Instance.ForceUpdate();
                     return;
                 }
             };
@@ -127,45 +149,6 @@ namespace DamageMeter.UI
             }
             if (selected) return;
             ListEncounter.SelectedItem = ListEncounter.Items[0];
-        }
-
-        public void Update()
-        {
-            var entities = DamageTracker.Instance.Entities;
-            var stats = DamageTracker.Instance.ToList();
-                UpdateComboboxEncounter(entities);
-                StayTopMost();
-                stats = stats.OrderByDescending(playerStats => playerStats.Dealt.Damage).ToList();
-                var visiblePlayerStats = new HashSet<PlayerInfo>();
-                var counter = 0;
-                foreach (var playerStats in stats)
-                {
-                    
-                    PlayerStats playerStatsControl;
-                    Controls.TryGetValue(playerStats, out playerStatsControl);
-                    if (playerStats.Dealt.Damage == 0 && playerStats.Received.Hits == 0)
-                    {
-                        continue;
-                    }
-                    visiblePlayerStats.Add(playerStats);
-                    if (playerStatsControl != null) continue;
-                    playerStatsControl = new PlayerStats(playerStats);
-                    Controls.Add(playerStats, playerStatsControl);
-
-                    if (counter == 9)
-                    {
-                        break;
-                    }
-                    counter++;
-
-                }
-
-                var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
-                foreach (var invisibleControl in invisibleControls)
-                {
-                    Controls[invisibleControl.Key].CloseSkills();
-                    Controls.Remove(invisibleControl.Key);
-                }
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
@@ -221,14 +204,18 @@ namespace DamageMeter.UI
             {
                 encounter = null;
             }
-            NetworkController.Instance.Encounter = encounter;
-            Repaint();
+            if (encounter != NetworkController.Instance.Encounter)
+            {
+                NetworkController.Instance.Encounter = encounter;
+                NetworkController.Instance.ForceUpdate();
+            }
         }
 
         private delegate void UpdateEncounter(Entity entity);
 
-        private delegate void ChangeTitle(string servername);
+        private delegate void UpdateUi(
+            long intervalvalue, long totalDamage, LinkedList<Entity> entities, List<PlayerInfo> stats);
 
-        private delegate void UpdateData(List<PlayerInfo> stats, LinkedList<Entity> entities);
+        private delegate void ChangeTitle(string servername);
     }
 }

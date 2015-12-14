@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using DamageMeter.Skills.Skill;
 
 namespace DamageMeter.Skills
 {
-    public class SkillsStats
+    public class SkillsStats : ICloneable
     {
         public SkillsStats()
         {
@@ -16,26 +16,32 @@ namespace DamageMeter.Skills
             PlayerInfo = playerInfo;
         }
 
+        public void SetPlayerInfo(PlayerInfo playerInfo)
+        {
+            PlayerInfo = playerInfo;
+            foreach (var skill in Skills)
+            {
+                skill.Value.SetPlayerInfo(playerInfo);
+            }
+        }
+
         public long FirstHit
         {
             get
             {
-                lock (Skills)
+                long firstHit = 0;
+                foreach (var skill in Skills)
                 {
-                    long firstHit = 0;
-                    foreach (var skill in Skills)
+                    if (firstHit == 0)
                     {
-                        if (firstHit == 0)
-                        {
-                            firstHit = skill.Value.FirstHit;
-                        }
-                        else if (skill.Value.FirstHit < firstHit && skill.Value.FirstHit != 0)
-                        {
-                            firstHit = skill.Value.FirstHit;
-                        }
+                        firstHit = skill.Value.FirstHit;
                     }
-                    return firstHit;
+                    else if (skill.Value.FirstHit < firstHit && skill.Value.FirstHit != 0)
+                    {
+                        firstHit = skill.Value.FirstHit;
+                    }
                 }
+                return firstHit;
             }
         }
 
@@ -43,25 +49,22 @@ namespace DamageMeter.Skills
         {
             get
             {
-                lock (Skills)
+                long lastHit = 0;
+                foreach (var skill in Skills)
                 {
-                    long lastHit = 0;
-                    foreach (var skill in Skills)
+                    if (lastHit == 0)
                     {
-                        if (lastHit == 0)
+                        lastHit = skill.Value.LastHit;
+                    }
+                    else
+                    {
+                        if (skill.Value.LastHit > lastHit)
                         {
                             lastHit = skill.Value.LastHit;
                         }
-                        else
-                        {
-                            if (skill.Value.LastHit > lastHit)
-                            {
-                                lastHit = skill.Value.LastHit;
-                            }
-                        }
                     }
-                    return lastHit;
                 }
+                return lastHit;
             }
         }
 
@@ -80,10 +83,10 @@ namespace DamageMeter.Skills
             }
         }
 
-        public ConcurrentDictionary<Skill.Skill, SkillStats> Skills { get; set; } =
-            new ConcurrentDictionary<Skill.Skill, SkillStats>();
+        public Dictionary<Skill.Skill, SkillStats> Skills { get; set; } =
+            new Dictionary<Skill.Skill, SkillStats>();
 
-        public PlayerInfo PlayerInfo { get; }
+        public PlayerInfo PlayerInfo { get; private set; }
 
 
         public long Damage
@@ -91,10 +94,9 @@ namespace DamageMeter.Skills
             get
             {
                 long damage = 0;
-                lock (Skills)
-                {
-                    damage += Skills.Sum(skill => skill.Value.Damage);
-                }
+
+                damage += Skills.Sum(skill => skill.Value.Damage);
+
                 return damage;
             }
         }
@@ -104,10 +106,7 @@ namespace DamageMeter.Skills
             get
             {
                 long mana = 0;
-                lock (Skills)
-                {
-                    mana += Skills.Sum(skill => skill.Value.Mana);
-                }
+                mana += Skills.Sum(skill => skill.Value.Mana);
                 return mana;
             }
         }
@@ -117,10 +116,7 @@ namespace DamageMeter.Skills
             get
             {
                 long heal = 0;
-                lock (Skills)
-                {
-                    heal += Skills.Sum(skill => skill.Value.Heal);
-                }
+                heal += Skills.Sum(skill => skill.Value.Heal);
                 return heal;
             }
         }
@@ -144,6 +140,15 @@ namespace DamageMeter.Skills
             get { return Skills.Sum(skill => skill.Value.Hits); }
         }
 
+        public object Clone()
+        {
+            var clone = new SkillsStats(PlayerInfo)
+            {
+                Skills = Skills.ToDictionary(i => i.Key, i => (SkillStats) i.Value.Clone())
+            };
+            return clone;
+        }
+
         public static SkillsStats operator +(SkillsStats c1, SkillsStats c2)
         {
             if (c1.PlayerInfo != c2.PlayerInfo)
@@ -153,7 +158,7 @@ namespace DamageMeter.Skills
 
             var skills = new SkillsStats(c1.PlayerInfo);
             skills.Skills =
-                new ConcurrentDictionary<Skill.Skill, SkillStats>(skills.Skills.Concat(c1.Skills)
+                new Dictionary<Skill.Skill, SkillStats>(skills.Skills.Concat(c1.Skills)
                     .ToDictionary(x => x.Key, x => x.Value));
             foreach (var skill in c2.Skills)
             {

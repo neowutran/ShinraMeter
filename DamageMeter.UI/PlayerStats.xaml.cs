@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -31,7 +30,10 @@ namespace DamageMeter.UI
         public string Dps => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Dps) + "/s";
 
 
-        public string DamagePart => Math.Round(PlayerInfo.Dealt.DamageFraction) + "%";
+        public string DamagePart(long totalDamage)
+        {
+         return   Math.Round(PlayerInfo.Dealt.DamageFraction(totalDamage)) + "%";
+        }
 
         public string Damage => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Damage);
 
@@ -45,13 +47,15 @@ namespace DamageMeter.UI
 
         public string PlayerName => PlayerInfo.Name;
 
-        public void Repaint()
+        public void Repaint(PlayerInfo playerInfo, long totalDamage)
         {
-            DpsIndicator.Width = ActualWidth*(PlayerInfo.Dealt.DamageFraction/100);
+            PlayerInfo = playerInfo;
+            Console.WriteLine(PlayerInfo.Dealt.DamageFraction(totalDamage));
+            DpsIndicator.Width = ActualWidth*(PlayerInfo.Dealt.DamageFraction(totalDamage) /100);
             LabelDps.Content = Dps;
             //LabelDamage.Content = Damage;
             LabelCritRate.Content = CritRate;
-            LabelDamagePart.Content = DamagePart;
+            LabelDamagePart.Content = DamagePart(totalDamage);
             LabelDamageReceived.Content = DamageReceived;
             LabelHitsReceived.Content = HitReceived;
 
@@ -67,7 +71,9 @@ namespace DamageMeter.UI
             }
             if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
             {
-                return new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(PlayerInfo.Dealt.EntitiesStats[NetworkController.Instance.Encounter].Skills);
+                return
+                    new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(
+                        PlayerInfo.Dealt.EntitiesStats[NetworkController.Instance.Encounter].Skills);
             }
 
             return new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>();
