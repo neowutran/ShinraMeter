@@ -76,7 +76,6 @@
             <ControlTemplate.Triggers>
                 <Trigger Property="ToggleButton.IsMouseOver" Value="true" />
                 <Trigger Property="ToggleButton.IsChecked" Value="true" />
-                <Trigger Property="IsEnabled" Value="False" />
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
@@ -159,12 +158,6 @@
                             <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
                                 <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="4" />
                                 <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0" />
-                            </Trigger>
-                            <Trigger Property="IsEditable"
-                                     Value="true">
-                                <Setter Property="IsTabStop" Value="false" />
-                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
-                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

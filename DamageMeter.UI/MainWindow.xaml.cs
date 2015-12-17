@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Sniffing;
 using Data;
+using log4net;
 using Application = System.Windows.Forms.Application;
 
 namespace DamageMeter.UI
@@ -22,6 +23,15 @@ namespace DamageMeter.UI
         public MainWindow()
         {
             InitializeComponent();
+            AppDomain currentDomain = default(AppDomain);
+            currentDomain = AppDomain.CurrentDomain;
+            // Handler for unhandled exceptions.
+            currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
+            // Handler for exceptions in threads behind forms.
+            Application.ThreadException += GlobalThreadExceptionHandler;
+            BasicTeraData.Instance.LogError();
+
+
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
@@ -32,10 +42,34 @@ namespace DamageMeter.UI
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
             PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
+            ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new LinkedList<Entity>());
             Title = "Shinra Meter V" + UpdateManager.Version;
         }
 
+        private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
+        {
+            keyEventArgs.Handled = true;
+           
+        }
+
+        private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
+            var ex = default(Exception);
+            ex = (Exception)e.ExceptionObject;
+            var log = LogManager.GetLogger(typeof(Program));
+            log.Error("##### CRASH (version="+UpdateManager.Version+"): #####\r\n"+ex.Message + "\r\n" + ex.StackTrace+"\r\n"+ex.Source+"\r\n"+ex+"\r\n"+ex.Data+"\r\n"+ex.InnerException+"\r\n"+ex.TargetSite);
+        }
+
+        private static void GlobalThreadExceptionHandler(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
+            var ex = default(Exception);
+            ex = e.Exception;
+            var log = LogManager.GetLogger(typeof(Program)); //Log4NET
+            log.Error("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
+        }
         private bool _keyboardInitialized;
 
         public void UpdateKeyboard(object o, EventArgs args)

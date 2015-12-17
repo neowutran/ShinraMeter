@@ -21,8 +21,14 @@ namespace DamageMeter.UI
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
+
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
+
+
+
+
+
             bool aIsNewInstance;
             bool isUpdating;
             var updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);

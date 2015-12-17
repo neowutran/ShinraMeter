@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using log4net.Config;
 using Tera.Game;
 
 namespace Data
@@ -61,6 +62,11 @@ namespace Data
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the resource directory");
+        }
+
+        public void LogError()
+        {
+            XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
         }
 
         private static IEnumerable<Server> GetServers(string filename)
