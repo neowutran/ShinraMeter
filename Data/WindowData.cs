@@ -19,9 +19,12 @@ namespace Data
             int.TryParse(_xml.Root.Element("location").Element("x").Value, out x);
             int.TryParse(_xml.Root.Element("location").Element("y").Value, out y);
             Location = new Point(x, y);
+            Language = _xml.Root.Element("language").Value;
         }
 
         public Point Location { get; set; }
+
+        public string Language { get; set; }
 
         public void Save()
         {

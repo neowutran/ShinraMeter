@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Xml.Linq;
 
 namespace Data
 {
@@ -9,24 +11,22 @@ namespace Data
     {
         private readonly Dictionary<string, Zone> _zonesData = new Dictionary<string, Zone>();
 
-        public MonsterDatabase(string folder)
+        public MonsterDatabase(string folder,string language)
         {
-            foreach (var file in Directory.EnumerateFiles(folder, "*.tsv"))
-            {
-                var filename = Path.GetFileNameWithoutExtension(file);
-                var nameElements = filename.Split('-');
-                var area = nameElements[0];
-                var areaname = nameElements[1];
-                var monsters = new StreamReader(File.OpenRead(file));
-                var zone = new Zone(area, areaname);
-                _zonesData.Add(area, zone);
+            var xml = XDocument.Load(folder+"monsters-"+language+".xml");
 
-                while (!monsters.EndOfStream)
+            foreach (var zone in xml.Root.Elements("Zone"))
+            {
+                var id = zone.Attribute("id").Value;
+                var name = zone.Attribute("name").Value;
+                _zonesData.Add(id, new Zone(id, name));
+                foreach (var monster in zone.Elements("Monster"))
                 {
-                    var line = monsters.ReadLine();
-                    if (line == null) continue;
-                    var values = line.Split('\t');
-                    zone.Monsters.Add(values[0], new Monster(values[0], values[1], bool.Parse(values[2])));
+                    var monsterId = monster.Attribute("id").Value;
+                    var monsterName = monster.Attribute("name").Value;
+                    var isBoss = monster.Attribute("isBoss").Value;
+                    var hp = monster.Attribute("hp").Value;
+                    _zonesData[id].Monsters.Add(monsterId, new Monster(monsterId,monsterName,isBoss == "True", hp));
                 }
             }
         }

@@ -10,6 +10,7 @@ namespace Tera.Game.Messages
         {
             Raw = reader.Message.Payload.Array;
             OpCodeName = reader.OpCodeName;
+
         }
 
         public byte[] Raw { get; protected set; }
