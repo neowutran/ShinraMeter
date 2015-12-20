@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Markup;
 using System.Xml.Linq;
 
 namespace Data
@@ -13,6 +14,22 @@ namespace Data
 
         public MonsterDatabase(string folder,string language)
         {
+
+            var isBossOverrideXml = XDocument.Load(folder + "isBossOverride.xml");
+            var bossOverride = new Dictionary<string, Dictionary<string, bool>>();
+            foreach (var zone in isBossOverrideXml.Root.Elements("Zone"))
+            {
+                var id = zone.Attribute("id").Value;
+                bossOverride.Add(id, new Dictionary<string, bool>());
+                foreach (var monster in zone.Elements("Monster"))
+                {
+                    var monsterId = monster.Attribute("id").Value;
+                    var isBoss = monster.Attribute("isBoss").Value;
+                    isBoss = isBoss.ToLower();
+                    bossOverride[id].Add(monsterId, isBoss=="true");
+                }
+            }
+
             var xml = XDocument.Load(folder+"monsters-"+language+".xml");
 
             foreach (var zone in xml.Root.Elements("Zone"))
@@ -25,8 +42,14 @@ namespace Data
                     var monsterId = monster.Attribute("id").Value;
                     var monsterName = monster.Attribute("name").Value;
                     var isBoss = monster.Attribute("isBoss").Value;
+                    isBoss = isBoss.ToLower();
                     var hp = monster.Attribute("hp").Value;
-                    _zonesData[id].Monsters.Add(monsterId, new Monster(monsterId,monsterName,isBoss == "True", hp));
+                    var isBossBool = isBoss == "true";
+                    if (bossOverride.ContainsKey(id) && bossOverride[id].ContainsKey(monsterId))
+                    {
+                        isBossBool = bossOverride[id][monsterId];
+                    }
+                    _zonesData[id].Monsters.Add(monsterId, new Monster(monsterId,monsterName,isBossBool, hp));
                 }
             }
         }
