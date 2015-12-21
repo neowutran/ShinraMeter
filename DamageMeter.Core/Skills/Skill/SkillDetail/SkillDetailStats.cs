@@ -95,6 +95,18 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             private set { _averageHit += value; }
         }
 
+        public long AverageTotal
+        {
+            get
+            {
+                if (Hits == 0)
+                {
+                    return 0;
+                }
+                return _damage/Hits;
+            }
+        }
+
         public long LowestHit
         {
             get { return _lowestHit; }

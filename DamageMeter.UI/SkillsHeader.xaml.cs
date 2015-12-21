@@ -18,6 +18,7 @@ namespace DamageMeter.UI
         public static readonly string AverageCrit = "Avg Crit";
         public static readonly string BiggestCrit = "Big Crit";
         public static readonly string AverageHit = "Avg Blk";
+        public static readonly string AverageTotal = "Avg";
         public static readonly string HitsDmg = "HDmg";
         public static readonly string HitsHeal = "Hheal";
         public static readonly string HitsMana = "Hmana";
@@ -49,6 +50,7 @@ namespace DamageMeter.UI
 
             LabelTotalMana.Content = Mana;
             LabelTotalHeal.Content = Heal;
+            LabelAverageTotal.Content = AverageTotal;
         }
 
 

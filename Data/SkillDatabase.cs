@@ -89,7 +89,35 @@ namespace Data
 
         public string GetName(PlayerClass user, int skillId)
         {
-            return GetOrPlaceholder(user, skillId).Name;
+            List<UserSkill> skillsSpecific, skillsCommon;
+
+            _userSkilldata.TryGetValue(user, out skillsSpecific);
+
+            _userSkilldata.TryGetValue(PlayerClass.Common, out skillsCommon);
+
+
+            var allSkills = new List<UserSkill>();
+            if (skillsCommon != null)
+            {
+                allSkills = allSkills.Union(skillsCommon).ToList();
+            }
+            if (skillsSpecific != null)
+            {
+                allSkills = allSkills.Union(skillsSpecific).ToList();
+            }
+
+            var researchSkillId = skillId.ToString();
+            researchSkillId = researchSkillId.Substring(researchSkillId.Length - 2);
+            foreach (var skill in allSkills)
+            {
+                var skillIdString = skill.Id.ToString();
+                var subid = skillIdString.Substring(skillIdString.Length - 2);
+                if (researchSkillId == subid)
+                {
+                    return skill.Name;
+                }
+            }
+            return "Unknow";
         }
 
         public bool? IsChained(PlayerClass user, int skillId)

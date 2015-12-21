@@ -49,6 +49,8 @@ namespace DamageMeter.UI
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.AverageCrit);
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.BiggestCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.AverageHit);
+            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(skill.AverageTotal);
+
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

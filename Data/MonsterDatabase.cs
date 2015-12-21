@@ -15,18 +15,27 @@ namespace Data
         public MonsterDatabase(string folder,string language)
         {
 
-            var isBossOverrideXml = XDocument.Load(folder + "isBossOverride.xml");
+            var isBossOverrideXml = XDocument.Load(folder + "monsters-override.xml");
             var bossOverride = new Dictionary<string, Dictionary<string, bool>>();
+            var nameOverride = new Dictionary<string, Dictionary<string, string>>();
             foreach (var zone in isBossOverrideXml.Root.Elements("Zone"))
             {
                 var id = zone.Attribute("id").Value;
                 bossOverride.Add(id, new Dictionary<string, bool>());
+                nameOverride.Add(id, new Dictionary<string, string>());
                 foreach (var monster in zone.Elements("Monster"))
                 {
                     var monsterId = monster.Attribute("id").Value;
-                    var isBoss = monster.Attribute("isBoss").Value;
-                    isBoss = isBoss.ToLower();
-                    bossOverride[id].Add(monsterId, isBoss=="true");
+                    var isBoss = monster.Attribute("isBoss");
+                    if (isBoss != null)
+                    {
+                        var isBossString = isBoss.Value.ToLower();
+                        bossOverride[id].Add(monsterId, isBossString == "true");
+                    }
+                    var bossName = monster.Attribute("name");
+                    if (bossName == null) continue;
+                    var nameOverrideString = bossName.Value;
+                    nameOverride[id].Add(monsterId, nameOverrideString);
                 }
             }
 
@@ -48,6 +57,10 @@ namespace Data
                     if (bossOverride.ContainsKey(id) && bossOverride[id].ContainsKey(monsterId))
                     {
                         isBossBool = bossOverride[id][monsterId];
+                    }
+                    if (nameOverride.ContainsKey(id) && nameOverride[id].ContainsKey(monsterId))
+                    {
+                        monsterName = nameOverride[id][monsterId];
                     }
                     _zonesData[id].Monsters.Add(monsterId, new Monster(monsterId,monsterName,isBossBool, hp));
                 }

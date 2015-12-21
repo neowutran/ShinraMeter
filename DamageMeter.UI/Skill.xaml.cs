@@ -56,6 +56,7 @@ namespace DamageMeter.UI
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(stats.AverageCrit);
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.BiggestCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.AverageHit);
+            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(stats.AverageTotal);
 
 
             IEnumerable<KeyValuePair<int, SkillDetailStats>> listStats = stats.SkillDetails.ToList();

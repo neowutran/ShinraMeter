@@ -96,6 +96,26 @@ namespace DamageMeter.Skills.Skill
             }
         }
 
+        public long AverageTotal
+        {
+            get
+            {
+                long average = 0;
+                var totalHits = 0;
+                foreach (var skill in SkillDetails)
+                {
+                    totalHits += skill.Value.Hits;
+                    average += skill.Value.AverageTotal * skill.Value.Hits;
+                }
+                if (totalHits == 0)
+                {
+                    return 0;
+                }
+                return average / totalHits;
+
+            }
+        }
+
         public long FirstHit
         {
             get

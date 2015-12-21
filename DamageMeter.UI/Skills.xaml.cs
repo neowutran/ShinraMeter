@@ -48,12 +48,18 @@ namespace DamageMeter.UI
 
             header.LabelTotalHeal.MouseRightButtonUp += LabelTotalHealOnMouseRightButtonUp;
             header.LabelTotalMana.MouseRightButtonUp += LabelTotalManaOnMouseRightButtonUp;
+            header.LabelAverageTotal.MouseRightButtonUp += LabelAverageTotalOnMouseRightButtonUp;
             _currentSortedLabel = header.LabelTotalDamage;
             SkillsList.Items.Add(header);
 
             _skills = skills;
             _parent = parent;
             Repaint();
+        }
+
+        private void LabelAverageTotalOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.Avg, (Label)sender, SkillsHeader.AverageTotal);
         }
 
 
@@ -140,6 +146,8 @@ namespace DamageMeter.UI
                             return from entry in _skills orderby entry.Value.CritRateDmg descending select entry;
                         case SortBy.CritRateHeal:
                             return from entry in _skills orderby entry.Value.CritRateHeal descending select entry;
+                        case SortBy.Avg:
+                            return from entry in _skills orderby entry.Value.AverageTotal descending select entry;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -176,6 +184,8 @@ namespace DamageMeter.UI
                             return from entry in _skills orderby entry.Value.CritRateDmg ascending select entry;
                         case SortBy.CritRateHeal:
                             return from entry in _skills orderby entry.Value.CritRateHeal ascending select entry;
+                        case SortBy.Avg:
+                            return from entry in _skills orderby entry.Value.AverageTotal ascending select entry;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -310,6 +320,7 @@ namespace DamageMeter.UI
             Heal,
             Mana,
             AvgCrit,
+            Avg,
             BigCrit,
             DamagePercent,
             NumberHitsDmg,
