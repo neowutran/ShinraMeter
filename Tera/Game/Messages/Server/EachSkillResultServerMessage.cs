@@ -21,6 +21,8 @@ namespace Tera.Game.Messages
             Source = reader.ReadEntityId();
             Target = reader.ReadEntityId();
 
+           
+
             //I think it s some kind of source ID.
             //When I use a skill against any monstrer, it s always the same value
             //When I pick up a mana mote, differente ID

@@ -24,7 +24,10 @@ namespace Data
 
         public Point Location { get; set; }
 
-        public string Language { get; set; }
+        public double MainWindowOpacity { get; private set; }
+        public double SkillWindowOpacity { get; private set; }
+
+        public string Language { get; private set; }
 
         public void Save()
         {

@@ -22,7 +22,8 @@ namespace Tera.Game
             {"S_START_USER_PROJECTILE", typeof (StartUserProjectileServerMessage)},
             {"S_CREATURE_CHANGE_HP", typeof (SCreatureChangeHp)},
             {"S_NPC_TARGET_USER", typeof (SNpcTargetUser)},
-            {"S_NPC_OCCUPIER_INFO", typeof (SNpcOccupierInfo)}
+            {"S_NPC_OCCUPIER_INFO", typeof (SNpcOccupierInfo)},
+            {"C_CHAT", typeof(CChat) }
         };
 
         private readonly OpCodeNamer _opCodeNamer;

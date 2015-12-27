@@ -68,6 +68,7 @@ namespace NetworkSniffer
         {
             Debug.Assert(_devices == null);
             _devices = WinPcapDeviceList.New();
+         
 
             var interestingDevices = _devices.Where(IsInteresting);
 

@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Game\Angle.cs" />
     <Compile Include="Game\IHasOwner.cs" />
+    <Compile Include="Game\Messages\Server\CChat.cs" />
     <Compile Include="Game\Messages\Server\SCreatureChangeHp.cs" />
     <Compile Include="Game\Messages\Server\SNpcOccupierInfo.cs" />
     <Compile Include="Game\Messages\Server\SNpcTargetUser.cs" />
