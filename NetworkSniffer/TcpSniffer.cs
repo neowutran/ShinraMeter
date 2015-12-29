@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using PacketDotNet;
 using PacketDotNet.Utils;
+using SharpPcap.WinPcap;
 
 namespace NetworkSniffer
 {
@@ -22,15 +23,15 @@ namespace NetworkSniffer
 
         public string TcpLogFile { get; set; }
 
-        public event Action<TcpConnection> NewConnection;
+        public event Action<TcpConnection, WinPcapDevice> NewConnection;
 
-        protected void OnNewConnection(TcpConnection connection)
+        protected void OnNewConnection(TcpConnection connection, WinPcapDevice device)
         {
             var handler = NewConnection;
-            handler?.Invoke(connection);
+            handler?.Invoke(connection,device);
         }
 
-        private void Receive(IpPacket ipPacket)
+        private void Receive(IpPacket ipPacket, WinPcapDevice device)
         {
             var protocol = ipPacket.Protocol;
             if (protocol != IPProtocolType.TCP)
@@ -42,7 +43,6 @@ namespace NetworkSniffer
                 return;
             }
             var tcpPacket = new TcpPacket(new ByteArraySegment(ipPacket.PayloadPacket.BytesHighPerformance));
-
             var isFirstPacket = tcpPacket.Syn;
             var sourceIp = new IPAddress(ipPacket.SourceAddress.GetAddressBytes()).ToString();
             var destinationIp = new IPAddress(ipPacket.DestinationAddress.GetAddressBytes()).ToString();
@@ -55,7 +55,7 @@ namespace NetworkSniffer
                 if (isFirstPacket)
                 {
                     connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber);
-                    OnNewConnection(connection);
+                    OnNewConnection(connection,device);
                     isInterestingConnection = connection.HasSubscribers;
                     if (!isInterestingConnection)
                     {

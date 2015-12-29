@@ -4,7 +4,7 @@ using System;
 
 namespace Tera.Sniffing.Crypt
 {
-    internal class Session
+    public class Session
     {
         public byte[] ClientKey1 = new byte[128];
         public byte[] ClientKey2 = new byte[128];
@@ -18,6 +18,17 @@ namespace Tera.Sniffing.Crypt
 
         public byte[] TmpKey1 = new byte[128];
         public byte[] TmpKey2 = new byte[128];
+
+        public Cryptor ChatEncryptor { get; private set; }
+
+        private static Session _instance;
+        public static Session Instance => _instance ?? (_instance = new Session());
+
+
+        private Session()
+        {
+            
+        }
 
         public void Init()
         {
@@ -35,6 +46,7 @@ namespace Tera.Sniffing.Crypt
             Buffer.BlockCopy(TmpKey1, 0, EncryptKey, 0, 128);
 
             Encryptor = new Cryptor(EncryptKey);
+            ChatEncryptor = new Cryptor(EncryptKey);
         }
 
         public void Encrypt(byte[] data)

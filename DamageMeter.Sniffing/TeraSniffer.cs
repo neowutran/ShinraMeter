@@ -4,9 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Data;
 using NetworkSniffer;
 using PacketDotNet.Utils;
+using SharpPcap.WinPcap;
 using Tera;
 using Tera.Game;
 using Tera.Sniffing;
@@ -54,7 +56,7 @@ namespace DamageMeter.Sniffing
         }
 
         public event Action<Message> MessageReceived;
-        public event Action<Server> NewConnection;
+        public event Action<Server, IPEndPoint, IPEndPoint> NewConnection;
 
         public IEnumerable<string> SnifferStatus()
         {
@@ -63,10 +65,10 @@ namespace DamageMeter.Sniffing
 
         public event Action<string> Warning;
 
-        protected virtual void OnNewConnection(Server server)
+        protected virtual void OnNewConnection(Server server, IPEndPoint serverIpEndPoint, IPEndPoint clientIpEndPoint)
         {
             var handler = NewConnection;
-            handler?.Invoke(server);
+            handler?.Invoke(server, serverIpEndPoint, clientIpEndPoint);
         }
 
         protected virtual void OnMessageReceived(Message message)
@@ -81,15 +83,18 @@ namespace DamageMeter.Sniffing
             handler?.Invoke(obj);
         }
 
+        public WinPcapDevice Device { get; private set; }
+
 
         // called from the tcp sniffer, so it needs to lock
-        private void HandleNewConnection(TcpConnection connection)
+        private void HandleNewConnection(TcpConnection connection,WinPcapDevice device)
         {
             lock (_eventLock)
             {
                 if (!_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
                     !_serversByIp.ContainsKey(connection.Source.Address.ToString()))
                     return;
+                Device = device;
                 _isNew.Add(connection);
                 connection.DataReceived += HandleTcpDataReceived;
             }
@@ -118,7 +123,7 @@ namespace DamageMeter.Sniffing
 
                         _messageSplitter = new MessageSplitter();
                         _messageSplitter.MessageReceived += HandleMessageReceived;
-                        OnNewConnection(server);
+                        OnNewConnection(server, connection.Source, connection.Destination);
                     }
                     if (_serverToClient != null && _clientToServer == null &&
                         (_serverToClient.Destination.Equals(connection.Source) &&

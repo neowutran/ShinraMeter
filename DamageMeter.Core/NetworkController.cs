@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows.Threading;
 using DamageMeter.Sniffing;
@@ -19,8 +20,9 @@ namespace DamageMeter
             long interval, long totaldamage, LinkedList<Entity> entities, List<PlayerInfo> stats);
 
         private static NetworkController _instance;
-        private static TeraData _teraData;
         private EntityTracker _entityTracker;
+
+        public TeraData TeraData { get; private set; }
 
         private long _lastTick;
         private MessageFactory _messageFactory;
@@ -49,15 +51,21 @@ namespace DamageMeter
             dispatcher.Invoke(changeUi);
         }
 
-        private void HandleNewConnection(Server server)
+        private void HandleNewConnection(Server server, IPEndPoint serverIpEndPoint, IPEndPoint clientIpEndPoint)
         {
-            _teraData = BasicTeraData.Instance.DataForRegion(server.Region);
+            TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
             _entityTracker = new EntityTracker();
             _playerTracker = new PlayerTracker(_entityTracker);
-            _messageFactory = new MessageFactory(_teraData.OpCodeNamer);
+            _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
+            ServerIpEndPoint = serverIpEndPoint;
+            ClientIpEndPoint = clientIpEndPoint;
             var handler = Connected;
             handler?.Invoke(server.Name);
         }
+
+        public IPEndPoint ServerIpEndPoint { get; private set; }
+        public IPEndPoint ClientIpEndPoint { get; private set; }
+
 
         public void Reset()
         {

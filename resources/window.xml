@@ -2,11 +2,11 @@
 <window>
   <location>
     <x>0</x>
-    <y>184</y>
+    <y>122</y>
   </location>
   <language>EU-EN</language>
   <opacity>
-  <mainwindow></mainwindow>
-  <skillwindow></skillwindow>
+    <mainwindow></mainwindow>
+    <skillwindow></skillwindow>
   </opacity>
 </window>

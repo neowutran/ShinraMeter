@@ -4,10 +4,9 @@ using System;
 
 namespace Tera.Sniffing.Crypt
 {
-    internal class Cryptor
+    public class Cryptor
     {
-        //No fucking idea where that come from, will search later
-        //TODO
+      
         private readonly CryptorKey[] _key =
         {
             new CryptorKey(55, 31),

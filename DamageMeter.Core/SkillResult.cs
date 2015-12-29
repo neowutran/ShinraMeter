@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System.Linq.Expressions;
+using Data;
 using Tera.Game;
 using Tera.Game.Messages;
 
@@ -24,7 +25,12 @@ namespace DamageMeter
             {
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
                 Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, message.SkillId);
-
+                /*
+                if (SourcePlayer.Name == "Fistiniere")
+                {
+                    new ChatBuilder().Add("bonjour").Send();
+                }
+                */
                 /*
                 if ((SourcePlayer.Name == "Diclah" || SourcePlayer.Name == "Yukikoolol" ||
                      SourcePlayer.Name == "Yukikoo"))

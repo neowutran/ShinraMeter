@@ -30,13 +30,11 @@ namespace Tera.Sniffing
 
         private static Session CreateSession(byte[] clientKey1, byte[] clientKey2, byte[] serverKey1, byte[] serverKey2)
         {
-            var session = new Session
-            {
-                ClientKey1 = clientKey1,
-                ClientKey2 = clientKey2,
-                ServerKey1 = serverKey1,
-                ServerKey2 = serverKey2
-            };
+            var session = Session.Instance;
+            session.ClientKey1 = clientKey1;
+            session.ClientKey2 = clientKey2;
+            session.ServerKey1 = serverKey1;
+            session.ServerKey2 = serverKey2;
             session.Init();
             
             Console.WriteLine("Success");

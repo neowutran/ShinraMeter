@@ -49,9 +49,12 @@ namespace NetworkSniffer
             dataReceived?.Invoke(this, data);
         }
 
+        public static uint NextSequenceNumber { get; private set; }
+
         internal void HandleTcpReceived(uint sequenceNumber, ByteArraySegment data)
         {
             var dataPosition = SequenceNumberToBytesReceived(sequenceNumber);
+            NextSequenceNumber = (uint)(sequenceNumber + data.Length);
             if (dataPosition == BytesReceived)
             {
                 OnDataReceived(data);

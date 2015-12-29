@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Tera.Game;
 
 namespace Tera.Sniffing
@@ -7,6 +8,6 @@ namespace Tera.Sniffing
     {
         bool Enabled { get; set; }
         event Action<Message> MessageReceived;
-        event Action<Server> NewConnection;
+        event Action<Server, IPEndPoint, IPEndPoint> NewConnection;
     }
 }

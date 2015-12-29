@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using PacketDotNet;
 using PacketDotNet.Utils;
 using SharpPcap;
@@ -77,6 +78,7 @@ namespace NetworkSniffer
                 device.OnPacketArrival += device_OnPacketArrival;
                 device.Open(DeviceMode.Promiscuous, 1000);
                 device.Filter = _filter;
+                
 
                 /*
                 try
@@ -100,12 +102,12 @@ namespace NetworkSniffer
             handler?.Invoke(obj);
         }
 
-        public event Action<IpPacket> PacketReceived;
+        public event Action<IpPacket, WinPcapDevice> PacketReceived;
 
-        protected void OnPacketReceived(IpPacket data)
+        protected void OnPacketReceived(IpPacket data, WinPcapDevice device)
         {
             var packetReceived = PacketReceived;
-            packetReceived?.Invoke(data);
+            packetReceived?.Invoke(data, device);
         }
 
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
@@ -117,10 +119,11 @@ namespace NetworkSniffer
             var ipPacket = ethernetPacket.PayloadPacket as IpPacket;
             if (ipPacket == null)
                 return;
+            var device = (WinPcapDevice)sender;
+            
+            OnPacketReceived(ipPacket,device);
 
-            OnPacketReceived(ipPacket);
-
-            var device = (WinPcapDevice) sender;
+           
             if (device.Statistics.DroppedPackets == _droppedPackets &&
                 device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets)
                 return;
