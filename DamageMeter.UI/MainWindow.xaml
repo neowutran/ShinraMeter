@@ -196,7 +196,7 @@
         </Style>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush Color="Black" Opacity="0.5" />
+        <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.5" />
     </Window.Background>
     <Grid HorizontalAlignment="Left">
         

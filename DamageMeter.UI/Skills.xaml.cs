@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DamageMeter.Skills.Skill;
+using Data;
 
 namespace DamageMeter.UI
 {
@@ -54,6 +55,7 @@ namespace DamageMeter.UI
 
             _skills = skills;
             _parent = parent;
+            BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
             Repaint();
         }
 

@@ -45,6 +45,7 @@ namespace DamageMeter.UI
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new LinkedList<Entity>());
             Title = "Shinra Meter V" + UpdateManager.Version;
+            BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
         }
 
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
@@ -208,6 +209,7 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
             BasicTeraData.Instance.WindowData.Save();
+            BasicTeraData.Instance.HotkeysData.Save();
             TeraSniffer.Instance.Enabled = false;
             Application.Exit();
         }

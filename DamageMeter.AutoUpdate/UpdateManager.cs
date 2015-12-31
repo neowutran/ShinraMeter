@@ -15,7 +15,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "0.48";
+        public static readonly string Version = "0.49";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -105,14 +105,34 @@ namespace DamageMeter.AutoUpdate
 
             foreach (var directory in Directory.GetDirectories(sourceDir))
             {
+                if (directory == "config")
+                {
+                    Directory.CreateDirectory(targetDir);
+                }
                 Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
             }
         }
 
         public static void DestroyRelease()
         {
+            Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\"), File.Delete);
             if (!Directory.Exists(ExecutableDirectory + @"\..\..\resources\")) return;
-            Directory.Delete(ExecutableDirectory + @"\..\..\resources\", true);
+            var data = ExecutableDirectory + @"\..\..\resources\data\";
+            var img = ExecutableDirectory + @"\..\..\resources\img\";
+            var ssl = ExecutableDirectory + @"\..\..\resources\ssl\";
+            if (Directory.Exists(data))
+            {
+                Directory.Delete(data, true);
+            }
+            if (Directory.Exists(img))
+            {
+                Directory.Delete(img, true);
+            }
+            if (Directory.Exists(ssl))
+            {
+                Directory.Delete(ssl, true);
+            }
+
             Console.WriteLine("Resources directory destroyed");
         }
 
@@ -152,7 +172,7 @@ namespace DamageMeter.AutoUpdate
 
         private static void SetCertificate()
         {
-            var cloudCertificate = new X509Certificate2(ResourcesDirectory + @"cloud.neowutran.ovh.der");
+            var cloudCertificate = new X509Certificate2(ResourcesDirectory + @"ssl/cloud.neowutran.ovh.der");
             ServicePointManager.ServerCertificateValidationCallback =
                 (sender, certificate, chain, sslPolicyErrors) =>
                     certificate.Equals(cloudCertificate);

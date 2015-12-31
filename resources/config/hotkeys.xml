@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hotkeys>
+  <paste>
+    <ctrl>False</ctrl>
+    <shift>False</shift>
+    <window>False</window>
+    <key>Home</key>
+  </paste>
+  <reset>
+    <ctrl>False</ctrl>
+    <shift>False</shift>
+    <window>False</window>
+    <alt>False</alt>
+    <key>Delete</key>
+  </reset>
+  <copys>
+    <copy>
+      <ctrl>True</ctrl>
+      <shift>False</shift>
+      <window>False</window>
+      <key>End</key>
+      <string>
+        <header>Damage Taken @ {encounter}:\</header>
+        <content>[{class}] {name}: Hits: {hits_received} = {damage_received}\</content>
+        <footer></footer>
+        <order_by>hits_received</order_by>
+        <order>descending</order>
+      </string>
+    </copy>
+    <copy>
+      <ctrl>False</ctrl>
+      <shift>True</shift>
+      <window>False</window>
+      <key>End</key>
+      <string>
+        <header>Damage Done @ {encounter} {timer}:\</header>
+        <content>[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {dps}\</content>
+        <footer></footer>
+        <order_by>damage_percentage</order_by>
+        <order>descending</order>
+      </string>
+    </copy>
+  </copys>
+</hotkeys>

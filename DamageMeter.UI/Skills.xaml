@@ -17,7 +17,7 @@
         MouseLeftButtonDown="Skills_OnMouseLeftButtonDown"
         Title="Skills" Height="500" Width="1135">
     <Window.Background>
-        <SolidColorBrush Color="Black" Opacity="0.7" />
+        <SolidColorBrush x:Name="BackgroundColor"  Color="Black" Opacity="0.7" />
     </Window.Background>
     <Window.Resources>
         <Style x:Key="ShinraButtonStyle" TargetType="Button">

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <window>
   <location>
-    <x>0</x>
-    <y>146</y>
+    <x>37</x>
+    <y>80</y>
   </location>
   <language>EU-EN</language>
   <opacity>
-    <mainwindow></mainwindow>
-    <skillwindow></skillwindow>
+    <mainWindow>50</mainWindow>
+    <skillWindow>70</skillWindow>
   </opacity>
 </window>

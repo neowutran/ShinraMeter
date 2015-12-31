@@ -23,17 +23,65 @@ namespace Data
             None = 0
         }
 
+        private void DefaultValue()
+        {
+            Paste = new KeyValuePair<Keys, ModifierKeys>(Keys.Home, ModifierKeys.None);
+            Reset = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.None);
+            Copy = new List<CopyKey>
+            {
+                new CopyKey(
+                    @"Damage Taken @ {encounter}:\",
+                    "",
+                    @"[{class}] {name}: Hits: {hits_received} = {damage_received}\",
+                    ModifierKeys.Control,
+                    Keys.End,
+                    "hits_received",
+                    "descending"
+                    ),
+                new CopyKey(
+                    @"Damage Done @ {encounter} {timer}:\",
+                    "",
+                    @"[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {dps}\",
+                    ModifierKeys.Shift,
+                    Keys.End,
+                    "damage_percentage",
+                    "descending"
+                    )
+            };
+
+        }
+
+        private readonly string _hotkeyFile;
+
+        private readonly bool _fileExist;
 
         public HotkeysData(BasicTeraData basicData)
         {
-            // Load XML File
-            var xml = XDocument.Load(Path.Combine(basicData.ResourceDirectory, "hotkeys.xml"));
+            _fileExist = false;
+            DefaultValue();
 
+            // Load XML File
+            XDocument xml;
+            _hotkeyFile = Path.Combine(basicData.ResourceDirectory, "config/hotkeys.xml");
+            try
+            {
+                xml = XDocument.Load(_hotkeyFile);
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }
             // Get Keys
-            Debug.Assert(xml.Root != null, "xml.Root != null");
-            var pasteQuery = from hotkeys in xml.Root.Descendants("paste")
+            var root = xml.Root;
+            if (root == null) return;
+
+
+            _fileExist = true;
+
+
+            var pasteQuery = from hotkeys in root.Descendants("paste")
                 select hotkeys.Element("key");
-            var resetQuery = from hotkeys in xml.Root.Descendants("reset")
+            var resetQuery = from hotkeys in root.Descendants("reset")
                 select hotkeys.Element("key");
 
             Keys resetKey, pasteKey;
@@ -51,20 +99,20 @@ namespace Data
 
 
             //Get modifier
-            var pasteShiftQuery = from hotkeys in xml.Root.Descendants("paste")
+            var pasteShiftQuery = from hotkeys in root.Descendants("paste")
                 select hotkeys.Element("shift");
-            var pasteWindowQuery = from hotkeys in xml.Root.Descendants("paste")
+            var pasteWindowQuery = from hotkeys in root.Descendants("paste")
                 select hotkeys.Element("window");
-            var pasteCtrlQuery = from hotkeys in xml.Root.Descendants("paste")
+            var pasteCtrlQuery = from hotkeys in root.Descendants("paste")
                 select hotkeys.Element("ctrl");
 
-            var resetShiftQuery = from hotkeys in xml.Root.Descendants("reset")
+            var resetShiftQuery = from hotkeys in root.Descendants("reset")
                 select hotkeys.Element("shift");
-            var resetCtrlQuery = from hotkeys in xml.Root.Descendants("reset")
+            var resetCtrlQuery = from hotkeys in root.Descendants("reset")
                 select hotkeys.Element("ctrl");
-            var resetWindowQuery = from hotkeys in xml.Root.Descendants("reset")
+            var resetWindowQuery = from hotkeys in root.Descendants("reset")
                 select hotkeys.Element("window");
-            var resetAltQuery = from hotkeys in xml.Root.Descendants("reset")
+            var resetAltQuery = from hotkeys in root.Descendants("reset")
                 select hotkeys.Element("alt");
 
 
@@ -89,9 +137,9 @@ namespace Data
             CopyData(xml);
         }
 
-        public List<CopyKey> Copy { get; }
-        public KeyValuePair<Keys, ModifierKeys> Reset { get; }
-        public KeyValuePair<Keys, ModifierKeys> Paste { get; }
+        public List<CopyKey> Copy { get; private set; }
+        public KeyValuePair<Keys, ModifierKeys> Reset { get; private set; }
+        public KeyValuePair<Keys, ModifierKeys> Paste { get; private set; }
 
         private void CopyData(XDocument xml)
         {
@@ -120,7 +168,7 @@ namespace Data
             }
         }
 
-        private ModifierKeys ConvertToModifierKey(bool ctrl, bool alt, bool shift, bool window)
+        private static ModifierKeys ConvertToModifierKey(bool ctrl, bool alt, bool shift, bool window)
         {
             var modifier = ModifierKeys.None;
             if (ctrl)
@@ -140,6 +188,68 @@ namespace Data
                 modifier |= ModifierKeys.Win;
             }
             return modifier;
+        }
+
+        public void Save()
+        {
+            if (_fileExist) return;
+
+            var xml = new XDocument(new XElement("hotkeys"));
+            xml.Root.Add(new XElement("paste"));
+
+            var pasteCtrl = (Paste.Value & ModifierKeys.Control) != ModifierKeys.None;
+            var pasteShift = (Paste.Value & ModifierKeys.Shift) != ModifierKeys.None;
+            var pasteWindow = (Paste.Value & ModifierKeys.Win) != ModifierKeys.None;
+            var pasteKey = Paste.Key;
+            xml.Root.Element("paste").Add(new XElement("ctrl", pasteCtrl.ToString()));
+            xml.Root.Element("paste").Add(new XElement("shift", pasteShift.ToString()));
+            xml.Root.Element("paste").Add(new XElement("window", pasteWindow.ToString()));
+            xml.Root.Element("paste").Add(new XElement("key", pasteKey.ToString()));
+
+            var resetCtrl = (Reset.Value & ModifierKeys.Control) != ModifierKeys.None;
+            var resetShift = (Reset.Value & ModifierKeys.Shift) != ModifierKeys.None;
+            var resetWindow = (Reset.Value & ModifierKeys.Win) != ModifierKeys.None;
+            var resetAlt = (Reset.Value & ModifierKeys.Alt) != ModifierKeys.None;
+            var resetKey = Reset.Key;
+
+            xml.Root.Add(new XElement("reset"));
+
+            xml.Root.Element("reset").Add(new XElement("ctrl", resetCtrl.ToString()));
+            xml.Root.Element("reset").Add(new XElement("shift", resetShift.ToString()));
+            xml.Root.Element("reset").Add(new XElement("window", resetWindow.ToString()));
+            xml.Root.Element("reset").Add(new XElement("alt", resetAlt.ToString()));
+            xml.Root.Element("reset").Add(new XElement("key", resetKey.ToString()));
+
+            xml.Root.Add(new XElement("copys"));
+
+            foreach (var copy in Copy)
+            {
+
+                var copyElement = new XElement("copy");
+
+                var copyCtrl = (copy.Modifier & ModifierKeys.Control) != ModifierKeys.None;
+                var copyShift = (copy.Modifier & ModifierKeys.Shift) != ModifierKeys.None;
+                var copyWindow = (copy.Modifier & ModifierKeys.Win) != ModifierKeys.None;
+                var copyKey = copy.Key;
+
+                copyElement.Add(new XElement("ctrl", copyCtrl.ToString()));
+                copyElement.Add(new XElement("shift", copyShift.ToString()));
+                copyElement.Add(new XElement("window", copyWindow.ToString()));
+                copyElement.Add(new XElement("key", copyKey.ToString()));
+                var stringElement = new XElement("string");
+
+                stringElement.Add(new XElement("header", copy.Header));
+                stringElement.Add(new XElement("content", copy.Content));
+                stringElement.Add(new XElement("footer", copy.Footer));
+                stringElement.Add(new XElement("order_by", copy.OrderBy));
+                stringElement.Add(new XElement("order", copy.Order));
+                copyElement.Add(stringElement);
+
+                xml.Root.Element("copys").Add(copyElement);
+
+            }
+
+            xml.Save(_hotkeyFile);
         }
     }
 }
