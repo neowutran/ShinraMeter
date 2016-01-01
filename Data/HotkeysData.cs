@@ -87,14 +87,23 @@ namespace Data
             Keys resetKey, pasteKey;
 
             var xElements = resetQuery as XElement[] ?? resetQuery.ToArray();
-            if (!Enum.TryParse(xElements.First().Value, out resetKey))
+            var keyValue = xElements.First().Value;
+            keyValue = keyValue.ToUpper();
+            if (!Enum.TryParse(keyValue, out resetKey))
             {
-                Console.WriteLine("Unable to convert string {0} to key", xElements.First().Value);
+                var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
+                MessageBox.Show(message);
+                throw new Exception(message);
+
             }
             var enumerable = pasteQuery as XElement[] ?? pasteQuery.ToArray();
-            if (!Enum.TryParse(enumerable.First().Value, out pasteKey))
+            keyValue = enumerable.First().Value;
+            keyValue = keyValue.ToUpper();
+            if (!Enum.TryParse(keyValue, out pasteKey))
             {
-                Console.WriteLine("Unable to convert string {0} to key", enumerable.First().Value);
+                var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
+                MessageBox.Show(message);
+                throw new Exception(message);
             }
 
 
@@ -156,10 +165,13 @@ namespace Data
                 var footer = copy.Element("string").Element("footer").Value;
                 var content = copy.Element("string").Element("content").Value;
                 Keys key;
-                if (!Enum.TryParse(copy.Element("key").Value, out key))
+                var keyValue = copy.Element("key").Value;
+                keyValue = keyValue.ToUpper();
+                if (!Enum.TryParse(keyValue, out key))
                 {
-                    Console.WriteLine("Unable to convert string {0} to key", copy.Element("key").Value);
-                    throw new Exception("Unable to convert string " + copy.Element("key").Value + " to key");
+                    var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
+                    MessageBox.Show(message);
+                    throw new Exception(message);
                 }
                 var order = copy.Element("string").Element("order").Value;
                 var orderBy = copy.Element("string").Element("order_by").Value;
