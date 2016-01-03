@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,17 +21,18 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class MainWindow
     {
+        private bool _keyboardInitialized;
+
         public MainWindow()
         {
             InitializeComponent();
-            AppDomain currentDomain = default(AppDomain);
+            var currentDomain = default(AppDomain);
             currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
             currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
             // Handler for exceptions in threads behind forms.
             Application.ThreadException += GlobalThreadExceptionHandler;
-            BasicTeraData.Instance.LogError();
-
+            var init = BasicTeraData.Instance;
 
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
@@ -48,30 +50,35 @@ namespace DamageMeter.UI
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
         }
 
+
+        public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
+
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
             keyEventArgs.Handled = true;
-           
         }
 
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
             var ex = default(Exception);
-            ex = (Exception)e.ExceptionObject;
-            var log = LogManager.GetLogger(typeof(Program));
-            log.Error("##### CRASH (version="+UpdateManager.Version+"): #####\r\n"+ex.Message + "\r\n" + ex.StackTrace+"\r\n"+ex.Source+"\r\n"+ex+"\r\n"+ex.Data+"\r\n"+ex.InnerException+"\r\n"+ex.TargetSite);
+            ex = (Exception) e.ExceptionObject;
+            var log = LogManager.GetLogger(typeof (Program));
+            log.Error("##### CRASH (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
+                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
+                      "\r\n" + ex.TargetSite);
         }
 
-        private static void GlobalThreadExceptionHandler(object sender, System.Threading.ThreadExceptionEventArgs e)
+        private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
         {
             MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
             var ex = default(Exception);
             ex = e.Exception;
-            var log = LogManager.GetLogger(typeof(Program)); //Log4NET
-            log.Error("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
+            var log = LogManager.GetLogger(typeof (Program)); //Log4NET
+            log.Error("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
+                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
+                      "\r\n" + ex.TargetSite);
         }
-        private bool _keyboardInitialized;
 
         public void UpdateKeyboard(object o, EventArgs args)
         {
@@ -84,15 +91,10 @@ namespace DamageMeter.UI
             {
                 KeyboardHook.Instance.SetHotkeys(TeraWindow.IsTeraActive());
             }
-
         }
-
-
-        public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
         public void Update(long nintervalvalue, long ntotalDamage, LinkedList<Entity> nentities, List<PlayerInfo> nstats)
         {
-
             UpdateUi changeUi =
                 delegate(long intervalvalue, long totalDamage, LinkedList<Entity> entities, List<PlayerInfo> stats)
                 {
@@ -104,7 +106,10 @@ namespace DamageMeter.UI
                     {
                         PlayerStats playerStatsControl;
                         Controls.TryGetValue(playerStats, out playerStatsControl);
-                        if (playerStats.Dealt.Damage == 0 && playerStats.Received.Hits == 0){continue;}
+                        if (playerStats.Dealt.Damage == 0 && playerStats.Received.Hits == 0)
+                        {
+                            continue;
+                        }
                         visiblePlayerStats.Add(playerStats);
                         if (playerStatsControl != null) continue;
                         playerStatsControl = new PlayerStats(playerStats);
@@ -130,7 +135,7 @@ namespace DamageMeter.UI
                     foreach (var player in Controls)
                     {
                         var data = stats.IndexOf(player.Value.PlayerInfo);
-                        player.Value.Repaint(stats[data],totalDamage);
+                        player.Value.Repaint(stats[data], totalDamage);
                     }
                     Players.Items.Clear();
                     var sortedDict = from entry in Controls

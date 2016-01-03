@@ -52,6 +52,7 @@
     <Compile Include="ClassIcons.cs" />
     <Compile Include="CopyKey.cs" />
     <Compile Include="HotkeysData.cs" />
+    <Compile Include="InvalidConfigFileException.cs" />
     <Compile Include="Monster.cs" />
     <Compile Include="MonsterDatabase.cs" />
     <Compile Include="PinData.cs" />

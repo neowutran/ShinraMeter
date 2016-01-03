@@ -1,8 +1,6 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using System.Xml.Linq;
 
 namespace Data
@@ -11,6 +9,34 @@ namespace Data
     {
         private readonly string _windowFile;
         private readonly XDocument _xml;
+
+        public WindowData(BasicTeraData basicData)
+        {
+            DefaultValue();
+            // Load XML File
+            _windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
+            try
+            {
+                _xml = XDocument.Load(_windowFile);
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }
+
+            ParseLocation();
+            ParseLanguage();
+            ParseMainWindowOpacity();
+            ParseSkillWindowOpacity();
+        }
+
+        public Point Location { get; set; }
+
+        public double MainWindowOpacity { get; private set; }
+        public double SkillWindowOpacity { get; private set; }
+
+
+        public string Language { get; private set; }
 
         private void DefaultValue()
         {
@@ -57,9 +83,8 @@ namespace Data
 
             if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity))
             {
-                MainWindowOpacity = ((double)mainWindowOpacity)/100;
+                MainWindowOpacity = ((double) mainWindowOpacity)/100;
             }
-        
         }
 
         private void ParseSkillWindowOpacity()
@@ -72,46 +97,15 @@ namespace Data
 
             if (int.TryParse(mainWindowElement.Value, out skillWindowOpacity))
             {
-                SkillWindowOpacity = ((double)skillWindowOpacity)/100;
+                SkillWindowOpacity = ((double) skillWindowOpacity)/100;
             }
         }
-
-        public WindowData(BasicTeraData basicData)
-        {
-
-            DefaultValue();
-            // Load XML File
-            _windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
-            try
-            {
-                _xml = XDocument.Load(_windowFile);
-            }
-            catch (FileNotFoundException)
-            {
-                return;
-            }
-
-            ParseLocation();
-            ParseLanguage();
-            ParseMainWindowOpacity();
-            ParseSkillWindowOpacity();
-
-        }
-
-        public Point Location { get; set; }
-
-        public double MainWindowOpacity { get; private set; }
-        public double SkillWindowOpacity { get; private set; }
-
-       
-
-        public string Language { get; private set; }
 
         public void Save()
         {
             var xml = new XDocument(new XElement("window"));
             xml.Root.Add(new XElement("location"));
-            xml.Root.Element("location").Add(new XElement("x",Location.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("language", Language));
             xml.Root.Add(new XElement("opacity"));

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Threading;
 using DamageMeter.Skills;
 using DamageMeter.Skills.Skill;
 using DamageMeter.Taken;
@@ -257,12 +256,10 @@ namespace DamageMeter
 
         private void UpdateEncounter(Entity entity, SkillResult msg)
         {
-          
-                if (!Entities.Contains(entity) && !msg.IsHeal && !msg.IsMana)
-                {
-                    Entities.AddFirst(entity);
-                }
-            
+            if (!Entities.Contains(entity) && !msg.IsHeal && !msg.IsMana)
+            {
+                Entities.AddFirst(entity);
+            }
         }
 
         private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget)

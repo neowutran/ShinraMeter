@@ -8,23 +8,12 @@ namespace DamageMeter.Dealt
 {
     public class EntitiesDealt : ICloneable
     {
-        public PlayerInfo PlayerInfo;
         public Dictionary<Entity, SkillsStats> EntitiesStats = new Dictionary<Entity, SkillsStats>();
+        public PlayerInfo PlayerInfo;
 
         public EntitiesDealt(PlayerInfo playerInfo)
         {
             PlayerInfo = playerInfo;
-        }
-
-        public double DamageFraction(long totalDamage)
-        {
-        
-                if (totalDamage == 0)
-                {
-                    return 0;
-                }
-                return Math.Round(((double) Damage*100/ totalDamage), 1);
-            
         }
 
         public long FirstHit
@@ -55,7 +44,6 @@ namespace DamageMeter.Dealt
         {
             get
             {
-             
                 if (NetworkController.Instance.Encounter != null &&
                     EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
                     return EntitiesStats[NetworkController.Instance.Encounter].LastHit;
@@ -181,6 +169,25 @@ namespace DamageMeter.Dealt
             }
         }
 
+        public object Clone()
+        {
+            var clone = new EntitiesDealt(PlayerInfo)
+            {
+                EntitiesStats = EntitiesStats.ToDictionary(i => i.Key, i => (SkillsStats) i.Value.Clone())
+            };
+
+            return clone;
+        }
+
+        public double DamageFraction(long totalDamage)
+        {
+            if (totalDamage == 0)
+            {
+                return 0;
+            }
+            return Math.Round(((double) Damage*100/totalDamage), 1);
+        }
+
         public void SetPlayerInfo(PlayerInfo playerInfo)
         {
             PlayerInfo = playerInfo;
@@ -188,16 +195,6 @@ namespace DamageMeter.Dealt
             {
                 entityStats.Value.SetPlayerInfo(playerInfo);
             }
-        }
-
-        public object Clone()
-        {
-            var clone = new EntitiesDealt(PlayerInfo)
-            {
-                EntitiesStats = EntitiesStats.ToDictionary(i => i.Key, i => (SkillsStats) i.Value.Clone())
-            };
-         
-            return clone;
         }
     }
 }

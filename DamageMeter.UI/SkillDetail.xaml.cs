@@ -46,11 +46,10 @@ namespace DamageMeter.UI
 
             LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(skill.Heal);
             LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skill.Mana);
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.AverageCrit);
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.BiggestCrit);
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.AverageHit);
-            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(skill.AverageTotal);
-
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageCrit);
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.DmgBiggestCrit);
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageHit);
+            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageTotal);
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

@@ -48,6 +48,8 @@ namespace DamageMeter.Sniffing
 
         public static TeraSniffer Instance => _instance ?? (_instance = new TeraSniffer());
 
+        public WinPcapDevice Device { get; private set; }
+
         // IpSniffer has its own locking, so we need no lock here.
         public bool Enabled
         {
@@ -83,11 +85,9 @@ namespace DamageMeter.Sniffing
             handler?.Invoke(obj);
         }
 
-        public WinPcapDevice Device { get; private set; }
-
 
         // called from the tcp sniffer, so it needs to lock
-        private void HandleNewConnection(TcpConnection connection,WinPcapDevice device)
+        private void HandleNewConnection(TcpConnection connection, WinPcapDevice device)
         {
             lock (_eventLock)
             {

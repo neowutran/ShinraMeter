@@ -69,8 +69,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Skill.xaml.cs">
-      <DependentUpon>Skill.xaml</DependentUpon>
+    <Compile Include="Skill.cs" />
+    <Compile Include="SkillMana.xaml.cs">
+      <DependentUpon>SkillMana.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SkillHeal.xaml.cs">
+      <DependentUpon>SkillHeal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SkillDps.xaml.cs">
+      <DependentUpon>SkillDps.xaml</DependentUpon>
     </Compile>
     <Compile Include="SkillDetail.xaml.cs">
       <DependentUpon>SkillDetail.xaml</DependentUpon>
@@ -78,8 +85,17 @@
     <Compile Include="Skills.xaml.cs">
       <DependentUpon>Skills.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillsHeader.xaml.cs">
-      <DependentUpon>SkillsHeader.xaml</DependentUpon>
+    <Compile Include="SkillsDetail.xaml.cs">
+      <DependentUpon>SkillsDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SkillsHeaderHeal.xaml.cs">
+      <DependentUpon>SkillsHeaderHeal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SkillsHeaderMana.xaml.cs">
+      <DependentUpon>SkillsHeaderMana.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SkillsHeaderDps.xaml.cs">
+      <DependentUpon>SkillsHeaderDps.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -97,7 +113,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Skill.xaml">
+    <Page Include="SkillMana.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SkillHeal.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SkillDps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -109,7 +133,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SkillsHeader.xaml">
+    <Page Include="SkillsDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SkillsHeaderHeal.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SkillsHeaderMana.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SkillsHeaderDps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

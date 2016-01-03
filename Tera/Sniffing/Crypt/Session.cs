@@ -6,6 +6,7 @@ namespace Tera.Sniffing.Crypt
 {
     public class Session
     {
+        private static Session _instance;
         public byte[] ClientKey1 = new byte[128];
         public byte[] ClientKey2 = new byte[128];
         public byte[] DecryptKey = new byte[128];
@@ -19,16 +20,13 @@ namespace Tera.Sniffing.Crypt
         public byte[] TmpKey1 = new byte[128];
         public byte[] TmpKey2 = new byte[128];
 
-        public Cryptor ChatEncryptor { get; private set; }
-
-        private static Session _instance;
-        public static Session Instance => _instance ?? (_instance = new Session());
-
 
         private Session()
         {
-            
         }
+
+        public Cryptor ChatEncryptor { get; private set; }
+        public static Session Instance => _instance ?? (_instance = new Session());
 
         public void Init()
         {

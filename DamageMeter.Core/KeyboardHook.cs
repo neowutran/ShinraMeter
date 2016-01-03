@@ -58,7 +58,8 @@ namespace DamageMeter
                     BasicTeraData.Instance.HotkeysData.Copy.Where(
                         copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
-                CopyPaste.Copy(DamageTracker.Instance.GetStats(), DamageTracker.Instance.TotalDamage, DamageTracker.Instance.Interval,copy.Header, copy.Content, copy.Footer, copy.OrderBy,
+                CopyPaste.Copy(DamageTracker.Instance.GetStats(), DamageTracker.Instance.TotalDamage,
+                    DamageTracker.Instance.Interval, copy.Header, copy.Content, copy.Footer, copy.OrderBy,
                     copy.Order);
                 var text = Clipboard.GetText();
                 var pasteThread = new Thread(() => CopyPaste.Paste(text));

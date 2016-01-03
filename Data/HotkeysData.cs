@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -23,37 +22,9 @@ namespace Data
             None = 0
         }
 
-        private void DefaultValue()
-        {
-            Paste = new KeyValuePair<Keys, ModifierKeys>(Keys.Home, ModifierKeys.None);
-            Reset = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.None);
-            Copy = new List<CopyKey>
-            {
-                new CopyKey(
-                    @"Damage Taken @ {encounter}:\",
-                    "",
-                    @"[{class}] {name}: Hits: {hits_received} = {damage_received}\",
-                    ModifierKeys.Control,
-                    Keys.End,
-                    "hits_received",
-                    "descending"
-                    ),
-                new CopyKey(
-                    @"Damage Done @ {encounter} {timer}:\",
-                    "",
-                    @"[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {dps}\",
-                    ModifierKeys.Shift,
-                    Keys.End,
-                    "damage_percentage",
-                    "descending"
-                    )
-            };
-
-        }
+        private readonly bool _fileExist;
 
         private readonly string _hotkeyFile;
-
-        private readonly bool _fileExist;
 
         public HotkeysData(BasicTeraData basicData)
         {
@@ -88,22 +59,21 @@ namespace Data
 
             var xElements = resetQuery as XElement[] ?? resetQuery.ToArray();
             var keyValue = xElements.First().Value;
-            keyValue = keyValue.ToUpper();
+            keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
             if (!Enum.TryParse(keyValue, out resetKey))
             {
                 var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
                 MessageBox.Show(message);
-                throw new Exception(message);
-
+                throw new InvalidConfigFileException(message);
             }
             var enumerable = pasteQuery as XElement[] ?? pasteQuery.ToArray();
             keyValue = enumerable.First().Value;
-            keyValue = keyValue.ToUpper();
+            keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
             if (!Enum.TryParse(keyValue, out pasteKey))
             {
                 var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
                 MessageBox.Show(message);
-                throw new Exception(message);
+                throw new InvalidConfigFileException(message);
             }
 
 
@@ -150,9 +120,35 @@ namespace Data
         public KeyValuePair<Keys, ModifierKeys> Reset { get; private set; }
         public KeyValuePair<Keys, ModifierKeys> Paste { get; private set; }
 
+        private void DefaultValue()
+        {
+            Paste = new KeyValuePair<Keys, ModifierKeys>(Keys.Home, ModifierKeys.None);
+            Reset = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.None);
+            Copy = new List<CopyKey>
+            {
+                new CopyKey(
+                    @"Damage Taken @ {encounter}:\",
+                    "",
+                    @"[{class}] {name}: Hits: {hits_received} = {damage_received}\",
+                    ModifierKeys.Control,
+                    Keys.End,
+                    "hits_received",
+                    "descending"
+                    ),
+                new CopyKey(
+                    @"Damage Done @ {encounter} {timer}:\",
+                    "",
+                    @"[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {dps}\",
+                    ModifierKeys.Shift,
+                    Keys.End,
+                    "damage_percentage",
+                    "descending"
+                    )
+            };
+        }
+
         private void CopyData(XDocument xml)
         {
-            Debug.Assert(xml.Root != null, "xml.Root != null");
             foreach (var copy in xml.Root.Elements("copys").Elements("copy"))
             {
                 bool ctrl, shift, window;
@@ -166,12 +162,12 @@ namespace Data
                 var content = copy.Element("string").Element("content").Value;
                 Keys key;
                 var keyValue = copy.Element("key").Value;
-                keyValue = keyValue.ToUpper();
+                keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
                 if (!Enum.TryParse(keyValue, out key))
                 {
                     var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
                     MessageBox.Show(message);
-                    throw new Exception(message);
+                    throw new InvalidConfigFileException(message);
                 }
                 var order = copy.Element("string").Element("order").Value;
                 var orderBy = copy.Element("string").Element("order_by").Value;
@@ -236,7 +232,6 @@ namespace Data
 
             foreach (var copy in Copy)
             {
-
                 var copyElement = new XElement("copy");
 
                 var copyCtrl = (copy.Modifier & ModifierKeys.Control) != ModifierKeys.None;
@@ -258,7 +253,6 @@ namespace Data
                 copyElement.Add(stringElement);
 
                 xml.Root.Element("copys").Add(copyElement);
-
             }
 
             xml.Save(_hotkeyFile);

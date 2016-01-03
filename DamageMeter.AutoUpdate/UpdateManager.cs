@@ -15,7 +15,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "0.49";
+        public static readonly string Version = "0.51";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -116,6 +116,7 @@ namespace DamageMeter.AutoUpdate
         public static void DestroyRelease()
         {
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\"), File.Delete);
+            Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\resources\"), File.Delete);
             if (!Directory.Exists(ExecutableDirectory + @"\..\..\resources\")) return;
             var data = ExecutableDirectory + @"\..\..\resources\data\";
             var img = ExecutableDirectory + @"\..\..\resources\img\";

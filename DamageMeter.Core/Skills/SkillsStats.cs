@@ -16,15 +16,6 @@ namespace DamageMeter.Skills
             PlayerInfo = playerInfo;
         }
 
-        public void SetPlayerInfo(PlayerInfo playerInfo)
-        {
-            PlayerInfo = playerInfo;
-            foreach (var skill in Skills)
-            {
-                skill.Value.SetPlayerInfo(playerInfo);
-            }
-        }
-
         public long FirstHit
         {
             get
@@ -147,6 +138,15 @@ namespace DamageMeter.Skills
                 Skills = Skills.ToDictionary(i => i.Key, i => (SkillStats) i.Value.Clone())
             };
             return clone;
+        }
+
+        public void SetPlayerInfo(PlayerInfo playerInfo)
+        {
+            PlayerInfo = playerInfo;
+            foreach (var skill in Skills)
+            {
+                skill.Value.SetPlayerInfo(playerInfo);
+            }
         }
 
         public static SkillsStats operator +(SkillsStats c1, SkillsStats c2)

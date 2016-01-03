@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Windows.Threading;
 using DamageMeter.Sniffing;
 using Data;
@@ -22,8 +21,6 @@ namespace DamageMeter
         private static NetworkController _instance;
         private EntityTracker _entityTracker;
 
-        public TeraData TeraData { get; private set; }
-
         private long _lastTick;
         private MessageFactory _messageFactory;
         private PlayerTracker _playerTracker;
@@ -32,17 +29,19 @@ namespace DamageMeter
         {
             TeraSniffer.Instance.MessageReceived += HandleMessageReceived;
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
-
         }
+
+        public TeraData TeraData { get; private set; }
 
         public Entity Encounter { get; set; }
 
         public static NetworkController Instance => _instance ?? (_instance = new NetworkController());
 
+        public IPEndPoint ServerIpEndPoint { get; private set; }
+        public IPEndPoint ClientIpEndPoint { get; private set; }
+
         public event ConnectedHandler Connected;
         public event UpdateUiHandler TickUpdated;
-
-        private delegate void ForceUpdateUi();
 
         public void ForceUpdate()
         {
@@ -63,9 +62,6 @@ namespace DamageMeter
             handler?.Invoke(server.Name);
         }
 
-        public IPEndPoint ServerIpEndPoint { get; private set; }
-        public IPEndPoint ClientIpEndPoint { get; private set; }
-
 
         public void Reset()
         {
@@ -75,14 +71,14 @@ namespace DamageMeter
 
         private void UpdateUi()
         {
-            _lastTick = DateTime.UtcNow.Ticks / 10000000;
+            _lastTick = DateTime.UtcNow.Ticks/10000000;
             var handler = TickUpdated;
             var damage = DamageTracker.Instance.TotalDamage;
-            var stats = 
-            DamageTracker.Instance.GetStats().OrderByDescending(playerStats => playerStats.Dealt.Damage).ToList();
+            var stats =
+                DamageTracker.Instance.GetStats().OrderByDescending(playerStats => playerStats.Dealt.Damage).ToList();
             var interval = DamageTracker.Instance.Interval;
             var entities = new LinkedList<Entity>(DamageTracker.Instance.Entities);
-            handler?.Invoke(interval,damage,entities,stats );
+            handler?.Invoke(interval, damage, entities, stats);
         }
 
         private void HandleMessageReceived(Message obj)
@@ -103,5 +99,7 @@ namespace DamageMeter
             if (second - _lastTick < 1) return;
             UpdateUi();
         }
+
+        private delegate void ForceUpdateUi();
     }
 }

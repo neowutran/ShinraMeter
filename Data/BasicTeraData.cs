@@ -20,6 +20,7 @@ namespace Data
         private BasicTeraData(string resourceDirectory)
         {
             ResourceDirectory = resourceDirectory;
+            XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
@@ -32,11 +33,11 @@ namespace Data
 
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
 
-        public SkillDatabase SkillDatabase { get; }
-        public PinData PinData { get; }
-        public MonsterDatabase MonsterDatabase { get; }
+        public SkillDatabase SkillDatabase { get; private set; }
+        public PinData PinData { get; private set; }
+        public MonsterDatabase MonsterDatabase { get; private set; }
         public WindowData WindowData { get; }
-        public HotkeysData HotkeysData { get; }
+        public HotkeysData HotkeysData { get; private set; }
         public string ResourceDirectory { get; }
         public IEnumerable<Server> Servers { get; private set; }
 
@@ -62,11 +63,6 @@ namespace Data
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the resource directory");
-        }
-
-        public void LogError()
-        {
-            XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
         }
 
         private static IEnumerable<Server> GetServers(string filename)

@@ -6,7 +6,6 @@ namespace Tera.Sniffing.Crypt
 {
     public class Cryptor
     {
-      
         private readonly CryptorKey[] _key =
         {
             new CryptorKey(55, 31),

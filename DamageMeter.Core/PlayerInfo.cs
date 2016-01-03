@@ -3,7 +3,6 @@ using System.ComponentModel;
 using DamageMeter.Dealt;
 using DamageMeter.Taken;
 using Tera.Game;
-using Skill = DamageMeter.Skills.Skill.Skill;
 
 namespace DamageMeter
 {
@@ -26,13 +25,27 @@ namespace DamageMeter
         public EntitiesDealt Dealt { get; private set; }
 
 
+        public object Clone()
+        {
+            var clone = new PlayerInfo(Player)
+            {
+                Received = (EntitiesTaken) Received.Clone(),
+                Dealt = (EntitiesDealt) Dealt.Clone()
+            };
+            clone.Dealt.SetPlayerInfo(clone);
+            return clone;
+        }
+
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((PlayerInfo)obj);
+            return Equals((PlayerInfo) obj);
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public bool Equals(PlayerInfo other)
         {
@@ -47,7 +60,7 @@ namespace DamageMeter
             }
 
             // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null))
+            if (((object) a == null) || ((object) b == null))
             {
                 return false;
             }
@@ -64,21 +77,6 @@ namespace DamageMeter
         {
             return Player.GetHashCode();
         }
-
-
-
-        public object Clone()
-        {
-            var clone = new PlayerInfo(Player)
-            {
-                Received = (EntitiesTaken) Received.Clone(),
-                Dealt = (EntitiesDealt) Dealt.Clone()
-            };
-            clone.Dealt.SetPlayerInfo(clone);
-            return clone;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
 
         public bool IsHealer()

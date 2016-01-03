@@ -28,7 +28,7 @@ namespace NetworkSniffer
         protected void OnNewConnection(TcpConnection connection, WinPcapDevice device)
         {
             var handler = NewConnection;
-            handler?.Invoke(connection,device);
+            handler?.Invoke(connection, device);
         }
 
         private void Receive(IpPacket ipPacket, WinPcapDevice device)
@@ -55,7 +55,7 @@ namespace NetworkSniffer
                 if (isFirstPacket)
                 {
                     connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber);
-                    OnNewConnection(connection,device);
+                    OnNewConnection(connection, device);
                     isInterestingConnection = connection.HasSubscribers;
                     if (!isInterestingConnection)
                     {

@@ -199,29 +199,31 @@
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.5" />
     </Window.Background>
     <Grid HorizontalAlignment="Left">
-        
-          
-            <Image Grid.Column="0" x:Name="PinImage" MouseLeftButtonDown="ToggleTopMost_OnClick" Stretch="Fill" HorizontalAlignment="Left"
+
+
+        <Image Grid.Column="0" x:Name="PinImage" MouseLeftButtonDown="ToggleTopMost_OnClick" Stretch="Fill"
+               HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" />
 
 
-            <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
+        <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="30,0,0,0" VerticalAlignment="Top" Width="248" HorizontalContentAlignment="Stretch" MinHeight="29" Height="5" />
-            <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="330,0,0,0" FontSize="14" Foreground="White"
+                  Margin="30,0,0,0" VerticalAlignment="Top" Width="248" HorizontalContentAlignment="Stretch"
+                  MinHeight="29" Height="5" />
+        <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="330,0,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-            <Label  x:Name="Timer" HorizontalAlignment="Left" Margin="279,0,0,0" FontSize="14" Foreground="White"
+        <Label x:Name="Timer" HorizontalAlignment="Left" Margin="279,0,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-            <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
+        <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
                 Content="X" Foreground="White" BorderThickness="0" Click="Button_OnClick"
                 HorizontalAlignment="Left" Height="29" MinHeight="29"
                 Margin="381,0,0,0" VerticalAlignment="Top" Width="19" />
-        
+
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,28,0,0"
                       HorizontalAlignment="Left" MaxHeight="290" />
-      
+
     </Grid>
 </Window>

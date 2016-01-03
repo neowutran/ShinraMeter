@@ -1,6 +1,4 @@
-﻿using System.Drawing.Text;
-
-namespace Data
+﻿namespace Data
 {
     public class Monster
     {

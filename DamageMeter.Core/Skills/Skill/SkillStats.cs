@@ -17,15 +17,6 @@ namespace DamageMeter.Skills.Skill
         private readonly Entity _entityTarget;
         private PlayerInfo _playerInfo;
 
-        public void SetPlayerInfo(PlayerInfo playerInfo)
-        {
-            _playerInfo = playerInfo;
-            foreach (var skilldetail in SkillDetails)
-            {
-                skilldetail.Value.PlayerInfo = playerInfo;
-            }
-        }
-
         public Dictionary<int, SkillDetailStats> SkillDetails =
             new Dictionary<int, SkillDetailStats>();
 
@@ -48,12 +39,17 @@ namespace DamageMeter.Skills.Skill
         public double CritRateHeal => HitsHeal == 0 ? 0 : Math.Round((double) CritsHeal*100/HitsHeal, 1);
         public double CritRateDmg => HitsDmg == 0 ? 0 : Math.Round((double) CritsDmg*100/HitsDmg, 1);
 
-        public long BiggestCrit
+        public long DmgBiggestCrit
         {
-            get { return SkillDetails.Select(skill => skill.Value.BiggestCrit).Concat(new long[] {0}).Max(); }
+            get { return SkillDetails.Select(skill => skill.Value.DmgBiggestCrit).Concat(new long[] {0}).Max(); }
         }
 
-        public long AverageCrit
+        public long HealBiggestCrit
+        {
+            get { return SkillDetails.Select(skill => skill.Value.HealBiggestCrit).Concat(new long[] {0}).Max(); }
+        }
+
+        public long DmgAverageCrit
         {
             get
             {
@@ -61,8 +57,8 @@ namespace DamageMeter.Skills.Skill
                 var numberCrits = 0;
                 foreach (var skill in SkillDetails)
                 {
-                    numberCrits += skill.Value.Crits;
-                    averageCrit += skill.Value.AverageCrit*skill.Value.Crits;
+                    numberCrits += skill.Value.CritsDmg;
+                    averageCrit += skill.Value.DmgAverageCrit*skill.Value.CritsDmg;
                 }
                 if (numberCrits == 0)
                 {
@@ -72,12 +68,36 @@ namespace DamageMeter.Skills.Skill
             }
         }
 
-        public long BiggestHit
+        public long HealAverageCrit
         {
-            get { return SkillDetails.Select(skill => skill.Value.BiggestHit).Concat(new long[] {0}).Max(); }
+            get
+            {
+                long averageCrit = 0;
+                var numberCrits = 0;
+                foreach (var skill in SkillDetails)
+                {
+                    numberCrits += skill.Value.CritsHeal;
+                    averageCrit += skill.Value.HealAverageCrit*skill.Value.CritsHeal;
+                }
+                if (numberCrits == 0)
+                {
+                    return 0;
+                }
+                return averageCrit/numberCrits;
+            }
         }
 
-        public long AverageHit
+        public long DmgBiggestHit
+        {
+            get { return SkillDetails.Select(skill => skill.Value.DmgBiggestHit).Concat(new long[] {0}).Max(); }
+        }
+
+        public long HealBiggestHit
+        {
+            get { return SkillDetails.Select(skill => skill.Value.HealBiggestHit).Concat(new long[] {0}).Max(); }
+        }
+
+        public long DmgAverageHit
         {
             get
             {
@@ -85,8 +105,8 @@ namespace DamageMeter.Skills.Skill
                 var numberHits = 0;
                 foreach (var skill in SkillDetails)
                 {
-                    numberHits += skill.Value.Hits - skill.Value.Crits;
-                    averageHit += skill.Value.AverageHit*(skill.Value.Hits - skill.Value.Crits);
+                    numberHits += skill.Value.HitsDmg - skill.Value.CritsDmg;
+                    averageHit += skill.Value.DmgAverageHit*(skill.Value.HitsDmg - skill.Value.CritsDmg);
                 }
                 if (numberHits == 0)
                 {
@@ -96,7 +116,26 @@ namespace DamageMeter.Skills.Skill
             }
         }
 
-        public long AverageTotal
+        public long HealAverageHit
+        {
+            get
+            {
+                long averageHit = 0;
+                var numberHits = 0;
+                foreach (var skill in SkillDetails)
+                {
+                    numberHits += skill.Value.HitsHeal - skill.Value.CritsHeal;
+                    averageHit += skill.Value.HealAverageHit*(skill.Value.HitsHeal - skill.Value.CritsHeal);
+                }
+                if (numberHits == 0)
+                {
+                    return 0;
+                }
+                return averageHit/numberHits;
+            }
+        }
+
+        public long DmgAverageTotal
         {
             get
             {
@@ -104,15 +143,34 @@ namespace DamageMeter.Skills.Skill
                 var totalHits = 0;
                 foreach (var skill in SkillDetails)
                 {
-                    totalHits += skill.Value.Hits;
-                    average += skill.Value.AverageTotal * skill.Value.Hits;
+                    totalHits += skill.Value.HitsDmg;
+                    average += skill.Value.DmgAverageTotal*skill.Value.HitsDmg;
                 }
                 if (totalHits == 0)
                 {
                     return 0;
                 }
-                return average / totalHits;
+                return average/totalHits;
+            }
+        }
 
+
+        public long HealAverageTotal
+        {
+            get
+            {
+                long average = 0;
+                var totalHits = 0;
+                foreach (var skill in SkillDetails)
+                {
+                    totalHits += skill.Value.HitsHeal;
+                    average += skill.Value.HealAverageTotal*skill.Value.HitsHeal;
+                }
+                if (totalHits == 0)
+                {
+                    return 0;
+                }
+                return average/totalHits;
             }
         }
 
@@ -192,6 +250,15 @@ namespace DamageMeter.Skills.Skill
                 SkillDetails = SkillDetails.ToDictionary(i => i.Key, i => (SkillDetailStats) i.Value.Clone())
             };
             return clone;
+        }
+
+        public void SetPlayerInfo(PlayerInfo playerInfo)
+        {
+            _playerInfo = playerInfo;
+            foreach (var skilldetail in SkillDetails)
+            {
+                skilldetail.Value.PlayerInfo = playerInfo;
+            }
         }
 
         public static SkillStats operator +(SkillStats c1, SkillStats c2)

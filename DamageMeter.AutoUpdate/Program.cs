@@ -20,6 +20,7 @@ namespace DamageMeter.AutoUpdate
             }
             Thread.Sleep(1000);
             var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
+
             UpdateManager.DestroyRelease();
 
             var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];

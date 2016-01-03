@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows.Markup;
+﻿using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Data
@@ -12,9 +9,8 @@ namespace Data
     {
         private readonly Dictionary<string, Zone> _zonesData = new Dictionary<string, Zone>();
 
-        public MonsterDatabase(string folder,string language)
+        public MonsterDatabase(string folder, string language)
         {
-
             var isBossOverrideXml = XDocument.Load(folder + "monsters-override.xml");
             var bossOverride = new Dictionary<string, Dictionary<string, bool>>();
             var nameOverride = new Dictionary<string, Dictionary<string, string>>();
@@ -39,7 +35,7 @@ namespace Data
                 }
             }
 
-            var xml = XDocument.Load(folder+"monsters-"+language+".xml");
+            var xml = XDocument.Load(folder + "monsters-" + language + ".xml");
 
             foreach (var zone in xml.Root.Elements("Zone"))
             {
@@ -62,7 +58,7 @@ namespace Data
                     {
                         monsterName = nameOverride[id][monsterId];
                     }
-                    _zonesData[id].Monsters.Add(monsterId, new Monster(monsterId,monsterName,isBossBool, hp));
+                    _zonesData[id].Monsters.Add(monsterId, new Monster(monsterId, monsterName, isBossBool, hp));
                 }
             }
         }

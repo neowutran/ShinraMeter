@@ -4,15 +4,22 @@ namespace DamageMeter.Skills.Skill.SkillDetail
 {
     public class SkillDetailStats : ICloneable
     {
-        private long _averageCrit;
-        private long _averageHit;
-
-        private long _biggestCrit;
-        private long _biggestHit;
-        private long _damage;
         private readonly Entity _entityTarget;
-        private long _lowestCrit;
-        private long _lowestHit;
+        private long _damage;
+        private long _dmgAverageCrit;
+        private long _dmgAverageHit;
+
+        private long _dmgBiggestCrit;
+        private long _dmgBiggestHit;
+        private long _dmgLowestCrit;
+        private long _dmgLowestHit;
+        private long _healAverageCrit;
+
+        private long _healAverageHit;
+
+        private long _healBiggestCrit;
+
+        private long _healBiggestHit;
 
         public SkillDetailStats(PlayerInfo playerInfo, Entity entityTarget, int skillId)
         {
@@ -33,88 +40,151 @@ namespace DamageMeter.Skills.Skill.SkillDetail
         public double CritRateHeal => HitsHeal == 0 ? 0 : Math.Round((double) CritsHeal*100/HitsHeal, 1);
         public double CritRateDmg => HitsDmg == 0 ? 0 : Math.Round((double) CritsDmg*100/HitsDmg, 1);
 
-        public long BiggestCrit
+        public long DmgBiggestCrit
         {
-            get { return _biggestCrit; }
+            get { return _dmgBiggestCrit; }
             private set
             {
-                if (_biggestCrit < value)
+                if (_dmgBiggestCrit < value)
                 {
-                    _biggestCrit = value;
+                    _dmgBiggestCrit = value;
                 }
             }
         }
 
-        public long AverageCrit
+        public long DmgAverageCrit
         {
             get
             {
-                if (Crits == 0)
+                if (CritsDmg == 0)
                 {
                     return 0;
                 }
-                return _averageCrit/Crits;
+                return _dmgAverageCrit/CritsDmg;
             }
-            private set { _averageCrit += value; }
+            private set { _dmgAverageCrit += value; }
         }
 
-        public long LowestCrit
+        public long DmgLowestCrit
         {
-            get { return _lowestCrit; }
+            get { return _dmgLowestCrit; }
             private set
             {
-                if ((_lowestCrit > 0 && value < _lowestCrit) || _lowestCrit == 0)
+                if ((_dmgLowestCrit > 0 && value < _dmgLowestCrit) || _dmgLowestCrit == 0)
                 {
-                    _lowestCrit = value;
+                    _dmgLowestCrit = value;
                 }
             }
         }
 
-        public long BiggestHit
+        public long DmgBiggestHit
         {
-            get { return _biggestHit; }
+            get { return _dmgBiggestHit; }
             private set
             {
-                if (_biggestHit < value)
+                if (_dmgBiggestHit < value)
                 {
-                    _biggestHit = value;
+                    _dmgBiggestHit = value;
                 }
             }
         }
 
-        public long AverageHit
+        public long HealBiggestHit
+        {
+            get { return _healBiggestHit; }
+            private set
+            {
+                if (_healBiggestHit < value)
+                {
+                    _healBiggestHit = value;
+                }
+            }
+        }
+
+        public long HealBiggestCrit
+        {
+            get { return _healBiggestCrit; }
+            private set
+            {
+                if (_healBiggestCrit < value)
+                {
+                    _healBiggestCrit = value;
+                }
+            }
+        }
+
+        public long HealAverageCrit
         {
             get
             {
-                if (Hits == 0 || Crits == Hits)
+                if (CritsHeal == 0)
                 {
                     return 0;
                 }
-                return _averageHit/(Hits - Crits);
+                return _healAverageCrit/CritsHeal;
             }
-            private set { _averageHit += value; }
+            private set { _healAverageCrit += value; }
         }
 
-        public long AverageTotal
+        public long DmgAverageHit
         {
             get
             {
-                if (Hits == 0)
+                if (HitsDmg == 0 || CritsDmg == HitsDmg)
                 {
                     return 0;
                 }
-                return _damage/Hits;
+                return _dmgAverageHit/(HitsDmg - CritsDmg);
+            }
+            private set { _dmgAverageHit += value; }
+        }
+
+
+        public long HealAverageHit
+        {
+            get
+            {
+                if (HitsHeal == 0 || CritsHeal == HitsHeal)
+                {
+                    return 0;
+                }
+                return _healAverageHit/(HitsHeal - CritsHeal);
+            }
+            private set { _healAverageHit += value; }
+        }
+
+        public long DmgAverageTotal
+        {
+            get
+            {
+                if (HitsDmg == 0)
+                {
+                    return 0;
+                }
+                return _damage/HitsDmg;
             }
         }
 
-        public long LowestHit
+        public long HealAverageTotal
         {
-            get { return _lowestHit; }
+            get
+            {
+                if (HitsHeal == 0)
+                {
+                    return 0;
+                }
+                return Heal/HitsHeal;
+            }
+        }
+
+        public long DmgLowestHit
+        {
+            get { return _dmgLowestHit; }
             private set
             {
-                if ((_lowestHit > 0 && value < _lowestHit) || _lowestHit == 0)
+                if ((_dmgLowestHit > 0 && value < _dmgLowestHit) || _dmgLowestHit == 0)
                 {
-                    _lowestHit = value;
+                    _dmgLowestHit = value;
                 }
             }
         }
@@ -167,9 +237,10 @@ namespace DamageMeter.Skills.Skill.SkillDetail
         public object Clone()
         {
             var newskill = new SkillDetailStats(PlayerInfo, _entityTarget, Id);
-            newskill.LowestCrit = LowestCrit;
+            newskill.DmgLowestCrit = DmgLowestCrit;
 
-            newskill.BiggestCrit = BiggestCrit;
+            newskill.DmgBiggestCrit = DmgBiggestCrit;
+            newskill.HealBiggestCrit = HealBiggestCrit;
             newskill.HitsHeal = HitsHeal;
             newskill.HitsDmg = HitsDmg;
             newskill.Mana = Mana;
@@ -177,28 +248,15 @@ namespace DamageMeter.Skills.Skill.SkillDetail
 
             newskill.CritsDmg = CritsDmg;
             newskill.CritsHeal = CritsHeal;
+            newskill._dmgAverageCrit = _dmgAverageCrit;
+            newskill._dmgAverageHit = _dmgAverageHit;
+            newskill._healAverageCrit = _healAverageCrit;
+            newskill._healAverageHit = _healAverageHit;
+            newskill.DmgLowestHit = DmgLowestHit;
 
-            if (newskill.Crits == 0)
-            {
-                newskill._averageCrit = 0;
-            }
-            else
-            {
-                newskill._averageCrit = (_averageCrit*newskill.Crits)/(newskill.Crits);
-            }
-            if (newskill.Hits - newskill.Crits == 0)
-            {
-                newskill._averageHit = 0;
-            }
-            else
-            {
-                newskill._averageHit = (_averageHit*(Hits - Crits))/
-                                       (newskill.Hits - newskill.Crits);
-            }
+            newskill.DmgBiggestHit = DmgBiggestHit;
+            newskill.HealBiggestHit = HealBiggestHit;
 
-            newskill.LowestHit = LowestHit;
-
-            newskill.BiggestHit = BiggestHit;
 
             newskill.FirstHit = FirstHit;
             newskill.LastHit = LastHit;
@@ -207,7 +265,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             newskill._damage = _damage;
             newskill.Heal = Heal;
 
-           
+
             return newskill;
         }
 
@@ -220,11 +278,13 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             var skill = c1._entityTarget != c2._entityTarget
                 ? new SkillDetailStats(c1.PlayerInfo, null, c1.Id)
                 : new SkillDetailStats(c1.PlayerInfo, c1._entityTarget, c1.Id);
-            skill.LowestCrit = c1.LowestCrit;
-            skill.LowestCrit = c2.LowestCrit;
+            skill.DmgLowestCrit = c1.DmgLowestCrit;
+            skill.DmgLowestCrit = c2.DmgLowestCrit;
 
-            skill.BiggestCrit = c1.BiggestCrit;
-            skill.BiggestCrit = c2.BiggestCrit;
+            skill.DmgBiggestCrit = c1.DmgBiggestCrit;
+            skill.DmgBiggestCrit = c2.DmgBiggestCrit;
+            skill.HealBiggestCrit = c1.HealBiggestCrit;
+            skill.HealBiggestCrit = c2.HealBiggestCrit;
             skill.HitsHeal = c1.HitsHeal + c2.HitsHeal;
             skill.HitsDmg = c1.HitsDmg + c2.HitsDmg;
             skill.Mana = c1.Mana + c2.Mana;
@@ -233,29 +293,20 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             skill.CritsDmg = c1.CritsDmg + c2.CritsDmg;
             skill.CritsHeal = c1.CritsHeal + c2.CritsHeal;
 
-            if (skill.Crits == 0)
-            {
-                skill._averageCrit = 0;
-            }
-            else
-            {
-                skill._averageCrit = (c1._averageCrit*c1.Crits + c2._averageCrit*c2.Crits)/(skill.Crits);
-            }
-            if (skill.Hits - skill.Crits == 0)
-            {
-                skill._averageHit = 0;
-            }
-            else
-            {
-                skill._averageHit = (c1._averageHit*(c1.Hits - c1.Crits) + c2._averageHit*(c2.Hits - c2.Crits))/
-                                    (skill.Hits - skill.Crits);
-            }
 
-            skill.LowestHit = c1.LowestHit;
-            skill.LowestHit = c2.LowestHit;
+            skill._dmgAverageCrit = c1._dmgAverageCrit + c2._dmgAverageCrit;
 
-            skill.BiggestHit = c1.BiggestHit;
-            skill.BiggestHit = c2.BiggestHit;
+            skill._dmgAverageHit = c1._dmgAverageHit + c2._dmgAverageHit;
+            skill._healAverageCrit = c1._healAverageCrit + c2._healAverageCrit;
+            skill._healAverageHit = c1._healAverageHit + c2._healAverageHit;
+            skill.DmgLowestHit = c1.DmgLowestHit;
+            skill.DmgLowestHit = c2.DmgLowestHit;
+
+            skill.DmgBiggestHit = c1.DmgBiggestHit;
+            skill.DmgBiggestHit = c2.DmgBiggestHit;
+            skill.HealBiggestHit = c1.HealBiggestHit;
+            skill.HealBiggestHit = c2.HealBiggestHit;
+
 
             skill.FirstHit = c1.FirstHit > c2.FirstHit ? c2.FirstHit : c1.FirstHit;
             skill.LastHit = c1.LastHit > c2.LastHit ? c1.LastHit : c2.LastHit;
@@ -296,14 +347,16 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         CritsHeal++;
                         HitsHeal++;
                         Heal += damage;
+                        HealBiggestCrit = damage;
+                        HealAverageCrit = damage;
                         break;
                     case SkillStats.Type.Damage:
                         HitsDmg++;
                         CritsDmg++;
                         Damage += damage;
-                        BiggestCrit = damage;
-                        AverageCrit = damage;
-                        LowestCrit = damage;
+                        DmgBiggestCrit = damage;
+                        DmgAverageCrit = damage;
+                        DmgLowestCrit = damage;
                         SetTotalDamage(damage);
                         break;
                     default:
@@ -317,13 +370,15 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                     case SkillStats.Type.Heal:
                         HitsHeal++;
                         Heal += damage;
+                        HealBiggestHit = damage;
+                        HealAverageHit = damage;
                         break;
                     case SkillStats.Type.Damage:
                         HitsDmg++;
                         Damage += damage;
-                        BiggestHit = damage;
-                        AverageHit = damage;
-                        LowestHit = damage;
+                        DmgBiggestHit = damage;
+                        DmgAverageHit = damage;
+                        DmgLowestHit = damage;
                         SetTotalDamage(damage);
                         break;
                     default:

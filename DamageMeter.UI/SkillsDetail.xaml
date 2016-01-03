@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="DamageMeter.UI.SkillsDetail"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <Grid>
+        <ScrollViewer MinHeight="475" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
+            <ItemsControl MouseLeftButtonDown="Skills_OnMouseLeftButtonDown" MinHeight="475" x:Name="SkillsList"
+                          Background="Transparent" BorderThickness="0" Focusable="False"
+                          HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False" />
+        </ScrollViewer>
+    </Grid>
+</UserControl>

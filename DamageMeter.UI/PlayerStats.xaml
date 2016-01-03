@@ -40,7 +40,7 @@
             <Label Grid.Column="2" FontSize="14" x:Name="LabelDps" HorizontalContentAlignment="Right"
                    VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
-                  <Label Grid.Column="3" FontSize="14" x:Name="LabelDamage" HorizontalContentAlignment="Right"
+            <Label Grid.Column="3" FontSize="14" x:Name="LabelDamage" HorizontalContentAlignment="Right"
                    VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
             <Label Grid.Column="4" FontSize="14" x:Name="LabelCritRate" HorizontalContentAlignment="Right"

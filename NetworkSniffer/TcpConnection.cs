@@ -35,6 +35,8 @@ namespace NetworkSniffer
 
         public uint CurrentSequenceNumber => unchecked((uint) (InitialSequenceNumber + 1 + BytesReceived));
 
+        public static uint NextSequenceNumber { get; private set; }
+
         public event Action<TcpConnection, ByteArraySegment> DataReceived;
 
         public long SequenceNumberToBytesReceived(uint sequenceNumber)
@@ -49,12 +51,10 @@ namespace NetworkSniffer
             dataReceived?.Invoke(this, data);
         }
 
-        public static uint NextSequenceNumber { get; private set; }
-
         internal void HandleTcpReceived(uint sequenceNumber, ByteArraySegment data)
         {
             var dataPosition = SequenceNumberToBytesReceived(sequenceNumber);
-            NextSequenceNumber = (uint)(sequenceNumber + data.Length);
+            NextSequenceNumber = (uint) (sequenceNumber + data.Length);
             if (dataPosition == BytesReceived)
             {
                 OnDataReceived(data);

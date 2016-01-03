@@ -36,7 +36,7 @@ namespace Tera.Sniffing
             session.ServerKey1 = serverKey1;
             session.ServerKey2 = serverKey2;
             session.Init();
-            
+
             Console.WriteLine("Success");
             return session;
         }
@@ -73,7 +73,7 @@ namespace Tera.Sniffing
             {
                 var result = data.ToArray();
                 _session.Decrypt(result);
-                
+
                 OnClientToServerDecrypted(result);
             }
             else

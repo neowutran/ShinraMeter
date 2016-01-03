@@ -8,7 +8,6 @@ namespace Tera.Game.Messages
         internal ParsedMessage(TeraMessageReader reader)
             : base(reader.Message.Time, reader.Message.Direction, reader.Message.Data)
         {
-            
             Raw = reader.Message.Payload.Array;
             OpCodeName = reader.OpCodeName;
             if (OpCodeName == "C_CHAT")

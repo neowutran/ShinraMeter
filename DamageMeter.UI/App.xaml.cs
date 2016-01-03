@@ -24,11 +24,6 @@ namespace DamageMeter.UI
 
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
-
-
-
-
-
             bool aIsNewInstance;
             bool isUpdating;
             var updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
@@ -40,9 +35,9 @@ namespace DamageMeter.UI
                 {
                     shutdown = await CheckUpdate();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Unable to contact update server, try again later: "+ex.Message);
+                    MessageBox.Show("Unable to contact update server, try again later: " + ex.Message);
                 }
                 if (!shutdown) return;
                 Current.Shutdown();

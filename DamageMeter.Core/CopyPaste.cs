@@ -12,7 +12,8 @@ namespace DamageMeter
             TeraWindow.SendString(text);
         }
 
-        public static void Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long intervalvalue, string header, string content, string footer,
+        public static void Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long intervalvalue, string header,
+            string content, string footer,
             string orderby, string order)
         {
             //stop if nothing to paste
@@ -29,7 +30,8 @@ namespace DamageMeter
                         playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Name);
                         break;
                     case "damage_percentage":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.DamageFraction(totalDamage));
+                        playerInfosOrdered =
+                            playerInfos.OrderBy(playerInfo => playerInfo.Dealt.DamageFraction(totalDamage));
                         break;
                     case "damage_dealt":
                         playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Damage);
@@ -65,7 +67,8 @@ namespace DamageMeter
                         playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Name);
                         break;
                     case "damage_percentage":
-                        playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.DamageFraction(totalDamage));
+                        playerInfosOrdered =
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.DamageFraction(totalDamage));
                         break;
                     case "damage_dealt":
                         playerInfosOrdered =
@@ -105,9 +108,10 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage));
-                currentContent = currentContent.Replace("{class}", playerStats.Class+"");
+                currentContent = currentContent.Replace("{class}", playerStats.Class + "");
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
-                currentContent = currentContent.Replace("{damage_percentage}", playerStats.Dealt.DamageFraction(totalDamage) + "%");
+                currentContent = currentContent.Replace("{damage_percentage}",
+                    playerStats.Dealt.DamageFraction(totalDamage) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate + "%");
                 currentContent = currentContent.Replace("{damage_received}",
                     FormatHelpers.Instance.FormatValue(playerStats.Received.Damage));
