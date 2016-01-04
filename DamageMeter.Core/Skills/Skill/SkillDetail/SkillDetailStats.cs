@@ -1,4 +1,5 @@
 ﻿using System;
+using Tera.Game;
 
 namespace DamageMeter.Skills.Skill.SkillDetail
 {
@@ -20,6 +21,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
         private long _healBiggestCrit;
 
         private long _healBiggestHit;
+
 
         public SkillDetailStats(PlayerInfo playerInfo, Entity entityTarget, int skillId)
         {

@@ -14,38 +14,29 @@ namespace Data
             new Dictionary<PlayerClass, List<UserSkill>>();
 
 
-        public SkillDatabase(string filename)
+        public SkillDatabase(string folder, string language)
         {
-            foreach (var file in Directory.EnumerateFiles(filename, "*.tsv"))
-            {
-                var name = Path.GetFileNameWithoutExtension(file);
-                var skills = new StreamReader(File.OpenRead(file));
-                name = char.ToUpper(name[0]) + name.Substring(1);
-                var playerClass = (PlayerClass) Enum.Parse(typeof (PlayerClass), name);
-                ParseFile(skills, playerClass);
-            }
-        }
-
-        private void ParseFile(StreamReader reader, PlayerClass playerClass)
-        {
+           
+                var reader = new StreamReader(File.OpenRead(folder+"skills-"+language+".tsv"));
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
                 if (line == null) continue;
                 var values = line.Split('\t');
-                string hitnumber = null;
-                bool? isChained = null;
-                if (values.Length >= 3 && !string.IsNullOrEmpty(values[2]))
+                var id = int.Parse(values[0]);
+                var race = values[1];
+                var gender = values[2];
+                PlayerClass playerClass;
+                Enum.TryParse(values[3], out playerClass);
+                var skillName = values[4];
+                var chained = false;
+                if (values[5] != "")
                 {
-                    hitnumber = values[2];
+                    chained = bool.Parse(values[5]);
                 }
-                if (values.Length >= 4 && !string.IsNullOrEmpty(values[3]))
-                {
-                    isChained = bool.Parse(values[3]);
-                }
-
-
-                var skill = new UserSkill(int.Parse(values[0]), playerClass, values[1], hitnumber, isChained);
+                var skillDetail = values[6];
+                
+                var skill = new UserSkill(id, playerClass, skillName, skillDetail,chained);
                 if (!_userSkilldata.ContainsKey(skill.PlayerClass))
                 {
                     _userSkilldata[skill.PlayerClass] = new List<UserSkill>();
@@ -53,7 +44,6 @@ namespace Data
                 _userSkilldata[skill.PlayerClass].Add(skill);
             }
         }
-
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
         public UserSkill Get(PlayerClass user, int skillId)
@@ -75,7 +65,8 @@ namespace Data
                 allSkills = allSkills.Union(skillsSpecific).ToList();
             }
 
-            return allSkills.FirstOrDefault(skill => skill.Id == skillId);
+            var skillResult =  allSkills.FirstOrDefault(skill => skill.Id == skillId);
+            return skillResult;
         }
 
         public UserSkill GetOrPlaceholder(PlayerClass user, int skillId)

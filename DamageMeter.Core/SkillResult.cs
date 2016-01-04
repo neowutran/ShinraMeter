@@ -17,13 +17,16 @@ namespace DamageMeter
 
             Source = entityRegistry.GetOrPlaceholder(message.Source);
             Target = entityRegistry.GetOrPlaceholder(message.Target);
-            var sourceUser = UserEntity.ForEntity(Source); // Attribute damage dealt by owned entities to the owner
+            var userNpc = UserEntity.ForEntity(Source);
+            var npc = (NpcEntity) userNpc["npc"];
+            var sourceUser = userNpc["user"] as UserEntity; // Attribute damage dealt by owned entities to the owner
             var targetUser = Target as UserEntity; // But don't attribute damage received by owned entities to the owner
 
             if (sourceUser != null)
             {
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
-                Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, message.SkillId);
+                Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, message.SkillId) ??
+                        new UserSkill(message.SkillId,sourceUser.RaceGenderClass.Class,BasicTeraData.Instance.MonsterDatabase.GetMonsterName(npc.NpcArea.ToString(),npc.NpcId.ToString()), null, null);
                 /*
                 if (SourcePlayer.Name == "Fistiniere")
                 {

@@ -19,6 +19,7 @@ namespace DamageMeter.UI
 
         public void Update(SkillDetailStats skill)
         {
+            
             var hit = BasicTeraData.Instance.SkillDatabase.Hit(skill.PlayerInfo.Class, skill.Id);
             var chained = BasicTeraData.Instance.SkillDatabase.IsChained(skill.PlayerInfo.Class, skill.Id);
             if (hit != null)
