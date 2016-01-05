@@ -9,9 +9,9 @@ namespace DamageMeter.UI
     /// <summary>
     ///     Logique d'interaction pour SkillContent.xaml
     /// </summary>
-    public partial class SkillDetail
+    public partial class SkillDetailDps
     {
-        public SkillDetail(SkillDetailStats skill)
+        public SkillDetailDps(SkillDetailStats skill)
         {
             InitializeComponent();
             Update(skill);
@@ -28,29 +28,24 @@ namespace DamageMeter.UI
             }
             if (chained == true)
             {
-                LabelName.Content += ": Chained";
+                LabelName.Content += " Chained";
             }
 
             LabelId.Content = skill.Id;
             LabelCritRateDmg.Content = skill.CritRateDmg + "%";
-            LabelCritRateHeal.Content = skill.CritRateHeal + "%";
 
             LabelDamagePercentage.Content = skill.DamagePercentage + "%";
             LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skill.Damage);
 
             LabelNumberHitDmg.Content = skill.HitsDmg;
-            LabelNumberHitHeal.Content = skill.HitsHeal;
-            LabelNumberHitMana.Content = skill.HitsMana;
 
             LabelNumberCritDmg.Content = skill.CritsDmg;
-            LabelNumberCritHeal.Content = skill.CritsHeal;
 
-            LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(skill.Heal);
-            LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skill.Mana);
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageCrit);
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.DmgBiggestCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageHit);
             LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageTotal);
+
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

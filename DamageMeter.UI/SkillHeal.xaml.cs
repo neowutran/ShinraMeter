@@ -52,11 +52,11 @@ namespace DamageMeter.UI
 
 
             IEnumerable<KeyValuePair<int, SkillDetailStats>> listStats = stats.SkillDetails.ToList();
-            listStats = listStats.OrderByDescending(stat => stat.Value.Damage);
+            listStats = listStats.OrderByDescending(stat => stat.Value.HealAverageTotal);
             SkillsDetailList.Items.Clear();
             foreach (var stat in listStats)
             {
-                SkillsDetailList.Items.Add(new SkillDetail(stat.Value));
+                SkillsDetailList.Items.Add(new SkillDetailHeal(stat.Value));
             }
         }
 

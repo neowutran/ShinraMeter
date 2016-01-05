@@ -55,7 +55,7 @@ namespace DamageMeter.UI
             SkillsDetailList.Items.Clear();
             foreach (var stat in listStats)
             {
-                SkillsDetailList.Items.Add(new SkillDetail(stat.Value));
+                SkillsDetailList.Items.Add(new SkillDetailDps(stat.Value));
             }
         }
 

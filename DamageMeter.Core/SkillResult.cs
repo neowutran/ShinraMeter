@@ -25,8 +25,14 @@ namespace DamageMeter
             if (sourceUser != null)
             {
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
-                Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, message.SkillId) ??
-                        new UserSkill(message.SkillId,sourceUser.RaceGenderClass.Class,BasicTeraData.Instance.MonsterDatabase.GetMonsterName(npc.NpcArea.ToString(),npc.NpcId.ToString()), null, null);
+                Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, message.SkillId);
+                if (Skill == null && npc != null)
+                {
+
+                    var petName = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(npc.NpcArea.ToString(), npc.NpcId.ToString());
+                    Skill = new UserSkill(message.SkillId, sourceUser.RaceGenderClass.Class,petName, BasicTeraData.Instance.PetSkillDatabase.Get(petName,message.SkillId), null);
+
+                }
                 /*
                 if (SourcePlayer.Name == "Fistiniere")
                 {

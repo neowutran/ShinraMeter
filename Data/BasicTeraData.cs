@@ -27,12 +27,12 @@ namespace Data
             Servers = GetServers(Path.Combine(ResourceDirectory, "data/servers.txt")).ToList();
             MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters/"), Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
             PinData = new PinData(Path.Combine(ResourceDirectory, "img/"));
-
-            SkillDatabase = new SkillDatabase(Path.Combine(ResourceDirectory, "data/skills/"), WindowData.Language);
+            PetSkillDatabase = new PetSkillDatabase(Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
+            SkillDatabase = new SkillDatabase(Path.Combine(ResourceDirectory, "data/skills/"), Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
         }
 
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
-
+        public PetSkillDatabase PetSkillDatabase { get; private set; }
         public SkillDatabase SkillDatabase { get; private set; }
         public PinData PinData { get; private set; }
         public MonsterDatabase MonsterDatabase { get; private set; }

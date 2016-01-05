@@ -14,10 +14,45 @@ namespace Data
             new Dictionary<PlayerClass, List<UserSkill>>();
 
 
-        public SkillDatabase(string folder, string language)
+        public SkillDatabase(string folder,string folderOverride, string language)
         {
-           
-                var reader = new StreamReader(File.OpenRead(folder+"skills-"+language+".tsv"));
+
+            var readerOverride = new StreamReader(File.OpenRead(folderOverride + "skills-override-" + language + ".tsv"));
+            Dictionary<PlayerClass, List<int>> overrideSkills = new Dictionary<PlayerClass, List<int>>();
+            while (!readerOverride.EndOfStream)
+            {
+                var line = readerOverride.ReadLine();
+                if (line == null) continue;
+                var values = line.Split('\t');
+                var id = int.Parse(values[0]);
+                var race = values[1];
+                var gender = values[2];
+                PlayerClass playerClass;
+                Enum.TryParse(values[3], out playerClass);
+                var skillName = values[4];
+                var chained = false;
+                if (values[5] != "")
+                {
+                    chained = bool.Parse(values[5]);
+                }
+                var skillDetail = values[6];
+
+                var skill = new UserSkill(id, playerClass, skillName, skillDetail, chained);
+                if (!_userSkilldata.ContainsKey(skill.PlayerClass))
+                {
+                    _userSkilldata[skill.PlayerClass] = new List<UserSkill>();
+                }
+                _userSkilldata[skill.PlayerClass].Add(skill);
+                if (!overrideSkills.ContainsKey(playerClass))
+                {
+                    overrideSkills[playerClass] = new List<int>();
+                }
+                overrideSkills[playerClass].Add(id);
+            }
+
+
+
+            var reader = new StreamReader(File.OpenRead(folder+"skills-"+language+".tsv"));
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
@@ -41,7 +76,16 @@ namespace Data
                 {
                     _userSkilldata[skill.PlayerClass] = new List<UserSkill>();
                 }
-                _userSkilldata[skill.PlayerClass].Add(skill);
+                if (!overrideSkills.ContainsKey(skill.PlayerClass))
+                {
+                    _userSkilldata[skill.PlayerClass].Add(skill);
+                    continue;
+
+                }
+                if (!overrideSkills[skill.PlayerClass].Contains(skill.Id))
+                {
+                    _userSkilldata[skill.PlayerClass].Add(skill);
+                }
             }
         }
 
