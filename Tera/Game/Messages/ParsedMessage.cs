@@ -10,6 +10,7 @@ namespace Tera.Game.Messages
         {
             Raw = reader.Message.Payload.Array;
             OpCodeName = reader.OpCodeName;
+            Console.WriteLine(OpCodeName);
             if (OpCodeName == "C_CHAT")
             {
                 PrintRaw();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DamageMeter
@@ -9,8 +10,12 @@ namespace DamageMeter
     {
         public static void Paste(string text)
         {
+            if (!Monitor.TryEnter(Lock)) return;
             TeraWindow.SendString(text);
+            Monitor.Exit(Lock);
         }
+        private static readonly object Lock = new object();
+
 
         public static void Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long intervalvalue, string header,
             string content, string footer,
