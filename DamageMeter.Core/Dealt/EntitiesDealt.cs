@@ -72,7 +72,7 @@ namespace DamageMeter.Dealt
             {
                 if (Interval == 0)
                 {
-                    return 0;
+                    return Damage;
                 }
                 return Damage/Interval;
             }

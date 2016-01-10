@@ -50,7 +50,6 @@ namespace DamageMeter.UI
         public void Repaint(PlayerInfo playerInfo, long totalDamage)
         {
             PlayerInfo = playerInfo;
-            DpsIndicator.Width = ActualWidth*(PlayerInfo.Dealt.DamageFraction(totalDamage)/100);
             LabelDps.Content = Dps;
             LabelDamage.Content = Damage;
             LabelCritRate.Content = CritRate;
@@ -60,6 +59,8 @@ namespace DamageMeter.UI
 
 
             _windowSkill?.Update(Skills(), new Dictionary<Skill, SkillStats>(PlayerInfo.Dealt.AllSkills));
+            DpsIndicator.Width = 400 * (PlayerInfo.Dealt.DamageFraction(totalDamage) / 100);
+
         }
 
         private Dictionary<Skill, SkillStats> Skills()

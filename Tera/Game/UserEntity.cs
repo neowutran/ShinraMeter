@@ -44,7 +44,7 @@ namespace Tera.Game
 
         public static Dictionary<string, Entity> ForEntity(Entity entity)
         {
-            Dictionary<string, Entity> entities = new Dictionary<string, Entity>();
+            var entities = new Dictionary<string, Entity>();
             var ownedEntity = entity as IHasOwner;
             while (ownedEntity?.Owner != null)
             {

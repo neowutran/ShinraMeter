@@ -246,7 +246,7 @@ namespace DamageMeter
                 return false;
             }
 
-            if ((UserEntity.ForEntity(message.Source) == UserEntity.ForEntity(message.Target)) && (message.Damage > 0))
+            if ((UserEntity.ForEntity(message.Source)["user"] == UserEntity.ForEntity(message.Target)["user"]) && (message.Damage > 0))
             {
                 return false;
             }
@@ -321,12 +321,14 @@ namespace DamageMeter
 
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource)
         {
+         
+
             if (message.Damage == 0)
             {
                 return;
             }
 
-            if ((UserEntity.ForEntity(message.Target) == UserEntity.ForEntity(message.Source)) && (message.Damage > 0))
+            if ((UserEntity.ForEntity(message.Target)["user"] == UserEntity.ForEntity(message.Source)["user"]))
             {
                 return;
             }
