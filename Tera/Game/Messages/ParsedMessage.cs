@@ -10,11 +10,13 @@ namespace Tera.Game.Messages
         {
             Raw = reader.Message.Payload.Array;
             OpCodeName = reader.OpCodeName;
-            Console.WriteLine(OpCodeName);
-            if (OpCodeName == "C_CHAT")
-            {
-                PrintRaw();
-            }
+
+
+            // Trop d'operation d'ecriture? En tous cas, dps meter ne fonctionne pas avec ca. Peut etre perte de packet? 
+            // Too many write operation? I don't know. But with that line, the dps meter doesn't work. Packet loose? Threading pb? 
+            // Will investigate but no many idea for now
+            PrintRaw();
+
         }
 
         public byte[] Raw { get; protected set; }
