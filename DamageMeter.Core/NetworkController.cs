@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Windows;
 using System.Windows.Threading;
 using DamageMeter.Sniffing;
 using Data;
-using Tera;
 using Tera.Game;
 using Tera.Game.Messages;
+using Application = System.Windows.Forms.Application;
+using Message = Tera.Message;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace DamageMeter
 {
@@ -25,10 +30,21 @@ namespace DamageMeter
         private MessageFactory _messageFactory;
         private PlayerTracker _playerTracker;
 
+        public void Exit()
+        {
+            BasicTeraData.Instance.WindowData.Save();
+            BasicTeraData.Instance.HotkeysData.Save();
+            TeraSniffer.Instance.Enabled = false;
+            Application.Exit();
+        }
+
         private NetworkController()
         {
-            TeraSniffer.Instance.MessageReceived += HandleMessageReceived;
+            //TeraSniffer.Instance.MessageReceived += HandleMessageReceived;
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
+            var packetAnalysis = new Thread(PacketAnalysisLoop);
+            packetAnalysis.Start();
+            
         }
 
         public TeraData TeraData { get; private set; }
@@ -81,23 +97,45 @@ namespace DamageMeter
             handler?.Invoke(interval, damage, entities, stats);
         }
 
-        private void HandleMessageReceived(Message obj)
-        {
-            var message = _messageFactory.Create(obj);
-            _entityTracker.Update(message);
-            var npcOccupier = message as SNpcOccupierInfo;
-            if (npcOccupier != null)
-            {
-                DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier));
-            }
-            var skillResultMessage = message as EachSkillResultServerMessage;
-            if (skillResultMessage == null) return;
-            var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker);
-            DamageTracker.Instance.Update(skillResult);
 
-            var second = DateTime.UtcNow.Ticks/10000000;
-            if (second - _lastTick < 1) return;
-            UpdateUi();
+       
+
+        private void PacketAnalysisLoop()
+        {
+
+            while (true)
+            {
+                Message obj;
+                var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out obj);
+                if (!successDequeue)
+                {
+                    Thread.Sleep(20);
+                    continue;
+                }
+
+                if (TeraSniffer.Instance.Packets.Count > 3000)
+                {
+                    MessageBox.Show(
+                        "Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Shutting down now.");
+                    Exit();
+                }
+
+                var message = _messageFactory.Create(obj);
+                _entityTracker.Update(message);
+                var npcOccupier = message as SNpcOccupierInfo;
+                if (npcOccupier != null)
+                {
+                    DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier));
+                }
+                var skillResultMessage = message as EachSkillResultServerMessage;
+                if (skillResultMessage == null) continue;
+                var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker);
+                DamageTracker.Instance.Update(skillResult);
+
+                var second = DateTime.UtcNow.Ticks/10000000;
+                if (second - _lastTick < 1) continue;
+                UpdateUi();
+            }
         }
 
         private delegate void ForceUpdateUi();

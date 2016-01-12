@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -57,7 +58,6 @@ namespace DamageMeter.Sniffing
             set { _ipSniffer.Enabled = value; }
         }
 
-        public event Action<Message> MessageReceived;
         public event Action<Server, IPEndPoint, IPEndPoint> NewConnection;
 
         public IEnumerable<string> SnifferStatus()
@@ -73,10 +73,12 @@ namespace DamageMeter.Sniffing
             handler?.Invoke(server, serverIpEndPoint, clientIpEndPoint);
         }
 
+        public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
+
+
         protected virtual void OnMessageReceived(Message message)
         {
-            var handler = MessageReceived;
-            handler?.Invoke(message);
+            Packets.Enqueue(message);
         }
 
         protected virtual void OnWarning(string obj)

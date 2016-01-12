@@ -54,12 +54,12 @@ namespace DamageMeter
             var c_chatByte = BitConverter.GetBytes(NetworkController.Instance.TeraData.OpCodeNamer.GetCode("C_CHAT"));
             var packetPayload = c_chatByte.Concat(_say).Concat(bytesChat).ToArray();
 
-            Console.WriteLine("not encrypted");
-            Console.WriteLine(BitConverter.ToString(packetPayload));
+            //Console.WriteLine("not encrypted");
+            //Console.WriteLine(BitConverter.ToString(packetPayload));
             EnCryptor.ApplyCryptor(packetPayload, packetPayload.Length);
 
-            Console.WriteLine("Encrypted");
-            Console.WriteLine(BitConverter.ToString(packetPayload));
+            //Console.WriteLine("Encrypted");
+            //Console.WriteLine(BitConverter.ToString(packetPayload));
 
 
             if (!TeraSniffer.Instance.Device.Opened)
@@ -76,7 +76,7 @@ namespace DamageMeter
                 Psh = true
             };
 
-            Console.WriteLine(TcpConnection.NextSequenceNumber);
+           // Console.WriteLine(TcpConnection.NextSequenceNumber);
 
 
             var ipPacket = new IPv4Packet(NetworkController.Instance.ClientIpEndPoint.Address,
@@ -111,7 +111,7 @@ namespace DamageMeter
 
             ipPacket.UpdateIPChecksum();
             ethernetPacket.UpdateCalculatedValues();
-            Console.WriteLine("Send");
+         //   Console.WriteLine("Send");
             TeraSniffer.Instance.Device.SendPacket(ethernetPacket.Bytes);
         }
 

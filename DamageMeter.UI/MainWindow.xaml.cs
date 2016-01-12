@@ -213,10 +213,7 @@ namespace DamageMeter.UI
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
-            BasicTeraData.Instance.WindowData.Save();
-            BasicTeraData.Instance.HotkeysData.Save();
-            TeraSniffer.Instance.Enabled = false;
-            Application.Exit();
+            NetworkController.Instance.Exit();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
