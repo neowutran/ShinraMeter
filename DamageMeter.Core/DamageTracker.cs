@@ -264,6 +264,11 @@ namespace DamageMeter
 
         private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget)
         {
+            if (message.IsCritical)
+            {
+                Console.WriteLine("crit");
+            }
+
             if (!IsValidAttack(message))
             {
                 return;
@@ -275,6 +280,7 @@ namespace DamageMeter
             {
                 Console.WriteLine("Yukikoo id:"+message.Source.Id);
                 Console.WriteLine("Target id:"+message.Target.Id);
+                
             }
 
             var entities = playerInfo.Dealt;

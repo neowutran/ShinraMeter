@@ -24,7 +24,9 @@ namespace Tera.Game
             {"S_NPC_TARGET_USER", typeof (SNpcTargetUser)},
             {"S_NPC_OCCUPIER_INFO", typeof (SNpcOccupierInfo)},
             {"C_CHAT", typeof (CChat)},
-            {"S_ABNORMALITY_BEGIN", typeof(SAbnormalityBegin) }
+            {"S_ABNORMALITY_BEGIN", typeof(SAbnormalityBegin) },
+            {"S_ABNORMALITY_END", typeof(SAbnormalityEnd) }
+
         };
 
         private readonly OpCodeNamer _opCodeNamer;

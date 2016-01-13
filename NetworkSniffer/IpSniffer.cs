@@ -78,6 +78,7 @@ namespace NetworkSniffer
                 device.Open(DeviceMode.Promiscuous, 1000);
                 device.Filter = _filter;
               
+                /* Please, remember to comment that BEFORE publishing a new release xD
                 try
                 {
                     device.KernelBufferSize = 2000000000;
@@ -87,6 +88,8 @@ namespace NetworkSniffer
                     // ignored
 
                 }
+                */ 
+
                 device.StartCapture();
             }
         }
