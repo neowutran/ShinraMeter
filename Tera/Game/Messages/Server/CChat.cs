@@ -9,11 +9,11 @@ namespace Tera.Game.Messages
             //    reader.Skip(2);
             Canal = reader.ReadBytes(6);
 
-            Console.WriteLine("Canal:" + BitConverter.ToString(Canal));
+            //Console.WriteLine("Canal:" + BitConverter.ToString(Canal));
 
             Text = reader.ReadTeraString();
             
-            Console.WriteLine("text:" + Text);
+            //Console.WriteLine("text:" + Text);
         }
 
         public string Text { get; set; }

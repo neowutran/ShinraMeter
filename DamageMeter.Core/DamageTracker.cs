@@ -194,7 +194,7 @@ namespace DamageMeter
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
 
-
+               
                 UpdateStatsDealt(playerStats, skillResult, entityTarget);
             }
 
@@ -270,6 +270,13 @@ namespace DamageMeter
             }
 
             UpdateEncounter(entityTarget, message);
+
+            if (playerInfo.Name == "Yukikoo")
+            {
+                Console.WriteLine("Yukikoo id:"+message.Source.Id);
+                Console.WriteLine("Target id:"+message.Target.Id);
+            }
+
             var entities = playerInfo.Dealt;
 
             if (!entities.EntitiesStats.ContainsKey(entityTarget))
@@ -333,6 +340,7 @@ namespace DamageMeter
                 return;
             }
 
+       
             var entity = entitySource;
 
             if (entitySource.IsBoss())

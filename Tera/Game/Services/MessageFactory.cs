@@ -23,7 +23,8 @@ namespace Tera.Game
             {"S_CREATURE_CHANGE_HP", typeof (SCreatureChangeHp)},
             {"S_NPC_TARGET_USER", typeof (SNpcTargetUser)},
             {"S_NPC_OCCUPIER_INFO", typeof (SNpcOccupierInfo)},
-            {"C_CHAT", typeof (CChat)}
+            {"C_CHAT", typeof (CChat)},
+            {"S_ABNORMALITY_BEGIN", typeof(SAbnormalityBegin) }
         };
 
         private readonly OpCodeNamer _opCodeNamer;

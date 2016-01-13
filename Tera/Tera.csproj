@@ -41,6 +41,7 @@
     <Compile Include="Game\Messages\Server\SNpcOccupierInfo.cs" />
     <Compile Include="Game\Messages\Server\SNpcTargetUser.cs" />
     <Compile Include="Game\Messages\Server\STargetInfo.cs" />
+    <Compile Include="Game\Messages\Server\S_ABNORMALITY_BEGIN.cs" />
     <Compile Include="Game\Messages\StartUserProjectileServerMessage.cs" />
     <Compile Include="Game\PlaceHolderEntity.cs" />
     <Compile Include="Game\Player.cs" />

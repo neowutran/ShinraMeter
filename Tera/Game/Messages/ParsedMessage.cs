@@ -12,7 +12,12 @@ namespace Tera.Game.Messages
             Raw = reader.Message.Payload.Array;
             OpCodeName = reader.OpCodeName;
 
-            //    PrintRaw();
+            
+            if (OpCodeName.Contains("ABNORMALITY"))
+            {
+                PrintRaw();
+            }
+            
 
         }
 
