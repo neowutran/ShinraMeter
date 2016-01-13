@@ -13,7 +13,7 @@ namespace Tera.Game.Messages
             Unknow2 = reader.ReadInt32();
             StackCounter = reader.ReadInt32();
 
-            Console.WriteLine("Target:"+TargetId+";Abnormality:"+AbnormalityId+";Unknow:"+Unknow+";Uknow2:"+Unknow2+";Stack:"+StackCounter);
+//            Console.WriteLine("Target:"+TargetId+";Abnormality:"+AbnormalityId+";Unknow:"+Unknow+";Uknow2:"+Unknow2+";Stack:"+StackCounter);
         }
 
         private int Unknow { get; set; }
