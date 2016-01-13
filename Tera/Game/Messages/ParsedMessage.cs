@@ -18,6 +18,7 @@ namespace Tera.Game.Messages
                 PrintRaw();
             }
             
+            
 
         }
 

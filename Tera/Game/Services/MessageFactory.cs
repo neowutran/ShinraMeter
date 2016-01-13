@@ -25,7 +25,8 @@ namespace Tera.Game
             {"S_NPC_OCCUPIER_INFO", typeof (SNpcOccupierInfo)},
             {"C_CHAT", typeof (CChat)},
             {"S_ABNORMALITY_BEGIN", typeof(SAbnormalityBegin) },
-            {"S_ABNORMALITY_END", typeof(SAbnormalityEnd) }
+            {"S_ABNORMALITY_END", typeof(SAbnormalityEnd) },
+            {"S_ABNORMALITY_REFRESH", typeof(SAbnormalityRefresh) }
 
         };
 
