@@ -9,22 +9,22 @@ namespace Tera.Game.Messages
         {
             TargetId = reader.ReadEntityId();
             AbnormalityId = reader.ReadInt32();
+            Duration = reader.ReadInt32();
             Unknow = reader.ReadInt32();
-            Unknow2 = reader.ReadInt32();
             StackCounter = reader.ReadInt32();
 
-//            Console.WriteLine("Target:"+TargetId+";Abnormality:"+AbnormalityId+";Unknow:"+Unknow+";Uknow2:"+Unknow2+";Stack:"+StackCounter);
+            Console.WriteLine("Target:"+TargetId+";Abnormality:"+AbnormalityId+";Duration:"+Duration+";Uknow:"+Unknow+";Stack:"+StackCounter);
         }
 
-        private int Unknow { get; set; }
+        public int Duration { get; }
 
-        private int Unknow2 { get; set; }
+        public int Unknow { get; }
 
 
-        private int StackCounter { get; set; }
+        public int StackCounter { get;}
 
-        private int AbnormalityId { get; set; }
+        public int AbnormalityId { get; }
 
-        private EntityId TargetId { get; set; }
+        public EntityId TargetId { get; }
     }
 }

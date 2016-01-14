@@ -87,7 +87,7 @@ namespace DamageMeter
 
         private void UpdateUi()
         {
-            _lastTick = DateTime.UtcNow.Ticks/10000000;
+            _lastTick = Utils.Now();
             var handler = TickUpdated;
             var damage = DamageTracker.Instance.TotalDamage;
             var stats =
@@ -122,17 +122,52 @@ namespace DamageMeter
 
                 var message = _messageFactory.Create(obj);
                 _entityTracker.Update(message);
+
+
+                AbnormalityTracker.Instance.Update();
+
                 var npcOccupier = message as SNpcOccupierInfo;
                 if (npcOccupier != null)
                 {
                     DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier));
+                    continue;
                 }
+
+                var abnormalityBegin = message as SAbnormalityBegin;
+                if (abnormalityBegin != null)
+                {
+                    AbnormalityTracker.Instance.AddAbnormality(abnormalityBegin);
+                    continue;
+                }
+
+                var abnormalityEnd = message as SAbnormalityEnd;
+                if (abnormalityEnd != null)
+                {
+                    AbnormalityTracker.Instance.DeleteAbnormality(abnormalityEnd);
+                    continue;
+                }
+
+                var abnormalityRefresh = message as SAbnormalityRefresh;
+                if (abnormalityRefresh != null)
+                {
+                    AbnormalityTracker.Instance.RefreshAbnormality(abnormalityRefresh);
+                    continue;
+                }
+
+                var despawnNpc = message as SDespawnNpc;
+                if (despawnNpc != null)
+                {
+                    AbnormalityTracker.Instance.DeleteAbnormality(despawnNpc);
+                    continue;
+                }
+
+
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage == null) continue;
                 var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker);
                 DamageTracker.Instance.Update(skillResult);
 
-                var second = DateTime.UtcNow.Ticks/10000000;
+                var second = Utils.Now();
                 if (second - _lastTick < 1) continue;
                 UpdateUi();
             }

@@ -29,8 +29,10 @@ namespace Data
             PinData = new PinData(Path.Combine(ResourceDirectory, "img/"));
             PetSkillDatabase = new PetSkillDatabase(Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
             SkillDatabase = new SkillDatabase(Path.Combine(ResourceDirectory, "data/skills/"), Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
+            HotDotDatabase = new HotDotDatabase(Path.Combine(ResourceDirectory, "data/hotdot/"), WindowData.Language);
         }
-
+        
+        public HotDotDatabase HotDotDatabase { get; }
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
         public PetSkillDatabase PetSkillDatabase { get; private set; }
         public SkillDatabase SkillDatabase { get; private set; }

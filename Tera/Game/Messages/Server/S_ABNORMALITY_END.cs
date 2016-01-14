@@ -10,9 +10,9 @@ namespace Tera.Game.Messages
             AbnormalityId = reader.ReadInt32();
         }
 
-        private int AbnormalityId { get; set; }
-        
-        private EntityId TargetId { get; set; }
+        public int AbnormalityId { get; }
+
+        public EntityId TargetId { get; }
     }
 }
         

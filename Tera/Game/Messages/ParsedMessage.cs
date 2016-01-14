@@ -13,13 +13,13 @@ namespace Tera.Game.Messages
             OpCodeName = reader.OpCodeName;
 
             
-            if (OpCodeName.Contains("ABNORMALITY") || OpCodeName == "S_DESPAWN_NPC")
+            
+            if (OpCodeName.Contains("ABNORMALITY") || OpCodeName == "S_DESPAWN_NPC" || OpCodeName == "S_LOGIN")
             {
                 PrintRaw();
             }
             
-            
-
+       
         }
 
         public byte[] Raw { get; protected set; }

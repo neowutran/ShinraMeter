@@ -10,7 +10,7 @@ namespace Tera.Game.Messages
 
             Npc = reader.ReadEntityId();
         }
-        private EntityId Npc { get; set; }
+        public EntityId Npc { get;}
 
     }
 }

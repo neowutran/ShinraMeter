@@ -33,44 +33,6 @@ namespace DamageMeter
                     Skill = new UserSkill(message.SkillId, sourceUser.RaceGenderClass.Class,petName, BasicTeraData.Instance.PetSkillDatabase.Get(petName,message.SkillId), null);
 
                 }
-                /*
-                if (SourcePlayer.Name == "Fistiniere")
-                {
-                    new ChatBuilder().Add("bonjour").Send();
-                }
-                */
-                /*
-                if ((SourcePlayer.Name == "Diclah" || SourcePlayer.Name == "Yukikoolol" ||
-                     SourcePlayer.Name == "Yukikoo"))
-                {
-                    Console.Write("Source id:" + message.Source);
-                    if (Skill != null)
-                    {
-                        Console.Write("skill name" + message.SkillId);
-                    }
-                    else
-                    {
-                        Console.Write("Skill id" + message.SkillId);
-                    }
-
-                    Console.Write(";Target:" + message.Target);
-
-
-                    Console.WriteLine("Flags:" + message.Flags + ";flags:" + Convert.ToString(message.FlagsDebug, 2) +
-                                      ";isCrit:" + message.IsCritical + ";Amount:" + message.Amount + ";HitId:" +
-                                      message.HitId);
-                    foreach (var byt in message.Unknow1)
-                    {
-                        Console.Write(Convert.ToString(byt, 16));
-                    }
-                    Console.WriteLine("-");
-                    foreach (var byt in message.Unknow2)
-                    {
-                        Console.Write(Convert.ToString(byt, 16));
-                    }
-                    Console.WriteLine("#");
-                }
-                */
             }
 
             if (targetUser != null)

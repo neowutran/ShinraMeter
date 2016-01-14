@@ -55,6 +55,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abnormality.cs" />
+    <Compile Include="AbnormalityTracker.cs" />
     <Compile Include="ChatBuilder.cs" />
     <Compile Include="CopyPaste.cs" />
     <Compile Include="DamageTracker.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Taken\EntitiesTaken.cs" />
     <Compile Include="TeraWindow.cs" />
     <Compile Include="NetworkController.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetworkSniffer\NetworkSniffer.csproj">
