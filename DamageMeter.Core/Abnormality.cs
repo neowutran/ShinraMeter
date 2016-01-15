@@ -18,12 +18,15 @@ namespace DamageMeter
         private long _startTime;
         private int _timeLeft;
 
+        public EntityId Target { get; }
+
         public int Duration { get; private set; }
 
-        public Abnormality(HotDot hotdot, EntityId source, int duration, int stack)
+        public Abnormality(HotDot hotdot, EntityId source, EntityId target, int duration, int stack)
         {
             HotDot = hotdot;
             Source = source;
+            Target = target;
             Duration = duration / 1000;
             _timeLeft = Duration;
             Stack = stack == 0 ? 1 : stack;
@@ -57,13 +60,40 @@ namespace DamageMeter
 
             
                 Console.WriteLine("dot:"+HotDot.Name+";amount HP:" + amountHp + ";amount MP:" + amountMp);
-                
-                //TODO add damage / heal
+
+                for (var i = 0; i < numberTick; i++)
+                {
+                    var skillResultHp = NetworkController.Instance.ForgeSkillResult(
+                        true,
+                        (int)amountHp,
+                        false, //TODO isCritical
+                        true,
+                        HotDot.Id,
+                        Source,
+                        Target);
+
+                    var skillResultMp = NetworkController.Instance.ForgeSkillResult(
+                       true,
+                       (int)amountMp,
+                       false, //TODO isCritical
+                       false,
+                       HotDot.Id,
+                       Source,
+                       Target);
+
+                    DamageTracker.Instance.Update(skillResultHp);
+                    DamageTracker.Instance.Update(skillResultMp);
+
+
+
+                }
             }
             else
             {
                 //TODO Percentage, need to know target max HP / MP etc
             }
+
+            NetworkController.Instance.CheckUpdateUi();
         }
 
     
@@ -71,6 +101,7 @@ namespace DamageMeter
         {
             Stack = stackCounter;
             Duration = duration / 1000;
+            _timeLeft = Duration;
         }
 
     }

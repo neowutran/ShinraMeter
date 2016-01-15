@@ -21,6 +21,14 @@ namespace DamageMeter.UI
         {
             
             var hit = BasicTeraData.Instance.SkillDatabase.Hit(skill.PlayerInfo.Class, skill.Id);
+            if (hit == null)
+            {
+                if (BasicTeraData.Instance.HotDotDatabase.Get(skill.Id) != null)
+                {
+                    hit = "DOT";
+                }
+            }
+            
             var chained = BasicTeraData.Instance.SkillDatabase.IsChained(skill.PlayerInfo.Class, skill.Id);
             if (hit != null)
             {

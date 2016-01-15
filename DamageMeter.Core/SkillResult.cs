@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System;
+using Data;
 using Tera.Game;
 using Tera.Game.Messages;
 
@@ -6,17 +7,16 @@ namespace DamageMeter
 {
     public class SkillResult
     {
-        public SkillResult(EachSkillResultServerMessage message, EntityTracker entityRegistry,
+        public SkillResult(bool abnormality,int amount, bool isCritical, bool isHp, int skillId, EntityId source, EntityId target , EntityTracker entityRegistry,
             PlayerTracker playerTracker)
         {
-            Amount = message.Amount;
-            IsCritical = message.IsCritical;
-            IsHeal = message.IsHeal;
-            IsMana = message.IsMana;
-            SkillId = message.SkillId;
-
-            Source = entityRegistry.GetOrPlaceholder(message.Source);
-            Target = entityRegistry.GetOrPlaceholder(message.Target);
+            Amount = amount;
+            IsCritical = isCritical;
+            IsHp = isHp;
+            SkillId = skillId;
+            Abnormality = abnormality;
+            Source = entityRegistry.GetOrPlaceholder(source);
+            Target = entityRegistry.GetOrPlaceholder(target);
             var userNpc = UserEntity.ForEntity(Source);
             var npc = (NpcEntity) userNpc["npc"];
             var sourceUser = userNpc["user"] as UserEntity; // Attribute damage dealt by owned entities to the owner
@@ -25,13 +25,22 @@ namespace DamageMeter
             if (sourceUser != null)
             {
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
-                Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, message.SkillId);
-                if (Skill == null && npc != null)
+                if (abnormality)
                 {
+                    Skill = new UserSkill(skillId, PlayerClass.Common, BasicTeraData.Instance.HotDotDatabase.Get(skillId).Name, "DOT", null);
+                }
+                else
+                {
+                    Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, skillId);
+                    if (Skill == null && npc != null)
+                    {
 
-                    var petName = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(npc.NpcArea.ToString(), npc.NpcId.ToString());
-                    Skill = new UserSkill(message.SkillId, sourceUser.RaceGenderClass.Class,petName, BasicTeraData.Instance.PetSkillDatabase.Get(petName,message.SkillId), null);
+                        var petName = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(npc.NpcArea.ToString(),
+                            npc.NpcId.ToString());
+                        Skill = new UserSkill(skillId, sourceUser.RaceGenderClass.Class, petName,
+                            BasicTeraData.Instance.PetSkillDatabase.Get(petName, skillId), null);
 
+                    }
                 }
             }
 
@@ -41,13 +50,12 @@ namespace DamageMeter
             }
         }
 
+        public bool Abnormality { get; }
         public int Amount { get; }
         public Tera.Game.Entity Source { get; }
         public Tera.Game.Entity Target { get; }
         public bool IsCritical { get; private set; }
-        public bool IsHeal { get; }
-
-        public bool IsMana { get; }
+        public bool IsHp { get; }
 
         public int SkillId { get; private set; }
         public UserSkill Skill { get; }
@@ -56,17 +64,17 @@ namespace DamageMeter
         {
             get
             {
-                if (!IsMana && !IsHeal)
+                if ( IsHp && Amount < 0)
                 {
-                    return Amount;
+                    return Math.Abs(Amount);
                 }
                 return 0;
             }
         }
 
-        public int Heal => IsHeal ? Amount : 0;
+        public int Heal => (IsHp && Amount > 0) ? Amount : 0;
 
-        public int Mana => IsMana ? Amount : 0;
+        public int Mana => !IsHp ? Amount : 0;
 
 
         public Player SourcePlayer { get; }

@@ -37,13 +37,13 @@
     <Compile Include="Game\Angle.cs" />
     <Compile Include="Game\IHasOwner.cs" />
     <Compile Include="Game\Messages\Server\CChat.cs" />
-    <Compile Include="Game\Messages\Server\SCreatureChangeHp.cs" />
     <Compile Include="Game\Messages\Server\SNpcOccupierInfo.cs" />
     <Compile Include="Game\Messages\Server\SNpcTargetUser.cs" />
     <Compile Include="Game\Messages\Server\STargetInfo.cs" />
     <Compile Include="Game\Messages\Server\S_ABNORMALITY_END.cs" />
     <Compile Include="Game\Messages\Server\S_ABNORMALITY_BEGIN.cs" />
     <Compile Include="Game\Messages\Server\S_ABNORMALITY_REFRESH.cs" />
+    <Compile Include="Game\Messages\Server\S_CREATURE_CHANGE_HP.cs" />
     <Compile Include="Game\Messages\Server\S_DESPAWN_NPC.cs" />
     <Compile Include="Game\Messages\StartUserProjectileServerMessage.cs" />
     <Compile Include="Game\PlaceHolderEntity.cs" />

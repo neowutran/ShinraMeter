@@ -36,7 +36,7 @@ namespace DamageMeter
                 return;
             }
            
-            _abnormalities[target].Add(new Abnormality(hotdot, message.SourceId, message.Duration, message.Stack));
+            _abnormalities[target].Add(new Abnormality(hotdot, message.SourceId, message.TargetId, message.Duration, message.Stack));
             
         }
 

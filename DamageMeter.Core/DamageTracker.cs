@@ -246,7 +246,7 @@ namespace DamageMeter
                 return false;
             }
 
-            if ((UserEntity.ForEntity(message.Source)["user"] == UserEntity.ForEntity(message.Target)["user"]) && (message.Damage > 0))
+            if ((UserEntity.ForEntity(message.Source)["user"] == UserEntity.ForEntity(message.Target)["user"]) && (message.Damage != 0))
             {
                 return false;
             }
@@ -256,7 +256,7 @@ namespace DamageMeter
 
         private void UpdateEncounter(Entity entity, SkillResult msg)
         {
-            if (!Entities.Contains(entity) && !msg.IsHeal && !msg.IsMana)
+            if (!Entities.Contains(entity) && msg.Damage != 0)
             {
                 Entities.AddFirst(entity);
             }
@@ -271,13 +271,6 @@ namespace DamageMeter
             }
 
             UpdateEncounter(entityTarget, message);
-
-            if (playerInfo.Name == "Yukikoo")
-            {
-                Console.WriteLine("Yukikoo id:"+message.Source.Id);
-                Console.WriteLine("Target id:"+message.Target.Id);
-                
-            }
 
             var entities = playerInfo.Dealt;
 
@@ -301,17 +294,19 @@ namespace DamageMeter
             {
                 skillStats = new SkillStats(playerInfo, entityTarget);
             }
-            if (message.IsHeal)
+            if (message.IsHp)
             {
-                skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal);
+                if (message.Amount > 0)
+                {
+                    skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal);                    
+                }
+                else
+                {
+                    skillStats.AddData(message.SkillId, message.Damage, message.IsCritical, SkillStats.Type.Damage);
+                }
             }
-            else if (message.IsMana)
-            {
+            else {
                 skillStats.AddData(message.SkillId, message.Mana, message.IsCritical, SkillStats.Type.Mana);
-            }
-            else
-            {
-                skillStats.AddData(message.SkillId, message.Damage, message.IsCritical, SkillStats.Type.Damage);
             }
 
             var skill = entities.EntitiesStats[entityTarget].Skills.Keys.ToList();
@@ -369,6 +364,7 @@ namespace DamageMeter
             playerInfo.Received.EntitiesStats[entity].AddDamage(message.Damage);
             if (Instance.Entities.Contains(entity)) return;
             Instance.Entities.AddFirst(entity);
+            Console.WriteLine(entity.Name);
             TotalDamageEntity.Add(entity, 0);
         }
     }

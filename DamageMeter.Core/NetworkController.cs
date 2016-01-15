@@ -124,7 +124,6 @@ namespace DamageMeter
                 _entityTracker.Update(message);
 
 
-                AbnormalityTracker.Instance.Update();
 
                 var npcOccupier = message as SNpcOccupierInfo;
                 if (npcOccupier != null)
@@ -132,6 +131,8 @@ namespace DamageMeter
                     DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier));
                     continue;
                 }
+
+                AbnormalityTracker.Instance.Update();
 
                 var abnormalityBegin = message as SAbnormalityBegin;
                 if (abnormalityBegin != null)
@@ -164,13 +165,47 @@ namespace DamageMeter
 
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage == null) continue;
-                var skillResult = new SkillResult(skillResultMessage, _entityTracker, _playerTracker);
+                var amount = skillResultMessage.Amount;
+                if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
+                {
+                    amount *= -1;
+                }
+                var skillResult = ForgeSkillResult(
+                    false,
+                    amount,
+                    skillResultMessage.IsCritical,
+                    skillResultMessage.IsHp,
+                    skillResultMessage.SkillId,
+                    skillResultMessage.Source,
+                    skillResultMessage.Target);
+              
                 DamageTracker.Instance.Update(skillResult);
-
-                var second = Utils.Now();
-                if (second - _lastTick < 1) continue;
-                UpdateUi();
+                CheckUpdateUi();
             }
+        }
+
+
+        public void CheckUpdateUi()
+        {
+
+            var second = Utils.Now();
+            if (second - _lastTick < 1) return;
+            UpdateUi();
+        }
+        public SkillResult ForgeSkillResult(bool abnormality, int amount, bool isCritical, bool isHeal,
+            int skillId, EntityId source, EntityId target)
+        {
+            return new SkillResult(
+                   abnormality,
+                   amount,
+                   isCritical,
+                   isHeal,
+                   skillId,
+                   source,
+                   target,
+                   _entityTracker,
+                   _playerTracker
+                   );
         }
 
         private delegate void ForceUpdateUi();

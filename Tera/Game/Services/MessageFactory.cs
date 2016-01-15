@@ -29,7 +29,6 @@ namespace Tera.Game
             {"S_ABNORMALITY_REFRESH", typeof(SAbnormalityRefresh) },
             {"S_DESPAWN_NPC",typeof(SDespawnNpc) }
 
-
         };
 
         private readonly OpCodeNamer _opCodeNamer;
