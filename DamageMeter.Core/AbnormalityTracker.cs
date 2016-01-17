@@ -32,7 +32,7 @@ namespace DamageMeter
             var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(message.AbnormalityId);
             if (hotdot == null)
             {
-          //      Console.WriteLine("UNKNOW DOT");
+       //         Console.WriteLine("UNKNOW DOT");
                 return;
             }
            
@@ -45,7 +45,7 @@ namespace DamageMeter
             var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(message.AbnormalityId);
             if (hotdot == null)
             {
-           //     Console.WriteLine("UNKNOW DOT");
+         //       Console.WriteLine("UNKNOW DOT");
                 return;
             }
             var abnormalityUser = _abnormalities[message.TargetId];
@@ -96,35 +96,49 @@ namespace DamageMeter
         {
             Dot = 131071,
             Hot = 65536,
-            Aura = 0,
-
         }
 
-        //TODO refactor the 2 update with generics or other
-
-        public void Update(S_PLAYER_CHANGE_MP message)
+        public void Update(SPlayerChangeMp message)
         {
-            if (!_abnormalities.ContainsKey(message.TargetId))
+            Update(message.TargetId, message.SourceId, message.MpChange, message.Type, message.Critical == 1, false);
+        }
+
+        private void Update(EntityId target, EntityId source, int change, int type, bool critical, bool isHp)
+        {
+            if (!_abnormalities.ContainsKey(target))
             {
                 return;
             }
 
-            foreach (var abnormality in _abnormalities[message.TargetId])
+            var abnormalities = _abnormalities[target];
+            abnormalities = abnormalities.OrderByDescending(o => o.TimeBeforeApply).ToList();
+
+            foreach (var abnormality in abnormalities)
             {
-                if (abnormality.Source != message.SourceId)
-                {
-                    continue;
-                }
-                if ((!(abnormality.HotDot.Mp > 0) || message.MpChange <= 0) &&
-                    (!(abnormality.HotDot.Mp < 0) || message.MpChange >= 0)) continue;
-
-                if (!Enum.IsDefined(typeof (HotDot), message.Type))
+                if (abnormality.Source != source)
                 {
                     continue;
                 }
 
-                var critical = message.Critical == 1;
-                abnormality.Apply(message.MpChange, critical, false);
+                if (isHp)
+                {
+                    if ((!(abnormality.HotDot.Hp > 0) || change <= 0) &&
+                        (!(abnormality.HotDot.Hp < 0) || change >= 0) 
+                        ) continue;
+                }
+                else
+                {
+                    if ((!(abnormality.HotDot.Mp > 0) || change <= 0) &&
+                        (!(abnormality.HotDot.Mp < 0) || change >= 0) 
+                        ) continue;
+                }
+
+                if (!Enum.IsDefined(typeof(HotDot), type))
+                {
+                    continue;
+                }
+
+                abnormality.Apply(change, critical, isHp);
                 break;
             }
         }
@@ -134,29 +148,7 @@ namespace DamageMeter
 
         public void Update(SCreatureChangeHp message)
         {
-            if (!_abnormalities.ContainsKey(message.TargetId))
-            {
-                return;
-            }
-
-            foreach (var abnormality in _abnormalities[message.TargetId])
-            {
-                if (abnormality.Source != message.SourceId)
-                {
-                    continue;
-                }
-                if ((!(abnormality.HotDot.Hp > 0) || message.HpChange <= 0) &&
-                    (!(abnormality.HotDot.Hp < 0) || message.HpChange >= 0)) continue;
-
-                if (!Enum.IsDefined(typeof (HotDot), message.Type))
-                {
-                    continue;
-                }
-
-                var critical = message.Critical == 1;
-                abnormality.Apply(message.HpChange, critical, true );
-                break;
-            }
+            Update(message.TargetId, message.SourceId, message.HpChange, message.Type, message.Critical == 1, true);
         }
     }
 }

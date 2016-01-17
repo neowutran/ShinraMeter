@@ -102,7 +102,7 @@ namespace DamageMeter
         }
 
 
-        private void DeleteEntity(Entity entity)
+        public void DeleteEntity(Entity entity)
         {
             if (NetworkController.Instance.Encounter == entity)
             {
@@ -271,12 +271,7 @@ namespace DamageMeter
             }
 
             UpdateEncounter(entityTarget, message);
-            if (playerInfo.Name == "Yukikoo")
-            {
-                Console.WriteLine("Yukikoo:"+message.Source.Id+";target"+message.Target.Id);
-
-            }
-
+       
             var entities = playerInfo.Dealt;
 
             if (!entities.EntitiesStats.ContainsKey(entityTarget))

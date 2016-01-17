@@ -39,7 +39,7 @@ namespace DamageMeter
             }
         }
 
-        private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
+        private static void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
             if (e.Key == BasicTeraData.Instance.HotkeysData.Paste.Key &&
                 e.Modifier == BasicTeraData.Instance.HotkeysData.Paste.Value)
@@ -52,6 +52,9 @@ namespace DamageMeter
                      e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Value)
             {
                 NetworkController.Instance.Reset();
+            }else if (e.Key == BasicTeraData.Instance.HotkeysData.ResetCurrent.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ResetCurrent.Value)
+            {
+                NetworkController.Instance.ResetCurrent();
             }
             foreach (
                 var copy in
@@ -82,6 +85,8 @@ namespace DamageMeter
                     BasicTeraData.Instance.HotkeysData.Paste.Key);
                 Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value,
                     BasicTeraData.Instance.HotkeysData.Reset.Key);
+                Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Value,
+                   BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
             }
             catch
             {

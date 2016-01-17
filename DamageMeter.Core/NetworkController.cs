@@ -85,6 +85,12 @@ namespace DamageMeter
             UpdateUi();
         }
 
+        public void ResetCurrent()
+        {
+            DamageTracker.Instance.DeleteEntity(Encounter);
+            UpdateUi();
+        }
+
         private void UpdateUi()
         {
             _lastTick = Utils.Now();
@@ -138,7 +144,7 @@ namespace DamageMeter
                     AbnormalityTracker.Instance.Update(changeHp);
                 }
 
-                var changeMp = message as S_PLAYER_CHANGE_MP;
+                var changeMp = message as SPlayerChangeMp;
                 if (changeMp != null)
                 {
                     AbnormalityTracker.Instance.Update(changeMp);

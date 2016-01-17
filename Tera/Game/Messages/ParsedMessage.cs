@@ -19,12 +19,13 @@ namespace Tera.Game.Messages
                 PrintRaw();
             }
             */
-
-            
+        //    Console.WriteLine(OpCodeName);
+            /*
             if (OpCodeName.Contains("CHANGE_MP"))
             {
                 PrintRaw();
             }
+            */
             
             /*
             Console.WriteLine(OpCodeName);

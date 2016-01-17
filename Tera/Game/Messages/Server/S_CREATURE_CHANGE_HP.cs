@@ -19,7 +19,7 @@ namespace Tera.Game.Messages
             Critical = reader.ReadInt16();
             
            
-            Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Hp left:" + HpRemaining + ";Max HP:" + TotalHp+";HpLost/Gain:"+ HpChange + ";Type:"+ Type + ";Unknow3:"+Unknow3);
+ //           Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Hp left:" + HpRemaining + ";Max HP:" + TotalHp+";HpLost/Gain:"+ HpChange + ";Type:"+ Type + ";Unknow3:"+Unknow3);
 
         }
 

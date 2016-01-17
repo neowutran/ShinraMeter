@@ -10,9 +10,9 @@ namespace Tera.Game.Messages
 {
 
 
-    public class S_PLAYER_CHANGE_MP : ParsedMessage
+    public class SPlayerChangeMp : ParsedMessage
     {
-        internal S_PLAYER_CHANGE_MP(TeraMessageReader reader) : base(reader)
+        internal SPlayerChangeMp(TeraMessageReader reader) : base(reader)
         {
             MpRemaining = reader.ReadInt32();
             TotalMp = reader.ReadInt32();
@@ -24,7 +24,7 @@ namespace Tera.Game.Messages
             Critical = reader.ReadInt16();
 
 
-            Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Mp left:" + MpRemaining + ";Max MP:" + TotalMp + ";MpLost/Gain:" + MpChange + ";Type:" + Type + ";Unknow3:" + Unknow3);
+  //          Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Mp left:" + MpRemaining + ";Max MP:" + TotalMp + ";MpLost/Gain:" + MpChange + ";Type:" + Type + ";Unknow3:" + Unknow3);
 
         }
 

@@ -54,8 +54,10 @@ namespace Data
                 select hotkeys.Element("key");
             var resetQuery = from hotkeys in root.Descendants("reset")
                 select hotkeys.Element("key");
+          
 
-            Keys resetKey, pasteKey;
+
+                           Keys resetKey, pasteKey;
 
             var xElements = resetQuery as XElement[] ?? resetQuery.ToArray();
             var keyValue = xElements.First().Value;
@@ -66,6 +68,7 @@ namespace Data
                 MessageBox.Show(message);
                 throw new InvalidConfigFileException(message);
             }
+
             var enumerable = pasteQuery as XElement[] ?? pasteQuery.ToArray();
             keyValue = enumerable.First().Value;
             keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
@@ -76,6 +79,9 @@ namespace Data
                 throw new InvalidConfigFileException(message);
             }
 
+
+
+        
 
             //Get modifier
             var pasteShiftQuery = from hotkeys in root.Descendants("paste")
@@ -95,6 +101,8 @@ namespace Data
                 select hotkeys.Element("alt");
 
 
+         
+
             bool pasteShift, pasteWindow, resetShift, resetCtrl, resetWindow, resetAlt, pasteCtrl;
             bool.TryParse(pasteShiftQuery.First().Value, out pasteShift);
             bool.TryParse(pasteWindowQuery.First().Value, out pasteWindow);
@@ -106,13 +114,13 @@ namespace Data
             bool.TryParse(resetWindowQuery.First().Value, out resetWindow);
             bool.TryParse(resetAltQuery.First().Value, out resetAlt);
 
-            var pasteModifier = ConvertToModifierKey(pasteCtrl, false, pasteShift, pasteWindow);
+       var pasteModifier = ConvertToModifierKey(pasteCtrl, false, pasteShift, pasteWindow);
             var resetModifier = ConvertToModifierKey(resetCtrl, resetAlt, resetShift, resetWindow);
 
             Paste = new KeyValuePair<Keys, ModifierKeys>(pasteKey, pasteModifier);
             Reset = new KeyValuePair<Keys, ModifierKeys>(resetKey, resetModifier);
             Copy = new List<CopyKey>();
-
+            KeyResetCurrent(root);
             CopyData(xml);
         }
 
@@ -120,10 +128,57 @@ namespace Data
         public KeyValuePair<Keys, ModifierKeys> Reset { get; private set; }
         public KeyValuePair<Keys, ModifierKeys> Paste { get; private set; }
 
+        public KeyValuePair<Keys, ModifierKeys> ResetCurrent { get; private set; }
+
+        private void KeyResetCurrent(XElement root)
+        {
+            try
+            {
+                var resetCurrentQuery = from hotkeys in root.Descendants("reset_current")
+                    select hotkeys.Element("key");
+                Keys resetCurrentKey;
+                var xelements = resetCurrentQuery as XElement[] ?? resetCurrentQuery.ToArray();
+                var keyValue = xelements.First().Value;
+                keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
+                if (!Enum.TryParse(keyValue, out resetCurrentKey))
+                {
+                    var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
+                    MessageBox.Show(message);
+                    throw new InvalidConfigFileException(message);
+                }
+
+                var resetCurrentShiftQuery = from hotkeys in root.Descendants("reset_current")
+                    select hotkeys.Element("shift");
+                var resetCurrentCtrlQuery = from hotkeys in root.Descendants("reset_current")
+                    select hotkeys.Element("ctrl");
+                var resetCurrentWindowQuery = from hotkeys in root.Descendants("reset_current")
+                    select hotkeys.Element("window");
+                var resetCurrentAltQuery = from hotkeys in root.Descendants("reset_current")
+                    select hotkeys.Element("alt");
+
+                bool resetCurrentAlt, resetCurrentShift, resetCurrentCtrl, resetCurrentWindow;
+                bool.TryParse(resetCurrentShiftQuery.First().Value, out resetCurrentShift);
+                bool.TryParse(resetCurrentCtrlQuery.First().Value, out resetCurrentCtrl);
+                bool.TryParse(resetCurrentWindowQuery.First().Value, out resetCurrentWindow);
+                bool.TryParse(resetCurrentAltQuery.First().Value, out resetCurrentAlt);
+                var resetCurrentModifier = ConvertToModifierKey(resetCurrentCtrl, resetCurrentAlt, resetCurrentShift,
+                    resetCurrentWindow);
+
+                ResetCurrent = new KeyValuePair<Keys, ModifierKeys>(resetCurrentKey, resetCurrentModifier);
+            }
+            catch
+            {
+                
+            }
+
+
+        }
+
         private void DefaultValue()
         {
             Paste = new KeyValuePair<Keys, ModifierKeys>(Keys.Home, ModifierKeys.None);
             Reset = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.None);
+            ResetCurrent = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.Control);
             Copy = new List<CopyKey>
             {
                 new CopyKey(
@@ -227,6 +282,26 @@ namespace Data
             xml.Root.Element("reset").Add(new XElement("window", resetWindow.ToString()));
             xml.Root.Element("reset").Add(new XElement("alt", resetAlt.ToString()));
             xml.Root.Element("reset").Add(new XElement("key", resetKey.ToString()));
+
+
+
+
+            var resetCurrentCtrl = (ResetCurrent.Value & ModifierKeys.Control) != ModifierKeys.None;
+            var resetCurrentShift = (ResetCurrent.Value & ModifierKeys.Shift) != ModifierKeys.None;
+            var resetCurrentWindow = (ResetCurrent.Value & ModifierKeys.Win) != ModifierKeys.None;
+            var resetCurrentAlt = (ResetCurrent.Value & ModifierKeys.Alt) != ModifierKeys.None;
+            var resetCurrentKey = ResetCurrent.Key;
+
+            xml.Root.Add(new XElement("reset_current"));
+
+            xml.Root.Element("reset_current").Add(new XElement("ctrl", resetCurrentCtrl.ToString()));
+            xml.Root.Element("reset_current").Add(new XElement("shift", resetCurrentShift.ToString()));
+            xml.Root.Element("reset_current").Add(new XElement("window", resetCurrentWindow.ToString()));
+            xml.Root.Element("reset_current").Add(new XElement("alt", resetCurrentAlt.ToString()));
+            xml.Root.Element("reset_current").Add(new XElement("key", resetCurrentKey.ToString()));
+
+
+
 
             xml.Root.Add(new XElement("copys"));
 

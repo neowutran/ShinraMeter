@@ -28,7 +28,7 @@ namespace Tera.Game
             {"S_ABNORMALITY_END", typeof(SAbnormalityEnd) },
             {"S_ABNORMALITY_REFRESH", typeof(SAbnormalityRefresh) },
             {"S_DESPAWN_NPC",typeof(SDespawnNpc) },
-            {"S_PLAYER_CHANGE_MP", typeof(S_PLAYER_CHANGE_MP) }
+            {"S_PLAYER_CHANGE_MP", typeof(SPlayerChangeMp) }
 
         };
 

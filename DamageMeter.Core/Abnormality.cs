@@ -19,6 +19,10 @@ namespace DamageMeter
 
         public int Duration { get; private set; }
 
+        public long LastApply { get; private set; }
+
+        public long TimeBeforeApply => (Utils.Now() - LastApply) - HotDot.Tick;
+
         public Abnormality(HotDot hotdot, EntityId source, EntityId target, int duration, int stack)
         {
             HotDot = hotdot;
@@ -28,10 +32,12 @@ namespace DamageMeter
             Stack = stack == 0 ? 1 : stack;
         }
 
+        
+
         public void Apply(int amount, bool critical, bool isHp )
         {
           
-                Console.WriteLine("dot:"+HotDot.Name+";amount:" + amount + ";Hp:" + isHp);
+           //     Console.WriteLine("dot:"+HotDot.Name+";amount:" + amount + ";Hp:" + isHp);
                 var skillResult = NetworkController.Instance.ForgeSkillResult(
                     true,
                     amount,
@@ -43,6 +49,7 @@ namespace DamageMeter
                 DamageTracker.Instance.Update(skillResult);
 
             NetworkController.Instance.CheckUpdateUi();
+            LastApply = Utils.Now();
         }
 
     
