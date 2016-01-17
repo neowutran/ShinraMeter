@@ -12,21 +12,21 @@ namespace Tera.Game.Messages
             HpRemaining = reader.ReadInt32();
             TotalHp = reader.ReadInt32();
             HpChange = reader.ReadInt16();
-            Unknow2 = reader.ReadInt32();
+            Type = reader.ReadInt32();
             Unknow3 = reader.ReadInt16();
             TargetId = reader.ReadEntityId();
             SourceId = reader.ReadEntityId();
             Critical = reader.ReadInt16();
             
            
-            Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Hp left:" + HpRemaining + ";Max HP:" + TotalHp+";HpLost/Gain:"+ HpChange + ";Unknow2:"+Unknow2+";Unknow3:"+Unknow3);
+            Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Hp left:" + HpRemaining + ";Max HP:" + TotalHp+";HpLost/Gain:"+ HpChange + ";Type:"+ Type + ";Unknow3:"+Unknow3);
 
         }
 
         public int Unknow3 { get; }
         public int HpChange { get; }
 
-        public int Unknow2 { get; }
+        public int Type { get; }
 
 
         public int HpRemaining { get; }

@@ -21,13 +21,18 @@ namespace Tera.Game.Messages
             */
 
             
-            if (OpCodeName == "S_CREATURE_CHANGE_HP" || OpCodeName == "S_SHOW_HP" || OpCodeName.Contains("ABNORMALITY"))
+            if (OpCodeName.Contains("CHANGE_MP"))
             {
                 PrintRaw();
             }
-         //   Console.WriteLine(OpCodeName);
             
-            
+            /*
+            Console.WriteLine(OpCodeName);
+            if (OpCodeName == "S_PLAYER_STAT_UPDATE")
+            {
+                PrintRaw();
+            }
+            */
        
         }
 

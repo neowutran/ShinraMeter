@@ -132,7 +132,18 @@ namespace DamageMeter
                     continue;
                 }
 
-                AbnormalityTracker.Instance.Update();
+                var changeHp = message as SCreatureChangeHp;
+                if (changeHp != null)
+                {
+                    AbnormalityTracker.Instance.Update(changeHp);
+                }
+
+                var changeMp = message as S_PLAYER_CHANGE_MP;
+                if (changeMp != null)
+                {
+                    AbnormalityTracker.Instance.Update(changeMp);
+                }
+
 
                 var abnormalityBegin = message as SAbnormalityBegin;
                 if (abnormalityBegin != null)

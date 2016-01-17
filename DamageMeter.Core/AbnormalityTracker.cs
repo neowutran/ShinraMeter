@@ -32,7 +32,7 @@ namespace DamageMeter
             var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(message.AbnormalityId);
             if (hotdot == null)
             {
-                Console.WriteLine("UNKNOW DOT");
+          //      Console.WriteLine("UNKNOW DOT");
                 return;
             }
            
@@ -45,7 +45,7 @@ namespace DamageMeter
             var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(message.AbnormalityId);
             if (hotdot == null)
             {
-                Console.WriteLine("UNKNOW DOT");
+           //     Console.WriteLine("UNKNOW DOT");
                 return;
             }
             var abnormalityUser = _abnormalities[message.TargetId];
@@ -92,11 +92,70 @@ namespace DamageMeter
 
         }
 
-        public void Update()
+        public enum HotDot
         {
-            foreach (var abnormality in _abnormalities.SelectMany(userAbnormality => userAbnormality.Value))
+            Dot = 131071,
+            Hot = 65536,
+            Aura = 0,
+
+        }
+
+        //TODO refactor the 2 update with generics or other
+
+        public void Update(S_PLAYER_CHANGE_MP message)
+        {
+            if (!_abnormalities.ContainsKey(message.TargetId))
             {
-                abnormality.Update();
+                return;
+            }
+
+            foreach (var abnormality in _abnormalities[message.TargetId])
+            {
+                if (abnormality.Source != message.SourceId)
+                {
+                    continue;
+                }
+                if ((!(abnormality.HotDot.Mp > 0) || message.MpChange <= 0) &&
+                    (!(abnormality.HotDot.Mp < 0) || message.MpChange >= 0)) continue;
+
+                if (!Enum.IsDefined(typeof (HotDot), message.Type))
+                {
+                    continue;
+                }
+
+                var critical = message.Critical == 1;
+                abnormality.Apply(message.MpChange, critical, false);
+                break;
+            }
+        }
+
+
+
+
+        public void Update(SCreatureChangeHp message)
+        {
+            if (!_abnormalities.ContainsKey(message.TargetId))
+            {
+                return;
+            }
+
+            foreach (var abnormality in _abnormalities[message.TargetId])
+            {
+                if (abnormality.Source != message.SourceId)
+                {
+                    continue;
+                }
+                if ((!(abnormality.HotDot.Hp > 0) || message.HpChange <= 0) &&
+                    (!(abnormality.HotDot.Hp < 0) || message.HpChange >= 0)) continue;
+
+                if (!Enum.IsDefined(typeof (HotDot), message.Type))
+                {
+                    continue;
+                }
+
+                var critical = message.Critical == 1;
+                abnormality.Apply(message.HpChange, critical, true );
+                break;
             }
         }
     }

@@ -271,6 +271,11 @@ namespace DamageMeter
             }
 
             UpdateEncounter(entityTarget, message);
+            if (playerInfo.Name == "Yukikoo")
+            {
+                Console.WriteLine("Yukikoo:"+message.Source.Id+";target"+message.Target.Id);
+
+            }
 
             var entities = playerInfo.Dealt;
 
