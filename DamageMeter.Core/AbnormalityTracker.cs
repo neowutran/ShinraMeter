@@ -48,13 +48,20 @@ namespace DamageMeter
          //       Console.WriteLine("UNKNOW DOT");
                 return;
             }
+            if (!_abnormalities.ContainsKey(message.TargetId))
+            {
+                //TODO ADD ABNORMALITY, too lazy to do it now
+                return;
+            }
             var abnormalityUser = _abnormalities[message.TargetId];
             foreach (var abnormality in abnormalityUser)
             {
                 if (abnormality.HotDot.Id != message.AbnormalityId) continue;
                 abnormality.Refresh(message.StackCounter, message.Duration);
-                break;
+                return;
             }
+
+            //TODO ADD ABNORMALITY, too lazy to do it now (aka: Gameforge star event, go farm)
         }
 
         public void DeleteAbnormality(SAbnormalityEnd message)
