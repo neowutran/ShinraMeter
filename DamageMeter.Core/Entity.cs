@@ -19,6 +19,22 @@ namespace DamageMeter
             SetName();
         }
 
+        public bool IsGroup { get; }
+
+        public Entity(uint modelId, EntityId id, uint npcId, ushort npcArea, bool group) : this(modelId, id, npcId, npcArea)
+        {
+            IsGroup = group;
+        }
+
+        public Entity getGroup()
+        {
+            if (!IsBoss())
+            {
+                return null;
+            }
+            return new Entity(0,new EntityId(0), 0, 0, true);
+        }
+
         public Entity(string name)
         {
             Name = name;

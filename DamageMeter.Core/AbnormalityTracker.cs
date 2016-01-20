@@ -24,20 +24,24 @@ namespace DamageMeter
 
         public void AddAbnormality(SAbnormalityBegin message)
         {
-            var target = message.TargetId;
+            AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.Stack, message.AbnormalityId);
+        }
+
+        private void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId)
+        {
             if (!_abnormalities.ContainsKey(target))
             {
-                _abnormalities.Add(target,new List<Abnormality>());
+                _abnormalities.Add(target, new List<Abnormality>());
             }
-            var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(message.AbnormalityId);
+            var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityId);
             if (hotdot == null)
             {
-       //         Console.WriteLine("UNKNOW DOT");
+                //         Console.WriteLine("UNKNOW DOT");
                 return;
             }
-           
-            _abnormalities[target].Add(new Abnormality(hotdot, message.SourceId, message.TargetId, message.Duration, message.Stack));
-            
+
+            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack));
+
         }
 
         public void RefreshAbnormality(SAbnormalityRefresh message)
@@ -50,7 +54,8 @@ namespace DamageMeter
             }
             if (!_abnormalities.ContainsKey(message.TargetId))
             {
-                //TODO ADD ABNORMALITY, too lazy to do it now
+              //  AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.StackCounter, message.AbnormalityId);
+                //TODO ADD ABNORMALITY, too lazy to do it now, NEED A SOURCE, WITHOUT SOURCE, RETURN
                 return;
             }
             var abnormalityUser = _abnormalities[message.TargetId];
@@ -61,7 +66,7 @@ namespace DamageMeter
                 return;
             }
 
-            //TODO ADD ABNORMALITY, too lazy to do it now (aka: Gameforge star event, go farm)
+            //TODO ADD ABNORMALITY, too lazy to do it now (aka: Gameforge star event, go farm), NEED A SOURCE, WITHOUT SOURCE, RETURN
         }
 
         public void DeleteAbnormality(SAbnormalityEnd message)

@@ -13,8 +13,7 @@ namespace DamageMeter.AutoUpdate
         private static void Main()
         {
             bool aIsNewInstance, isUpdating;
-            Mutex _unique;
-            _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
+            var _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             while (!aIsNewInstance)
             {
                 Console.WriteLine("Sleep");
