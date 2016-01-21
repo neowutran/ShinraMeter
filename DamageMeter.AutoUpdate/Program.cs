@@ -45,7 +45,7 @@ namespace DamageMeter.AutoUpdate
                 numberTry++;
                 CountError(numberTry);
             }
-            catch (Exception e)
+            catch
             {
                 numberTry++;
                 CountError(numberTry);

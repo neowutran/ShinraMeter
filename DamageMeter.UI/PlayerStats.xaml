@@ -30,6 +30,7 @@
                 <ColumnDefinition Width="45" />
                 <ColumnDefinition Width="35" />
                 <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="50" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" FontSize="14" VerticalAlignment="Center" HorizontalContentAlignment="Left"
                    x:Name="LabelName" Foreground="GreenYellow"
@@ -52,6 +53,9 @@
             <Label Grid.Column="6" FontSize="14" x:Name="LabelDamageReceived" HorizontalContentAlignment="Right"
                    VerticalAlignment="Bottom"
                    Foreground="Yellow" MinHeight="29" />
+            <Label Grid.Column="7" FontSize="14" x:Name="Timer" HorizontalContentAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Foreground="White" MinHeight="29" />
 
         </Grid>
 

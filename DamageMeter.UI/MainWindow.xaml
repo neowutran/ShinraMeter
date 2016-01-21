@@ -15,8 +15,8 @@
         ResizeMode="NoResize"
         BorderThickness="0"
         Icon="shinra.jpg"
-        MinWidth="400"
-        MaxWidth="400"
+        MinWidth="450"
+        MaxWidth="450"
         MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
@@ -198,7 +198,7 @@
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.5" />
     </Window.Background>
-    <Grid HorizontalAlignment="Left">
+    <Grid HorizontalAlignment="Left" Width="450">
 
 
         <Image Grid.Column="0" x:Name="PinImage" MouseLeftButtonDown="ToggleTopMost_OnClick" Stretch="Fill"
@@ -208,16 +208,16 @@
 
         <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="30,0,0,0" VerticalAlignment="Top" Width="248" HorizontalContentAlignment="Stretch"
+                  Margin="30,0,0,0" VerticalAlignment="Top" Width="295" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
-        <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="330,0,0,0" FontSize="14" Foreground="White"
+        <Label x:Name="TotalDamage" HorizontalAlignment="Left" Margin="380,0,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-        <Label x:Name="Timer" HorizontalAlignment="Left" Margin="279,0,0,0" FontSize="14" Foreground="White"
+        <Label x:Name="Timer" HorizontalAlignment="Left" Margin="329,0,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
         <Button Style="{StaticResource ShinraButtonStyle}" Opacity="0.5" Background="Black" x:Name="CloseMeter"
                 Content="X" Foreground="White" BorderThickness="0" Click="Button_OnClick"
                 HorizontalAlignment="Left" Height="29" MinHeight="29"
-                Margin="381,0,0,0" VerticalAlignment="Top" Width="19" />
+                Margin="431,0,0,0" VerticalAlignment="Top" Width="19" />
 
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"

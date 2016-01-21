@@ -26,13 +26,9 @@ namespace DamageMeter
             IsGroup = group;
         }
 
-        public Entity getGroup()
+        public Entity GetGroup()
         {
-            if (!IsBoss())
-            {
-                return null;
-            }
-            return new Entity(0,new EntityId(0), 0, 0, true);
+            return !IsBoss() ? null : new Entity(0,new EntityId(0), 0, 0, true);
         }
 
         public Entity(string name)

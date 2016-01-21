@@ -56,10 +56,11 @@ namespace DamageMeter.UI
             LabelDamagePart.Content = DamagePart(totalDamage);
             LabelDamageReceived.Content = DamageReceived;
             LabelHitsReceived.Content = HitReceived;
-
+            var interval = TimeSpan.FromSeconds(playerInfo.Dealt.Interval);
+            Timer.Content = interval.ToString(@"mm\:ss");
 
             _windowSkill?.Update(Skills(), new Dictionary<Skill, SkillStats>(PlayerInfo.Dealt.AllSkills));
-            DpsIndicator.Width = 400 * (PlayerInfo.Dealt.DamageFraction(totalDamage) / 100);
+            DpsIndicator.Width = ActualWidth * (PlayerInfo.Dealt.DamageFraction(totalDamage) / 100);
 
         }
 

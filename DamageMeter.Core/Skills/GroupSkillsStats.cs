@@ -22,6 +22,15 @@ namespace DamageMeter.Skills
           
         }
 
+        public new long FirstHit => DamageTracker.Instance.EntitiesFirstHit[_boss];
+        public new long LastHit => DamageTracker.Instance.EntitiesLastHit[_boss];
+
+        public new long Interval => LastHit - FirstHit;
+
+
+        private SkillsStats _stats;
+
+    
         //TODO override ALL skillsStats method
 
     }

@@ -25,10 +25,10 @@ namespace DamageMeter
         public Dictionary<Entity, long> TotalDamageEntity { get; set; } =
             new Dictionary<Entity, long>();
 
-        private Dictionary<Entity, long> EntitiesFirstHit { get; } = new Dictionary<Entity, long>()
+        public Dictionary<Entity, long> EntitiesFirstHit { get; } = new Dictionary<Entity, long>()
             ;
 
-        private Dictionary<Entity, long> EntitiesLastHit { get; } = new Dictionary<Entity, long>();
+        public Dictionary<Entity, long> EntitiesLastHit { get; } = new Dictionary<Entity, long>();
 
         public long TotalDamage
         {
@@ -194,7 +194,6 @@ namespace DamageMeter
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
 
-               
                 UpdateStatsDealt(playerStats, skillResult, entityTarget);
             }
 
@@ -226,13 +225,13 @@ namespace DamageMeter
                 }
                 else
                 {
-                    Console.WriteLine("UNKNOW DAMAGE");
+                    Console.WriteLine("UNKNOW DAMAGE:"+source.Owner.GetType());
                     entitySource = new Entity("UNKNOW");
                 }
             }
             else
             {
-                Console.WriteLine("UNKNOW DAMAGE");
+                Console.WriteLine("UNKNOW DAMAGE:"+skillResult.Source);
                 entitySource = new Entity("UNKNOW");
             }
 
@@ -271,7 +270,13 @@ namespace DamageMeter
             }
 
             UpdateEncounter(entityTarget, message);
-       
+            UpdateSkillStats(message, entityTarget, playerInfo);
+       }
+
+
+        private static void UpdateSkillStats(SkillResult message, Entity entityTarget, PlayerInfo playerInfo)
+        {
+
             var entities = playerInfo.Dealt;
 
             if (!entities.EntitiesStats.ContainsKey(entityTarget))
@@ -279,13 +284,12 @@ namespace DamageMeter
                 entities.EntitiesStats[entityTarget] = new SkillsStats(playerInfo);
             }
 
-
             var skillName = message.SkillId.ToString();
             if (message.Skill != null)
             {
                 skillName = message.Skill.Name;
             }
-            var skillKey = new Skill(skillName, new List<int> {message.SkillId});
+            var skillKey = new Skill(skillName, new List<int> { message.SkillId });
 
 
             SkillStats skillStats;
@@ -298,7 +302,8 @@ namespace DamageMeter
             {
                 if (message.Amount > 0)
                 {
-                    skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal);                    
+                    
+                    skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal);
                 }
                 else
                 {
@@ -326,18 +331,24 @@ namespace DamageMeter
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource)
         {
          
-
-            if (message.Damage == 0)
+            if (!IsValidAttack(message))
             {
                 return;
             }
 
-            if ((UserEntity.ForEntity(message.Target)["user"] == UserEntity.ForEntity(message.Source)["user"]))
+            //Not damage & if you are a healer, don't show heal / mana regen affecting you, as that will modify your crit rate and other stats. 
+            if ((message.IsHp && message.Amount > 0 || !message.IsHp) && !PlayerClassHelper.IsHeal(playerInfo.Class) && (UserEntity.ForEntity(message.Source)["user"] != UserEntity.ForEntity(message.Target)["user"]))
+            {
+                UpdateSkillStats(message, new Entity(playerInfo.Player.User.Name), playerInfo);
+                return;
+            }
+
+            if (message.Damage <= 0)
             {
                 return;
             }
 
-       
+
             var entity = entitySource;
 
             if (entitySource.IsBoss())
@@ -361,10 +372,10 @@ namespace DamageMeter
                 playerInfo.Received.EntitiesStats[entity] = new DamageTaken();
             }
 
+
             playerInfo.Received.EntitiesStats[entity].AddDamage(message.Damage);
             if (Instance.Entities.Contains(entity)) return;
             Instance.Entities.AddFirst(entity);
-            Console.WriteLine(entity.Name);
             TotalDamageEntity.Add(entity, 0);
         }
     }
