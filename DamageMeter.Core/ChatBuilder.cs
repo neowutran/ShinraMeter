@@ -22,7 +22,6 @@ namespace DamageMeter
 
 
         public Cryptor EnCryptor => Session.Instance.ChatEncryptor;
-        public Cryptor DeCryptor => Session.Instance.ChatDecryptor;
         /*
        Some problem with predicting the next sequence number(but totaly possible as we know everything that goes on the network), but anyway, something like that will cause more harm than good.
        Was fun anyway, that thing should be interesting with a full console client, so you can send colorfull chat message.
@@ -61,9 +60,6 @@ namespace DamageMeter
 
             //Console.WriteLine("Encrypted");
             Console.WriteLine(BitConverter.ToString(packetPayload));
-            DeCryptor.ApplyCryptor(packetPayload, packetPayload.Length);
-            Console.WriteLine(BitConverter.ToString(packetPayload));
-            return;
 
             if (!TeraSniffer.Instance.Device.Opened)
             {
@@ -79,7 +75,7 @@ namespace DamageMeter
                 Psh = true
             };
 
-           // Console.WriteLine(TcpConnection.NextSequenceNumber);
+            // Console.WriteLine(TcpConnection.NextSequenceNumber);
 
 
             var ipPacket = new IPv4Packet(NetworkController.Instance.ClientIpEndPoint.Address,
@@ -114,7 +110,7 @@ namespace DamageMeter
 
             ipPacket.UpdateIPChecksum();
             ethernetPacket.UpdateCalculatedValues();
-         //   Console.WriteLine("Send");
+            //   Console.WriteLine("Send");
             TeraSniffer.Instance.Device.SendPacket(ethernetPacket.Bytes);
         }
 

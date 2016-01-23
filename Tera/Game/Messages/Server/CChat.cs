@@ -12,9 +12,8 @@ namespace Tera.Game.Messages
             //Console.WriteLine("Canal:" + BitConverter.ToString(Canal));
 
             Text = reader.ReadTeraString();
-            
+
             Console.WriteLine("text:" + Text);
-           
         }
 
         public string Text { get; set; }

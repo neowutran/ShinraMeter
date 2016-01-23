@@ -31,6 +31,8 @@ namespace DamageMeter.Sniffing
         private MessageSplitter _messageSplitter;
         private TcpConnection _serverToClient;
 
+        public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
+
         private TeraSniffer()
         {
             var servers = BasicTeraData.Instance.Servers;
@@ -72,8 +74,6 @@ namespace DamageMeter.Sniffing
             var handler = NewConnection;
             handler?.Invoke(server, serverIpEndPoint, clientIpEndPoint);
         }
-
-        public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
 
 
         protected virtual void OnMessageReceived(Message message)

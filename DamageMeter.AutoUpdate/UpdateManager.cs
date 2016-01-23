@@ -57,7 +57,6 @@ namespace DamageMeter.AutoUpdate
             ZipFile.ExtractToDirectory(ExecutableDirectory + @"\tmp\" + latestVersion, ExecutableDirectory + @"\tmp\");
             ZipFile.ExtractToDirectory(ExecutableDirectory + @"\tmp\" + latestVersion,
                 ExecutableDirectory + @"\tmp\release\");
-            
         }
 
 

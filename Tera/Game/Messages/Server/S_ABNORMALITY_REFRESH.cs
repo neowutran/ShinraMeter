@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     public class SAbnormalityRefresh : ParsedMessage
     {
@@ -21,7 +18,7 @@ namespace Tera.Game.Messages
         public int Unknow { get; }
 
 
-        public int StackCounter { get;}
+        public int StackCounter { get; }
 
         public int AbnormalityId { get; }
 

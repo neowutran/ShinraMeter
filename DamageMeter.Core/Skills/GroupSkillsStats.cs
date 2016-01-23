@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DamageMeter.Skills
+﻿namespace DamageMeter.Skills
 {
-    public class GroupSkillsStats: SkillsStats
+    public class GroupSkillsStats : SkillsStats
     {
-
-      
-
-        private Entity _boss;
+        private readonly Entity _boss;
         private PlayerInfo _playerInfo;
+
+
+        private SkillsStats _stats;
 
         public GroupSkillsStats(PlayerInfo playerInfo, Entity boss)
         {
-
             _boss = boss;
             _playerInfo = playerInfo;
-          
         }
 
         public new long FirstHit => DamageTracker.Instance.EntitiesFirstHit[_boss];
@@ -28,10 +20,6 @@ namespace DamageMeter.Skills
         public new long Interval => LastHit - FirstHit;
 
 
-        private SkillsStats _stats;
-
-    
         //TODO override ALL skillsStats method
-
     }
 }

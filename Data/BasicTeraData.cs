@@ -25,13 +25,15 @@ namespace Data
             WindowData = new WindowData(this);
             _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
             Servers = GetServers(Path.Combine(ResourceDirectory, "data/servers.txt")).ToList();
-            MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters/"), Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
+            MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters/"),
+                Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
             PinData = new PinData(Path.Combine(ResourceDirectory, "img/"));
             PetSkillDatabase = new PetSkillDatabase(Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
-            SkillDatabase = new SkillDatabase(Path.Combine(ResourceDirectory, "data/skills/"), Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
+            SkillDatabase = new SkillDatabase(Path.Combine(ResourceDirectory, "data/skills/"),
+                Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
             HotDotDatabase = new HotDotDatabase(Path.Combine(ResourceDirectory, "data/hotdot/"), WindowData.Language);
         }
-        
+
         public HotDotDatabase HotDotDatabase { get; }
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
         public PetSkillDatabase PetSkillDatabase { get; private set; }

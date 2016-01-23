@@ -1,7 +1,5 @@
 ﻿namespace Tera.Game.Messages
 {
-
-
     public class SPlayerChangeMp : ParsedMessage
     {
         internal SPlayerChangeMp(TeraMessageReader reader) : base(reader)
@@ -16,8 +14,7 @@
             Critical = reader.ReadInt16();
 
 
-  //          Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Mp left:" + MpRemaining + ";Max MP:" + TotalMp + ";MpLost/Gain:" + MpChange + ";Type:" + Type + ";Unknow3:" + Unknow3);
-
+            //          Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Mp left:" + MpRemaining + ";Max MP:" + TotalMp + ";MpLost/Gain:" + MpChange + ";Type:" + Type + ";Unknow3:" + Unknow3);
         }
 
         public int Unknow3 { get; }
@@ -33,9 +30,7 @@
         public int Critical { get; }
 
 
-
         public EntityId TargetId { get; }
         public EntityId SourceId { get; }
-
     }
 }

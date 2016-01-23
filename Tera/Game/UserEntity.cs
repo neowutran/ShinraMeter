@@ -48,15 +48,14 @@ namespace Tera.Game
             var ownedEntity = entity as IHasOwner;
             while (ownedEntity?.Owner != null)
             {
-                if (entity.GetType() == typeof(NpcEntity))
+                if (entity.GetType() == typeof (NpcEntity))
                 {
-                    entities.Add("npc", (NpcEntity)entity);
+                    entities.Add("npc", (NpcEntity) entity);
                 }
                 entity = ownedEntity.Owner;
                 ownedEntity = entity as IHasOwner;
-             
             }
-            entities.Add("user", (Entity)entity);
+            entities.Add("user", entity);
             if (!entities.ContainsKey("npc"))
             {
                 entities.Add("npc", null);

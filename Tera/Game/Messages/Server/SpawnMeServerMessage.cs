@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     public class SpawnMeServerMessage : ParsedMessage
     {
@@ -8,10 +6,10 @@ namespace Tera.Game.Messages
             : base(reader)
         {
             Id = reader.ReadEntityId();
-            
-         //   PrintRaw();
-         //   Console.WriteLine(reader.ReadTeraString());
-          //  Console.WriteLine(reader.ReadTeraString());
+
+            //   PrintRaw();
+            //   Console.WriteLine(reader.ReadTeraString());
+            //  Console.WriteLine(reader.ReadTeraString());
             //Console.WriteLine(reader.ReadInt32());
             //Console.WriteLine(reader.ReadInt32());
         }

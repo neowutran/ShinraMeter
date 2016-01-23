@@ -19,22 +19,18 @@ namespace DamageMeter
             SetName();
         }
 
-        public bool IsGroup { get; }
-
-        public Entity(uint modelId, EntityId id, uint npcId, ushort npcArea, bool group) : this(modelId, id, npcId, npcArea)
+        public Entity(uint modelId, EntityId id, uint npcId, ushort npcArea, bool group)
+            : this(modelId, id, npcId, npcArea)
         {
             IsGroup = group;
-        }
-
-        public Entity GetGroup()
-        {
-            return !IsBoss() ? null : new Entity(0,new EntityId(0), 0, 0, true);
         }
 
         public Entity(string name)
         {
             Name = name;
         }
+
+        public bool IsGroup { get; }
 
         public string Name { get; private set; }
 
@@ -62,6 +58,11 @@ namespace DamageMeter
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             return obj.GetType() == GetType() && Equals((Entity) obj);
+        }
+
+        public Entity GetGroup()
+        {
+            return !IsBoss() ? null : new Entity(0, new EntityId(0), 0, 0, true);
         }
 
         public bool IsBoss()

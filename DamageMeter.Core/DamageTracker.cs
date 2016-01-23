@@ -225,7 +225,7 @@ namespace DamageMeter
                 }
                 else
                 {
-                    Console.WriteLine("UNKNOW DAMAGE:"+source.Owner.GetType());
+                    Console.WriteLine("UNKNOW DAMAGE:" + source.Owner.GetType());
                     entitySource = new Entity("UNKNOW");
                 }
             }
@@ -244,7 +244,8 @@ namespace DamageMeter
                 return false;
             }
 
-            if ((UserEntity.ForEntity(message.Source)["user"] == UserEntity.ForEntity(message.Target)["user"]) && (message.Damage != 0))
+            if ((UserEntity.ForEntity(message.Source)["user"] == UserEntity.ForEntity(message.Target)["user"]) &&
+                (message.Damage != 0))
             {
                 return false;
             }
@@ -262,7 +263,6 @@ namespace DamageMeter
 
         private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget)
         {
-        
             if (!IsValidAttack(message))
             {
                 return;
@@ -275,12 +275,11 @@ namespace DamageMeter
 
             UpdateEncounter(entityTarget, message);
             UpdateSkillStats(message, entityTarget, playerInfo);
-       }
+        }
 
 
         private static void UpdateSkillStats(SkillResult message, Entity entityTarget, PlayerInfo playerInfo)
         {
-
             var entities = playerInfo.Dealt;
 
             if (!entities.EntitiesStats.ContainsKey(entityTarget))
@@ -293,7 +292,7 @@ namespace DamageMeter
             {
                 skillName = message.Skill.Name;
             }
-            var skillKey = new Skill(skillName, new List<int> { message.SkillId });
+            var skillKey = new Skill(skillName, new List<int> {message.SkillId});
 
 
             SkillStats skillStats;
@@ -306,7 +305,6 @@ namespace DamageMeter
             {
                 if (message.Amount > 0)
                 {
-                    
                     skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal);
                 }
                 else
@@ -314,7 +312,8 @@ namespace DamageMeter
                     skillStats.AddData(message.SkillId, message.Damage, message.IsCritical, SkillStats.Type.Damage);
                 }
             }
-            else {
+            else
+            {
                 skillStats.AddData(message.SkillId, message.Mana, message.IsCritical, SkillStats.Type.Mana);
             }
 
@@ -334,14 +333,14 @@ namespace DamageMeter
 
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource)
         {
-         
             if (!IsValidAttack(message))
             {
                 return;
             }
 
             //Not damage & if you are a healer, don't show heal / mana regen affecting you, as that will modify your crit rate and other stats. 
-            if ((message.IsHp && message.Amount > 0 || !message.IsHp) && !PlayerClassHelper.IsHeal(playerInfo.Class) && (UserEntity.ForEntity(message.Source)["user"] != UserEntity.ForEntity(message.Target)["user"]))
+            if ((message.IsHp && message.Amount > 0 || !message.IsHp) && !PlayerClassHelper.IsHeal(playerInfo.Class) &&
+                (UserEntity.ForEntity(message.Source)["user"] != UserEntity.ForEntity(message.Target)["user"]))
             {
                 UpdateSkillStats(message, new Entity(playerInfo.Player.User.Name), playerInfo);
                 return;

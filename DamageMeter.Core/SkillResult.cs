@@ -1,13 +1,13 @@
 ﻿using System;
 using Data;
 using Tera.Game;
-using Tera.Game.Messages;
 
 namespace DamageMeter
 {
     public class SkillResult
     {
-        public SkillResult(bool abnormality,int amount, bool isCritical, bool isHp, int skillId, EntityId source, EntityId target , EntityTracker entityRegistry,
+        public SkillResult(bool abnormality, int amount, bool isCritical, bool isHp, int skillId, EntityId source,
+            EntityId target, EntityTracker entityRegistry,
             PlayerTracker playerTracker)
         {
             Amount = amount;
@@ -24,7 +24,8 @@ namespace DamageMeter
 
             if (abnormality)
             {
-                Skill = new UserSkill(skillId, PlayerClass.Common, BasicTeraData.Instance.HotDotDatabase.Get(skillId).Name, "DOT", null);
+                Skill = new UserSkill(skillId, PlayerClass.Common,
+                    BasicTeraData.Instance.HotDotDatabase.Get(skillId).Name, "DOT", null);
             }
 
             if (sourceUser != null)
@@ -35,15 +36,12 @@ namespace DamageMeter
                     Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, skillId);
                     if (Skill == null && npc != null)
                     {
-
                         var petName = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(npc.NpcArea.ToString(),
                             npc.NpcId.ToString());
                         Skill = new UserSkill(skillId, sourceUser.RaceGenderClass.Class, petName,
                             BasicTeraData.Instance.PetSkillDatabase.Get(petName, skillId), null);
-
                     }
                 }
-
             }
 
             if (targetUser != null)
@@ -66,7 +64,7 @@ namespace DamageMeter
         {
             get
             {
-                if ( IsHp && Amount < 0)
+                if (IsHp && Amount < 0)
                 {
                     return Math.Abs(Amount);
                 }

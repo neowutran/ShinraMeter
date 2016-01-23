@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DamageMeter.AutoUpdate
 {
@@ -25,7 +23,7 @@ namespace DamageMeter.AutoUpdate
 
             UpdateManager.DestroyRelease();
             CountError(0);
-             var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];
+            var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];
             UpdateManager.Copy(source, UpdateManager.ExecutableDirectory + @"\..\..\");
             Console.WriteLine("New version installed");
             Process.Start(UpdateManager.ExecutableDirectory + @"\..\..\ShinraMeter.exe");
@@ -50,16 +48,17 @@ namespace DamageMeter.AutoUpdate
                 numberTry++;
                 CountError(numberTry);
             }
-
-
         }
 
         private static bool Count()
         {
             using (var client = new HttpClient())
             {
-               var response = client.GetAsync(new Uri("http://diclah.com/~yukikoo/counter/counter.php?version=" + UpdateManager.Version)).Result;
-               return response.IsSuccessStatusCode;
+                var response =
+                    client.GetAsync(
+                        new Uri("http://diclah.com/~yukikoo/counter/counter.php?version=" + UpdateManager.Version))
+                        .Result;
+                return response.IsSuccessStatusCode;
             }
         }
     }

@@ -77,7 +77,7 @@ namespace NetworkSniffer
                 device.OnPacketArrival += device_OnPacketArrival;
                 device.Open(DeviceMode.Promiscuous, 1000);
                 device.Filter = _filter;
-              
+
                 /* Please, remember to comment that BEFORE publishing a new release xD
                 try
                 {
@@ -88,7 +88,7 @@ namespace NetworkSniffer
                     // ignored
 
                 }
-                */ 
+                */
 
                 device.StartCapture();
             }

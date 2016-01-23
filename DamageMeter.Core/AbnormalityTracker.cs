@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Data;
 using Tera.Game;
 using Tera.Game.Messages;
@@ -12,15 +8,16 @@ namespace DamageMeter
 {
     public class AbnormalityTracker
     {
-
         private static AbnormalityTracker _instance;
-        public static AbnormalityTracker Instance => _instance ?? (_instance = new AbnormalityTracker());
 
-        private readonly Dictionary<EntityId,List<Abnormality>> _abnormalities = new Dictionary<EntityId, List<Abnormality>>(); 
+        private readonly Dictionary<EntityId, List<Abnormality>> _abnormalities =
+            new Dictionary<EntityId, List<Abnormality>>();
 
         private AbnormalityTracker()
         {
         }
+
+        public static AbnormalityTracker Instance => _instance ?? (_instance = new AbnormalityTracker());
 
         public void AddAbnormality(SAbnormalityBegin message)
         {
@@ -34,15 +31,14 @@ namespace DamageMeter
                 _abnormalities.Add(target, new List<Abnormality>());
             }
             var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityId);
-           _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack));
-
+            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack));
         }
 
         public void RefreshAbnormality(SAbnormalityRefresh message)
         {
             if (!_abnormalities.ContainsKey(message.TargetId))
             {
-              //  AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.StackCounter, message.AbnormalityId);
+                //  AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.StackCounter, message.AbnormalityId);
                 //TODO ADD ABNORMALITY, too lazy to do it now, NEED A SOURCE, WITHOUT SOURCE, RETURN
                 return;
             }
@@ -78,7 +74,7 @@ namespace DamageMeter
             {
                 _abnormalities.Remove(message.TargetId);
                 return;
-            } 
+            }
             _abnormalities[message.TargetId] = abnormalityUser;
         }
 
@@ -89,10 +85,8 @@ namespace DamageMeter
                 return;
             }
             _abnormalities.Remove(message.Npc);
-
         }
 
-       
 
         public void Update(SPlayerChangeMp message)
         {
@@ -101,18 +95,16 @@ namespace DamageMeter
 
         private void Update(EntityId target, EntityId source, int change, int type, bool critical, bool isHp)
         {
-
-         //  Console.WriteLine(";isHp:" + isHp + ";amount:" + change + ";type:" + type);
+            //  Console.WriteLine(";isHp:" + isHp + ";amount:" + change + ";type:" + type);
 
             // SystemHot/Dot 
             if (
                 (int) HotDotDatabase.HotDot.SystemHot == type ||
                 (int) HotDotDatabase.HotDot.CrystalHpHot == type ||
-                (int)HotDotDatabase.HotDot.NaturalMpRegen == type ||
-                (int) HotDotDatabase.HotDot.StuffMpHot == type                
+                (int) HotDotDatabase.HotDot.NaturalMpRegen == type ||
+                (int) HotDotDatabase.HotDot.StuffMpHot == type
                 )
             {
-
                 /*
                 var skillResult = NetworkController.Instance.ForgeSkillResult(
                    true,
@@ -132,10 +124,9 @@ namespace DamageMeter
             }
 
 
-
             if (!_abnormalities.ContainsKey(target))
             {
-             //   Console.WriteLine("ERROR 1: HPCHANGE= " + change);
+                //   Console.WriteLine("ERROR 1: HPCHANGE= " + change);
                 return;
             }
 
@@ -144,7 +135,7 @@ namespace DamageMeter
 
             foreach (var abnormality in abnormalities)
             {
-           //     Console.WriteLine("Check 0 : HPCHANGE= " + change + ";id:"+abnormality.HotDot.Id+";source:"+source+";abno source:"+abnormality.Source);
+                //     Console.WriteLine("Check 0 : HPCHANGE= " + change + ";id:"+abnormality.HotDot.Id+";source:"+source+";abno source:"+abnormality.Source);
 
 
                 if (abnormality.Source != source && abnormality.Source != abnormality.Target)
@@ -152,12 +143,12 @@ namespace DamageMeter
                     continue;
                 }
 
-              //  Console.WriteLine("Check 1 : HPCHANGE= " + change);
+                //  Console.WriteLine("Check 1 : HPCHANGE= " + change);
 
                 if (isHp)
                 {
                     if ((!(abnormality.HotDot.Hp > 0) || change <= 0) &&
-                        (!(abnormality.HotDot.Hp < 0) || change >= 0) 
+                        (!(abnormality.HotDot.Hp < 0) || change >= 0)
                         ) continue;
                 }
                 else
@@ -167,7 +158,7 @@ namespace DamageMeter
                         ) continue;
                 }
 
-                if ((int)HotDotDatabase.HotDot.Dot != type  && (int)HotDotDatabase.HotDot.Hot != type)
+                if ((int) HotDotDatabase.HotDot.Dot != type && (int) HotDotDatabase.HotDot.Hot != type)
                 {
                     continue;
                 }
@@ -176,10 +167,7 @@ namespace DamageMeter
                 return;
             }
             //Console.WriteLine("ERROR 2: HPCHANGE= " + change);
-
         }
-
-
 
 
         public void Update(SCreatureChangeHp message)

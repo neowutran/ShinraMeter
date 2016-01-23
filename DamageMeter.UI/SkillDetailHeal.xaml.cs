@@ -19,7 +19,6 @@ namespace DamageMeter.UI
 
         public void Update(SkillDetailStats skill)
         {
-            
             var hit = BasicTeraData.Instance.SkillDatabase.Hit(skill.PlayerInfo.Class, skill.Id);
             if (hit == null)
             {
@@ -28,7 +27,7 @@ namespace DamageMeter.UI
                     hit = "DOT";
                 }
             }
-            
+
             var chained = BasicTeraData.Instance.SkillDatabase.IsChained(skill.PlayerInfo.Class, skill.Id);
             if (hit != null)
             {
@@ -55,7 +54,6 @@ namespace DamageMeter.UI
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageHit);
             LabelAverage.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageTotal);
-
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

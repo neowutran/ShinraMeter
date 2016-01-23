@@ -1,10 +1,5 @@
-﻿using System;
-using System.CodeDom;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
-   
-
     public class SCreatureChangeHp : ParsedMessage
     {
         internal SCreatureChangeHp(TeraMessageReader reader) : base(reader)
@@ -17,10 +12,9 @@ namespace Tera.Game.Messages
             TargetId = reader.ReadEntityId();
             SourceId = reader.ReadEntityId();
             Critical = reader.ReadInt16();
-            
-           
- //           Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Hp left:" + HpRemaining + ";Max HP:" + TotalHp+";HpLost/Gain:"+ HpChange + ";Type:"+ Type + ";Unknow3:"+Unknow3);
 
+
+            //           Console.WriteLine("target = " + TargetId + ";Source:" + SourceId + ";Critical:" + Critical + ";Hp left:" + HpRemaining + ";Max HP:" + TotalHp+";HpLost/Gain:"+ HpChange + ";Type:"+ Type + ";Unknow3:"+Unknow3);
         }
 
         public int Unknow3 { get; }
@@ -36,9 +30,7 @@ namespace Tera.Game.Messages
         public int Critical { get; }
 
 
-
         public EntityId TargetId { get; }
         public EntityId SourceId { get; }
-
     }
 }

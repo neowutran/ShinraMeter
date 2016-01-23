@@ -7,14 +7,23 @@ namespace Data
 {
     public class HotDotDatabase
     {
+        public enum HotDot
+        {
+            Dot = 131071,
+            Hot = 65536,
+            SystemHot = 655360, // natural regen
+            CrystalHpHot = 196608,
+            StuffMpHot = 262144,
+            NaturalMpRegen = 0
+        }
+
         private readonly Dictionary<int, Data.HotDot> _hotdots =
             new Dictionary<int, Data.HotDot>();
 
 
         public HotDotDatabase(string folder, string language)
         {
-
-            var reader = new StreamReader(File.OpenRead(folder+"hotdot-"+language+".tsv"));
+            var reader = new StreamReader(File.OpenRead(folder + "hotdot-" + language + ".tsv"));
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
@@ -24,7 +33,7 @@ namespace Data
                 var effectId = int.Parse(values[1]);
                 var hp = double.Parse(values[2], CultureInfo.InvariantCulture);
                 var mp = double.Parse(values[3], CultureInfo.InvariantCulture);
-                var method = (Data.HotDot.DotType)Enum.Parse(typeof(Data.HotDot.DotType), values[4]);
+                var method = (Data.HotDot.DotType) Enum.Parse(typeof (Data.HotDot.DotType), values[4]);
                 var time = int.Parse(values[5]);
                 var tick = int.Parse(values[6]);
                 var name = values[7];
@@ -32,25 +41,14 @@ namespace Data
             }
         }
 
-        public enum HotDot
-        {
-            Dot = 131071,
-            Hot = 65536,
-            SystemHot = 655360, // natural regen
-            CrystalHpHot = 196608,
-            StuffMpHot = 262144,
-            NaturalMpRegen = 0,
-        }
-
         public Data.HotDot Get(int skillId)
         {
             if (!_hotdots.ContainsKey(skillId))
             {
-
                 var name = "";
                 switch (skillId)
                 {
-                    case (int) HotDot.CrystalHpHot * -1:
+                    case (int) HotDot.CrystalHpHot*-1:
                         name = "Crystal regen HP";
                         break;
                     case (int) HotDot.NaturalMpRegen*-1:
@@ -62,9 +60,9 @@ namespace Data
                     case (int) HotDot.StuffMpHot*-1:
                         name = "Stuff regen MP";
                         break;
-                 }
+                }
 
-            
+
                 return new Data.HotDot(skillId, 0, 0, 0, Data.HotDot.DotType.abs, 999999, 1, name);
             }
             return _hotdots[skillId];

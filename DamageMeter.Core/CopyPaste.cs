@@ -8,13 +8,14 @@ namespace DamageMeter
 {
     public static class CopyPaste
     {
+        private static readonly object Lock = new object();
+
         public static void Paste(string text)
         {
             if (!Monitor.TryEnter(Lock)) return;
             TeraWindow.SendString(text);
             Monitor.Exit(Lock);
         }
-        private static readonly object Lock = new object();
 
 
         public static void Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long intervalvalue, string header,

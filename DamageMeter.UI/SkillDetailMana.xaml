@@ -15,23 +15,23 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
-                           Foreground="Yellow"
-                           MinHeight="29" />
+                   HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
+                   Foreground="Yellow"
+                   MinHeight="29" />
 
 
             <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelTotalMana" VerticalAlignment="Center"
-                           MinHeight="29"
-                           Foreground="DeepSkyBlue" />
+                   HorizontalAlignment="Stretch" x:Name="LabelTotalMana" VerticalAlignment="Center"
+                   MinHeight="29"
+                   Foreground="DeepSkyBlue" />
             <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelNumberHitMana" VerticalAlignment="Center"
-                           MinHeight="29"
-                           Foreground="DeepSkyBlue" />
+                   HorizontalAlignment="Stretch" x:Name="LabelNumberHitMana" VerticalAlignment="Center"
+                   MinHeight="29"
+                   Foreground="DeepSkyBlue" />
             <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
-                           Foreground="Yellow"
-                           MinHeight="29" />
+                   HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
+                   Foreground="Yellow"
+                   MinHeight="29" />
         </Grid>
     </Grid>
 </UserControl>

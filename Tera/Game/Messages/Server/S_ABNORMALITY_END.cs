@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     public class SAbnormalityEnd : ParsedMessage
     {
@@ -15,5 +13,3 @@ namespace Tera.Game.Messages
         public EntityId TargetId { get; }
     }
 }
-        
-

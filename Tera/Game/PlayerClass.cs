@@ -26,5 +26,5 @@ namespace Tera.Game
         {
             return playerClass == PlayerClass.Mystic || playerClass == PlayerClass.Priest;
         }
-    } 
+    }
 }

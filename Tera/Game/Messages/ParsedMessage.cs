@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace Tera.Game.Messages
 {
@@ -11,21 +10,21 @@ namespace Tera.Game.Messages
         {
             Raw = reader.Message.Payload.Array;
             OpCodeName = reader.OpCodeName;
-            
+
             /*
             if (OpCodeName.Contains("ABNORMALITY") || OpCodeName == "S_DESPAWN_NPC")
             {
                 PrintRaw();
             }
             */
-        //    Console.WriteLine(OpCodeName);
+            //    Console.WriteLine(OpCodeName);
             /*
             if (OpCodeName.Contains("CHANGE_MP"))
             {
                 PrintRaw();
             }
             */
-            
+
             /*
             Console.WriteLine(OpCodeName);
             if (OpCodeName == "S_PLAYER_STAT_UPDATE")
@@ -33,7 +32,6 @@ namespace Tera.Game.Messages
                 PrintRaw();
             }
             */
-       
         }
 
         public byte[] Raw { get; protected set; }

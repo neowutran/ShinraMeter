@@ -19,7 +19,6 @@ namespace DamageMeter.UI
 
         public void Update(SkillDetailStats skill)
         {
-            
             var hit = BasicTeraData.Instance.SkillDatabase.Hit(skill.PlayerInfo.Class, skill.Id);
             if (hit == null)
             {
@@ -52,7 +51,6 @@ namespace DamageMeter.UI
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.DmgBiggestCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageHit);
             LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageTotal);
-
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

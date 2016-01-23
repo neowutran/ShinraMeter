@@ -14,11 +14,10 @@ namespace Data
             new Dictionary<PlayerClass, List<UserSkill>>();
 
 
-        public SkillDatabase(string folder,string folderOverride, string language)
+        public SkillDatabase(string folder, string folderOverride, string language)
         {
-
             var readerOverride = new StreamReader(File.OpenRead(folderOverride + "skills-override-" + language + ".tsv"));
-            Dictionary<PlayerClass, List<int>> overrideSkills = new Dictionary<PlayerClass, List<int>>();
+            var overrideSkills = new Dictionary<PlayerClass, List<int>>();
             while (!readerOverride.EndOfStream)
             {
                 var line = readerOverride.ReadLine();
@@ -51,8 +50,7 @@ namespace Data
             }
 
 
-
-            var reader = new StreamReader(File.OpenRead(folder+"skills-"+language+".tsv"));
+            var reader = new StreamReader(File.OpenRead(folder + "skills-" + language + ".tsv"));
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
@@ -70,8 +68,8 @@ namespace Data
                     chained = bool.Parse(values[5]);
                 }
                 var skillDetail = values[6];
-                
-                var skill = new UserSkill(id, playerClass, skillName, skillDetail,chained);
+
+                var skill = new UserSkill(id, playerClass, skillName, skillDetail, chained);
                 if (!_userSkilldata.ContainsKey(skill.PlayerClass))
                 {
                     _userSkilldata[skill.PlayerClass] = new List<UserSkill>();
@@ -80,7 +78,6 @@ namespace Data
                 {
                     _userSkilldata[skill.PlayerClass].Add(skill);
                     continue;
-
                 }
                 if (!overrideSkills[skill.PlayerClass].Contains(skill.Id))
                 {
@@ -109,7 +106,7 @@ namespace Data
                 allSkills = allSkills.Union(skillsSpecific).ToList();
             }
 
-            var skillResult =  allSkills.FirstOrDefault(skill => skill.Id == skillId);
+            var skillResult = allSkills.FirstOrDefault(skill => skill.Id == skillId);
             return skillResult;
         }
 

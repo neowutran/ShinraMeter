@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Threading;
 using DamageMeter.Sniffing;
 using Data;
 using Tera.Game;
 using Tera.Game.Messages;
-using Application = System.Windows.Forms.Application;
 using Message = Tera.Message;
-using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace DamageMeter
 {
@@ -30,21 +26,12 @@ namespace DamageMeter
         private MessageFactory _messageFactory;
         private PlayerTracker _playerTracker;
 
-        public void Exit()
-        {
-            BasicTeraData.Instance.WindowData.Save();
-            BasicTeraData.Instance.HotkeysData.Save();
-            TeraSniffer.Instance.Enabled = false;
-            Application.Exit();
-        }
-
         private NetworkController()
         {
             //TeraSniffer.Instance.MessageReceived += HandleMessageReceived;
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
             var packetAnalysis = new Thread(PacketAnalysisLoop);
             packetAnalysis.Start();
-            
         }
 
         public TeraData TeraData { get; private set; }
@@ -55,6 +42,14 @@ namespace DamageMeter
 
         public IPEndPoint ServerIpEndPoint { get; private set; }
         public IPEndPoint ClientIpEndPoint { get; private set; }
+
+        public void Exit()
+        {
+            BasicTeraData.Instance.WindowData.Save();
+            BasicTeraData.Instance.HotkeysData.Save();
+            TeraSniffer.Instance.Enabled = false;
+            Application.Exit();
+        }
 
         public event ConnectedHandler Connected;
         public event UpdateUiHandler TickUpdated;
@@ -104,11 +99,8 @@ namespace DamageMeter
         }
 
 
-       
-
         private void PacketAnalysisLoop()
         {
-
             while (true)
             {
                 Message obj;
@@ -128,7 +120,6 @@ namespace DamageMeter
 
                 var message = _messageFactory.Create(obj);
                 _entityTracker.Update(message);
-
 
 
                 var npcOccupier = message as SNpcOccupierInfo;
@@ -195,7 +186,7 @@ namespace DamageMeter
                     skillResultMessage.SkillId,
                     skillResultMessage.Source,
                     skillResultMessage.Target);
-              
+
                 DamageTracker.Instance.Update(skillResult);
                 CheckUpdateUi();
             }
@@ -204,25 +195,25 @@ namespace DamageMeter
 
         public void CheckUpdateUi()
         {
-
             var second = Utils.Now();
             if (second - _lastTick < 1) return;
             UpdateUi();
         }
+
         public SkillResult ForgeSkillResult(bool abnormality, int amount, bool isCritical, bool isHeal,
             int skillId, EntityId source, EntityId target)
         {
             return new SkillResult(
-                   abnormality,
-                   amount,
-                   isCritical,
-                   isHeal,
-                   skillId,
-                   source,
-                   target,
-                   _entityTracker,
-                   _playerTracker
-                   );
+                abnormality,
+                amount,
+                isCritical,
+                isHeal,
+                skillId,
+                source,
+                target,
+                _entityTracker,
+                _playerTracker
+                );
         }
 
         private delegate void ForceUpdateUi();

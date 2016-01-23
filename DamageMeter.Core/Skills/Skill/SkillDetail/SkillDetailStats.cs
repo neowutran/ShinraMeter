@@ -1,5 +1,4 @@
 ﻿using System;
-using Tera.Game;
 
 namespace DamageMeter.Skills.Skill.SkillDetail
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Tera.Game;
@@ -10,7 +9,7 @@ namespace Data
     // Currently this is limited to the name of the skill
     public class PetSkillDatabase
     {
-        private readonly Dictionary<string,List<UserSkill>> _petSkilldata = new Dictionary<string, List<UserSkill>>();
+        private readonly Dictionary<string, List<UserSkill>> _petSkilldata = new Dictionary<string, List<UserSkill>>();
 
 
         public PetSkillDatabase(string folder, string language)
@@ -18,7 +17,7 @@ namespace Data
             StreamReader reader;
             try
             {
-                 reader = new StreamReader(File.OpenRead(folder + "pets-skills-" + language + ".tsv"));
+                reader = new StreamReader(File.OpenRead(folder + "pets-skills-" + language + ".tsv"));
             }
             catch
             {
@@ -33,8 +32,8 @@ namespace Data
                 var petName = values[0];
                 var skillId = int.Parse(values[1]);
                 var skillName = values[2];
-                              
-                var skill = new UserSkill(skillId, PlayerClass.Common, petName, skillName,null);
+
+                var skill = new UserSkill(skillId, PlayerClass.Common, petName, skillName, null);
                 if (!_petSkilldata.ContainsKey(petName))
                 {
                     _petSkilldata[petName] = new List<UserSkill>();
@@ -53,6 +52,5 @@ namespace Data
             var petSkill = _petSkilldata[pet].FirstOrDefault(skill => skill.Id == skillId);
             return petSkill == null ? "" : petSkill.Hit;
         }
-
     }
 }

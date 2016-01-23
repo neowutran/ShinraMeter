@@ -60,8 +60,7 @@ namespace DamageMeter.UI
             Timer.Content = interval.ToString(@"mm\:ss");
 
             _windowSkill?.Update(Skills(), new Dictionary<Skill, SkillStats>(PlayerInfo.Dealt.AllSkills));
-            DpsIndicator.Width = ActualWidth * (PlayerInfo.Dealt.DamageFraction(totalDamage) / 100);
-
+            DpsIndicator.Width = ActualWidth*(PlayerInfo.Dealt.DamageFraction(totalDamage)/100);
         }
 
         private Dictionary<Skill, SkillStats> Skills()

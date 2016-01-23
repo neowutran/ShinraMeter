@@ -24,15 +24,17 @@ namespace Tera.Game
             {"S_NPC_TARGET_USER", typeof (SNpcTargetUser)},
             {"S_NPC_OCCUPIER_INFO", typeof (SNpcOccupierInfo)},
             {"C_CHAT", typeof (CChat)},
-            {"S_ABNORMALITY_BEGIN", typeof(SAbnormalityBegin) },
-            {"S_ABNORMALITY_END", typeof(SAbnormalityEnd) },
-            {"S_ABNORMALITY_REFRESH", typeof(SAbnormalityRefresh) },
-            {"S_DESPAWN_NPC",typeof(SDespawnNpc) },
-            {"S_PLAYER_CHANGE_MP", typeof(SPlayerChangeMp) },
-            {"S_PARTY_MEMBER_ABNORMAL_ADD", typeof(SPartyMemberAbnormalAdd) },
-            {"S_PARTY_MEMBER_CHANGE_MP", typeof(SPartyMemberChangeMp) },
-            {"S_PARTY_MEMBER_CHANGE_HP", typeof(SPartyMemberChangeHp) }
-
+            {"S_ABNORMALITY_BEGIN", typeof (SAbnormalityBegin)},
+            {"S_ABNORMALITY_END", typeof (SAbnormalityEnd)},
+            {"S_ABNORMALITY_REFRESH", typeof (SAbnormalityRefresh)},
+            {"S_DESPAWN_NPC", typeof (SDespawnNpc)},
+            {"S_PLAYER_CHANGE_MP", typeof (SPlayerChangeMp)},
+            {"S_PARTY_MEMBER_ABNORMAL_ADD", typeof (SPartyMemberAbnormalAdd)},
+            {"S_PARTY_MEMBER_CHANGE_MP", typeof (SPartyMemberChangeMp)},
+            {"S_PARTY_MEMBER_CHANGE_HP", typeof (SPartyMemberChangeHp)},
+            {"S_PARTY_MEMBER_ABNORMAL_CLEAR", typeof (SPartyMemberAbnormalClear)},
+            {"S_PARTY_MEMBER_ABNORMAL_DEL", typeof (SPartyMemberAbnormalDel)},
+            {"S_PARTY_MEMBER_ABNORMAL_REFRESH", typeof (SPartyMemberAbnormalRefresh)}
         };
 
         private readonly OpCodeNamer _opCodeNamer;

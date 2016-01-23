@@ -1,6 +1,6 @@
 ﻿namespace Tera.Game.Messages
 {
-    public class SPartyMemberAbnormalRefresh:ParsedMessage
+    public class SPartyMemberAbnormalRefresh : ParsedMessage
     {
         internal SPartyMemberAbnormalRefresh(TeraMessageReader reader) : base(reader)
         {

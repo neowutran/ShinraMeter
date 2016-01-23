@@ -52,7 +52,9 @@ namespace DamageMeter
                      e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Value)
             {
                 NetworkController.Instance.Reset();
-            }else if (e.Key == BasicTeraData.Instance.HotkeysData.ResetCurrent.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ResetCurrent.Value)
+            }
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.ResetCurrent.Key &&
+                     e.Modifier == BasicTeraData.Instance.HotkeysData.ResetCurrent.Value)
             {
                 NetworkController.Instance.ResetCurrent();
             }
@@ -86,7 +88,7 @@ namespace DamageMeter
                 Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value,
                     BasicTeraData.Instance.HotkeysData.Reset.Key);
                 Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Value,
-                   BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
+                    BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
             }
             catch
             {
