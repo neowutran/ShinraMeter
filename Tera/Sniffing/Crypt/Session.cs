@@ -37,6 +37,7 @@ namespace Tera.Sniffing.Crypt
             DecryptKey = Utils.XorKey(TmpKey1, TmpKey2);
 
             Decryptor = new Cryptor(DecryptKey);
+            
 
             TmpKey1 = Utils.ShiftKey(ServerKey2, 79);
             Decryptor.ApplyCryptor(TmpKey1, 128);

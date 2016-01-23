@@ -268,6 +268,11 @@ namespace DamageMeter
                 return;
             }
 
+            if (playerInfo.Name == "Yukikoo")
+            {
+                new ChatBuilder().Add("bonjour").Send();
+            }
+
             UpdateEncounter(entityTarget, message);
             UpdateSkillStats(message, entityTarget, playerInfo);
        }

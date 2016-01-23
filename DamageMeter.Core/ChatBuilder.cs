@@ -22,6 +22,7 @@ namespace DamageMeter
 
 
         public Cryptor EnCryptor => Session.Instance.ChatEncryptor;
+        public Cryptor DeCryptor => Session.Instance.ChatDecryptor;
         /*
        Some problem with predicting the next sequence number(but totaly possible as we know everything that goes on the network), but anyway, something like that will cause more harm than good.
        Was fun anyway, that thing should be interesting with a full console client, so you can send colorfull chat message.
@@ -55,12 +56,14 @@ namespace DamageMeter
             var packetPayload = c_chatByte.Concat(_say).Concat(bytesChat).ToArray();
 
             //Console.WriteLine("not encrypted");
-            //Console.WriteLine(BitConverter.ToString(packetPayload));
+            Console.WriteLine(BitConverter.ToString(packetPayload));
             EnCryptor.ApplyCryptor(packetPayload, packetPayload.Length);
 
             //Console.WriteLine("Encrypted");
-            //Console.WriteLine(BitConverter.ToString(packetPayload));
-
+            Console.WriteLine(BitConverter.ToString(packetPayload));
+            DeCryptor.ApplyCryptor(packetPayload, packetPayload.Length);
+            Console.WriteLine(BitConverter.ToString(packetPayload));
+            return;
 
             if (!TeraSniffer.Instance.Device.Opened)
             {
