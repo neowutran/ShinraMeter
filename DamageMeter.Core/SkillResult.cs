@@ -22,14 +22,19 @@ namespace DamageMeter
             var sourceUser = userNpc["user"] as UserEntity; // Attribute damage dealt by owned entities to the owner
             var targetUser = Target as UserEntity; // But don't attribute damage received by owned entities to the owner
 
+            if (abnormality)
+            {
+                Console.WriteLine(skillId);
+                Console.WriteLine(BasicTeraData.Instance.HotDotDatabase.Get(skillId).Name);
+                Console.WriteLine(BasicTeraData.Instance.HotDotDatabase.Get(skillId));
+                Console.WriteLine(BasicTeraData.Instance.HotDotDatabase.Get(skillId).Hp);
+                Skill = new UserSkill(skillId, PlayerClass.Common, BasicTeraData.Instance.HotDotDatabase.Get(skillId).Name, "DOT", null);
+            }
+
             if (sourceUser != null)
             {
                 SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
-                if (abnormality)
-                {
-                    Skill = new UserSkill(skillId, PlayerClass.Common, BasicTeraData.Instance.HotDotDatabase.Get(skillId).Name, "DOT", null);
-                }
-                else
+                if (!abnormality)
                 {
                     Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, skillId);
                     if (Skill == null && npc != null)
@@ -42,6 +47,7 @@ namespace DamageMeter
 
                     }
                 }
+
             }
 
             if (targetUser != null)

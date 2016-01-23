@@ -15,7 +15,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "0.56";
+        public static readonly string Version = "0.57";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -57,6 +57,7 @@ namespace DamageMeter.AutoUpdate
             ZipFile.ExtractToDirectory(ExecutableDirectory + @"\tmp\" + latestVersion, ExecutableDirectory + @"\tmp\");
             ZipFile.ExtractToDirectory(ExecutableDirectory + @"\tmp\" + latestVersion,
                 ExecutableDirectory + @"\tmp\release\");
+            
         }
 
 
