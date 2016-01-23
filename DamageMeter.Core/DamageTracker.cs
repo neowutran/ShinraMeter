@@ -231,7 +231,6 @@ namespace DamageMeter
             }
             else
             {
-                Console.WriteLine("UNKNOW DAMAGE:"+skillResult.Source);
                 entitySource = new Entity("UNKNOW");
             }
 

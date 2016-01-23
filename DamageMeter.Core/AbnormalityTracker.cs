@@ -34,24 +34,12 @@ namespace DamageMeter
                 _abnormalities.Add(target, new List<Abnormality>());
             }
             var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityId);
-            if (hotdot == null)
-            {
-                //         Console.WriteLine("UNKNOW DOT");
-                return;
-            }
-
-            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack));
+           _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack));
 
         }
 
         public void RefreshAbnormality(SAbnormalityRefresh message)
         {
-            var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(message.AbnormalityId);
-            if (hotdot == null)
-            {
-         //       Console.WriteLine("UNKNOW DOT");
-                return;
-            }
             if (!_abnormalities.ContainsKey(message.TargetId))
             {
               //  AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.StackCounter, message.AbnormalityId);
@@ -104,11 +92,7 @@ namespace DamageMeter
 
         }
 
-        public enum HotDot
-        {
-            Dot = 131071,
-            Hot = 65536,
-        }
+       
 
         public void Update(SPlayerChangeMp message)
         {
@@ -117,8 +101,41 @@ namespace DamageMeter
 
         private void Update(EntityId target, EntityId source, int change, int type, bool critical, bool isHp)
         {
+
+         //  Console.WriteLine(";isHp:" + isHp + ";amount:" + change + ";type:" + type);
+
+            // SystemHot/Dot 
+            if (
+                (int) HotDotDatabase.HotDot.SystemHot == type ||
+                (int) HotDotDatabase.HotDot.CrystalHpHot == type ||
+                (int)HotDotDatabase.HotDot.NaturalMpRegen == type ||
+                (int) HotDotDatabase.HotDot.StuffMpHot == type                
+                )
+            {
+
+                /*
+                var skillResult = NetworkController.Instance.ForgeSkillResult(
+                   true,
+                   change,
+                   critical,
+                   isHp,
+                   type*-1, //unknow ID
+                   source,
+                   target);
+
+
+                DamageTracker.Instance.Update(skillResult);
+
+                NetworkController.Instance.CheckUpdateUi();
+                */
+                return;
+            }
+
+
+
             if (!_abnormalities.ContainsKey(target))
             {
+             //   Console.WriteLine("ERROR 1: HPCHANGE= " + change);
                 return;
             }
 
@@ -127,10 +144,15 @@ namespace DamageMeter
 
             foreach (var abnormality in abnormalities)
             {
-                if (abnormality.Source != source)
+           //     Console.WriteLine("Check 0 : HPCHANGE= " + change + ";id:"+abnormality.HotDot.Id+";source:"+source+";abno source:"+abnormality.Source);
+
+
+                if (abnormality.Source != source && abnormality.Source != abnormality.Target)
                 {
                     continue;
                 }
+
+              //  Console.WriteLine("Check 1 : HPCHANGE= " + change);
 
                 if (isHp)
                 {
@@ -141,18 +163,20 @@ namespace DamageMeter
                 else
                 {
                     if ((!(abnormality.HotDot.Mp > 0) || change <= 0) &&
-                        (!(abnormality.HotDot.Mp < 0) || change >= 0) 
+                        (!(abnormality.HotDot.Mp < 0) || change >= 0)
                         ) continue;
                 }
 
-                if (!Enum.IsDefined(typeof(HotDot), type))
+                if ((int)HotDotDatabase.HotDot.Dot != type  && (int)HotDotDatabase.HotDot.Hot != type)
                 {
                     continue;
                 }
 
                 abnormality.Apply(change, critical, isHp);
-                break;
+                return;
             }
+            //Console.WriteLine("ERROR 2: HPCHANGE= " + change);
+
         }
 
 

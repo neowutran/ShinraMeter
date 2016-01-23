@@ -24,10 +24,6 @@ namespace DamageMeter
 
             if (abnormality)
             {
-                Console.WriteLine(skillId);
-                Console.WriteLine(BasicTeraData.Instance.HotDotDatabase.Get(skillId).Name);
-                Console.WriteLine(BasicTeraData.Instance.HotDotDatabase.Get(skillId));
-                Console.WriteLine(BasicTeraData.Instance.HotDotDatabase.Get(skillId).Hp);
                 Skill = new UserSkill(skillId, PlayerClass.Common, BasicTeraData.Instance.HotDotDatabase.Get(skillId).Name, "DOT", null);
             }
 
