@@ -31,6 +31,10 @@ namespace DamageMeter
                 _abnormalities.Add(target, new List<Abnormality>());
             }
             var hotdot = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityId);
+            if (hotdot == null)
+            {
+                return;
+            }
             _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack));
         }
 
@@ -98,6 +102,7 @@ namespace DamageMeter
             //  Console.WriteLine(";isHp:" + isHp + ";amount:" + change + ";type:" + type);
 
             // SystemHot/Dot 
+            /*
             if (
                 (int) HotDotDatabase.HotDot.SystemHot == type ||
                 (int) HotDotDatabase.HotDot.CrystalHpHot == type ||
@@ -120,9 +125,10 @@ namespace DamageMeter
 
                 NetworkController.Instance.CheckUpdateUi();
                 */
+                /*
                 return;
             }
-
+            */
 
             if (!_abnormalities.ContainsKey(target))
             {

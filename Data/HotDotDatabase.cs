@@ -11,10 +11,10 @@ namespace Data
         {
             Dot = 131071,
             Hot = 65536,
-            SystemHot = 655360, // natural regen
-            CrystalHpHot = 196608,
-            StuffMpHot = 262144,
-            NaturalMpRegen = 0
+          //  SystemHot = 655360, // natural regen
+          //  CrystalHpHot = 196608,   Not 
+          //  StuffMpHot = 262144,
+          //  NaturalMpRegen = 0
         }
 
         private readonly Dictionary<int, Data.HotDot> _hotdots =
@@ -45,6 +45,7 @@ namespace Data
         {
             if (!_hotdots.ContainsKey(skillId))
             {
+                /*
                 var name = "";
                 switch (skillId)
                 {
@@ -64,6 +65,8 @@ namespace Data
 
 
                 return new Data.HotDot(skillId, 0, 0, 0, Data.HotDot.DotType.abs, 999999, 1, name);
+                */
+                return null;
             }
             return _hotdots[skillId];
         }

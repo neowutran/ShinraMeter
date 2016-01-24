@@ -28,7 +28,9 @@ namespace Data
             ParseLanguage();
             ParseMainWindowOpacity();
             ParseSkillWindowOpacity();
+            ParseAutoUpdate();
         }
+        
 
         public Point Location { get; set; }
 
@@ -44,6 +46,23 @@ namespace Data
             Language = "EU-EN";
             MainWindowOpacity = 0.5;
             SkillWindowOpacity = 0.7;
+            AutoUpdate = true;
+        }
+
+        public bool AutoUpdate { get; private set; }
+
+
+        public void ParseAutoUpdate()
+        {
+            var root = _xml.Root;
+            var autoupdate = root?.Element("autoupdate");
+            if (autoupdate == null) return;
+            bool auto;
+            var parseSuccess = bool.TryParse(autoupdate.Value, out auto);
+            if (parseSuccess)
+            {
+                AutoUpdate = auto;
+            }
         }
 
         private void ParseLocation()
@@ -111,6 +130,7 @@ namespace Data
             xml.Root.Add(new XElement("opacity"));
             xml.Root.Element("opacity").Add(new XElement("mainWindow", MainWindowOpacity*100));
             xml.Root.Element("opacity").Add(new XElement("skillWindow", SkillWindowOpacity*100));
+            xml.Root.Add(new XElement("autoupdate", AutoUpdate));
             xml.Save(_windowFile);
         }
     }
