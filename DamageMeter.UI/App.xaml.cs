@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using DamageMeter.AutoUpdate;
+using Data;
 
 namespace DamageMeter.UI
 {
@@ -30,6 +31,10 @@ namespace DamageMeter.UI
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             if (aIsNewInstance)
             {
+                if (!BasicTeraData.Instance.WindowData.AutoUpdate)
+                {
+                    return;
+                }
                 var shutdown = false;
                 try
                 {
