@@ -1,4 +1,5 @@
 ﻿using System;
+using log4net;
 
 namespace DamageMeter.Skills.Skill.SkillDetail
 {
@@ -361,7 +362,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         SetTotalDamage(damage);
                         break;
                     default:
-                        throw new Exception("NO CRIT ON MANA");
+                        throw new Exception("NO CRIT ON MANA. Amount:"+damage);
                 }
             }
             else

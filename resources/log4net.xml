@@ -1,7 +1,7 @@
 <log4net>
 <appender name="FileAppender" type="log4net.Appender.FileAppender">
     <file value="error.log" />
-    <appendToFile value="false" />
+    <appendToFile value="true" />
     <layout type="log4net.Layout.PatternLayout">
         <conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
     </layout>

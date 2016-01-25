@@ -37,6 +37,9 @@ namespace DamageMeter.Sniffing
         {
             var servers = BasicTeraData.Instance.Servers;
             _serversByIp = servers.ToDictionary(x => x.Ip);
+
+
+
             var netmasks =
                 _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct().ToArray();
             var filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
@@ -44,6 +47,9 @@ namespace DamageMeter.Sniffing
 
             _ipSniffer = new IpSniffer(filter);
             _ipSniffer.Warning += OnWarning;
+
+     
+
             var tcpSniffer = new TcpSniffer(_ipSniffer);
             tcpSniffer.NewConnection += HandleNewConnection;
         }
@@ -111,10 +117,10 @@ namespace DamageMeter.Sniffing
                     return;
                 if (_isNew.Contains(connection))
                 {
-                    _isNew.Remove(connection);
                     if (_serversByIp.ContainsKey(connection.Source.Address.ToString()) &&
                         data.Bytes.Skip(data.Offset).Take(4).SequenceEqual(new byte[] {1, 0, 0, 0}))
                     {
+                        _isNew.Remove(connection);
                         var server = _serversByIp[connection.Source.Address.ToString()];
                         _serverToClient = connection;
                         _clientToServer = null;
@@ -131,6 +137,7 @@ namespace DamageMeter.Sniffing
                         (_serverToClient.Destination.Equals(connection.Source) &&
                          _serverToClient.Source.Equals(connection.Destination)))
                     {
+                        _isNew.Remove(connection);
                         _clientToServer = connection;
                     }
                 }
