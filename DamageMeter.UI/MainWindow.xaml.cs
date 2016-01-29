@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Sniffing;
@@ -44,10 +45,12 @@ namespace DamageMeter.UI
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
             PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
+            EntityStatsImage.Source = BasicTeraData.Instance.PinData.EntityStats.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new LinkedList<Entity>());
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
+            _entityStats = new EntityStats(this);
         }
 
 
@@ -100,6 +103,7 @@ namespace DamageMeter.UI
                 {
                     UpdateComboboxEncounter(entities.Keys);
                     StayTopMost();
+                    _entityStats.Update(entities);
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
                     foreach (var playerStats in stats)
@@ -268,11 +272,23 @@ namespace DamageMeter.UI
             }
         }
 
+        private EntityStats _entityStats;
+
         private delegate void UpdateEncounter(Entity entity);
 
         private delegate void UpdateUi(
             long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
 
         private delegate void ChangeTitle(string servername);
+
+        private void EntityStatsImage_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _entityStats.Show();
+        }
+
+        public void CloseEntityStats()
+        {
+            _entityStats.Hide();
+        }
     }
 }

@@ -22,7 +22,8 @@ namespace DamageMeter
             {
                 TotalDamage = TotalDamage,
                 FirstHit = FirstHit,
-                LastHit = LastHit
+                LastHit = LastHit,
+                VolleyOfCurse = VolleyOfCurse
             };
             return newEntityInfo;
         }

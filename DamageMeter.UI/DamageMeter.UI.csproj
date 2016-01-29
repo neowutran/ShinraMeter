@@ -69,6 +69,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EntityStats.xaml.cs">
+      <DependentUpon>EntityStats.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Skill.cs" />
     <Compile Include="SkillDetailMana.xaml.cs">
       <DependentUpon>SkillDetailMana.xaml</DependentUpon>
@@ -103,6 +106,10 @@
     <Compile Include="SkillsHeaderDps.xaml.cs">
       <DependentUpon>SkillsHeaderDps.xaml</DependentUpon>
     </Compile>
+    <Page Include="EntityStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
