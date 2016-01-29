@@ -1,17 +1,21 @@
-﻿using Data;
+﻿using System;
+using System.Windows.Forms.VisualStyles;
+using Data;
 using Tera.Game;
 
 namespace DamageMeter
 {
     public class Abnormality
     {
-        public Abnormality(HotDot hotdot, EntityId source, EntityId target, int duration, int stack)
+        public Abnormality(HotDot hotdot, EntityId source, EntityId target, int duration, int stack, long ticks)
         {
             HotDot = hotdot;
             Source = source;
             Target = target;
             Duration = duration/1000;
             Stack = stack == 0 ? 1 : stack;
+            FirstHit = ticks;
+            Console.WriteLine("DOT:id="+HotDot.Id+"; Duration:"+Duration);
         }
 
         public HotDot HotDot { get; }
@@ -24,8 +28,9 @@ namespace DamageMeter
 
         public long LastApply { get; private set; }
 
-        public long TimeBeforeApply => (Utils.Now() - LastApply) - HotDot.Tick;
+        public long FirstHit { get; private set; }
 
+        public long TimeBeforeApply => (Utils.Now() - LastApply) - HotDot.Tick;
 
         public void Apply(int amount, bool critical, bool isHp)
         {
@@ -42,6 +47,21 @@ namespace DamageMeter
 
             NetworkController.Instance.CheckUpdateUi();
             LastApply = Utils.Now();
+        }
+
+        public void ApplyRemove(long lastTicks)
+        {
+            if (HotDot.Id != 27160) return;
+            Console.WriteLine("Appli remove:"+HotDot.Id);
+            foreach (var entityStats in DamageTracker.Instance.EntitiesStats)
+            {
+                if (entityStats.Key.Id != Target) continue;
+                var entity = entityStats.Key;
+                DamageTracker.Instance.EntitiesStats[entity].VolleyOfCurse += (lastTicks - FirstHit)/ 10000000;
+                Console.WriteLine("Constit debuff: "+DamageTracker.Instance.EntitiesStats[entity].VolleyOfCurse+";"+ DamageTracker.Instance.EntitiesStats[entity].Interval + "%="+ (DamageTracker.Instance.EntitiesStats[entity].VolleyOfCurse * 100) / DamageTracker.Instance.EntitiesStats[entity].Interval);
+                return;
+            }
+            
         }
 
 

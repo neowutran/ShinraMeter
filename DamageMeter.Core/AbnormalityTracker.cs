@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Tera.Game;
@@ -21,10 +22,11 @@ namespace DamageMeter
 
         public void AddAbnormality(SAbnormalityBegin message)
         {
-            AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.Stack, message.AbnormalityId);
+            
+            AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.Stack, message.AbnormalityId, message.Time.Ticks);
         }
 
-        private void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId)
+        private void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId, long ticks)
         {
             if (!_abnormalities.ContainsKey(target))
             {
@@ -35,7 +37,7 @@ namespace DamageMeter
             {
                 return;
             }
-            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack));
+            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
         }
 
         public void RefreshAbnormality(SAbnormalityRefresh message)
@@ -70,6 +72,7 @@ namespace DamageMeter
             {
                 if (abnormalityUser[i].HotDot.Id == message.AbnormalityId)
                 {
+                    abnormalityUser[i].ApplyRemove(message.Time.Ticks);
                     abnormalityUser.Remove(abnormalityUser[i]);
                 }
             }
@@ -84,9 +87,14 @@ namespace DamageMeter
 
         public void DeleteAbnormality(SDespawnNpc message)
         {
+            Console.WriteLine("Despawn NPC");
             if (!_abnormalities.ContainsKey(message.Npc))
             {
                 return;
+            }
+            foreach (var abno in _abnormalities[message.Npc])
+            {
+                abno.ApplyRemove(message.Time.Ticks);
             }
             _abnormalities.Remove(message.Npc);
         }

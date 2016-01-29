@@ -65,6 +65,7 @@
     <Compile Include="CopyPaste.cs" />
     <Compile Include="DamageTracker.cs" />
     <Compile Include="Dealt\EntitiesDealt.cs" />
+    <Compile Include="EntityInfo.cs" />
     <Compile Include="FormatHelpers.cs" />
     <Compile Include="IpHelper.cs" />
     <Compile Include="KeyboardHook.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="PlayerInfo.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Skills\GroupSkillsStats.cs" />
     <Compile Include="Skills\Skill\Skill.cs" />
     <Compile Include="Skills\Skill\SkillDetail\SkillDetailStats.cs" />
     <Compile Include="SkillResult.cs" />

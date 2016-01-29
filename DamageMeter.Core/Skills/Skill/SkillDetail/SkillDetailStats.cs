@@ -322,17 +322,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
         private void SetTotalDamage(long damage)
         {
             if (_entityTarget == null) return;
-            lock (DamageTracker.Instance.TotalDamageEntity)
-            {
-                if (DamageTracker.Instance.TotalDamageEntity.ContainsKey(_entityTarget))
-                {
-                    DamageTracker.Instance.TotalDamageEntity[_entityTarget] += damage;
-                }
-                else
-                {
-                    DamageTracker.Instance.TotalDamageEntity[_entityTarget] = damage;
-                }
-            }
+            DamageTracker.Instance.EntitiesStats[_entityTarget].TotalDamage += damage;
             DamageTracker.Instance.SetFirstHit(_entityTarget);
             DamageTracker.Instance.SetLastHit(_entityTarget);
             DamageTracker.Instance.UpdateCurrentBoss(_entityTarget);

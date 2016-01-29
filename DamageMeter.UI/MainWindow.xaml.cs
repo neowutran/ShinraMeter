@@ -93,12 +93,12 @@ namespace DamageMeter.UI
             }
         }
 
-        public void Update(long nintervalvalue, long ntotalDamage, LinkedList<Entity> nentities, List<PlayerInfo> nstats)
+        public void Update(long nintervalvalue, long ntotalDamage, Dictionary<Entity, EntityInfo> nentities, List<PlayerInfo> nstats)
         {
             UpdateUi changeUi =
-                delegate(long intervalvalue, long totalDamage, LinkedList<Entity> entities, List<PlayerInfo> stats)
+                delegate(long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats)
                 {
-                    UpdateComboboxEncounter(entities);
+                    UpdateComboboxEncounter(entities.Keys);
                     StayTopMost();
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
@@ -271,7 +271,7 @@ namespace DamageMeter.UI
         private delegate void UpdateEncounter(Entity entity);
 
         private delegate void UpdateUi(
-            long intervalvalue, long totalDamage, LinkedList<Entity> entities, List<PlayerInfo> stats);
+            long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
 
         private delegate void ChangeTitle(string servername);
     }
