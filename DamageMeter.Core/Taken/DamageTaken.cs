@@ -21,6 +21,7 @@ namespace DamageMeter.Taken
 
         public void AddDamage(long damage)
         {
+            Console.WriteLine("Damage taken");
             Damage += damage;
             Hits++;
         }

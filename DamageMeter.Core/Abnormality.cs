@@ -51,14 +51,19 @@ namespace DamageMeter
 
         public void ApplyRemove(long lastTicks)
         {
-            if (HotDot.Id != 27160) return;
-            Console.WriteLine("Appli remove:"+HotDot.Id);
+            if (HotDot.Type != "Endurance") return;
             foreach (var entityStats in DamageTracker.Instance.EntitiesStats)
             {
                 if (entityStats.Key.Id != Target) continue;
                 var entity = entityStats.Key;
-                DamageTracker.Instance.EntitiesStats[entity].VolleyOfCurse += (lastTicks - FirstHit)/ 10000000;
-                Console.WriteLine("Constit debuff: "+DamageTracker.Instance.EntitiesStats[entity].VolleyOfCurse+";"+ DamageTracker.Instance.EntitiesStats[entity].Interval + "%="+ (DamageTracker.Instance.EntitiesStats[entity].VolleyOfCurse * 100) / DamageTracker.Instance.EntitiesStats[entity].Interval);
+
+                if (!DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.ContainsKey(HotDot))
+                {
+                    DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.Add(HotDot,0);
+                }
+                DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot] += (lastTicks - FirstHit)/
+                                                                                            10000000;
+                
                 return;
             }
             

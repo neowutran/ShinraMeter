@@ -1,6 +1,8 @@
-﻿namespace Data
+﻿using System;
+
+namespace Data
 {
-    public class HotDot
+    public class HotDot : IEquatable<object>
     {
         public enum DotType
         {
@@ -8,20 +10,62 @@
             perc = 3 // each tick  HP += MaxHP*HPChange; MP += MaxMP*MPChange
         }
 
-        public HotDot(int id, int effectId, double hp, double mp, DotType method, int time, int tick, string name)
+        public HotDot(int id, string type, double hp, double mp, double amount, DotType method, int time, int tick, string name)
         {
             Id = id;
-            EffectId = effectId;
+            Type = type;
             Hp = hp;
             Mp = mp;
+            Amount = amount;
             Method = method;
             Time = time;
             Tick = tick;
             Name = name;
         }
 
+
+        public bool Equals(HotDot other)
+        {
+            return Id == other.Id;
+        }
+
+        public static bool operator ==(HotDot a, HotDot b)
+        {
+            if (ReferenceEquals(a, b))
+            {
+                return true;
+            }
+
+            // If one is null, but not both, return false.
+            if (((object)a == null) || ((object)b == null))
+            {
+                return false;
+            }
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(HotDot a, HotDot b)
+        {
+            return !(a == b);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode() ^ Id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((HotDot)obj);
+        }
+
+        public double Amount { get; }
+
         public int Id { get; }
-        public int EffectId { get; }
+        public string Type { get; }
         public double Hp { get; }
         public double Mp { get; }
         public DotType Method { get; }

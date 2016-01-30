@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data;
 
 namespace DamageMeter
 {
@@ -14,7 +15,7 @@ namespace DamageMeter
 
         public long Interval => LastHit - FirstHit;
 
-        public long VolleyOfCurse { get; set; }
+        public Dictionary<HotDot, long> AbnormalityTime = new Dictionary<HotDot, long>(); 
 
         public object Clone()
         {
@@ -23,7 +24,7 @@ namespace DamageMeter
                 TotalDamage = TotalDamage,
                 FirstHit = FirstHit,
                 LastHit = LastHit,
-                VolleyOfCurse = VolleyOfCurse
+                AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => i.Value)
             };
             return newEntityInfo;
         }

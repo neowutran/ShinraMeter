@@ -46,7 +46,11 @@
         <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
                 Content="X" Foreground="White" Click="CloseMeter_OnClick" HorizontalContentAlignment="Stretch"
                 VerticalAlignment="Top" Margin="0" />
-        <Label x:Name="VolleyOfCurse" HorizontalAlignment="Left" FontSize="14" Foreground="White"
-               VerticalAlignment="Center" MinHeight="29" Height="29" HorizontalContentAlignment="Center" />
+
+        <ItemsControl Margin="0,25,0,0" Name="EnduranceAbnormality" Background="Transparent" BorderThickness="0" Focusable="False"
+                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left"/>
+        
     </Grid>
 </Window>

@@ -30,45 +30,21 @@ namespace Data
                 if (line == null) continue;
                 var values = line.Split('\t');
                 var id = int.Parse(values[0]);
-                var effectId = int.Parse(values[1]);
+                var type = values[1];
                 var hp = double.Parse(values[2], CultureInfo.InvariantCulture);
                 var mp = double.Parse(values[3], CultureInfo.InvariantCulture);
                 var method = (Data.HotDot.DotType) Enum.Parse(typeof (Data.HotDot.DotType), values[4]);
                 var time = int.Parse(values[5]);
                 var tick = int.Parse(values[6]);
-                var name = values[7];
-                _hotdots[id] = new Data.HotDot(id, effectId, hp, mp, method, time, tick, name);
+                var amount = double.Parse(values[7], CultureInfo.InvariantCulture);
+                var name = values[8];
+                _hotdots[id] = new Data.HotDot(id, type, hp, mp, amount, method, time, tick, name);
             }
         }
 
         public Data.HotDot Get(int skillId)
         {
-            if (!_hotdots.ContainsKey(skillId))
-            {
-                /*
-                var name = "";
-                switch (skillId)
-                {
-                    case (int) HotDot.CrystalHpHot*-1:
-                        name = "Crystal regen HP";
-                        break;
-                    case (int) HotDot.NaturalMpRegen*-1:
-                        name = "Natural regen";
-                        break;
-                    case (int) HotDot.SystemHot*-1:
-                        name = "System hot/dot";
-                        break;
-                    case (int) HotDot.StuffMpHot*-1:
-                        name = "Stuff regen MP";
-                        break;
-                }
-
-
-                return new Data.HotDot(skillId, 0, 0, 0, Data.HotDot.DotType.abs, 999999, 1, name);
-                */
-                return null;
-            }
-            return _hotdots[skillId];
+            return !_hotdots.ContainsKey(skillId) ? null : _hotdots[skillId];
         }
     }
 }

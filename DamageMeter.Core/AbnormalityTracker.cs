@@ -87,7 +87,6 @@ namespace DamageMeter
 
         public void DeleteAbnormality(SDespawnNpc message)
         {
-            Console.WriteLine("Despawn NPC");
             if (!_abnormalities.ContainsKey(message.Npc))
             {
                 return;

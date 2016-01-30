@@ -20,7 +20,7 @@ namespace DamageMeter.UI
     public partial class EntityStats : Window
     {
 
-        private MainWindow _parent;
+        private readonly MainWindow _parent;
 
         public EntityStats(MainWindow parent)
         {
@@ -32,19 +32,37 @@ namespace DamageMeter.UI
         public void Update(Dictionary<Entity, EntityInfo> stats)
         {
             var entity = NetworkController.Instance.Encounter;
+            EnduranceAbnormality.Items.Clear();
             if (entity == null)
             {
                 return;
             }
-            var statsVolley = stats[entity];
-            if (statsVolley.Interval == 0)
+            var statsAbnormalities = stats[entity];
+            if (statsAbnormalities.Interval == 0)
             {
                 return;
             }
-            VolleyOfCurse.Content = "Volley of curse endurance debuff: Total uptime=" + statsVolley.VolleyOfCurse +
-                                    "s ; Total fight time=" + statsVolley.Interval + "s ; Uptime percentage:" +
-                                    (statsVolley.VolleyOfCurse*100)/statsVolley.Interval+"%";
 
+
+            foreach (var statsAbnormality in statsAbnormalities.AbnormalityTime)
+            {
+
+                var abnormality = new Label
+                {
+                    Content =
+                        "" + statsAbnormality.Key.Name + "=> Total uptime: " + statsAbnormality.Value +
+                        "s ; Total fight time: " + statsAbnormalities.Interval + "s ; Uptime percentage: " +
+                        (statsAbnormality.Value*100)/statsAbnormalities.Interval+"%",
+                    Foreground = Brushes.White,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    FontSize = 14,
+                    MinHeight = 29,
+                    Height = 29,
+                    HorizontalContentAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                EnduranceAbnormality.Items.Add(abnormality);
+            }
         }
 
         private void EntityStats_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -61,7 +79,6 @@ namespace DamageMeter.UI
 
         private void CloseMeter_OnClick(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Close");
             _parent.CloseEntityStats();
         }
     }
