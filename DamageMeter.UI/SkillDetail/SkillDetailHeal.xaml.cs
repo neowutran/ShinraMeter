@@ -4,14 +4,14 @@ using System.Windows.Input;
 using DamageMeter.Skills.Skill.SkillDetail;
 using Data;
 
-namespace DamageMeter.UI
+namespace DamageMeter.UI.SkillDetail
 {
     /// <summary>
     ///     Logique d'interaction pour SkillContent.xaml
     /// </summary>
-    public partial class SkillDetailMana
+    public partial class SkillDetailHeal
     {
-        public SkillDetailMana(SkillDetailStats skill)
+        public SkillDetailHeal(SkillDetailStats skill)
         {
             InitializeComponent();
             Update(skill);
@@ -19,7 +19,6 @@ namespace DamageMeter.UI
 
         public void Update(SkillDetailStats skill)
         {
-            //TODO Need to refactor this shitty copy paste shit
             var hit = BasicTeraData.Instance.SkillDatabase.Hit(skill.PlayerInfo.Class, skill.Id);
             if (hit == null)
             {
@@ -28,6 +27,7 @@ namespace DamageMeter.UI
                     hit = "DOT";
                 }
             }
+
             var chained = BasicTeraData.Instance.SkillDatabase.IsChained(skill.PlayerInfo.Class, skill.Id);
             if (hit != null)
             {
@@ -38,9 +38,22 @@ namespace DamageMeter.UI
                 LabelName.Content += " Chained";
             }
 
+
             LabelId.Content = skill.Id;
-            LabelNumberHitMana.Content = skill.HitsMana;
-            LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skill.Mana);
+            LabelCritRateHeal.Content = skill.CritRateHeal + "%";
+
+
+            LabelNumberHitHeal.Content = skill.HitsHeal;
+            LabelNumberCritHeal.Content = skill.CritsHeal;
+
+            LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(skill.Heal);
+            LabelBiggestHit.Content = FormatHelpers.Instance.FormatValue(skill.HealBiggestHit);
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.HealBiggestCrit);
+
+
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageCrit);
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageHit);
+            LabelAverage.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageTotal);
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

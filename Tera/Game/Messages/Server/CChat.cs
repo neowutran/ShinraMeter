@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     public class CChat : ParsedMessage
     {
@@ -13,7 +11,7 @@ namespace Tera.Game.Messages
 
             Text = reader.ReadTeraString();
 
-           // Console.WriteLine("text:" + Text);
+            // Console.WriteLine("text:" + Text);
         }
 
         public string Text { get; set; }

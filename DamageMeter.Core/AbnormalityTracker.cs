@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Tera.Game;
@@ -22,11 +21,12 @@ namespace DamageMeter
 
         public void AddAbnormality(SAbnormalityBegin message)
         {
-            
-            AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.Stack, message.AbnormalityId, message.Time.Ticks);
+            AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.Stack, message.AbnormalityId,
+                message.Time.Ticks);
         }
 
-        private void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId, long ticks)
+        private void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId,
+            long ticks)
         {
             if (!_abnormalities.ContainsKey(target))
             {
@@ -52,7 +52,8 @@ namespace DamageMeter
             foreach (var abnormality in abnormalityUser)
             {
                 if (abnormality.HotDot.Id != message.AbnormalityId) continue;
-                abnormality.Refresh(message.StackCounter, message.Duration);
+                abnormality.Refresh(message.StackCounter, message.Duration, message.Time.Ticks);
+
                 return;
             }
 
@@ -72,7 +73,7 @@ namespace DamageMeter
             {
                 if (abnormalityUser[i].HotDot.Id == message.AbnormalityId)
                 {
-                    abnormalityUser[i].ApplyRemove(message.Time.Ticks);
+                    abnormalityUser[i].ApplyEnduranceDebuff(message.Time.Ticks);
                     abnormalityUser.Remove(abnormalityUser[i]);
                 }
             }
@@ -93,7 +94,7 @@ namespace DamageMeter
             }
             foreach (var abno in _abnormalities[message.Npc])
             {
-                abno.ApplyRemove(message.Time.Ticks);
+                abno.ApplyEnduranceDebuff(message.Time.Ticks);
             }
             _abnormalities.Remove(message.Npc);
         }
@@ -101,45 +102,14 @@ namespace DamageMeter
 
         public void Update(SPlayerChangeMp message)
         {
-            Update(message.TargetId, message.SourceId, message.MpChange, message.Type, message.Critical == 1, false);
+            Update(message.TargetId, message.SourceId, message.MpChange, message.Type, message.Critical == 1, false,
+                message.Time.Ticks);
         }
 
-        private void Update(EntityId target, EntityId source, int change, int type, bool critical, bool isHp)
+        private void Update(EntityId target, EntityId source, int change, int type, bool critical, bool isHp, long time)
         {
-            //  Console.WriteLine(";isHp:" + isHp + ";amount:" + change + ";type:" + type);
-
-            // SystemHot/Dot 
-            /*
-            if (
-                (int) HotDotDatabase.HotDot.SystemHot == type ||
-                (int) HotDotDatabase.HotDot.CrystalHpHot == type ||
-                (int) HotDotDatabase.HotDot.NaturalMpRegen == type ||
-                (int) HotDotDatabase.HotDot.StuffMpHot == type
-                )
-            {
-                /*
-                var skillResult = NetworkController.Instance.ForgeSkillResult(
-                   true,
-                   change,
-                   critical,
-                   isHp,
-                   type*-1, //unknow ID
-                   source,
-                   target);
-
-
-                DamageTracker.Instance.Update(skillResult);
-
-                NetworkController.Instance.CheckUpdateUi();
-                */
-                /*
-                return;
-            }
-            */
-
             if (!_abnormalities.ContainsKey(target))
             {
-                //   Console.WriteLine("ERROR 1: HPCHANGE= " + change);
                 return;
             }
 
@@ -148,15 +118,10 @@ namespace DamageMeter
 
             foreach (var abnormality in abnormalities)
             {
-                //     Console.WriteLine("Check 0 : HPCHANGE= " + change + ";id:"+abnormality.HotDot.Id+";source:"+source+";abno source:"+abnormality.Source);
-
-
                 if (abnormality.Source != source && abnormality.Source != abnormality.Target)
                 {
                     continue;
                 }
-
-                //  Console.WriteLine("Check 1 : HPCHANGE= " + change);
 
                 if (isHp)
                 {
@@ -176,16 +141,24 @@ namespace DamageMeter
                     continue;
                 }
 
-                abnormality.Apply(change, critical, isHp);
+                abnormality.Apply(change, critical, isHp, time);
                 return;
             }
-            //Console.WriteLine("ERROR 2: HPCHANGE= " + change);
+        }
+
+        public void ApplyEnduranceDebuff(long time)
+        {
+            foreach (var abnormality in _abnormalities.SelectMany(abnormalityList => abnormalityList.Value))
+            {
+                abnormality.ApplyEnduranceDebuff(time);
+            }
         }
 
 
         public void Update(SCreatureChangeHp message)
         {
-            Update(message.TargetId, message.SourceId, message.HpChange, message.Type, message.Critical == 1, true);
+            Update(message.TargetId, message.SourceId, message.HpChange, message.Type, message.Critical == 1, true,
+                message.Time.Ticks);
         }
     }
 }

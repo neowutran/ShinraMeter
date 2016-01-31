@@ -4,7 +4,7 @@
     {
         internal SPartyMemberAbnormalClear(TeraMessageReader reader) : base(reader)
         {
-          //  PrintRaw();
+            //  PrintRaw();
         }
     }
 }

@@ -49,14 +49,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -69,26 +64,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EntityStats.xaml.cs">
-      <DependentUpon>EntityStats.xaml</DependentUpon>
+    <Compile Include="EntityStats\EnduranceDebuffHeader.xaml.cs">
+      <DependentUpon>EnduranceDebuffHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EntityStats\EnduranceDebuff.xaml.cs">
+      <DependentUpon>EnduranceDebuff.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EntityStats\EntityStatsMain.xaml.cs">
+      <DependentUpon>EntityStatsMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="Skill.cs" />
-    <Compile Include="SkillDetailMana.xaml.cs">
+    <Compile Include="SkillDetail\SkillDetailMana.xaml.cs">
       <DependentUpon>SkillDetailMana.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillDetailHeal.xaml.cs">
+    <Compile Include="SkillDetail\SkillDetailHeal.xaml.cs">
       <DependentUpon>SkillDetailHeal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillMana.xaml.cs">
+    <Compile Include="Skill\SkillMana.xaml.cs">
       <DependentUpon>SkillMana.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillHeal.xaml.cs">
+    <Compile Include="Skill\SkillHeal.xaml.cs">
       <DependentUpon>SkillHeal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillDps.xaml.cs">
+    <Compile Include="Skill\SkillDps.xaml.cs">
       <DependentUpon>SkillDps.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillDetailDps.xaml.cs">
+    <Compile Include="SkillDetail\SkillDetailDps.xaml.cs">
       <DependentUpon>SkillDetailDps.xaml</DependentUpon>
     </Compile>
     <Compile Include="Skills.xaml.cs">
@@ -97,16 +98,24 @@
     <Compile Include="SkillsDetail.xaml.cs">
       <DependentUpon>SkillsDetail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillsHeaderHeal.xaml.cs">
+    <Compile Include="SkillsHeaders\SkillsHeaderHeal.xaml.cs">
       <DependentUpon>SkillsHeaderHeal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillsHeaderMana.xaml.cs">
+    <Compile Include="SkillsHeaders\SkillsHeaderMana.xaml.cs">
       <DependentUpon>SkillsHeaderMana.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SkillsHeaderDps.xaml.cs">
+    <Compile Include="SkillsHeaders\SkillsHeaderDps.xaml.cs">
       <DependentUpon>SkillsHeaderDps.xaml</DependentUpon>
     </Compile>
-    <Page Include="EntityStats.xaml">
+    <Page Include="EntityStats\EnduranceDebuffHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EntityStats\EnduranceDebuff.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EntityStats\EntityStatsMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,27 +135,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SkillDetailMana.xaml">
+    <Page Include="SkillDetail\SkillDetailMana.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SkillDetailHeal.xaml">
+    <Page Include="SkillDetail\SkillDetailHeal.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SkillMana.xaml">
+    <Page Include="Skill\SkillMana.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SkillHeal.xaml">
+    <Page Include="Skill\SkillHeal.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SkillDps.xaml">
+    <Page Include="Skill\SkillDps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SkillDetailDps.xaml">
+    <Page Include="SkillDetail\SkillDetailDps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,15 +167,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SkillsHeaderHeal.xaml">
+    <Page Include="SkillsHeaders\SkillsHeaderHeal.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SkillsHeaderMana.xaml">
+    <Page Include="SkillsHeaders\SkillsHeaderMana.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SkillsHeaderDps.xaml">
+    <Page Include="SkillsHeaders\SkillsHeaderDps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -231,6 +240,7 @@
   <ItemGroup>
     <Resource Include="shinra.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -181,11 +181,7 @@ namespace DamageMeter.Dealt
 
         public double DamageFraction(long totalDamage)
         {
-            if (totalDamage == 0)
-            {
-                return 0;
-            }
-            return Math.Round(((double) Damage*100/totalDamage), 1);
+            return totalDamage == 0 ? 0 : Math.Round((double) Damage*100/totalDamage, 1);
         }
 
         public void SetPlayerInfo(PlayerInfo playerInfo)

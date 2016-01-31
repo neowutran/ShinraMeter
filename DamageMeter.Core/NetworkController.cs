@@ -17,7 +17,7 @@ namespace DamageMeter
         public delegate void ConnectedHandler(string serverName);
 
         public delegate void UpdateUiHandler(
-            long interval, long totaldamage, Dictionary<Entity,EntityInfo> entities, List<PlayerInfo> stats);
+            long interval, long totaldamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
 
         private static NetworkController _instance;
 
@@ -41,6 +41,9 @@ namespace DamageMeter
 
         public IPEndPoint ServerIpEndPoint { get; private set; }
         public IPEndPoint ClientIpEndPoint { get; private set; }
+
+
+        public EntityTracker EntityTracker { get; private set; }
 
         public void Exit()
         {
@@ -91,7 +94,9 @@ namespace DamageMeter
             var handler = TickUpdated;
             var damage = DamageTracker.Instance.TotalDamage;
             var stats =
-                DamageTracker.Instance.GetPlayerStats().OrderByDescending(playerStats => playerStats.Dealt.Damage).ToList();
+                DamageTracker.Instance.GetPlayerStats()
+                    .OrderByDescending(playerStats => playerStats.Dealt.Damage)
+                    .ToList();
             var interval = DamageTracker.Instance.Interval;
             var entities =
                 DamageTracker.Instance.GetEntityStats();
@@ -107,7 +112,7 @@ namespace DamageMeter
                 var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out obj);
                 if (!successDequeue)
                 {
-                    Thread.Sleep(20);
+                    Thread.Sleep(10);
                     continue;
                 }
 
@@ -120,12 +125,12 @@ namespace DamageMeter
 
                 var message = _messageFactory.Create(obj);
                 EntityTracker.Update(message);
-
+                AbnormalityTracker.Instance.ApplyEnduranceDebuff(message.Time.Ticks);
 
                 var npcOccupier = message as SNpcOccupierInfo;
                 if (npcOccupier != null)
                 {
-                    DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier));
+                    DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier), npcOccupier.Time.Ticks);
                     continue;
                 }
 
@@ -187,13 +192,10 @@ namespace DamageMeter
                     skillResultMessage.Source,
                     skillResultMessage.Target);
 
-                DamageTracker.Instance.Update(skillResult);
+                DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
                 CheckUpdateUi();
             }
         }
-
-
-        public EntityTracker EntityTracker { get; private set; }
 
         public void CheckUpdateUi()
         {

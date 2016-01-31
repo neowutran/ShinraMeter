@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="DamageMeter.UI.SkillHeal"
+﻿<UserControl x:Class="DamageMeter.UI.Skill.SkillDps"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -19,7 +19,6 @@
                         <ColumnDefinition Width="65" />
                         <ColumnDefinition Width="65" />
                         <ColumnDefinition Width="65" />
-
                         <ColumnDefinition Width="65" />
                         <ColumnDefinition Width="300" />
                     </Grid.ColumnDefinitions>
@@ -29,48 +28,45 @@
                            Foreground="Yellow"
                            MinHeight="29" />
 
-
                     <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelTotalHeal" VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch" x:Name="LabelTotalDamage" VerticalAlignment="Center"
                            MinHeight="29"
-                           Foreground="LawnGreen" />
-
+                           Foreground="white" />
 
                     <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelAverageCrit" VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch" x:Name="LabelDamagePercentage" VerticalAlignment="Center"
                            MinHeight="29"
-                           Foreground="LawnGreen" />
+                           Foreground="white" />
+
                     <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelAverageHit" VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch" x:Name="LabelCritRateDmg" VerticalAlignment="Center"
                            MinHeight="29"
-                           Foreground="LawnGreen" />
+                           Foreground="white" />
                     <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelAverage" VerticalAlignment="Center"
-                           MinHeight="29"
-                           Foreground="LawnGreen" />
-                    <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
                            HorizontalAlignment="Stretch" x:Name="LabelBiggestCrit" VerticalAlignment="Center"
                            MinHeight="29"
-                           Foreground="LawnGreen" />
-
+                           Foreground="white" />
+                    <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
+                           HorizontalAlignment="Stretch" x:Name="LabelAverageCrit" VerticalAlignment="Center"
+                           MinHeight="29"
+                           Foreground="white" />
                     <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelBiggestHit" VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch" x:Name="LabelAverageHit" VerticalAlignment="Center"
                            MinHeight="29"
-                           Foreground="LawnGreen" />
-
-
+                           Foreground="white" />
                     <Label Grid.Column="7" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelCritRateHeal" VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch" x:Name="LabelAverageTotal" VerticalAlignment="Center"
                            MinHeight="29"
-                           Foreground="LawnGreen" />
+                           Foreground="white" />
                     <Label Grid.Column="8" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelNumberHitHeal" VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch" x:Name="LabelNumberHitDmg" VerticalAlignment="Center"
                            MinHeight="29"
-                           Foreground="LawnGreen" />
+                           Foreground="white" />
                     <Label Grid.Column="9" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelNumberCritHeal" VerticalAlignment="Center"
+                           HorizontalAlignment="Stretch" x:Name="LabelNumberCritDmg" VerticalAlignment="Center"
                            MinHeight="29"
-                           Foreground="LawnGreen" />
+                           Foreground="white" />
+
                     <Label Grid.Column="10" FontSize="14" HorizontalContentAlignment="Center"
                            HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
                            Foreground="Yellow"

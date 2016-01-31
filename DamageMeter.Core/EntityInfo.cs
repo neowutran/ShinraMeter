@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Data;
 
 namespace DamageMeter
 {
-    public class EntityInfo: ICloneable
+    public class EntityInfo : ICloneable
     {
+        public Dictionary<HotDot, AbnormalityDuration> AbnormalityTime = new Dictionary<HotDot, AbnormalityDuration>();
         public long TotalDamage { get; set; }
         public long FirstHit { get; set; }
         public long LastHit { get; set; }
 
         public long Interval => LastHit - FirstHit;
-
-        public Dictionary<HotDot, long> AbnormalityTime = new Dictionary<HotDot, long>(); 
 
         public object Clone()
         {

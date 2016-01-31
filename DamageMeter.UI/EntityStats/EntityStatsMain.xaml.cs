@@ -1,28 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace DamageMeter.UI
+namespace DamageMeter.UI.EntityStats
 {
     /// <summary>
-    /// Logique d'interaction pour EntityStats.xaml
+    ///     Logique d'interaction pour EntityStats.xaml
     /// </summary>
-    public partial class EntityStats : Window
+    public partial class EntityStatsMain
     {
-
         private readonly MainWindow _parent;
 
-        public EntityStats(MainWindow parent)
+        public EntityStatsMain(MainWindow parent)
         {
             InitializeComponent();
             _parent = parent;
@@ -43,24 +35,10 @@ namespace DamageMeter.UI
                 return;
             }
 
-
+            EnduranceAbnormality.Items.Add(new EnduranceDebuffHeader(this));
             foreach (var statsAbnormality in statsAbnormalities.AbnormalityTime)
             {
-
-                var abnormality = new Label
-                {
-                    Content =
-                        "" + statsAbnormality.Key.Name + "=> Total uptime: " + statsAbnormality.Value +
-                        "s ; Total fight time: " + statsAbnormalities.Interval + "s ; Uptime percentage: " +
-                        (statsAbnormality.Value*100)/statsAbnormalities.Interval+"%",
-                    Foreground = Brushes.White,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    FontSize = 14,
-                    MinHeight = 29,
-                    Height = 29,
-                    HorizontalContentAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
+                var abnormality = new EnduranceDebuff(this, statsAbnormality.Key, statsAbnormality.Value, statsAbnormalities); 
                 EnduranceAbnormality.Items.Add(abnormality);
             }
         }

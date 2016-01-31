@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     public class SPartyMemberAbnormalAdd : ParsedMessage
     {
@@ -10,7 +8,7 @@ namespace Tera.Game.Messages
             AbnormalityId = reader.ReadInt32();
             Duration = reader.ReadInt32();
             Stack = reader.ReadInt32();
-          //  Console.WriteLine("target = " + TargetId + ";Abnormality:" + AbnormalityId + ";Duration:" + Duration +
+            //  Console.WriteLine("target = " + TargetId + ";Abnormality:" + AbnormalityId + ";Duration:" + Duration +
             //                  ";Stack:" + Stack);
         }
 

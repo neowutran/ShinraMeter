@@ -10,7 +10,8 @@ namespace Data
             perc = 3 // each tick  HP += MaxHP*HPChange; MP += MaxMP*MPChange
         }
 
-        public HotDot(int id, string type, double hp, double mp, double amount, DotType method, int time, int tick, string name)
+        public HotDot(int id, string type, double hp, double mp, double amount, DotType method, int time, int tick,
+            string name)
         {
             Id = id;
             Type = type;
@@ -21,6 +22,24 @@ namespace Data
             Time = time;
             Tick = tick;
             Name = name;
+        }
+
+        public double Amount { get; }
+
+        public int Id { get; }
+        public string Type { get; }
+        public double Hp { get; }
+        public double Mp { get; }
+        public DotType Method { get; }
+        public int Time { get; }
+        public int Tick { get; }
+        public string Name { get; }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((HotDot) obj);
         }
 
 
@@ -37,7 +56,7 @@ namespace Data
             }
 
             // If one is null, but not both, return false.
-            if (((object)a == null) || ((object)b == null))
+            if (((object) a == null) || ((object) b == null))
             {
                 return false;
             }
@@ -54,23 +73,5 @@ namespace Data
         {
             return Name.GetHashCode() ^ Id.GetHashCode();
         }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((HotDot)obj);
-        }
-
-        public double Amount { get; }
-
-        public int Id { get; }
-        public string Type { get; }
-        public double Hp { get; }
-        public double Mp { get; }
-        public DotType Method { get; }
-        public int Time { get; }
-        public int Tick { get; }
-        public string Name { get; }
     }
 }

@@ -6,7 +6,6 @@
         {
             TargetId = reader.ReadEntityId();
             AbnormalityId = reader.ReadInt32();
-            
         }
 
 

@@ -28,7 +28,8 @@ namespace DamageMeter
             {
                 if (NetworkController.Instance.Encounter == null)
                 {
-                    return EntitiesStats.Select(entityStats => entityStats.Value).Select(stats => stats.TotalDamage).Sum();
+                    return
+                        EntitiesStats.Select(entityStats => entityStats.Value).Select(stats => stats.TotalDamage).Sum();
                 }
                 if (!EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
                 {
@@ -88,8 +89,20 @@ namespace DamageMeter
         }
 
 
-        public void UpdateEntities(NpcOccupierResult npcOccupierResult)
+        public void UpdateEntities(NpcOccupierResult npcOccupierResult, long time)
         {
+            /*
+            var npcEntity =
+                (NpcEntity) NetworkController.Instance.EntityTracker.GetOrPlaceholder(npcOccupierResult.Npc);
+            var entityNpc = new Entity(npcEntity.CategoryId, npcEntity.Id, npcEntity.NpcId, npcEntity.NpcArea);
+            if (!EntitiesStats.ContainsKey(entityNpc) && !npcOccupierResult.HasReset)
+            {
+                EntitiesStats.Add(entityNpc, new EntityInfo());
+                EntitiesStats[entityNpc].FirstHit = time/ 10000000;
+                return;
+            }*/
+
+
             foreach (var entityStats in EntitiesStats)
             {
                 var entity = entityStats.Key;
@@ -122,17 +135,17 @@ namespace DamageMeter
             handler?.Invoke(entity);
         }
 
-        public void SetFirstHit(Entity entity)
+        public void SetFirstHit(Entity entity, long time)
         {
-            if(EntitiesStats[entity].FirstHit == 0)
+            if (EntitiesStats[entity].FirstHit == 0)
             {
-                EntitiesStats[entity].FirstHit = DateTime.UtcNow.Ticks/10000000;
+                EntitiesStats[entity].FirstHit = time;
             }
         }
 
-        public void SetLastHit(Entity entity)
+        public void SetLastHit(Entity entity, long time)
         {
-            EntitiesStats[entity].LastHit = DateTime.UtcNow.Ticks/10000000;
+            EntitiesStats[entity].LastHit = time;
         }
 
         public long GetInterval(Entity entity)
@@ -144,7 +157,6 @@ namespace DamageMeter
         {
             _usersStats = new Dictionary<Player, PlayerInfo>();
             EntitiesStats = new Dictionary<Entity, EntityInfo>();
-
         }
 
 
@@ -164,7 +176,7 @@ namespace DamageMeter
             return playerStats;
         }
 
-        public void Update(SkillResult skillResult)
+        public void Update(SkillResult skillResult, long time)
         {
             PlayerInfo playerStats;
             if (skillResult.SourcePlayer != null)
@@ -187,7 +199,7 @@ namespace DamageMeter
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
 
-                UpdateStatsDealt(playerStats, skillResult, entityTarget);
+                UpdateStatsDealt(playerStats, skillResult, entityTarget, time);
             }
 
             if (skillResult.TargetPlayer == null) return;
@@ -227,7 +239,7 @@ namespace DamageMeter
                 entitySource = new Entity("UNKNOW");
             }
 
-            UpdateStatsReceived(playerStats, skillResult, entitySource);
+            UpdateStatsReceived(playerStats, skillResult, entitySource, time);
         }
 
         private static bool IsValidAttack(SkillResult message)
@@ -254,7 +266,7 @@ namespace DamageMeter
             }
         }
 
-        private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget)
+        private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget, long time)
         {
             if (!IsValidAttack(message))
             {
@@ -262,11 +274,11 @@ namespace DamageMeter
             }
 
             UpdateEncounter(entityTarget, message);
-            UpdateSkillStats(message, entityTarget, playerInfo);
+            UpdateSkillStats(message, entityTarget, playerInfo, time);
         }
 
 
-        private static void UpdateSkillStats(SkillResult message, Entity entityTarget, PlayerInfo playerInfo)
+        private static void UpdateSkillStats(SkillResult message, Entity entityTarget, PlayerInfo playerInfo, long time)
         {
             var entities = playerInfo.Dealt;
 
@@ -293,16 +305,16 @@ namespace DamageMeter
             {
                 if (message.Amount > 0)
                 {
-                    skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal);
+                    skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal, time);
                 }
                 else
                 {
-                    skillStats.AddData(message.SkillId, message.Damage, message.IsCritical, SkillStats.Type.Damage);
+                    skillStats.AddData(message.SkillId, message.Damage, message.IsCritical, SkillStats.Type.Damage, time);
                 }
             }
             else
             {
-                skillStats.AddData(message.SkillId, message.Mana, message.IsCritical, SkillStats.Type.Mana);
+                skillStats.AddData(message.SkillId, message.Mana, message.IsCritical, SkillStats.Type.Mana, time);
             }
 
             var skill = entities.EntitiesStats[entityTarget].Skills.Keys.ToList();
@@ -319,7 +331,7 @@ namespace DamageMeter
             entities.EntitiesStats[entityTarget].Skills.Add(skillKey, skillStats);
         }
 
-        private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource)
+        private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource, long time)
         {
             if (!IsValidAttack(message))
             {
@@ -330,7 +342,7 @@ namespace DamageMeter
             if ((message.IsHp && message.Amount > 0 || !message.IsHp) && !PlayerClassHelper.IsHeal(playerInfo.Class) &&
                 (UserEntity.ForEntity(message.Source)["user"] != UserEntity.ForEntity(message.Target)["user"]))
             {
-                UpdateSkillStats(message, new Entity(playerInfo.Player.User.Name), playerInfo);
+                UpdateSkillStats(message, new Entity(playerInfo.Player.User.Name), playerInfo, time);
                 return;
             }
 

@@ -16,7 +16,7 @@ namespace NetworkSniffer
 
         public static bool operator ==(ConnectionId x, ConnectionId y)
         {
-            return (x.Source.Equals(y.Source)) && (x.Destination.Equals(y.Destination));
+            return x.Source.Equals(y.Source) && x.Destination.Equals(y.Destination);
         }
 
         public static bool operator !=(ConnectionId x, ConnectionId y)

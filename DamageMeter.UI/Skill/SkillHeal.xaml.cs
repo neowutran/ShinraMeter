@@ -6,15 +6,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DamageMeter.Skills.Skill;
 using DamageMeter.Skills.Skill.SkillDetail;
+using DamageMeter.UI.SkillDetail;
 
-namespace DamageMeter.UI
+namespace DamageMeter.UI.Skill
 {
     /// <summary>
     ///     Logique d'interaction pour Skill.xaml
     /// </summary>
-    public partial class SkillDps : ISkill
+    public partial class SkillHeal : ISkill
     {
-        public SkillDps(Skill skill, SkillStats stats)
+        public SkillHeal(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
         {
             InitializeComponent();
 
@@ -22,7 +23,7 @@ namespace DamageMeter.UI
             Update(skill, stats);
         }
 
-        public void Update(Skill skill, SkillStats stats)
+        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
         {
             var skillsId = "";
             for (var i = 0; i < skill.SkillId.Count; i++)
@@ -35,27 +36,28 @@ namespace DamageMeter.UI
             }
 
             LabelId.Content = skillsId;
-            LabelCritRateDmg.Content = stats.CritRateDmg + "%";
+            LabelCritRateHeal.Content = stats.CritRateHeal + "%";
 
-            LabelDamagePercentage.Content = stats.DamagePercentage + "%";
-            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(stats.Damage);
 
-            LabelNumberHitDmg.Content = stats.HitsDmg;
+            LabelNumberHitHeal.Content = stats.HitsHeal;
+            LabelNumberCritHeal.Content = stats.CritsHeal;
 
-            LabelNumberCritDmg.Content = stats.CritsDmg;
+            LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(stats.Heal);
+            LabelBiggestHit.Content = FormatHelpers.Instance.FormatValue(stats.HealBiggestHit);
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.HealBiggestCrit);
 
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(stats.DmgAverageCrit);
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.DmgBiggestCrit);
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.DmgAverageHit);
-            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(stats.DmgAverageTotal);
+
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(stats.HealAverageCrit);
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.HealAverageHit);
+            LabelAverage.Content = FormatHelpers.Instance.FormatValue(stats.HealAverageTotal);
 
 
             IEnumerable<KeyValuePair<int, SkillDetailStats>> listStats = stats.SkillDetails.ToList();
-            listStats = listStats.OrderByDescending(stat => stat.Value.Damage);
+            listStats = listStats.OrderByDescending(stat => stat.Value.HealAverageTotal);
             SkillsDetailList.Items.Clear();
             foreach (var stat in listStats)
             {
-                SkillsDetailList.Items.Add(new SkillDetailDps(stat.Value));
+                SkillsDetailList.Items.Add(new SkillDetailHeal(stat.Value));
             }
         }
 

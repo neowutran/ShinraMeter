@@ -14,7 +14,7 @@ namespace Tera.PacketLog
             var value = (long) Math.Round((dateTime - TimeOrigin).TotalMilliseconds);
 
             var byteCount = 0;
-            while ((value >> byteCount*8) != 0)
+            while (value >> byteCount*8 != 0)
             {
                 byteCount++;
             }

@@ -1,12 +1,10 @@
 ﻿using System;
-using log4net;
 
 namespace DamageMeter.Skills.Skill.SkillDetail
 {
     public class SkillDetailStats : ICloneable
     {
         private readonly Entity _entityTarget;
-        private long _damage;
         private long _dmgAverageCrit;
         private long _dmgAverageHit;
 
@@ -163,7 +161,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                 {
                     return 0;
                 }
-                return _damage/HitsDmg;
+                return Damage/HitsDmg;
             }
         }
 
@@ -194,26 +192,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
         public long FirstHit { get; set; }
         public long LastHit { get; set; }
 
-        public long Damage
-        {
-            get { return _damage; }
-            private set
-            {
-                if (value == _damage) return;
-                if (PlayerInfo != null)
-                {
-                    if (value != 0)
-                    {
-                        if (FirstHit == 0)
-                        {
-                            FirstHit = DateTime.UtcNow.Ticks/10000000;
-                        }
-                        LastHit = DateTime.UtcNow.Ticks/10000000;
-                    }
-                }
-                _damage = value;
-            }
-        }
+        public long Damage { get; private set; }
 
         public long Heal { get; private set; }
 
@@ -264,11 +243,28 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             newskill.LastHit = LastHit;
 
 
-            newskill._damage = _damage;
+            newskill.Damage = Damage;
             newskill.Heal = Heal;
 
 
             return newskill;
+        }
+
+        public void SetDamage(long damage, long time)
+        {
+            if (damage == Damage) return;
+            if (PlayerInfo != null)
+            {
+                if (damage != 0)
+                {
+                    if (FirstHit == 0)
+                    {
+                        FirstHit = time/10000000;
+                    }
+                    LastHit = time/10000000;
+                }
+            }
+            Damage = damage;
         }
 
         public static SkillDetailStats operator +(SkillDetailStats c1, SkillDetailStats c2)
@@ -314,22 +310,22 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             skill.LastHit = c1.LastHit > c2.LastHit ? c1.LastHit : c2.LastHit;
 
 
-            skill._damage = c1._damage + c2._damage;
+            skill.Damage = c1.Damage + c2.Damage;
             skill.Heal = c1.Heal + c2.Heal;
             return skill;
         }
 
-        private void SetTotalDamage(long damage)
+        private void SetTotalDamage(long damage, long time)
         {
             if (_entityTarget == null) return;
             DamageTracker.Instance.EntitiesStats[_entityTarget].TotalDamage += damage;
-            DamageTracker.Instance.SetFirstHit(_entityTarget);
-            DamageTracker.Instance.SetLastHit(_entityTarget);
+            DamageTracker.Instance.SetFirstHit(_entityTarget, time);
+            DamageTracker.Instance.SetLastHit(_entityTarget, time);
             DamageTracker.Instance.UpdateCurrentBoss(_entityTarget);
         }
 
 
-        public void AddData(long damage, bool isCrit, SkillStats.Type type)
+        public void AddData(long damage, bool isCrit, SkillStats.Type type, long time)
         {
             if (isCrit)
             {
@@ -345,14 +341,14 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                     case SkillStats.Type.Damage:
                         HitsDmg++;
                         CritsDmg++;
-                        Damage += damage;
+                        SetDamage(Damage + damage, time);
                         DmgBiggestCrit = damage;
                         DmgAverageCrit = damage;
                         DmgLowestCrit = damage;
-                        SetTotalDamage(damage);
+                        SetTotalDamage(damage, time);
                         break;
                     default:
-                        throw new Exception("NO CRIT ON MANA. Amount:"+damage);
+                        throw new Exception("NO CRIT ON MANA. Amount:" + damage);
                 }
             }
             else
@@ -367,11 +363,11 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         break;
                     case SkillStats.Type.Damage:
                         HitsDmg++;
-                        Damage += damage;
+                        SetDamage(Damage + damage, time);
                         DmgBiggestHit = damage;
                         DmgAverageHit = damage;
                         DmgLowestHit = damage;
-                        SetTotalDamage(damage);
+                        SetTotalDamage(damage, time);
                         break;
                     default:
                         HitsMana++;

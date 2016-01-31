@@ -67,8 +67,8 @@ namespace DamageMeter
                 for (var index = 0; index < rowsCount; index++)
                 {
                     rows[index] = (MIB_IPNETROW) Marshal.PtrToStructure(new IntPtr(currentBuffer.ToInt64() +
-                                                                                   (index*
-                                                                                    Marshal.SizeOf(typeof (MIB_IPNETROW)))
+                                                                                   index*
+                                                                                   Marshal.SizeOf(typeof (MIB_IPNETROW))
                         ),
                         typeof (MIB_IPNETROW));
                 }
@@ -107,7 +107,7 @@ namespace DamageMeter
             var addr = ipEntry.AddressList;
             foreach (var ip in addr.Where(ip => !ip.IsIPv6LinkLocal))
             {
-                return (ip);
+                return ip;
             }
             return addr.Length > 0 ? addr[0] : null;
         }

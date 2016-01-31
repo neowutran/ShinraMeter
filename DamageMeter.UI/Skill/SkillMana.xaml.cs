@@ -6,15 +6,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DamageMeter.Skills.Skill;
 using DamageMeter.Skills.Skill.SkillDetail;
+using DamageMeter.UI.SkillDetail;
 
-namespace DamageMeter.UI
+namespace DamageMeter.UI.Skill
 {
     /// <summary>
     ///     Logique d'interaction pour Skill.xaml
     /// </summary>
     public partial class SkillMana : ISkill
     {
-        public SkillMana(Skill skill, SkillStats stats)
+        public SkillMana(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
         {
             InitializeComponent();
 
@@ -27,7 +28,7 @@ namespace DamageMeter.UI
             return (string) LabelName.Content;
         }
 
-        public void Update(Skill skill, SkillStats stats)
+        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
         {
             var skillsId = "";
             for (var i = 0; i < skill.SkillId.Count; i++)

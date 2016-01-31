@@ -42,7 +42,8 @@ namespace DamageMeter.UI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Unable to contact update server, try again later: " + ex.Message+". Details:\n"+ex.StackTrace);
+                    MessageBox.Show("Unable to contact update server, try again later: " + ex.Message + ". Details:\n" +
+                                    ex.StackTrace);
                 }
                 if (!shutdown) return;
                 Current.Shutdown();

@@ -55,7 +55,7 @@ namespace Tera.Sniffing.Crypt
 
         public void ApplyCryptor(byte[] buf, int size)
         {
-            var pre = (size < _changeLen) ? size : _changeLen;
+            var pre = size < _changeLen ? size : _changeLen;
             if (pre != 0)
             {
                 for (var j = 0; j < pre; j++)
@@ -76,9 +76,9 @@ namespace Tera.Sniffing.Crypt
                     {
                         var t1 = k.Buffer[k.Pos1];
                         var t2 = k.Buffer[k.Pos2];
-                        var t3 = (t1 <= t2) ? t1 : t2;
+                        var t3 = t1 <= t2 ? t1 : t2;
                         k.Sum = t1 + t2;
-                        k.Key = (t3 > k.Sum) ? 1 : 0;
+                        k.Key = t3 > k.Sum ? 1 : 0;
                         k.Pos1 = (k.Pos1 + 1)%k.Size;
                         k.Pos2 = (k.Pos2 + 1)%k.Size;
                     }
@@ -101,9 +101,9 @@ namespace Tera.Sniffing.Crypt
                     {
                         var t1 = k.Buffer[k.Pos1];
                         var t2 = k.Buffer[k.Pos2];
-                        var t3 = (t1 <= t2) ? t1 : t2;
+                        var t3 = t1 <= t2 ? t1 : t2;
                         k.Sum = t1 + t2;
-                        k.Key = (t3 > k.Sum) ? 1 : 0;
+                        k.Key = t3 > k.Sum ? 1 : 0;
                         k.Pos1 = (k.Pos1 + 1)%k.Size;
                         k.Pos2 = (k.Pos2 + 1)%k.Size;
                     }

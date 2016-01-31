@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     public class SPartyMemberAbnormalRefresh : ParsedMessage
     {
         internal SPartyMemberAbnormalRefresh(TeraMessageReader reader) : base(reader)
         {
-         //   PrintRaw();
+            //   PrintRaw();
             TargetId = reader.ReadEntityId();
             AbnormalityId = reader.ReadInt32();
             Duration = reader.ReadInt32();

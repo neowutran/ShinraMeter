@@ -22,7 +22,7 @@
 
         protected ulong CircularShift(int bits, ulong word)
         {
-            return ((((word) << bits) & 0xFFFFFFFF) | ((word) >> (32 - bits)));
+            return ((word << bits) & 0xFFFFFFFF) | (word >> (32 - bits));
         }
 
         protected int Result()
@@ -94,9 +94,9 @@
             // Initialize the first 16 words in the array W
             for (t = 0; t < 16; t++)
             {
-                w[t] = ((ulong) MessageBlock[t*4]) << 24;
-                w[t] |= ((ulong) MessageBlock[t*4 + 1]) << 16;
-                w[t] |= ((ulong) MessageBlock[t*4 + 2]) << 8;
+                w[t] = (ulong) MessageBlock[t*4] << 24;
+                w[t] |= (ulong) MessageBlock[t*4 + 1] << 16;
+                w[t] |= (ulong) MessageBlock[t*4 + 2] << 8;
                 w[t] |= MessageBlock[t*4 + 3];
             }
 
@@ -111,7 +111,7 @@
 
             for (t = 0; t < 20; t++)
             {
-                temp = CircularShift(5, a) + ((b & c) | ((~b) & d)) + e + w[t] + k[0];
+                temp = CircularShift(5, a) + ((b & c) | (~b & d)) + e + w[t] + k[0];
                 temp &= 0xFFFFFFFF;
                 e = d;
                 d = c;
@@ -198,11 +198,11 @@
             MessageBlock[56] = (byte) (LengthHigh >> 24);
             MessageBlock[57] = (byte) (LengthHigh >> 16);
             MessageBlock[58] = (byte) (LengthHigh >> 8);
-            MessageBlock[59] = (byte) (LengthHigh);
+            MessageBlock[59] = (byte) LengthHigh;
             MessageBlock[60] = (byte) (LengthLow >> 24);
             MessageBlock[61] = (byte) (LengthLow >> 16);
             MessageBlock[62] = (byte) (LengthLow >> 8);
-            MessageBlock[63] = (byte) (LengthLow);
+            MessageBlock[63] = (byte) LengthLow;
 
             ProcessMessageBlock();
         }

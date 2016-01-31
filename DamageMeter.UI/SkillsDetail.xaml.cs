@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DamageMeter.Skills.Skill;
+using DamageMeter.UI.Skill;
+using DamageMeter.UI.SkillsHeaders;
 
 namespace DamageMeter.UI
 {
@@ -21,11 +23,11 @@ namespace DamageMeter.UI
         }
 
         private Label _currentSortedLabel;
-        private IEnumerable<KeyValuePair<Skill, SkillStats>> _skills;
+        private IEnumerable<KeyValuePair<DamageMeter.Skills.Skill.Skill, SkillStats>> _skills;
         private SortBy _sortBy = SortBy.Damage;
         private SortOrder _sortOrder = SortOrder.Descending;
 
-        public SkillsDetail(Dictionary<Skill, SkillStats> skills, Type type)
+        public SkillsDetail(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, Type type)
         {
             InitializeComponent();
             TypeSkill = type;
@@ -170,7 +172,7 @@ namespace DamageMeter.UI
         }
 
 
-        private IEnumerable<KeyValuePair<Skill, SkillStats>> Sort()
+        private IEnumerable<KeyValuePair<DamageMeter.Skills.Skill.Skill, SkillStats>> Sort()
         {
             switch (_sortOrder)
             {
@@ -407,7 +409,7 @@ namespace DamageMeter.UI
         }
 
 
-        public void Update(Dictionary<Skill, SkillStats> skills)
+        public void Update(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills)
         {
             _skills = skills;
             Repaint();
@@ -436,12 +438,12 @@ namespace DamageMeter.UI
             HBigHit,
             CritRateDmg,
             CritRateHeal
-        };
+        }
 
         private enum SortOrder
         {
             Ascending,
             Descending
-        };
+        }
     }
 }

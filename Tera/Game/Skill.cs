@@ -33,7 +33,7 @@ namespace Tera.Game
             var other = obj as UserSkill;
             if (other == null)
                 return false;
-            return (Id == other.Id) && (PlayerClass.Equals(other.PlayerClass));
+            return (Id == other.Id) && PlayerClass.Equals(other.PlayerClass);
         }
 
         public override int GetHashCode()

@@ -19,7 +19,8 @@ namespace DamageMeter.UI
         private readonly SkillsDetail _skillMana;
 
 
-        public Skills(Dictionary<Skill, SkillStats> skills, Dictionary<Skill, SkillStats> allSkills, PlayerStats parent)
+        public Skills(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills,
+            Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> allSkills, PlayerStats parent)
         {
             InitializeComponent();
 
@@ -45,11 +46,12 @@ namespace DamageMeter.UI
         }
 
 
-        public void Update(Dictionary<Skill, SkillStats> skills, Dictionary<Skill, SkillStats> allSkills)
+        public void Update(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills,
+            Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> allSkills)
         {
             _skillDps.Update(skills);
-            _skillHeal.Update(new Dictionary<Skill, SkillStats>(allSkills));
-            _skillMana.Update(new Dictionary<Skill, SkillStats>(allSkills));
+            _skillHeal.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills));
+            _skillMana.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills));
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;
             ManaPanel.Content = _skillMana;

@@ -12,7 +12,7 @@ namespace DamageMeter.Skills.Skill
             Damage,
             Heal,
             Mana
-        };
+        }
 
         private readonly Entity _entityTarget;
         private PlayerInfo _playerInfo;
@@ -292,13 +292,13 @@ namespace DamageMeter.Skills.Skill
             return skill;
         }
 
-        public void AddData(int skillId, long damage, bool isCrit, Type type)
+        public void AddData(int skillId, long damage, bool isCrit, Type type, long time)
         {
             if (!SkillDetails.ContainsKey(skillId))
             {
                 SkillDetails[skillId] = new SkillDetailStats(_playerInfo, _entityTarget, skillId);
             }
-            SkillDetails[skillId].AddData(damage, isCrit, type);
+            SkillDetails[skillId].AddData(damage, isCrit, type, time);
         }
     }
 }

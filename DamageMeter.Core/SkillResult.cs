@@ -77,7 +77,7 @@ namespace DamageMeter
             }
         }
 
-        public int Heal => (IsHp && Amount > 0) ? Amount : 0;
+        public int Heal => IsHp && Amount > 0 ? Amount : 0;
 
         public int Mana => !IsHp ? Amount : 0;
 

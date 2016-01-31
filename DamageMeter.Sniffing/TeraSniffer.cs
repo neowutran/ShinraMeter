@@ -39,7 +39,6 @@ namespace DamageMeter.Sniffing
             _serversByIp = servers.ToDictionary(x => x.Ip);
 
 
-
             var netmasks =
                 _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct().ToArray();
             var filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
@@ -48,7 +47,6 @@ namespace DamageMeter.Sniffing
             _ipSniffer = new IpSniffer(filter);
             _ipSniffer.Warning += OnWarning;
 
-     
 
             var tcpSniffer = new TcpSniffer(_ipSniffer);
             tcpSniffer.NewConnection += HandleNewConnection;
@@ -134,8 +132,8 @@ namespace DamageMeter.Sniffing
                         OnNewConnection(server, connection.Source, connection.Destination);
                     }
                     if (_serverToClient != null && _clientToServer == null &&
-                        (_serverToClient.Destination.Equals(connection.Source) &&
-                         _serverToClient.Source.Equals(connection.Destination)))
+                        _serverToClient.Destination.Equals(connection.Source) &&
+                        _serverToClient.Source.Equals(connection.Destination))
                     {
                         _isNew.Remove(connection);
                         _clientToServer = connection;

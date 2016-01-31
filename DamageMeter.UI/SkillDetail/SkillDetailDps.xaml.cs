@@ -4,7 +4,7 @@ using System.Windows.Input;
 using DamageMeter.Skills.Skill.SkillDetail;
 using Data;
 
-namespace DamageMeter.UI
+namespace DamageMeter.UI.SkillDetail
 {
     /// <summary>
     ///     Logique d'interaction pour SkillContent.xaml

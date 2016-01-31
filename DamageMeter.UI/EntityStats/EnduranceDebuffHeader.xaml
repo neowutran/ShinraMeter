@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="DamageMeter.UI.EntityStats.EnduranceDebuffHeader"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             >
+    <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" FontSize="14" HorizontalContentAlignment="Center"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelClass"
+                   Foreground="Yellow"
+                   MinHeight="29" />
+
+
+        <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
+                   HorizontalAlignment="Stretch" x:Name="LabelName" VerticalAlignment="Center"
+                   MinHeight="29"
+                   Foreground="Yellow" />
+
+
+        <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
+                   HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDuration" VerticalAlignment="Center"
+                   MinHeight="29"
+                   Foreground="White" />
+        <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
+                   HorizontalAlignment="Stretch" x:Name="LabelInterval" VerticalAlignment="Center"
+                   MinHeight="29"
+                   Foreground="White" />
+        <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
+                   HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDurationPercentage" VerticalAlignment="Center"
+                   MinHeight="29"
+                   Foreground="White" />
+        <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
+                   HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
+                   MinHeight="29"
+                   Foreground="Yellow" />
+    </Grid>
+</UserControl>

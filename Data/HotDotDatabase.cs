@@ -10,11 +10,11 @@ namespace Data
         public enum HotDot
         {
             Dot = 131071,
-            Hot = 65536,
-          //  SystemHot = 655360, // natural regen
-          //  CrystalHpHot = 196608,   Not 
-          //  StuffMpHot = 262144,
-          //  NaturalMpRegen = 0
+            Hot = 65536
+            //  SystemHot = 655360, // natural regen
+            //  CrystalHpHot = 196608,   Not 
+            //  StuffMpHot = 262144,
+            //  NaturalMpRegen = 0
         }
 
         private readonly Dictionary<int, Data.HotDot> _hotdots =

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tera.Game.Messages
+﻿namespace Tera.Game.Messages
 {
     public class SPartyMemberChangeHp : ParsedMessage
     {
@@ -10,7 +8,7 @@ namespace Tera.Game.Messages
             HpRemaining = reader.ReadInt32();
             TotalHp = reader.ReadInt32();
             Unknow3 = reader.ReadInt16();
-           // Console.WriteLine("target = " + TargetId + ";Hp left:" + HpRemaining + ";Max HP:" + TotalHp + ";Unknow3:" + Unknow3);
+            // Console.WriteLine("target = " + TargetId + ";Hp left:" + HpRemaining + ";Max HP:" + TotalHp + ";Unknow3:" + Unknow3);
         }
 
         public int Unknow3 { get; }

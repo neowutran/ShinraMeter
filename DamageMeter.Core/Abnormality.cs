@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms.VisualStyles;
 using Data;
 using Tera.Game;
 
@@ -15,7 +14,6 @@ namespace DamageMeter
             Duration = duration/1000;
             Stack = stack == 0 ? 1 : stack;
             FirstHit = ticks;
-            Console.WriteLine("DOT:id="+HotDot.Id+"; Duration:"+Duration);
         }
 
         public HotDot HotDot { get; }
@@ -30,9 +28,9 @@ namespace DamageMeter
 
         public long FirstHit { get; private set; }
 
-        public long TimeBeforeApply => (Utils.Now() - LastApply) - HotDot.Tick;
+        public long TimeBeforeApply => DateTime.UtcNow.Ticks - LastApply - HotDot.Tick*10000000;
 
-        public void Apply(int amount, bool critical, bool isHp)
+        public void Apply(int amount, bool critical, bool isHp, long time)
         {
             //     Console.WriteLine("dot:"+HotDot.Name+";amount:" + amount + ";Hp:" + isHp);
             var skillResult = NetworkController.Instance.ForgeSkillResult(
@@ -43,37 +41,46 @@ namespace DamageMeter
                 HotDot.Id,
                 Source,
                 Target);
-            DamageTracker.Instance.Update(skillResult);
+            DamageTracker.Instance.Update(skillResult, time);
 
             NetworkController.Instance.CheckUpdateUi();
-            LastApply = Utils.Now();
+            LastApply = time;
         }
 
-        public void ApplyRemove(long lastTicks)
+        public void ApplyEnduranceDebuff(long lastTicks)
         {
             if (HotDot.Type != "Endurance") return;
             foreach (var entityStats in DamageTracker.Instance.EntitiesStats)
             {
                 if (entityStats.Key.Id != Target) continue;
                 var entity = entityStats.Key;
-
                 if (!DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.ContainsKey(HotDot))
                 {
-                    DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.Add(HotDot,0);
+                    var npcEntity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Source);
+                    if (!(npcEntity is UserEntity))
+                    {
+                        return;
+                    }
+                    var user = (UserEntity) npcEntity;
+                    var abnormalityInitDuration = new AbnormalityDuration
+                    {
+                        InitialPlayerClass = user.RaceGenderClass.Class,
+                        Duration = 0
+                    };
+                    DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.Add(HotDot, abnormalityInitDuration);
                 }
-                DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot] += (lastTicks - FirstHit)/
-                                                                                            10000000;
-                
+                DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].Duration += lastTicks - FirstHit;
+                FirstHit = lastTicks;
                 return;
             }
-            
         }
 
 
-        public void Refresh(int stackCounter, int duration)
+        public void Refresh(int stackCounter, int duration, long time)
         {
             Stack = stackCounter;
             Duration = duration/1000;
+            ApplyEnduranceDebuff(time);
         }
     }
 }

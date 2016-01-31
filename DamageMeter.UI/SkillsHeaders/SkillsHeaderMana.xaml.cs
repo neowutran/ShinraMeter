@@ -2,48 +2,42 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace DamageMeter.UI
+namespace DamageMeter.UI.SkillsHeaders
 {
     /// <summary>
     ///     Logique d'interaction pour Skill.xaml
     /// </summary>
-    public partial class SkillsHeaderHeal
+    public partial class SkillsHeaderMana
     {
         public static readonly string SkillName = "Skill name";
         public static readonly string SkillId = "Skill Id";
+        public static readonly string CritRateDmg = "CCdmg";
         public static readonly string CritRateHeal = "CCheal";
         public static readonly string TotalDamage = "Dmg";
         public static readonly string DamagePercentage = "% Dmg";
         public static readonly string AverageCrit = "Avg Crit";
         public static readonly string BiggestCrit = "Big Crit";
-        public static readonly string BiggestHit = "Big Blk";
         public static readonly string AverageHit = "Avg Blk";
         public static readonly string AverageTotal = "Avg";
+        public static readonly string HitsDmg = "HDmg";
         public static readonly string HitsHeal = "Hheal";
+        public static readonly string HitsMana = "Hmana";
+        public static readonly string CritsDmg = "Cdmg";
         public static readonly string CritsHeal = "Cheal";
+        public static readonly string Mana = "Mana";
         public static readonly string Heal = "Heal";
 
-        public SkillsHeaderHeal()
+        public SkillsHeaderMana()
         {
             InitializeComponent();
             LabelName.Content = SkillName;
             LabelId.Content = SkillId;
-            LabelCritRateHeal.Content = CritRateHeal;
 
 
-            LabelNumberHitHeal.Content = HitsHeal;
+            LabelNumberHitMana.Content = HitsMana;
 
-            LabelNumberCritHeal.Content = CritsHeal;
 
-            LabelAverageCrit.Content = AverageCrit;
-            LabelAverageHit.Content = AverageHit;
-
-            LabelBiggestCrit.Content = BiggestCrit;
-            LabelBiggestHit.Content = BiggestHit;
-
-            LabelAverage.Content = AverageTotal;
-
-            LabelTotalHeal.Content = Heal + "↓";
+            LabelTotalMana.Content = Mana + "↓";
         }
 
 

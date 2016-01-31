@@ -30,7 +30,7 @@ namespace Data
             ParseSkillWindowOpacity();
             ParseAutoUpdate();
         }
-        
+
 
         public Point Location { get; set; }
 
@@ -40,6 +40,8 @@ namespace Data
 
         public string Language { get; private set; }
 
+        public bool AutoUpdate { get; private set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -48,8 +50,6 @@ namespace Data
             SkillWindowOpacity = 0.7;
             AutoUpdate = true;
         }
-
-        public bool AutoUpdate { get; private set; }
 
 
         public void ParseAutoUpdate()
@@ -102,7 +102,7 @@ namespace Data
 
             if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity))
             {
-                MainWindowOpacity = ((double) mainWindowOpacity)/100;
+                MainWindowOpacity = (double) mainWindowOpacity/100;
             }
         }
 
@@ -116,7 +116,7 @@ namespace Data
 
             if (int.TryParse(mainWindowElement.Value, out skillWindowOpacity))
             {
-                SkillWindowOpacity = ((double) skillWindowOpacity)/100;
+                SkillWindowOpacity = (double) skillWindowOpacity/100;
             }
         }
 

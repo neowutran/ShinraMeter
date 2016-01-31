@@ -77,7 +77,7 @@ namespace DamageMeter.AutoUpdate
             }
             Console.WriteLine("Latest version downloaded");
             Console.WriteLine("Checksum");
-            if (!(Checksum(latestVersion, latestVersion + ".zip").Result))
+            if (!Checksum(latestVersion, latestVersion + ".zip").Result)
             {
                 MessageBox.Show("Invalid checksum, abording upgrade");
                 return;

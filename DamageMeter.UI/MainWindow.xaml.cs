@@ -7,10 +7,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Sniffing;
+using DamageMeter.UI.EntityStats;
 using Data;
 using log4net;
 using Application = System.Windows.Forms.Application;
@@ -22,6 +22,7 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class MainWindow
     {
+        private readonly EntityStatsMain _entityStats;
         private bool _keyboardInitialized;
 
         public MainWindow()
@@ -50,7 +51,7 @@ namespace DamageMeter.UI
             UpdateComboboxEncounter(new LinkedList<Entity>());
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
-            _entityStats = new EntityStats(this);
+            _entityStats = new EntityStatsMain(this);
         }
 
 
@@ -96,13 +97,21 @@ namespace DamageMeter.UI
             }
         }
 
-        public void Update(long nintervalvalue, long ntotalDamage, Dictionary<Entity, EntityInfo> nentities, List<PlayerInfo> nstats)
+        public void Update(long nintervalvalue, long ntotalDamage, Dictionary<Entity, EntityInfo> nentities,
+            List<PlayerInfo> nstats)
         {
             UpdateUi changeUi =
-                delegate(long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats)
+                delegate(long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities,
+                    List<PlayerInfo> stats)
                 {
-                    UpdateComboboxEncounter(entities.Keys);
                     StayTopMost();
+                    var entitiesStats = entities.ToList().OrderByDescending(e => e.Value.LastHit).ToList();
+                    var encounterList = new LinkedList<Entity>();
+                    foreach (var entityStats in entitiesStats)
+                    {
+                        encounterList.AddLast(entityStats.Key);
+                    }
+                    UpdateComboboxEncounter(encounterList);
                     _entityStats.Update(entities);
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
@@ -136,20 +145,19 @@ namespace DamageMeter.UI
                     TotalDamage.Content = FormatHelpers.Instance.FormatValue(totalDamage);
                     var interval = TimeSpan.FromSeconds(intervalvalue);
                     Timer.Content = interval.ToString(@"mm\:ss");
-                    foreach (var player in Controls)
-                    {
-                        var data = stats.IndexOf(player.Value.PlayerInfo);
-                        player.Value.Repaint(stats[data], totalDamage);
-                    }
+
                     Players.Items.Clear();
                     var sortedDict = from entry in Controls
-                        orderby entry.Value.PlayerInfo.Dealt.DamageFraction(totalDamage) descending
+                        orderby
+                            stats[stats.IndexOf(entry.Value.PlayerInfo)].Dealt.DamageFraction(totalDamage) descending
                         select entry;
                     foreach (var item in sortedDict)
                     {
                         Players.Items.Add(item.Value);
+                        var data = stats.IndexOf(item.Value.PlayerInfo);
+                        item.Value.Repaint(stats[data], totalDamage, Width);
                     }
-                    Height = (Controls.Count)*29 + CloseMeter.ActualHeight;
+                    Height = Controls.Count*29 + CloseMeter.ActualHeight;
                 };
             Dispatcher.Invoke(changeUi, nintervalvalue, ntotalDamage, nentities, nstats);
         }
@@ -190,7 +198,7 @@ namespace DamageMeter.UI
         private void UpdateComboboxEncounter(IEnumerable<Entity> entities)
         {
             Entity selectedEntity = null;
-            if (((ComboBoxItem) ListEncounter.SelectedItem) != null)
+            if ((ComboBoxItem) ListEncounter.SelectedItem != null)
             {
                 selectedEntity = (Entity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
             }
@@ -272,15 +280,6 @@ namespace DamageMeter.UI
             }
         }
 
-        private EntityStats _entityStats;
-
-        private delegate void UpdateEncounter(Entity entity);
-
-        private delegate void UpdateUi(
-            long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
-
-        private delegate void ChangeTitle(string servername);
-
         private void EntityStatsImage_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _entityStats.Show();
@@ -290,5 +289,12 @@ namespace DamageMeter.UI
         {
             _entityStats.Hide();
         }
+
+        private delegate void UpdateEncounter(Entity entity);
+
+        private delegate void UpdateUi(
+            long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
+
+        private delegate void ChangeTitle(string servername);
     }
 }

@@ -211,7 +211,8 @@
                   Margin="30,0,0,0" VerticalAlignment="Top" Width="270" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
 
-        <Image Grid.Column="0" x:Name="EntityStatsImage" MouseLeftButtonDown="EntityStatsImage_OnMouseLeftButtonDown" Stretch="Fill"
+        <Image Grid.Column="0" x:Name="EntityStatsImage" MouseLeftButtonDown="EntityStatsImage_OnMouseLeftButtonDown"
+               Stretch="Fill"
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" Margin="300,0,0,0" />
 
