@@ -230,8 +230,14 @@ namespace DamageMeter.UI
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Top = BasicTeraData.Instance.WindowData.Location.Y;
-            Left = BasicTeraData.Instance.WindowData.Location.X;
+            if (BasicTeraData.Instance.WindowData.RememberPosition)
+            {
+                Top = BasicTeraData.Instance.WindowData.Location.Y;
+                Left = BasicTeraData.Instance.WindowData.Location.X;
+                return;
+            }
+            Top = 0;
+            Left = 0;
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)

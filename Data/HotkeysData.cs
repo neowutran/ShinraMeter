@@ -22,13 +22,10 @@ namespace Data
             None = 0
         }
 
-        private readonly bool _fileExist;
-
         private readonly string _hotkeyFile;
 
         public HotkeysData(BasicTeraData basicData)
         {
-            _fileExist = false;
             DefaultValue();
 
             // Load XML File
@@ -45,10 +42,6 @@ namespace Data
             // Get Keys
             var root = xml.Root;
             if (root == null) return;
-
-
-            _fileExist = true;
-
 
             var pasteQuery = from hotkeys in root.Descendants("paste")
                 select hotkeys.Element("key");
@@ -246,8 +239,6 @@ namespace Data
 
         public void Save()
         {
-            if (_fileExist) return;
-
             var xml = new XDocument(new XElement("hotkeys"));
             xml.Root.Add(new XElement("paste"));
 

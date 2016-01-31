@@ -29,6 +29,7 @@ namespace Data
             ParseMainWindowOpacity();
             ParseSkillWindowOpacity();
             ParseAutoUpdate();
+            ParseRememberPosition();
         }
 
 
@@ -37,7 +38,7 @@ namespace Data
         public double MainWindowOpacity { get; private set; }
         public double SkillWindowOpacity { get; private set; }
 
-
+        public bool RememberPosition { get; private set; }
         public string Language { get; private set; }
 
         public bool AutoUpdate { get; private set; }
@@ -49,7 +50,23 @@ namespace Data
             MainWindowOpacity = 0.5;
             SkillWindowOpacity = 0.7;
             AutoUpdate = true;
+            RememberPosition = true;
         }
+
+        public void ParseRememberPosition()
+        {
+            var root = _xml.Root;
+            var rememberPosition = root?.Element("remember_position");
+            if (rememberPosition == null) return;
+            bool remember;
+            var parseSuccess = bool.TryParse(rememberPosition.Value, out remember);
+            if (parseSuccess)
+            {
+                RememberPosition = remember;
+            }
+        }
+
+
 
 
         public void ParseAutoUpdate()
@@ -131,6 +148,7 @@ namespace Data
             xml.Root.Element("opacity").Add(new XElement("mainWindow", MainWindowOpacity*100));
             xml.Root.Element("opacity").Add(new XElement("skillWindow", SkillWindowOpacity*100));
             xml.Root.Add(new XElement("autoupdate", AutoUpdate));
+            xml.Root.Add(new XElement("remember_position", RememberPosition));
             xml.Save(_windowFile);
         }
     }

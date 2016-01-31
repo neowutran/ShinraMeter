@@ -13,6 +13,13 @@
     <alt>False</alt>
     <key>Delete</key>
   </reset>
+  <reset_current>
+    <ctrl>True</ctrl>
+    <shift>False</shift>
+    <window>False</window>
+    <alt>False</alt>
+    <key>Delete</key>
+  </reset_current>
   <copys>
     <copy>
       <ctrl>True</ctrl>
