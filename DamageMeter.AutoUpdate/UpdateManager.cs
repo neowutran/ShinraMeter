@@ -181,11 +181,26 @@ namespace DamageMeter.AutoUpdate
 
         private static async Task<string> GetResponseText(string address)
         {
+            return await GetResponseText(address, 10);
+        }
+
+        private static async Task<string> GetResponseText(string address, int numbertry)
+        {
             SetCertificate();
-            using (var client = new HttpClient())
+            try
             {
-                Console.WriteLine(address);
-                return await client.GetStringAsync(new Uri(address));
+                using (var client = new HttpClient())
+                {
+                    return await client.GetStringAsync(new Uri(address));
+                }
+            }
+            catch(Exception)
+            {
+                if (numbertry > 0)
+                {
+                    return await GetResponseText(address, numbertry - 1);
+                }
+                throw;
             }
         }
     }

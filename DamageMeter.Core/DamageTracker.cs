@@ -351,12 +351,11 @@ namespace DamageMeter
                 return;
             }
 
-
             var entity = entitySource;
 
             if (entitySource.IsBoss())
             {
-                foreach (var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name))
+                foreach (var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name && t.Key.Id == entitySource.Id))
                 {
                     entity = t.Key;
                     break;

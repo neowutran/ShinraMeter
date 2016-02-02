@@ -289,11 +289,14 @@ namespace DamageMeter.UI
         private void EntityStatsImage_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _entityStats.Show();
+            _entityStats.Topmost = false;
+            _entityStats.Topmost = true;
         }
 
         public void CloseEntityStats()
         {
             _entityStats.Hide();
+            _entityStats.Topmost = false;
         }
 
         private delegate void UpdateEncounter(Entity entity);

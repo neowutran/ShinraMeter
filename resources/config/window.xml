@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <window>
   <location>
-    <x>78</x>
-    <y>127</y>
+    <x>22</x>
+    <y>114</y>
   </location>
   <language>EU-EN</language>
   <opacity>
@@ -10,4 +10,5 @@
     <skillWindow>70</skillWindow>
   </opacity>
   <autoupdate>true</autoupdate>
+  <remember_position>true</remember_position>
 </window>

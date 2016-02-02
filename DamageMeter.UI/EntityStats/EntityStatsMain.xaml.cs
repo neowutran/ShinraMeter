@@ -18,7 +18,10 @@ namespace DamageMeter.UI.EntityStats
         {
             InitializeComponent();
             _parent = parent;
+            _header = new EnduranceDebuffHeader(this);
         }
+
+        private readonly EnduranceDebuffHeader _header;
 
 
         public void Update(Dictionary<Entity, EntityInfo> stats)
@@ -35,7 +38,7 @@ namespace DamageMeter.UI.EntityStats
                 return;
             }
 
-            EnduranceAbnormality.Items.Add(new EnduranceDebuffHeader(this));
+            EnduranceAbnormality.Items.Add(_header);
             foreach (var statsAbnormality in statsAbnormalities.AbnormalityTime)
             {
                 var abnormality = new EnduranceDebuff(this, statsAbnormality.Key, statsAbnormality.Value, statsAbnormalities); 
