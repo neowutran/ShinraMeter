@@ -16,6 +16,7 @@
         BorderThickness="0"
         Icon="shinra.jpg"
         MinWidth="450"
+        ShowActivated="False"
         MaxWidth="450"
         MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         Loaded="MainWindow_OnLoaded"

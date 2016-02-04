@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,6 +23,7 @@ namespace DamageMeter.UI.EntityStats
         }
 
         private readonly EnduranceDebuffHeader _header;
+        private readonly List<EnduranceDebuff> _enduranceDebuffsList = new List<EnduranceDebuff>(); 
 
 
         public void Update(Dictionary<Entity, EntityInfo> stats)
@@ -39,9 +41,22 @@ namespace DamageMeter.UI.EntityStats
             }
 
             EnduranceAbnormality.Items.Add(_header);
-            foreach (var statsAbnormality in statsAbnormalities.AbnormalityTime)
+
+            for(var i = 0; i < statsAbnormalities.AbnormalityTime.Count; i++)
             {
-                var abnormality = new EnduranceDebuff(this, statsAbnormality.Key, statsAbnormality.Value, statsAbnormalities); 
+                EnduranceDebuff abnormality;
+                if (_enduranceDebuffsList.Count > i)
+                {
+                    abnormality = _enduranceDebuffsList[i];
+                    abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i), statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities);
+                }
+                else
+                {
+                    abnormality = new EnduranceDebuff(this);
+                    abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i), statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities);
+                    _enduranceDebuffsList.Add(abnormality);
+                }
+
                 EnduranceAbnormality.Items.Add(abnormality);
             }
         }

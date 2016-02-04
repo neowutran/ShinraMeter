@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -14,6 +15,8 @@ using DamageMeter.UI.EntityStats;
 using Data;
 using log4net;
 using Application = System.Windows.Forms.Application;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DamageMeter.UI
 {
@@ -54,6 +57,7 @@ namespace DamageMeter.UI
             _entityStats = new EntityStatsMain(this);
         }
 
+      
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 

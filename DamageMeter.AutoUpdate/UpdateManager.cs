@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,7 +16,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "0.59";
+        public static readonly string Version = "0.60";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -181,7 +182,7 @@ namespace DamageMeter.AutoUpdate
 
         private static async Task<string> GetResponseText(string address)
         {
-            return await GetResponseText(address, 10);
+            return await GetResponseText(address, 3);
         }
 
         private static async Task<string> GetResponseText(string address, int numbertry)
@@ -191,7 +192,9 @@ namespace DamageMeter.AutoUpdate
             {
                 using (var client = new HttpClient())
                 {
-                    return await client.GetStringAsync(new Uri(address));
+
+                    var response = await client.GetByteArrayAsync(new Uri(address));
+                    return Encoding.UTF8.GetString(response, 0, response.Length);
                 }
             }
             catch(Exception)

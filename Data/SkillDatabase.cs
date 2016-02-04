@@ -84,63 +84,41 @@ namespace Data
                     _userSkilldata[skill.PlayerClass].Add(skill);
                 }
             }
+
+          
+            for(var i = 0; i < _userSkilldata.Count; i++)
+            {
+                if (_userSkilldata.Keys.ElementAt(i) == PlayerClass.Common) { continue;}
+                _userSkilldata[_userSkilldata.Keys.ElementAt(i)] =_userSkilldata.Values.ElementAt(i).Union(_userSkilldata[PlayerClass.Common]).ToList();
+            }
+
         }
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
         public UserSkill Get(PlayerClass user, int skillId)
         {
-            List<UserSkill> skillsSpecific, skillsCommon;
-
-            _userSkilldata.TryGetValue(user, out skillsSpecific);
-
-            _userSkilldata.TryGetValue(PlayerClass.Common, out skillsCommon);
-
-
-            var allSkills = new List<UserSkill>();
-            if (skillsCommon != null)
-            {
-                allSkills = allSkills.Union(skillsCommon).ToList();
-            }
-            if (skillsSpecific != null)
-            {
-                allSkills = allSkills.Union(skillsSpecific).ToList();
-            }
-
-            var skillResult = allSkills.FirstOrDefault(skill => skill.Id == skillId);
+            List<UserSkill> skills;
+            _userSkilldata.TryGetValue(user, out skills);
+            var skillResult = skills.FirstOrDefault(skill => skill.Id == skillId);
             return skillResult;
         }
 
         public UserSkill GetOrPlaceholder(PlayerClass user, int skillId)
         {
             var existing = Get(user, skillId);
-            if (existing != null)
-                return existing;
-
-            return new UserSkill(skillId, user, "Unknown " + skillId, null, null);
+            return existing ?? new UserSkill(skillId, user, "Unknown " + skillId, null, null);
         }
 
         public string GetName(PlayerClass user, int skillId)
         {
-            List<UserSkill> skillsSpecific, skillsCommon;
+            List<UserSkill> skills;
 
-            _userSkilldata.TryGetValue(user, out skillsSpecific);
+            _userSkilldata.TryGetValue(user, out skills);
 
-            _userSkilldata.TryGetValue(PlayerClass.Common, out skillsCommon);
-
-
-            var allSkills = new List<UserSkill>();
-            if (skillsCommon != null)
-            {
-                allSkills = allSkills.Union(skillsCommon).ToList();
-            }
-            if (skillsSpecific != null)
-            {
-                allSkills = allSkills.Union(skillsSpecific).ToList();
-            }
-
+          
             var researchSkillId = skillId.ToString();
             researchSkillId = researchSkillId.Substring(researchSkillId.Length - 2);
-            foreach (var skill in allSkills)
+            foreach (var skill in skills)
             {
                 var skillIdString = skill.Id.ToString();
                 var subid = skillIdString.Substring(skillIdString.Length - 2);
