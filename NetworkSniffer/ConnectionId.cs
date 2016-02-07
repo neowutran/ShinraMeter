@@ -5,13 +5,13 @@ namespace NetworkSniffer
 {
     internal struct ConnectionId : IEquatable<ConnectionId>
     {
-        public readonly IPEndPoint Source;
-        public readonly IPEndPoint Destination;
+        public readonly EndpointIpv4 Source;
+        public readonly EndpointIpv4 Destination;
 
-        public ConnectionId(string sourceIp, ushort sourcePort, string destinationIp, ushort destinationPort)
+        public ConnectionId(uint sourceIp, ushort sourcePort, uint destinationIp, ushort destinationPort)
         {
-            Source = new IPEndPoint(IPAddress.Parse(sourceIp), sourcePort);
-            Destination = new IPEndPoint(IPAddress.Parse(destinationIp), destinationPort);
+            Source = new EndpointIpv4(sourceIp, sourcePort);
+            Destination = new EndpointIpv4(destinationIp, destinationPort);
         }
 
         public static bool operator ==(ConnectionId x, ConnectionId y)

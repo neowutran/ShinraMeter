@@ -6,11 +6,12 @@
              mc:Ignorable="d"
              d:DesignHeight="29"
              MinHeight="29"
+             Focusable="False"
              MaxHeight="29"
              Height="29">
-    <Grid>
+    <Grid Focusable="False">
 
-        <Rectangle MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator"
+        <Rectangle Focusable="False" MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="DpsIndicator"
                    Fill="DodgerBlue"
                    Opacity="0.5" HorizontalAlignment="Left" MinHeight="32" MaxHeight="32" Height="32"
                    Stroke="Transparent" VerticalAlignment="Center"
@@ -20,7 +21,7 @@
                Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
                Height="25" VerticalAlignment="Top" Width="25" Margin="0,0,0,0" />
 
-        <Grid MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="GridStats" Width="Auto"
+        <Grid Focusable="False" MouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="GridStats" Width="Auto"
               Margin="25,0,0,0" VerticalAlignment="Top" Height="29" MinHeight="29" MaxHeight="29">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="90" />

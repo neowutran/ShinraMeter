@@ -6,10 +6,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using Data;
 using NetworkSniffer;
-using PacketDotNet.Utils;
-using SharpPcap.WinPcap;
 using Tera;
 using Tera.Game;
 using Tera.Sniffing;
@@ -22,7 +21,7 @@ namespace DamageMeter.Sniffing
         // Only take this lock in callbacks from tcp sniffing, not in code that can be called by the user.
         // Otherwise this could cause a deadlock if the user calls such a method from a callback that already holds a lock
         private readonly object _eventLock = new object();
-        private readonly IpSniffer _ipSniffer;
+        private readonly IpSnifferRawSocketMultipleInterfaces _ipSniffer;
         private readonly HashSet<TcpConnection> _isNew = new HashSet<TcpConnection>();
 
         private readonly Dictionary<string, Server> _serversByIp;
@@ -38,15 +37,8 @@ namespace DamageMeter.Sniffing
             var servers = BasicTeraData.Instance.Servers;
             _serversByIp = servers.ToDictionary(x => x.Ip);
 
-
-            var netmasks =
-                _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct().ToArray();
-            var filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
-            filter = "tcp and (" + filter + ")";
-
-            _ipSniffer = new IpSniffer(filter);
+            _ipSniffer = new IpSnifferRawSocketMultipleInterfaces();
             _ipSniffer.Warning += OnWarning;
-
 
             var tcpSniffer = new TcpSniffer(_ipSniffer);
             tcpSniffer.NewConnection += HandleNewConnection;
@@ -55,7 +47,7 @@ namespace DamageMeter.Sniffing
 
         public static TeraSniffer Instance => _instance ?? (_instance = new TeraSniffer());
 
-        public WinPcapDevice Device { get; private set; }
+        public Socket Device { get; private set; }
 
         // IpSniffer has its own locking, so we need no lock here.
         public bool Enabled
@@ -65,11 +57,7 @@ namespace DamageMeter.Sniffing
         }
 
         public event Action<Server, IPEndPoint, IPEndPoint> NewConnection;
-
-        public IEnumerable<string> SnifferStatus()
-        {
-            return _ipSniffer.Status();
-        }
+        
 
         public event Action<string> Warning;
 
@@ -93,7 +81,7 @@ namespace DamageMeter.Sniffing
 
 
         // called from the tcp sniffer, so it needs to lock
-        private void HandleNewConnection(TcpConnection connection, WinPcapDevice device)
+        private void HandleNewConnection(TcpConnection connection, Socket device)
         {
             lock (_eventLock)
             {
@@ -107,16 +95,16 @@ namespace DamageMeter.Sniffing
         }
 
         // called from the tcp sniffer, so it needs to lock
-        private void HandleTcpDataReceived(TcpConnection connection, ByteArraySegment data)
+        private void HandleTcpDataReceived(TcpConnection connection, ArraySegment<byte> data)
         {
             lock (_eventLock)
             {
-                if (data.Length == 0)
+                if (data.Count == 0)
                     return;
                 if (_isNew.Contains(connection))
                 {
                     if (_serversByIp.ContainsKey(connection.Source.Address.ToString()) &&
-                        data.Bytes.Skip(data.Offset).Take(4).SequenceEqual(new byte[] {1, 0, 0, 0}))
+                        data.Array.Skip(data.Offset).Take(4).SequenceEqual(new byte[] {1, 0, 0, 0}))
                     {
                         _isNew.Remove(connection);
                         var server = _serversByIp[connection.Source.Address.ToString()];
@@ -144,7 +132,7 @@ namespace DamageMeter.Sniffing
                     return;
                 if (_decrypter == null)
                     return;
-                var dataArray = data.Bytes.Skip(data.Offset).Take(data.Length).ToArray();
+                var dataArray = data.Array.Skip(data.Offset).Take(data.Count).ToArray();
                 if (connection == _clientToServer)
                     _decrypter.ClientToServer(dataArray);
                 else

@@ -16,7 +16,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "0.60";
+        public static readonly string Version = "0.61";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -174,10 +174,16 @@ namespace DamageMeter.AutoUpdate
 
         private static void SetCertificate()
         {
-            var cloudCertificate = new X509Certificate2(ResourcesDirectory + @"ssl/cloud.neowutran.ovh.der");
+        var cloudCertificate =
+              new X509Certificate2(
+                  X509Certificate.CreateFromCertFile(ResourcesDirectory + @"ssl/cloud.neowutran.ovh.der"));
             ServicePointManager.ServerCertificateValidationCallback =
                 (sender, certificate, chain, sslPolicyErrors) =>
                     certificate.Equals(cloudCertificate);
+                    
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
         }
 
         private static async Task<string> GetResponseText(string address)

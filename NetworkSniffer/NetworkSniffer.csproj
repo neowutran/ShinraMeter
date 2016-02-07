@@ -30,18 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PacketDotNet">
-      <HintPath>..\SharpPcap\PacketDotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpPcap">
-      <HintPath>..\SharpPcap\SharpPcap.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionId.cs" />
-    <Compile Include="IpSniffer.cs" />
+    <Compile Include="EndpointIpv4.cs" />
+    <Compile Include="IpSnifferRawSocketMultipleInterfaces.cs" />
+    <Compile Include="IpSnifferRawSocketSingleInterface.cs" />
+    <Compile Include="Packets\IpPacket.cs" />
+    <Compile Include="Packets\ParserHelpers.cs" />
+    <Compile Include="Packets\TcpFlags.cs" />
+    <Compile Include="Packets\TcpPacket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TcpConnection.cs" />
     <Compile Include="TcpSniffer.cs" />

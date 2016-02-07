@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Data;
 
@@ -19,9 +18,15 @@ namespace DamageMeter.UI.EntityStats
         public void Update(HotDot hotdot, AbnormalityDuration abnormalityDuration, EntityInfo entityInfo)
         {
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
-            LabelAbnormalityDuration.Content = Math.Round((double)(abnormalityDuration.Duration / 10000000)) + "s";
+
+            var interval = TimeSpan.FromSeconds(Math.Round((double)(abnormalityDuration.Duration / 10000000)));
+            LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
+
             LabelAbnormalityDurationPercentage.Content = (abnormalityDuration.Duration * 100) / entityInfo.Interval + "%";
-            LabelInterval.Content = Math.Round((double)(entityInfo.Interval / 10000000)) + "s";
+
+            interval = TimeSpan.FromSeconds(Math.Round((double)(entityInfo.Interval / 10000000)));
+            LabelInterval.Content = interval.ToString(@"mm\:ss");
+
             LabelName.Content = hotdot.Name;
             LabelId.Content = hotdot.Id;
         }

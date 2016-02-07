@@ -348,7 +348,11 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         SetTotalDamage(damage, time);
                         break;
                     default:
-                        throw new Exception("NO CRIT ON MANA. Amount:" + damage);
+
+                        //Don't know why, but it seem that CRIT on MANA are used for some kind of info for duels. 
+                        // Anyway, useless
+                        return;
+                        //throw new Exception("NO CRIT ON MANA. Amount:" + damage);
                 }
             }
             else

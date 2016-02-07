@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
 using System.Windows.Media;
-using DamageMeter.Sniffing;
-using NetworkSniffer;
-using PacketDotNet;
 using Tera.Sniffing.Crypt;
 
 namespace DamageMeter
@@ -47,7 +42,7 @@ namespace DamageMeter
             return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
         }
 
-
+        /*
         public void Send()
         {
             var bytesChat = Encoding.Unicode.GetBytes(_chatMessage);
@@ -61,10 +56,7 @@ namespace DamageMeter
             //Console.WriteLine("Encrypted");
             Console.WriteLine(BitConverter.ToString(packetPayload));
 
-            if (!TeraSniffer.Instance.Device.Opened)
-            {
-                TeraSniffer.Instance.Device.Open();
-            }
+            
             var serverPort = (ushort) NetworkController.Instance.ServerIpEndPoint.Port;
             var clientPort = (ushort) NetworkController.Instance.ClientIpEndPoint.Port;
             var tcpPacket = new TcpPacket(clientPort, serverPort)
@@ -90,7 +82,7 @@ namespace DamageMeter
 
             var networkDevice =
                 NetworkInterface.GetAllNetworkInterfaces()
-                    .FirstOrDefault(device => device.GetPhysicalAddress().Equals(TeraSniffer.Instance.Device.MacAddress));
+                    .FirstOrDefault(device => device.GetPhysicalAddress().Equals(TeraSniffer.Instance.Device.));
             var address = networkDevice.GetIPProperties().GatewayAddresses.FirstOrDefault();
 
             var all = IpHelper.GetAllDevicesOnLan();
@@ -111,8 +103,9 @@ namespace DamageMeter
             ipPacket.UpdateIPChecksum();
             ethernetPacket.UpdateCalculatedValues();
             //   Console.WriteLine("Send");
-            TeraSniffer.Instance.Device.SendPacket(ethernetPacket.Bytes);
+            TeraSniffer.Instance.Device.Send(ethernetPacket.Bytes);
         }
+        */
 
         public static byte[] StringToByteArray(string hex)
         {

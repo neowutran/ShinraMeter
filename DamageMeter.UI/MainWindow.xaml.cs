@@ -55,9 +55,16 @@ namespace DamageMeter.UI
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             _entityStats = new EntityStatsMain(this);
+            _trayIcon = new NotifyIcon
+            {
+                Icon = new System.Drawing.Icon("shinra.ico"),
+                Visible = true,
+                Text = Title + ": No server"
+            };
         }
 
-      
+        private readonly NotifyIcon _trayIcon;
+
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
@@ -162,6 +169,8 @@ namespace DamageMeter.UI
                         item.Value.Repaint(stats[data], totalDamage, Width);
                     }
                     Height = Controls.Count*29 + CloseMeter.ActualHeight;
+                    Console.WriteLine("control count = "+Controls.Count);
+                    Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
                 };
             Dispatcher.Invoke(changeUi, nintervalvalue, ntotalDamage, nentities, nstats);
         }
@@ -169,7 +178,9 @@ namespace DamageMeter.UI
 
         public void HandleConnected(string serverName)
         {
-            ChangeTitle changeTitle = delegate(string newServerName) { Title = newServerName; };
+            ChangeTitle changeTitle = delegate(string newServerName) { Title = newServerName;
+                                                                         _trayIcon.Text = Title + ": " +newServerName;
+            };
             Dispatcher.Invoke(changeTitle, serverName);
         }
 

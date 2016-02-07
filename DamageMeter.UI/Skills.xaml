@@ -8,6 +8,7 @@
         AllowsTransparency="True"
         Focusable="False"
         ResizeMode="CanResizeWithGrip"
+        ShowActivated="False"
         BorderThickness="0"
         Topmost="True"
         Icon="shinra.jpg"
