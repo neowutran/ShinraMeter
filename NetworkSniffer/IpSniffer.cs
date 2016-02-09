@@ -7,15 +7,8 @@ namespace NetworkSniffer
 {
     public abstract class IpSniffer
     {
-        public event Action<ArraySegment<byte>> PacketReceived;
-
-        protected void OnPacketReceived(ArraySegment<byte> data)
-        {
-            var packetReceived = PacketReceived;
-            packetReceived?.Invoke(data);
-        }
-
         private bool _enabled;
+
         public bool Enabled
         {
             get { return _enabled; }
@@ -27,6 +20,14 @@ namespace NetworkSniffer
                     SetEnabled(value);
                 }
             }
+        }
+
+        public event Action<ArraySegment<byte>> PacketReceived;
+
+        protected void OnPacketReceived(ArraySegment<byte> data)
+        {
+            var packetReceived = PacketReceived;
+            packetReceived?.Invoke(data);
         }
 
         protected abstract void SetEnabled(bool value);

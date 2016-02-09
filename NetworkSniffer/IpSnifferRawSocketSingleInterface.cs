@@ -13,14 +13,14 @@ namespace NetworkSniffer
     // Might work on Server variants of Windows, but I didn't test that
     public class IpSnifferRawSocketSingleInterface : IpSniffer
     {
-        private Socket _socket;
-        private readonly IPAddress _localIp;
         private readonly byte[] _buffer;
+        private readonly IPAddress _localIp;
+        private Socket _socket;
 
         public IpSnifferRawSocketSingleInterface(IPAddress localIp)
         {
             _localIp = localIp;
-            _buffer = new byte[1<<17];
+            _buffer = new byte[1 << 17];
         }
 
         private void Init()
@@ -36,7 +36,7 @@ namespace NetworkSniffer
             var receiveAllOn = BitConverter.GetBytes(1);
             _socket.IOControl(IOControlCode.ReceiveAll, receiveAllOn, null);
 
-            _socket.ReceiveBufferSize = (1 << 16);
+            _socket.ReceiveBufferSize = 1 << 16;
             Read();
         }
 
@@ -58,10 +58,10 @@ namespace NetworkSniffer
             {
                 return;
             }
-            var socket = (Socket)ar.AsyncState;
+            var socket = (Socket) ar.AsyncState;
             var count = socket.EndReceive(ar);
-            
-            
+
+
             OnPacketReceived(new ArraySegment<byte>(_buffer, 0, count));
             Read();
         }
@@ -78,7 +78,7 @@ namespace NetworkSniffer
             }
         }
 
-       
+
         public override string ToString()
         {
             return $"{base.ToString()} {_localIp}";

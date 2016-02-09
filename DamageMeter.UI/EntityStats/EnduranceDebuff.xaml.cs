@@ -9,7 +9,9 @@ namespace DamageMeter.UI.EntityStats
     /// </summary>
     public partial class EnduranceDebuff
     {
-        public EnduranceDebuff(EntityStatsMain  parent)
+        private readonly EntityStatsMain _parent;
+
+        public EnduranceDebuff(EntityStatsMain parent)
         {
             InitializeComponent();
             _parent = parent;
@@ -23,17 +25,15 @@ namespace DamageMeter.UI.EntityStats
             var interval = TimeSpan.FromSeconds(second);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
-            LabelAbnormalityDurationPercentage.Content = (abnormalityDuration.Duration * 100) / entityInfo.Interval + "%";
+            LabelAbnormalityDurationPercentage.Content = abnormalityDuration.Duration*100/entityInfo.Interval + "%";
 
-            second = entityInfo.Interval / TimeSpan.TicksPerSecond;
+            second = entityInfo.Interval/TimeSpan.TicksPerSecond;
             interval = TimeSpan.FromSeconds(second);
             LabelInterval.Content = interval.ToString(@"mm\:ss");
 
             LabelName.Content = hotdot.Name;
             LabelId.Content = hotdot.Id;
         }
-
-        private readonly EntityStatsMain _parent;
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

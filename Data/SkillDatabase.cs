@@ -85,13 +85,16 @@ namespace Data
                 }
             }
 
-          
-            for(var i = 0; i < _userSkilldata.Count; i++)
-            {
-                if (_userSkilldata.Keys.ElementAt(i) == PlayerClass.Common) { continue;}
-                _userSkilldata[_userSkilldata.Keys.ElementAt(i)] =_userSkilldata.Values.ElementAt(i).Union(_userSkilldata[PlayerClass.Common]).ToList();
-            }
 
+            for (var i = 0; i < _userSkilldata.Count; i++)
+            {
+                if (_userSkilldata.Keys.ElementAt(i) == PlayerClass.Common)
+                {
+                    continue;
+                }
+                _userSkilldata[_userSkilldata.Keys.ElementAt(i)] =
+                    _userSkilldata.Values.ElementAt(i).Union(_userSkilldata[PlayerClass.Common]).ToList();
+            }
         }
 
         // skillIds are reused across races and class, so we need a RaceGenderClass to disambiguate them
@@ -115,7 +118,7 @@ namespace Data
 
             _userSkilldata.TryGetValue(user, out skills);
 
-          
+
             var researchSkillId = skillId.ToString();
             researchSkillId = researchSkillId.Substring(researchSkillId.Length - 2);
             foreach (var skill in skills)

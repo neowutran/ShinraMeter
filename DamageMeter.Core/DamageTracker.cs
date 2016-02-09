@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DamageMeter.Skills;
 using DamageMeter.Skills.Skill;
-using DamageMeter.Taken;
 using Tera.Game;
 using Skill = DamageMeter.Skills.Skill.Skill;
 
@@ -353,7 +352,8 @@ namespace DamageMeter
 
             if (entitySource.IsBoss())
             {
-                foreach (var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name && t.Key.Id == entitySource.Id))
+                foreach (
+                    var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name && t.Key.Id == entitySource.Id))
                 {
                     entity = t.Key;
                     break;

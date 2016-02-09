@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace DamageMeter.UI.EntityStats
 {
@@ -13,6 +11,9 @@ namespace DamageMeter.UI.EntityStats
     /// </summary>
     public partial class EntityStatsMain
     {
+        private readonly List<EnduranceDebuff> _enduranceDebuffsList = new List<EnduranceDebuff>();
+
+        private readonly EnduranceDebuffHeader _header;
         private readonly MainWindow _parent;
 
         public EntityStatsMain(MainWindow parent)
@@ -21,9 +22,6 @@ namespace DamageMeter.UI.EntityStats
             _parent = parent;
             _header = new EnduranceDebuffHeader(this);
         }
-
-        private readonly EnduranceDebuffHeader _header;
-        private readonly List<EnduranceDebuff> _enduranceDebuffsList = new List<EnduranceDebuff>(); 
 
 
         public void Update(Dictionary<Entity, EntityInfo> stats)
@@ -42,18 +40,20 @@ namespace DamageMeter.UI.EntityStats
 
             EnduranceAbnormality.Items.Add(_header);
 
-            for(var i = 0; i < statsAbnormalities.AbnormalityTime.Count; i++)
+            for (var i = 0; i < statsAbnormalities.AbnormalityTime.Count; i++)
             {
                 EnduranceDebuff abnormality;
                 if (_enduranceDebuffsList.Count > i)
                 {
                     abnormality = _enduranceDebuffsList[i];
-                    abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i), statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities);
+                    abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i),
+                        statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities);
                 }
                 else
                 {
                     abnormality = new EnduranceDebuff(this);
-                    abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i), statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities);
+                    abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i),
+                        statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities);
                     _enduranceDebuffsList.Add(abnormality);
                 }
 

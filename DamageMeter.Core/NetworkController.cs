@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Threading;
 using DamageMeter.Sniffing;
 using Data;
 using Tera.Game;
@@ -31,7 +29,7 @@ namespace DamageMeter
             //TeraSniffer.Instance.MessageReceived += HandleMessageReceived;
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
             var packetAnalysis = new Thread(PacketAnalysisLoop);
-            
+
             packetAnalysis.Start();
         }
 
@@ -47,6 +45,8 @@ namespace DamageMeter
 
         public EntityTracker EntityTracker { get; private set; }
 
+        public bool ForceUpdate { get; set; }
+
         public void Exit()
         {
             BasicTeraData.Instance.WindowData.Save();
@@ -58,8 +58,6 @@ namespace DamageMeter
         public event ConnectedHandler Connected;
         public event UpdateUiHandler TickUpdated;
 
-        public bool ForceUpdate { get; set; }
- 
         private void HandleNewConnection(Server server, IPEndPoint serverIpEndPoint, IPEndPoint clientIpEndPoint)
         {
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
@@ -105,6 +103,15 @@ namespace DamageMeter
         {
             while (true)
             {
+
+                if (ForceUpdate)
+                {
+                    ForceUpdate = false;
+                    UpdateUi();
+                    return;
+                }
+
+
                 Message obj;
                 var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out obj);
                 if (!successDequeue)
@@ -196,14 +203,6 @@ namespace DamageMeter
         public void CheckUpdateUi()
         {
             var second = Utils.Now();
-
-            if (ForceUpdate)
-            {
-                ForceUpdate = false;
-                UpdateUi();
-                return;
-            }
-
             if (second - _lastTick < 1) return;
             UpdateUi();
         }

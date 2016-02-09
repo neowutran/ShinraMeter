@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Sniffing;
@@ -15,8 +15,10 @@ using DamageMeter.UI.EntityStats;
 using Data;
 using log4net;
 using Application = System.Windows.Forms.Application;
+using Brushes = System.Windows.Media.Brushes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
+using Point = System.Windows.Point;
 
 namespace DamageMeter.UI
 {
@@ -26,6 +28,8 @@ namespace DamageMeter.UI
     public partial class MainWindow
     {
         private readonly EntityStatsMain _entityStats;
+
+        private readonly NotifyIcon _trayIcon;
         private bool _keyboardInitialized;
 
         public MainWindow()
@@ -57,13 +61,11 @@ namespace DamageMeter.UI
             _entityStats = new EntityStatsMain(this);
             _trayIcon = new NotifyIcon
             {
-                Icon = new System.Drawing.Icon("shinra.ico"),
+                Icon = new Icon("shinra.ico"),
                 Visible = true,
                 Text = "Shinra Meter V" + UpdateManager.Version + ": No server"
             };
         }
-
-        private readonly NotifyIcon _trayIcon;
 
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -177,8 +179,10 @@ namespace DamageMeter.UI
 
         public void HandleConnected(string serverName)
         {
-            ChangeTitle changeTitle = delegate(string newServerName) { Title = newServerName;
-                                                                         _trayIcon.Text = "Shinra Meter V" + UpdateManager.Version + ": " +newServerName;
+            ChangeTitle changeTitle = delegate(string newServerName)
+            {
+                Title = newServerName;
+                _trayIcon.Text = "Shinra Meter V" + UpdateManager.Version + ": " + newServerName;
             };
             Dispatcher.Invoke(changeTitle, serverName);
         }
@@ -238,6 +242,8 @@ namespace DamageMeter.UI
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
+            _trayIcon.Visible = false;
+            _trayIcon.Icon = null;
             NetworkController.Instance.Exit();
         }
 

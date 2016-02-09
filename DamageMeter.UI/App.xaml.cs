@@ -43,10 +43,13 @@ namespace DamageMeter.UI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Unable to contact update server, try again later, additional data available in error.log");
-                    var log = LogManager.GetLogger(typeof(Program)); //Log4NET
-                    log.Error("##### UPDATE EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
-                              ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
+                    MessageBox.Show(
+                        "Unable to contact update server, try again later, additional data available in error.log");
+                    var log = LogManager.GetLogger(typeof (Program)); //Log4NET
+                    log.Error("##### UPDATE EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message +
+                              "\r\n" +
+                              ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" +
+                              ex.InnerException +
                               "\r\n" + ex.TargetSite);
                 }
                 if (!shutdown) return;

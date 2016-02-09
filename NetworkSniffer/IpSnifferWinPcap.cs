@@ -29,13 +29,13 @@ namespace NetworkSniffer
             _filter = filter;
         }
 
+        public int? BufferSize { get; set; }
+
         public IEnumerable<string> Status()
         {
             return _devices.Select(device =>
                 $"Device {device.LinkType} {(device.Opened ? "Open" : "Closed")} {device.LastError}\r\n{device}");
         }
-
-        public int? BufferSize { get; set; }
 
         protected override void SetEnabled(bool value)
         {
@@ -68,7 +68,8 @@ namespace NetworkSniffer
                     }
                     catch (Exception e)
                     {
-                        Logger.Warn($"Failed to set KernelBufferSize to {BufferSize.Value} on {device.Name}. {e.Message}");
+                        Logger.Warn(
+                            $"Failed to set KernelBufferSize to {BufferSize.Value} on {device.Name}. {e.Message}");
                     }
                 }
                 device.StartCapture();
@@ -90,11 +91,11 @@ namespace NetworkSniffer
 
         protected virtual void OnWarning(string obj)
         {
-            Action<string> handler = Warning;
+            var handler = Warning;
             if (handler != null) handler(obj);
         }
 
-        void device_OnPacketArrival(object sender, CaptureEventArgs e)
+        private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
             var linkPacket = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
 
@@ -107,12 +108,14 @@ namespace NetworkSniffer
 
             OnPacketReceived(ipData2);
 
-            var device = (WinPcapDevice)sender;
-            if (device.Statistics.DroppedPackets != _droppedPackets || device.Statistics.InterfaceDroppedPackets != _interfaceDroppedPackets)
+            var device = (WinPcapDevice) sender;
+            if (device.Statistics.DroppedPackets != _droppedPackets ||
+                device.Statistics.InterfaceDroppedPackets != _interfaceDroppedPackets)
             {
                 _droppedPackets = device.Statistics.DroppedPackets;
                 _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
-                OnWarning(string.Format("DroppedPackets {0}, InterfaceDroppedPackets {1}", device.Statistics.DroppedPackets, device.Statistics.InterfaceDroppedPackets));
+                OnWarning(string.Format("DroppedPackets {0}, InterfaceDroppedPackets {1}",
+                    device.Statistics.DroppedPackets, device.Statistics.InterfaceDroppedPackets));
             }
         }
     }

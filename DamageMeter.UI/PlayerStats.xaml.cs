@@ -59,7 +59,8 @@ namespace DamageMeter.UI
             var intervalTimespan = TimeSpan.FromSeconds(playerInfo.Dealt.Interval);
             Timer.Content = intervalTimespan.ToString(@"mm\:ss");
 
-            _windowSkill?.Update(Skills(),new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills));
+            _windowSkill?.Update(Skills(),
+                new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills));
             DpsIndicator.Width = width*(PlayerInfo.Dealt.DamageFraction(totalDamage)/100);
         }
 
@@ -67,12 +68,15 @@ namespace DamageMeter.UI
         {
             if (NetworkController.Instance.Encounter == null)
             {
-                return new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills);
+                return
+                    new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(
+                        PlayerInfo.Dealt.AllSkills);
             }
             if (PlayerInfo.Dealt.ContainsEntity(NetworkController.Instance.Encounter))
             {
                 return
-                    new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.GetSkills(NetworkController.Instance.Encounter));
+                    new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(
+                        PlayerInfo.Dealt.GetSkills(NetworkController.Instance.Encounter));
             }
 
             return new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>();
@@ -83,7 +87,8 @@ namespace DamageMeter.UI
             if (_windowSkill == null)
             {
                 _windowSkill = new Skills(Skills(),
-                    new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills), this)
+                    new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(
+                        PlayerInfo.Dealt.AllSkills), this)
                 {
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}

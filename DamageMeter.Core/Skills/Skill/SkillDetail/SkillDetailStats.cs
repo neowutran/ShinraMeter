@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace DamageMeter.Skills.Skill.SkillDetail
 {
@@ -256,13 +255,11 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             if (damage == 0) return;
             if (PlayerInfo != null)
             {
-               
-               if (FirstHit == 0)
-               {
-                    FirstHit = time / TimeSpan.TicksPerSecond;
+                if (FirstHit == 0)
+                {
+                    FirstHit = time/TimeSpan.TicksPerSecond;
                 }
-               LastHit = time / TimeSpan.TicksPerSecond;
-                
+                LastHit = time/TimeSpan.TicksPerSecond;
             }
             Damage += damage;
         }
@@ -352,7 +349,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         //Don't know why, but it seem that CRIT on MANA are used for some kind of info for duels. 
                         // Anyway, useless
                         return;
-                        //throw new Exception("NO CRIT ON MANA. Amount:" + damage);
+                    //throw new Exception("NO CRIT ON MANA. Amount:" + damage);
                 }
             }
             else

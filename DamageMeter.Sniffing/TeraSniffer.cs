@@ -6,7 +6,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using Data;
 using NetworkSniffer;
 using Tera;
@@ -43,14 +42,13 @@ namespace DamageMeter.Sniffing
                 var netmasks =
                     _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct().ToArray();
 
-                string filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
+                var filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
                 filter = "tcp and (" + filter + ")";
 
                 _ipSniffer = new IpSnifferWinPcap(filter);
             }
             else
             {
-
                 _ipSniffer = new IpSnifferRawSocketMultipleInterfaces();
             }
 
@@ -69,7 +67,7 @@ namespace DamageMeter.Sniffing
         }
 
         public event Action<Server, IPEndPoint, IPEndPoint> NewConnection;
-        
+
 
         public event Action<string> Warning;
 

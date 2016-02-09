@@ -30,14 +30,13 @@ namespace NetworkSniffer
         public override bool Equals(object obj)
         {
             if (obj is EndpointIpv4)
-                return Equals((EndpointIpv4)obj);
-            else
-                return false;
+                return Equals((EndpointIpv4) obj);
+            return false;
         }
 
         public override int GetHashCode()
         {
-            return unchecked((int)(_ip + (uint)_port * 1397));
+            return unchecked((int) (_ip + (uint) _port*1397));
         }
 
         public EndpointIpv4(uint ip, ushort port)
@@ -49,10 +48,10 @@ namespace NetworkSniffer
         private static IPAddress ToIpAddress(uint ip)
         {
             var bytes = new byte[4];
-            bytes[0] = (byte)(ip >> 24);
-            bytes[1] = (byte)(ip >> 16);
-            bytes[2] = (byte)(ip >> 8);
-            bytes[3] = (byte)(ip >> 0);
+            bytes[0] = (byte) (ip >> 24);
+            bytes[1] = (byte) (ip >> 16);
+            bytes[2] = (byte) (ip >> 8);
+            bytes[3] = (byte) (ip >> 0);
             return new IPAddress(bytes);
         }
 

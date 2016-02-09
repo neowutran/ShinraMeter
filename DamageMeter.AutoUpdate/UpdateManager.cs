@@ -174,16 +174,15 @@ namespace DamageMeter.AutoUpdate
 
         private static void SetCertificate()
         {
-        var cloudCertificate =
-              new X509Certificate2(
-                  X509Certificate.CreateFromCertFile(ResourcesDirectory + @"ssl/cloud.neowutran.ovh.der"));
+            var cloudCertificate =
+                new X509Certificate2(
+                    X509Certificate.CreateFromCertFile(ResourcesDirectory + @"ssl/cloud.neowutran.ovh.der"));
             ServicePointManager.ServerCertificateValidationCallback =
                 (sender, certificate, chain, sslPolicyErrors) =>
                     certificate.Equals(cloudCertificate);
-                    
+
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
         }
 
         private static async Task<string> GetResponseText(string address)
@@ -198,12 +197,11 @@ namespace DamageMeter.AutoUpdate
             {
                 using (var client = new HttpClient())
                 {
-
                     var response = await client.GetByteArrayAsync(new Uri(address));
                     return Encoding.UTF8.GetString(response, 0, response.Length);
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 if (numbertry > 0)
                 {

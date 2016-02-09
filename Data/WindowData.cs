@@ -84,8 +84,6 @@ namespace Data
         }
 
 
-
-
         public void ParseAutoUpdate()
         {
             var root = _xml.Root;

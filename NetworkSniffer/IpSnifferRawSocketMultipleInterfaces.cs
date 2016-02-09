@@ -12,23 +12,13 @@ namespace NetworkSniffer
 {
     public class IpSnifferRawSocketMultipleInterfaces : IpSniffer
     {
+        private readonly List<IpSnifferRawSocketSingleInterface> _individualSniffers =
+            new List<IpSnifferRawSocketSingleInterface>();
+
         private readonly IEnumerable<IPAddress> _ipAddresses;
 
-        public static IEnumerable<IPAddress> AllInterfaceIPs
-        {
-            get
-            {
-                return NetworkInterface.GetAllNetworkInterfaces()
-                                       .SelectMany(x => x.GetIPProperties().UnicastAddresses)
-                                       .Select(x => x.Address)
-                                       .Where(x => x.AddressFamily == AddressFamily.InterNetwork);
-            }
-        }
-
-        public static IEnumerable<IPAddress> DefaultInterfaceIPs => AllInterfaceIPs;
-
         public IpSnifferRawSocketMultipleInterfaces()
-            :this(DefaultInterfaceIPs)
+            : this(DefaultInterfaceIPs)
         {
         }
 
@@ -37,7 +27,18 @@ namespace NetworkSniffer
             _ipAddresses = ipAddresses;
         }
 
-        private readonly List<IpSnifferRawSocketSingleInterface> _individualSniffers = new List<IpSnifferRawSocketSingleInterface>();
+        public static IEnumerable<IPAddress> AllInterfaceIPs
+        {
+            get
+            {
+                return NetworkInterface.GetAllNetworkInterfaces()
+                    .SelectMany(x => x.GetIPProperties().UnicastAddresses)
+                    .Select(x => x.Address)
+                    .Where(x => x.AddressFamily == AddressFamily.InterNetwork);
+            }
+        }
+
+        public static IEnumerable<IPAddress> DefaultInterfaceIPs => AllInterfaceIPs;
 
         protected override void SetEnabled(bool value)
         {
@@ -64,7 +65,7 @@ namespace NetworkSniffer
             }
         }
 
-      
+
         public event Action<string> Warning;
 
         protected virtual void OnWarning(string obj)
@@ -72,6 +73,5 @@ namespace NetworkSniffer
             var handler = Warning;
             handler?.Invoke(obj);
         }
-
     }
 }

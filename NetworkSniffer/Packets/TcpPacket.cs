@@ -13,7 +13,7 @@ namespace NetworkSniffer.Packets
         public uint SequenceNumber => ParserHelpers.GetUInt32BigEndian(Packet.Array, Packet.Offset + 4);
         public uint AcknowledgementNumber => ParserHelpers.GetUInt32BigEndian(Packet.Array, Packet.Offset + 8);
         public byte OffsetAndFlags => Packet.Array[Packet.Offset + 12];
-        public TcpFlags Flags => (TcpFlags)Packet.Array[Packet.Offset + 13];
+        public TcpFlags Flags => (TcpFlags) Packet.Array[Packet.Offset + 13];
         public ushort WindowSize => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 14);
         public ushort Checksum => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 16);
         public ushort UrgentPointer => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 18);
@@ -25,7 +25,7 @@ namespace NetworkSniffer.Packets
                 var lengthInWords = OffsetAndFlags >> 4;
                 if (lengthInWords < 5)
                     throw new FormatException("Incorrect TcpHeader length");
-                return lengthInWords * 4;
+                return lengthInWords*4;
             }
         }
 
@@ -54,5 +54,4 @@ namespace NetworkSniffer.Packets
             Packet = packet;
         }
     }
-
 }
