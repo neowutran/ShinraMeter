@@ -14,22 +14,22 @@ namespace NetworkSniffer
 
         private readonly object _lock = new object();
 
-        public TcpSniffer(IpSnifferRawSocketMultipleInterfaces ipSniffer)
+        public TcpSniffer(IpSniffer ipSniffer)
         {
             ipSniffer.PacketReceived += Receive;
         }
 
         public string TcpLogFile { get; set; }
 
-        public event Action<TcpConnection, Socket> NewConnection;
+        public event Action<TcpConnection> NewConnection;
 
-        protected void OnNewConnection(TcpConnection connection, Socket device)
+        protected void OnNewConnection(TcpConnection connection)
         {
             var handler = NewConnection;
-            handler?.Invoke(connection, device);
+            handler?.Invoke(connection);
         }
 
-        private void Receive(ArraySegment<byte> ipData, Socket device)
+        private void Receive(ArraySegment<byte> ipData)
         {
             var ipPacket = new Ip4Packet(ipData);
             var protocol = ipPacket.Protocol;
@@ -48,7 +48,7 @@ namespace NetworkSniffer
                 if (isFirstPacket)
                 {
                     connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber);
-                    OnNewConnection(connection, device);
+                    OnNewConnection(connection);
                     isInterestingConnection = connection.HasSubscribers;
                     if (!isInterestingConnection)
                         return;

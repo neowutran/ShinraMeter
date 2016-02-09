@@ -19,10 +19,14 @@ namespace DamageMeter.UI
         private readonly SkillsDetail _skillMana;
 
 
-        public Skills(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills,
-            Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> allSkills, PlayerStats parent)
+        public Skills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
+            Dictionary<long,Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent)
         {
             InitializeComponent();
+
+            var skills = NoTimedSkills(timedSkills);
+            var allSkills = NoTimedSkills(timedAllSkills);
+            
 
             _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps);
             _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal);
@@ -33,6 +37,29 @@ namespace DamageMeter.UI
             TabControl.SelectionChanged += TabControlOnSelectionChanged;
             _parent = parent;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
+        }
+
+        private Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> NoTimedSkills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> dictionary )
+        {
+
+            var result = new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>();
+            foreach (var timedStats in dictionary)
+            {
+                foreach (var stats in timedStats.Value)
+                {
+
+                    if (result.ContainsKey(stats.Key))
+                    {
+                        result[stats.Key] += stats.Value;
+                        continue;
+                    }
+                    result.Add(stats.Key, stats.Value);
+
+                }
+            }
+            return result;
+
+
         }
 
         private void TabControlOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
@@ -46,9 +73,12 @@ namespace DamageMeter.UI
         }
 
 
-        public void Update(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills,
-            Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> allSkills)
+        public void Update(Dictionary<long,Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
+            Dictionary<long,Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills)
         {
+            var skills = NoTimedSkills(timedSkills);
+            var allSkills = NoTimedSkills(timedAllSkills);
+
             _skillDps.Update(skills);
             _skillHeal.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills));
             _skillMana.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills));

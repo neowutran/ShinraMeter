@@ -56,28 +56,26 @@ namespace DamageMeter.UI
             LabelDamagePart.Content = DamagePart(totalDamage);
             LabelDamageReceived.Content = DamageReceived;
             LabelHitsReceived.Content = HitReceived;
-            var interval = TimeSpan.FromSeconds(playerInfo.Dealt.Interval);
-            Timer.Content = interval.ToString(@"mm\:ss");
+            var intervalTimespan = TimeSpan.FromSeconds(playerInfo.Dealt.Interval);
+            Timer.Content = intervalTimespan.ToString(@"mm\:ss");
 
-            _windowSkill?.Update(Skills(),
-                new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(PlayerInfo.Dealt.AllSkills));
+            _windowSkill?.Update(Skills(),new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills));
             DpsIndicator.Width = width*(PlayerInfo.Dealt.DamageFraction(totalDamage)/100);
         }
 
-        private Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> Skills()
+        private Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> Skills()
         {
             if (NetworkController.Instance.Encounter == null)
             {
-                return new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(PlayerInfo.Dealt.AllSkills);
+                return new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills);
             }
-            if (PlayerInfo.Dealt.EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+            if (PlayerInfo.Dealt.ContainsEntity(NetworkController.Instance.Encounter))
             {
                 return
-                    new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(
-                        PlayerInfo.Dealt.EntitiesStats[NetworkController.Instance.Encounter].Skills);
+                    new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.GetSkills(NetworkController.Instance.Encounter));
             }
 
-            return new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>();
+            return new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>();
         }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
@@ -85,7 +83,7 @@ namespace DamageMeter.UI
             if (_windowSkill == null)
             {
                 _windowSkill = new Skills(Skills(),
-                    new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(PlayerInfo.Dealt.AllSkills), this)
+                    new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills), this)
                 {
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}
@@ -94,7 +92,7 @@ namespace DamageMeter.UI
 
             _windowSkill.Show();
             _windowSkill.Update(Skills(),
-                new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(PlayerInfo.Dealt.AllSkills));
+                new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills));
         }
 
         public void CloseSkills()

@@ -8,7 +8,7 @@ namespace DamageMeter.Dealt
 {
     public class EntitiesDealt : ICloneable
     {
-        public Dictionary<Entity, SkillsStats> EntitiesStats = new Dictionary<Entity, SkillsStats>();
+        private Dictionary<long, Dictionary<Entity, SkillsStats>> _entitiesStats = new Dictionary<long, Dictionary<Entity, SkillsStats>>();
         public PlayerInfo PlayerInfo;
 
         public EntitiesDealt(PlayerInfo playerInfo)
@@ -16,27 +16,136 @@ namespace DamageMeter.Dealt
             PlayerInfo = playerInfo;
         }
 
+        private long GetFirstHit(Entity entity)
+        {
+            long firstHit = 0;
+            foreach (var timedStat in _entitiesStats)
+            {
+                foreach (var stat in timedStat.Value)
+                {
+                    if (stat.Key == entity && (stat.Value.FirstHit < firstHit && firstHit != 0) )
+                    {
+                        firstHit = stat.Value.FirstHit;
+                    }
+                }
+                
+            }
+            return firstHit;
+        }
+
+        public void RemoveEntity(Entity entity)
+        {
+            foreach (var timedStats in _entitiesStats)
+            {
+                timedStats.Value.Remove(entity);
+            }
+        }
+
+
+        public void AddStats(long time, Entity target, SkillsStats stats)
+        {
+            var roundedTime = (long)Math.Round((double)(time / 10000000));
+            if (!_entitiesStats.ContainsKey(roundedTime))
+            {
+                var statsDictionnary = new Dictionary<Entity, SkillsStats> {{target, stats}};
+                _entitiesStats.Add(roundedTime, statsDictionnary);
+                return;
+            }
+
+            if (!_entitiesStats[roundedTime].ContainsKey(target))
+            {
+                _entitiesStats[roundedTime].Add(target, stats);
+                return;
+            }
+
+            _entitiesStats[roundedTime][target] += stats;
+        }
+
+
+        public Dictionary<Skill, SkillStats> GetSkills(long time, Entity target)
+        {
+            var roundedTime = time/TimeSpan.TicksPerSecond;
+            if (!_entitiesStats.ContainsKey(roundedTime))
+            {
+                return null;
+            }
+
+            if (!_entitiesStats[roundedTime].ContainsKey(target))
+            {
+                return null;
+            }
+
+            return _entitiesStats[roundedTime][target].Skills;
+        }
+
+        public Dictionary<long, Dictionary<Skill, SkillStats>> GetSkills(Entity target)
+        {
+            var stats = new Dictionary<long, Dictionary<Skill, SkillStats>>();
+            foreach (var timedStats in _entitiesStats)
+            {
+
+                if (!_entitiesStats[timedStats.Key].ContainsKey(target))
+                {
+                    continue;
+                }
+
+
+               
+                for(var i = 0; i < _entitiesStats[timedStats.Key][target].Skills.Count; i++) { 
+                    if (!stats.ContainsKey(timedStats.Key))
+                    {
+                        stats.Add(timedStats.Key, _entitiesStats[timedStats.Key][target].Skills);
+                        continue;
+                    }
+                    var key = _entitiesStats[timedStats.Key][target].Skills.Keys.ElementAt(i);
+
+                    if (!stats[timedStats.Key].ContainsKey(_entitiesStats[timedStats.Key][target].Skills.Keys.ElementAt(i)))
+                    {
+                        stats[timedStats.Key].Add(key, _entitiesStats[timedStats.Key][target].Skills[key]);
+                        continue;
+                    }
+
+                    stats[timedStats.Key][key] += _entitiesStats[timedStats.Key][target].Skills[key];
+
+                }
+
+            }
+
+            return stats;
+
+        }
+
+        private long GetLastHit(Entity entity)
+        {
+            long lastHit = 0;
+            foreach (var timedStat in _entitiesStats)
+            {
+                foreach (var stat in timedStat.Value)
+                {
+                    if (stat.Key == entity && (stat.Value.LastHit > lastHit))
+                    {
+                        lastHit = stat.Value.LastHit;
+                    }
+                }
+
+            }
+            return lastHit;
+        }
+
         public long FirstHit
         {
             get
             {
-                if (NetworkController.Instance.Encounter != null &&
-                    EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
-                    return EntitiesStats[NetworkController.Instance.Encounter].FirstHit;
-                if (NetworkController.Instance.Encounter != null) return 0;
-                long firsthit = 0;
-                foreach (var entityStats in EntitiesStats)
+                if (_entitiesStats.Count == 0)
                 {
-                    if (firsthit == 0)
-                    {
-                        firsthit = entityStats.Value.FirstHit;
-                    }
-                    else if (entityStats.Value.FirstHit < firsthit && entityStats.Value.FirstHit != 0)
-                    {
-                        firsthit = entityStats.Value.FirstHit;
-                    }
+                    return 0;
                 }
-                return firsthit;
+                if (NetworkController.Instance.Encounter == null)
+                {
+                    return _entitiesStats.Keys.OrderBy(x => x).ToList()[0];
+                }
+                var firstHit = GetFirstHit(NetworkController.Instance.Encounter);
+                return firstHit != 0 ? firstHit : 0;
             }
         }
 
@@ -44,23 +153,16 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                if (NetworkController.Instance.Encounter != null &&
-                    EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
-                    return EntitiesStats[NetworkController.Instance.Encounter].LastHit;
-                if (NetworkController.Instance.Encounter != null) return 0;
-                long lasthit = 0;
-                foreach (var entityStats in EntitiesStats)
+                if (_entitiesStats.Count == 0)
                 {
-                    if (lasthit == 0)
-                    {
-                        lasthit = entityStats.Value.LastHit;
-                    }
-                    else if (entityStats.Value.LastHit > lasthit)
-                    {
-                        lasthit = entityStats.Value.LastHit;
-                    }
+                    return 0;
                 }
-                return lasthit;
+                if (NetworkController.Instance.Encounter == null)
+                {
+                    return _entitiesStats.Keys.OrderByDescending(x => x).ToList()[0];
+                }
+                var lastHit = GetLastHit(NetworkController.Instance.Encounter);
+                return lastHit;
             }
         }
 
@@ -74,8 +176,14 @@ namespace DamageMeter.Dealt
                 {
                     return Damage;
                 }
+
                 return Damage/Interval;
             }
+        }
+
+        public bool ContainsEntity(Entity entity)
+        {
+            return _entitiesStats.Any(timedstats => timedstats.Value.Any(entities => entities.Key == entity));
         }
 
 
@@ -85,42 +193,40 @@ namespace DamageMeter.Dealt
             {
                 if (NetworkController.Instance.Encounter == null)
                 {
-                    return EntitiesStats.Sum(entityStats => entityStats.Value.Damage);
+                    return _entitiesStats.Sum(timedStats => timedStats.Value.Sum(stat => stat.Value.Damage));
                 }
-                if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return EntitiesStats[NetworkController.Instance.Encounter].Damage;
+                    return _entitiesStats.Sum(timedStats => timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter).Sum(stats => stats.Value.Damage));
                 }
                 return 0;
             }
         }
 
-        public long Mana
-        {
-            get { return EntitiesStats.Sum(entityStats => entityStats.Value.Mana); }
-        }
-
-        public long Heal
-        {
-            get { return EntitiesStats.Sum(entityStats => entityStats.Value.Heal); }
-        }
-
-        public Dictionary<Skill, SkillStats> AllSkills
+        public Dictionary<long,Dictionary<Skill, SkillStats>> AllSkills
         {
             get
             {
-                var skills = new Dictionary<Skill, SkillStats>();
-
-
-                foreach (var skill in EntitiesStats.SelectMany(entities => entities.Value.Skills))
+                var skills = new Dictionary<long, Dictionary<Skill, SkillStats>>();
+                foreach (var timedStats in _entitiesStats)
                 {
-                    if (skills.ContainsKey(skill.Key))
+                    skills.Add(timedStats.Key, new Dictionary<Skill, SkillStats>());
+                    foreach (var stats in timedStats.Value)
                     {
-                        skills[skill.Key] += skill.Value;
-                    }
-                    else
-                    {
-                        skills[skill.Key] = skill.Value;
+                        foreach (var skillStats in stats.Value.Skills)
+                        {
+
+                            if (!skills[timedStats.Key].ContainsKey(skillStats.Key))
+                            {
+                                skills[timedStats.Key].Add(skillStats.Key, skillStats.Value);
+                            }
+                            else
+                            {
+                                skills[timedStats.Key][skillStats.Key] += skillStats.Value;
+                            }
+
+                        }
+
                     }
                 }
 
@@ -143,11 +249,11 @@ namespace DamageMeter.Dealt
             {
                 if (NetworkController.Instance.Encounter == null || PlayerInfo.IsHealer())
                 {
-                    return EntitiesStats.Sum(skills => skills.Value.Crits);
+                    return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Crits));
                 }
-                if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return EntitiesStats[NetworkController.Instance.Encounter].Crits;
+                    return _entitiesStats.Sum(timedStats => timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter).Sum(stats => stats.Value.Crits));
                 }
                 return 0;
             }
@@ -159,11 +265,11 @@ namespace DamageMeter.Dealt
             {
                 if (NetworkController.Instance.Encounter == null || PlayerInfo.IsHealer())
                 {
-                    return EntitiesStats.Sum(skills => skills.Value.Hits);
+                    return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Hits));
                 }
-                if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return EntitiesStats[NetworkController.Instance.Encounter].Hits;
+                    return _entitiesStats.Sum(timedStats => timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter).Sum(stats => stats.Value.Hits));
                 }
                 return 0;
             }
@@ -173,7 +279,7 @@ namespace DamageMeter.Dealt
         {
             var clone = new EntitiesDealt(PlayerInfo)
             {
-                EntitiesStats = EntitiesStats.ToDictionary(i => i.Key, i => (SkillsStats) i.Value.Clone())
+                _entitiesStats = _entitiesStats.ToDictionary(i => i.Key, i => i.Value.ToDictionary(j => j.Key, j => (SkillsStats)j.Value.Clone()))
             };
 
             return clone;
@@ -187,9 +293,12 @@ namespace DamageMeter.Dealt
         public void SetPlayerInfo(PlayerInfo playerInfo)
         {
             PlayerInfo = playerInfo;
-            foreach (var entityStats in EntitiesStats)
+            foreach (var entityStats in _entitiesStats)
             {
-                entityStats.Value.SetPlayerInfo(playerInfo);
+                foreach (var stats in entityStats.Value)
+                {
+                    stats.Value.SetPlayerInfo(playerInfo);
+                }
             }
         }
     }

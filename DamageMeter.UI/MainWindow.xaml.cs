@@ -59,7 +59,7 @@ namespace DamageMeter.UI
             {
                 Icon = new System.Drawing.Icon("shinra.ico"),
                 Visible = true,
-                Text = Title + ": No server"
+                Text = "Shinra Meter V" + UpdateManager.Version + ": No server"
             };
         }
 
@@ -169,7 +169,6 @@ namespace DamageMeter.UI
                         item.Value.Repaint(stats[data], totalDamage, Width);
                     }
                     Height = Controls.Count*29 + CloseMeter.ActualHeight;
-                    Console.WriteLine("control count = "+Controls.Count);
                     Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
                 };
             Dispatcher.Invoke(changeUi, nintervalvalue, ntotalDamage, nentities, nstats);
@@ -179,7 +178,7 @@ namespace DamageMeter.UI
         public void HandleConnected(string serverName)
         {
             ChangeTitle changeTitle = delegate(string newServerName) { Title = newServerName;
-                                                                         _trayIcon.Text = Title + ": " +newServerName;
+                                                                         _trayIcon.Text = "Shinra Meter V" + UpdateManager.Version + ": " +newServerName;
             };
             Dispatcher.Invoke(changeTitle, serverName);
         }
@@ -195,7 +194,6 @@ namespace DamageMeter.UI
                     var encounter = (Entity) ((ComboBoxItem) item).Content;
                     if (encounter != newentity) continue;
                     ListEncounter.SelectedItem = item;
-                    NetworkController.Instance.ForceUpdate();
                     return;
                 }
             };
@@ -297,7 +295,7 @@ namespace DamageMeter.UI
             if (encounter != NetworkController.Instance.Encounter)
             {
                 NetworkController.Instance.Encounter = encounter;
-                NetworkController.Instance.ForceUpdate();
+                NetworkController.Instance.ForceUpdate = true;
             }
         }
 

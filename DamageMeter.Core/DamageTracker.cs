@@ -122,7 +122,7 @@ namespace DamageMeter
             EntitiesStats.Remove(entity);
             foreach (var stats in _usersStats)
             {
-                stats.Value.Dealt.EntitiesStats.Remove(entity);
+                stats.Value.Dealt.RemoveEntity(entity);
                 stats.Value.Received.EntitiesStats.Remove(entity);
             }
         }
@@ -282,10 +282,7 @@ namespace DamageMeter
         {
             var entities = playerInfo.Dealt;
 
-            if (!entities.EntitiesStats.ContainsKey(entityTarget))
-            {
-                entities.EntitiesStats[entityTarget] = new SkillsStats(playerInfo);
-            }
+            entities.AddStats(time, entityTarget, new SkillsStats(playerInfo));
 
             var skillName = message.SkillId.ToString();
             if (message.Skill != null)
@@ -296,7 +293,8 @@ namespace DamageMeter
 
 
             SkillStats skillStats;
-            entities.EntitiesStats[entityTarget].Skills.TryGetValue(skillKey, out skillStats);
+            var dictionarySkillStats = entities.GetSkills(time, entityTarget);
+            dictionarySkillStats.TryGetValue(skillKey, out skillStats);
             if (skillStats == null)
             {
                 skillStats = new SkillStats(playerInfo, entityTarget);
@@ -317,7 +315,7 @@ namespace DamageMeter
                 skillStats.AddData(message.SkillId, message.Mana, message.IsCritical, SkillStats.Type.Mana, time);
             }
 
-            var skill = entities.EntitiesStats[entityTarget].Skills.Keys.ToList();
+            var skill = dictionarySkillStats.Keys.ToList();
             var indexSkill = skill.IndexOf(skillKey);
             if (indexSkill != -1)
             {
@@ -327,8 +325,8 @@ namespace DamageMeter
                     skillKey.SkillId.Add(skillid);
                 }
             }
-            entities.EntitiesStats[entityTarget].Skills.Remove(skillKey);
-            entities.EntitiesStats[entityTarget].Skills.Add(skillKey, skillStats);
+            dictionarySkillStats.Remove(skillKey);
+            dictionarySkillStats.Add(skillKey, skillStats);
         }
 
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource, long time)

@@ -11,7 +11,7 @@ namespace NetworkSniffer
     // Doesn't work since Microsoft crippled raw sockets on the Desktop variants of Windows.
     // In particular it doesn't receive incoming TCP packets
     // Might work on Server variants of Windows, but I didn't test that
-    public class IpSnifferRawSocketSingleInterface
+    public class IpSnifferRawSocketSingleInterface : IpSniffer
     {
         private Socket _socket;
         private readonly IPAddress _localIp;
@@ -62,11 +62,11 @@ namespace NetworkSniffer
             var count = socket.EndReceive(ar);
             
             
-            OnPacketReceived(new ArraySegment<byte>(_buffer, 0, count), socket);
+            OnPacketReceived(new ArraySegment<byte>(_buffer, 0, count));
             Read();
         }
 
-        protected void SetEnabled(bool value)
+        protected override void SetEnabled(bool value)
         {
             if (value)
             {
@@ -78,31 +78,7 @@ namespace NetworkSniffer
             }
         }
 
-        
-        public bool Enabled
-        {
-            get { return _enabled; }
-            set
-            {
-                if (_enabled == value) return;
-                _enabled = value;
-                SetEnabled(value);
-            }
-        }
-
-        private bool _enabled;
-
-        public event Action<ArraySegment<byte>, Socket> PacketReceived;
-
-
-        protected void OnPacketReceived(ArraySegment<byte> data, Socket device)
-        {
-            var packetReceived = PacketReceived;
-            packetReceived?.Invoke(data, device);
-        }
-
-
-
+       
         public override string ToString()
         {
             return $"{base.ToString()} {_localIp}";

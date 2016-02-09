@@ -21,7 +21,7 @@ namespace DamageMeter.Sniffing
         // Only take this lock in callbacks from tcp sniffing, not in code that can be called by the user.
         // Otherwise this could cause a deadlock if the user calls such a method from a callback that already holds a lock
         private readonly object _eventLock = new object();
-        private readonly IpSnifferRawSocketMultipleInterfaces _ipSniffer;
+        private readonly IpSniffer _ipSniffer;
         private readonly HashSet<TcpConnection> _isNew = new HashSet<TcpConnection>();
 
         private readonly Dictionary<string, Server> _serversByIp;
@@ -37,8 +37,22 @@ namespace DamageMeter.Sniffing
             var servers = BasicTeraData.Instance.Servers;
             _serversByIp = servers.ToDictionary(x => x.Ip);
 
-            _ipSniffer = new IpSnifferRawSocketMultipleInterfaces();
-            _ipSniffer.Warning += OnWarning;
+
+            if (BasicTeraData.Instance.WindowData.Winpcap)
+            {
+                var netmasks =
+                    _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct().ToArray();
+
+                string filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
+                filter = "tcp and (" + filter + ")";
+
+                _ipSniffer = new IpSnifferWinPcap(filter);
+            }
+            else
+            {
+
+                _ipSniffer = new IpSnifferRawSocketMultipleInterfaces();
+            }
 
             var tcpSniffer = new TcpSniffer(_ipSniffer);
             tcpSniffer.NewConnection += HandleNewConnection;
@@ -46,8 +60,6 @@ namespace DamageMeter.Sniffing
 
 
         public static TeraSniffer Instance => _instance ?? (_instance = new TeraSniffer());
-
-        public Socket Device { get; private set; }
 
         // IpSniffer has its own locking, so we need no lock here.
         public bool Enabled
@@ -81,14 +93,13 @@ namespace DamageMeter.Sniffing
 
 
         // called from the tcp sniffer, so it needs to lock
-        private void HandleNewConnection(TcpConnection connection, Socket device)
+        private void HandleNewConnection(TcpConnection connection)
         {
             lock (_eventLock)
             {
                 if (!_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
                     !_serversByIp.ContainsKey(connection.Source.Address.ToString()))
                     return;
-                Device = device;
                 _isNew.Add(connection);
                 connection.DataReceived += HandleTcpDataReceived;
             }

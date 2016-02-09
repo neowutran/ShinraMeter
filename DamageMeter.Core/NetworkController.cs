@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -30,6 +31,7 @@ namespace DamageMeter
             //TeraSniffer.Instance.MessageReceived += HandleMessageReceived;
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
             var packetAnalysis = new Thread(PacketAnalysisLoop);
+            
             packetAnalysis.Start();
         }
 
@@ -56,13 +58,8 @@ namespace DamageMeter
         public event ConnectedHandler Connected;
         public event UpdateUiHandler TickUpdated;
 
-        public void ForceUpdate()
-        {
-            var dispatcher = Dispatcher.CurrentDispatcher;
-            ForceUpdateUi changeUi = UpdateUi;
-            dispatcher.Invoke(changeUi);
-        }
-
+        public bool ForceUpdate { get; set; }
+ 
         private void HandleNewConnection(Server server, IPEndPoint serverIpEndPoint, IPEndPoint clientIpEndPoint)
         {
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
@@ -191,7 +188,6 @@ namespace DamageMeter
                     skillResultMessage.SkillId,
                     skillResultMessage.Source,
                     skillResultMessage.Target);
-
                 DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
                 CheckUpdateUi();
             }
@@ -200,6 +196,14 @@ namespace DamageMeter
         public void CheckUpdateUi()
         {
             var second = Utils.Now();
+
+            if (ForceUpdate)
+            {
+                ForceUpdate = false;
+                UpdateUi();
+                return;
+            }
+
             if (second - _lastTick < 1) return;
             UpdateUi();
         }
@@ -219,7 +223,5 @@ namespace DamageMeter
                 _playerTracker
                 );
         }
-
-        private delegate void ForceUpdateUi();
     }
 }

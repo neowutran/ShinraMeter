@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace DamageMeter.Skills.Skill.SkillDetail
 {
@@ -252,19 +253,19 @@ namespace DamageMeter.Skills.Skill.SkillDetail
 
         public void SetDamage(long damage, long time)
         {
-            if (damage == Damage) return;
+            if (damage == 0) return;
             if (PlayerInfo != null)
             {
                 if (damage != 0)
                 {
                     if (FirstHit == 0)
                     {
-                        FirstHit = time/10000000;
+                        FirstHit = time / TimeSpan.TicksPerSecond;
                     }
-                    LastHit = time/10000000;
+                    LastHit = time / TimeSpan.TicksPerSecond;
                 }
             }
-            Damage = damage;
+            Damage += damage;
         }
 
         public static SkillDetailStats operator +(SkillDetailStats c1, SkillDetailStats c2)
@@ -341,7 +342,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                     case SkillStats.Type.Damage:
                         HitsDmg++;
                         CritsDmg++;
-                        SetDamage(Damage + damage, time);
+                        SetDamage(damage, time);
                         DmgBiggestCrit = damage;
                         DmgAverageCrit = damage;
                         DmgLowestCrit = damage;
@@ -367,7 +368,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         break;
                     case SkillStats.Type.Damage:
                         HitsDmg++;
-                        SetDamage(Damage + damage, time);
+                        SetDamage(damage, time);
                         DmgBiggestHit = damage;
                         DmgAverageHit = damage;
                         DmgLowestHit = damage;

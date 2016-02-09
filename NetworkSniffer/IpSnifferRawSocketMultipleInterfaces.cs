@@ -10,7 +10,7 @@ using System.Net.Sockets;
 
 namespace NetworkSniffer
 {
-    public class IpSnifferRawSocketMultipleInterfaces
+    public class IpSnifferRawSocketMultipleInterfaces : IpSniffer
     {
         private readonly IEnumerable<IPAddress> _ipAddresses;
 
@@ -25,16 +25,7 @@ namespace NetworkSniffer
             }
         }
 
-        private bool _enabled;
-
-
-        public static IEnumerable<IPAddress> DefaultInterfaceIPs
-        {
-            get
-            {
-                return AllInterfaceIPs.Where(x => x.ToString() != "127.0.0.1");
-            }
-        }
+        public static IEnumerable<IPAddress> DefaultInterfaceIPs => AllInterfaceIPs;
 
         public IpSnifferRawSocketMultipleInterfaces()
             :this(DefaultInterfaceIPs)
@@ -48,7 +39,7 @@ namespace NetworkSniffer
 
         private readonly List<IpSnifferRawSocketSingleInterface> _individualSniffers = new List<IpSnifferRawSocketSingleInterface>();
 
-        protected void SetEnabled(bool value)
+        protected override void SetEnabled(bool value)
         {
             if (value)
             {
@@ -73,16 +64,6 @@ namespace NetworkSniffer
             }
         }
 
-        public bool Enabled
-        {
-            get { return _enabled; }
-            set
-            {
-                if (_enabled == value) return;
-                _enabled = value;
-                SetEnabled(value);
-            }
-        }
       
         public event Action<string> Warning;
 
@@ -90,14 +71,6 @@ namespace NetworkSniffer
         {
             var handler = Warning;
             handler?.Invoke(obj);
-        }
-
-        public event Action<ArraySegment<byte>, Socket> PacketReceived;
-
-        protected void OnPacketReceived(ArraySegment<byte> data, Socket device)
-        {
-            var packetReceived = PacketReceived;
-            packetReceived?.Invoke(data, device);
         }
 
     }

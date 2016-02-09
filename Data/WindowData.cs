@@ -30,6 +30,7 @@ namespace Data
             ParseSkillWindowOpacity();
             ParseAutoUpdate();
             ParseRememberPosition();
+            ParseWinpcap();
         }
 
 
@@ -43,6 +44,8 @@ namespace Data
 
         public bool AutoUpdate { get; private set; }
 
+        public bool Winpcap { get; private set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -51,6 +54,7 @@ namespace Data
             SkillWindowOpacity = 0.7;
             AutoUpdate = true;
             RememberPosition = true;
+            Winpcap = false;
         }
 
         public void ParseRememberPosition()
@@ -63,6 +67,19 @@ namespace Data
             if (parseSuccess)
             {
                 RememberPosition = remember;
+            }
+        }
+
+        public void ParseWinpcap()
+        {
+            var root = _xml.Root;
+            var winpcapElement = root?.Element("winpcap");
+            if (winpcapElement == null) return;
+            bool winpcap;
+            var parseSuccess = bool.TryParse(winpcapElement.Value, out winpcap);
+            if (parseSuccess)
+            {
+                Winpcap = winpcap;
             }
         }
 
@@ -149,6 +166,7 @@ namespace Data
             xml.Root.Element("opacity").Add(new XElement("skillWindow", SkillWindowOpacity*100));
             xml.Root.Add(new XElement("autoupdate", AutoUpdate));
             xml.Root.Add(new XElement("remember_position", RememberPosition));
+            xml.Root.Add(new XElement("winpcap", Winpcap));
             xml.Save(_windowFile);
         }
     }

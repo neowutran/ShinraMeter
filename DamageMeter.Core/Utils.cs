@@ -6,7 +6,7 @@ namespace DamageMeter
     {
         public static long Now()
         {
-            return DateTime.UtcNow.Ticks/10000000;
+            return DateTime.UtcNow.Ticks/TimeSpan.TicksPerSecond;
         }
     }
 }
