@@ -61,7 +61,7 @@ namespace DamageMeter.UI
 
             _windowSkill?.Update(Skills(),
                 new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills));
-            DpsIndicator.Width = width*(PlayerInfo.Dealt.DamageFraction(totalDamage)/100);
+            DpsIndicator.Width = 450*(PlayerInfo.Dealt.DamageFraction(totalDamage)/100);
         }
 
         private Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> Skills()
