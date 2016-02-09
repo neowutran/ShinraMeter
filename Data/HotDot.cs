@@ -6,8 +6,11 @@ namespace Data
     {
         public enum DotType
         {
-            abs = 2, //each tick  HP +=HPChange ; MP += MPChange
-            perc = 3 // each tick  HP += MaxHP*HPChange; MP += MaxMP*MPChange
+            seta = 1, // ?set abs stat value
+            abs = 2, // each tick  HP +=HPChange ; MP += MPChange
+            perc = 3, // each tick  HP += MaxHP*HPChange; MP += MaxMP*MPChange
+            setp = 4  // ?set % stat value
+
         }
 
         public HotDot(int id, string type, double hp, double mp, double amount, DotType method, int time, int tick,

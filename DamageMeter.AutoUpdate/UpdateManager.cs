@@ -16,7 +16,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "0.64";
+        public static readonly string Version = "0.65";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -109,6 +109,7 @@ namespace DamageMeter.AutoUpdate
                 if (directory == "config")
                 {
                     Directory.CreateDirectory(targetDir);
+                    continue;
                 }
                 Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
             }
