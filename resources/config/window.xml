@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <window>
   <location>
-    <x>22</x>
-    <y>114</y>
+    <x>NaN</x>
+    <y>NaN</y>
   </location>
   <language>EU-EN</language>
   <opacity>
@@ -11,4 +11,5 @@
   </opacity>
   <autoupdate>true</autoupdate>
   <remember_position>true</remember_position>
+  <winpcap>false</winpcap>
 </window>

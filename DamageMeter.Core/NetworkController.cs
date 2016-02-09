@@ -26,7 +26,6 @@ namespace DamageMeter
 
         private NetworkController()
         {
-            //TeraSniffer.Instance.MessageReceived += HandleMessageReceived;
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
             var packetAnalysis = new Thread(PacketAnalysisLoop);
 
@@ -53,6 +52,7 @@ namespace DamageMeter
             BasicTeraData.Instance.HotkeysData.Save();
             TeraSniffer.Instance.Enabled = false;
             Application.Exit();
+            System.Environment.Exit(0);
         }
 
         public event ConnectedHandler Connected;

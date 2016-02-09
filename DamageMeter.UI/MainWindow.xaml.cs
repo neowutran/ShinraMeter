@@ -29,7 +29,7 @@ namespace DamageMeter.UI
     {
         private readonly EntityStatsMain _entityStats;
 
-        private readonly NotifyIcon _trayIcon;
+        private NotifyIcon _trayIcon;
         private bool _keyboardInitialized;
 
         public MainWindow()
@@ -52,8 +52,8 @@ namespace DamageMeter.UI
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-            PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
-            EntityStatsImage.Source = BasicTeraData.Instance.PinData.EntityStats.Source;
+            PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
+            EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new LinkedList<Entity>());
             Title = "Shinra Meter V" + UpdateManager.Version;
@@ -61,12 +61,26 @@ namespace DamageMeter.UI
             _entityStats = new EntityStatsMain(this);
             _trayIcon = new NotifyIcon
             {
-                Icon = new Icon("shinra.ico"),
+                Icon = BasicTeraData.Instance.ImageDatabase.Tray,
                 Visible = true,
                 Text = "Shinra Meter V" + UpdateManager.Version + ": No server"
             };
+            _trayIcon.Click += TrayIconOnClick;
         }
 
+        private void TrayIconOnClick(object sender, EventArgs eventArgs)
+        {
+            Close();
+        }
+
+        public void Exit()
+        {
+            _trayIcon.Visible = false;
+            _trayIcon.Icon = null;
+            _trayIcon.Dispose();
+            BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
+            NetworkController.Instance.Exit();
+        }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
@@ -241,10 +255,7 @@ namespace DamageMeter.UI
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
-            _trayIcon.Visible = false;
-            _trayIcon.Icon = null;
-            NetworkController.Instance.Exit();
+         Exit();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -282,11 +293,11 @@ namespace DamageMeter.UI
             if (Topmost)
             {
                 Topmost = false;
-                PinImage.Source = BasicTeraData.Instance.PinData.Pin.Source;
+                PinImage.Source = BasicTeraData.Instance.ImageDatabase.Pin.Source;
                 return;
             }
             Topmost = true;
-            PinImage.Source = BasicTeraData.Instance.PinData.UnPin.Source;
+            PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
         }
 
 
