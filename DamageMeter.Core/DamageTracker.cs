@@ -123,7 +123,7 @@ namespace DamageMeter
             foreach (var stats in _usersStats)
             {
                 stats.Value.Dealt.RemoveEntity(entity);
-                stats.Value.Received.EntitiesStats.Remove(entity);
+                stats.Value.Received.RemoveEntity(entity);
             }
         }
 
@@ -366,14 +366,7 @@ namespace DamageMeter
                 }
             }
 
-
-            if (!playerInfo.Received.EntitiesStats.ContainsKey(entity))
-            {
-                playerInfo.Received.EntitiesStats[entity] = new DamageTaken();
-            }
-
-
-            playerInfo.Received.EntitiesStats[entity].AddDamage(message.Damage);
+            playerInfo.Received.AddStats(time, entity, message.Damage);
             if (EntitiesStats.ContainsKey(entity)) return;
             EntitiesStats.Add(entity, new EntityInfo());
         }

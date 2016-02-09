@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DamageMeter.Skills;
 
 namespace DamageMeter.Taken
 {
     public class EntitiesTaken : ICloneable
     {
-        public Dictionary<Entity, DamageTaken> EntitiesStats = new Dictionary<Entity, DamageTaken>();
+        private Dictionary<long, Dictionary<Entity, DamageTaken>> _entitiesStats = new Dictionary<long, Dictionary<Entity, DamageTaken>>();
 
         public long Damage
         {
@@ -14,14 +15,51 @@ namespace DamageMeter.Taken
             {
                 if (NetworkController.Instance.Encounter == null)
                 {
-                    return EntitiesStats.Sum(entityStats => entityStats.Value.Damage);
+                    return _entitiesStats.Sum(entityStats => entityStats.Value.Sum(stats => stats.Value.Damage));
                 }
-                if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return EntitiesStats[NetworkController.Instance.Encounter].Damage;
+                    return _entitiesStats.Sum(timedStats => timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter).Sum(stats => stats.Value.Damage));
                 }
                 return 0;
             }
+        }
+
+
+        public void AddStats(long time, Entity target, long damage)
+        {
+            var roundedTime = time / TimeSpan.TicksPerSecond;
+            if (!_entitiesStats.ContainsKey(roundedTime))
+            {
+                var statsDictionnary = new Dictionary<Entity, DamageTaken> { { target, new DamageTaken() } };
+                statsDictionnary[target].AddDamage(damage);
+                _entitiesStats.Add(roundedTime, statsDictionnary);
+                return;
+            }
+
+            if (!_entitiesStats[roundedTime].ContainsKey(target))
+            {
+                _entitiesStats[roundedTime].Add(target, new DamageTaken());
+                _entitiesStats[roundedTime][target].AddDamage(damage);
+                return;
+            }
+
+            _entitiesStats[roundedTime][target].AddDamage(damage);
+        }
+
+
+        public void RemoveEntity(Entity entity)
+        {
+            foreach (var timedStats in _entitiesStats)
+            {
+                timedStats.Value.Remove(entity);
+            }
+        }
+
+
+        public bool ContainsEntity(Entity entity)
+        {
+            return _entitiesStats.Any(timedstats => timedstats.Value.Any(entities => entities.Key == entity));
         }
 
         public int Hits
@@ -30,11 +68,11 @@ namespace DamageMeter.Taken
             {
                 if (NetworkController.Instance.Encounter == null)
                 {
-                    return EntitiesStats.Sum(entityStats => entityStats.Value.Hits);
+                    return _entitiesStats.Sum(entityStats => entityStats.Value.Sum(stats => stats.Value.Hits));
                 }
-                if (EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return EntitiesStats[NetworkController.Instance.Encounter].Hits;
+                    return _entitiesStats.Sum(timedStats => timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter).Sum(stats => stats.Value.Hits));
                 }
                 return 0;
             }
@@ -44,7 +82,7 @@ namespace DamageMeter.Taken
         {
             var clone = new EntitiesTaken
             {
-                EntitiesStats = EntitiesStats.ToDictionary(i => i.Key, i => (DamageTaken) i.Value.Clone())
+                _entitiesStats = _entitiesStats.ToDictionary(i => i.Key, i => i.Value.ToDictionary(j => j.Key, j => (DamageTaken)j.Value.Clone()))
             };
             return clone;
         }

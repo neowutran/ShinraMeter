@@ -19,12 +19,14 @@ namespace DamageMeter.UI.EntityStats
         {
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
 
-            var interval = TimeSpan.FromSeconds(Math.Round((double)(abnormalityDuration.Duration / 10000000)));
+            var second = abnormalityDuration.Duration/TimeSpan.TicksPerSecond;
+            var interval = TimeSpan.FromSeconds(second);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
             LabelAbnormalityDurationPercentage.Content = (abnormalityDuration.Duration * 100) / entityInfo.Interval + "%";
 
-            interval = TimeSpan.FromSeconds(Math.Round((double)(entityInfo.Interval / 10000000)));
+            second = entityInfo.Interval / TimeSpan.TicksPerSecond;
+            interval = TimeSpan.FromSeconds(second);
             LabelInterval.Content = interval.ToString(@"mm\:ss");
 
             LabelName.Content = hotdot.Name;

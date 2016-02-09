@@ -256,14 +256,13 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             if (damage == 0) return;
             if (PlayerInfo != null)
             {
-                if (damage != 0)
-                {
-                    if (FirstHit == 0)
-                    {
-                        FirstHit = time / TimeSpan.TicksPerSecond;
-                    }
-                    LastHit = time / TimeSpan.TicksPerSecond;
+               
+               if (FirstHit == 0)
+               {
+                    FirstHit = time / TimeSpan.TicksPerSecond;
                 }
+               LastHit = time / TimeSpan.TicksPerSecond;
+                
             }
             Damage += damage;
         }

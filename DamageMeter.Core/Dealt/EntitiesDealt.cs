@@ -23,7 +23,7 @@ namespace DamageMeter.Dealt
             {
                 foreach (var stat in timedStat.Value)
                 {
-                    if (stat.Key == entity && (stat.Value.FirstHit < firstHit && firstHit != 0) )
+                    if (stat.Key == entity && (stat.Value.FirstHit < firstHit || firstHit == 0) )
                     {
                         firstHit = stat.Value.FirstHit;
                     }
@@ -44,7 +44,7 @@ namespace DamageMeter.Dealt
 
         public void AddStats(long time, Entity target, SkillsStats stats)
         {
-            var roundedTime = (long)Math.Round((double)(time / 10000000));
+            var roundedTime = time / TimeSpan.TicksPerSecond;
             if (!_entitiesStats.ContainsKey(roundedTime))
             {
                 var statsDictionnary = new Dictionary<Entity, SkillsStats> {{target, stats}};
@@ -144,8 +144,7 @@ namespace DamageMeter.Dealt
                 {
                     return _entitiesStats.Keys.OrderBy(x => x).ToList()[0];
                 }
-                var firstHit = GetFirstHit(NetworkController.Instance.Encounter);
-                return firstHit != 0 ? firstHit : 0;
+                return GetFirstHit(NetworkController.Instance.Encounter);
             }
         }
 
@@ -161,8 +160,7 @@ namespace DamageMeter.Dealt
                 {
                     return _entitiesStats.Keys.OrderByDescending(x => x).ToList()[0];
                 }
-                var lastHit = GetLastHit(NetworkController.Instance.Encounter);
-                return lastHit;
+                return GetLastHit(NetworkController.Instance.Encounter); ;
             }
         }
 

@@ -8,7 +8,7 @@ namespace DamageMeter.UI.EntityStats
     /// <summary>
     ///     Logique d'interaction pour EnduranceDebuff.xaml
     /// </summary>
-    public partial class EnduranceDebuffHeader : UserControl
+    public partial class EnduranceDebuffHeader
     {
         public EnduranceDebuffHeader(EntityStatsMain  parent)
         {
@@ -16,8 +16,8 @@ namespace DamageMeter.UI.EntityStats
             _parent = parent;
 
             LabelClass.Content = "Class";
-            LabelAbnormalityDuration.Content = "Duration";
-            LabelInterval.Content = "Fight duration";
+            LabelAbnormalityDuration.Content = "DOT";
+            LabelInterval.Content = "Fight";
             LabelAbnormalityDurationPercentage.Content = "% Fight";
             LabelName.Content = "Name";
             LabelId.Content = "Id";
