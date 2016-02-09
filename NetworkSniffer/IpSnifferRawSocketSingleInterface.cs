@@ -23,6 +23,8 @@ namespace NetworkSniffer
             _buffer = new byte[1 << 17];
         }
 
+        private bool _isInit = false;
+
         private void Init()
         {
             Debug.Assert(_socket == null);
@@ -42,6 +44,10 @@ namespace NetworkSniffer
 
         private void Finish()
         {
+            if (!_isInit)
+            {
+                return;
+            }
             Debug.Assert(_socket != null);
             _socket.Close();
             _socket = null;
@@ -70,7 +76,15 @@ namespace NetworkSniffer
         {
             if (value)
             {
-                Init();
+                try
+                {
+                    Init();
+                    _isInit = true;
+                }
+                catch
+                {
+                    // ignored
+                }
             }
             else
             {
