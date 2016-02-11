@@ -49,7 +49,7 @@ namespace Data
 
         public bool Equals(HotDot other)
         {
-            return Id == other.Id;
+            return Id == other.Id && Type == other.Type;
         }
 
         public static bool operator ==(HotDot a, HotDot b)

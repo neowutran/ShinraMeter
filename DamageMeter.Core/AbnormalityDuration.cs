@@ -37,7 +37,7 @@ namespace DamageMeter
         public long Duration(long begin, long end)
         {
             long totalDuration = 0;
-            
+            bool maxTime = false;
             foreach (var duration in ListDuration)
             {
 
@@ -48,6 +48,19 @@ namespace DamageMeter
 
                 var abnormalityBegin = duration.Begin;
                 var abnormalityEnd = duration.End;
+
+                if (maxTime && duration.End == long.MaxValue)
+                {
+                    Console.WriteLine("!!!!! Big issue !!!!!!");
+                }
+
+                if (duration.End == long.MaxValue)
+                {
+                    maxTime = true;
+                }
+
+
+
                 if (begin > abnormalityBegin)
                 {
                     abnormalityBegin = begin;

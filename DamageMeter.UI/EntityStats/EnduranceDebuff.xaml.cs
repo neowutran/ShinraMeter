@@ -21,7 +21,6 @@ namespace DamageMeter.UI.EntityStats
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
             var intervalEntity = lastHit - firstHit;
             var second = abnormalityDuration.Duration(firstHit, lastHit);
-            Console.WriteLine("interval = " + intervalEntity + "; dot duration:" +second);
             var interval = TimeSpan.FromSeconds(second);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 

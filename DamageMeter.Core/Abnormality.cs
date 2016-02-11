@@ -45,8 +45,6 @@ namespace DamageMeter
                 Source,
                 Target);
             DamageTracker.Instance.Update(skillResult, time);
-
-            NetworkController.Instance.CheckUpdateUi();
             LastApply = time;
         }
 
@@ -101,6 +99,7 @@ namespace DamageMeter
 
         private void RegisterBuff()
         {
+            if (HotDot.Type == "HPChange" || HotDot.Type == "MPChange") return;
             var userEntity = NetworkController.Instance.EntityTracker.GetOrNull(Target);
 
             if (!(userEntity is UserEntity))
@@ -140,6 +139,7 @@ namespace DamageMeter
 
         private void ApplyBuff(long lastTicks)
         {
+            if (HotDot.Type == "HPChange" || HotDot.Type == "MPChange") return;
             var userEntity = NetworkController.Instance.EntityTracker.GetOrNull(Target);
             if (!(userEntity is UserEntity))
             {

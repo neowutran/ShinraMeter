@@ -38,8 +38,6 @@ namespace DamageMeter
             {
                 return;
             }
-
-            Console.WriteLine("Create:"+hotdot.Name);
             _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
         }
 
@@ -47,8 +45,6 @@ namespace DamageMeter
         {
             if (!_abnormalities.ContainsKey(message.TargetId))
             {
-                //  AddAbnormality(message.TargetId, message.SourceId, message.Duration, message.StackCounter, message.AbnormalityId);
-                //TODO ADD ABNORMALITY, too lazy to do it now, NEED A SOURCE, WITHOUT SOURCE, RETURN
                 return;
             }
             var abnormalityUser = _abnormalities[message.TargetId];
@@ -56,11 +52,8 @@ namespace DamageMeter
             {
                 if (abnormality.HotDot.Id != message.AbnormalityId) continue;
                 abnormality.Refresh(message.StackCounter, message.Duration, message.Time.Ticks);
-
                 return;
             }
-
-            //TODO ADD ABNORMALITY, too lazy to do it now (aka: Gameforge star event, go farm), NEED A SOURCE, WITHOUT SOURCE, RETURN
         }
 
         public void DeleteAbnormality(SAbnormalityEnd message)
@@ -78,7 +71,6 @@ namespace DamageMeter
                 {
 
                     abnormalityUser[i].ApplyBuffDebuff(message.Time.Ticks);
-                    Console.WriteLine("remove:"+abnormalityUser[i].HotDot.Name);
                     abnormalityUser.Remove(abnormalityUser[i]);
                 }
             }
@@ -93,15 +85,26 @@ namespace DamageMeter
 
         public void DeleteAbnormality(SDespawnNpc message)
         {
-            if (!_abnormalities.ContainsKey(message.Npc))
+            DeleteAbnormality(message.Npc, message.Time.Ticks);
+        }
+
+
+        public void DeleteAbnormality(SDespawnUser message)
+        {
+            DeleteAbnormality(message.User, message.Time.Ticks);
+        }
+
+        private void DeleteAbnormality(EntityId entity, long ticks)
+        {
+            if (!_abnormalities.ContainsKey(entity))
             {
                 return;
             }
-            foreach (var abno in _abnormalities[message.Npc])
+            foreach (var abno in _abnormalities[entity])
             {
-                abno.ApplyBuffDebuff(message.Time.Ticks);
+              abno.ApplyBuffDebuff(ticks);
             }
-            _abnormalities.Remove(message.Npc);
+            _abnormalities.Remove(entity);
         }
 
 

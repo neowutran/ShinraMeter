@@ -182,6 +182,12 @@ namespace DamageMeter
                     continue;
                 }
 
+                var despawnUser = message as SDespawnUser;
+                if (despawnUser != null)
+                {
+                    AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
+                }
+
 
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage == null) continue;
