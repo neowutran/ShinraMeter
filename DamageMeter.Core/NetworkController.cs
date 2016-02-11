@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -16,13 +17,13 @@ namespace DamageMeter
         public delegate void ConnectedHandler(string serverName);
 
         public delegate void UpdateUiHandler(
-            long interval, long totaldamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
+            long firsthit, long lastHit , long totaldamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
 
         private static NetworkController _instance;
 
         private long _lastTick;
         private MessageFactory _messageFactory;
-        private PlayerTracker _playerTracker;
+        public PlayerTracker PlayerTracker;
 
         private NetworkController()
         {
@@ -62,7 +63,7 @@ namespace DamageMeter
         {
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
             EntityTracker = new EntityTracker();
-            _playerTracker = new PlayerTracker(EntityTracker);
+            PlayerTracker = new PlayerTracker(EntityTracker);
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
             ServerIpEndPoint = serverIpEndPoint;
             ClientIpEndPoint = clientIpEndPoint;
@@ -92,10 +93,11 @@ namespace DamageMeter
                 DamageTracker.Instance.GetPlayerStats()
                     .OrderByDescending(playerStats => playerStats.Dealt.Damage)
                     .ToList();
-            var interval = DamageTracker.Instance.Interval;
+            var firstHit = DamageTracker.Instance.FirstHit;
+            var lastHit = DamageTracker.Instance.LastHit;
             var entities =
                 DamageTracker.Instance.GetEntityStats();
-            handler?.Invoke(interval, damage, entities, stats);
+            handler?.Invoke(firstHit, lastHit, damage, entities, stats);
         }
 
 
@@ -109,6 +111,9 @@ namespace DamageMeter
                     ForceUpdate = false;
                     UpdateUi();
                 }
+
+                CheckUpdateUi();
+
 
 
                 Message obj;
@@ -128,7 +133,6 @@ namespace DamageMeter
 
                 var message = _messageFactory.Create(obj);
                 EntityTracker.Update(message);
-                AbnormalityTracker.Instance.ApplyEnduranceDebuff(message.Time.Ticks);
 
                 var npcOccupier = message as SNpcOccupierInfo;
                 if (npcOccupier != null)
@@ -195,7 +199,6 @@ namespace DamageMeter
                     skillResultMessage.Source,
                     skillResultMessage.Target);
                 DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
-                CheckUpdateUi();
             }
         }
 
@@ -217,8 +220,7 @@ namespace DamageMeter
                 skillId,
                 source,
                 target,
-                EntityTracker,
-                _playerTracker
+                EntityTracker
                 );
         }
     }

@@ -1,12 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
 using DamageMeter.Dealt;
 using DamageMeter.Taken;
+using Data;
 using Tera.Game;
 
 namespace DamageMeter
 {
-    public class PlayerInfo : INotifyPropertyChanged, ICloneable, IEquatable<object>
+    public class PlayerInfo : ICloneable, IEquatable<object>
     {
         public PlayerInfo(Player user)
         {
@@ -14,6 +16,8 @@ namespace DamageMeter
             Received = new EntitiesTaken();
             Dealt = new EntitiesDealt(this);
         }
+        public Dictionary<HotDot, AbnormalityDuration> AbnormalityTime = new Dictionary<HotDot, AbnormalityDuration>();
+
 
         public Player Player { get; }
 
@@ -30,7 +34,8 @@ namespace DamageMeter
             var clone = new PlayerInfo(Player)
             {
                 Received = (EntitiesTaken) Received.Clone(),
-                Dealt = (EntitiesDealt) Dealt.Clone()
+                Dealt = (EntitiesDealt) Dealt.Clone(),
+                AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => (AbnormalityDuration)i.Value.Clone())
             };
             clone.Dealt.SetPlayerInfo(clone);
             return clone;
@@ -44,8 +49,6 @@ namespace DamageMeter
             if (obj.GetType() != GetType()) return false;
             return Equals((PlayerInfo) obj);
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public bool Equals(PlayerInfo other)
         {
@@ -84,10 +87,5 @@ namespace DamageMeter
             return Class == PlayerClass.Mystic || Class == PlayerClass.Priest;
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

@@ -4,12 +4,13 @@
     <x>NaN</x>
     <y>NaN</y>
   </location>
-  <language>TW</language>
+  <language>EU-EN</language>
   <opacity>
     <mainWindow>50</mainWindow>
     <skillWindow>70</skillWindow>
   </opacity>
-  <autoupdate>true</autoupdate>
-  <remember_position>true</remember_position>
-  <winpcap>false</winpcap>
+  <autoupdate>false</autoupdate>
+  <remember_position>false</remember_position>
+  <winpcap>true</winpcap>
+  <invisible_ui>true</invisible_ui>
 </window>

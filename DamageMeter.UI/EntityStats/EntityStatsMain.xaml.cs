@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -20,7 +21,7 @@ namespace DamageMeter.UI.EntityStats
         {
             InitializeComponent();
             _parent = parent;
-            _header = new EnduranceDebuffHeader(this);
+            _header = new EnduranceDebuffHeader();
         }
 
 
@@ -47,13 +48,13 @@ namespace DamageMeter.UI.EntityStats
                 {
                     abnormality = _enduranceDebuffsList[i];
                     abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i),
-                        statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities);
+                        statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities.FirstHit, statsAbnormalities.LastHit);
                 }
                 else
                 {
-                    abnormality = new EnduranceDebuff(this);
+                    abnormality = new EnduranceDebuff();
                     abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i),
-                        statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities);
+                        statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities.FirstHit, statsAbnormalities.LastHit);
                     _enduranceDebuffsList.Add(abnormality);
                 }
 

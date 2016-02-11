@@ -83,6 +83,7 @@
             <TabItem Header="Dps" x:Name="DpsPanel" Background="Transparent" Foreground="White" />
             <TabItem Header="Heal" x:Name="HealPanel" Background="Transparent" Foreground="White" />
             <TabItem Header="Mana" x:Name="ManaPanel" Background="Transparent" Foreground="White" />
+            <TabItem Header="Buff" x:Name="BuffPanel" Background="Transparent" Foreground="White" />
         </TabControl>
     </Grid>
 </Window>

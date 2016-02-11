@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DamageMeter.Dealt;
 using DamageMeter.Skills;
 using DamageMeter.Skills.Skill;
+using DamageMeter.Taken;
 using Tera.Game;
 using Skill = DamageMeter.Skills.Skill.Skill;
 
@@ -13,7 +15,7 @@ namespace DamageMeter
         public delegate void CurrentBossChange(Entity entity);
 
         private static DamageTracker _instance;
-        private Dictionary<Player, PlayerInfo> _usersStats = new Dictionary<Player, PlayerInfo>();
+        public Dictionary<Player, PlayerInfo> UsersStats = new Dictionary<Player, PlayerInfo>();
         public Dictionary<Entity, EntityInfo> EntitiesStats = new Dictionary<Entity, EntityInfo>();
 
 
@@ -38,12 +40,12 @@ namespace DamageMeter
             }
         }
 
-        private long FirstHit
+        public long FirstHit
         {
             get
             {
                 long firsthit = 0;
-                foreach (var userstat in _usersStats)
+                foreach (var userstat in UsersStats)
                 {
                     if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit < firsthit)) &&
                         userstat.Value.Dealt.FirstHit != 0)
@@ -57,12 +59,12 @@ namespace DamageMeter
 
         public long Interval => LastHit - FirstHit;
 
-        private long LastHit
+        public long LastHit
         {
             get
             {
                 long lasthit = 0;
-                foreach (var userstat in _usersStats)
+                foreach (var userstat in UsersStats)
                 {
                     if (((lasthit == 0) || (userstat.Value.Dealt.LastHit > lasthit)) &&
                         userstat.Value.Dealt.LastHit != 0)
@@ -84,24 +86,12 @@ namespace DamageMeter
 
         public List<PlayerInfo> GetPlayerStats()
         {
-            return _usersStats.Select(stat => (PlayerInfo) stat.Value.Clone()).ToList();
+            return UsersStats.Select(stat => (PlayerInfo) stat.Value.Clone()).ToList();
         }
 
 
         public void UpdateEntities(NpcOccupierResult npcOccupierResult, long time)
         {
-            /*
-            var npcEntity =
-                (NpcEntity) NetworkController.Instance.EntityTracker.GetOrPlaceholder(npcOccupierResult.Npc);
-            var entityNpc = new Entity(npcEntity.CategoryId, npcEntity.Id, npcEntity.NpcId, npcEntity.NpcArea);
-            if (!EntitiesStats.ContainsKey(entityNpc) && !npcOccupierResult.HasReset)
-            {
-                EntitiesStats.Add(entityNpc, new EntityInfo());
-                EntitiesStats[entityNpc].FirstHit = time/ 10000000;
-                return;
-            }*/
-
-
             foreach (var entityStats in EntitiesStats)
             {
                 var entity = entityStats.Key;
@@ -118,8 +108,31 @@ namespace DamageMeter
             {
                 NetworkController.Instance.Encounter = null;
             }
+            
             EntitiesStats.Remove(entity);
-            foreach (var stats in _usersStats)
+            var add = false;
+            var newEntityStat = new EntityInfo();
+            foreach (var abnormality in EntitiesStats[entity].AbnormalityTime)
+            {
+
+                if (abnormality.Value.Ended())
+                {
+                    continue;
+                }
+                var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
+                duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count - 1]);
+                newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
+                add = true;
+            }
+
+            EntitiesStats.Remove(entity);
+            if (add)
+            {
+                EntitiesStats.Add(entity, newEntityStat);
+            }
+
+           
+            foreach (var stats in UsersStats)
             {
                 stats.Value.Dealt.RemoveEntity(entity);
                 stats.Value.Received.RemoveEntity(entity);
@@ -154,8 +167,56 @@ namespace DamageMeter
 
         public void Reset()
         {
-            _usersStats = new Dictionary<Player, PlayerInfo>();
-            EntitiesStats = new Dictionary<Entity, EntityInfo>();
+            var newUserStats = new Dictionary<Player, PlayerInfo>();
+            var newEntityStats = new Dictionary<Entity, EntityInfo>();
+            bool add;
+            foreach (var entity in EntitiesStats)
+            {
+                add = false;
+                var newEntityStat = new EntityInfo();
+                foreach (var abnormality in entity.Value.AbnormalityTime)
+                {
+
+                    if (abnormality.Value.Ended())
+                    {
+                        continue;
+                    }
+                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
+                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count -1]);
+                    newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
+                    add = true;
+                }
+
+                if (add)
+                {
+                    newEntityStats.Add(entity.Key, newEntityStat);
+                }
+            }
+
+            foreach (var user in UsersStats)
+            {
+                add = false;
+                var newUserStat = new PlayerInfo(user.Key);
+
+                foreach (var abnormality in user.Value.AbnormalityTime)
+                {
+                    if (abnormality.Value.Ended())
+                    {
+                        continue;
+                    }
+                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
+                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count -1]);
+                    newUserStat.AbnormalityTime.Add(abnormality.Key, duration);
+                    add = true;
+                }
+                if (add)
+                {
+                    newUserStats.Add(user.Key, newUserStat);
+                }
+            }
+
+            UsersStats = newUserStats;
+            EntitiesStats = newEntityStats;
         }
 
 
@@ -163,13 +224,13 @@ namespace DamageMeter
         {
             PlayerInfo playerStats;
 
-            if (_usersStats.TryGetValue(player, out playerStats))
+            if (UsersStats.TryGetValue(player, out playerStats))
             {
                 return playerStats;
             }
 
             playerStats = new PlayerInfo(player);
-            _usersStats.Add(player, playerStats);
+            UsersStats.Add(player, playerStats);
 
 
             return playerStats;

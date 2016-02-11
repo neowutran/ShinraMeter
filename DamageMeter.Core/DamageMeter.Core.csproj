@@ -51,6 +51,7 @@
     <Compile Include="CopyPaste.cs" />
     <Compile Include="DamageTracker.cs" />
     <Compile Include="Dealt\EntitiesDealt.cs" />
+    <Compile Include="Duration.cs" />
     <Compile Include="EntityInfo.cs" />
     <Compile Include="FormatHelpers.cs" />
     <Compile Include="IpHelper.cs" />

@@ -7,14 +7,14 @@ namespace DamageMeter
     public class SkillResult
     {
         public SkillResult(bool abnormality, int amount, bool isCritical, bool isHp, int skillId, EntityId source,
-            EntityId target, EntityTracker entityRegistry,
-            PlayerTracker playerTracker)
+            EntityId target, EntityTracker entityRegistry)
         {
             Amount = amount;
             IsCritical = isCritical;
             IsHp = isHp;
             SkillId = skillId;
             Abnormality = abnormality;
+            
             Source = entityRegistry.GetOrPlaceholder(source);
             Target = entityRegistry.GetOrPlaceholder(target);
             var userNpc = UserEntity.ForEntity(Source);
@@ -35,7 +35,7 @@ namespace DamageMeter
 
             if (sourceUser != null)
             {
-                SourcePlayer = playerTracker.Get(sourceUser.PlayerId);
+                SourcePlayer = NetworkController.Instance.PlayerTracker.Get(sourceUser.PlayerId);
                 if (!abnormality)
                 {
                     Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, skillId);
@@ -51,7 +51,7 @@ namespace DamageMeter
 
             if (targetUser != null)
             {
-                TargetPlayer = playerTracker.Get(targetUser.PlayerId);
+                TargetPlayer = NetworkController.Instance.PlayerTracker.Get(targetUser.PlayerId);
             }
         }
 

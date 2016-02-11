@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Tera.Game;
@@ -37,6 +38,8 @@ namespace DamageMeter
             {
                 return;
             }
+
+            Console.WriteLine("Create:"+hotdot.Name);
             _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
         }
 
@@ -73,7 +76,9 @@ namespace DamageMeter
             {
                 if (abnormalityUser[i].HotDot.Id == message.AbnormalityId)
                 {
-                    abnormalityUser[i].ApplyEnduranceDebuff(message.Time.Ticks);
+
+                    abnormalityUser[i].ApplyBuffDebuff(message.Time.Ticks);
+                    Console.WriteLine("remove:"+abnormalityUser[i].HotDot.Name);
                     abnormalityUser.Remove(abnormalityUser[i]);
                 }
             }
@@ -94,7 +99,7 @@ namespace DamageMeter
             }
             foreach (var abno in _abnormalities[message.Npc])
             {
-                abno.ApplyEnduranceDebuff(message.Time.Ticks);
+                abno.ApplyBuffDebuff(message.Time.Ticks);
             }
             _abnormalities.Remove(message.Npc);
         }
@@ -145,15 +150,6 @@ namespace DamageMeter
                 return;
             }
         }
-
-        public void ApplyEnduranceDebuff(long time)
-        {
-            foreach (var abnormality in _abnormalities.SelectMany(abnormalityList => abnormalityList.Value))
-            {
-                abnormality.ApplyEnduranceDebuff(time);
-            }
-        }
-
 
         public void Update(SCreatureChangeHp message)
         {

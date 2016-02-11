@@ -81,6 +81,9 @@
     <Compile Include="SkillDetail\SkillDetailHeal.xaml.cs">
       <DependentUpon>SkillDetailHeal.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Buff.xaml.cs">
+      <DependentUpon>Buff.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Skill\SkillMana.xaml.cs">
       <DependentUpon>SkillMana.xaml</DependentUpon>
     </Compile>
@@ -143,6 +146,10 @@
     <Page Include="SkillDetail\SkillDetailHeal.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Buff.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Skill\SkillMana.xaml">
       <Generator>MSBuild:Compile</Generator>

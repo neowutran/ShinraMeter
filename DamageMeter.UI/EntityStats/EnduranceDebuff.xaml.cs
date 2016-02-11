@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using Data;
 
@@ -9,26 +10,32 @@ namespace DamageMeter.UI.EntityStats
     /// </summary>
     public partial class EnduranceDebuff
     {
-        private readonly EntityStatsMain _parent;
 
-        public EnduranceDebuff(EntityStatsMain parent)
+        public EnduranceDebuff()
         {
             InitializeComponent();
-            _parent = parent;
         }
 
-        public void Update(HotDot hotdot, AbnormalityDuration abnormalityDuration, EntityInfo entityInfo)
+        public void Update(HotDot hotdot, AbnormalityDuration abnormalityDuration, long firstHit, long lastHit)
         {
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
-
-            var second = abnormalityDuration.Duration/TimeSpan.TicksPerSecond;
+            var intervalEntity = lastHit - firstHit;
+            var second = abnormalityDuration.Duration(firstHit, lastHit);
+            Console.WriteLine("interval = " + intervalEntity + "; dot duration:" +second);
             var interval = TimeSpan.FromSeconds(second);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
-            LabelAbnormalityDurationPercentage.Content = abnormalityDuration.Duration*100/entityInfo.Interval + "%";
+            if (intervalEntity == 0)
+            {
+                LabelAbnormalityDurationPercentage.Content = "0%";
+            }
+            else
+            {
+                LabelAbnormalityDurationPercentage.Content = abnormalityDuration.Duration(firstHit, lastHit)*100/
+                                                             intervalEntity + "%";
 
-            second = entityInfo.Interval/TimeSpan.TicksPerSecond;
-            interval = TimeSpan.FromSeconds(second);
+            }
+            interval = TimeSpan.FromSeconds(intervalEntity);
             LabelInterval.Content = interval.ToString(@"mm\:ss");
 
             LabelName.Content = hotdot.Name;
@@ -37,9 +44,11 @@ namespace DamageMeter.UI.EntityStats
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
             try
             {
-                _parent.DragMove();
+                var w = Window.GetWindow(this);
+                w?.DragMove();
             }
             catch
             {

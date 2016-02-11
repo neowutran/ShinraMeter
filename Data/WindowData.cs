@@ -31,6 +31,7 @@ namespace Data
             ParseAutoUpdate();
             ParseRememberPosition();
             ParseWinpcap();
+            ParseInvisibleUi();
         }
 
 
@@ -46,6 +47,8 @@ namespace Data
 
         public bool Winpcap { get; private set; }
 
+        public bool InvisibleUI { get; private set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -54,6 +57,7 @@ namespace Data
             SkillWindowOpacity = 0.7;
             AutoUpdate = true;
             RememberPosition = true;
+            InvisibleUI = false;
             Winpcap = false;
         }
 
@@ -67,6 +71,19 @@ namespace Data
             if (parseSuccess)
             {
                 RememberPosition = remember;
+            }
+        }
+
+        public void ParseInvisibleUi()
+        {
+            var root = _xml.Root;
+            var invisibleUI = root?.Element("invisible_ui");
+            if (invisibleUI == null) return;
+            bool invisibleUi;
+            var parseSuccess = bool.TryParse(invisibleUI.Value, out invisibleUi);
+            if (parseSuccess)
+            {
+                InvisibleUI = invisibleUi;
             }
         }
 
@@ -165,6 +182,7 @@ namespace Data
             xml.Root.Add(new XElement("autoupdate", AutoUpdate));
             xml.Root.Add(new XElement("remember_position", RememberPosition));
             xml.Root.Add(new XElement("winpcap", Winpcap));
+            xml.Root.Add(new XElement("invisible_ui", InvisibleUI));
             xml.Save(_windowFile);
         }
     }

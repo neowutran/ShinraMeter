@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DamageMeter.UI.EntityStats
@@ -8,12 +9,10 @@ namespace DamageMeter.UI.EntityStats
     /// </summary>
     public partial class EnduranceDebuffHeader
     {
-        private readonly EntityStatsMain _parent;
 
-        public EnduranceDebuffHeader(EntityStatsMain parent)
+        public EnduranceDebuffHeader()
         {
             InitializeComponent();
-            _parent = parent;
 
             LabelClass.Content = "Class";
             LabelAbnormalityDuration.Content = "DOT";
@@ -25,9 +24,12 @@ namespace DamageMeter.UI.EntityStats
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+         
+
             try
             {
-                _parent.DragMove();
+                var w = Window.GetWindow(this);
+                w?.DragMove();
             }
             catch
             {

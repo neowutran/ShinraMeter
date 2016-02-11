@@ -1,4 +1,7 @@
-﻿namespace Tera.Game.Messages
+﻿using System;
+using System.Text;
+
+namespace Tera.Game.Messages
 {
     public class LoginServerMessage : ParsedMessage
     {

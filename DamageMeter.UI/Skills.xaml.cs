@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DamageMeter.Skills.Skill;
+using DamageMeter.UI.Skill;
 using Data;
 
 namespace DamageMeter.UI
@@ -17,10 +18,11 @@ namespace DamageMeter.UI
         private readonly SkillsDetail _skillDps;
         private readonly SkillsDetail _skillHeal;
         private readonly SkillsDetail _skillMana;
+        private readonly Buff _buff;
 
 
         public Skills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
-            Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent)
+            Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent, PlayerInfo playerInfo)
         {
             InitializeComponent();
 
@@ -31,9 +33,11 @@ namespace DamageMeter.UI
             _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps);
             _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal);
             _skillMana = new SkillsDetail(allSkills, SkillsDetail.Type.Mana);
+            _buff = new Buff(playerInfo);
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;
             ManaPanel.Content = _skillMana;
+            BuffPanel.Content = _buff;
             TabControl.SelectionChanged += TabControlOnSelectionChanged;
             _parent = parent;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
@@ -61,26 +65,36 @@ namespace DamageMeter.UI
         private void TabControlOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
             var tabitem = (TabItem) ((TabControl) selectionChangedEventArgs.Source).SelectedItem;
-            var skills = (SkillsDetail) tabitem.Content;
 
-            MaxWidth = skills.ContentWidth + 50;
-            MinWidth = skills.ContentWidth - 300;
-            Width = skills.ContentWidth - 300;
+            double width = 0;
+            if (tabitem.Content is SkillsDetail)
+            {
+                width = ((SkillsDetail) tabitem.Content).ContentWidth;
+            }
+            else
+            {
+                width = ((Buff) tabitem.Content).ContentWidth;
+            }
+
+            MaxWidth = width + 50;
+            MinWidth = width - 300;
+            Width = width - 300;
         }
 
 
         public void Update(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
-            Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills)
+            Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerInfo playerinfo)
         {
             var skills = NoTimedSkills(timedSkills);
             var allSkills = NoTimedSkills(timedAllSkills);
-
+            _buff.Update(playerinfo);
             _skillDps.Update(skills);
             _skillHeal.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills));
             _skillMana.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills));
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;
             ManaPanel.Content = _skillMana;
+            BuffPanel.Content = _buff;
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)

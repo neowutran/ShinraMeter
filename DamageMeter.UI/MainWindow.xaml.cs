@@ -52,6 +52,10 @@ namespace DamageMeter.UI
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
+            if (BasicTeraData.Instance.WindowData.InvisibleUI)
+            {
+                Visibility = Visibility.Hidden;
+            }
             PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
@@ -70,7 +74,16 @@ namespace DamageMeter.UI
 
         private void TrayIconOnClick(object sender, EventArgs eventArgs)
         {
-            Close();
+            VerifyClose();
+        }
+
+        public void VerifyClose()
+        {
+            if (MessageBox.Show("Do you want to close the application?", "Close Shinra Meter V" + UpdateManager.Version, MessageBoxButton.YesNo,
+               MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                Close();
+            }
         }
 
         public void Exit()
@@ -124,11 +137,11 @@ namespace DamageMeter.UI
             }
         }
 
-        public void Update(long nintervalvalue, long ntotalDamage, Dictionary<Entity, EntityInfo> nentities,
+        public void Update(long nfirstHit, long nlastHit, long ntotalDamage, Dictionary<Entity, EntityInfo> nentities,
             List<PlayerInfo> nstats)
         {
             UpdateUi changeUi =
-                delegate(long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities,
+                delegate(long firstHit, long lastHit, long totalDamage, Dictionary<Entity, EntityInfo> entities,
                     List<PlayerInfo> stats)
                 {
                     StayTopMost();
@@ -170,6 +183,7 @@ namespace DamageMeter.UI
                     }
 
                     TotalDamage.Content = FormatHelpers.Instance.FormatValue(totalDamage);
+                    var intervalvalue = lastHit - firstHit;
                     var interval = TimeSpan.FromSeconds(intervalvalue);
                     Timer.Content = interval.ToString(@"mm\:ss");
 
@@ -182,12 +196,15 @@ namespace DamageMeter.UI
                     {
                         Players.Items.Add(item.Value);
                         var data = stats.IndexOf(item.Value.PlayerInfo);
-                        item.Value.Repaint(stats[data], totalDamage, Width);
+                        item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit);
                     }
                     Height = Controls.Count*29 + CloseMeter.ActualHeight;
-                    Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
+                    if (BasicTeraData.Instance.WindowData.InvisibleUI)
+                    {
+                        Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
+                    }
                 };
-            Dispatcher.Invoke(changeUi, nintervalvalue, ntotalDamage, nentities, nstats);
+            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, nentities, nstats);
         }
 
 
@@ -332,7 +349,7 @@ namespace DamageMeter.UI
         private delegate void UpdateEncounter(Entity entity);
 
         private delegate void UpdateUi(
-            long intervalvalue, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
+            long firstHit, long lastHit, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
 
         private delegate void ChangeTitle(string servername);
     }

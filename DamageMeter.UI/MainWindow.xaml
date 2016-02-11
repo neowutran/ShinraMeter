@@ -17,7 +17,6 @@
         Icon="shinra.jpg"
         MinWidth="450"
         ShowActivated="False"
-        Visibility="Hidden"
         MaxWidth="450"
         MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         Loaded="MainWindow_OnLoaded"

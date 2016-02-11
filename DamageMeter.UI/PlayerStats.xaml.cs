@@ -47,7 +47,7 @@ namespace DamageMeter.UI
             return Math.Round(PlayerInfo.Dealt.DamageFraction(totalDamage)) + "%";
         }
 
-        public void Repaint(PlayerInfo playerInfo, long totalDamage, double width)
+        public void Repaint(PlayerInfo playerInfo, long totalDamage, long firstHit, long lastHit)
         {
             PlayerInfo = playerInfo;
             LabelDps.Content = Dps;
@@ -60,7 +60,7 @@ namespace DamageMeter.UI
             Timer.Content = intervalTimespan.ToString(@"mm\:ss");
 
             _windowSkill?.Update(Skills(),
-                new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills));
+                new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills), playerInfo);
             DpsIndicator.Width = 450*(PlayerInfo.Dealt.DamageFraction(totalDamage)/100);
         }
 
@@ -88,7 +88,7 @@ namespace DamageMeter.UI
             {
                 _windowSkill = new Skills(Skills(),
                     new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(
-                        PlayerInfo.Dealt.AllSkills), this)
+                        PlayerInfo.Dealt.AllSkills), this, PlayerInfo)
                 {
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}
@@ -97,7 +97,7 @@ namespace DamageMeter.UI
 
             _windowSkill.Show();
             _windowSkill.Update(Skills(),
-                new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills));
+                new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills), PlayerInfo);
         }
 
         public void CloseSkills()

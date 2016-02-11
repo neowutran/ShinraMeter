@@ -21,7 +21,7 @@ namespace DamageMeter
                 TotalDamage = TotalDamage,
                 FirstHit = FirstHit,
                 LastHit = LastHit,
-                AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => i.Value)
+                AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => (AbnormalityDuration)i.Value.Clone())
             };
             return newEntityInfo;
         }

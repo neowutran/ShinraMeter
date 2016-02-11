@@ -6,6 +6,7 @@ namespace Data
     {
         public enum DotType
         {
+            swch = 0, // switch on for noctineum ? other strange uses.
             seta = 1, // ?set abs stat value
             abs = 2, // each tick  HP +=HPChange ; MP += MPChange
             perc = 3, // each tick  HP += MaxHP*HPChange; MP += MaxMP*MPChange
