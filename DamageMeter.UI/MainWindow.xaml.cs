@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +17,10 @@ using Data;
 using log4net;
 using Application = System.Windows.Forms.Application;
 using Brushes = System.Windows.Media.Brushes;
+using ContextMenu = System.Windows.Forms.ContextMenu;
+using Control = System.Windows.Forms.Control;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 
@@ -41,8 +45,10 @@ namespace DamageMeter.UI
             currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
             // Handler for exceptions in threads behind forms.
             Application.ThreadException += GlobalThreadExceptionHandler;
-            var init = BasicTeraData.Instance;
-
+            if (BasicTeraData.Instance.WindowData.InvisibleUI)
+            {
+                Visibility = Visibility.Hidden;
+            }
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
@@ -52,10 +58,7 @@ namespace DamageMeter.UI
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-            if (BasicTeraData.Instance.WindowData.InvisibleUI)
-            {
-                Visibility = Visibility.Hidden;
-            }
+          
             PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
@@ -63,18 +66,70 @@ namespace DamageMeter.UI
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             _entityStats = new EntityStatsMain(this);
+             TrayConfiguration();
+        }
+
+
+        private void TrayConfiguration()
+        {
             _trayIcon = new NotifyIcon
             {
                 Icon = BasicTeraData.Instance.ImageDatabase.Tray,
                 Visible = true,
                 Text = "Shinra Meter V" + UpdateManager.Version + ": No server"
             };
+
+            var reset = new MenuItem {Text = "Reset"};
+            reset.Click += ResetOnClick;
+            var exit = new MenuItem {Text = "Close"};
+            exit.Click += ExitOnClick;
+            var wiki = new MenuItem {Text = "Wiki"};
+            wiki.Click += WikiOnClick;
+            var issues = new MenuItem {Text = "Report issue"};
+            issues.Click += IssuesOnClick;
+            var forum = new MenuItem {Text = "Forum"};
+            forum.Click += ForumOnClick;
+          
+            var context = new ContextMenu();
+            context.MenuItems.Add(reset);
+            context.MenuItems.Add(exit);
+            context.MenuItems.Add(wiki);
+            context.MenuItems.Add(issues);
+            context.MenuItems.Add(forum);
+
+            _trayIcon.ContextMenu = context;
             _trayIcon.Click += TrayIconOnClick;
+        }
+
+        private void ExitOnClick(object sender, EventArgs eventArgs)
+        {
+            VerifyClose();
+        }
+
+        private void ResetOnClick(object sender, EventArgs eventArgs)
+        {
+            NetworkController.Instance.Reset();
+        }
+
+        private void ForumOnClick(object sender, EventArgs eventArgs)
+        {
+            Process.Start("http://forum.teratoday.com/topic/1316-shinrameter-open-source-tera-dps-meter/");
+        }
+
+        private void IssuesOnClick(object sender, EventArgs eventArgs)
+        {
+            Process.Start("https://github.com/neowutran/ShinraMeter/issues");
+        }
+
+        private void WikiOnClick(object sender, EventArgs eventArgs)
+        {
+            Process.Start("https://github.com/neowutran/ShinraMeter/wiki");
         }
 
         private void TrayIconOnClick(object sender, EventArgs eventArgs)
         {
-            VerifyClose();
+            var mi = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+            mi.Invoke(_trayIcon, null);
         }
 
         public void VerifyClose()
