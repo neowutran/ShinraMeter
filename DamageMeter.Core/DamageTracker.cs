@@ -109,7 +109,6 @@ namespace DamageMeter
                 NetworkController.Instance.Encounter = null;
             }
             
-            EntitiesStats.Remove(entity);
             var add = false;
             var newEntityStat = new EntityInfo();
             foreach (var abnormality in EntitiesStats[entity].AbnormalityTime)
@@ -236,26 +235,65 @@ namespace DamageMeter
             return playerStats;
         }
 
+
+        public Entity GetActorEntity(EntityId entityId)
+        {
+            var entity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(entityId);
+            if (entity is NpcEntity)
+            {
+                var target = (NpcEntity)entity;
+                return new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
+            }
+            else if (entity is UserEntity)
+            {
+                var target = (UserEntity)entity;
+                return new Entity(target.Name);
+            }
+
+            return null;
+        }
+
+        public Entity GetEntity(EntityId entityId)
+        {
+            var entity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(entityId);
+            var entity2 = GetActorEntity(entityId);
+            if (entity2 != null)
+            {
+                return entity2;
+            }
+            else if (entity is ProjectileEntity)
+            {
+                var source = (ProjectileEntity)entity;
+                if (source.Owner is NpcEntity)
+                {
+                    var source2 = (NpcEntity)source.Owner;
+                    return new Entity(source2.CategoryId, source.Id, source2.NpcId, source2.NpcArea);
+                }
+                else if (source.Owner is UserEntity)
+                {
+                    var source2 = (UserEntity)source.Owner;
+                    return new Entity(source2.Name);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
         public void Update(SkillResult skillResult, long time)
         {
             PlayerInfo playerStats;
             if (skillResult.SourcePlayer != null)
             {
                 playerStats = GetOrCreate(skillResult.SourcePlayer);
-
-                Entity entityTarget;
-                if (skillResult.Target is NpcEntity)
-                {
-                    var target = (NpcEntity) skillResult.Target;
-                    entityTarget = new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
-                }
-                else if (skillResult.Target is UserEntity)
-                {
-                    var target = (UserEntity) skillResult.Target;
-                    entityTarget = new Entity(target.Name);
-                }
-                else
-                {
+                var entityTarget = GetActorEntity(skillResult.Target.Id);
+                if(entityTarget == null) { 
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
 
@@ -264,41 +302,7 @@ namespace DamageMeter
 
             if (skillResult.TargetPlayer == null) return;
             playerStats = GetOrCreate(skillResult.TargetPlayer);
-            Entity entitySource;
-            if (skillResult.Source is NpcEntity)
-            {
-                var source = (NpcEntity) skillResult.Source;
-                entitySource = new Entity(source.CategoryId, source.Id, source.NpcId, source.NpcArea);
-            }
-            else if (skillResult.Source is UserEntity)
-            {
-                var source = (UserEntity) skillResult.Source;
-                entitySource = new Entity(source.Name);
-            }
-            else if (skillResult.Source is ProjectileEntity)
-            {
-                var source = (ProjectileEntity) skillResult.Source;
-                if (source.Owner is NpcEntity)
-                {
-                    var source2 = (NpcEntity) source.Owner;
-                    entitySource = new Entity(source2.CategoryId, source.Id, source2.NpcId, source2.NpcArea);
-                }
-                else if (source.Owner is UserEntity)
-                {
-                    var source2 = (UserEntity) source.Owner;
-                    entitySource = new Entity(source2.Name);
-                }
-                else
-                {
-                    Console.WriteLine("UNKNOW DAMAGE:" + source.Owner.GetType());
-                    entitySource = new Entity("UNKNOW");
-                }
-            }
-            else
-            {
-                entitySource = new Entity("UNKNOW");
-            }
-
+            var entitySource = GetEntity(skillResult.Source.Id) ?? new Entity("UNKNOW");
             UpdateStatsReceived(playerStats, skillResult, entitySource, time);
         }
 

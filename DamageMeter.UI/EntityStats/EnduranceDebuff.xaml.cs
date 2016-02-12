@@ -20,7 +20,9 @@ namespace DamageMeter.UI.EntityStats
         {
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
             var intervalEntity = lastHit - firstHit;
+         //   Console.WriteLine("f:"+firstHit+";l:"+lastHit+";i:"+intervalEntity);
             var second = abnormalityDuration.Duration(firstHit, lastHit);
+           // Console.WriteLine(second);
             var interval = TimeSpan.FromSeconds(second);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 

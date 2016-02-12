@@ -1,4 +1,6 @@
-﻿namespace Tera.Game.Messages
+﻿using System;
+
+namespace Tera.Game.Messages
 {
     public class SAbnormalityBegin : ParsedMessage
     {

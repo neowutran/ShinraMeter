@@ -41,25 +41,25 @@ namespace DamageMeter.UI.EntityStats
 
             EnduranceAbnormality.Items.Add(_header);
 
-            for (var i = 0; i < statsAbnormalities.AbnormalityTime.Count; i++)
+            var count = 0;
+            foreach (var abnormality in statsAbnormalities.AbnormalityTime)
             {
-                EnduranceDebuff abnormality;
-                if (_enduranceDebuffsList.Count > i)
+                EnduranceDebuff abnormalityUi;
+                if (_enduranceDebuffsList.Count > count)
                 {
-                    abnormality = _enduranceDebuffsList[i];
-                    abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i),
-                        statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities.FirstHit, statsAbnormalities.LastHit);
+                    abnormalityUi = _enduranceDebuffsList[count];
                 }
                 else
                 {
-                    abnormality = new EnduranceDebuff();
-                    abnormality.Update(statsAbnormalities.AbnormalityTime.Keys.ElementAt(i),
-                        statsAbnormalities.AbnormalityTime.Values.ElementAt(i), statsAbnormalities.FirstHit, statsAbnormalities.LastHit);
-                    _enduranceDebuffsList.Add(abnormality);
+                    abnormalityUi = new EnduranceDebuff();
+                    _enduranceDebuffsList.Add(abnormalityUi);
                 }
 
-                EnduranceAbnormality.Items.Add(abnormality);
+                abnormalityUi.Update(abnormality.Key, abnormality.Value, statsAbnormalities.FirstHit / TimeSpan.TicksPerSecond, statsAbnormalities.LastHit / TimeSpan.TicksPerSecond);
+                EnduranceAbnormality.Items.Add(abnormalityUi);
+                count++;
             }
+            
         }
 
         private void EntityStats_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

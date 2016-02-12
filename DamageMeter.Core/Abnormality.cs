@@ -58,27 +58,47 @@ namespace DamageMeter
 
         private void ApplyEnduranceDebuff(long lastTicks)
         {
-            if (HotDot.Type != "Endurance") return;
-            foreach (var entityStats in DamageTracker.Instance.EntitiesStats)
+            if (HotDot.Type != "Endurance" || HotDot.Amount > 1) return;
+            var entityGame = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Target);
+            Entity entity = null;
+            if (entityGame is NpcEntity)
             {
-                if (entityStats.Key.Id != Target) continue;
-                var entity = entityStats.Key;
-                DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration[DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration.Count -1].Update(lastTicks);
+                var target = (NpcEntity)entityGame;
+                entity = new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
+            }
+
+            if (entity == null)
+            {
                 return;
             }
+            DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration[DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration.Count -1].Update(lastTicks);
         }
 
 
         private void RegisterEnduranceDebuff()
         {
-            if (HotDot.Type != "Endurance") return;
+            if (HotDot.Type != "Endurance" || HotDot.Amount > 1) return;
             var duration = new Duration(FirstHit, long.MaxValue);
-            foreach (var entityStats in DamageTracker.Instance.EntitiesStats)
+            var entityGame = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Target);
+            Entity entity = null;
+            if (entityGame is NpcEntity)
             {
-                if (entityStats.Key.Id != Target) continue;
-                var entity = entityStats.Key;
-                if (!DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.ContainsKey(HotDot))
-                {
+                var target = (NpcEntity)entityGame;
+                entity =  new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
+            }
+
+            if (entity == null)
+            {
+                return;
+            }
+
+            if (!DamageTracker.Instance.EntitiesStats.ContainsKey(entity))
+            {
+                DamageTracker.Instance.EntitiesStats.Add(entity, new EntityInfo());
+            }
+
+            if(!DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.ContainsKey(HotDot))
+            {
                     var npcEntity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Source);
                     if (!(npcEntity is UserEntity))
                     {
@@ -90,11 +110,10 @@ namespace DamageMeter
                     DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.Add(HotDot, abnormalityInitDuration);
                     return;
 
-                }
-              
-                DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration.Add(duration);
-                return;
             }
+              
+            DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration.Add(duration);
+      
         }
 
         private void RegisterBuff()

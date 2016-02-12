@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Xml.Linq;
@@ -98,6 +99,7 @@ namespace Data
             {
                 Winpcap = winpcap;
             }
+           
         }
 
 

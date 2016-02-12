@@ -28,7 +28,10 @@ namespace NetworkSniffer
         private void Init()
         {
             Debug.Assert(_socket == null);
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP)
+            {
+                ReceiveBufferSize = 8192*1024
+            };
 
             if (_localIp != null)
             {

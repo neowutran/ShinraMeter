@@ -29,27 +29,24 @@ namespace DamageMeter.UI
             EnduranceAbnormality.Items.Clear();
             
            EnduranceAbnormality.Items.Add(_header);
-
-            for (var i = 0; i < playerInfo.AbnormalityTime.Count; i++)
+            var counter = 0;
+            foreach (var abnormality in playerInfo.AbnormalityTime)
             {
-                EnduranceDebuff abnormality;
-                if (_enduranceDebuffsList.Count > i)
+                EnduranceDebuff abnormalityUi;
+                if (_enduranceDebuffsList.Count > counter)
                 {
-                    abnormality = _enduranceDebuffsList[i];
-                    abnormality.Update(playerInfo.AbnormalityTime.Keys.ElementAt(i),
-                        playerInfo.AbnormalityTime.Values.ElementAt(i), playerInfo.Dealt.FirstHit, playerInfo.Dealt.LastHit);
+                    abnormalityUi = _enduranceDebuffsList[counter];
                 }
                 else
                 {
-                    abnormality = new EnduranceDebuff();
-                    abnormality.Update(playerInfo.AbnormalityTime.Keys.ElementAt(i),
-                        playerInfo.AbnormalityTime.Values.ElementAt(i), playerInfo.Dealt.FirstHit, playerInfo.Dealt.LastHit);
-                    _enduranceDebuffsList.Add(abnormality);
+                    abnormalityUi = new EnduranceDebuff();
+                    _enduranceDebuffsList.Add(abnormalityUi);
                 }
+                abnormalityUi.Update(abnormality.Key,abnormality.Value, playerInfo.Dealt.FirstHit, playerInfo.Dealt.LastHit);
+                EnduranceAbnormality.Items.Add(abnormalityUi);
 
-                EnduranceAbnormality.Items.Add(abnormality);
+                counter++;
             }
-        }
-
+         }
     }
 }

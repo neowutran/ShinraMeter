@@ -27,6 +27,7 @@ namespace NetworkSniffer
         public IpSnifferWinPcap(string filter)
         {
             _filter = filter;
+            BufferSize = 8192*1024;
         }
 
         public int? BufferSize { get; set; }
@@ -92,7 +93,7 @@ namespace NetworkSniffer
         protected virtual void OnWarning(string obj)
         {
             var handler = Warning;
-            if (handler != null) handler(obj);
+            handler?.Invoke(obj);
         }
 
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
@@ -109,14 +110,15 @@ namespace NetworkSniffer
             OnPacketReceived(ipData2);
 
             var device = (WinPcapDevice) sender;
-            if (device.Statistics.DroppedPackets != _droppedPackets ||
-                device.Statistics.InterfaceDroppedPackets != _interfaceDroppedPackets)
+            if (device.Statistics.DroppedPackets == _droppedPackets &&
+                device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets)
             {
-                _droppedPackets = device.Statistics.DroppedPackets;
-                _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
-                OnWarning(string.Format("DroppedPackets {0}, InterfaceDroppedPackets {1}",
-                    device.Statistics.DroppedPackets, device.Statistics.InterfaceDroppedPackets));
+                return;
             }
+            _droppedPackets = device.Statistics.DroppedPackets;
+            _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
+            OnWarning(
+                $"DroppedPackets {device.Statistics.DroppedPackets}, InterfaceDroppedPackets {device.Statistics.InterfaceDroppedPackets}");
         }
     }
 }

@@ -75,7 +75,7 @@ namespace Data
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() ^ Id.GetHashCode();
+            return Type.GetHashCode() ^ Id.GetHashCode();
         }
     }
 }
