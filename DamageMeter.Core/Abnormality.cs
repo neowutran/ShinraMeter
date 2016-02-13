@@ -59,11 +59,13 @@ namespace DamageMeter
         private void ApplyEnduranceDebuff(long lastTicks)
         {
             if (HotDot.Type != "Endurance" || HotDot.Amount > 1) return;
+            if (_enduranceDebuffRegistered == false) return;
             var entityGame = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Target);
             Entity entity = null;
-            if (entityGame is NpcEntity)
+            var game = entityGame as NpcEntity;
+            if (game != null)
             {
-                var target = (NpcEntity)entityGame;
+                var target = game;
                 entity = new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
             }
 
@@ -81,9 +83,10 @@ namespace DamageMeter
             var duration = new Duration(FirstHit, long.MaxValue);
             var entityGame = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Target);
             Entity entity = null;
-            if (entityGame is NpcEntity)
+            var game = entityGame as NpcEntity;
+            if (game != null)
             {
-                var target = (NpcEntity)entityGame;
+                var target = game;
                 entity =  new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
             }
 
@@ -97,7 +100,7 @@ namespace DamageMeter
                 DamageTracker.Instance.EntitiesStats.Add(entity, new EntityInfo());
             }
 
-            if(!DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.ContainsKey(HotDot))
+            if (!DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.ContainsKey(HotDot))
             {
                     var npcEntity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Source);
                     if (!(npcEntity is UserEntity))
@@ -108,13 +111,19 @@ namespace DamageMeter
                     var abnormalityInitDuration = new AbnormalityDuration(user.RaceGenderClass.Class);
                     abnormalityInitDuration.ListDuration.Add(duration);
                     DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.Add(HotDot, abnormalityInitDuration);
+                    _enduranceDebuffRegistered = true;
                     return;
 
             }
-              
+            
             DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration.Add(duration);
-      
+            _enduranceDebuffRegistered = true;
+
+
         }
+
+        private bool _enduranceDebuffRegistered;
+        private bool _buffRegistered;
 
         private void RegisterBuff()
         {
@@ -149,24 +158,38 @@ namespace DamageMeter
                 var abnormalityInitDuration = new AbnormalityDuration(playerClass);
                 abnormalityInitDuration.ListDuration.Add(duration);
                 DamageTracker.Instance.UsersStats[player].AbnormalityTime.Add(HotDot, abnormalityInitDuration);
+                _buffRegistered = true;
                 return;
             }
-         
-               DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration.Add(duration);
-            
+
+            ////////// !! WARNING !!
+            var count = DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration.Count;
+            if (count > 0)
+            {
+                if (DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration[count - 1].End ==
+                    long.MaxValue)
+                {
+                    return;
+                }
+            }
+            ////////////
+
+            DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration.Add(duration);
+            _buffRegistered = true;
+
+
         }
 
         private void ApplyBuff(long lastTicks)
         {
             if (HotDot.Type == "HPChange" || HotDot.Type == "MPChange") return;
+            if (_buffRegistered == false) return;
             var userEntity = NetworkController.Instance.EntityTracker.GetOrNull(Target);
             if (!(userEntity is UserEntity))
             {
                 return;
             }
             var player = new Player((UserEntity)userEntity);
-
-            // TODO: reset => exception
             DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration[DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration.Count - 1].Update(lastTicks);
          
         }          

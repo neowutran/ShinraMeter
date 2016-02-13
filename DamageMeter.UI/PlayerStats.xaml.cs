@@ -93,6 +93,8 @@ namespace DamageMeter.UI
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}
                 };
+                _windowSkill.Show();
+                return;
             }
 
             _windowSkill.Show();

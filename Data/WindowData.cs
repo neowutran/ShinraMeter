@@ -48,7 +48,7 @@ namespace Data
 
         public bool Winpcap { get; private set; }
 
-        public bool InvisibleUI { get; private set; }
+        public bool InvisibleUI { get; set; }
 
         private void DefaultValue()
         {

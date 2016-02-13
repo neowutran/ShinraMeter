@@ -38,6 +38,7 @@ namespace DamageMeter
             {
                 return;
             }
+
             _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
         }
 

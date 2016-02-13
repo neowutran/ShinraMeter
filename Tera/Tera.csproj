@@ -43,7 +43,6 @@
     <Compile Include="Game\Messages\Server\S_ABNORMALITY_END.cs" />
     <Compile Include="Game\Messages\Server\S_ABNORMALITY_BEGIN.cs" />
     <Compile Include="Game\Messages\Server\S_ABNORMALITY_REFRESH.cs" />
-    <Compile Include="Game\Messages\Server\S_CLEAR_ALL_HOLDED_ABNORMALITY.cs" />
     <Compile Include="Game\Messages\Server\S_CREATURE_CHANGE_HP.cs" />
     <Compile Include="Game\Messages\Server\S_DESPAWN_NPC.cs" />
     <Compile Include="Game\Messages\Server\S_PARTY_MEMBER_ABNORMAL_ADD.cs" />

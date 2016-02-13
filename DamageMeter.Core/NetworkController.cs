@@ -134,12 +134,14 @@ namespace DamageMeter
                 var message = _messageFactory.Create(obj);
                 EntityTracker.Update(message);
 
+                /*
                 var npcOccupier = message as SNpcOccupierInfo;
                 if (npcOccupier != null)
                 {
                     DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier), npcOccupier.Time.Ticks);
                     continue;
                 }
+                */
 
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
@@ -178,6 +180,7 @@ namespace DamageMeter
                 var despawnNpc = message as SDespawnNpc;
                 if (despawnNpc != null)
                 {
+                    DamageTracker.Instance.HasReset(despawnNpc);
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnNpc);
                     continue;
                 }

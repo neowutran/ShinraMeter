@@ -78,6 +78,8 @@ namespace DamageMeter.UI
                 Visible = true,
                 Text = "Shinra Meter V" + UpdateManager.Version + ": No server"
             };
+            _trayIcon.Click += TrayIconOnClick;
+
 
             var reset = new MenuItem {Text = "Reset"};
             reset.Click += ResetOnClick;
@@ -85,20 +87,30 @@ namespace DamageMeter.UI
             exit.Click += ExitOnClick;
             var wiki = new MenuItem {Text = "Wiki"};
             wiki.Click += WikiOnClick;
+            var patch = new MenuItem {Text = "Patch note"};
+            patch.Click+= PatchOnClick;
             var issues = new MenuItem {Text = "Report issue"};
+
             issues.Click += IssuesOnClick;
             var forum = new MenuItem {Text = "Forum"};
+
             forum.Click += ForumOnClick;
+            
           
             var context = new ContextMenu();
             context.MenuItems.Add(reset);
             context.MenuItems.Add(exit);
             context.MenuItems.Add(wiki);
+            context.MenuItems.Add(patch);
             context.MenuItems.Add(issues);
             context.MenuItems.Add(forum);
 
             _trayIcon.ContextMenu = context;
-            _trayIcon.Click += TrayIconOnClick;
+        }
+
+        private void PatchOnClick(object sender, EventArgs eventArgs)
+        {
+            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
         }
 
         private void ExitOnClick(object sender, EventArgs eventArgs)
@@ -113,23 +125,38 @@ namespace DamageMeter.UI
 
         private void ForumOnClick(object sender, EventArgs eventArgs)
         {
-            Process.Start("http://forum.teratoday.com/topic/1316-shinrameter-open-source-tera-dps-meter/");
+            Process.Start("explorer.exe", "http://forum.teratoday.com/topic/1316-shinrameter-open-source-tera-dps-meter/");
         }
 
         private void IssuesOnClick(object sender, EventArgs eventArgs)
         {
-            Process.Start("https://github.com/neowutran/ShinraMeter/issues");
+            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/issues");
         }
 
         private void WikiOnClick(object sender, EventArgs eventArgs)
         {
-            Process.Start("https://github.com/neowutran/ShinraMeter/wiki");
+          Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki");
         }
 
         private void TrayIconOnClick(object sender, EventArgs eventArgs)
         {
-            var mi = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-            mi.Invoke(_trayIcon, null);
+          
+            var e = (System.Windows.Forms.MouseEventArgs) eventArgs;
+            if (e.Button.ToString() == "Right")
+            {
+                return;
+            }
+            var invisibleUi = BasicTeraData.Instance.WindowData.InvisibleUI;
+            BasicTeraData.Instance.WindowData.InvisibleUI = !invisibleUi;
+
+            if (invisibleUi)
+            {
+                Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
+            }
         }
 
         public void VerifyClose()

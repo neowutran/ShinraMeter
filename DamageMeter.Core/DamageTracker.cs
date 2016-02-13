@@ -6,6 +6,7 @@ using DamageMeter.Skills;
 using DamageMeter.Skills.Skill;
 using DamageMeter.Taken;
 using Tera.Game;
+using Tera.Game.Messages;
 using Skill = DamageMeter.Skills.Skill.Skill;
 
 namespace DamageMeter
@@ -78,6 +79,12 @@ namespace DamageMeter
 
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
 
+        public void HasReset(SDespawnNpc message)
+        {
+            _hasReset.Add(message.Npc);
+        }
+
+        private List<EntityId> _hasReset = new List<EntityId>(); 
 
         public Dictionary<Entity, EntityInfo> GetEntityStats()
         {
@@ -166,6 +173,7 @@ namespace DamageMeter
 
         public void Reset()
         {
+            _hasReset = new List<EntityId>();
             var newUserStats = new Dictionary<Player, PlayerInfo>();
             var newEntityStats = new Dictionary<Entity, EntityInfo>();
             bool add;
@@ -297,12 +305,18 @@ namespace DamageMeter
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
 
+               
                 UpdateStatsDealt(playerStats, skillResult, entityTarget, time);
             }
 
             if (skillResult.TargetPlayer == null) return;
             playerStats = GetOrCreate(skillResult.TargetPlayer);
-            var entitySource = GetEntity(skillResult.Source.Id) ?? new Entity("UNKNOW");
+            var entitySource = new Entity("UNKNOW");
+            if (skillResult.Source != null)
+            {
+                entitySource = GetEntity(skillResult.Source.Id) ?? new Entity("UNKNOW");
+
+            }
             UpdateStatsReceived(playerStats, skillResult, entitySource, time);
         }
 
@@ -332,6 +346,13 @@ namespace DamageMeter
 
         private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget, long time)
         {
+
+            if (_hasReset.Contains(entityTarget.Id))
+            {
+                DeleteEntity(entityTarget);
+                _hasReset.Remove(entityTarget.Id);
+            }
+
             if (!IsValidAttack(message))
             {
                 return;
@@ -395,6 +416,13 @@ namespace DamageMeter
 
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource, long time)
         {
+
+            if (_hasReset.Contains(entitySource.Id))
+            {
+                DeleteEntity(entitySource);
+                _hasReset.Remove(entitySource.Id);
+            }
+
             if (!IsValidAttack(message))
             {
                 return;

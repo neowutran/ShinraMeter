@@ -28,7 +28,8 @@ namespace DamageMeter.Dealt
                 }
                 if (NetworkController.Instance.Encounter == null)
                 {
-                    return _entitiesStats.Keys.OrderBy(x => x).ToList()[0];
+                    var list = _entitiesStats.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+                    return (from element in list where element.Value.Any(stats => stats.Value.Dps > 0) select element.Key).FirstOrDefault();
                 }
                 return GetFirstHit(NetworkController.Instance.Encounter);
             }
@@ -44,7 +45,8 @@ namespace DamageMeter.Dealt
                 }
                 if (NetworkController.Instance.Encounter == null)
                 {
-                    return _entitiesStats.Keys.OrderByDescending(x => x).ToList()[0];
+                    var list = _entitiesStats.OrderByDescending(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+                    return (from element in list where element.Value.Any(stats => stats.Value.Dps > 0) select element.Key).FirstOrDefault();
                 }
                 return GetLastHit(NetworkController.Instance.Encounter);
                 
@@ -183,9 +185,10 @@ namespace DamageMeter.Dealt
             {
                 foreach (var stat in timedStat.Value)
                 {
-                    if (stat.Key == entity && (stat.Value.FirstHit < firstHit || firstHit == 0))
+                    if (stat.Key == entity && stat.Value.Dps > 0 && (stat.Value.FirstHit < firstHit || firstHit == 0))
                     {
                         firstHit = stat.Value.FirstHit;
+                        
                     }
                 }
             }
@@ -279,7 +282,7 @@ namespace DamageMeter.Dealt
             {
                 foreach (var stat in timedStat.Value)
                 {
-                    if (stat.Key == entity && (stat.Value.LastHit > lastHit))
+                    if (stat.Key == entity && stat.Value.Dps > 0 && (stat.Value.LastHit > lastHit))
                     {
                         lastHit = stat.Value.LastHit;
                     }
