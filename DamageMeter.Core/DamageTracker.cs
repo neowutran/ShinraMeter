@@ -143,6 +143,8 @@ namespace DamageMeter
                 stats.Value.Dealt.RemoveEntity(entity);
                 stats.Value.Received.RemoveEntity(entity);
             }
+
+            _hasReset.Remove(entity.Id);
         }
 
         public event CurrentBossChange CurrentBossUpdated;
