@@ -302,6 +302,7 @@ namespace DamageMeter.UI
 
         public void SelectEncounter(Entity entity)
         {
+            Console.WriteLine("Update boss encounter");
             UpdateEncounter changeSelected = delegate(Entity newentity)
             {
                 if (!newentity.IsBoss()) return;
@@ -309,7 +310,13 @@ namespace DamageMeter.UI
                 foreach (var item in ListEncounter.Items)
                 {
                     var encounter = (Entity) ((ComboBoxItem) item).Content;
-                    if (encounter != newentity) continue;
+                    if (encounter != newentity)
+                    {
+
+                        Console.WriteLine("encounter:"+encounter+";boss:"+newentity);
+                        continue;
+
+                    }
                     ListEncounter.SelectedItem = item;
                     return;
                 }

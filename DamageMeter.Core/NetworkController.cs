@@ -147,12 +147,14 @@ namespace DamageMeter
                 if (changeHp != null)
                 {
                     AbnormalityTracker.Instance.Update(changeHp);
+                    continue;
                 }
 
                 var changeMp = message as SPlayerChangeMp;
                 if (changeMp != null)
                 {
                     AbnormalityTracker.Instance.Update(changeMp);
+                    continue;
                 }
 
 
@@ -189,6 +191,8 @@ namespace DamageMeter
                 if (despawnUser != null)
                 {
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
+                    continue;
+
                 }
 
 

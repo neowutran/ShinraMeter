@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -85,6 +86,7 @@ namespace DamageMeter.UI
         public void Update(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerInfo playerinfo)
         {
+           // Console.WriteLine("thread id:"+Thread.CurrentThread.ManagedThreadId);
             var skills = NoTimedSkills(timedSkills);
             var allSkills = NoTimedSkills(timedAllSkills);
             _buff.Update(playerinfo);

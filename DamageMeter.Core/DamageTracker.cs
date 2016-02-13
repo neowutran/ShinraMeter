@@ -118,17 +118,21 @@ namespace DamageMeter
             
             var add = false;
             var newEntityStat = new EntityInfo();
-            foreach (var abnormality in EntitiesStats[entity].AbnormalityTime)
+            if (EntitiesStats.ContainsKey(entity))
             {
 
-                if (abnormality.Value.Ended())
+                foreach (var abnormality in EntitiesStats[entity].AbnormalityTime)
                 {
-                    continue;
+
+                    if (abnormality.Value.Ended())
+                    {
+                        continue;
+                    }
+                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
+                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count - 1]);
+                    newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
+                    add = true;
                 }
-                var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
-                duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count - 1]);
-                newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
-                add = true;
             }
 
             EntitiesStats.Remove(entity);
