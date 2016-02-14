@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Sniffing;
@@ -16,13 +15,11 @@ using DamageMeter.UI.EntityStats;
 using Data;
 using log4net;
 using Application = System.Windows.Forms.Application;
-using Brushes = System.Windows.Media.Brushes;
 using ContextMenu = System.Windows.Forms.ContextMenu;
-using Control = System.Windows.Forms.Control;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
-using Point = System.Windows.Point;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace DamageMeter.UI
 {
@@ -32,9 +29,9 @@ namespace DamageMeter.UI
     public partial class MainWindow
     {
         private readonly EntityStatsMain _entityStats;
+        private bool _keyboardInitialized;
 
         private NotifyIcon _trayIcon;
-        private bool _keyboardInitialized;
 
         public MainWindow()
         {
@@ -58,7 +55,7 @@ namespace DamageMeter.UI
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-          
+
             PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
@@ -66,8 +63,10 @@ namespace DamageMeter.UI
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             _entityStats = new EntityStatsMain(this);
-             TrayConfiguration();
+            TrayConfiguration();
         }
+
+        public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
 
         private void TrayConfiguration()
@@ -88,15 +87,15 @@ namespace DamageMeter.UI
             var wiki = new MenuItem {Text = "Wiki"};
             wiki.Click += WikiOnClick;
             var patch = new MenuItem {Text = "Patch note"};
-            patch.Click+= PatchOnClick;
+            patch.Click += PatchOnClick;
             var issues = new MenuItem {Text = "Report issue"};
 
             issues.Click += IssuesOnClick;
             var forum = new MenuItem {Text = "Forum"};
 
             forum.Click += ForumOnClick;
-            
-          
+
+
             var context = new ContextMenu();
             context.MenuItems.Add(reset);
             context.MenuItems.Add(exit);
@@ -125,7 +124,8 @@ namespace DamageMeter.UI
 
         private void ForumOnClick(object sender, EventArgs eventArgs)
         {
-            Process.Start("explorer.exe", "http://forum.teratoday.com/topic/1316-shinrameter-open-source-tera-dps-meter/");
+            Process.Start("explorer.exe",
+                "http://forum.teratoday.com/topic/1316-shinrameter-open-source-tera-dps-meter/");
         }
 
         private void IssuesOnClick(object sender, EventArgs eventArgs)
@@ -135,13 +135,12 @@ namespace DamageMeter.UI
 
         private void WikiOnClick(object sender, EventArgs eventArgs)
         {
-          Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki");
+            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki");
         }
 
         private void TrayIconOnClick(object sender, EventArgs eventArgs)
         {
-          
-            var e = (System.Windows.Forms.MouseEventArgs) eventArgs;
+            var e = (MouseEventArgs) eventArgs;
             if (e.Button.ToString() == "Right")
             {
                 return;
@@ -161,8 +160,9 @@ namespace DamageMeter.UI
 
         public void VerifyClose()
         {
-            if (MessageBox.Show("Do you want to close the application?", "Close Shinra Meter V" + UpdateManager.Version, MessageBoxButton.YesNo,
-               MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Do you want to close the application?", "Close Shinra Meter V" + UpdateManager.Version,
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 Close();
             }
@@ -176,8 +176,6 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
             NetworkController.Instance.Exit();
         }
-
-        public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
@@ -302,7 +300,6 @@ namespace DamageMeter.UI
 
         public void SelectEncounter(Entity entity)
         {
-            Console.WriteLine("Update boss encounter");
             UpdateEncounter changeSelected = delegate(Entity newentity)
             {
                 if (!newentity.IsBoss()) return;
@@ -312,10 +309,7 @@ namespace DamageMeter.UI
                     var encounter = (Entity) ((ComboBoxItem) item).Content;
                     if (encounter != newentity)
                     {
-
-                        Console.WriteLine("encounter:"+encounter+";boss:"+newentity);
                         continue;
-
                     }
                     ListEncounter.SelectedItem = item;
                     return;
@@ -361,7 +355,7 @@ namespace DamageMeter.UI
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-         Exit();
+            Exit();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -438,7 +432,8 @@ namespace DamageMeter.UI
         private delegate void UpdateEncounter(Entity entity);
 
         private delegate void UpdateUi(
-            long firstHit, long lastHit, long totalDamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
+            long firstHit, long lastHit, long totalDamage, Dictionary<Entity, EntityInfo> entities,
+            List<PlayerInfo> stats);
 
         private delegate void ChangeTitle(string servername);
     }

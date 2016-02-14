@@ -29,7 +29,10 @@ namespace DamageMeter.Dealt
                 if (NetworkController.Instance.Encounter == null)
                 {
                     var list = _entitiesStats.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
-                    return (from element in list where element.Value.Any(stats => stats.Value.Damage > 0) select element.Key).FirstOrDefault();
+                    return
+                        (from element in list
+                            where element.Value.Any(stats => stats.Value.Damage > 0)
+                            select element.Key).FirstOrDefault();
                 }
                 return GetFirstHit(NetworkController.Instance.Encounter);
             }
@@ -46,10 +49,12 @@ namespace DamageMeter.Dealt
                 if (NetworkController.Instance.Encounter == null)
                 {
                     var list = _entitiesStats.OrderByDescending(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
-                    return (from element in list where element.Value.Any(stats => stats.Value.Damage > 0) select element.Key).FirstOrDefault();
+                    return
+                        (from element in list
+                            where element.Value.Any(stats => stats.Value.Damage > 0)
+                            select element.Key).FirstOrDefault();
                 }
                 return GetLastHit(NetworkController.Instance.Encounter);
-                
             }
         }
 
@@ -188,7 +193,6 @@ namespace DamageMeter.Dealt
                     if (stat.Key == entity && stat.Value.Damage > 0 && (stat.Value.FirstHit < firstHit || firstHit == 0))
                     {
                         firstHit = stat.Value.FirstHit;
-                        
                     }
                 }
             }
@@ -242,7 +246,6 @@ namespace DamageMeter.Dealt
 
         public Dictionary<long, Dictionary<Skill, SkillStats>> GetSkills(Entity target)
         {
-            
             var stats = new Dictionary<long, Dictionary<Skill, SkillStats>>();
             foreach (var timedStats in _entitiesStats)
             {
@@ -254,7 +257,6 @@ namespace DamageMeter.Dealt
                 stats.Add(timedStats.Key, new Dictionary<Skill, SkillStats>());
                 foreach (var skillStats in timedStats.Value[target].Skills)
                 {
-
                     if (!stats[timedStats.Key].ContainsKey(skillStats.Key))
                     {
                         stats[timedStats.Key].Add(skillStats.Key, skillStats.Value);
@@ -267,7 +269,6 @@ namespace DamageMeter.Dealt
             }
 
             return stats;
-            
         }
 
         private long GetLastHit(Entity entity)

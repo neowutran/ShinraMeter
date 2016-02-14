@@ -35,7 +35,7 @@ namespace Tera.Game
             {"S_PARTY_MEMBER_ABNORMAL_CLEAR", typeof (SPartyMemberAbnormalClear)},
             {"S_PARTY_MEMBER_ABNORMAL_DEL", typeof (SPartyMemberAbnormalDel)},
             {"S_PARTY_MEMBER_ABNORMAL_REFRESH", typeof (SPartyMemberAbnormalRefresh)},
-            {"S_DESPAWN_USER", typeof(SDespawnUser) }
+            {"S_DESPAWN_USER", typeof (SDespawnUser)}
         };
 
         private readonly OpCodeNamer _opCodeNamer;

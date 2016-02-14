@@ -26,6 +26,7 @@ namespace DamageMeter.AutoUpdate
             var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];
             UpdateManager.Copy(source, UpdateManager.ExecutableDirectory + @"\..\..\");
             Console.WriteLine("New version installed");
+            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
             Process.Start(UpdateManager.ExecutableDirectory + @"\..\..\ShinraMeter.exe");
             Environment.Exit(0);
         }

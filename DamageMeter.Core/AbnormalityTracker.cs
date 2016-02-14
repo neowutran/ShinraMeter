@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Tera.Game;
@@ -70,7 +69,6 @@ namespace DamageMeter
             {
                 if (abnormalityUser[i].HotDot.Id == message.AbnormalityId)
                 {
-
                     abnormalityUser[i].ApplyBuffDebuff(message.Time.Ticks);
                     abnormalityUser.Remove(abnormalityUser[i]);
                 }
@@ -103,7 +101,7 @@ namespace DamageMeter
             }
             foreach (var abno in _abnormalities[entity])
             {
-              abno.ApplyBuffDebuff(ticks);
+                abno.ApplyBuffDebuff(ticks);
             }
             _abnormalities.Remove(entity);
         }

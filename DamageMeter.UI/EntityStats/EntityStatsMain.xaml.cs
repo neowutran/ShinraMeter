@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -55,11 +53,12 @@ namespace DamageMeter.UI.EntityStats
                     _enduranceDebuffsList.Add(abnormalityUi);
                 }
 
-                abnormalityUi.Update(abnormality.Key, abnormality.Value, statsAbnormalities.FirstHit / TimeSpan.TicksPerSecond, statsAbnormalities.LastHit / TimeSpan.TicksPerSecond);
+                abnormalityUi.Update(abnormality.Key, abnormality.Value,
+                    statsAbnormalities.FirstHit/TimeSpan.TicksPerSecond,
+                    statsAbnormalities.LastHit/TimeSpan.TicksPerSecond);
                 EnduranceAbnormality.Items.Add(abnormalityUi);
                 count++;
             }
-            
         }
 
         private void EntityStats_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

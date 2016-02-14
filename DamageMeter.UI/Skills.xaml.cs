@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DamageMeter.Skills.Skill;
-using DamageMeter.UI.Skill;
 using Data;
 
 namespace DamageMeter.UI
@@ -15,15 +13,16 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class Skills
     {
+        private readonly Buff _buff;
         private readonly PlayerStats _parent;
         private readonly SkillsDetail _skillDps;
         private readonly SkillsDetail _skillHeal;
         private readonly SkillsDetail _skillMana;
-        private readonly Buff _buff;
 
 
         public Skills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
-            Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent, PlayerInfo playerInfo)
+            Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent,
+            PlayerInfo playerInfo)
         {
             InitializeComponent();
 
@@ -84,9 +83,10 @@ namespace DamageMeter.UI
 
 
         public void Update(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
-            Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerInfo playerinfo)
+            Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills,
+            PlayerInfo playerinfo)
         {
-           // Console.WriteLine("thread id:"+Thread.CurrentThread.ManagedThreadId);
+            // Console.WriteLine("thread id:"+Thread.CurrentThread.ManagedThreadId);
             var skills = NoTimedSkills(timedSkills);
             var allSkills = NoTimedSkills(timedAllSkills);
             _buff.Update(playerinfo);

@@ -14,7 +14,7 @@ namespace DamageMeter
             IsHp = isHp;
             SkillId = skillId;
             Abnormality = abnormality;
-            
+
             Source = entityRegistry.GetOrPlaceholder(source);
             Target = entityRegistry.GetOrPlaceholder(target);
             var userNpc = UserEntity.ForEntity(Source);

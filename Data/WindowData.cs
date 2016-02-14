@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Xml.Linq;
@@ -59,7 +58,7 @@ namespace Data
             AutoUpdate = true;
             RememberPosition = true;
             InvisibleUI = false;
-            Winpcap = false;
+            Winpcap = true;
         }
 
         public void ParseRememberPosition()
@@ -99,7 +98,6 @@ namespace Data
             {
                 Winpcap = winpcap;
             }
-           
         }
 
 

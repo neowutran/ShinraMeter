@@ -15,6 +15,8 @@ namespace NetworkSniffer
     {
         private readonly byte[] _buffer;
         private readonly IPAddress _localIp;
+
+        private bool _isInit;
         private Socket _socket;
 
         public IpSnifferRawSocketSingleInterface(IPAddress localIp)
@@ -22,8 +24,6 @@ namespace NetworkSniffer
             _localIp = localIp;
             _buffer = new byte[1 << 17];
         }
-
-        private bool _isInit = false;
 
         private void Init()
         {

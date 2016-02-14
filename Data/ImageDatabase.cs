@@ -12,7 +12,7 @@ namespace Data
             Pin = new Image {Source = new BitmapImage(new Uri(folder + "pin.png"))};
             UnPin = new Image {Source = new BitmapImage(new Uri(folder + "unpin.png"))};
             EntityStats = new Image {Source = new BitmapImage(new Uri(folder + "stats.png"))};
-            Tray = new Icon(folder+"shinra.ico");
+            Tray = new Icon(folder + "shinra.ico");
         }
 
         public Image Pin { get; private set; }

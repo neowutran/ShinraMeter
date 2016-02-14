@@ -81,17 +81,16 @@ namespace DamageMeter
 
         private void Register()
         {
-         
-                Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value,
-                    BasicTeraData.Instance.HotkeysData.Paste.Key);
-                Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value,
-                    BasicTeraData.Instance.HotkeysData.Reset.Key);
-                Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Value,
-                    BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
+            Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value,
+                BasicTeraData.Instance.HotkeysData.Paste.Key);
+            Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value,
+                BasicTeraData.Instance.HotkeysData.Reset.Key);
+            Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Value,
+                BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
             foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy)
-                {
-                    Instance.RegisterHotKey(copy.Modifier, copy.Key);
-                }
+            {
+                Instance.RegisterHotKey(copy.Modifier, copy.Key);
+            }
             _isRegistered = true;
         }
 

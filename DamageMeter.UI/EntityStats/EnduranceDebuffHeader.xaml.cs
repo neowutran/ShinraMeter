@@ -9,7 +9,6 @@ namespace DamageMeter.UI.EntityStats
     /// </summary>
     public partial class EnduranceDebuffHeader
     {
-
         public EnduranceDebuffHeader()
         {
             InitializeComponent();
@@ -24,8 +23,6 @@ namespace DamageMeter.UI.EntityStats
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-         
-
             try
             {
                 var w = Window.GetWindow(this);

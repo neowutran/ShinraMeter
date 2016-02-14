@@ -10,7 +10,6 @@ namespace DamageMeter.UI.EntityStats
     /// </summary>
     public partial class EnduranceDebuff
     {
-
         public EnduranceDebuff()
         {
             InitializeComponent();
@@ -20,9 +19,9 @@ namespace DamageMeter.UI.EntityStats
         {
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
             var intervalEntity = lastHit - firstHit;
-         //   Console.WriteLine("f:"+firstHit+";l:"+lastHit+";i:"+intervalEntity);
+            //   Console.WriteLine("f:"+firstHit+";l:"+lastHit+";i:"+intervalEntity);
             var second = abnormalityDuration.Duration(firstHit, lastHit);
-           // Console.WriteLine(second);
+            // Console.WriteLine(second);
             var interval = TimeSpan.FromSeconds(second);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
@@ -34,7 +33,6 @@ namespace DamageMeter.UI.EntityStats
             {
                 LabelAbnormalityDurationPercentage.Content = abnormalityDuration.Duration(firstHit, lastHit)*100/
                                                              intervalEntity + "%";
-
             }
             interval = TimeSpan.FromSeconds(intervalEntity);
             LabelInterval.Content = interval.ToString(@"mm\:ss");
@@ -45,7 +43,6 @@ namespace DamageMeter.UI.EntityStats
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
             try
             {
                 var w = Window.GetWindow(this);

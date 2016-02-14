@@ -7,7 +7,6 @@ namespace Tera.Game.Messages
         internal SDespawnUser(TeraMessageReader reader) : base(reader)
         {
             User = reader.ReadEntityId();
-            Console.WriteLine(User);
         }
 
         public EntityId User { get; }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DamageMeter.Dealt;
 using DamageMeter.Skills;
 using DamageMeter.Skills.Skill;
-using DamageMeter.Taken;
 using Tera.Game;
 using Tera.Game.Messages;
 using Skill = DamageMeter.Skills.Skill.Skill;
@@ -16,8 +14,10 @@ namespace DamageMeter
         public delegate void CurrentBossChange(Entity entity);
 
         private static DamageTracker _instance;
-        public Dictionary<Player, PlayerInfo> UsersStats = new Dictionary<Player, PlayerInfo>();
+
+        private List<EntityId> _hasReset = new List<EntityId>();
         public Dictionary<Entity, EntityInfo> EntitiesStats = new Dictionary<Entity, EntityInfo>();
+        public Dictionary<Player, PlayerInfo> UsersStats = new Dictionary<Player, PlayerInfo>();
 
 
         private DamageTracker()
@@ -84,8 +84,6 @@ namespace DamageMeter
             _hasReset.Add(message.Npc);
         }
 
-        private List<EntityId> _hasReset = new List<EntityId>(); 
-
         public Dictionary<Entity, EntityInfo> GetEntityStats()
         {
             return EntitiesStats.ToDictionary(stats => stats.Key, stats => (EntityInfo) stats.Value.Clone());
@@ -115,15 +113,13 @@ namespace DamageMeter
             {
                 NetworkController.Instance.Encounter = null;
             }
-            
+
             var add = false;
             var newEntityStat = new EntityInfo();
             if (EntitiesStats.ContainsKey(entity))
             {
-
                 foreach (var abnormality in EntitiesStats[entity].AbnormalityTime)
                 {
-
                     if (abnormality.Value.Ended())
                     {
                         continue;
@@ -141,7 +137,7 @@ namespace DamageMeter
                 EntitiesStats.Add(entity, newEntityStat);
             }
 
-           
+
             foreach (var stats in UsersStats)
             {
                 stats.Value.Dealt.RemoveEntity(entity);
@@ -189,13 +185,12 @@ namespace DamageMeter
                 var newEntityStat = new EntityInfo();
                 foreach (var abnormality in entity.Value.AbnormalityTime)
                 {
-
                     if (abnormality.Value.Ended())
                     {
                         continue;
                     }
                     var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
-                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count -1]);
+                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count - 1]);
                     newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
                     add = true;
                 }
@@ -218,7 +213,7 @@ namespace DamageMeter
                         continue;
                     }
                     var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
-                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count -1]);
+                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count - 1]);
                     newUserStat.AbnormalityTime.Add(abnormality.Key, duration);
                     add = true;
                 }
@@ -255,12 +250,12 @@ namespace DamageMeter
             var entity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(entityId);
             if (entity is NpcEntity)
             {
-                var target = (NpcEntity)entity;
+                var target = (NpcEntity) entity;
                 return new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
             }
-            else if (entity is UserEntity)
+            if (entity is UserEntity)
             {
-                var target = (UserEntity)entity;
+                var target = (UserEntity) entity;
                 return new Entity(target.Name);
             }
 
@@ -275,29 +270,22 @@ namespace DamageMeter
             {
                 return entity2;
             }
-            else if (entity is ProjectileEntity)
+            if (entity is ProjectileEntity)
             {
-                var source = (ProjectileEntity)entity;
+                var source = (ProjectileEntity) entity;
                 if (source.Owner is NpcEntity)
                 {
-                    var source2 = (NpcEntity)source.Owner;
+                    var source2 = (NpcEntity) source.Owner;
                     return new Entity(source2.CategoryId, source.Id, source2.NpcId, source2.NpcArea);
                 }
-                else if (source.Owner is UserEntity)
+                if (source.Owner is UserEntity)
                 {
-                    var source2 = (UserEntity)source.Owner;
+                    var source2 = (UserEntity) source.Owner;
                     return new Entity(source2.Name);
                 }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
                 return null;
             }
-
+            return null;
         }
 
         public void Update(SkillResult skillResult, long time)
@@ -307,11 +295,12 @@ namespace DamageMeter
             {
                 playerStats = GetOrCreate(skillResult.SourcePlayer);
                 var entityTarget = GetActorEntity(skillResult.Target.Id);
-                if(entityTarget == null) { 
+                if (entityTarget == null)
+                {
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
 
-               
+
                 UpdateStatsDealt(playerStats, skillResult, entityTarget, time);
             }
 
@@ -321,7 +310,6 @@ namespace DamageMeter
             if (skillResult.Source != null)
             {
                 entitySource = GetEntity(skillResult.Source.Id) ?? new Entity("UNKNOW");
-
             }
             UpdateStatsReceived(playerStats, skillResult, entitySource, time);
         }
@@ -352,7 +340,6 @@ namespace DamageMeter
 
         private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget, long time)
         {
-
             if (_hasReset.Contains(entityTarget.Id))
             {
                 DeleteEntity(entityTarget);
@@ -422,7 +409,6 @@ namespace DamageMeter
 
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource, long time)
         {
-
             if (_hasReset.Contains(entitySource.Id))
             {
                 DeleteEntity(entitySource);

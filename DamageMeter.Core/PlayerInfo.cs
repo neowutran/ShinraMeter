@@ -10,13 +10,14 @@ namespace DamageMeter
 {
     public class PlayerInfo : ICloneable, IEquatable<object>
     {
+        public Dictionary<HotDot, AbnormalityDuration> AbnormalityTime = new Dictionary<HotDot, AbnormalityDuration>();
+
         public PlayerInfo(Player user)
         {
             Player = user;
             Received = new EntitiesTaken();
             Dealt = new EntitiesDealt(this);
         }
-        public Dictionary<HotDot, AbnormalityDuration> AbnormalityTime = new Dictionary<HotDot, AbnormalityDuration>();
 
 
         public Player Player { get; }
@@ -35,7 +36,7 @@ namespace DamageMeter
             {
                 Received = (EntitiesTaken) Received.Clone(),
                 Dealt = (EntitiesDealt) Dealt.Clone(),
-                AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => (AbnormalityDuration)i.Value.Clone())
+                AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => (AbnormalityDuration) i.Value.Clone())
             };
             clone.Dealt.SetPlayerInfo(clone);
             return clone;
@@ -86,6 +87,5 @@ namespace DamageMeter
         {
             return Class == PlayerClass.Mystic || Class == PlayerClass.Priest;
         }
-
     }
 }

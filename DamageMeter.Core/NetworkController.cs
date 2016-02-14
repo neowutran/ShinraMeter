@@ -17,7 +17,8 @@ namespace DamageMeter
         public delegate void ConnectedHandler(string serverName);
 
         public delegate void UpdateUiHandler(
-            long firsthit, long lastHit , long totaldamage, Dictionary<Entity, EntityInfo> entities, List<PlayerInfo> stats);
+            long firsthit, long lastHit, long totaldamage, Dictionary<Entity, EntityInfo> entities,
+            List<PlayerInfo> stats);
 
         private static NetworkController _instance;
 
@@ -53,7 +54,7 @@ namespace DamageMeter
             BasicTeraData.Instance.HotkeysData.Save();
             TeraSniffer.Instance.Enabled = false;
             Application.Exit();
-            System.Environment.Exit(0);
+            Environment.Exit(0);
         }
 
         public event ConnectedHandler Connected;
@@ -105,7 +106,6 @@ namespace DamageMeter
         {
             while (true)
             {
-
                 if (ForceUpdate)
                 {
                     ForceUpdate = false;
@@ -113,7 +113,6 @@ namespace DamageMeter
                 }
 
                 CheckUpdateUi();
-
 
 
                 Message obj;
@@ -134,14 +133,14 @@ namespace DamageMeter
                 var message = _messageFactory.Create(obj);
                 EntityTracker.Update(message);
 
-                
+
                 var npcOccupier = message as SNpcOccupierInfo;
                 if (npcOccupier != null)
                 {
                     DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier), npcOccupier.Time.Ticks);
                     continue;
                 }
-                
+
 
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
@@ -192,7 +191,6 @@ namespace DamageMeter
                 {
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
                     continue;
-
                 }
 
 
