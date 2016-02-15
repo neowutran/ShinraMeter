@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <window>
   <location>
-    <x>3</x>
-    <y>0</y>
+    <x>103</x>
+    <y>212</y>
   </location>
   <language>EU-EN</language>
   <opacity>
@@ -10,7 +10,7 @@
     <skillWindow>70</skillWindow>
   </opacity>
   <autoupdate>false</autoupdate>
-  <remember_position>false</remember_position>
+  <remember_position>true</remember_position>
   <winpcap>true</winpcap>
-  <invisible_ui>true</invisible_ui>
+  <invisible_ui>false</invisible_ui>
 </window>

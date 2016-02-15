@@ -94,7 +94,7 @@ namespace DamageMeter
 
         public bool Equals(Entity other)
         {
-            return Name.Equals(other.Name) && Id == other.Id;
+            return Name.Equals(other.Name);
         }
 
         public static bool operator ==(Entity a, Entity b)
@@ -120,7 +120,7 @@ namespace DamageMeter
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() ^ Id.GetHashCode();
+            return Name.GetHashCode();
         }
     }
 }

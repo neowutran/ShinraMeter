@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
@@ -50,7 +51,6 @@ namespace DamageMeter.UI
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
             NetworkController.Instance.TickUpdated += Update;
-            DamageTracker.Instance.CurrentBossUpdated += SelectEncounter;
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -59,11 +59,21 @@ namespace DamageMeter.UI
             PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
-            UpdateComboboxEncounter(new LinkedList<Entity>());
+            UpdateComboboxEncounter(new LinkedList<Entity>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             _entityStats = new EntityStatsMain(this);
             TrayConfiguration();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
+            source.AddHook(new HwndSourceHook(WindowsServices.ClickNoFocus));
+            
+         //   var hwnd = new WindowInteropHelper(this).Handle;
+         //  WindowsServices.SetWindowExTransparent(hwnd);
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -218,11 +228,11 @@ namespace DamageMeter.UI
         }
 
         public void Update(long nfirstHit, long nlastHit, long ntotalDamage, Dictionary<Entity, EntityInfo> nentities,
-            List<PlayerInfo> nstats)
+            List<PlayerInfo> nstats, Entity ncurrentBoss)
         {
             UpdateUi changeUi =
                 delegate(long firstHit, long lastHit, long totalDamage, Dictionary<Entity, EntityInfo> entities,
-                    List<PlayerInfo> stats)
+                    List<PlayerInfo> stats, Entity currentBoss)
                 {
                     StayTopMost();
                     var entitiesStats = entities.ToList().OrderByDescending(e => e.Value.LastHit).ToList();
@@ -231,7 +241,7 @@ namespace DamageMeter.UI
                     {
                         encounterList.AddLast(entityStats.Key);
                     }
-                    UpdateComboboxEncounter(encounterList);
+                    UpdateComboboxEncounter(encounterList, currentBoss);
                     _entityStats.Update(entities);
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
@@ -284,7 +294,7 @@ namespace DamageMeter.UI
                         Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
                     }
                 };
-            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, nentities, nstats);
+            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, nentities, nstats, ncurrentBoss);
         }
 
 
@@ -298,26 +308,6 @@ namespace DamageMeter.UI
             Dispatcher.Invoke(changeTitle, serverName);
         }
 
-        public void SelectEncounter(Entity entity)
-        {
-            UpdateEncounter changeSelected = delegate(Entity newentity)
-            {
-                if (!newentity.IsBoss()) return;
-
-                foreach (var item in ListEncounter.Items)
-                {
-                    var encounter = (Entity) ((ComboBoxItem) item).Content;
-                    if (encounter != newentity)
-                    {
-                        continue;
-                    }
-                    ListEncounter.SelectedItem = item;
-                    return;
-                }
-            };
-            Dispatcher.Invoke(changeSelected, entity);
-        }
-
         private void StayTopMost()
 
         {
@@ -326,8 +316,49 @@ namespace DamageMeter.UI
             Topmost = true;
         }
 
-        private void UpdateComboboxEncounter(IEnumerable<Entity> entities)
+        private bool NeedUpdateEncounter(List<Entity> entities)
         {
+            if (entities.Count != ListEncounter.Items.Count)
+            {
+                return true;
+            }
+            for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
+            {
+                if (((Entity)((ComboBoxItem)ListEncounter.Items[i]).Content) != entities[i - 1])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool ChangeEncounterSelection(Entity entity)
+        {
+            if (entity == null)
+            {
+                return false;
+            }
+            foreach (var item in ListEncounter.Items)
+            {
+                if(((Entity)((ComboBoxItem)item).Content) == entity)
+                {
+
+                    ListEncounter.SelectedItem = item;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void UpdateComboboxEncounter(IEnumerable<Entity> entities, Entity currentBoss)
+        {
+            var entityList = entities.ToList();
+            if (!NeedUpdateEncounter(entityList))
+            {
+                ChangeEncounterSelection(currentBoss);
+                return;
+            }
+
             Entity selectedEntity = null;
             if ((ComboBoxItem) ListEncounter.SelectedItem != null)
             {
@@ -337,7 +368,7 @@ namespace DamageMeter.UI
             ListEncounter.Items.Clear();
             ListEncounter.Items.Add(new ComboBoxItem {Content = new Entity("TOTAL")});
             var selected = false;
-            foreach (var entity in entities)
+            foreach (var entity in entityList)
             {
                 var item = new ComboBoxItem {Content = entity};
                 if (entity.IsBoss())
@@ -349,8 +380,14 @@ namespace DamageMeter.UI
                 ListEncounter.SelectedItem = ListEncounter.Items[ListEncounter.Items.Count - 1];
                 selected = true;
             }
+            if (ChangeEncounterSelection(currentBoss))
+            {
+                return;
+            }
+
             if (selected) return;
             ListEncounter.SelectedItem = ListEncounter.Items[0];
+
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
@@ -388,18 +425,6 @@ namespace DamageMeter.UI
         }
 
 
-        private void ToggleTopMost_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (Topmost)
-            {
-                Topmost = false;
-                PinImage.Source = BasicTeraData.Instance.ImageDatabase.Pin.Source;
-                return;
-            }
-            Topmost = true;
-            PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
-        }
-
 
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -416,25 +441,36 @@ namespace DamageMeter.UI
             }
         }
 
-        private void EntityStatsImage_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _entityStats.Show();
-            _entityStats.Topmost = false;
-            _entityStats.Topmost = true;
-        }
-
         public void CloseEntityStats()
         {
             _entityStats.Hide();
             _entityStats.Topmost = false;
         }
 
-        private delegate void UpdateEncounter(Entity entity);
-
         private delegate void UpdateUi(
             long firstHit, long lastHit, long totalDamage, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats);
+            List<PlayerInfo> stats, Entity currentBoss);
 
         private delegate void ChangeTitle(string servername);
+
+        private void PinImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (Topmost)
+            {
+                Topmost = false;
+                PinImage.Source = BasicTeraData.Instance.ImageDatabase.Pin.Source;
+                return;
+            }
+            Topmost = true;
+            PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
+        }
+
+        private void EntityStatsImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _entityStats.Show();
+            _entityStats.Topmost = false;
+            _entityStats.Topmost = true;
+        }
     }
 }

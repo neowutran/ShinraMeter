@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using DamageMeter.Skills.Skill;
 using Data;
 
@@ -79,6 +81,16 @@ namespace DamageMeter.UI
             MaxWidth = width + 50;
             MinWidth = width - 300;
             Width = width - 300;
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
+            source.AddHook(new HwndSourceHook(WindowsServices.ClickNoFocus));
+
+            //   var hwnd = new WindowInteropHelper(this).Handle;
+            //  WindowsServices.SetWindowExTransparent(hwnd);
         }
 
 

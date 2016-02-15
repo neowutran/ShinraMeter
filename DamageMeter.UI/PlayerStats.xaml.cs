@@ -69,6 +69,8 @@ namespace DamageMeter.UI
             DpsIndicator.Width = 450*PlayerInfo.Dealt.DamageFraction(totalDamage)/100;
         }
 
+
+
         private Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> Skills()
         {
             if (NetworkController.Instance.Encounter == null)
@@ -88,6 +90,7 @@ namespace DamageMeter.UI
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
+            e.Handled = true;
             var skills = Skills();
             if (_windowSkill == null)
             {
@@ -128,5 +131,6 @@ namespace DamageMeter.UI
                 Console.WriteLine(@"Exception move");
             }
         }
+
     }
 }

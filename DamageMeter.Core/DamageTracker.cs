@@ -15,7 +15,7 @@ namespace DamageMeter
 
         private static DamageTracker _instance;
 
-        private List<EntityId> _hasReset = new List<EntityId>();
+        private List<Entity> _hasReset = new List<Entity>();
         public Dictionary<Entity, EntityInfo> EntitiesStats = new Dictionary<Entity, EntityInfo>();
         public Dictionary<Player, PlayerInfo> UsersStats = new Dictionary<Player, PlayerInfo>();
 
@@ -77,11 +77,18 @@ namespace DamageMeter
             }
         }
 
+        public Entity CurrentBoss { get; set; }
+
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
 
         public void HasReset(SDespawnNpc message)
         {
-            _hasReset.Add(message.Npc);
+            var entity = GetActorEntity(message.Npc);
+            if (entity == null)
+            {
+                return;
+            }
+            _hasReset.Add(entity);
         }
 
         public Dictionary<Entity, EntityInfo> GetEntityStats()
@@ -144,15 +151,15 @@ namespace DamageMeter
                 stats.Value.Received.RemoveEntity(entity);
             }
 
-            _hasReset.Remove(entity.Id);
+            _hasReset.Remove(entity);
         }
-
-        public event CurrentBossChange CurrentBossUpdated;
 
         public void UpdateCurrentBoss(Entity entity)
         {
-            var handler = CurrentBossUpdated;
-            handler?.Invoke(entity);
+            if (entity.IsBoss())
+            {
+                CurrentBoss = entity;
+            }
         }
 
         public void SetFirstHit(Entity entity, long time)
@@ -175,7 +182,7 @@ namespace DamageMeter
 
         public void Reset()
         {
-            _hasReset = new List<EntityId>();
+            _hasReset = new List<Entity>();
             var newUserStats = new Dictionary<Player, PlayerInfo>();
             var newEntityStats = new Dictionary<Entity, EntityInfo>();
             bool add;
@@ -340,10 +347,11 @@ namespace DamageMeter
 
         private void UpdateStatsDealt(PlayerInfo playerInfo, SkillResult message, Entity entityTarget, long time)
         {
-            if (_hasReset.Contains(entityTarget.Id))
+            if (_hasReset.Contains(entityTarget) && entityTarget.IsBoss())
             {
+                Console.WriteLine("Remove:"+entityTarget.Name);
                 DeleteEntity(entityTarget);
-                _hasReset.Remove(entityTarget.Id);
+                _hasReset.Remove(entityTarget);
             }
 
             if (!IsValidAttack(message))
@@ -409,10 +417,11 @@ namespace DamageMeter
 
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource, long time)
         {
-            if (_hasReset.Contains(entitySource.Id))
+            if (_hasReset.Contains(entitySource) && entitySource.IsBoss())
             {
+                Console.WriteLine("Remove:" + entitySource.Name);
                 DeleteEntity(entitySource);
-                _hasReset.Remove(entitySource.Id);
+                _hasReset.Remove(entitySource);
             }
 
             if (!IsValidAttack(message))
@@ -438,7 +447,7 @@ namespace DamageMeter
             if (entitySource.IsBoss())
             {
                 foreach (
-                    var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name && t.Key.Id == entitySource.Id))
+                    var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name).OrderByDescending(t => t.Value.FirstHit))
                 {
                     entity = t.Key;
                     break;

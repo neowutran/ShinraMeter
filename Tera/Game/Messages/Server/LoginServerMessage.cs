@@ -44,8 +44,7 @@ namespace Tera.Game.Messages
             reader.Skip(9);
             
             Name = reader.ReadTeraString();
-            Console.WriteLine("Name:"+Name);
-            PrintRaw();
+          
         }
 
         public EntityId Id { get; private set; }

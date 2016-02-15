@@ -111,6 +111,7 @@
     <Compile Include="SkillsHeaders\SkillsHeaderDps.xaml.cs">
       <DependentUpon>SkillsHeaderDps.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowServices.cs" />
     <Page Include="EntityStats\EnduranceDebuffHeader.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

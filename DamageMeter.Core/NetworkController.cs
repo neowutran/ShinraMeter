@@ -18,7 +18,7 @@ namespace DamageMeter
 
         public delegate void UpdateUiHandler(
             long firsthit, long lastHit, long totaldamage, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats);
+            List<PlayerInfo> stats, Entity currentBoss);
 
         private static NetworkController _instance;
 
@@ -98,7 +98,9 @@ namespace DamageMeter
             var lastHit = DamageTracker.Instance.LastHit;
             var entities =
                 DamageTracker.Instance.GetEntityStats();
-            handler?.Invoke(firstHit, lastHit, damage, entities, stats);
+            var currentBossFight = DamageTracker.Instance.CurrentBoss;
+            handler?.Invoke(firstHit, lastHit, damage, entities, stats, currentBossFight);
+            DamageTracker.Instance.CurrentBoss = null;
         }
 
 
