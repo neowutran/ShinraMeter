@@ -28,10 +28,7 @@ namespace NetworkSniffer
         private void Init()
         {
             Debug.Assert(_socket == null);
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP)
-            {
-                ReceiveBufferSize = 8192*1024
-            };
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
 
             if (_localIp != null)
             {
@@ -41,7 +38,9 @@ namespace NetworkSniffer
             var receiveAllOn = BitConverter.GetBytes(1);
             _socket.IOControl(IOControlCode.ReceiveAll, receiveAllOn, null);
 
-            _socket.ReceiveBufferSize = 1 << 16;
+            //_socket.ReceiveBufferSize = 1 << 16;
+            _socket.ReceiveBufferSize = 8192*1024;
+
             Read();
         }
 
@@ -69,7 +68,10 @@ namespace NetworkSniffer
             }
             var socket = (Socket) ar.AsyncState;
             var count = socket.EndReceive(ar);
-
+            if (count == 0)
+            {
+                Console.WriteLine("Socket disconnected");
+            }
 
             OnPacketReceived(new ArraySegment<byte>(_buffer, 0, count));
             Read();

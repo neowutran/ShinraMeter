@@ -13,7 +13,6 @@
         AllowsTransparency="True"
         ResizeMode="NoResize"
         BorderThickness="0"
-        Focusable="False"
         Icon="shinra.jpg"
         MinWidth="450"
         ShowActivated="False"
@@ -202,12 +201,12 @@
     <Grid HorizontalAlignment="Left" Width="450">
 
 
-        <Image Focusable="False" Grid.Column="0" x:Name="PinImage" PreviewMouseLeftButtonDown="PinImage_OnPreviewMouseLeftButtonDown"  Stretch="Fill"
+        <Image Grid.Column="0" x:Name="PinImage" PreviewMouseLeftButtonDown="PinImage_OnPreviewMouseLeftButtonDown"  Stretch="Fill"
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" />
 
 
-        <ComboBox Focusable="False" SelectionChanged="ListEncounter_OnSelectionChanged"
+        <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
                   Margin="30,0,0,0" VerticalAlignment="Top" Width="270" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
