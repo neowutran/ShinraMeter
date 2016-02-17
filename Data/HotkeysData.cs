@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -43,71 +44,39 @@ namespace Data
             var root = xml.Root;
             if (root == null) return;
 
-            var pasteQuery = from hotkeys in root.Descendants("paste")
-                select hotkeys.Element("key");
-            var resetQuery = from hotkeys in root.Descendants("reset")
-                select hotkeys.Element("key");
-
-
-            Keys resetKey, pasteKey;
-
-            var xElements = resetQuery as XElement[] ?? resetQuery.ToArray();
-            var keyValue = xElements.First().Value;
-            keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
-            if (!Enum.TryParse(keyValue, out resetKey))
+            var pasteKey = ReadElement(root, "paste",false);
+            if (pasteKey != null)
             {
-                var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
-                MessageBox.Show(message);
-                throw new InvalidConfigFileException(message);
+                Paste = (KeyValuePair<Keys, ModifierKeys>)pasteKey;
             }
 
-            var enumerable = pasteQuery as XElement[] ?? pasteQuery.ToArray();
-            keyValue = enumerable.First().Value;
-            keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
-            if (!Enum.TryParse(keyValue, out pasteKey))
+            var resetKey = ReadElement(root, "reset", true);
+            if (resetKey != null)
             {
-                var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
-                MessageBox.Show(message);
-                throw new InvalidConfigFileException(message);
+                Reset = (KeyValuePair<Keys, ModifierKeys>)resetKey;
             }
 
-
-            //Get modifier
-            var pasteShiftQuery = from hotkeys in root.Descendants("paste")
-                select hotkeys.Element("shift");
-            var pasteWindowQuery = from hotkeys in root.Descendants("paste")
-                select hotkeys.Element("window");
-            var pasteCtrlQuery = from hotkeys in root.Descendants("paste")
-                select hotkeys.Element("ctrl");
-
-            var resetShiftQuery = from hotkeys in root.Descendants("reset")
-                select hotkeys.Element("shift");
-            var resetCtrlQuery = from hotkeys in root.Descendants("reset")
-                select hotkeys.Element("ctrl");
-            var resetWindowQuery = from hotkeys in root.Descendants("reset")
-                select hotkeys.Element("window");
-            var resetAltQuery = from hotkeys in root.Descendants("reset")
-                select hotkeys.Element("alt");
-
-
-            bool pasteShift, pasteWindow, resetShift, resetCtrl, resetWindow, resetAlt, pasteCtrl;
-            bool.TryParse(pasteShiftQuery.First().Value, out pasteShift);
-            bool.TryParse(pasteWindowQuery.First().Value, out pasteWindow);
-            bool.TryParse(pasteCtrlQuery.First().Value, out pasteCtrl);
-
-
-            bool.TryParse(resetShiftQuery.First().Value, out resetShift);
-            bool.TryParse(resetCtrlQuery.First().Value, out resetCtrl);
-            bool.TryParse(resetWindowQuery.First().Value, out resetWindow);
-            bool.TryParse(resetAltQuery.First().Value, out resetAlt);
-
-            var pasteModifier = ConvertToModifierKey(pasteCtrl, false, pasteShift, pasteWindow);
-            var resetModifier = ConvertToModifierKey(resetCtrl, resetAlt, resetShift, resetWindow);
-
-            Paste = new KeyValuePair<Keys, ModifierKeys>(pasteKey, pasteModifier);
-            Reset = new KeyValuePair<Keys, ModifierKeys>(resetKey, resetModifier);
             Copy = new List<CopyKey>();
-            KeyResetCurrent(root);
+
+            var activateKey = ReadElement(root, "activate_click_throu", true);
+            if (activateKey != null)
+            {
+                ActivateClickThrou = (KeyValuePair<Keys,ModifierKeys>)activateKey;
+            }
+
+            var desactivateKey = ReadElement(root, "desactivate_click_throu", true);
+            if (desactivateKey != null)
+            {
+                DesactivateClickThrou = (KeyValuePair<Keys, ModifierKeys>)desactivateKey;
+            }
+
+            var resetCurrentKey = ReadElement(root, "reset_current", true);
+            if (resetCurrentKey != null)
+            {
+                ResetCurrent = (KeyValuePair<Keys, ModifierKeys>)resetCurrentKey;
+            }
+
+
             CopyData(xml);
         }
 
@@ -117,46 +86,51 @@ namespace Data
 
         public KeyValuePair<Keys, ModifierKeys> ResetCurrent { get; private set; }
 
-        private void KeyResetCurrent(XElement root)
+
+        private static KeyValuePair<Keys, ModifierKeys>? ReadElement(XContainer root,  string element, bool readAlt)
         {
             try
             {
-                var resetCurrentQuery = from hotkeys in root.Descendants("reset_current")
+                var query = from hotkeys in root.Descendants(element)
                     select hotkeys.Element("key");
-                Keys resetCurrentKey;
-                var xelements = resetCurrentQuery as XElement[] ?? resetCurrentQuery.ToArray();
+                Keys key;
+                var xelements = query as XElement[] ?? query.ToArray();
                 var keyValue = xelements.First().Value;
                 keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
-                if (!Enum.TryParse(keyValue, out resetCurrentKey))
+                if (!Enum.TryParse(keyValue, out key))
                 {
                     var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
                     MessageBox.Show(message);
-                    throw new InvalidConfigFileException(message);
+                    return null;
                 }
 
-                var resetCurrentShiftQuery = from hotkeys in root.Descendants("reset_current")
+                var shiftQuery = from hotkeys in root.Descendants(element)
                     select hotkeys.Element("shift");
-                var resetCurrentCtrlQuery = from hotkeys in root.Descendants("reset_current")
+                var ctrlQuery = from hotkeys in root.Descendants(element)
                     select hotkeys.Element("ctrl");
-                var resetCurrentWindowQuery = from hotkeys in root.Descendants("reset_current")
+                var windowQuery = from hotkeys in root.Descendants(element)
                     select hotkeys.Element("window");
-                var resetCurrentAltQuery = from hotkeys in root.Descendants("reset_current")
-                    select hotkeys.Element("alt");
+                bool alt = false, shift, ctrl, window;
+                bool.TryParse(shiftQuery.First().Value, out shift);
+                bool.TryParse(ctrlQuery.First().Value, out ctrl);
+                bool.TryParse(windowQuery.First().Value, out window);
+                if (readAlt)
+                {
+                    var altQuery = from hotkeys in root.Descendants(element)
+                        select hotkeys.Element("alt");
+                    bool.TryParse(altQuery.First().Value, out alt);
 
-                bool resetCurrentAlt, resetCurrentShift, resetCurrentCtrl, resetCurrentWindow;
-                bool.TryParse(resetCurrentShiftQuery.First().Value, out resetCurrentShift);
-                bool.TryParse(resetCurrentCtrlQuery.First().Value, out resetCurrentCtrl);
-                bool.TryParse(resetCurrentWindowQuery.First().Value, out resetCurrentWindow);
-                bool.TryParse(resetCurrentAltQuery.First().Value, out resetCurrentAlt);
-                var resetCurrentModifier = ConvertToModifierKey(resetCurrentCtrl, resetCurrentAlt, resetCurrentShift,
-                    resetCurrentWindow);
+                }
 
-                ResetCurrent = new KeyValuePair<Keys, ModifierKeys>(resetCurrentKey, resetCurrentModifier);
+                var modifier = ConvertToModifierKey(ctrl, alt, shift, window);
+                return new KeyValuePair<Keys, ModifierKeys>(key, modifier);
+
             }
             catch
             {
+                return null;
             }
-        }
+        } 
 
         private void DefaultValue()
         {
@@ -184,7 +158,13 @@ namespace Data
                     "descending"
                     )
             };
+            ActivateClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageUp, ModifierKeys.Control);
+            DesactivateClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
+
         }
+
+        public KeyValuePair<Keys, ModifierKeys> ActivateClickThrou { get; private set; }
+         public KeyValuePair<Keys,ModifierKeys> DesactivateClickThrou { get; private set; }
 
         private void CopyData(XDocument xml)
         {
@@ -237,6 +217,7 @@ namespace Data
             return modifier;
         }
 
+
         public void Save()
         {
             var xml = new XDocument(new XElement("hotkeys"));
@@ -279,6 +260,37 @@ namespace Data
             xml.Root.Element("reset_current").Add(new XElement("window", resetCurrentWindow.ToString()));
             xml.Root.Element("reset_current").Add(new XElement("alt", resetCurrentAlt.ToString()));
             xml.Root.Element("reset_current").Add(new XElement("key", resetCurrentKey.ToString()));
+
+
+            var activateClickThrouCtrl = (ActivateClickThrou.Value & ModifierKeys.Control) != ModifierKeys.None;
+            var activateClickThrouShift = (ActivateClickThrou.Value & ModifierKeys.Shift) != ModifierKeys.None;
+            var activateClickThrouWindow = (ActivateClickThrou.Value & ModifierKeys.Win) != ModifierKeys.None;
+            var activateClickThrouAlt = (ActivateClickThrou.Value & ModifierKeys.Alt) != ModifierKeys.None;
+            var activateClickThrouKey = ActivateClickThrou.Key;
+
+            xml.Root.Add(new XElement("activate_click_throu"));
+
+            xml.Root.Element("activate_click_throu").Add(new XElement("ctrl", activateClickThrouCtrl.ToString()));
+            xml.Root.Element("activate_click_throu").Add(new XElement("shift", activateClickThrouShift.ToString()));
+            xml.Root.Element("activate_click_throu").Add(new XElement("window", activateClickThrouWindow.ToString()));
+            xml.Root.Element("activate_click_throu").Add(new XElement("alt", activateClickThrouAlt.ToString()));
+            xml.Root.Element("activate_click_throu").Add(new XElement("key", activateClickThrouKey.ToString()));
+
+
+            var desactivateClickThrouCtrl = (DesactivateClickThrou.Value & ModifierKeys.Control) != ModifierKeys.None;
+            var desactivateClickThrouShift = (DesactivateClickThrou.Value & ModifierKeys.Shift) != ModifierKeys.None;
+            var desactivateClickThrouWindow = (DesactivateClickThrou.Value & ModifierKeys.Win) != ModifierKeys.None;
+            var desactivateClickThrouAlt = (DesactivateClickThrou.Value & ModifierKeys.Alt) != ModifierKeys.None;
+            var desactivateClickThrouKey = DesactivateClickThrou.Key;
+
+            xml.Root.Add(new XElement("desactivate_click_throu"));
+
+            xml.Root.Element("desactivate_click_throu").Add(new XElement("ctrl", desactivateClickThrouCtrl.ToString()));
+            xml.Root.Element("desactivate_click_throu").Add(new XElement("shift", desactivateClickThrouShift.ToString()));
+            xml.Root.Element("desactivate_click_throu").Add(new XElement("window", desactivateClickThrouWindow.ToString()));
+            xml.Root.Element("desactivate_click_throu").Add(new XElement("alt", desactivateClickThrouAlt.ToString()));
+            xml.Root.Element("desactivate_click_throu").Add(new XElement("key", desactivateClickThrouKey.ToString()));
+
 
 
             xml.Root.Add(new XElement("copys"));

@@ -57,6 +57,13 @@ namespace DamageMeter
                      e.Modifier == BasicTeraData.Instance.HotkeysData.ResetCurrent.Value)
             {
                 NetworkController.Instance.ResetCurrent();
+            }else if (e.Key == BasicTeraData.Instance.HotkeysData.ActivateClickThrou.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ActivateClickThrou.Value)
+            {
+                NetworkController.Instance.SetClickThrou();
+            }else if (e.Key == BasicTeraData.Instance.HotkeysData.DesactivateClickThrou.Key &&
+                      e.Modifier == BasicTeraData.Instance.HotkeysData.DesactivateClickThrou.Value)
+            {
+                NetworkController.Instance.UnsetClickThrou();
             }
             foreach (
                 var copy in
@@ -87,6 +94,10 @@ namespace DamageMeter
                 BasicTeraData.Instance.HotkeysData.Reset.Key);
             Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Value,
                 BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ActivateClickThrou.Value,
+                BasicTeraData.Instance.HotkeysData.ActivateClickThrou.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.DesactivateClickThrou.Value,
+                BasicTeraData.Instance.HotkeysData.DesactivateClickThrou.Key);
             foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy)
             {
                 Instance.RegisterHotKey(copy.Modifier, copy.Key);

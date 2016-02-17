@@ -88,6 +88,17 @@ namespace DamageMeter.UI
         }
 
 
+        public void SetClickThrou()
+        {
+            _windowSkill?.SetClickThrou();
+        }
+
+        public void UnsetClickThrou()
+        {
+            _windowSkill?.UnsetClickThrou();
+        }
+
+
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -51,6 +52,8 @@ namespace DamageMeter.UI
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
             NetworkController.Instance.TickUpdated += Update;
+            NetworkController.Instance.SetClickThrouAction += SetClickThrou;
+            NetworkController.Instance.UnsetClickThrouAction += UnsetClickThrou;
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -69,11 +72,30 @@ namespace DamageMeter.UI
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
+            var source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
             source.AddHook(new HwndSourceHook(WindowsServices.ClickNoFocus));
-            
-         //   var hwnd = new WindowInteropHelper(this).Handle;
-         //  WindowsServices.SetWindowExTransparent(hwnd);
+        }
+
+        public void SetClickThrou()
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            WindowsServices.SetWindowExTransparent(hwnd);
+            foreach (var players in Controls)
+            {
+                players.Value.SetClickThrou();
+            }
+            _entityStats.SetClickThrou();
+        }
+
+        public void UnsetClickThrou()
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            WindowsServices.SetWindowExVisible(hwnd);
+            foreach (var players in Controls)
+            {
+                players.Value.UnsetClickThrou();
+            }
+            _entityStats.UnsetClickThrou();
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -213,6 +235,25 @@ namespace DamageMeter.UI
                       ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                       "\r\n" + ex.TargetSite);
         }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            //Set the window style to noactivate.
+            WindowInteropHelper helper = new WindowInteropHelper(this);
+            SetWindowLong(helper.Handle, GWL_EXSTYLE,
+                GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_NOACTIVATE);
+        }
+
+        private const int GWL_EXSTYLE = -20;
+        private const int WS_EX_NOACTIVATE = 0x08000000;
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
         public void UpdateKeyboard(object o, EventArgs args)
         {

@@ -64,6 +64,36 @@ namespace DamageMeter.UI
             return result;
         }
 
+        public void SetClickThrou()
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            WindowsServices.SetWindowExTransparent(hwnd);
+        }
+
+        public void UnsetClickThrou()
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            WindowsServices.SetWindowExVisible(hwnd);
+        }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            //Set the window style to noactivate.
+            var helper = new WindowInteropHelper(this);
+            SetWindowLong(helper.Handle, GWL_EXSTYLE,
+                GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_NOACTIVATE);
+        }
+
+        private const int GWL_EXSTYLE = -20;
+        private const int WS_EX_NOACTIVATE = 0x08000000;
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         private void TabControlOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
             var tabitem = (TabItem) ((TabControl) selectionChangedEventArgs.Source).SelectedItem;
@@ -86,11 +116,8 @@ namespace DamageMeter.UI
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
-            HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
+            var source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
             source.AddHook(new HwndSourceHook(WindowsServices.ClickNoFocus));
-
-            //   var hwnd = new WindowInteropHelper(this).Handle;
-            //  WindowsServices.SetWindowExTransparent(hwnd);
         }
 
 

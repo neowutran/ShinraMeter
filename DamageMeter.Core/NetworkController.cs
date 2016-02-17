@@ -15,6 +15,12 @@ namespace DamageMeter
     public class NetworkController
     {
         public delegate void ConnectedHandler(string serverName);
+        public delegate void SetClickThrouEvent();
+        public delegate void UnsetClickThrouEvent();
+
+        public event SetClickThrouEvent SetClickThrouAction;
+        public event UnsetClickThrouEvent UnsetClickThrouAction;
+
 
         public delegate void UpdateUiHandler(
             long firsthit, long lastHit, long totaldamage, Dictionary<Entity, EntityInfo> entities,
@@ -101,6 +107,20 @@ namespace DamageMeter
             var currentBossFight = DamageTracker.Instance.CurrentBoss;
             handler?.Invoke(firstHit, lastHit, damage, entities, stats, currentBossFight);
             DamageTracker.Instance.CurrentBoss = null;
+        }
+
+        public void SetClickThrou()
+        {
+            var handler = SetClickThrouAction;
+            handler?.Invoke();
+
+        }
+
+        public void UnsetClickThrou()
+        {
+            var handler = UnsetClickThrouAction;
+            handler?.Invoke();
+
         }
 
 

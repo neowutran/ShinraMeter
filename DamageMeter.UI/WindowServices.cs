@@ -15,10 +15,10 @@ namespace DamageMeter.UI
         const int GWL_EXSTYLE = (-20);
 
         [DllImport("user32.dll")]
-        static extern int GetWindowLong(IntPtr hwnd, int index);
+        private static extern int GetWindowLong(IntPtr hwnd, int index);
 
         [DllImport("user32.dll")]
-        static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+        private static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
         public static void SetWindowExTransparent(IntPtr hwnd)
         {
@@ -28,7 +28,7 @@ namespace DamageMeter.UI
 
         public static void SetWindowExVisible(IntPtr hwnd)
         {
-            int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+            var extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
             SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle & ~WS_EX_TRANSPARENT);
         }
 
@@ -37,26 +37,10 @@ namespace DamageMeter.UI
             const int WM_MOUSEACTIVATE = 0x0021;
             const int MA_NOACTIVATE = 3;
 
-            if (msg == WM_MOUSEACTIVATE)
-            {
-                handled = true;
-                return new IntPtr(MA_NOACTIVATE);
-            }
-
-            return IntPtr.Zero;
+            if (msg != WM_MOUSEACTIVATE) return IntPtr.Zero;
+            handled = true;
+            return new IntPtr(MA_NOACTIVATE);
         }
 
-        public static void ShowWindowNoActive(Window window)
-        {
-            ShowWindow(new WindowInteropHelper(window).Handle, ShowWindowCommands.SW_SHOWNOACTIVATE);
-        }
-
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, ShowWindowCommands nCmdShow);
-
-        private enum ShowWindowCommands : int
-        {
-            SW_SHOWNOACTIVATE = 4
-        }
     }
 }
