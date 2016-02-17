@@ -65,6 +65,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClickThrouWindow.cs" />
     <Compile Include="EntityStats\EnduranceDebuffHeader.xaml.cs">
       <DependentUpon>EnduranceDebuffHeader.xaml</DependentUpon>
     </Compile>

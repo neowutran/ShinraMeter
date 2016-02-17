@@ -22,7 +22,7 @@ namespace NetworkSniffer
         public IpSnifferRawSocketSingleInterface(IPAddress localIp)
         {
             _localIp = localIp;
-            _buffer = new byte[1 << 17];
+            _buffer = new byte[1 << 22];
         }
 
         private void Init()
@@ -39,7 +39,7 @@ namespace NetworkSniffer
             _socket.IOControl(IOControlCode.ReceiveAll, receiveAllOn, null);
 
             //_socket.ReceiveBufferSize = 1 << 16;
-            _socket.ReceiveBufferSize = 8192*1024;
+            _socket.ReceiveBufferSize = 1 << 22;
 
             Read();
         }

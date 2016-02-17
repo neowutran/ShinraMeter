@@ -12,5 +12,5 @@
   <autoupdate>false</autoupdate>
   <remember_position>true</remember_position>
   <winpcap>false</winpcap>
-  <invisible_ui>true</invisible_ui>
+  <invisible_ui>false</invisible_ui>
 </window>

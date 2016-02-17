@@ -1,8 +1,9 @@
-﻿<Window x:Class="DamageMeter.UI.Skills"
+﻿<ui:ClickThrouWindow x:Class="DamageMeter.UI.Skills"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="clr-namespace:DamageMeter.UI"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -86,4 +87,4 @@
             <TabItem Header="Buff" x:Name="BuffPanel" Background="Transparent" Foreground="White" />
         </TabControl>
     </Grid>
-</Window>
+</ui:ClickThrouWindow>
