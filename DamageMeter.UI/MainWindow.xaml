@@ -124,9 +124,11 @@
                                      IsReadOnly="{TemplateBinding IsReadOnly}" />
                             <Popup
                                 Name="Popup"
+                                
                                 Placement="Bottom"
                                 IsOpen="{TemplateBinding IsDropDownOpen}"
                                 AllowsTransparency="True"
+                                
                                 Focusable="False"
                                 PopupAnimation="Slide">
                                 <Grid
@@ -205,13 +207,10 @@
         <Image Grid.Column="0" x:Name="PinImage" PreviewMouseLeftButtonDown="PinImage_OnPreviewMouseLeftButtonDown"  Stretch="Fill"
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" />
-
-
         <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
                   Margin="30,0,0,0" VerticalAlignment="Top" Width="270" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
-
         <Image Grid.Column="0" x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown" 
                Stretch="Fill"
                HorizontalAlignment="Left"
@@ -231,6 +230,5 @@
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,28,0,0"
                       HorizontalAlignment="Left" MaxHeight="290" />
-
     </Grid>
 </ui:ClickThrouWindow>

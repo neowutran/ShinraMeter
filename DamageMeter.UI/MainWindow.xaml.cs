@@ -257,7 +257,6 @@ namespace DamageMeter.UI
                     {
                         encounterList.AddLast(entityStats.Key);
                     }
-                    UpdateComboboxEncounter(encounterList, currentBoss);
                     _entityStats.Update(entities);
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
@@ -302,9 +301,13 @@ namespace DamageMeter.UI
                     {
                         Players.Items.Add(item.Value);
                         var data = stats.IndexOf(item.Value.PlayerInfo);
+                        
                         item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit);
                     }
+
                     Height = Controls.Count*29 + CloseMeter.ActualHeight;
+                    UpdateComboboxEncounter(encounterList, currentBoss);
+                       
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
                     {
                         Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
@@ -332,7 +335,7 @@ namespace DamageMeter.UI
             Topmost = true;
         }
 
-        private bool NeedUpdateEncounter(List<Entity> entities)
+        private bool NeedUpdateEncounter(IReadOnlyList<Entity> entities)
         {
             if (entities.Count != ListEncounter.Items.Count)
             {
@@ -356,12 +359,9 @@ namespace DamageMeter.UI
             }
             foreach (var item in ListEncounter.Items)
             {
-                if(((Entity)((ComboBoxItem)item).Content) == entity)
-                {
-
-                    ListEncounter.SelectedItem = item;
-                    return true;
-                }
+                if (((Entity) ((ComboBoxItem) item).Content) != entity) continue;
+                ListEncounter.SelectedItem = item;
+                return true;
             }
             return false;
         }
@@ -369,12 +369,7 @@ namespace DamageMeter.UI
         private void UpdateComboboxEncounter(IEnumerable<Entity> entities, Entity currentBoss)
         {
             var entityList = entities.ToList();
-            if (!NeedUpdateEncounter(entityList))
-            {
-                ChangeEncounterSelection(currentBoss);
-                return;
-            }
-
+          
             Entity selectedEntity = null;
             if ((ComboBoxItem) ListEncounter.SelectedItem != null)
             {
