@@ -79,6 +79,8 @@ namespace DamageMeter.UI
                 players.Value.SetClickThrou();
             }
             _entityStats.SetClickThrou();
+            _clickThrou.Text = "Desactivate click throu";
+            EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStatsClickThrou.Source;
         }
 
         public void UnsetClickThrou()
@@ -90,6 +92,8 @@ namespace DamageMeter.UI
                 players.Value.UnsetClickThrou();
             }
             _entityStats.UnsetClickThrou();
+            _clickThrou.Text = "Activate click throu";
+            EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
@@ -120,9 +124,12 @@ namespace DamageMeter.UI
             var forum = new MenuItem {Text = "Forum"};
 
             forum.Click += ForumOnClick;
+            _clickThrou = new MenuItem {Text = "Activate click throu"};
+            _clickThrou.Click += ClickThrouOnClick;
 
 
             var context = new ContextMenu();
+            context.MenuItems.Add(_clickThrou);
             context.MenuItems.Add(reset);
             context.MenuItems.Add(exit);
             context.MenuItems.Add(wiki);
@@ -130,7 +137,15 @@ namespace DamageMeter.UI
             context.MenuItems.Add(issues);
             context.MenuItems.Add(forum);
 
+
             _trayIcon.ContextMenu = context;
+        }
+
+        private MenuItem _clickThrou;
+
+        private static void ClickThrouOnClick(object sender, EventArgs eventArgs)
+        {
+            NetworkController.Instance.SwitchClickThrou();
         }
 
         private void PatchOnClick(object sender, EventArgs eventArgs)
@@ -369,7 +384,12 @@ namespace DamageMeter.UI
         private void UpdateComboboxEncounter(IEnumerable<Entity> entities, Entity currentBoss)
         {
             var entityList = entities.ToList();
-          
+            if (!NeedUpdateEncounter(entityList))
+            {
+                ChangeEncounterSelection(currentBoss);
+                return;
+            }
+
             Entity selectedEntity = null;
             if ((ComboBoxItem) ListEncounter.SelectedItem != null)
             {

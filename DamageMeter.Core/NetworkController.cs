@@ -109,18 +109,30 @@ namespace DamageMeter
             DamageTracker.Instance.CurrentBoss = null;
         }
 
-        public void SetClickThrou()
+        private bool _clickThrou = false;
+        public void SwitchClickThrou()
+        {
+            if (_clickThrou)
+            {
+                UnsetClickThrou();
+                _clickThrou = false;
+                return;
+            }
+            SetClickThrou();
+            _clickThrou = true;
+        }
+
+        private void SetClickThrou()
         {
             var handler = SetClickThrouAction;
             handler?.Invoke();
 
         }
 
-        public void UnsetClickThrou()
+        private void UnsetClickThrou()
         {
             var handler = UnsetClickThrouAction;
             handler?.Invoke();
-
         }
 
 

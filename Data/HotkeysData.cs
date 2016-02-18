@@ -58,16 +58,10 @@ namespace Data
 
             Copy = new List<CopyKey>();
 
-            var activateKey = ReadElement(root, "activate_click_throu", true);
+            var activateKey = ReadElement(root, "click_throu", true);
             if (activateKey != null)
             {
-                ActivateClickThrou = (KeyValuePair<Keys,ModifierKeys>)activateKey;
-            }
-
-            var desactivateKey = ReadElement(root, "desactivate_click_throu", true);
-            if (desactivateKey != null)
-            {
-                DesactivateClickThrou = (KeyValuePair<Keys, ModifierKeys>)desactivateKey;
+                ClickThrou = (KeyValuePair<Keys,ModifierKeys>)activateKey;
             }
 
             var resetCurrentKey = ReadElement(root, "reset_current", true);
@@ -158,13 +152,11 @@ namespace Data
                     "descending"
                     )
             };
-            ActivateClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageUp, ModifierKeys.Control);
-            DesactivateClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
+            ClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageUp, ModifierKeys.Control);
 
         }
 
-        public KeyValuePair<Keys, ModifierKeys> ActivateClickThrou { get; private set; }
-         public KeyValuePair<Keys,ModifierKeys> DesactivateClickThrou { get; private set; }
+        public KeyValuePair<Keys, ModifierKeys> ClickThrou { get; private set; }
 
         private void CopyData(XDocument xml)
         {
@@ -262,38 +254,22 @@ namespace Data
             xml.Root.Element("reset_current").Add(new XElement("key", resetCurrentKey.ToString()));
 
 
-            var activateClickThrouCtrl = (ActivateClickThrou.Value & ModifierKeys.Control) != ModifierKeys.None;
-            var activateClickThrouShift = (ActivateClickThrou.Value & ModifierKeys.Shift) != ModifierKeys.None;
-            var activateClickThrouWindow = (ActivateClickThrou.Value & ModifierKeys.Win) != ModifierKeys.None;
-            var activateClickThrouAlt = (ActivateClickThrou.Value & ModifierKeys.Alt) != ModifierKeys.None;
-            var activateClickThrouKey = ActivateClickThrou.Key;
+            var activateClickThrouCtrl = (ClickThrou.Value & ModifierKeys.Control) != ModifierKeys.None;
+            var activateClickThrouShift = (ClickThrou.Value & ModifierKeys.Shift) != ModifierKeys.None;
+            var activateClickThrouWindow = (ClickThrou.Value & ModifierKeys.Win) != ModifierKeys.None;
+            var activateClickThrouAlt = (ClickThrou.Value & ModifierKeys.Alt) != ModifierKeys.None;
+            var activateClickThrouKey = ClickThrou.Key;
 
-            xml.Root.Add(new XElement("activate_click_throu"));
+            xml.Root.Add(new XElement("click_throu"));
 
-            xml.Root.Element("activate_click_throu").Add(new XElement("ctrl", activateClickThrouCtrl.ToString()));
-            xml.Root.Element("activate_click_throu").Add(new XElement("shift", activateClickThrouShift.ToString()));
-            xml.Root.Element("activate_click_throu").Add(new XElement("window", activateClickThrouWindow.ToString()));
-            xml.Root.Element("activate_click_throu").Add(new XElement("alt", activateClickThrouAlt.ToString()));
-            xml.Root.Element("activate_click_throu").Add(new XElement("key", activateClickThrouKey.ToString()));
-
-
-            var desactivateClickThrouCtrl = (DesactivateClickThrou.Value & ModifierKeys.Control) != ModifierKeys.None;
-            var desactivateClickThrouShift = (DesactivateClickThrou.Value & ModifierKeys.Shift) != ModifierKeys.None;
-            var desactivateClickThrouWindow = (DesactivateClickThrou.Value & ModifierKeys.Win) != ModifierKeys.None;
-            var desactivateClickThrouAlt = (DesactivateClickThrou.Value & ModifierKeys.Alt) != ModifierKeys.None;
-            var desactivateClickThrouKey = DesactivateClickThrou.Key;
-
-            xml.Root.Add(new XElement("desactivate_click_throu"));
-
-            xml.Root.Element("desactivate_click_throu").Add(new XElement("ctrl", desactivateClickThrouCtrl.ToString()));
-            xml.Root.Element("desactivate_click_throu").Add(new XElement("shift", desactivateClickThrouShift.ToString()));
-            xml.Root.Element("desactivate_click_throu").Add(new XElement("window", desactivateClickThrouWindow.ToString()));
-            xml.Root.Element("desactivate_click_throu").Add(new XElement("alt", desactivateClickThrouAlt.ToString()));
-            xml.Root.Element("desactivate_click_throu").Add(new XElement("key", desactivateClickThrouKey.ToString()));
+            xml.Root.Element("click_throu").Add(new XElement("ctrl", activateClickThrouCtrl.ToString()));
+            xml.Root.Element("click_throu").Add(new XElement("shift", activateClickThrouShift.ToString()));
+            xml.Root.Element("click_throu").Add(new XElement("window", activateClickThrouWindow.ToString()));
+            xml.Root.Element("click_throu").Add(new XElement("alt", activateClickThrouAlt.ToString()));
+            xml.Root.Element("click_throu").Add(new XElement("key", activateClickThrouKey.ToString()));
 
 
-
-            xml.Root.Add(new XElement("copys"));
+           xml.Root.Add(new XElement("copys"));
 
             foreach (var copy in Copy)
             {
