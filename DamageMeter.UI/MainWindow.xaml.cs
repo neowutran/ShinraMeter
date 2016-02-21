@@ -272,6 +272,7 @@ namespace DamageMeter.UI
                     {
                         encounterList.AddLast(entityStats.Key);
                     }
+                    UpdateComboboxEncounter(encounterList, currentBoss);
                     _entityStats.Update(entities);
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
@@ -321,7 +322,6 @@ namespace DamageMeter.UI
                     }
 
                     Height = Controls.Count*29 + CloseMeter.ActualHeight;
-                    UpdateComboboxEncounter(encounterList, currentBoss);
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
                     {
