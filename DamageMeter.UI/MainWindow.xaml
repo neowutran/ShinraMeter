@@ -204,14 +204,20 @@
     <Grid HorizontalAlignment="Left" Width="450">
 
 
-        <Image Grid.Column="0" x:Name="PinImage" PreviewMouseLeftButtonDown="PinImage_OnPreviewMouseLeftButtonDown"  Stretch="Fill"
+        <Image x:Name="PinImage" PreviewMouseLeftButtonDown="PinImage_OnPreviewMouseLeftButtonDown"  Stretch="Fill"
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" />
         <ComboBox SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="30,0,0,0" VerticalAlignment="Top" Width="270" HorizontalContentAlignment="Stretch"
+                  Margin="30,0,0,0" VerticalAlignment="Top" Width="245" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
-        <Image Grid.Column="0" x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown" 
+        
+        <Image x:Name="Chrono" PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown" 
+               Stretch="Fill"
+               HorizontalAlignment="Left"
+               Height="29" VerticalAlignment="Top" Width="29" Margin="275,0,0,0" />
+        
+        <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown" 
                Stretch="Fill"
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" Margin="300,0,0,0" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tera.PacketLog;
 
 namespace DamageMeter.Taken
 {
@@ -17,14 +18,25 @@ namespace DamageMeter.Taken
                 {
                     return _entitiesStats.Sum(entityStats => entityStats.Value.Sum(stats => stats.Value.Damage));
                 }
+               
                 if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return
-                        _entitiesStats.Sum(
-                            timedStats =>
-                                timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
-                                    .Sum(stats => stats.Value.Damage));
+                    if (!NetworkController.Instance.TimedEncounter)
+                    {
+                        return
+                            _entitiesStats.Sum(
+                                timedStats =>
+                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                        .Sum(stats => stats.Value.Damage));
+                    }
+
+
+                    var firstHit = DamageTracker.Instance.FirstHit;
+                    var lastHit = DamageTracker.Instance.LastHit;
+
+                    return _entitiesStats.Where(timedstats => timedstats.Key >= firstHit && timedstats.Key <= lastHit).Sum(timedstats => timedstats.Value.Sum(stat => stat.Value.Damage));
                 }
+              
                 return 0;
             }
         }
@@ -39,11 +51,19 @@ namespace DamageMeter.Taken
                 }
                 if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return
-                        _entitiesStats.Sum(
-                            timedStats =>
-                                timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
-                                    .Sum(stats => stats.Value.Hits));
+                    if (!NetworkController.Instance.TimedEncounter)
+                    {
+                        return
+                            _entitiesStats.Sum(
+                                timedStats =>
+                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                        .Sum(stats => stats.Value.Hits));
+                    }
+                    var firstHit = DamageTracker.Instance.FirstHit;
+                    var lastHit = DamageTracker.Instance.LastHit;
+
+                    return _entitiesStats.Where(timedstats => timedstats.Key >= firstHit && timedstats.Key <= lastHit).Sum(timedstats => timedstats.Value.Sum(stat => stat.Value.Hits));
+
                 }
                 return 0;
             }

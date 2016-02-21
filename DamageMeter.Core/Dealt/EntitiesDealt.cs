@@ -84,11 +84,16 @@ namespace DamageMeter.Dealt
                 }
                 if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return
-                        _entitiesStats.Sum(
-                            timedStats =>
-                                timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
-                                    .Sum(stats => stats.Value.Damage));
+                    if (!NetworkController.Instance.TimedEncounter)
+                    {
+                        return
+                            _entitiesStats.Sum(
+                                timedStats =>
+                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                        .Sum(stats => stats.Value.Damage));
+                    }
+                    return _entitiesStats.Where(stats => stats.Key >= FirstHit && stats.Key <= LastHit).SelectMany(stats => stats.Value).Sum(entitiesStats => entitiesStats.Value.Damage);
+                    
                 }
                 return 0;
             }
@@ -141,11 +146,16 @@ namespace DamageMeter.Dealt
                 }
                 if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return
-                        _entitiesStats.Sum(
-                            timedStats =>
-                                timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
-                                    .Sum(stats => stats.Value.Crits));
+                    if (!NetworkController.Instance.TimedEncounter)
+                    {
+                        return
+                            _entitiesStats.Sum(
+                                timedStats =>
+                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                        .Sum(stats => stats.Value.Crits));
+                    }
+
+                    return _entitiesStats.Where(stats => stats.Key >= FirstHit && stats.Key <= LastHit).SelectMany(stats => stats.Value).Sum(entitiesStats => entitiesStats.Value.Crits);
                 }
                 return 0;
             }
@@ -161,11 +171,16 @@ namespace DamageMeter.Dealt
                 }
                 if (ContainsEntity(NetworkController.Instance.Encounter))
                 {
-                    return
-                        _entitiesStats.Sum(
-                            timedStats =>
-                                timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
-                                    .Sum(stats => stats.Value.Hits));
+                    if (!NetworkController.Instance.TimedEncounter)
+                    {
+                        return
+                            _entitiesStats.Sum(
+                                timedStats =>
+                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                        .Sum(stats => stats.Value.Hits));
+                    }
+                    return _entitiesStats.Where(stats => stats.Key >= FirstHit && stats.Key <= LastHit).SelectMany(stats => stats.Value).Sum(entitiesStats => entitiesStats.Value.Hits);
+
                 }
                 return 0;
             }
@@ -264,6 +279,35 @@ namespace DamageMeter.Dealt
                     else
                     {
                         stats[timedStats.Key][skillStats.Key] += skillStats.Value;
+                    }
+                }
+            }
+
+            return stats;
+        }
+
+        public Dictionary<long, Dictionary<Skill, SkillStats>> GetSkillsByTime(Entity target)
+        {
+            var firstHit = GetFirstHit(target);
+            var lastHit = GetLastHit(target);
+            
+            var stats = new Dictionary<long, Dictionary<Skill, SkillStats>>();
+            foreach (var timedStats in _entitiesStats)
+            {
+                if (timedStats.Key < firstHit || timedStats.Key > lastHit) continue;
+                stats[timedStats.Key] = new Dictionary<Skill, SkillStats>();
+                foreach (var skillsEntities in timedStats.Value)
+                {
+                    foreach (var skills in skillsEntities.Value.Skills)
+                    {
+                        if (!stats[timedStats.Key].ContainsKey(skills.Key))
+                        {
+                            stats[timedStats.Key].Add(skills.Key, skills.Value);
+                        }
+                        else
+                        {
+                            stats[timedStats.Key][skills.Key] += skills.Value;
+                        }
                     }
                 }
             }

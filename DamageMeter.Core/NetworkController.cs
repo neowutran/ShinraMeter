@@ -44,6 +44,8 @@ namespace DamageMeter
 
         public Entity Encounter { get; set; }
 
+        public bool TimedEncounter { get; set; }
+
         public static NetworkController Instance => _instance ?? (_instance = new NetworkController());
 
         public IPEndPoint ServerIpEndPoint { get; private set; }

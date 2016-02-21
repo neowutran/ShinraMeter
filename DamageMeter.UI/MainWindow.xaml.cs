@@ -61,6 +61,7 @@ namespace DamageMeter.UI
 
             PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
+            Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new LinkedList<Entity>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
@@ -502,6 +503,20 @@ namespace DamageMeter.UI
             _entityStats.Show();
             _entityStats.Topmost = false;
             _entityStats.Topmost = true;
+        }
+
+        private void Chrono_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (NetworkController.Instance.TimedEncounter)
+            {
+                NetworkController.Instance.TimedEncounter = false;
+                Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
+            }
+            else
+            {
+                NetworkController.Instance.TimedEncounter = true;
+                Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
+            }
         }
     }
 }
