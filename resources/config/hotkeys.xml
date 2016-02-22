@@ -20,20 +20,13 @@
     <alt>False</alt>
     <key>Delete</key>
   </reset_current>
-  <activate_click_throu>
+  <click_throu>
     <ctrl>True</ctrl>
     <shift>False</shift>
     <window>False</window>
     <alt>False</alt>
     <key>PageUp</key>
-  </activate_click_throu>
-  <desactivate_click_throu>
-    <ctrl>True</ctrl>
-    <shift>False</shift>
-    <window>False</window>
-    <alt>False</alt>
-    <key>Next</key>
-  </desactivate_click_throu>
+  </click_throu>
   <copys>
     <copy>
       <ctrl>True</ctrl>

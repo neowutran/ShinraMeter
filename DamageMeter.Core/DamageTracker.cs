@@ -30,14 +30,22 @@ namespace DamageMeter
             {
                 if (NetworkController.Instance.Encounter == null)
                 {
-                    return
-                        EntitiesStats.Select(entityStats => entityStats.Value).Select(stats => stats.TotalDamage).Sum();
+                    return (from users in UsersStats from skills in users.Value.Dealt.AllSkills from skill in skills.Value select skill.Value.Damage).Sum();
+
                 }
                 if (!EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
                 {
                     return 0;
                 }
-                return EntitiesStats[NetworkController.Instance.Encounter].TotalDamage;
+
+                if (!NetworkController.Instance.TimedEncounter)
+                {
+
+                    return (from users in UsersStats from skills in users.Value.Dealt.GetSkills(NetworkController.Instance.Encounter) from skill in skills.Value select skill.Value.Damage).Sum();
+
+                }
+
+                return (from users in UsersStats from skills in users.Value.Dealt.GetSkillsByTime(NetworkController.Instance.Encounter) from skill in skills.Value select skill.Value.Damage).Sum();
             }
         }
 

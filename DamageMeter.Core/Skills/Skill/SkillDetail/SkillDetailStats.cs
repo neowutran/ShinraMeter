@@ -312,10 +312,9 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             return skill;
         }
 
-        private void SetTotalDamage(long damage, long time)
+        private void SetTotalDamage(long time)
         {
             if (_entityTarget == null) return;
-            DamageTracker.Instance.EntitiesStats[_entityTarget].TotalDamage += damage;
             DamageTracker.Instance.SetFirstHit(_entityTarget, time);
             DamageTracker.Instance.SetLastHit(_entityTarget, time);
             DamageTracker.Instance.UpdateCurrentBoss(_entityTarget);
@@ -342,7 +341,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         DmgBiggestCrit = damage;
                         DmgAverageCrit = damage;
                         DmgLowestCrit = damage;
-                        SetTotalDamage(damage, time);
+                        SetTotalDamage(time);
                         break;
                     default:
 
@@ -368,7 +367,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                         DmgBiggestHit = damage;
                         DmgAverageHit = damage;
                         DmgLowestHit = damage;
-                        SetTotalDamage(damage, time);
+                        SetTotalDamage(time);
                         break;
                     default:
                         HitsMana++;

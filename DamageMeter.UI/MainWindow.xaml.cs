@@ -346,9 +346,11 @@ namespace DamageMeter.UI
         private void StayTopMost()
 
         {
-            if (!Topmost) return;
+            
+            if (!Topmost || !_topMost) return;
             Topmost = false;
             Topmost = true;
+            
         }
 
         private bool NeedUpdateEncounter(IReadOnlyList<Entity> entities)
@@ -517,6 +519,18 @@ namespace DamageMeter.UI
                 NetworkController.Instance.TimedEncounter = true;
                 Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
             }
+        }
+
+        private bool _topMost = true;
+
+        private void ListEncounter_OnDropDownOpened(object sender, EventArgs e)
+        {
+            _topMost = false;
+        }
+
+        private void ListEncounter_OnDropDownClosed(object sender, EventArgs e)
+        {
+            _topMost = true;
         }
     }
 }
