@@ -34,7 +34,14 @@ namespace DamageMeter.Taken
                     var firstHit = DamageTracker.Instance.FirstHit;
                     var lastHit = DamageTracker.Instance.LastHit;
 
-                    return _entitiesStats.Where(timedstats => timedstats.Key >= firstHit && timedstats.Key <= lastHit).Sum(timedstats => timedstats.Value.Sum(stat => stat.Value.Damage));
+                    long damage = 0;
+                    for (var i = firstHit; i <= lastHit; i++)
+                    {
+                        if (!_entitiesStats.ContainsKey(i)) continue;
+                        damage += _entitiesStats[i].Sum(stats => stats.Value.Damage);
+                    }
+                    return damage;
+
                 }
               
                 return 0;
@@ -62,8 +69,13 @@ namespace DamageMeter.Taken
                     var firstHit = DamageTracker.Instance.FirstHit;
                     var lastHit = DamageTracker.Instance.LastHit;
 
-                    return _entitiesStats.Where(timedstats => timedstats.Key >= firstHit && timedstats.Key <= lastHit).Sum(timedstats => timedstats.Value.Sum(stat => stat.Value.Hits));
-
+                    var hits = 0;
+                    for (var i = firstHit; i <= lastHit; i++)
+                    {
+                        if (!_entitiesStats.ContainsKey(i)) continue;
+                        hits += _entitiesStats[i].Sum(stats => stats.Value.Hits);
+                    }
+                    return hits;
                 }
                 return 0;
             }

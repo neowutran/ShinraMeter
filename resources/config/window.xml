@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <window>
   <location>
-    <x>1</x>
-    <y>207</y>
+    <x>5</x>
+    <y>202</y>
   </location>
-  <language>EU-EN</language>
+  <language>KR</language>
   <opacity>
     <mainWindow>50</mainWindow>
     <skillWindow>70</skillWindow>

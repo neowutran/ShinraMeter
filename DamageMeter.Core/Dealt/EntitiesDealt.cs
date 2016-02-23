@@ -92,7 +92,15 @@ namespace DamageMeter.Dealt
                                     timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
                                         .Sum(stats => stats.Value.Damage));
                     }
-                    return _entitiesStats.Where(stats => stats.Key >= FirstHit && stats.Key <= LastHit).SelectMany(stats => stats.Value).Sum(entitiesStats => entitiesStats.Value.Damage);
+
+                    long damage = 0;
+                    var lastHit = LastHit;
+                    for (var i = FirstHit; i <= lastHit; i++)
+                    {
+                        if (!_entitiesStats.ContainsKey(i)) continue;
+                        damage += _entitiesStats[i].Sum(stat => stat.Value.Damage);
+                    }
+                    return damage;
                     
                 }
                 return 0;
@@ -155,7 +163,14 @@ namespace DamageMeter.Dealt
                                         .Sum(stats => stats.Value.Crits));
                     }
 
-                    return _entitiesStats.Where(stats => stats.Key >= FirstHit && stats.Key <= LastHit).SelectMany(stats => stats.Value).Sum(entitiesStats => entitiesStats.Value.Crits);
+                    var crit = 0;
+                    var lastHit = LastHit;
+                    for (var i = FirstHit; i <= lastHit; i++)
+                    {
+                        if (!_entitiesStats.ContainsKey(i)) continue;
+                        crit += _entitiesStats[i].Sum(stat => stat.Value.Crits);
+                    }
+                    return crit;
                 }
                 return 0;
             }
@@ -179,7 +194,16 @@ namespace DamageMeter.Dealt
                                     timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
                                         .Sum(stats => stats.Value.Hits));
                     }
-                    return _entitiesStats.Where(stats => stats.Key >= FirstHit && stats.Key <= LastHit).SelectMany(stats => stats.Value).Sum(entitiesStats => entitiesStats.Value.Hits);
+
+
+                    var hits = 0;
+                    var lastHit = LastHit;
+                    for (var i = FirstHit; i <= lastHit; i++)
+                    {
+                        if (!_entitiesStats.ContainsKey(i)) continue;
+                        hits += _entitiesStats[i].Sum(stat => stat.Value.Hits);
+                    }
+                    return hits;
 
                 }
                 return 0;
@@ -292,23 +316,27 @@ namespace DamageMeter.Dealt
             var lastHit = GetLastHit(target);
             
             var stats = new Dictionary<long, Dictionary<Skill, SkillStats>>();
-            foreach (var timedStats in _entitiesStats)
+
+            for (var i = firstHit; i <= lastHit; i++)
             {
-                if (timedStats.Key < firstHit || timedStats.Key > lastHit) continue;
-                stats[timedStats.Key] = new Dictionary<Skill, SkillStats>();
-                foreach (var skillsEntities in timedStats.Value)
+                
+                if (!_entitiesStats.ContainsKey(i)) continue;
+                stats[i] = new Dictionary<Skill, SkillStats>();
+                foreach (var skillsEntities in _entitiesStats[i])
                 {
                     foreach (var skills in skillsEntities.Value.Skills)
                     {
-                        if (!stats[timedStats.Key].ContainsKey(skills.Key))
+                        if (!stats[i].ContainsKey(skills.Key))
                         {
-                            stats[timedStats.Key].Add(skills.Key, skills.Value);
+                            stats[i].Add(skills.Key, skills.Value);
                         }
                         else
                         {
-                            stats[timedStats.Key][skills.Key] += skills.Value;
+                            stats[i][skills.Key] += skills.Value;
                         }
                     }
+                  
+                    
                 }
             }
 
