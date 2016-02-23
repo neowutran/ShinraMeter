@@ -32,6 +32,7 @@ namespace Data
             ParseRememberPosition();
             ParseWinpcap();
             ParseInvisibleUi();
+            ParseAllowTrasparency();
         }
 
 
@@ -49,6 +50,8 @@ namespace Data
 
         public bool InvisibleUI { get; set; }
 
+        public bool AllowTransparency { get; set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -59,6 +62,7 @@ namespace Data
             RememberPosition = true;
             InvisibleUI = false;
             Winpcap = true;
+            AllowTransparency = true;
         }
 
         public void ParseRememberPosition()
@@ -84,6 +88,19 @@ namespace Data
             if (parseSuccess)
             {
                 InvisibleUI = invisibleUi;
+            }
+        }
+
+        public void ParseAllowTrasparency()
+        {
+            var root = _xml.Root;
+            var allowTransparency = root?.Element("allow_transparency");
+            if (allowTransparency == null) return;
+            bool transparency;
+            var parseSuccess = bool.TryParse(allowTransparency.Value, out transparency);
+            if (parseSuccess)
+            {
+                AllowTransparency = transparency;
             }
         }
 
@@ -183,6 +200,7 @@ namespace Data
             xml.Root.Add(new XElement("remember_position", RememberPosition));
             xml.Root.Add(new XElement("winpcap", Winpcap));
             xml.Root.Add(new XElement("invisible_ui", InvisibleUI));
+            xml.Root.Add(new XElement("allow_transparency", AllowTransparency));
             xml.Save(_windowFile);
         }
     }

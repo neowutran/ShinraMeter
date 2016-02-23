@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using Data;
 
 namespace DamageMeter.UI.EntityStats
 {
@@ -22,6 +23,7 @@ namespace DamageMeter.UI.EntityStats
             InitializeComponent();
             _parent = parent;
             _header = new EnduranceDebuffHeader();
+
         }
 
         public void SetClickThrou()

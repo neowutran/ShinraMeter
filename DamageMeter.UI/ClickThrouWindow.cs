@@ -6,12 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
+using Data;
 
 namespace DamageMeter.UI
 {
     public class ClickThrouWindow: Window
     {
 
+        public ClickThrouWindow()
+        {
+            AllowsTransparency = BasicTeraData.Instance.WindowData.AllowTransparency;
+        }
 
         protected override void OnSourceInitialized(EventArgs e)
         {
