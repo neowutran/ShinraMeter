@@ -35,8 +35,10 @@ namespace DamageMeter.UI
 
         private NotifyIcon _trayIcon;
 
-        public MainWindow()
+        public MainWindow(): base()
         {
+         
+               
             InitializeComponent();
             var currentDomain = default(AppDomain);
             currentDomain = AppDomain.CurrentDomain;
@@ -66,7 +68,6 @@ namespace DamageMeter.UI
             UpdateComboboxEncounter(new LinkedList<Entity>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
-            AllowsTransparency = BasicTeraData.Instance.WindowData.AllowTransparency;
             _entityStats = new EntityStatsMain(this);
             TrayConfiguration();
         }

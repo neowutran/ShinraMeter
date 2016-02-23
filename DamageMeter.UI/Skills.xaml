@@ -6,7 +6,6 @@
         xmlns:ui="clr-namespace:DamageMeter.UI"
         mc:Ignorable="d"
         WindowStyle="None"
-        AllowsTransparency="True"
         Focusable="False"
         ResizeMode="CanResizeWithGrip"
         ShowActivated="False"

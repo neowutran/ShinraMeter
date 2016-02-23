@@ -11,7 +11,6 @@
         MaxHeight="320"
         WindowStyle="None"
         Topmost="True"
-        AllowsTransparency="False"
         ResizeMode="NoResize"
         BorderThickness="0"
         Icon="shinra.jpg"
