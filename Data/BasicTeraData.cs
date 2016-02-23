@@ -23,23 +23,19 @@ namespace Data
             XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
-            _dataForRegion = Memoize<string, TeraData>(region => new TeraData(this, region));
+            _dataForRegion = Memoize<string, TeraData>(region => new TeraData(region));
             Servers = GetServers(Path.Combine(ResourceDirectory, "data/servers.txt")).ToList();
-            MonsterDatabase = new MonsterDatabase(Path.Combine(ResourceDirectory, "data/monsters/"),
-                Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
             ImageDatabase = new ImageDatabase(Path.Combine(ResourceDirectory, "img/"));
-            PetSkillDatabase = new PetSkillDatabase(Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
-            SkillDatabase = new SkillDatabase(Path.Combine(ResourceDirectory, "data/skills/"),
-                Path.Combine(ResourceDirectory, "data/"), WindowData.Language);
-            HotDotDatabase = new HotDotDatabase(Path.Combine(ResourceDirectory, "data/hotdot/"), WindowData.Language);
+
+
         }
 
-        public HotDotDatabase HotDotDatabase { get; }
+        public HotDotDatabase HotDotDatabase { get; set; }
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
-        public PetSkillDatabase PetSkillDatabase { get; private set; }
-        public SkillDatabase SkillDatabase { get; private set; }
+        public PetSkillDatabase PetSkillDatabase { get; set; }
+        public SkillDatabase SkillDatabase { get; set; }
         public ImageDatabase ImageDatabase { get; private set; }
-        public MonsterDatabase MonsterDatabase { get; private set; }
+        public MonsterDatabase MonsterDatabase { get; set; }
         public WindowData WindowData { get; }
         public HotkeysData HotkeysData { get; private set; }
         public string ResourceDirectory { get; }

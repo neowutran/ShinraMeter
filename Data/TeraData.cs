@@ -5,11 +5,28 @@ namespace Data
 {
     public class TeraData
     {
-        internal TeraData(BasicTeraData basicData, string region)
+        internal TeraData(string region)
         {
             OpCodeNamer =
-                new OpCodeNamer(Path.Combine(basicData.ResourceDirectory,
+                new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
                     $"data/opcodes/opcodes-{region}.txt"));
+            var language = GetLanguage(region);
+
+            BasicTeraData.Instance.MonsterDatabase = new MonsterDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/monsters/"),
+              Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
+            BasicTeraData.Instance.PetSkillDatabase = new PetSkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
+            BasicTeraData.Instance.SkillDatabase = new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/skills/"),
+                Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
+            BasicTeraData.Instance.HotDotDatabase = new HotDotDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/hotdot/"), language);
+        }
+
+        public string GetLanguage(string region)
+        {
+            if (BasicTeraData.Instance.WindowData.Language == "Auto")
+            {
+                return region == "EU" ? "EU-EN" : region;
+            }
+            return BasicTeraData.Instance.WindowData.Language;
         }
 
         public OpCodeNamer OpCodeNamer { get; private set; }
