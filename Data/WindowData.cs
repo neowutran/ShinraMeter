@@ -55,7 +55,7 @@ namespace Data
         private void DefaultValue()
         {
             Location = new Point(0, 0);
-            Language = "EU-EN";
+            Language = "Auto";
             MainWindowOpacity = 0.5;
             SkillWindowOpacity = 0.7;
             AutoUpdate = true;
