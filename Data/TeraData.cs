@@ -12,11 +12,9 @@ namespace Data
                     $"data/opcodes/opcodes-{region}.txt"));
             var language = GetLanguage(region);
 
-            BasicTeraData.Instance.MonsterDatabase = new MonsterDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/monsters/"),
-              Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
-            BasicTeraData.Instance.PetSkillDatabase = new PetSkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
-            BasicTeraData.Instance.SkillDatabase = new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/skills/"),
-                Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
+            BasicTeraData.Instance.MonsterDatabase = new MonsterDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/monsters/"), language);
+            BasicTeraData.Instance.PetSkillDatabase = new PetSkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/skills/"), language);
+            BasicTeraData.Instance.SkillDatabase = new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/skills/"), language);
             BasicTeraData.Instance.HotDotDatabase = new HotDotDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/hotdot/"), language);
         }
 

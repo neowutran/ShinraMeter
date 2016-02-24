@@ -14,9 +14,9 @@ namespace Data
             new Dictionary<PlayerClass, List<UserSkill>>();
 
 
-        public SkillDatabase(string folder, string folderOverride, string language)
+        public SkillDatabase(string folder, string language)
         {
-            var readerOverride = new StreamReader(File.OpenRead(folderOverride + "skills-override-" + language + ".tsv"));
+            var readerOverride = new StreamReader(File.OpenRead(folder + "skills-override-" + language + ".tsv"));
             var overrideSkills = new Dictionary<PlayerClass, List<int>>();
             while (!readerOverride.EndOfStream)
             {

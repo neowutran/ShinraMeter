@@ -9,9 +9,9 @@ namespace Data
     {
         private readonly Dictionary<string, Zone> _zonesData = new Dictionary<string, Zone>();
 
-        public MonsterDatabase(string folder, string overrideFolder, string language)
+        public MonsterDatabase(string folder, string language)
         {
-            var isBossOverrideXml = XDocument.Load(overrideFolder + "monsters-override.xml");
+            var isBossOverrideXml = XDocument.Load(folder + "monsters-override.xml");
             var bossOverride = new Dictionary<string, Dictionary<string, bool>>();
             var nameOverride = new Dictionary<string, Dictionary<string, string>>();
             foreach (var zone in isBossOverrideXml.Root.Elements("Zone"))
