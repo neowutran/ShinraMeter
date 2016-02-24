@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Windows.Forms;
 
 namespace NetworkSniffer
 {
@@ -71,6 +72,7 @@ namespace NetworkSniffer
             if (count == 0)
             {
                 Console.WriteLine("Socket disconnected");
+                MessageBox.Show("Socket disconnected. If you see this message, report to the dev");
             }
 
             OnPacketReceived(new ArraySegment<byte>(_buffer, 0, count));

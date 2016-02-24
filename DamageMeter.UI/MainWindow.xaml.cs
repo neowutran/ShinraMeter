@@ -134,11 +134,12 @@ namespace DamageMeter.UI
             var context = new ContextMenu();
             context.MenuItems.Add(_clickThrou);
             context.MenuItems.Add(reset);
-            context.MenuItems.Add(exit);
             context.MenuItems.Add(wiki);
             context.MenuItems.Add(patch);
             context.MenuItems.Add(issues);
             context.MenuItems.Add(forum);
+            context.MenuItems.Add(exit);
+
 
 
             _trayIcon.ContextMenu = context;

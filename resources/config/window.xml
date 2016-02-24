@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <window>
   <location>
-    <x>5</x>
-    <y>202</y>
+    <x>-4</x>
+    <y>154</y>
   </location>
-  <language>EU-EN</language>
+  <language>Auto</language>
   <opacity>
     <mainWindow>50</mainWindow>
     <skillWindow>70</skillWindow>
@@ -13,4 +13,5 @@
   <remember_position>true</remember_position>
   <winpcap>false</winpcap>
   <invisible_ui>false</invisible_ui>
+  <allow_transparency>true</allow_transparency>
 </window>
