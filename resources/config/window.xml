@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <window>
   <location>
-    <x>-4</x>
+    <x>1</x>
     <y>154</y>
   </location>
   <language>Auto</language>
@@ -12,6 +12,6 @@
   <autoupdate>false</autoupdate>
   <remember_position>true</remember_position>
   <winpcap>false</winpcap>
-  <invisible_ui>false</invisible_ui>
+  <invisible_ui>true</invisible_ui>
   <allow_transparency>true</allow_transparency>
 </window>

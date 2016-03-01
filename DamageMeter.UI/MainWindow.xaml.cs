@@ -35,7 +35,7 @@ namespace DamageMeter.UI
 
         private NotifyIcon _trayIcon;
 
-        public MainWindow(): base()
+        public MainWindow()
         {
          
                

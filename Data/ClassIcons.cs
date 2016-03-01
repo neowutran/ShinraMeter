@@ -13,7 +13,7 @@ namespace Data
 
         private ClassIcons()
         {
-            var directory = BasicTeraData.Instance.ResourceDirectory + @"\img\class-icons\";
+            var directory = BasicTeraData.Instance.ResourceDirectory + @"\data\class-icons\";
             foreach (var playerClass in (PlayerClass[]) Enum.GetValues(typeof (PlayerClass)))
             {
                 var filename = directory + playerClass.ToString().ToLowerInvariant() + ".png";

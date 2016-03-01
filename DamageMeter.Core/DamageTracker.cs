@@ -425,13 +425,7 @@ namespace DamageMeter
 
         private void UpdateStatsReceived(PlayerInfo playerInfo, SkillResult message, Entity entitySource, long time)
         {
-            if (_hasReset.Contains(entitySource) && entitySource.IsBoss())
-            {
-                Console.WriteLine("Remove:" + entitySource.Name);
-                DeleteEntity(entitySource);
-                _hasReset.Remove(entitySource);
-            }
-
+          
             if (!IsValidAttack(message))
             {
                 return;
