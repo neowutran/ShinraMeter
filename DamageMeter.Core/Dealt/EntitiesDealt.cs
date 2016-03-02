@@ -148,31 +148,29 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                if (NetworkController.Instance.Encounter == null || PlayerInfo.IsHealer())
+                if (NetworkController.Instance.Encounter == null || (PlayerInfo.IsHealer() && !NetworkController.Instance.TimedEncounter))
                 {
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Crits));
                 }
-                if (ContainsEntity(NetworkController.Instance.Encounter))
+           
+                if (!NetworkController.Instance.TimedEncounter)
                 {
-                    if (!NetworkController.Instance.TimedEncounter)
-                    {
-                        return
-                            _entitiesStats.Sum(
-                                timedStats =>
-                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
-                                        .Sum(stats => stats.Value.Crits));
-                    }
-
-                    var crit = 0;
-                    var lastHit = LastHit;
-                    for (var i = FirstHit; i <= lastHit; i++)
-                    {
-                        if (!_entitiesStats.ContainsKey(i)) continue;
-                        crit += _entitiesStats[i].Sum(stat => stat.Value.Crits);
-                    }
-                    return crit;
+                    return
+                        _entitiesStats.Sum(
+                            timedStats =>
+                                timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                    .Sum(stats => stats.Value.Crits));
                 }
-                return 0;
+
+                var crit = 0;
+                var lastHit = LastHit;
+                for (var i = FirstHit; i <= lastHit; i++)
+                {
+                    if (!_entitiesStats.ContainsKey(i)) continue;
+                    crit += _entitiesStats[i].Sum(stat => stat.Value.Crits);
+                }
+                return crit;
+                
             }
         }
 
@@ -180,33 +178,29 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                if (NetworkController.Instance.Encounter == null || PlayerInfo.IsHealer())
+                if (NetworkController.Instance.Encounter == null || (PlayerInfo.IsHealer() && !NetworkController.Instance.TimedEncounter ))
                 {
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Hits));
                 }
-                if (ContainsEntity(NetworkController.Instance.Encounter))
+                
+                if (!NetworkController.Instance.TimedEncounter)
                 {
-                    if (!NetworkController.Instance.TimedEncounter)
-                    {
-                        return
-                            _entitiesStats.Sum(
-                                timedStats =>
-                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
-                                        .Sum(stats => stats.Value.Hits));
-                    }
-
-
-                    var hits = 0;
-                    var lastHit = LastHit;
-                    for (var i = FirstHit; i <= lastHit; i++)
-                    {
-                        if (!_entitiesStats.ContainsKey(i)) continue;
-                        hits += _entitiesStats[i].Sum(stat => stat.Value.Hits);
-                    }
-                    return hits;
-
+                    return
+                        _entitiesStats.Sum(
+                            timedStats =>
+                                timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                    .Sum(stats => stats.Value.Hits));
                 }
-                return 0;
+
+
+                var hits = 0;
+                var lastHit = LastHit;
+                for (var i = FirstHit; i <= lastHit; i++)
+                {
+                    if (!_entitiesStats.ContainsKey(i)) continue;
+                    hits += _entitiesStats[i].Sum(stat => stat.Value.Hits);
+                }
+                return hits;
             }
         }
 

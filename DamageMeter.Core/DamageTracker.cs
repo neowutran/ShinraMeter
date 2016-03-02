@@ -291,7 +291,7 @@ namespace DamageMeter
                 if (source.Owner is NpcEntity)
                 {
                     var source2 = (NpcEntity) source.Owner;
-                    return new Entity(source2.CategoryId, source.Id, source2.NpcId, source2.NpcArea);
+                    return new Entity(source2.CategoryId, source2.Id, source2.NpcId, source2.NpcArea);
                 }
                 if (source.Owner is UserEntity)
                 {
@@ -449,7 +449,7 @@ namespace DamageMeter
             if (entitySource.IsBoss())
             {
                 foreach (
-                    var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name).OrderByDescending(t => t.Value.FirstHit))
+                    var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name && t.Key.Id == entitySource.Id))
                 {
                     entity = t.Key;
                     break;
