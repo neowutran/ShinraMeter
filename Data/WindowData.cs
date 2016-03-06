@@ -33,6 +33,7 @@ namespace Data
             ParseWinpcap();
             ParseInvisibleUi();
             ParseAllowTrasparency();
+            ParseTopmost();
         }
 
 
@@ -52,6 +53,8 @@ namespace Data
 
         public bool AllowTransparency { get; set; }
 
+        public bool Topmost { get; set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -62,6 +65,7 @@ namespace Data
             RememberPosition = true;
             InvisibleUI = false;
             Winpcap = true;
+            Topmost = true;
             AllowTransparency = true;
         }
 
@@ -77,6 +81,20 @@ namespace Data
                 RememberPosition = remember;
             }
         }
+
+        public void ParseTopmost()
+        {
+            var root = _xml.Root;
+            var topmost = root?.Element("topmost");
+            if (topmost == null) return;
+            bool remember;
+            var parseSuccess = bool.TryParse(topmost.Value, out remember);
+            if (parseSuccess)
+            {
+                Topmost = remember;
+            }
+        }
+
 
         public void ParseInvisibleUi()
         {
@@ -201,6 +219,7 @@ namespace Data
             xml.Root.Add(new XElement("winpcap", Winpcap));
             xml.Root.Add(new XElement("invisible_ui", InvisibleUI));
             xml.Root.Add(new XElement("allow_transparency", AllowTransparency));
+            xml.Root.Add(new XElement("topmost", Topmost));
             xml.Save(_windowFile);
         }
     }

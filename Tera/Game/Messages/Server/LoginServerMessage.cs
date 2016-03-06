@@ -14,15 +14,10 @@ namespace Tera.Game.Messages
             PlayerId = reader.ReadUInt32();
 
 
-            /*
-            reader.Skip(260);
-            Console.WriteLine(BitConverter.ToString(reader.ReadBytes(12)));
-            */
+            reader.Skip(272);
 
-            /*
-                This network message doesn't have a fixed size between different region
-
-            */
+            /* 
+            // Unless now, every region have switched to the new loginServerMessage structure
             reader.Skip(220);
 
             var nameFirstBit = false;
@@ -42,7 +37,8 @@ namespace Tera.Game.Messages
             }
 
             reader.Skip(9);
-            
+            */
+
             Name = reader.ReadTeraString();
           
         }

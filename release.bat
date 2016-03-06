@@ -1,4 +1,5 @@
 @echo off
+msbuild Tera.sln /p:Configuration=Release /p:Platform="Any CPU"
 set output=.\ShinraMeterV
 set source=.
 set variant=Release
@@ -13,3 +14,5 @@ xcopy "%source%\resources" "%output%\resources\" /E
 del "%output%\SharpPcap.xml"
 del "%output%\PacketDotNet.xml"
 del "%output%\*.vshost*"
+del "%output%\*.pdb"
+del "%output%\resources\config\*.xml"
