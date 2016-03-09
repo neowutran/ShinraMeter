@@ -14,7 +14,7 @@
         Icon="shinra.jpg"
         MinHeight="50"
         MouseLeftButtonDown="Skills_OnMouseLeftButtonDown"
-        Title="Skills" Height="500">
+        Title="Skills" Height="Auto">
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
     </Window.Background>

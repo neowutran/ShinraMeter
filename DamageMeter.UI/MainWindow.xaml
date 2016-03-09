@@ -10,7 +10,6 @@
         MinHeight="60"
         MaxHeight="320"
         WindowStyle="None"
-        Topmost="True"
         ResizeMode="NoResize"
         BorderThickness="0"
         Icon="shinra.jpg"

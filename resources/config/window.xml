@@ -14,4 +14,5 @@
   <winpcap>false</winpcap>
   <invisible_ui>true</invisible_ui>
   <allow_transparency>true</allow_transparency>
+  <topmost>true</topmost>
 </window>

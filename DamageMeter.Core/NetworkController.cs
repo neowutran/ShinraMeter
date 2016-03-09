@@ -217,7 +217,6 @@ namespace DamageMeter
                 var despawnNpc = message as SDespawnNpc;
                 if (despawnNpc != null)
                 {
-                    DamageTracker.Instance.HasReset(despawnNpc);
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnNpc);
                     continue;
                 }

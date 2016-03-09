@@ -16,7 +16,7 @@ namespace DamageMeter.UI
         {
             InitializeComponent();
             _header = new EnduranceDebuffHeader();
-            ContentWidth = 880;
+            ContentWidth = 980;
             Update(playerInfo);
         }
 
