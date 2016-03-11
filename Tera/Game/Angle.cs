@@ -4,9 +4,9 @@ namespace Tera.Game
 {
     public struct Angle
     {
-        private readonly ushort _raw;
+        private readonly short _raw;
 
-        public Angle(ushort raw)
+        public Angle(short raw)
             : this()
         {
             _raw = raw;

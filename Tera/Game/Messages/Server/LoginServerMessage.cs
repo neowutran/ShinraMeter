@@ -7,40 +7,14 @@ namespace Tera.Game.Messages
         internal LoginServerMessage(TeraMessageReader reader)
             : base(reader)
         {
-            reader.Skip(10);
+            int nameOffset = reader.ReadInt16();
+            reader.Skip(8);
             RaceGenderClass = new RaceGenderClass(reader.ReadInt32());
             Id = reader.ReadEntityId();
             reader.Skip(4);
             PlayerId = reader.ReadUInt32();
-
-
-            reader.Skip(272);
-
-            /* 
-            // Unless now, every region have switched to the new loginServerMessage structure
-            reader.Skip(220);
-
-            var nameFirstBit = false;
-            while (true)
-            {
-                var b = reader.ReadByte();
-                if (b == 0x80)
-                {
-                    nameFirstBit = true;
-                    continue;
-                }
-                if (b == 0x3F && nameFirstBit)
-                {
-                    break;
-                }
-                nameFirstBit = false;
-            }
-
-            reader.Skip(9);
-            */
-
+            reader.Skip(nameOffset-34);
             Name = reader.ReadTeraString();
-          
         }
 
         public EntityId Id { get; private set; }

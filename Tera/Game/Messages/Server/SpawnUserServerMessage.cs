@@ -1,4 +1,6 @@
-﻿namespace Tera.Game.Messages
+﻿using System;
+
+namespace Tera.Game.Messages
 {
     public class SpawnUserServerMessage : ParsedMessage
     {
@@ -13,6 +15,7 @@
             reader.Skip(208);
             Name = reader.ReadTeraString();
             GuildName = reader.ReadTeraString();
+//            Console.WriteLine(Name + ":" + BitConverter.ToString(BitConverter.GetBytes(Id.Id)));
         }
 
         public EntityId Id { get; private set; }

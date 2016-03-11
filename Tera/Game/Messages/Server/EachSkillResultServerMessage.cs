@@ -34,12 +34,16 @@ namespace Tera.Game.Messages
             HitId = reader.ReadInt32();
 
             //No fucking idea. I think I see 3 different part in that thing
-            Unknow2 = reader.ReadBytes(12);
+            Unknow2 = reader.ReadBytes(12); //unknown, id, time
 
             Amount = reader.ReadInt32();
             FlagsDebug = reader.ReadInt32();
             Flags = (SkillResultFlags) FlagsDebug;
-            IsCritical = (reader.ReadByte() & 1) != 0;
+            IsCritical = (reader.ReadUInt16() & 1) != 0;
+            Knockdown = (reader.ReadByte() & 1) != 0;
+            reader.Skip(1);//unknown
+            Position = reader.ReadVector3f();
+            Heading = reader.ReadAngle();
 
             if (IsMana)
             {
@@ -66,6 +70,9 @@ namespace Tera.Game.Messages
         public int SkillId { get; private set; }
         public SkillResultFlags Flags { get; }
         public bool IsCritical { get; private set; }
+        public bool Knockdown { get; private set; }
+        public Vector3f Position { get; private set; }
+        public Angle Heading { get; private set; }
 
         public bool IsMana => ((Flags & SkillResultFlags.Bit0) != 0) && ((Flags & SkillResultFlags.Heal) != 0);
 
