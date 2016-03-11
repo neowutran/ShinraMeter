@@ -35,7 +35,11 @@ namespace Tera.Game
             {"S_PARTY_MEMBER_ABNORMAL_CLEAR", typeof (SPartyMemberAbnormalClear)},
             {"S_PARTY_MEMBER_ABNORMAL_DEL", typeof (SPartyMemberAbnormalDel)},
             {"S_PARTY_MEMBER_ABNORMAL_REFRESH", typeof (SPartyMemberAbnormalRefresh)},
-            {"S_DESPAWN_USER", typeof (SDespawnUser)}
+            {"S_DESPAWN_USER", typeof (SDespawnUser)},
+            {"S_USER_STATUS", typeof (SUserStatus)},
+            {"S_CREATURE_LIFE", typeof (SCreatureLife)},
+            {"S_NPC_STATUS", typeof (SNpcStatus)},
+            {"S_NPC_LOCATION", typeof (SNpcLocation)}
         };
 
         private readonly OpCodeNamer _opCodeNamer;

@@ -27,9 +27,9 @@ namespace Tera.Game
             return new EntityId(id);
         }
 
-        public Vector3F ReadVector3F()
+        public Vector3f ReadVector3f()
         {
-            Vector3F result;
+            Vector3f result;
             result.X = ReadSingle();
             result.Y = ReadSingle();
             result.Z = ReadSingle();
@@ -38,7 +38,7 @@ namespace Tera.Game
 
         public Angle ReadAngle()
         {
-            return new Angle(ReadUInt16());
+            return new Angle(ReadInt16());
         }
 
         public void Skip(int count)
