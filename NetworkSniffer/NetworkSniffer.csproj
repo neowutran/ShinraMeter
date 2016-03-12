@@ -33,8 +33,9 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="PacketDotNet">
-      <HintPath>..\..\..\TeraDamageMeter\SharpPcap\PacketDotNet.dll</HintPath>
+    <Reference Include="PacketDotNet, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpPcap\PacketDotNet.dll</HintPath>
     </Reference>
     <Reference Include="SharpPcap">
       <HintPath>..\SharpPcap\SharpPcap.dll</HintPath>
