@@ -2,13 +2,12 @@
 {
     public enum Race : byte
     {
-        Popori = 5, // Male=Popori, Female = Elin
-
-        Human = 100, // Haven't searched for their values yet
-        Highelf,
-        Castanic,
-        Aman,
-        Baraka,
+        Human = 0,
+        Highelf = 1,
+        Aman = 2,
+        Castanic = 3,
+        Popori = 4, // Male=Popori, Female = Elin
+        Baraka = 5,
 
         Common = 255
     }
