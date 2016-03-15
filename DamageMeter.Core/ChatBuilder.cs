@@ -16,7 +16,7 @@ namespace DamageMeter
         private string _chatMessage = "";
 
 
-        public Cryptor EnCryptor => Session.Instance.ChatEncryptor;
+       // public Cryptor EnCryptor => Session.Instance.ChatEncryptor;
         /*
        Some problem with predicting the next sequence number(but totaly possible as we know everything that goes on the network), but anyway, something like that will cause more harm than good.
        Was fun anyway, that thing should be interesting with a full console client, so you can send colorfull chat message.

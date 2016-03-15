@@ -49,6 +49,7 @@ namespace Tera.Game.Messages
             {
                 Amount = Math.Abs(Amount);
             }
+
         }
 
         //DEBUG

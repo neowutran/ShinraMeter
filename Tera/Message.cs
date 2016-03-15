@@ -9,6 +9,7 @@ namespace Tera
             Time = time;
             Direction = direction;
             Data = data;
+          
         }
 
         public DateTime Time { get; private set; }

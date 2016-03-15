@@ -16,6 +16,13 @@ namespace Tera.Sniffing
         public event Action<byte[]> ClientToServerDecrypted;
         public event Action<byte[]> ServerToClientDecrypted;
 
+        private string _region;
+
+        public ConnectionDecrypter(string region)
+        {
+            _region = region;
+        }
+
         protected void OnClientToServerDecrypted(byte[] data)
         {
             var action = ClientToServerDecrypted;
@@ -28,14 +35,14 @@ namespace Tera.Sniffing
             action?.Invoke(data);
         }
 
-        private static Session CreateSession(byte[] clientKey1, byte[] clientKey2, byte[] serverKey1, byte[] serverKey2)
+        private Session CreateSession(byte[] clientKey1, byte[] clientKey2, byte[] serverKey1, byte[] serverKey2)
         {
             var session = Session.Instance;
             session.ClientKey1 = clientKey1;
             session.ClientKey2 = clientKey2;
             session.ServerKey1 = serverKey1;
             session.ServerKey2 = serverKey2;
-            session.Init();
+            session.Init(_region);
 
             Console.WriteLine("Success");
             return session;

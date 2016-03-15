@@ -44,7 +44,10 @@
     <Compile Include="Game\Messages\Server\S_ABNORMALITY_BEGIN.cs" />
     <Compile Include="Game\Messages\Server\S_ABNORMALITY_REFRESH.cs" />
     <Compile Include="Game\Messages\Server\S_CREATURE_CHANGE_HP.cs" />
+    <Compile Include="Game\Messages\Server\S_CREATURE_LIFE.cs" />
     <Compile Include="Game\Messages\Server\S_DESPAWN_NPC.cs" />
+    <Compile Include="Game\Messages\Server\S_NPC_LOCATION.cs" />
+    <Compile Include="Game\Messages\Server\S_NPC_STATUS.cs" />
     <Compile Include="Game\Messages\Server\S_PARTY_MEMBER_ABNORMAL_ADD.cs" />
     <Compile Include="Game\Messages\Server\S_PARTY_MEMBER_ABNORMAL_CLEAR.cs" />
     <Compile Include="Game\Messages\Server\S_PARTY_MEMBER_ABNORMAL_DEL.cs" />
@@ -52,6 +55,7 @@
     <Compile Include="Game\Messages\Server\S_PARTY_MEMBER_CHANGE_HP.cs" />
     <Compile Include="Game\Messages\Server\S_PARTY_MEMBER_CHANGE_MP.cs" />
     <Compile Include="Game\Messages\Server\S_PLAYER_CHANGE_MP.cs" />
+    <Compile Include="Game\Messages\Server\S_USER_STATUS.cs" />
     <Compile Include="Game\Messages\StartUserProjectileServerMessage.cs" />
     <Compile Include="Game\PlaceHolderEntity.cs" />
     <Compile Include="Game\Player.cs" />
