@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera", "Tera\Tera.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}"
@@ -17,16 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.UI", "DamageMet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.AutoUpdate", "DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj", "{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera", "TeraCommon\Tera.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B431143-1A77-44FF-8BC3-926FEC8AD97C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B431143-1A77-44FF-8BC3-926FEC8AD97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B431143-1A77-44FF-8BC3-926FEC8AD97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,6 +48,10 @@ Global
 		{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

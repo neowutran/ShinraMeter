@@ -1,7 +1,0 @@
-bin/
-obj/
-/release/
-/debug/
-*.suo
-*.user
-ShinraMeter*

@@ -227,10 +227,6 @@
       <Project>{87e95fb1-8b42-4f6f-b51a-d2e3e49cd242}</Project>
       <Name>DamageMeter.AutoUpdate</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tera\Tera.csproj">
-      <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
-      <Name>Tera</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DamageMeter.Core\DamageMeter.Core.csproj">
       <Project>{d1ed4752-f2fc-44c3-97b2-580bc79f4af1}</Project>
       <Name>DamageMeter.Core</Name>
@@ -242,6 +238,10 @@
     <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj">
       <Project>{66bb1685-8ff5-4431-b77f-7f80c92a5da4}</Project>
       <Name>DamageMeter.Sniffing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeraCommon\Tera.csproj">
+      <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
+      <Name>Tera</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

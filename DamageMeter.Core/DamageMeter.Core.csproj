@@ -77,10 +77,6 @@
       <Project>{5b431143-1a77-44ff-8bc3-926fec8ad97c}</Project>
       <Name>NetworkSniffer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tera\Tera.csproj">
-      <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
-      <Name>Tera</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
       <Name>Data</Name>
@@ -88,6 +84,10 @@
     <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj">
       <Project>{66bb1685-8ff5-4431-b77f-7f80c92a5da4}</Project>
       <Name>DamageMeter.Sniffing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeraCommon\Tera.csproj">
+      <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
+      <Name>Tera</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
