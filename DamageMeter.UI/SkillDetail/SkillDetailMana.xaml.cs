@@ -21,7 +21,7 @@ namespace DamageMeter.UI.SkillDetail
         public void Update(SkillDetailStats skill)
         {
             //TODO Need to refactor this shitty copy paste shit
-            var userskill = BasicTeraData.Instance.SkillDatabase.Get(new UserEntity(skill.PlayerInfo.Player.User.Id), skill.Id);
+            var userskill = BasicTeraData.Instance.SkillDatabase.Get(skill.PlayerInfo.Player.User, skill.Id);
             bool? chained = false;
             string hit = null;
             if (userskill != null)
