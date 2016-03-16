@@ -22,13 +22,9 @@ namespace DamageMeter.UI.SkillDetail
         {
             //TODO Need to refactor this shitty copy paste shit
             var userskill = BasicTeraData.Instance.SkillDatabase.Get(skill.PlayerInfo.Player.User, skill.Id);
-            bool? chained = false;
-            string hit = null;
-            if (userskill != null)
-            {
-                hit = ((UserSkill)userskill).Hit;
-                chained = userskill.IsChained;
-            }
+            bool? chained = userskill?.IsChained;
+            string hit = userskill?.Detail;
+
             if (hit == null)
             {
                 if (BasicTeraData.Instance.HotDotDatabase.Get(skill.Id) != null)
