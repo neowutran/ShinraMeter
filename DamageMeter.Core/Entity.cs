@@ -67,13 +67,13 @@ namespace DamageMeter
 
         public bool IsBoss()
         {
-            return BasicTeraData.Instance.MonsterDatabase.IsBoss(_npcArea.ToString(), _npcId.ToString());
+            return BasicTeraData.Instance.MonsterDatabase.GetOrPlaceholder(_npcArea, _npcId).Boss;
         }
 
         private void SetName()
         {
-            Name = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(_npcArea.ToString(), _npcId.ToString());
-            AreaName = BasicTeraData.Instance.MonsterDatabase.GetAreaName(_npcArea.ToString());
+            Name = BasicTeraData.Instance.MonsterDatabase.GetOrPlaceholder(_npcArea, _npcId).Name;
+            AreaName = BasicTeraData.Instance.MonsterDatabase.GetAreaName(_npcArea);
             if (!IsBoss())
             {
                 Id = new EntityId(0);

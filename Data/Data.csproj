@@ -49,19 +49,12 @@
     <Compile Include="BasicTeraData.cs" />
     <Compile Include="ClassIcons.cs" />
     <Compile Include="CopyKey.cs" />
-    <Compile Include="HotDot.cs" />
     <Compile Include="HotkeysData.cs" />
     <Compile Include="InvalidConfigFileException.cs" />
-    <Compile Include="Monster.cs" />
-    <Compile Include="MonsterDatabase.cs" />
     <Compile Include="ImageDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PetSkillDatabase.cs" />
-    <Compile Include="HotDotDatabase.cs" />
-    <Compile Include="SkillDatabase.cs" />
     <Compile Include="TeraData.cs" />
     <Compile Include="WindowData.cs" />
-    <Compile Include="Zone.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

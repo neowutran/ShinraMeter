@@ -35,7 +35,7 @@ namespace Data
         public PetSkillDatabase PetSkillDatabase { get; set; }
         public SkillDatabase SkillDatabase { get; set; }
         public ImageDatabase ImageDatabase { get; private set; }
-        public MonsterDatabase MonsterDatabase { get; set; }
+        public NpcDatabase MonsterDatabase { get; set; }
         public WindowData WindowData { get; }
         public HotkeysData HotkeysData { get; private set; }
         public string ResourceDirectory { get; }

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using DamageMeter.Skills.Skill.SkillDetail;
 using Data;
+using Tera.Game;
 
 namespace DamageMeter.UI.SkillDetail
 {
@@ -19,16 +20,21 @@ namespace DamageMeter.UI.SkillDetail
 
         public void Update(SkillDetailStats skill)
         {
-            var hit = BasicTeraData.Instance.SkillDatabase.Hit(skill.PlayerInfo.Class, skill.Id);
+            var userskill = BasicTeraData.Instance.SkillDatabase.Get(new UserEntity(skill.PlayerInfo.Player.User.Id), skill.Id);
+            bool? chained = false;
+            string hit = null;
+            if (userskill != null)
+            {
+                hit = ((UserSkill)userskill).Hit;
+                chained = userskill.IsChained;
+            }
             if (hit == null)
             {
                 if (BasicTeraData.Instance.HotDotDatabase.Get(skill.Id) != null)
                 {
-                    hit = "DOT";
+                    hit = "HOT";
                 }
             }
-
-            var chained = BasicTeraData.Instance.SkillDatabase.IsChained(skill.PlayerInfo.Class, skill.Id);
             if (hit != null)
             {
                 LabelName.Content = hit;

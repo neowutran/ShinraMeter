@@ -38,11 +38,10 @@ namespace DamageMeter
                 SourcePlayer = NetworkController.Instance.PlayerTracker.Get(sourceUser.PlayerId);
                 if (!abnormality)
                 {
-                    Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser.RaceGenderClass.Class, skillId);
+                    Skill = BasicTeraData.Instance.SkillDatabase.Get(new UserEntity(sourceUser.Id), skillId);
                     if (Skill == null && npc != null)
                     {
-                        var petName = BasicTeraData.Instance.MonsterDatabase.GetMonsterName(npc.NpcArea.ToString(),
-                            npc.NpcId.ToString());
+                        var petName = BasicTeraData.Instance.MonsterDatabase.GetOrPlaceholder(npc.NpcArea, npc.NpcId).Name;
                         Skill = new UserSkill(skillId, sourceUser.RaceGenderClass.Class, petName,
                             BasicTeraData.Instance.PetSkillDatabase.Get(petName, skillId), null);
                     }
@@ -63,7 +62,7 @@ namespace DamageMeter
         public bool IsHp { get; }
 
         public int SkillId { get; private set; }
-        public UserSkill Skill { get; }
+        public Skill Skill { get; }
 
         public int Damage
         {
