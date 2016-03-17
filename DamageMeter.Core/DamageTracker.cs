@@ -252,7 +252,7 @@ namespace DamageMeter
             if (entity is NpcEntity)
             {
                 var target = (NpcEntity) entity;
-                return new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
+                return new Entity(target);
             }
             if (entity is UserEntity)
             {
@@ -277,7 +277,7 @@ namespace DamageMeter
                 if (source.Owner is NpcEntity)
                 {
                     var source2 = (NpcEntity) source.Owner;
-                    return new Entity(source2.CategoryId, source2.Id, source2.NpcId, source2.NpcArea);
+                    return new Entity(source2);
                 }
                 if (source.Owner is UserEntity)
                 {

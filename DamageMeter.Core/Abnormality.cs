@@ -69,7 +69,7 @@ namespace DamageMeter
             if (game != null)
             {
                 var target = game;
-                entity = new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
+                entity = new Entity(target);
             }
 
             if (entity == null)
@@ -94,7 +94,7 @@ namespace DamageMeter
             if (game != null)
             {
                 var target = game;
-                entity = new Entity(target.CategoryId, target.Id, target.NpcId, target.NpcArea);
+                entity = new Entity(target);
             }
 
             if (entity == null)

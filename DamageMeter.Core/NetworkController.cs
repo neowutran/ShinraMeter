@@ -71,7 +71,7 @@ namespace DamageMeter
         private void HandleNewConnection(Server server, IPEndPoint serverIpEndPoint, IPEndPoint clientIpEndPoint)
         {
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
-            EntityTracker = new EntityTracker();
+            EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
             PlayerTracker = new PlayerTracker(EntityTracker);
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
             ServerIpEndPoint = serverIpEndPoint;

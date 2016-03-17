@@ -82,10 +82,6 @@ namespace DamageMeter
             return Player.GetHashCode();
         }
 
-
-        public bool IsHealer()
-        {
-            return Class == PlayerClass.Mystic || Class == PlayerClass.Priest;
-        }
+        public bool IsHealer => Player.IsHealer;
     }
 }
