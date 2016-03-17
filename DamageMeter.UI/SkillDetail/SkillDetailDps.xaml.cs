@@ -20,7 +20,7 @@ namespace DamageMeter.UI.SkillDetail
 
         public void Update(SkillDetailStats skill)
         {
-            var userskill = BasicTeraData.Instance.SkillDatabase.Get(skill.PlayerInfo.Player.User, skill.Id);
+            var userskill = BasicTeraData.Instance.SkillDatabase.GetOrNull(skill.PlayerInfo.Player.User, skill.Id);
             bool? chained = userskill?.IsChained;
             string hit = userskill?.Detail;
            

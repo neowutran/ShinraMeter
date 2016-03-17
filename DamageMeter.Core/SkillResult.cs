@@ -38,7 +38,7 @@ namespace DamageMeter
                 SourcePlayer = NetworkController.Instance.PlayerTracker.Get(sourceUser.PlayerId);
                 if (!abnormality)
                 {
-                    Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser, skillId);
+                    Skill = BasicTeraData.Instance.SkillDatabase.GetOrNull(sourceUser, skillId);
                     if (Skill == null && npc != null)
                     {
                         Skill = new UserSkill(skillId, sourceUser.RaceGenderClass.Class, npc.Info.Name,
