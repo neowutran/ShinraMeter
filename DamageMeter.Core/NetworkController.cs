@@ -48,10 +48,6 @@ namespace DamageMeter
 
         public static NetworkController Instance => _instance ?? (_instance = new NetworkController());
 
-        public IPEndPoint ServerIpEndPoint { get; private set; }
-        public IPEndPoint ClientIpEndPoint { get; private set; }
-
-
         public EntityTracker EntityTracker { get; private set; }
 
         public bool ForceUpdate { get; set; }
@@ -68,14 +64,12 @@ namespace DamageMeter
         public event ConnectedHandler Connected;
         public event UpdateUiHandler TickUpdated;
 
-        private void HandleNewConnection(Server server, IPEndPoint serverIpEndPoint, IPEndPoint clientIpEndPoint)
+        private void HandleNewConnection(Server server)
         {
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
             PlayerTracker = new PlayerTracker(EntityTracker);
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
-            ServerIpEndPoint = serverIpEndPoint;
-            ClientIpEndPoint = clientIpEndPoint;
             var handler = Connected;
             handler?.Invoke(server.Name);
         }

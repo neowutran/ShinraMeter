@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.UI", "DamageMet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.AutoUpdate", "DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj", "{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera", "TeraCommon\Tera.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Core", "TeraCommon\Tera.Core.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -46,7 +46,7 @@
       <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
       <Name>Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TeraCommon\Tera.csproj">
+    <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
       <Name>Tera</Name>
     </ProjectReference>

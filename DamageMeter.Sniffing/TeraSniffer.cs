@@ -66,15 +66,14 @@ namespace DamageMeter.Sniffing
             set { _ipSniffer.Enabled = value; }
         }
 
-        public event Action<Server, IPEndPoint, IPEndPoint> NewConnection;
-
-
+        public event Action<Server> NewConnection;
+        public event Action<Message> MessageReceived;
         public event Action<string> Warning;
 
-        protected virtual void OnNewConnection(Server server, IPEndPoint serverIpEndPoint, IPEndPoint clientIpEndPoint)
+        protected virtual void OnNewConnection(Server server)
         {
             var handler = NewConnection;
-            handler?.Invoke(server, serverIpEndPoint, clientIpEndPoint);
+            handler?.Invoke(server);
         }
 
 
@@ -126,7 +125,7 @@ namespace DamageMeter.Sniffing
 
                         _messageSplitter = new MessageSplitter();
                         _messageSplitter.MessageReceived += HandleMessageReceived;
-                        OnNewConnection(server, connection.Source, connection.Destination);
+                        OnNewConnection(server);
                     }
                     if (_serverToClient != null && _clientToServer == null &&
                         _serverToClient.Destination.Equals(connection.Source) &&
