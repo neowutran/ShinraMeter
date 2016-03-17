@@ -50,10 +50,7 @@ namespace DamageMeter
             return obj.GetType() == GetType() && Equals((Entity) obj);
         }
 
-        public bool IsBoss()
-        {
-            return NpcE?.Info.Boss??false;
-        }
+        public bool IsBoss => NpcE?.Info.Boss ?? false;
 
         public override string ToString()
         {

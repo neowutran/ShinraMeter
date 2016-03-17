@@ -408,7 +408,7 @@ namespace DamageMeter.UI
             foreach (var entity in entityList)
             {
                 var item = new ComboBoxItem {Content = entity};
-                if (entity.IsBoss())
+                if (entity.IsBoss)
                 {
                     item.Foreground = Brushes.Red;
                 }

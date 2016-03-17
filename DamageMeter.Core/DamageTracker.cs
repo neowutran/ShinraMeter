@@ -104,7 +104,7 @@ namespace DamageMeter
             foreach (var entityStats in EntitiesStats)
             {
                 var entity = entityStats.Key;
-                if (entity.Id != npcOccupierResult.Npc || !entity.IsBoss() || !npcOccupierResult.HasReset) continue;
+                if (entity.Id != npcOccupierResult.Npc || !entity.IsBoss || !npcOccupierResult.HasReset) continue;
                 DeleteEntity(entity);
                 return;
             }
@@ -151,7 +151,7 @@ namespace DamageMeter
 
         public void UpdateCurrentBoss(Entity entity)
         {
-            if (entity.IsBoss())
+            if (entity.IsBoss)
             {
                 CurrentBoss = entity;
             }
@@ -412,7 +412,7 @@ namespace DamageMeter
             }
 
             //Not damage & if you are a healer, don't show heal / mana regen affecting you, as that will modify your crit rate and other stats. 
-            if ((message.IsHp && message.Amount > 0 || !message.IsHp) && !PlayerClassHelper.IsHeal(playerInfo.Class) &&
+            if ((message.IsHp && message.Amount > 0 || !message.IsHp) && !playerInfo.IsHealer &&
                 (UserEntity.ForEntity(message.Source)["user"] != UserEntity.ForEntity(message.Target)["user"]))
             {
                 UpdateSkillStats(message, new Entity(playerInfo.Player.User.Name), playerInfo, time);
@@ -426,7 +426,7 @@ namespace DamageMeter
 
             var entity = entitySource;
 
-            if (entitySource.IsBoss())
+            if (entitySource.IsBoss)
             {
                 foreach (
                     var t in EntitiesStats.Where(t => t.Key.Name == entitySource.Name && t.Key.Id == entitySource.Id))
