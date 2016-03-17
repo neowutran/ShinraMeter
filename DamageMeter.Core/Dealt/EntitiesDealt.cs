@@ -148,7 +148,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                if (NetworkController.Instance.Encounter == null || (PlayerInfo.IsHealer() && !NetworkController.Instance.TimedEncounter))
+                if (NetworkController.Instance.Encounter == null || (PlayerInfo.IsHealer && !NetworkController.Instance.TimedEncounter))
                 {
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Crits));
                 }
@@ -178,7 +178,7 @@ namespace DamageMeter.Dealt
         {
             get
             {
-                if (NetworkController.Instance.Encounter == null || (PlayerInfo.IsHealer() && !NetworkController.Instance.TimedEncounter ))
+                if (NetworkController.Instance.Encounter == null || (PlayerInfo.IsHealer && !NetworkController.Instance.TimedEncounter ))
                 {
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Hits));
                 }

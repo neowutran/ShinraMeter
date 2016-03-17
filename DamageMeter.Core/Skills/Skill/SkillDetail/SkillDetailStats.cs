@@ -200,7 +200,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
 
         public int HitsAll => HitsDmg + HitsHeal;
 
-        public int Hits => PlayerInfo.IsHealer() ? HitsHeal : HitsDmg;
+        public int Hits => PlayerInfo.IsHealer ? HitsHeal : HitsDmg;
 
         public int HitsDmg { get; private set; }
 
@@ -210,7 +210,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
 
         public int CritsAll => CritsDmg + CritsHeal;
 
-        public int Crits => PlayerInfo.IsHealer() ? CritsHeal : CritsDmg;
+        public int Crits => PlayerInfo.IsHealer ? CritsHeal : CritsDmg;
 
         public int CritsHeal { get; private set; }
         public int CritsDmg { get; private set; }

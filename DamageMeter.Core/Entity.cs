@@ -6,21 +6,16 @@ namespace DamageMeter
 {
     public class Entity : IEquatable<object>
     {
-        private readonly ushort _npcArea;
-        private readonly uint _npcId;
-
-
-        public Entity(uint modelId, EntityId id, uint npcId, ushort npcArea)
+        public NpcEntity NpcE;
+        public Entity(NpcEntity npce)
         {
-            ModelId = modelId;
-            Id = id;
-            _npcId = npcId;
-            _npcArea = npcArea;
-            SetName();
+            NpcE = npce;
+            Name = NpcE.Info.Name;
+            Id = (NpcE.Info.Boss) ? NpcE.Id : new EntityId(0);
         }
 
-        public Entity(uint modelId, EntityId id, uint npcId, ushort npcArea, bool group)
-            : this(modelId, id, npcId, npcArea)
+        public Entity(NpcEntity npce, bool group)
+            : this(npce)
         {
             IsGroup = group;
         }
@@ -33,9 +28,6 @@ namespace DamageMeter
         public bool IsGroup { get; }
 
         public string Name { get; private set; }
-
-
-        public uint ModelId { get; }
 
         public EntityId Id { get; private set; }
 
@@ -51,8 +43,6 @@ namespace DamageMeter
             }
         }
 
-        public string AreaName { get; private set; }
-
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
@@ -60,33 +50,17 @@ namespace DamageMeter
             return obj.GetType() == GetType() && Equals((Entity) obj);
         }
 
-        public Entity GetGroup()
-        {
-            return !IsBoss() ? null : new Entity(0, new EntityId(0), 0, 0, true);
-        }
-
         public bool IsBoss()
         {
-            return BasicTeraData.Instance.MonsterDatabase.GetOrPlaceholder(_npcArea, _npcId).Boss;
+            return NpcE?.Info.Boss??false;
         }
-
-        private void SetName()
-        {
-            Name = BasicTeraData.Instance.MonsterDatabase.GetOrPlaceholder(_npcArea, _npcId).Name;
-            AreaName = BasicTeraData.Instance.MonsterDatabase.GetAreaName(_npcArea);
-            if (!IsBoss())
-            {
-                Id = new EntityId(0);
-            }
-        }
-
 
         public override string ToString()
         {
             var name = Name;
-            if (!string.IsNullOrEmpty(AreaName))
+            if (!string.IsNullOrEmpty(NpcE?.Info.Area))
             {
-                name += ": " + AreaName;
+                name += ": " + NpcE.Info.Area;
             }
             return name + "";
         }

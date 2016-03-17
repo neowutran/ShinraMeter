@@ -41,9 +41,8 @@ namespace DamageMeter
                     Skill = BasicTeraData.Instance.SkillDatabase.Get(sourceUser, skillId);
                     if (Skill == null && npc != null)
                     {
-                        var petName = BasicTeraData.Instance.MonsterDatabase.GetOrPlaceholder(npc.NpcArea, npc.NpcId).Name;
-                        Skill = new UserSkill(skillId, sourceUser.RaceGenderClass.Class, petName,
-                            BasicTeraData.Instance.PetSkillDatabase.Get(petName, skillId), null);
+                        Skill = new UserSkill(skillId, sourceUser.RaceGenderClass.Class, npc.Info.Name,
+                            BasicTeraData.Instance.PetSkillDatabase.Get(npc.Info.Name, skillId), null);
                     }
                 }
             }
