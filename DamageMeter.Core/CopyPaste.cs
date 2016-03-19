@@ -115,6 +115,7 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{damage_dealt}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage));
                 currentContent = currentContent.Replace("{class}", playerStats.Class + "");
+                currentContent = currentContent.Replace("{fullname}", playerStats.Player.FullName);
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(totalDamage) + "%");
