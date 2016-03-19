@@ -24,10 +24,8 @@ namespace Data
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
-            Servers = new ServerDatabase(ResourceDirectory);
+            Servers = new ServerDatabase(Path.Combine(ResourceDirectory,"data"));
             ImageDatabase = new ImageDatabase(Path.Combine(ResourceDirectory, "img/"));
-
-
         }
 
         public HotDotDatabase HotDotDatabase { get; set; }

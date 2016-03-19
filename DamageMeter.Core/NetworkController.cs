@@ -69,8 +69,9 @@ namespace DamageMeter
         {
             Server = server;
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
+            BasicTeraData.Instance.Servers.Region = server.Region;
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
-            PlayerTracker = new PlayerTracker(EntityTracker);
+            PlayerTracker = new PlayerTracker(EntityTracker,BasicTeraData.Instance.Servers);
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
             var handler = Connected;
             handler?.Invoke(server.Name);
