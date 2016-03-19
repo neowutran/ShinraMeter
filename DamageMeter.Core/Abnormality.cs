@@ -135,7 +135,7 @@ namespace DamageMeter
             {
                 return;
             }
-            var player = new Player((UserEntity) userEntity);
+            var player = NetworkController.Instance.PlayerTracker.GetOrUpdate((UserEntity) userEntity);
 
             if (!DamageTracker.Instance.UsersStats.ContainsKey(player))
             {
@@ -188,7 +188,7 @@ namespace DamageMeter
             {
                 return;
             }
-            var player = new Player((UserEntity) userEntity);
+            var player = NetworkController.Instance.PlayerTracker.GetOrUpdate((UserEntity)userEntity);
             DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration[
                 DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration.Count - 1].Update(
                     lastTicks);
