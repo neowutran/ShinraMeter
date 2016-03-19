@@ -172,7 +172,9 @@ namespace DamageMeter
 
         public long GetInterval(Entity entity)
         {
-            return EntitiesStats[entity].LastHit - EntitiesStats[entity].FirstHit;
+            if (EntitiesStats.ContainsKey(entity))
+                return EntitiesStats[entity].LastHit - EntitiesStats[entity].FirstHit;
+            else return 0;
         }
 
         public void Reset()

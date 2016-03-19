@@ -23,6 +23,7 @@ namespace DamageMeter.UI
             Image = ClassIcons.Instance.GetImage(PlayerInfo.Class).Source;
             Class.Source = Image;
             LabelName.Content = PlayerName;
+            LabelName.ToolTip = $"{BasicTeraData.Instance.Servers.GetServerName(playerInfo.Player.ServerId, NetworkController.Instance.Server.Region)} : {PlayerName}";
         }
 
         public PlayerInfo PlayerInfo { get; set; }

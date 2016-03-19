@@ -31,6 +31,7 @@ namespace DamageMeter
         private long _lastTick;
         private MessageFactory _messageFactory;
         public PlayerTracker PlayerTracker;
+        public Server Server;
 
         private NetworkController()
         {
@@ -66,6 +67,7 @@ namespace DamageMeter
 
         private void HandleNewConnection(Server server)
         {
+            Server = server;
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
             PlayerTracker = new PlayerTracker(EntityTracker);

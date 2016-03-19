@@ -23,8 +23,8 @@ namespace Data
             XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
-            _dataForRegion = Memoize<string, TeraData>(region => new TeraData(region));
-            Servers = GetServers(Path.Combine(ResourceDirectory, "data/servers.txt")).ToList();
+            _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
+            Servers = new ServerDatabase(ResourceDirectory);
             ImageDatabase = new ImageDatabase(Path.Combine(ResourceDirectory, "img/"));
 
 
@@ -39,13 +39,7 @@ namespace Data
         public WindowData WindowData { get; }
         public HotkeysData HotkeysData { get; private set; }
         public string ResourceDirectory { get; }
-        public IEnumerable<Server> Servers { get; private set; }
-
-        private static Func<T, TResult> Memoize<T, TResult>(Func<T, TResult> func)
-        {
-            var lookup = new ConcurrentDictionary<T, TResult>();
-            return x => lookup.GetOrAdd(x, func);
-        }
+        public ServerDatabase Servers { get; private set; }
 
         public TeraData DataForRegion(string region)
         {
@@ -63,14 +57,6 @@ namespace Data
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the resource directory");
-        }
-
-        private static IEnumerable<Server> GetServers(string filename)
-        {
-            return File.ReadAllLines(filename)
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s => s.Split(new[] {' '}, 3))
-                .Select(parts => new Server(parts[2], parts[1], parts[0]));
         }
     }
 }
