@@ -166,6 +166,12 @@ namespace DamageMeter
                 var message = _messageFactory.Create(obj);
                 EntityTracker.Update(message);
 
+                var sLogin = message as LoginServerMessage;
+                if (sLogin != null)
+                {
+                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId));
+                    continue;
+                }
 
                 var npcOccupier = message as SNpcOccupierInfo;
                 if (npcOccupier != null)
