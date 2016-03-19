@@ -56,6 +56,23 @@ namespace DamageMeter
             }
         }
 
+        public bool AbnormalityExist(EntityId target, HotDot dot)
+        {
+            if (!_abnormalities.ContainsKey(target))
+            {
+                return false;
+            }
+            var abnormalityTarget = _abnormalities[target];
+            for(var i = 0; i < abnormalityTarget.Count; i++)
+            {
+                if(abnormalityTarget[i].HotDot == dot)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void DeleteAbnormality(SAbnormalityEnd message)
         {
             if (!_abnormalities.ContainsKey(message.TargetId))

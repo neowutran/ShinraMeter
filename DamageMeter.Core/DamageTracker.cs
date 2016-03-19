@@ -124,7 +124,8 @@ namespace DamageMeter
             {
                 foreach (var abnormality in EntitiesStats[entity].AbnormalityTime)
                 {
-                    if (abnormality.Value.Ended())
+                   
+                    if (!AbnormalityTracker.Instance.AbnormalityExist(entity.Id, abnormality.Key))
                     {
                         continue;
                     }

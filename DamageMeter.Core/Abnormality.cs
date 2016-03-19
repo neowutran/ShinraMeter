@@ -77,7 +77,7 @@ namespace DamageMeter
                 return;
             }
 
-            //TODO
+            //TODO: bug here, try to fix
             DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration[
                 DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration.Count - 1].Update(
                     lastTicks);

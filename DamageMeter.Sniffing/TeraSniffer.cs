@@ -34,7 +34,7 @@ namespace DamageMeter.Sniffing
         private TeraSniffer()
         {
             var servers = BasicTeraData.Instance.Servers;
-            _serversByIp = servers.GetServers().ToDictionary(x => x.Ip);
+            _serversByIp = servers.GetServers().GroupBy(x => x.Ip).ToDictionary(x => x.Key, x => x.First());
 
 
             if (BasicTeraData.Instance.WindowData.Winpcap)

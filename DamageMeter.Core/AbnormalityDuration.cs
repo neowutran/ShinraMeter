@@ -69,6 +69,7 @@ namespace DamageMeter
                 if (maxTime && duration.End == long.MaxValue)
                 {
                     Console.WriteLine("!!!!! Big issue !!!!!!");
+                    throw new Exception("!!! Big issue !!!!!! Abnormality Duration fucked up");
                 }
 
                 if (duration.End == long.MaxValue)
