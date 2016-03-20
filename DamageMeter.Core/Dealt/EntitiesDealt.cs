@@ -173,6 +173,17 @@ namespace DamageMeter.Dealt
                 
             }
         }
+        public long DmgBiggestCrit
+        {
+            get
+            {
+                if (NetworkController.Instance.Encounter == null )
+                    return _entitiesStats.SelectMany(x => x.Value).SelectMany(x => x.Value.Skills).Select(x => x.Value.DmgBiggestCrit).Concat(new long[] { 0 }).Max();
+                if (!NetworkController.Instance.TimedEncounter)
+                    return _entitiesStats.SelectMany(x => x.Value).Where(stats => stats.Key == NetworkController.Instance.Encounter).SelectMany(x => x.Value.Skills).Select(x => x.Value.DmgBiggestCrit).Concat(new long[] { 0 }).Max();
+                return _entitiesStats.Where(x => x.Key >= FirstHit && x.Key <= LastHit).SelectMany(x => x.Value).SelectMany(x => x.Value.Skills).Select(x => x.Value.DmgBiggestCrit).Concat(new long[] { 0 }).Max();
+            }
+        }
 
         public int Hits
         {
