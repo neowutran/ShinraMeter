@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using DamageMeter.Sniffing;
@@ -134,11 +133,40 @@ namespace DamageMeter
             handler?.Invoke();
         }
 
+        public bool NeedToReset = false;
+        public bool NeedToResetCurrent = false;
+        public CopyKey NeedToCopy = null;
 
         private void PacketAnalysisLoop()
         {
             while (true)
             {
+
+                if (NeedToReset)
+                {
+                    Reset();
+                    NeedToReset = false;
+                }
+
+                if (NeedToResetCurrent)
+                {
+                    ResetCurrent();
+                    NeedToResetCurrent = false;
+                }
+
+                if(NeedToCopy != null)
+                {
+                    CopyPaste.Copy(DamageTracker.Instance.GetPlayerStats(), DamageTracker.Instance.TotalDamage,
+                    DamageTracker.Instance.Interval, NeedToCopy.Header, NeedToCopy.Content, NeedToCopy.Footer, NeedToCopy.OrderBy,
+                    NeedToCopy.Order);
+                    NeedToCopy = null;
+
+                    var text = Clipboard.GetText();
+                    var pasteThread = new Thread(() => CopyPaste.Paste(text));
+                    pasteThread.Start();
+
+                }
+
                 if (ForceUpdate)
                 {
                     ForceUpdate = false;
@@ -221,6 +249,12 @@ namespace DamageMeter
                 if (despawnNpc != null)
                 {
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnNpc);
+                    if (despawnNpc.Dead)
+                    {
+                        var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
+                        Console.WriteLine(entity.Name + " is dead.");
+                        //TODO: call teradps.io API
+                    }
                     continue;
                 }
 
@@ -231,9 +265,9 @@ namespace DamageMeter
                     continue;
                 }
 
-
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage == null) continue;
+
                 var amount = skillResultMessage.Amount;
                 if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
                 {

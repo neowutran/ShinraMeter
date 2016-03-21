@@ -117,7 +117,7 @@ namespace DamageMeter.Sniffing
                         var server = _serversByIp[connection.Source.Address.ToString()];
                         _serverToClient = connection;
                         _clientToServer = null;
-
+                        
                         _decrypter = new ConnectionDecrypter(server.Region);
                         _decrypter.ClientToServerDecrypted += HandleClientToServerDecrypted;
                         _decrypter.ServerToClientDecrypted += HandleServerToClientDecrypted;

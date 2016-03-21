@@ -98,6 +98,7 @@ namespace DamageMeter
             return UsersStats.Select(stat => (PlayerInfo) stat.Value.Clone()).ToList();
         }
 
+        private List<Entity> _toDelete = new List<Entity>();
 
         public void UpdateEntities(NpcOccupierResult npcOccupierResult, long time)
         {
@@ -105,7 +106,13 @@ namespace DamageMeter
             {
                 var entity = entityStats.Key;
                 if (entity.Id != npcOccupierResult.Npc || !entity.IsBoss || !npcOccupierResult.HasReset) continue;
-                DeleteEntity(entity);
+
+                /*
+                * Instead of deleting the entity directly, we store what entity need to be deleted.  
+                * With that, we are able to keep data on try run (without that, if you try the queen in DS2, when you wipe, all stats are deleted)
+                * Now, with that, the data will be keep until the next try against the boss
+                */
+                _toDelete.Add(entity);
                 return;
             }
         }
@@ -349,6 +356,14 @@ namespace DamageMeter
             {
                 return;
             }
+
+          
+            if (_toDelete.Contains(entityTarget))
+            {
+                DeleteEntity(entityTarget);
+                _toDelete.Remove(entityTarget);
+            }
+
 
             UpdateEncounter(entityTarget, message);
             UpdateSkillStats(message, entityTarget, playerInfo, time);

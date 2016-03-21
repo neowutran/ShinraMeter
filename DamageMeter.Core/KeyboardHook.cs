@@ -51,12 +51,14 @@ namespace DamageMeter
             else if (e.Key == BasicTeraData.Instance.HotkeysData.Reset.Key &&
                      e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Value)
             {
-                NetworkController.Instance.Reset();
+                //Can't call directly NetworkController.Instance.Reset() => threading problem
+                NetworkController.Instance.NeedToReset = true;
             }
             else if (e.Key == BasicTeraData.Instance.HotkeysData.ResetCurrent.Key &&
                      e.Modifier == BasicTeraData.Instance.HotkeysData.ResetCurrent.Value)
             {
-                NetworkController.Instance.ResetCurrent();
+                //Can't call directly NetworkController.Instance.ResetCurrent() => threading problem
+                NetworkController.Instance.NeedToResetCurrent = true;
             }else if (e.Key == BasicTeraData.Instance.HotkeysData.ClickThrou.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ClickThrou.Value)
             {
                 NetworkController.Instance.SwitchClickThrou();
@@ -66,12 +68,9 @@ namespace DamageMeter
                     BasicTeraData.Instance.HotkeysData.Copy.Where(
                         copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
-                CopyPaste.Copy(DamageTracker.Instance.GetPlayerStats(), DamageTracker.Instance.TotalDamage,
-                    DamageTracker.Instance.Interval, copy.Header, copy.Content, copy.Footer, copy.OrderBy,
-                    copy.Order);
-                var text = Clipboard.GetText();
-                var pasteThread = new Thread(() => CopyPaste.Paste(text));
-                pasteThread.Start();
+                //Can't copy directly, => treading problem
+                NetworkController.Instance.NeedToCopy = copy;
+                
             }
         }
 

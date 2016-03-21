@@ -117,6 +117,7 @@ namespace DamageMeter
                 var user = (UserEntity) npcEntity;
                 var abnormalityInitDuration = new AbnormalityDuration(user.RaceGenderClass.Class);
                 abnormalityInitDuration.ListDuration.Add(duration);
+
                 DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.Add(HotDot, abnormalityInitDuration);
                 _enduranceDebuffRegistered = true;
                 return;
