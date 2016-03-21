@@ -137,6 +137,15 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
+        public static void CopyThread(List<PlayerInfo> stats, long total, long interval, CopyKey copy)
+        {
+                   
+            CopyPaste.Copy(stats, total, interval, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = Clipboard.GetText();
+            CopyPaste.Paste(text);
+            
+        }
+
         private void PacketAnalysisLoop()
         {
             while (true)
@@ -156,15 +165,15 @@ namespace DamageMeter
 
                 if(NeedToCopy != null)
                 {
-                    CopyPaste.Copy(DamageTracker.Instance.GetPlayerStats(), DamageTracker.Instance.TotalDamage,
-                    DamageTracker.Instance.Interval, NeedToCopy.Header, NeedToCopy.Content, NeedToCopy.Footer, NeedToCopy.OrderBy,
-                    NeedToCopy.Order);
-                    NeedToCopy = null;
-
-                    var text = Clipboard.GetText();
-                    var pasteThread = new Thread(() => CopyPaste.Paste(text));
+                    var stats = DamageTracker.Instance.GetPlayerStats();
+                    var totaldamage = DamageTracker.Instance.TotalDamage;
+                    var interval = DamageTracker.Instance.Interval;
+                    var tmpcopy = NeedToCopy;
+                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, interval, tmpcopy));
+                    pasteThread.SetApartmentState(ApartmentState.STA);
                     pasteThread.Start();
-
+                    NeedToCopy = null;
+                    
                 }
 
                 if (ForceUpdate)
