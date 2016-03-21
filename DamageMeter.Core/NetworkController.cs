@@ -197,7 +197,7 @@ namespace DamageMeter
                 var sLogin = message as LoginServerMessage;
                 if (sLogin != null)
                 {
-                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId));
+                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId,Server));
                     continue;
                 }
 
