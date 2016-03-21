@@ -203,10 +203,18 @@ namespace DamageMeter
                 var message = _messageFactory.Create(obj);
                 EntityTracker.Update(message);
 
+                //var sSpawnUser = message as SpawnUserServerMessage;
+                //if (sSpawnUser != null)
+                //{
+                //    Console.WriteLine(sSpawnUser.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.Id.Id))+" : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.ServerId)) + " " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.PlayerId)));
+                //    continue;
+                //}
+
                 var sLogin = message as LoginServerMessage;
                 if (sLogin != null)
                 {
                     Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId,Server));
+                    //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;
                 }
 

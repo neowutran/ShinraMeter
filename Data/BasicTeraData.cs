@@ -38,6 +38,7 @@ namespace Data
         public HotkeysData HotkeysData { get; private set; }
         public string ResourceDirectory { get; }
         public ServerDatabase Servers { get; private set; }
+        public CharmsDatabase Charms { get; set; }
 
         public TeraData DataForRegion(string region)
         {
