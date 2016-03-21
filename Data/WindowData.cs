@@ -9,6 +9,7 @@ namespace Data
     {
         private readonly string _windowFile;
         private readonly XDocument _xml;
+        private readonly FileStream _filestream;
 
         public WindowData(BasicTeraData basicData)
         {
@@ -17,9 +18,10 @@ namespace Data
             _windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
             try
             {
-                _xml = XDocument.Load(_windowFile);
+                _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _xml = XDocument.Load(_filestream);
             }
-            catch (FileNotFoundException)
+            catch
             {
                 return;
             }
@@ -220,7 +222,13 @@ namespace Data
             xml.Root.Add(new XElement("invisible_ui", InvisibleUI));
             xml.Root.Add(new XElement("allow_transparency", AllowTransparency));
             xml.Root.Add(new XElement("topmost", Topmost));
-            xml.Save(_windowFile);
+
+            using (StreamWriter sr = new StreamWriter(_filestream))
+            {
+                // File writing as usual
+                sr.Write(xml);
+            }
+            _filestream.Close();
         }
     }
 }

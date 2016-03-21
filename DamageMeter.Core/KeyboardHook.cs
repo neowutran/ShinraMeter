@@ -68,7 +68,7 @@ namespace DamageMeter
                     BasicTeraData.Instance.HotkeysData.Copy.Where(
                         copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
             {
-                //Can't copy directly, => treading problem
+                //Can't copy directly, => threading problem
                 NetworkController.Instance.NeedToCopy = copy;
                 
             }

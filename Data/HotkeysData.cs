@@ -24,6 +24,7 @@ namespace Data
         }
 
         private readonly string _hotkeyFile;
+        private readonly FileStream _filestream;
 
         public HotkeysData(BasicTeraData basicData)
         {
@@ -34,9 +35,10 @@ namespace Data
             _hotkeyFile = Path.Combine(basicData.ResourceDirectory, "config/hotkeys.xml");
             try
             {
-                xml = XDocument.Load(_hotkeyFile);
+                _filestream = new FileStream(_hotkeyFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                xml = XDocument.Load(_filestream);
             }
-            catch (FileNotFoundException)
+            catch
             {
                 return;
             }
@@ -295,8 +297,12 @@ namespace Data
 
                 xml.Root.Element("copys").Add(copyElement);
             }
-
-            xml.Save(_hotkeyFile);
+            using (StreamWriter sr = new StreamWriter(_filestream))
+            {
+                // File writing as usual
+                sr.Write(xml);
+            }
+            _filestream.Close();
         }
     }
 }

@@ -1,16 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <window>
   <location>
-    <x>0</x>
-    <y>0</y>
+    <x>-1</x>
+    <y>143</y>
   </location>
   <language>Auto</language>
   <opacity>
     <mainWindow>50</mainWindow>
     <skillWindow>70</skillWindow>
   </opacity>
-  <autoupdate>true</autoupdate>
+  <autoupdate>false</autoupdate>
   <remember_position>true</remember_position>
-  <winpcap>true</winpcap>
+  <winpcap>false</winpcap>
   <invisible_ui>true</invisible_ui>
   <allow_transparency>true</allow_transparency>
   <topmost>true</topmost>
