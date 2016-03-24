@@ -120,7 +120,8 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(totalDamage) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate + "%");
-                currentContent = currentContent.Replace("{biggest_crit}", playerStats.Dealt.DmgBiggestCrit + "%");
+                currentContent = currentContent.Replace("{biggest_crit}",
+                    FormatHelpers.Instance.FormatValue(playerStats.Dealt.DmgBiggestCrit));
                 currentContent = currentContent.Replace("{damage_received}",
                     FormatHelpers.Instance.FormatValue(playerStats.Received.Damage));
                 currentContent = currentContent.Replace("{hits_received}",
