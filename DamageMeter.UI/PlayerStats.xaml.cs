@@ -28,16 +28,16 @@ namespace DamageMeter.UI
 
         public PlayerInfo PlayerInfo { get; set; }
 
-        public string Dps => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Dps) + "/s";
+        public string Dps => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Dps(CurrentBoss)) + "/s";
 
-        public string Damage => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Damage);
+        public string Damage => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Damage(CurrentBoss));
 
 
-        public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerInfo.Received.Damage);
+        public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerInfo.Received.Damage(CurrentBoss));
 
-        public string HitReceived => PlayerInfo.Received.Hits.ToString();
+        public string HitReceived => PlayerInfo.Received.Hits(CurrentBoss).ToString();
 
-        public string CritRate => Math.Round(PlayerInfo.Dealt.CritRate) + "%";
+        public string CritRate => Math.Round(PlayerInfo.Dealt.GetCritRate(CurrentBoss)) + "%";
 
 
         public string PlayerName => PlayerInfo.Name;
@@ -45,33 +45,36 @@ namespace DamageMeter.UI
 
         public string DamagePart(long totalDamage)
         {
-            return Math.Round(PlayerInfo.Dealt.DamageFraction(totalDamage)) + "%";
+            return Math.Round(PlayerInfo.Dealt.DamageFraction(CurrentBoss, totalDamage)) + "%";
         }
 
-        public void Repaint(PlayerInfo playerInfo, long totalDamage, long firstHit, long lastHit)
+        public Entity CurrentBoss { get; private set; }
+
+        public void Repaint(PlayerInfo playerInfo, long totalDamage, long firstHit, long lastHit, Entity currentBoss)
         {
             PlayerInfo = playerInfo;
+            CurrentBoss = currentBoss;
             LabelDps.Content = Dps;
 
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart(totalDamage);
             LabelDamageReceived.Content = DamageReceived;
             LabelHitsReceived.Content = HitReceived;
-            var intervalTimespan = TimeSpan.FromSeconds(playerInfo.Dealt.Interval);
+            var intervalTimespan = TimeSpan.FromSeconds(playerInfo.Dealt.Interval(CurrentBoss));
             Timer.Content = intervalTimespan.ToString(@"mm\:ss");
 
             var skills = Skills();
             var allskills = AllSkills();
-            _windowSkill?.Update(skills,allskills, playerInfo);
+            _windowSkill?.Update(skills,allskills, playerInfo, CurrentBoss);
             LabelDamage.Content = Damage;
-            DpsIndicator.Width = 450*PlayerInfo.Dealt.DamageFraction(totalDamage)/100;
+            DpsIndicator.Width = 450*PlayerInfo.Dealt.DamageFraction(CurrentBoss,totalDamage)/100;
         }
 
 
 
         private Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> Skills()
         {
-            if (NetworkController.Instance.Encounter == null)
+            if (CurrentBoss == null)
             {
                 return
                     new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(
@@ -79,14 +82,14 @@ namespace DamageMeter.UI
             }
 
             
-            if (PlayerInfo.Dealt.ContainsEntity(NetworkController.Instance.Encounter))
+            if (PlayerInfo.Dealt.ContainsEntity(CurrentBoss))
             {
 
                 if (NetworkController.Instance.TimedEncounter)
                 {
-                    return PlayerInfo.Dealt.GetSkillsByTime(NetworkController.Instance.Encounter);
+                    return PlayerInfo.Dealt.GetSkillsByTime(CurrentBoss);
                 }
-                return PlayerInfo.Dealt.GetSkills(NetworkController.Instance.Encounter);
+                return PlayerInfo.Dealt.GetSkills(CurrentBoss);
             }
 
             return new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>();
@@ -96,7 +99,7 @@ namespace DamageMeter.UI
 
         private Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> AllSkills()
         {
-            if (NetworkController.Instance.Encounter == null)
+            if (CurrentBoss == null)
             {
                 return
                     new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(
@@ -104,12 +107,12 @@ namespace DamageMeter.UI
             }
 
 
-            if (PlayerInfo.Dealt.ContainsEntity(NetworkController.Instance.Encounter))
+            if (PlayerInfo.Dealt.ContainsEntity(CurrentBoss))
             {
 
                 if (NetworkController.Instance.TimedEncounter)
                 {
-                    return PlayerInfo.Dealt.GetSkillsByTime(NetworkController.Instance.Encounter);
+                    return PlayerInfo.Dealt.GetSkillsByTime(CurrentBoss);
                 }
                 return new Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>>(PlayerInfo.Dealt.AllSkills);
             }
@@ -138,7 +141,7 @@ namespace DamageMeter.UI
 
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(skills, allSkills, this, PlayerInfo)
+                _windowSkill = new Skills(skills, allSkills, this, PlayerInfo, CurrentBoss)
                 {
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}
@@ -147,7 +150,7 @@ namespace DamageMeter.UI
                 return;
             }
 
-            _windowSkill.Update(skills,allSkills, PlayerInfo);
+            _windowSkill.Update(skills,allSkills, PlayerInfo, CurrentBoss);
             _windowSkill.Show();
         }
 

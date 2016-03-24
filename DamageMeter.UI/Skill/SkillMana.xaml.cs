@@ -15,12 +15,12 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillMana : ISkill
     {
-        public SkillMana(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
+        public SkillMana(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss)
         {
             InitializeComponent();
 
             LabelName.Content = skill.SkillName;
-            Update(skill, stats);
+            Update(skill, stats, currentBoss);
         }
 
         public string SkillNameIdent()
@@ -28,7 +28,7 @@ namespace DamageMeter.UI.Skill
             return (string) LabelName.Content;
         }
 
-        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
+        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss)
         {
             var skillsId = "";
             for (var i = 0; i < skill.SkillId.Count; i++)

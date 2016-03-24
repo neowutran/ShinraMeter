@@ -38,9 +38,9 @@ namespace DamageMeter.UI.EntityStats
             WindowsServices.SetWindowExVisible(hwnd);
         }
 
-        public void Update(Dictionary<Entity, EntityInfo> stats)
+        public void Update(Dictionary<Entity, EntityInfo> stats, Entity currentBoss)
         {
-            var entity = NetworkController.Instance.Encounter;
+            var entity = currentBoss;
             EnduranceAbnormality.Items.Clear();
             if (entity == null)
             {

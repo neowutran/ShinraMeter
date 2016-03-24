@@ -277,14 +277,14 @@ namespace DamageMeter.UI
                         encounterList.AddLast(entityStats.Key);
                     }
                     UpdateComboboxEncounter(encounterList, currentBoss);
-                    _entityStats.Update(entities);
+                    _entityStats.Update(entities, currentBoss);
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
                     foreach (var playerStats in stats)
                     {
                         PlayerStats playerStatsControl;
                         Controls.TryGetValue(playerStats, out playerStatsControl);
-                        if (playerStats.Dealt.Damage == 0 && playerStats.Received.Hits == 0)
+                        if (playerStats.Dealt.Damage(currentBoss) == 0 && playerStats.Received.Hits(currentBoss) == 0)
                         {
                             continue;
                         }
@@ -315,14 +315,14 @@ namespace DamageMeter.UI
                     Players.Items.Clear();
                     var sortedDict = from entry in Controls
                         orderby
-                            stats[stats.IndexOf(entry.Value.PlayerInfo)].Dealt.DamageFraction(totalDamage) descending
+                            stats[stats.IndexOf(entry.Value.PlayerInfo)].Dealt.DamageFraction(currentBoss, totalDamage) descending
                         select entry;
                     foreach (var item in sortedDict)
                     {
                         Players.Items.Add(item.Value);
                         var data = stats.IndexOf(item.Value.PlayerInfo);
                         
-                        item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit);
+                        item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit, currentBoss);
                     }
 
                     Height = Controls.Count*29 + CloseMeter.ActualHeight;
@@ -473,8 +473,7 @@ namespace DamageMeter.UI
             }
             if (encounter != NetworkController.Instance.Encounter)
             {
-                NetworkController.Instance.Encounter = encounter;
-                NetworkController.Instance.ForceUpdate = true;
+                NetworkController.Instance.NewEncounter = encounter;
             }
         }
 

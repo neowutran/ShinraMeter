@@ -12,13 +12,13 @@ namespace DamageMeter.UI.SkillDetail
     /// </summary>
     public partial class SkillDetailDps
     {
-        public SkillDetailDps(SkillDetailStats skill)
+        public SkillDetailDps(SkillDetailStats skill, Entity currentBoss)
         {
             InitializeComponent();
-            Update(skill);
+            Update(skill, currentBoss);
         }
 
-        public void Update(SkillDetailStats skill)
+        public void Update(SkillDetailStats skill, Entity currentBoss)
         {
             var userskill = BasicTeraData.Instance.SkillDatabase.GetOrNull(skill.PlayerInfo.Player.User, skill.Id);
             bool? chained = userskill?.IsChained;
@@ -43,7 +43,7 @@ namespace DamageMeter.UI.SkillDetail
             LabelId.Content = skill.Id;
             LabelCritRateDmg.Content = skill.CritRateDmg + "%";
 
-            LabelDamagePercentage.Content = skill.DamagePercentage + "%";
+            LabelDamagePercentage.Content = skill.GetDamagePercentage(currentBoss) + "%";
             LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skill.Damage);
 
             LabelNumberHitDmg.Content = skill.HitsDmg;

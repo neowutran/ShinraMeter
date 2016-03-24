@@ -12,17 +12,17 @@ namespace DamageMeter.UI
 
         private readonly EnduranceDebuffHeader _header;
 
-        public Buff(PlayerInfo playerInfo)
+        public Buff(PlayerInfo playerInfo, Entity currentBoss)
         {
             InitializeComponent();
             _header = new EnduranceDebuffHeader();
             ContentWidth = 980;
-            Update(playerInfo);
+            Update(playerInfo, currentBoss);
         }
 
         public double ContentWidth { get; private set; }
 
-        public void Update(PlayerInfo playerInfo)
+        public void Update(PlayerInfo playerInfo, Entity currentBoss)
         {
             EnduranceAbnormality.Items.Clear();
 
@@ -40,8 +40,8 @@ namespace DamageMeter.UI
                     abnormalityUi = new EnduranceDebuff();
                     _enduranceDebuffsList.Add(abnormalityUi);
                 }
-                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerInfo.Dealt.FirstHit,
-                    playerInfo.Dealt.LastHit);
+                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerInfo.Dealt.FirstHit(currentBoss),
+                    playerInfo.Dealt.LastHit(currentBoss));
                 EnduranceAbnormality.Items.Add(abnormalityUi);
 
                 counter++;

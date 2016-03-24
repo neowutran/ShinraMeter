@@ -15,15 +15,15 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillDps : ISkill
     {
-        public SkillDps(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
+        public SkillDps(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss)
         {
             InitializeComponent();
 
             LabelName.Content = skill.SkillName;
-            Update(skill, stats);
+            Update(skill, stats, currentBoss);
         }
 
-        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats)
+        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss)
         {
             var skillsId = "";
             for (var i = 0; i < skill.SkillId.Count; i++)
@@ -38,7 +38,7 @@ namespace DamageMeter.UI.Skill
             LabelId.Content = skillsId;
             LabelCritRateDmg.Content = stats.CritRateDmg + "%";
 
-            LabelDamagePercentage.Content = stats.DamagePercentage + "%";
+            LabelDamagePercentage.Content = stats.DamagePercentage(currentBoss) + "%";
             LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(stats.Damage);
 
             LabelNumberHitDmg.Content = stats.HitsDmg;
@@ -56,7 +56,7 @@ namespace DamageMeter.UI.Skill
             SkillsDetailList.Items.Clear();
             foreach (var stat in listStats)
             {
-                SkillsDetailList.Items.Add(new SkillDetailDps(stat.Value));
+                SkillsDetailList.Items.Add(new SkillDetailDps(stat.Value, currentBoss));
             }
         }
 

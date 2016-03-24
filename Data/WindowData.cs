@@ -36,6 +36,7 @@ namespace Data
             ParseInvisibleUi();
             ParseAllowTrasparency();
             ParseTopmost();
+            ParseTeraDps();
         }
 
 
@@ -55,6 +56,9 @@ namespace Data
 
         public bool AllowTransparency { get; set; }
 
+        public string TeraDpsUser { get; private set; }
+        public string TeraDpsToken { get; private set; }
+
         public bool Topmost { get; set; }
 
         private void DefaultValue()
@@ -70,6 +74,20 @@ namespace Data
             Topmost = true;
             AllowTransparency = true;
         }
+
+        private void ParseTeraDps()
+        {
+            var root = _xml.Root;
+            var teradps = root?.Element("teradps.io");
+            var user = teradps?.Element("user");
+            if (user == null) return;
+            var token = teradps?.Element("token");
+            if (token == null) return;
+
+            TeraDpsToken = token.Value;
+            TeraDpsUser = user.Value;
+        }
+
 
         public void ParseRememberPosition()
         {
@@ -222,9 +240,14 @@ namespace Data
             xml.Root.Add(new XElement("invisible_ui", InvisibleUI));
             xml.Root.Add(new XElement("allow_transparency", AllowTransparency));
             xml.Root.Add(new XElement("topmost", Topmost));
+            xml.Root.Add(new XElement("teradps.io"));
+            xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
+            xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
 
+            _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))
             {
+               
                 // File writing as usual
                 sr.Write(xml);
             }

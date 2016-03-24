@@ -18,7 +18,7 @@ namespace DamageMeter
         }
 
 
-        public static void Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long intervalvalue, string header,
+        public static void Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long intervalvalue, Entity currentBoss, string header,
             string content, string footer,
             string orderby, string order)
         {
@@ -30,27 +30,27 @@ namespace DamageMeter
                 switch (orderby)
                 {
                     case "damage_received":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Received.Damage);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Received.Damage(currentBoss));
                         break;
                     case "name":
                         playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Name);
                         break;
                     case "damage_percentage":
                         playerInfosOrdered =
-                            playerInfos.OrderBy(playerInfo => playerInfo.Dealt.DamageFraction(totalDamage));
+                            playerInfos.OrderBy(playerInfo => playerInfo.Dealt.DamageFraction(currentBoss, totalDamage));
                         break;
                     case "damage_dealt":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Damage);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Damage(currentBoss));
                         break;
                     case "dps":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Dps);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Dps(currentBoss));
                         break;
                     case "crit_rate":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.CritRate);
+                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.GetCritRate(currentBoss));
                         break;
                     case "hits_received":
                         playerInfosOrdered =
-                            playerInfos.OrderBy(playerInfo => playerInfo.Received.Hits);
+                            playerInfos.OrderBy(playerInfo => playerInfo.Received.Hits(currentBoss));
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -63,29 +63,29 @@ namespace DamageMeter
                 {
                     case "damage_received":
                         playerInfosOrdered =
-                            playerInfos.OrderByDescending(playerInfo => playerInfo.Received.Damage);
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Received.Damage(currentBoss));
                         break;
                     case "hits_received":
                         playerInfosOrdered =
-                            playerInfos.OrderByDescending(playerInfo => playerInfo.Received.Hits);
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Received.Hits(currentBoss));
                         break;
                     case "name":
                         playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Name);
                         break;
                     case "damage_percentage":
                         playerInfosOrdered =
-                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.DamageFraction(totalDamage));
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.DamageFraction(currentBoss, totalDamage));
                         break;
                     case "damage_dealt":
                         playerInfosOrdered =
-                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.Damage);
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.Damage(currentBoss));
                         break;
                     case "dps":
-                        playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.Dps);
+                        playerInfosOrdered = playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.Dps(currentBoss));
                         break;
                     case "crit_rate":
                         playerInfosOrdered =
-                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.CritRate);
+                            playerInfos.OrderByDescending(playerInfo => playerInfo.Dealt.GetCritRate(currentBoss));
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -95,9 +95,9 @@ namespace DamageMeter
 
             var dpsString = header;
             var name = "";
-            if (NetworkController.Instance.Encounter != null)
+            if (currentBoss != null)
             {
-                name = NetworkController.Instance.Encounter.Name;
+                name = currentBoss.Name;
             }
 
             dpsString = dpsString.Replace("{encounter}", name);
@@ -107,24 +107,24 @@ namespace DamageMeter
             foreach (var playerStats in playerInfosOrdered)
             {
                 var currentContent = content;
-                if (playerStats.Dealt.Damage == 0) continue;
+                if (playerStats.Dealt.Damage(currentBoss) == 0) continue;
 
                 currentContent = currentContent.Replace("{dps}",
-                    FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps) + "/s");
-                currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval + "s");
+                    FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps(currentBoss)) + "/s");
+                currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval(currentBoss) + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
-                    FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage));
+                    FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage(currentBoss)));
                 currentContent = currentContent.Replace("{class}", playerStats.Class + "");
                 currentContent = currentContent.Replace("{fullname}", playerStats.Player.FullName);
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
                 currentContent = currentContent.Replace("{damage_percentage}",
-                    playerStats.Dealt.DamageFraction(totalDamage) + "%");
-                currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate + "%");
-                currentContent = currentContent.Replace("{biggest_crit}", playerStats.Dealt.DmgBiggestCrit + "%");
+                    playerStats.Dealt.DamageFraction(currentBoss, totalDamage) + "%");
+                currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.GetCritRate(currentBoss) + "%");
+                currentContent = currentContent.Replace("{biggest_crit}", playerStats.Dealt.DmgBiggestCrit(currentBoss)+"");
                 currentContent = currentContent.Replace("{damage_received}",
-                    FormatHelpers.Instance.FormatValue(playerStats.Received.Damage));
+                    FormatHelpers.Instance.FormatValue(playerStats.Received.Damage(currentBoss)));
                 currentContent = currentContent.Replace("{hits_received}",
-                    FormatHelpers.Instance.FormatValue(playerStats.Received.Hits));
+                    FormatHelpers.Instance.FormatValue(playerStats.Received.Hits(currentBoss)));
 
                 dpsString += currentContent;
             }

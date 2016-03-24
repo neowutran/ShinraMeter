@@ -297,6 +297,8 @@ namespace Data
 
                 xml.Root.Element("copys").Add(copyElement);
             }
+
+            _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))
             {
                 // File writing as usual

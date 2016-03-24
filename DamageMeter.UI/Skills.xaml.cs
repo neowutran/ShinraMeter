@@ -24,7 +24,7 @@ namespace DamageMeter.UI
 
         public Skills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent,
-            PlayerInfo playerInfo)
+            PlayerInfo playerInfo, Entity currentBoss)
         {
             InitializeComponent();
 
@@ -32,10 +32,10 @@ namespace DamageMeter.UI
             var allSkills = NoTimedSkills(timedAllSkills);
 
 
-            _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps);
-            _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal);
-            _skillMana = new SkillsDetail(allSkills, SkillsDetail.Type.Mana);
-            _buff = new Buff(playerInfo);
+            _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps, currentBoss);
+            _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal, currentBoss);
+            _skillMana = new SkillsDetail(allSkills, SkillsDetail.Type.Mana, currentBoss);
+            _buff = new Buff(playerInfo, currentBoss);
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;
             ManaPanel.Content = _skillMana;
@@ -97,15 +97,15 @@ namespace DamageMeter.UI
 
         public void Update(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills,
-            PlayerInfo playerinfo)
+            PlayerInfo playerinfo, Entity currentBoss)
         {
             // Console.WriteLine("thread id:"+Thread.CurrentThread.ManagedThreadId);
             var skills = NoTimedSkills(timedSkills);
             var allSkills = NoTimedSkills(timedAllSkills);
-            _buff.Update(playerinfo);
-            _skillDps.Update(skills);
-            _skillHeal.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills));
-            _skillMana.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills));
+            _buff.Update(playerinfo,currentBoss);
+            _skillDps.Update(skills, currentBoss);
+            _skillHeal.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills), currentBoss);
+            _skillMana.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills), currentBoss);
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;
             ManaPanel.Content = _skillMana;

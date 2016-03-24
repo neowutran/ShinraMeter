@@ -39,7 +39,7 @@ namespace DamageMeter
                 {
                     return Name;
                 }
-                return Name + " " + DamageTracker.Instance.GetInterval(this);
+                return Name + " " + DamageTracker.Instance.Interval(this);
             }
         }
 

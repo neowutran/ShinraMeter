@@ -32,8 +32,12 @@ namespace DamageMeter.Skills.Skill.SkillDetail
 
         public int Id { get; }
 
-        public double DamagePercentage
-            => PlayerInfo.Dealt.Damage == 0 ? 0 : Math.Round((double) Damage*100/PlayerInfo.Dealt.Damage, 1);
+        public double GetDamagePercentage(Entity entity)
+        {
+                        
+            return PlayerInfo.Dealt.Damage(entity) == 0 ? 0 : Math.Round((double)Damage * 100 / PlayerInfo.Dealt.Damage(entity), 1);
+
+        }
 
         public double CritRate => Hits == 0 ? 0 : Math.Round((double) Crits*100/Hits, 1);
 
@@ -76,6 +80,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
                 }
             }
         }
+
 
         public long DmgBiggestHit
         {

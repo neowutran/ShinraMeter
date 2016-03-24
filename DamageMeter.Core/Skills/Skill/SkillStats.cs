@@ -31,8 +31,15 @@ namespace DamageMeter.Skills.Skill
             _playerInfo = playerInfo;
         }
 
-        public double DamagePercentage
-            => _playerInfo.Dealt.Damage == 0 ? 0 : Math.Round((double) Damage*100/_playerInfo.Dealt.Damage, 1);
+        public double DamagePercentage(Entity entity)
+        {
+            return _playerInfo.Dealt.Damage(entity) == 0 ? 0 : Math.Round((double)Damage * 100 / _playerInfo.Dealt.Damage(entity), 1);
+        }
+
+        public double DamagePercentageBossOnly(Entity entity)
+        {
+            return _playerInfo.Dealt.GetDamageBossOnly(entity) == 0 ? 0 : Math.Round((double)Damage * 100 / _playerInfo.Dealt.GetDamageBossOnly(entity), 1);
+        }
 
         public double CritRate => Hits == 0 ? 0 : Math.Round((double) Crits*100/Hits, 1);
 
@@ -41,12 +48,17 @@ namespace DamageMeter.Skills.Skill
 
         public long DmgBiggestCrit
         {
-            get { return SkillDetails.Select(skill => skill.Value.DmgBiggestCrit).Concat(new long[] {0}).Max(); }
+            get { return SkillDetails.Select(skill => skill.Value.DmgBiggestCrit).Max(); }
+        }
+
+        public long DmgLowestCrit
+        {
+            get { return SkillDetails.Select(skill => skill.Value.DmgLowestCrit).Min(); }
         }
 
         public long HealBiggestCrit
         {
-            get { return SkillDetails.Select(skill => skill.Value.HealBiggestCrit).Concat(new long[] {0}).Max(); }
+            get { return SkillDetails.Select(skill => skill.Value.HealBiggestCrit).Max(); }
         }
 
         public long DmgAverageCrit
@@ -89,12 +101,12 @@ namespace DamageMeter.Skills.Skill
 
         public long DmgBiggestHit
         {
-            get { return SkillDetails.Select(skill => skill.Value.DmgBiggestHit).Concat(new long[] {0}).Max(); }
+            get { return SkillDetails.Select(skill => skill.Value.DmgBiggestHit).Max(); }
         }
 
         public long HealBiggestHit
         {
-            get { return SkillDetails.Select(skill => skill.Value.HealBiggestHit).Concat(new long[] {0}).Max(); }
+            get { return SkillDetails.Select(skill => skill.Value.HealBiggestHit).Max(); }
         }
 
         public long DmgAverageHit
@@ -192,7 +204,7 @@ namespace DamageMeter.Skills.Skill
 
         public long LastHit
         {
-            get { return SkillDetails.Select(skill => skill.Value.LastHit).Concat(new long[] {0}).Max(); }
+            get { return SkillDetails.Select(skill => skill.Value.LastHit).Max(); }
         }
 
         public long Damage

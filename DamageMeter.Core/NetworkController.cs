@@ -42,15 +42,14 @@ namespace DamageMeter
 
         public TeraData TeraData { get; private set; }
 
-        public Entity Encounter { get; set; }
+        public Entity Encounter { get; private set; }
+        public Entity NewEncounter { get; set; }
 
         public bool TimedEncounter { get; set; }
 
         public static NetworkController Instance => _instance ?? (_instance = new NetworkController());
 
         public EntityTracker EntityTracker { get; private set; }
-
-        public bool ForceUpdate { get; set; }
 
         public void Exit()
         {
@@ -93,18 +92,17 @@ namespace DamageMeter
         {
             _lastTick = Utils.Now();
             var handler = TickUpdated;
+            var currentBossFight = Encounter;
             var damage = DamageTracker.Instance.TotalDamage;
             var stats =
                 DamageTracker.Instance.GetPlayerStats()
-                    .OrderByDescending(playerStats => playerStats.Dealt.Damage)
+                    .OrderByDescending(playerStats => playerStats.Dealt.Damage(currentBossFight))
                     .ToList();
-            var firstHit = DamageTracker.Instance.FirstHit;
-            var lastHit = DamageTracker.Instance.LastHit;
+            var firstHit = DamageTracker.Instance.FirstHit(currentBossFight);
+            var lastHit = DamageTracker.Instance.LastHit(currentBossFight);
             var entities =
                 DamageTracker.Instance.GetEntityStats();
-            var currentBossFight = DamageTracker.Instance.CurrentBoss;
             handler?.Invoke(firstHit, lastHit, damage, entities, stats, currentBossFight);
-            DamageTracker.Instance.CurrentBoss = null;
         }
 
         private bool _clickThrou = false;
@@ -137,10 +135,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(List<PlayerInfo> stats, long total, long interval, CopyKey copy)
+        public static void CopyThread(List<PlayerInfo> stats, long total, long interval, Entity currentBoss, CopyKey copy)
         {
                    
-            CopyPaste.Copy(stats, total, interval, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            CopyPaste.Copy(stats, total, interval, currentBoss, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             var text = Clipboard.GetText();
             CopyPaste.Paste(text);
             
@@ -167,21 +165,17 @@ namespace DamageMeter
                 {
                     var stats = DamageTracker.Instance.GetPlayerStats();
                     var totaldamage = DamageTracker.Instance.TotalDamage;
-                    var interval = DamageTracker.Instance.Interval;
+                    var currentBoss = Encounter;
+                    var interval = DamageTracker.Instance.Interval(currentBoss);
                     var tmpcopy = NeedToCopy;
-                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, interval, tmpcopy));
+                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, interval, currentBoss , tmpcopy));
                     pasteThread.SetApartmentState(ApartmentState.STA);
                     pasteThread.Start();
                     NeedToCopy = null;
                     
                 }
 
-                if (ForceUpdate)
-                {
-                    ForceUpdate = false;
-                    UpdateUi();
-                }
-
+                Encounter = NewEncounter;
                 CheckUpdateUi();
 
 
@@ -266,12 +260,7 @@ namespace DamageMeter
                 if (despawnNpc != null)
                 {
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnNpc);
-                    if (despawnNpc.Dead)
-                    {
-                        var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
-                        Console.WriteLine(entity.Name + " is dead.");
-                        //TODO: call teradps.io API
-                    }
+                    DataExporter.ToTeraDpsApi(despawnNpc);
                     continue;
                 }
 

@@ -1,7 +1,7 @@
 <window>
   <location>
-    <x>0</x>
-    <y>0</y>
+    <x>-11</x>
+    <y>241</y>
   </location>
   <language>Auto</language>
   <opacity>
@@ -14,4 +14,8 @@
   <invisible_ui>true</invisible_ui>
   <allow_transparency>true</allow_transparency>
   <topmost>true</topmost>
+  <teradps.io>
+    <user>crdChGPz6PndHvMYh</user>
+    <token>8PBcPuHHhRK_57tk3Ryc9IP_XtOIRXh_4-j9A9QUBxu</token>
+  </teradps.io>
 </window>

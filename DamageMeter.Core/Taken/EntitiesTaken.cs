@@ -10,29 +10,28 @@ namespace DamageMeter.Taken
         private Dictionary<long, Dictionary<Entity, DamageTaken>> _entitiesStats =
             new Dictionary<long, Dictionary<Entity, DamageTaken>>();
 
-        public long Damage
+        public long Damage(Entity currentBoss)
         {
-            get
-            {
-                if (NetworkController.Instance.Encounter == null)
+          
+                if (currentBoss == null)
                 {
                     return _entitiesStats.Sum(entityStats => entityStats.Value.Sum(stats => stats.Value.Damage));
                 }
                
-                if (ContainsEntity(NetworkController.Instance.Encounter))
+                if (ContainsEntity(currentBoss))
                 {
                     if (!NetworkController.Instance.TimedEncounter)
                     {
                         return
                             _entitiesStats.Sum(
                                 timedStats =>
-                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                    timedStats.Value.Where(stats => stats.Key == currentBoss)
                                         .Sum(stats => stats.Value.Damage));
                     }
 
 
-                    var firstHit = DamageTracker.Instance.FirstHit;
-                    var lastHit = DamageTracker.Instance.LastHit;
+                    var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
+                    var lastHit = DamageTracker.Instance.LastHit(currentBoss);
 
                     long damage = 0;
                     for (var i = firstHit; i <= lastHit; i++)
@@ -45,29 +44,28 @@ namespace DamageMeter.Taken
                 }
               
                 return 0;
-            }
+            
         }
 
-        public int Hits
+        public int Hits(Entity currentBoss)
         {
-            get
-            {
-                if (NetworkController.Instance.Encounter == null)
+          
+                if (currentBoss == null)
                 {
                     return _entitiesStats.Sum(entityStats => entityStats.Value.Sum(stats => stats.Value.Hits));
                 }
-                if (ContainsEntity(NetworkController.Instance.Encounter))
+                if (ContainsEntity(currentBoss))
                 {
                     if (!NetworkController.Instance.TimedEncounter)
                     {
                         return
                             _entitiesStats.Sum(
                                 timedStats =>
-                                    timedStats.Value.Where(stats => stats.Key == NetworkController.Instance.Encounter)
+                                    timedStats.Value.Where(stats => stats.Key == currentBoss)
                                         .Sum(stats => stats.Value.Hits));
                     }
-                    var firstHit = DamageTracker.Instance.FirstHit;
-                    var lastHit = DamageTracker.Instance.LastHit;
+                    var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
+                    var lastHit = DamageTracker.Instance.LastHit(currentBoss);
 
                     var hits = 0;
                     for (var i = firstHit; i <= lastHit; i++)
@@ -78,7 +76,7 @@ namespace DamageMeter.Taken
                     return hits;
                 }
                 return 0;
-            }
+            
         }
 
         public object Clone()

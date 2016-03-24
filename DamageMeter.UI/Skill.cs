@@ -4,7 +4,7 @@ namespace DamageMeter.UI
 {
     internal interface ISkill
     {
-        void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats);
+        void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity entity);
         string SkillNameIdent();
     }
 }

@@ -39,52 +39,53 @@ namespace DamageMeter
 
                 if (!NetworkController.Instance.TimedEncounter)
                 {
-
-                    return (from users in UsersStats from skills in users.Value.Dealt.GetSkills(NetworkController.Instance.Encounter) from skill in skills.Value select skill.Value.Damage).Sum();
-
+                    return TotalDamageBossOnly(NetworkController.Instance.Encounter);
                 }
 
                 return (from users in UsersStats from skills in users.Value.Dealt.GetSkillsByTime(NetworkController.Instance.Encounter) from skill in skills.Value select skill.Value.Damage).Sum();
             }
         }
 
-        public long FirstHit
+        public long TotalDamageBossOnly(Entity entity)
         {
-            get
-            {
+            return (from users in UsersStats from skills in users.Value.Dealt.GetSkills(entity) from skill in skills.Value select skill.Value.Damage).Sum();
+        }
+
+        public long FirstHit(Entity currentBoss)
+        {
+           
                 long firsthit = 0;
                 foreach (var userstat in UsersStats)
                 {
-                    if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit < firsthit)) &&
-                        userstat.Value.Dealt.FirstHit != 0)
+                    if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit(currentBoss) < firsthit)) &&
+                        userstat.Value.Dealt.FirstHit(currentBoss) != 0)
                     {
-                        firsthit = userstat.Value.Dealt.FirstHit;
+                        firsthit = userstat.Value.Dealt.FirstHit(currentBoss);
                     }
                 }
                 return firsthit;
-            }
+            
         }
 
-        public long Interval => LastHit - FirstHit;
+        public long Interval(Entity currentboss) {
+            return LastHit(currentboss) - FirstHit(currentboss);
+        }
 
-        public long LastHit
+        public long LastHit(Entity currentBoss)
         {
-            get
-            {
+           
                 long lasthit = 0;
                 foreach (var userstat in UsersStats)
                 {
-                    if (((lasthit == 0) || (userstat.Value.Dealt.LastHit > lasthit)) &&
-                        userstat.Value.Dealt.LastHit != 0)
+                    if (((lasthit == 0) || (userstat.Value.Dealt.LastHit(currentBoss) > lasthit)) &&
+                        userstat.Value.Dealt.LastHit(currentBoss) != 0)
                     {
-                        lasthit = userstat.Value.Dealt.LastHit;
+                        lasthit = userstat.Value.Dealt.LastHit(currentBoss);
                     }
                 }
                 return lasthit;
-            }
+            
         }
-
-        public Entity CurrentBoss { get; set; }
 
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
 
@@ -122,7 +123,7 @@ namespace DamageMeter
         {
             if (NetworkController.Instance.Encounter == entity)
             {
-                NetworkController.Instance.Encounter = null;
+                NetworkController.Instance.NewEncounter = null;
             }
 
             var add = false;
@@ -161,7 +162,7 @@ namespace DamageMeter
         {
             if (entity.IsBoss)
             {
-                CurrentBoss = entity;
+                NetworkController.Instance.NewEncounter = entity;
             }
         }
 
@@ -176,13 +177,6 @@ namespace DamageMeter
         public void SetLastHit(Entity entity, long time)
         {
             EntitiesStats[entity].LastHit = time;
-        }
-
-        public long GetInterval(Entity entity)
-        {
-            if (EntitiesStats.ContainsKey(entity))
-                return EntitiesStats[entity].LastHit - EntitiesStats[entity].FirstHit;
-            else return 0;
         }
 
         public void Reset()
@@ -236,6 +230,8 @@ namespace DamageMeter
 
             UsersStats = newUserStats;
             EntitiesStats = newEntityStats;
+            NetworkController.Instance.NewEncounter = null;
+           
         }
 
 
