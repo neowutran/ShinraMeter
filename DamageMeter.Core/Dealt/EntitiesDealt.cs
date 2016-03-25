@@ -27,7 +27,7 @@ namespace DamageMeter.Dealt
                 }
                 if (currentBoss == null)
                 {
-                    var list = _entitiesStats.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
+                    var list =  _entitiesStats.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
                     return
                         (from element in list
                             where element.Value.Any(stats => stats.Value.Damage > 0)

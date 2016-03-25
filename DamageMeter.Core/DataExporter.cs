@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using Tera.Game.Messages;
 using Data;
 using DamageMeter.TeraDpsApi;
@@ -103,7 +104,9 @@ namespace DamageMeter
             string json = JsonConvert.SerializeObject(teradpsData);
             Console.WriteLine(json);
 
-           // Send(json, 3);
+            
+            var sendThread = new Thread(() => Send(json, 3));
+            sendThread.Start();
         }
 
         private static void Send(string json, int numberTry)

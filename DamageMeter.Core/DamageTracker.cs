@@ -12,14 +12,11 @@ namespace DamageMeter
     public class DamageTracker
     {
         public delegate void CurrentBossChange(Entity entity);
-
-        private static DamageTracker _instance;
-
         public Dictionary<Entity, EntityInfo> EntitiesStats = new Dictionary<Entity, EntityInfo>();
         public Dictionary<Player, PlayerInfo> UsersStats = new Dictionary<Player, PlayerInfo>();
 
 
-        private DamageTracker()
+        public DamageTracker()
         {
         }
 
@@ -86,8 +83,6 @@ namespace DamageMeter
                 return lasthit;
             
         }
-
-        public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
 
         public Dictionary<Entity, EntityInfo> GetEntityStats()
         {

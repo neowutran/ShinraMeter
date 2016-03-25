@@ -295,7 +295,7 @@ namespace DamageMeter.UI
                     {
                         PlayerStats playerStatsControl;
                         Controls.TryGetValue(playerStats, out playerStatsControl);
-                        if (playerStats.Dealt.Damage(currentBoss) == 0 && playerStats.Received.Hits(currentBoss) == 0)
+                        if (playerStats.Dealt.Damage(currentBoss) == 0 && playerStats.Received.Hits(currentBoss, firstHit, lastHit) == 0)
                         {
                             continue;
                         }

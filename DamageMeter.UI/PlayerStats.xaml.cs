@@ -33,9 +33,9 @@ namespace DamageMeter.UI
         public string Damage => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Damage(CurrentBoss));
 
 
-        public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerInfo.Received.Damage(CurrentBoss));
+        public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerInfo.Received.Damage(CurrentBoss, _firstHit, _lastHit));
 
-        public string HitReceived => PlayerInfo.Received.Hits(CurrentBoss).ToString();
+        public string HitReceived => PlayerInfo.Received.Hits(CurrentBoss, _firstHit, _lastHit).ToString();
 
         public string CritRate => Math.Round(PlayerInfo.Dealt.GetCritRate(CurrentBoss)) + "%";
 
@@ -49,12 +49,16 @@ namespace DamageMeter.UI
         }
 
         public Entity CurrentBoss { get; private set; }
+        private long _firstHit;
+        private long _lastHit;
 
         public void Repaint(PlayerInfo playerInfo, long totalDamage, long firstHit, long lastHit, Entity currentBoss)
         {
             PlayerInfo = playerInfo;
             CurrentBoss = currentBoss;
             LabelDps.Content = Dps;
+            _firstHit = firstHit;
+            _lastHit = lastHit;
 
             LabelCritRate.Content = CritRate;
             LabelDamagePart.Content = DamagePart(totalDamage);

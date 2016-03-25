@@ -137,10 +137,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(List<PlayerInfo> stats, long total, long interval, Entity currentBoss, CopyKey copy)
+        public static void CopyThread(List<PlayerInfo> stats, long total, long firstHit, long lastHit, Entity currentBoss, CopyKey copy)
         {
                    
-            CopyPaste.Copy(stats, total, interval, currentBoss, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            CopyPaste.Copy(stats, total, firstHit, lastHit, currentBoss, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             var text = Clipboard.GetText();
             CopyPaste.Paste(text);
             
@@ -168,9 +168,10 @@ namespace DamageMeter
                     var stats = DamageTracker.Instance.GetPlayerStats();
                     var totaldamage = DamageTracker.Instance.TotalDamage;
                     var currentBoss = Encounter;
-                    var interval = DamageTracker.Instance.Interval(currentBoss);
+                    var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
+                    var lastHit = DamageTracker.Instance.LastHit(currentBoss);
                     var tmpcopy = NeedToCopy;
-                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, interval, currentBoss , tmpcopy));
+                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, firstHit, lastHit, currentBoss , tmpcopy));
                     pasteThread.SetApartmentState(ApartmentState.STA);
                     pasteThread.Start();
                     NeedToCopy = null;

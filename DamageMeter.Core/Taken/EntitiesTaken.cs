@@ -10,7 +10,7 @@ namespace DamageMeter.Taken
         private Dictionary<long, Dictionary<Entity, DamageTaken>> _entitiesStats =
             new Dictionary<long, Dictionary<Entity, DamageTaken>>();
 
-        public long Damage(Entity currentBoss)
+        public long Damage(Entity currentBoss, long firstHit, long lastHit)
         {
           
                 if (currentBoss == null)
@@ -29,10 +29,6 @@ namespace DamageMeter.Taken
                                         .Sum(stats => stats.Value.Damage));
                     }
 
-
-                    var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
-                    var lastHit = DamageTracker.Instance.LastHit(currentBoss);
-
                     long damage = 0;
                     for (var i = firstHit; i <= lastHit; i++)
                     {
@@ -47,7 +43,7 @@ namespace DamageMeter.Taken
             
         }
 
-        public int Hits(Entity currentBoss)
+        public int Hits(Entity currentBoss, long firstHit, long lastHit)
         {
           
                 if (currentBoss == null)
@@ -64,9 +60,7 @@ namespace DamageMeter.Taken
                                     timedStats.Value.Where(stats => stats.Key == currentBoss)
                                         .Sum(stats => stats.Value.Hits));
                     }
-                    var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
-                    var lastHit = DamageTracker.Instance.LastHit(currentBoss);
-
+                
                     var hits = 0;
                     for (var i = firstHit; i <= lastHit; i++)
                     {
