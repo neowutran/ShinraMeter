@@ -75,17 +75,19 @@ namespace DamageMeter
             handler?.Invoke(server.Name);
         }
 
+        private bool _forceUiUpdate = false;
+
 
         public void Reset()
         {
             DamageTracker.Instance.Reset();
-            UpdateUi();
+            _forceUiUpdate = true;
         }
 
         public void ResetCurrent()
         {
             DamageTracker.Instance.DeleteEntity(Encounter);
-            UpdateUi();
+            _forceUiUpdate = true;
         }
 
         private void UpdateUi()
@@ -176,6 +178,13 @@ namespace DamageMeter
                 }
 
                 Encounter = NewEncounter;
+
+                if (_forceUiUpdate)
+                {
+                    UpdateUi();
+                    _forceUiUpdate = false;
+                }
+
                 CheckUpdateUi();
 
 

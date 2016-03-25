@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Diagnostics;
 using System.Reflection;
-
-using System.IO.Compression;
 
 namespace Randomizer
 {
@@ -57,9 +51,12 @@ namespace Randomizer
                 if(detected == null)
                 {
                     Console.WriteLine("The file as already been randomized or randomization impossible. Exiting");
+                    Console.ReadKey();
                     return;
                 }
                 Randomize(stream, detected.Value);
+                Console.WriteLine("The file as been successfully randomized. Exiting");
+                Console.ReadKey();
 
             }
             return;

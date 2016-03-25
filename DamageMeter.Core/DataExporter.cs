@@ -103,7 +103,7 @@ namespace DamageMeter
             string json = JsonConvert.SerializeObject(teradpsData);
             Console.WriteLine(json);
 
-            Send(json, 3);
+           // Send(json, 3);
         }
 
         private static void Send(string json, int numberTry)
