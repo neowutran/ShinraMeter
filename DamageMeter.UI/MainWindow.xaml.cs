@@ -69,6 +69,7 @@ namespace DamageMeter.UI
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             _entityStats = new EntityStatsMain(this);
+            Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
         }
 
@@ -127,6 +128,10 @@ namespace DamageMeter.UI
             var forum = new MenuItem {Text = "Forum"};
 
             forum.Click += ForumOnClick;
+
+            var teradps = new MenuItem { Text = "TeraDps.io" };
+            teradps.Click += TeraDpsOnClick;
+
             _clickThrou = new MenuItem {Text = "Activate click throu"};
             _clickThrou.Click += ClickThrouOnClick;
 
@@ -138,6 +143,7 @@ namespace DamageMeter.UI
             context.MenuItems.Add(patch);
             context.MenuItems.Add(issues);
             context.MenuItems.Add(forum);
+            context.MenuItems.Add(teradps);
             context.MenuItems.Add(exit);
 
 
@@ -155,6 +161,11 @@ namespace DamageMeter.UI
         private void PatchOnClick(object sender, EventArgs eventArgs)
         {
             Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
+        }
+
+        private void TeraDpsOnClick(object sender, EventArgs eventArgs)
+        {
+            Process.Start("explorer.exe", "http://teradps.io");
         }
 
         private void ExitOnClick(object sender, EventArgs eventArgs)
