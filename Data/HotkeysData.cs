@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Data
@@ -37,6 +38,12 @@ namespace Data
             {
                 _filestream = new FileStream(_hotkeyFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 xml = XDocument.Load(_filestream);
+            }
+            catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
+            {
+                Save();
+                _filestream = new FileStream(_hotkeyFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                return;
             }
             catch
             {

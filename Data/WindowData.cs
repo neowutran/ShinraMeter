@@ -1,6 +1,8 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Data
@@ -20,6 +22,12 @@ namespace Data
             {
                 _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 _xml = XDocument.Load(_filestream);
+            }
+            catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
+            {
+                Save();
+                _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                return;
             }
             catch
             {
