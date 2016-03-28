@@ -244,6 +244,20 @@ namespace DamageMeter
                     continue;
                 }
 
+                var NpcStatus = message as SNpcStatus;
+                if (NpcStatus != null)
+                {
+                    if (NpcStatus.Enraged)
+                    {
+                        AbnormalityTracker.Instance.AddAbnormality(NpcStatus.Npc, NpcStatus.Target,100000,0,8888888,NpcStatus.Time.Ticks);
+                        continue;
+                    }
+                    else
+                    {
+                        AbnormalityTracker.Instance.DeleteAbnormality(NpcStatus);
+                        continue;
+                    }
+                }
 
                 var abnormalityBegin = message as SAbnormalityBegin;
                 if (abnormalityBegin != null)

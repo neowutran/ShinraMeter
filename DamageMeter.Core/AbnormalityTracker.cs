@@ -25,7 +25,7 @@ namespace DamageMeter
                 message.Time.Ticks);
         }
 
-        private void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId,
+        public void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId,
             long ticks)
         {
             if (!_abnormalities.ContainsKey(target))
@@ -38,7 +38,8 @@ namespace DamageMeter
                 return;
             }
 
-            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
+            if (_abnormalities[target].Where(x => x.HotDot.Id == abnormalityId).Count() == 0) //dont add existing abnormalities (!!! Big issue !!!!!! Abnormality Duration fucked up)
+                _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
         }
 
         public void RefreshAbnormality(SAbnormalityRefresh message)
@@ -73,37 +74,45 @@ namespace DamageMeter
             return false;
         }
 
-        public void DeleteAbnormality(SAbnormalityEnd message)
+        private void DeleteAbnormality(EntityId target, int abnormalityId, long ticks)
         {
-            if (!_abnormalities.ContainsKey(message.TargetId))
+            if (!_abnormalities.ContainsKey(target))
             {
                 return;
             }
 
-            var abnormalityUser = _abnormalities[message.TargetId];
+            var abnormalityUser = _abnormalities[target];
 
             for (var i = 0; i < abnormalityUser.Count; i++)
             {
-                if (abnormalityUser[i].HotDot.Id == message.AbnormalityId)
+                if (abnormalityUser[i].HotDot.Id == abnormalityId)
                 {
-                    abnormalityUser[i].ApplyBuffDebuff(message.Time.Ticks);
+                    abnormalityUser[i].ApplyBuffDebuff(ticks);
                     abnormalityUser.Remove(abnormalityUser[i]);
                 }
             }
 
             if (abnormalityUser.Count == 0)
             {
-                _abnormalities.Remove(message.TargetId);
+                _abnormalities.Remove(target);
                 return;
             }
-            _abnormalities[message.TargetId] = abnormalityUser;
+            _abnormalities[target] = abnormalityUser;
         }
 
+        public void DeleteAbnormality(SAbnormalityEnd message)
+        {
+            DeleteAbnormality(message.TargetId, message.AbnormalityId, message.Time.Ticks);
+        }
         public void DeleteAbnormality(SDespawnNpc message)
         {
             DeleteAbnormality(message.Npc, message.Time.Ticks);
         }
 
+        public void DeleteAbnormality(SNpcStatus message)
+        {
+            DeleteAbnormality(message.Npc, 8888888, message.Time.Ticks);
+        }
 
         public void DeleteAbnormality(SDespawnUser message)
         {
