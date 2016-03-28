@@ -38,7 +38,7 @@ namespace DamageMeter
                 return;
             }
 
-            if (_abnormalities[target].Where(x=>x.HotDot.Id==abnormalityId).Count()==0) //dont add existing abnormalities (!!! Big issue !!!!!! Abnormality Duration fucked up)
+            if (_abnormalities[target].Where(x => x.HotDot.Id == abnormalityId).Count() == 0) //dont add existing abnormalities (!!! Big issue !!!!!! Abnormality Duration fucked up)
                 _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
         }
 
@@ -107,7 +107,28 @@ namespace DamageMeter
 
         public void DeleteAbnormality(SNpcStatus message)
         {
-            DeleteAbnormality(message.Npc, message.Time.Ticks);
+            if (!_abnormalities.ContainsKey(message.Npc))
+            {
+                return;
+            }
+
+            var abnormalityUser = _abnormalities[message.Npc];
+
+            for (var i = 0; i < abnormalityUser.Count; i++)
+            {
+                if (abnormalityUser[i].HotDot.Id == 8888888)
+                {
+                    abnormalityUser[i].ApplyBuffDebuff(message.Time.Ticks);
+                    abnormalityUser.Remove(abnormalityUser[i]);
+                }
+            }
+
+            if (abnormalityUser.Count == 0)
+            {
+                _abnormalities.Remove(message.Npc);
+                return;
+            }
+            _abnormalities[message.Npc] = abnormalityUser;
         }
 
         public void DeleteAbnormality(SDespawnUser message)
