@@ -25,7 +25,7 @@ namespace DamageMeter
                 message.Time.Ticks);
         }
 
-        private void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId,
+        public void AddAbnormality(EntityId target, EntityId source, int duration, int stack, int abnormalityId,
             long ticks)
         {
             if (!_abnormalities.ContainsKey(target))
@@ -38,7 +38,8 @@ namespace DamageMeter
                 return;
             }
 
-            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
+            if (_abnormalities[target].Where(x=>x.HotDot.Id==abnormalityId).Count()==0) //dont add existing abnormalities (!!! Big issue !!!!!! Abnormality Duration fucked up)
+                _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
         }
 
         public void RefreshAbnormality(SAbnormalityRefresh message)
@@ -104,6 +105,10 @@ namespace DamageMeter
             DeleteAbnormality(message.Npc, message.Time.Ticks);
         }
 
+        public void DeleteAbnormality(SNpcStatus message)
+        {
+            DeleteAbnormality(message.Npc, message.Time.Ticks);
+        }
 
         public void DeleteAbnormality(SDespawnUser message)
         {
