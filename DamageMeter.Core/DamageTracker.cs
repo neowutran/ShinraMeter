@@ -46,6 +46,17 @@ namespace DamageMeter
             }
         }
 
+        public long PartyDps(Entity entity)
+        {
+            var interval = Interval(entity);
+            var damage = TotalDamageBossOnly(entity);
+            if (interval == 0)
+            {
+                return damage;
+            }
+            return damage / interval;
+        }
+
         public long TotalDamageBossOnly(Entity entity)
         {
             return (from users in UsersStats from skills in users.Value.Dealt.GetSkills(entity) from skill in skills.Value select skill.Value.Damage).Sum();

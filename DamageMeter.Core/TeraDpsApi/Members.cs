@@ -9,6 +9,11 @@ namespace DamageMeter.TeraDpsApi
     public class Members
     {
 
+
+        public string playerServer;
+        public int playerDeaths;
+        public double playerDeathDuration;
+
         public string playerName;
         public long playerDps;
         public string playerClass;

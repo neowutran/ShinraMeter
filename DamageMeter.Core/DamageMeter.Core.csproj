@@ -80,6 +80,10 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj">
+      <Project>{87e95fb1-8b42-4f6f-b51a-d2e3e49cd242}</Project>
+      <Name>DamageMeter.AutoUpdate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetworkSniffer\NetworkSniffer.csproj">
       <Project>{5b431143-1a77-44ff-8bc3-926fec8ad97c}</Project>
       <Name>NetworkSniffer</Name>

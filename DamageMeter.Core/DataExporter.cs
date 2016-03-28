@@ -37,6 +37,7 @@ namespace DamageMeter
             if (!entity.IsBoss) return;
             var stats = DamageTracker.Instance.GetPlayerStats();
             var interval = DamageTracker.Instance.Interval(entity);
+            var partyDps = DamageTracker.Instance.PartyDps(entity);
             
             var entities =
                 DamageTracker.Instance.GetEntityStats();
@@ -45,8 +46,9 @@ namespace DamageMeter
             var teradpsData = new EncounterBase();
             teradpsData.areaId = entity.NpcE.Info.HuntingZoneId;
             teradpsData.bossId = (int) entity.NpcE.Info.TemplateId;
-            teradpsData.server = NetworkController.Instance.Server.Name;
-
+            teradpsData.fightDuration = interval;
+            teradpsData.partyDps = partyDps;
+    
             if (entities.ContainsKey(entity))
             {
                 var entityStats = entities[entity];
@@ -69,6 +71,8 @@ namespace DamageMeter
                 }
                 teradpsUser.playerClass = user.Class.ToString();
                 teradpsUser.playerName = user.Name;
+                teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
+                
                 teradpsUser.playerAverageCritRate = user.Dealt.GetCritRateBossOnly(entity);
                 teradpsUser.playerDps = user.Dealt.GetDpsBossOnly(entity);
                 teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFractionBossOnly(entity, totaldamage);
@@ -87,10 +91,10 @@ namespace DamageMeter
                     var skillLog = new SkillLog();
                     skillLog.skillAverageCrit = skill.Value.DmgAverageCrit;
                     skillLog.skillAverageWhite = skill.Value.DmgAverageHit;
-                    skillLog.skillCritRate = skill.Value.CritRate;
+                    skillLog.skillCritRate = skill.Value.CritRateDmg;
                     skillLog.skillDamagePercent = skill.Value.DamagePercentageBossOnly(entity);
                     skillLog.skillHighestCrit = skill.Value.DmgBiggestCrit;
-                    skillLog.skillHits = skill.Value.Hits;
+                    skillLog.skillHits = skill.Value.HitsDmg;
                     skillLog.skillId = skill.Key.SkillId.ElementAt(0);
                     skillLog.skillLowestCrit = skill.Value.DmgLowestCrit;
                     skillLog.skillTotalDamage = skill.Value.Damage;
