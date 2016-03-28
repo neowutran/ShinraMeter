@@ -74,32 +74,36 @@ namespace DamageMeter
             return false;
         }
 
-        public void DeleteAbnormality(SAbnormalityEnd message)
+        private void DeleteAbnormality(EntityId target, int abnormalityId, long ticks)
         {
-            if (!_abnormalities.ContainsKey(message.TargetId))
+            if (!_abnormalities.ContainsKey(target))
             {
                 return;
             }
 
-            var abnormalityUser = _abnormalities[message.TargetId];
+            var abnormalityUser = _abnormalities[target];
 
             for (var i = 0; i < abnormalityUser.Count; i++)
             {
-                if (abnormalityUser[i].HotDot.Id == message.AbnormalityId)
+                if (abnormalityUser[i].HotDot.Id == abnormalityId)
                 {
-                    abnormalityUser[i].ApplyBuffDebuff(message.Time.Ticks);
+                    abnormalityUser[i].ApplyBuffDebuff(ticks);
                     abnormalityUser.Remove(abnormalityUser[i]);
                 }
             }
 
             if (abnormalityUser.Count == 0)
             {
-                _abnormalities.Remove(message.TargetId);
+                _abnormalities.Remove(target);
                 return;
             }
-            _abnormalities[message.TargetId] = abnormalityUser;
+            _abnormalities[target] = abnormalityUser;
         }
 
+        public void DeleteAbnormality(SAbnormalityEnd message)
+        {
+            DeleteAbnormality(message.TargetId, message.AbnormalityId, message.Time.Ticks);
+        }
         public void DeleteAbnormality(SDespawnNpc message)
         {
             DeleteAbnormality(message.Npc, message.Time.Ticks);
@@ -107,28 +111,7 @@ namespace DamageMeter
 
         public void DeleteAbnormality(SNpcStatus message)
         {
-            if (!_abnormalities.ContainsKey(message.Npc))
-            {
-                return;
-            }
-
-            var abnormalityUser = _abnormalities[message.Npc];
-
-            for (var i = 0; i < abnormalityUser.Count; i++)
-            {
-                if (abnormalityUser[i].HotDot.Id == 8888888)
-                {
-                    abnormalityUser[i].ApplyBuffDebuff(message.Time.Ticks);
-                    abnormalityUser.Remove(abnormalityUser[i]);
-                }
-            }
-
-            if (abnormalityUser.Count == 0)
-            {
-                _abnormalities.Remove(message.Npc);
-                return;
-            }
-            _abnormalities[message.Npc] = abnormalityUser;
+            DeleteAbnormality(message.Npc, 8888888, message.Time.Ticks);
         }
 
         public void DeleteAbnormality(SDespawnUser message)
