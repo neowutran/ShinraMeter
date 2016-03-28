@@ -11,28 +11,29 @@
         <Grid MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="300" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
+            <Label Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
                    BorderThickness="1" BorderBrush="Gray" FontSize="14" VerticalAlignment="Center"
                    x:Name="LabelName" Foreground="Yellow"
-                   MinHeight="29" />
+                   MinHeight="40" />
 
-            <Label Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" FontSize="14"
-                   BorderThickness="1" BorderBrush="Gray" x:Name="LabelTotalMana"
-                   VerticalAlignment="Center" MinHeight="29"
-                   Foreground="DeepSkyBlue" />
             <Label Grid.Column="3" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" FontSize="14"
-                   BorderThickness="1" BorderBrush="Gray" x:Name="LabelNumberHitMana"
-                   VerticalAlignment="Center" MinHeight="29"
+                   BorderThickness="1" BorderBrush="Gray" x:Name="LabelTotalMana"
+                   VerticalAlignment="Center" MinHeight="40"
                    Foreground="DeepSkyBlue" />
             <Label Grid.Column="4" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" FontSize="14"
+                   BorderThickness="1" BorderBrush="Gray" x:Name="LabelNumberHitMana"
+                   VerticalAlignment="Center" MinHeight="40"
+                   Foreground="DeepSkyBlue" />
+            <Label Grid.Column="5" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" FontSize="14"
                    BorderThickness="1" BorderBrush="Gray" x:Name="LabelId"
                    VerticalAlignment="Center" Foreground="Yellow"
-                   MinHeight="29" />
+                   MinHeight="40" />
         </Grid>
     </StackPanel>
 </UserControl>
