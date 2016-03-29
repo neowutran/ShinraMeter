@@ -15,15 +15,15 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillHeal : ISkill
     {
-        public SkillHeal(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss)
+        public SkillHeal(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss, bool timedEncounter)
         {
             InitializeComponent();
 
             LabelName.Content = skill.SkillName;
-            Update(skill, stats, currentBoss);
+            Update(skill, stats, currentBoss, timedEncounter);
         }
 
-        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss)
+        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss, bool timedEncounter)
         {
             var skillsId = "";
             for (var i = 0; i < skill.SkillId.Count; i++)

@@ -32,10 +32,10 @@ namespace DamageMeter.Skills.Skill.SkillDetail
 
         public int Id { get; }
 
-        public double GetDamagePercentage(Entity entity)
+        public double GetDamagePercentage(Entity entity, bool timedEncounter)
         {
                         
-            return PlayerInfo.Dealt.Damage(entity) == 0 ? 0 : Math.Round((double)Damage * 100 / PlayerInfo.Dealt.Damage(entity), 1);
+            return PlayerInfo.Dealt.Damage(entity, timedEncounter) == 0 ? 0 : Math.Round((double)Damage * 100 / PlayerInfo.Dealt.Damage(entity, timedEncounter), 1);
 
         }
 

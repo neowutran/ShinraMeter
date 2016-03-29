@@ -10,7 +10,7 @@ namespace DamageMeter.Taken
         private Dictionary<long, Dictionary<Entity, DamageTaken>> _entitiesStats =
             new Dictionary<long, Dictionary<Entity, DamageTaken>>();
 
-        public long Damage(Entity currentBoss, long firstHit, long lastHit)
+        public long Damage(Entity currentBoss, long firstHit, long lastHit, bool timedEncounter)
         {
           
                 if (currentBoss == null)
@@ -20,7 +20,7 @@ namespace DamageMeter.Taken
                
                 if (ContainsEntity(currentBoss))
                 {
-                    if (!NetworkController.Instance.TimedEncounter)
+                    if (!timedEncounter)
                     {
                         return
                             _entitiesStats.Sum(
@@ -43,7 +43,7 @@ namespace DamageMeter.Taken
             
         }
 
-        public int Hits(Entity currentBoss, long firstHit, long lastHit)
+        public int Hits(Entity currentBoss, long firstHit, long lastHit, bool timedEncounter)
         {
           
                 if (currentBoss == null)
@@ -52,7 +52,7 @@ namespace DamageMeter.Taken
                 }
                 if (ContainsEntity(currentBoss))
                 {
-                    if (!NetworkController.Instance.TimedEncounter)
+                    if (!timedEncounter)
                     {
                         return
                             _entitiesStats.Sum(

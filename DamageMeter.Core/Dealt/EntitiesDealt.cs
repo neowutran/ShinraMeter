@@ -56,15 +56,15 @@ namespace DamageMeter.Dealt
             
         }
 
-        public long Dps(Entity entity)
+        public long Dps(Entity entity, bool timedEncounter)
         {
        
                 if (Interval(entity) == 0)
                 {
-                    return Damage(entity);
+                    return Damage(entity, timedEncounter);
                 }
 
-                return Damage(entity)/Interval(entity);
+                return Damage(entity, timedEncounter) /Interval(entity);
             
         }
 
@@ -73,26 +73,9 @@ namespace DamageMeter.Dealt
             return LastHit(entity) - FirstHit(entity);
         }
 
-        public long GetDpsBossOnly(Entity entity)
-        {
-            if (Interval(entity) == 0)
-            {
-                return GetDamageBossOnly(entity);
-            }
+     
 
-            return GetDamageBossOnly(entity) / Interval(entity) ;
-        }
-
-        public long GetDamageBossOnly(Entity entity)
-        {
-            return
-                            _entitiesStats.Sum(
-                                timedStats =>
-                                    timedStats.Value.Where(stats => stats.Key == entity)
-                                        .Sum(stats => stats.Value.Damage));
-        }
-
-        public long Damage(Entity currentBoss)
+        public long Damage(Entity currentBoss, bool timedEncounter)
         {
         
                 if (currentBoss == null)
@@ -101,11 +84,15 @@ namespace DamageMeter.Dealt
                 }
                 if (ContainsEntity(currentBoss))
                 {
-                    if (!NetworkController.Instance.TimedEncounter)
+                    if (!timedEncounter)
                     {
-                        return GetDamageBossOnly(currentBoss);
-                            
-                    }
+                     return
+                        _entitiesStats.Sum(
+                            timedStats =>
+                                timedStats.Value.Where(stats => stats.Key == currentBoss)
+                                    .Sum(stats => stats.Value.Damage));
+
+                }
 
                     long damage = 0;
                     var lastHit = LastHit(currentBoss);
@@ -149,38 +136,27 @@ namespace DamageMeter.Dealt
             }
         }
 
-        public double GetCritRate(Entity entity)
+        public double CritRate(Entity entity, bool timedEncounter)
         {
-            var hits = Hits(entity);
-            return hits == 0 ? 0 : Math.Round((double)Crits(entity) * 100 / hits, 1);
+            var hits = Hits(entity, timedEncounter);
+            return hits == 0 ? 0 : Math.Round((double)Crits(entity, timedEncounter) * 100 / hits, 1);
         }
 
-        public double GetCritRateBossOnly(Entity entity)
-        {
-            var hits = GetHitsBossOnly(entity);
-            return hits == 0 ? 0 : Math.Round((double)GetCritsBossOnly(entity) * 100 / hits, 1);
-        }
 
-        private int GetCritsBossOnly(Entity entity)
-        {
-
-            return _entitiesStats.Sum(
-                               timedStats =>
-                                   timedStats.Value.Where(stats => stats.Key == entity)
-                                       .Sum(stats => stats.Value.Crits));
-        }
-
-        public int Crits(Entity currentBoss)
+        public int Crits(Entity currentBoss, bool timedEncounter)
         {
             
-                if (currentBoss == null || (PlayerInfo.IsHealer && !NetworkController.Instance.TimedEncounter))
+                if (currentBoss == null || (PlayerInfo.IsHealer && !timedEncounter))
                 {
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Crits));
                 }
            
-                if (!NetworkController.Instance.TimedEncounter)
+                if (!timedEncounter)
                 {
-                    return GetCritsBossOnly(currentBoss);             
+                    return _entitiesStats.Sum(
+                             timedStats =>
+                                 timedStats.Value.Where(stats => stats.Key == currentBoss)
+                                     .Sum(stats => stats.Value.Crits));
                 }
 
                 var crit = 0;
@@ -194,39 +170,33 @@ namespace DamageMeter.Dealt
                 
             
         }
-        public long DmgBiggestCrit(Entity currentBoss)
+        public long DmgBiggestCrit(Entity currentBoss, bool timedEncounter)
         {
             
                 if (currentBoss == null )
                     return _entitiesStats.SelectMany(x => x.Value).SelectMany(x => x.Value.Skills).Select(x => x.Value.DmgBiggestCrit).Concat(new long[] { 0 }).Max();
-                if (!NetworkController.Instance.TimedEncounter)
+                if (!timedEncounter)
                     return _entitiesStats.SelectMany(x => x.Value).Where(stats => stats.Key == currentBoss).SelectMany(x => x.Value.Skills).Select(x => x.Value.DmgBiggestCrit).Concat(new long[] { 0 }).Max();
                 return _entitiesStats.Where(x => x.Key >= FirstHit(currentBoss) && x.Key <= LastHit(currentBoss)).SelectMany(x => x.Value).SelectMany(x => x.Value.Skills).Select(x => x.Value.DmgBiggestCrit).Concat(new long[] { 0 }).Max();
             
         }
 
-        private int GetHitsBossOnly(Entity entity)
-        {
-            return
-                    _entitiesStats.Sum(
-                        timedStats =>
-                            timedStats.Value.Where(stats => stats.Key == entity)
-                                .Sum(stats => stats.Value.Hits));
-
-        }
-
-        public int Hits(Entity currentBoss)
+        public int Hits(Entity currentBoss, bool timedEncounter)
         {
           
-                if (currentBoss == null || (PlayerInfo.IsHealer && !NetworkController.Instance.TimedEncounter ))
+                if (currentBoss == null || (PlayerInfo.IsHealer && !timedEncounter))
                 {
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Hits));
                 }
                 
-                if (!NetworkController.Instance.TimedEncounter)
+                if (!timedEncounter)
                 {
-                    return GetHitsBossOnly(currentBoss);
-                }
+                    return
+                     _entitiesStats.Sum(
+                         timedStats =>
+                             timedStats.Value.Where(stats => stats.Key == currentBoss)
+                                 .Sum(stats => stats.Value.Hits));
+            }
                 var hits = 0;
                 var lastHit = GetLastHit(currentBoss);
                 for (var i = GetFirstHit(currentBoss); i <= lastHit; i++)
@@ -393,14 +363,9 @@ namespace DamageMeter.Dealt
             return _entitiesStats.Any(timedstats => timedstats.Value.Any(entities => entities.Key == entity));
         }
 
-        public double DamageFraction(Entity currentBoss, long totalDamage)
+        public double DamageFraction(Entity currentBoss, long totalDamage, bool timedEncounter)
         {
-            return totalDamage == 0 ? 0 : Math.Round((double) Damage(currentBoss)*100/totalDamage, 1);
-        }
-
-        public double DamageFractionBossOnly(Entity entity, long totalDamage)
-        {
-            return totalDamage == 0 ? 0 : Math.Round((double)GetDamageBossOnly(entity) * 100 / totalDamage, 1);
+            return totalDamage == 0 ? 0 : Math.Round((double) Damage(currentBoss, timedEncounter) *100/totalDamage, 1);
         }
 
         public void SetPlayerInfo(PlayerInfo playerInfo)

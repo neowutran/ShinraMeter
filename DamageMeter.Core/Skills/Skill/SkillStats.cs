@@ -31,14 +31,9 @@ namespace DamageMeter.Skills.Skill
             _playerInfo = playerInfo;
         }
 
-        public double DamagePercentage(Entity entity)
+        public double DamagePercentage(Entity entity, bool timedEncounter)
         {
-            return _playerInfo.Dealt.Damage(entity) == 0 ? 0 : Math.Round((double)Damage * 100 / _playerInfo.Dealt.Damage(entity), 1);
-        }
-
-        public double DamagePercentageBossOnly(Entity entity)
-        {
-            return _playerInfo.Dealt.GetDamageBossOnly(entity) == 0 ? 0 : Math.Round((double)Damage * 100 / _playerInfo.Dealt.GetDamageBossOnly(entity), 1);
+            return _playerInfo.Dealt.Damage(entity, timedEncounter) == 0 ? 0 : Math.Round((double)Damage * 100 / _playerInfo.Dealt.Damage(entity, timedEncounter), 1);
         }
 
         public double CritRate => Hits == 0 ? 0 : Math.Round((double) Crits*100/Hits, 1);

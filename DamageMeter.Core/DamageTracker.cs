@@ -23,33 +23,50 @@ namespace DamageMeter
         {
         }
 
-        public long TotalDamage
+        public long TotalDamage(Entity entity, bool timedEncounter) 
         {
-            get
-            {
-                if (NetworkController.Instance.Encounter == null)
+            
+                if (entity == null)
                 {
                     return (from users in UsersStats from skills in users.Value.Dealt.AllSkills from skill in skills.Value select skill.Value.Damage).Sum();
 
                 }
-                if (!EntitiesStats.ContainsKey(NetworkController.Instance.Encounter))
+                if (!EntitiesStats.ContainsKey(entity))
                 {
                     return 0;
                 }
 
-                if (!NetworkController.Instance.TimedEncounter)
+                if (!timedEncounter)
                 {
-                    return TotalDamageBossOnly(NetworkController.Instance.Encounter);
-                }
+                return (from users in UsersStats from skills in users.Value.Dealt.GetSkills(entity) from skill in skills.Value select skill.Value.Damage).Sum();
 
-                return (from users in UsersStats from skills in users.Value.Dealt.GetSkillsByTime(NetworkController.Instance.Encounter) from skill in skills.Value select skill.Value.Damage).Sum();
+            }
+
+            return (from users in UsersStats from skills in users.Value.Dealt.GetSkillsByTime(entity) from skill in skills.Value select skill.Value.Damage).Sum();
+            
+        }
+
+        public void RegisterDead(SCreatureLife dead)
+        {
+            var user = (UserEntity)NetworkController.Instance.EntityTracker.GetOrNull(dead.User);
+            if (user != null)
+            {
+                var player = NetworkController.Instance.PlayerTracker.GetOrUpdate(user);
+                if (dead.Dead)
+                {
+                    UsersStats[player].DeathCounter++;
+                    Console.WriteLine(player.Name + " is dead");
+                }else
+                {
+                    Console.WriteLine(player.Name + " is alive");
+                }
             }
         }
 
-        public long PartyDps(Entity entity)
+        public long PartyDps(Entity entity, bool timedEncounter)
         {
             var interval = Interval(entity);
-            var damage = TotalDamageBossOnly(entity);
+            var damage = TotalDamage(entity, timedEncounter);
             if (interval == 0)
             {
                 return damage;
@@ -57,10 +74,8 @@ namespace DamageMeter
             return damage / interval;
         }
 
-        public long TotalDamageBossOnly(Entity entity)
-        {
-            return (from users in UsersStats from skills in users.Value.Dealt.GetSkills(entity) from skill in skills.Value select skill.Value.Damage).Sum();
-        }
+
+     
 
         public long FirstHit(Entity currentBoss)
         {

@@ -35,14 +35,30 @@ namespace DamageMeter
             var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
 
             if (!entity.IsBoss) return;
+
+            bool timedEncounter = false;
+
+            //Nightmare desolarus
+            if (entity.NpcE.Info.HuntingZoneId == 759 && entity.NpcE.Info.TemplateId == 1003)
+            {
+                timedEncounter = true;
+            }
+            
             var stats = DamageTracker.Instance.GetPlayerStats();
             var interval = DamageTracker.Instance.Interval(entity);
-            var partyDps = DamageTracker.Instance.PartyDps(entity);
+
+
+            long partyDps;
             
             var entities =
                 DamageTracker.Instance.GetEntityStats();
-            var totaldamage = DamageTracker.Instance.TotalDamageBossOnly(entity);
 
+
+            long totaldamage = 0;
+           
+            totaldamage = DamageTracker.Instance.TotalDamage(entity, timedEncounter);
+            partyDps = DamageTracker.Instance.PartyDps(entity, timedEncounter);
+         
             var teradpsData = new EncounterBase();
             teradpsData.areaId = entity.NpcE.Info.HuntingZoneId;
             teradpsData.bossId = (int) entity.NpcE.Info.TemplateId;
@@ -64,18 +80,23 @@ namespace DamageMeter
             foreach(var user in stats)
             {
                 var teradpsUser = new Members();
-                teradpsUser.playerTotalDamage = user.Dealt.GetDamageBossOnly(entity);
-                if(teradpsUser.playerTotalDamage <= 0)
+                               
+                teradpsUser.playerTotalDamage = user.Dealt.Damage(entity, timedEncounter);
+                
+               if(teradpsUser.playerTotalDamage <= 0)
                 {
                     continue;
                 }
                 teradpsUser.playerClass = user.Class.ToString();
                 teradpsUser.playerName = user.Name;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
-                
-                teradpsUser.playerAverageCritRate = user.Dealt.GetCritRateBossOnly(entity);
-                teradpsUser.playerDps = user.Dealt.GetDpsBossOnly(entity);
-                teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFractionBossOnly(entity, totaldamage);
+                Dictionary < long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> skills;
+
+                teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter);
+                teradpsUser.playerDps = user.Dealt.Dps(entity, timedEncounter);
+                teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter);
+                skills = user.Dealt.GetSkillsByTime(entity);
+
 
                 foreach (var buff in user.AbnormalityTime) {
                     teradpsUser.buffUptime.Add(new KeyValuePair<int, long>(
@@ -83,7 +104,6 @@ namespace DamageMeter
                         (buff.Value.Duration(user.Dealt.GetFirstHit(entity), user.Dealt.GetLastHit(entity)) * 100 / interval)
                     ));
                 }
-                var skills = user.Dealt.GetSkills(entity);
                 var notimedskills = NoTimedSkills(skills);
 
                 foreach (var skill in notimedskills)
@@ -92,7 +112,11 @@ namespace DamageMeter
                     skillLog.skillAverageCrit = skill.Value.DmgAverageCrit;
                     skillLog.skillAverageWhite = skill.Value.DmgAverageHit;
                     skillLog.skillCritRate = skill.Value.CritRateDmg;
-                    skillLog.skillDamagePercent = skill.Value.DamagePercentageBossOnly(entity);
+
+                   
+                    skillLog.skillDamagePercent = skill.Value.DamagePercentage(entity, timedEncounter);
+                 
+
                     skillLog.skillHighestCrit = skill.Value.DmgBiggestCrit;
                     skillLog.skillHits = skill.Value.HitsDmg;
                     skillLog.skillId = skill.Key.SkillId.ElementAt(0);

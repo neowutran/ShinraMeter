@@ -152,7 +152,7 @@ namespace Data
                     "descending"
                     ),
                 new CopyKey(
-                    @"Damage Done @ {encounter} {timer}:\",
+                    @"Damage Done @ {encounter} {timer} {partyDps}:\",
                     "",
                     @"[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {dps}\",
                     ModifierKeys.Shift,

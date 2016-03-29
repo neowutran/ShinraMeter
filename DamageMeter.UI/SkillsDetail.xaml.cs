@@ -28,11 +28,13 @@ namespace DamageMeter.UI
         private SortOrder _sortOrder = SortOrder.Descending;
 
         private Entity _currentBoss;
+        private bool _timedEncounter;
 
-        public SkillsDetail(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, Type type, Entity currentBoss)
+        public SkillsDetail(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, Type type, Entity currentBoss, bool timedEncounter)
         {
             InitializeComponent();
             _currentBoss = currentBoss;
+            _timedEncounter = timedEncounter;
             TypeSkill = type;
             switch (TypeSkill)
             {
@@ -191,7 +193,7 @@ namespace DamageMeter.UI
                         case SortBy.DBigCrit:
                             return from entry in _skills orderby entry.Value.DmgBiggestCrit descending select entry;
                         case SortBy.DamagePercent:
-                            return from entry in _skills orderby entry.Value.DamagePercentage(_currentBoss) descending select entry;
+                            return from entry in _skills orderby entry.Value.DamagePercentage(_currentBoss, _timedEncounter) descending select entry;
                         case SortBy.Name:
                             return from entry in _skills orderby entry.Key.SkillName descending select entry;
                         case SortBy.Mana:
@@ -244,7 +246,7 @@ namespace DamageMeter.UI
                         case SortBy.DBigCrit:
                             return from entry in _skills orderby entry.Value.DmgBiggestCrit ascending select entry;
                         case SortBy.DamagePercent:
-                            return from entry in _skills orderby entry.Value.DamagePercentage(_currentBoss) ascending select entry;
+                            return from entry in _skills orderby entry.Value.DamagePercentage(_currentBoss, _timedEncounter) ascending select entry;
                         case SortBy.Name:
                             return from entry in _skills orderby entry.Key.SkillName ascending select entry;
                         case SortBy.Mana:
@@ -381,7 +383,7 @@ namespace DamageMeter.UI
                 for (var i = 0; i < oldSkills.Count; i++)
                 {
                     if (!skill.Key.SkillName.Equals(oldSkills[i].SkillNameIdent())) continue;
-                    oldSkills[i].Update(skill.Key, skill.Value, _currentBoss);
+                    oldSkills[i].Update(skill.Key, skill.Value, _currentBoss, _timedEncounter);
                     SkillsList.Items.Add(oldSkills[i]);
                     updated = i;
                     break;
@@ -396,16 +398,16 @@ namespace DamageMeter.UI
                 {
                     case Type.Dps:
                         if (skill.Value.Damage == 0) continue;
-                        SkillsList.Items.Add(new SkillDps(skill.Key, skill.Value, _currentBoss));
+                        SkillsList.Items.Add(new SkillDps(skill.Key, skill.Value, _currentBoss, _timedEncounter));
                         break;
                     case Type.Heal:
                         if (skill.Value.Heal == 0) continue;
-                        SkillsList.Items.Add(new SkillHeal(skill.Key, skill.Value, _currentBoss));
+                        SkillsList.Items.Add(new SkillHeal(skill.Key, skill.Value, _currentBoss, _timedEncounter));
                         break;
                     case Type.Mana:
                     default:
                         if (skill.Value.Mana == 0) continue;
-                        SkillsList.Items.Add(new SkillMana(skill.Key, skill.Value, _currentBoss));
+                        SkillsList.Items.Add(new SkillMana(skill.Key, skill.Value, _currentBoss, _timedEncounter));
                         break;
                 }
             }

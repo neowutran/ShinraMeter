@@ -26,6 +26,8 @@ namespace DamageMeter
 
         public PlayerClass Class => Player.Class;
 
+        public int DeathCounter { get; set; }
+
         public EntitiesTaken Received { get; private set; }
         public EntitiesDealt Dealt { get; private set; }
 
@@ -36,6 +38,7 @@ namespace DamageMeter
             {
                 Received = (EntitiesTaken) Received.Clone(),
                 Dealt = (EntitiesDealt) Dealt.Clone(),
+                DeathCounter = DeathCounter,
                 AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => (AbnormalityDuration) i.Value.Clone())
             };
             clone.Dealt.SetPlayerInfo(clone);

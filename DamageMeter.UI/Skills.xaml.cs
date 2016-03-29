@@ -24,7 +24,7 @@ namespace DamageMeter.UI
 
         public Skills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent,
-            PlayerInfo playerInfo, Entity currentBoss)
+            PlayerInfo playerInfo, Entity currentBoss, bool timedEncounter)
         {
             InitializeComponent();
 
@@ -32,9 +32,9 @@ namespace DamageMeter.UI
             var allSkills = NoTimedSkills(timedAllSkills);
 
 
-            _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps, currentBoss);
-            _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal, currentBoss);
-            _skillMana = new SkillsDetail(allSkills, SkillsDetail.Type.Mana, currentBoss);
+            _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps, currentBoss, timedEncounter);
+            _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal, currentBoss, timedEncounter);
+            _skillMana = new SkillsDetail(allSkills, SkillsDetail.Type.Mana, currentBoss, timedEncounter);
             _buff = new Buff(playerInfo, currentBoss);
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;

@@ -46,7 +46,7 @@
       <window>False</window>
       <key>End</key>
       <string>
-        <header>Damage Done @ {encounter} {timer}:\</header>
+        <header>Damage Done @ {encounter} {timer} {partyDps}:\</header>
         <content>[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {dps}\</content>
         <footer></footer>
         <order_by>damage_percentage</order_by>

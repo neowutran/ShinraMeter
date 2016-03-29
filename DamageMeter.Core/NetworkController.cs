@@ -22,8 +22,8 @@ namespace DamageMeter
 
 
         public delegate void UpdateUiHandler(
-            long firsthit, long lastHit, long totaldamage, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats, Entity currentBoss);
+            long firsthit, long lastHit, long totaldamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
+            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter);
 
         private static NetworkController _instance;
 
@@ -95,16 +95,18 @@ namespace DamageMeter
             _lastTick = Utils.Now();
             var handler = TickUpdated;
             var currentBossFight = Encounter;
-            var damage = DamageTracker.Instance.TotalDamage;
+            var timedEncounter = TimedEncounter;
+            var damage = DamageTracker.Instance.TotalDamage(currentBossFight, timedEncounter);
             var stats =
                 DamageTracker.Instance.GetPlayerStats()
-                    .OrderByDescending(playerStats => playerStats.Dealt.Damage(currentBossFight))
+                    .OrderByDescending(playerStats => playerStats.Dealt.Damage(currentBossFight, timedEncounter))
                     .ToList();
             var firstHit = DamageTracker.Instance.FirstHit(currentBossFight);
             var lastHit = DamageTracker.Instance.LastHit(currentBossFight);
             var entities =
                 DamageTracker.Instance.GetEntityStats();
-            handler?.Invoke(firstHit, lastHit, damage, entities, stats, currentBossFight);
+            var partyDps = DamageTracker.Instance.PartyDps(currentBossFight, timedEncounter);
+            handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight , timedEncounter);
         }
 
         private bool _clickThrou = false;
@@ -137,10 +139,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(List<PlayerInfo> stats, long total, long firstHit, long lastHit, Entity currentBoss, CopyKey copy)
+        public static void CopyThread(List<PlayerInfo> stats, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
         {
                    
-            CopyPaste.Copy(stats, total, firstHit, lastHit, currentBoss, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            CopyPaste.Copy(stats, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             var text = Clipboard.GetText();
             CopyPaste.Paste(text);
             
@@ -166,12 +168,14 @@ namespace DamageMeter
                 if(NeedToCopy != null)
                 {
                     var stats = DamageTracker.Instance.GetPlayerStats();
-                    var totaldamage = DamageTracker.Instance.TotalDamage;
                     var currentBoss = Encounter;
+                    var timedEncounter = TimedEncounter;
+                    var totaldamage = DamageTracker.Instance.TotalDamage(currentBoss, timedEncounter);
                     var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
                     var lastHit = DamageTracker.Instance.LastHit(currentBoss);
+                    var partyDps = DamageTracker.Instance.PartyDps(currentBoss, timedEncounter);
                     var tmpcopy = NeedToCopy;
-                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, firstHit, lastHit, currentBoss , tmpcopy));
+                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
                     pasteThread.SetApartmentState(ApartmentState.STA);
                     pasteThread.Start();
                     NeedToCopy = null;
@@ -294,6 +298,14 @@ namespace DamageMeter
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
                     continue;
                 }
+
+                var dead = message as SCreatureLife;
+                if(dead != null)
+                {
+                    DamageTracker.Instance.RegisterDead(dead);
+                    continue;
+                }
+
 
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage == null) continue;

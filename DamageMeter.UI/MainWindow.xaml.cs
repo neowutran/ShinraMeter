@@ -72,7 +72,10 @@ namespace DamageMeter.UI
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
         }
-
+        private void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            Exit();
+        }
 
         public void SetClickThrou()
         {
@@ -273,12 +276,12 @@ namespace DamageMeter.UI
             }
         }
 
-        public void Update(long nfirstHit, long nlastHit, long ntotalDamage, Dictionary<Entity, EntityInfo> nentities,
-            List<PlayerInfo> nstats, Entity ncurrentBoss)
+        public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
+            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter)
         {
-            UpdateUi changeUi =
-                delegate(long firstHit, long lastHit, long totalDamage, Dictionary<Entity, EntityInfo> entities,
-                    List<PlayerInfo> stats, Entity currentBoss)
+            NetworkController.UpdateUiHandler changeUi =
+                delegate(long firstHit, long lastHit, long totalDamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
+                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter)
                 {
                     StayTopMost();
                     var entitiesStats = entities.ToList().OrderByDescending(e => e.Value.LastHit).ToList();
@@ -289,13 +292,14 @@ namespace DamageMeter.UI
                     }
                     UpdateComboboxEncounter(encounterList, currentBoss);
                     _entityStats.Update(entities, currentBoss);
+                    PartyDps.Content = FormatHelpers.Instance.FormatValue(partyDps) + "/s";
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
                     foreach (var playerStats in stats)
                     {
                         PlayerStats playerStatsControl;
                         Controls.TryGetValue(playerStats, out playerStatsControl);
-                        if (playerStats.Dealt.Damage(currentBoss) == 0 && playerStats.Received.Hits(currentBoss, firstHit, lastHit) == 0)
+                        if (playerStats.Dealt.Damage(currentBoss, timedEncounter) == 0 && playerStats.Received.Hits(currentBoss, firstHit, lastHit, timedEncounter) == 0)
                         {
                             continue;
                         }
@@ -326,24 +330,24 @@ namespace DamageMeter.UI
                     Players.Items.Clear();
                     var sortedDict = from entry in Controls
                         orderby
-                            stats[stats.IndexOf(entry.Value.PlayerInfo)].Dealt.DamageFraction(currentBoss, totalDamage) descending
+                            stats[stats.IndexOf(entry.Value.PlayerInfo)].Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) descending
                         select entry;
                     foreach (var item in sortedDict)
                     {
                         Players.Items.Add(item.Value);
                         var data = stats.IndexOf(item.Value.PlayerInfo);
                         
-                        item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit, currentBoss);
+                        item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit, currentBoss, timedEncounter);
                     }
 
-                    Height = Controls.Count*29 + CloseMeter.ActualHeight;
+                    Height = Controls.Count*29 + 29;
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
                     {
                         Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
                     }
                 };
-            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, nentities, nstats, ncurrentBoss);
+            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter);
         }
 
 
@@ -438,11 +442,6 @@ namespace DamageMeter.UI
 
         }
 
-        private void MainWindow_OnClosed(object sender, EventArgs e)
-        {
-            Exit();
-        }
-
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             if (BasicTeraData.Instance.WindowData.RememberPosition)
@@ -494,10 +493,7 @@ namespace DamageMeter.UI
             _entityStats.Topmost = false;
         }
 
-        private delegate void UpdateUi(
-            long firstHit, long lastHit, long totalDamage, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats, Entity currentBoss);
-
+    
         private delegate void ChangeTitle(string servername);
 
         private void PinImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
