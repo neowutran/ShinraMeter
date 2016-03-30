@@ -15,34 +15,23 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class Skills
     {
-        private readonly Buff _buff;
+        private Buff _buff;
         private readonly PlayerStats _parent;
-        private readonly SkillsDetail _skillDps;
-        private readonly SkillsDetail _skillHeal;
-        private readonly SkillsDetail _skillMana;
+        private SkillsDetail _skillDps;
+        private SkillsDetail _skillHeal;
+        private SkillsDetail _skillMana;
 
 
         public Skills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent,
-            PlayerInfo playerInfo, Entity currentBoss, bool timedEncounter)
+            PlayerInfo playerInfo, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
             InitializeComponent();
-
-            var skills = NoTimedSkills(timedSkills);
-            var allSkills = NoTimedSkills(timedAllSkills);
-
-
-            _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps, currentBoss, timedEncounter);
-            _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal, currentBoss, timedEncounter);
-            _skillMana = new SkillsDetail(allSkills, SkillsDetail.Type.Mana, currentBoss, timedEncounter);
-            _buff = new Buff(playerInfo, currentBoss);
-            HealPanel.Content = _skillHeal;
-            DpsPanel.Content = _skillDps;
-            ManaPanel.Content = _skillMana;
-            BuffPanel.Content = _buff;
+                 
             TabControl.SelectionChanged += TabControlOnSelectionChanged;
             _parent = parent;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
+            Update(timedSkills, timedAllSkills, playerInfo, currentBoss, timedEncounter, firstHit, lastHit);
         }
 
         private Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> NoTimedSkills(
@@ -97,15 +86,41 @@ namespace DamageMeter.UI
 
         public void Update(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills,
-            PlayerInfo playerinfo, Entity currentBoss)
+            PlayerInfo playerinfo, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
             // Console.WriteLine("thread id:"+Thread.CurrentThread.ManagedThreadId);
+
+
+            var death = playerinfo.DeathCounter;
+            if (death == null)
+            {
+                DeathCounter.Content = 0;
+                DeathDuration.Content = "0s";
+            }
+            else {
+                DeathCounter.Content = death.Count(firstHit, lastHit);
+                var duration = death.Duration(firstHit, lastHit);
+                var interval = TimeSpan.FromSeconds(duration);
+                DeathDuration.Content = interval.ToString(@"mm\:ss");
+            }
+
             var skills = NoTimedSkills(timedSkills);
             var allSkills = NoTimedSkills(timedAllSkills);
-            _buff.Update(playerinfo,currentBoss);
-            _skillDps.Update(skills, currentBoss);
-            _skillHeal.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills), currentBoss);
-            _skillMana.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills), currentBoss);
+
+            if (_skillDps == null)
+            {
+                _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps, currentBoss, timedEncounter);
+                _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal, currentBoss, timedEncounter);
+                _skillMana = new SkillsDetail(allSkills, SkillsDetail.Type.Mana, currentBoss, timedEncounter);
+                _buff = new Buff(playerinfo, currentBoss);
+
+            }
+            else {
+                _skillDps.Update(skills, currentBoss, timedEncounter);
+                _skillHeal.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills), currentBoss, timedEncounter);
+                _skillMana.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills), currentBoss, timedEncounter);
+                _buff.Update(playerinfo, currentBoss);
+            }
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;
             ManaPanel.Content = _skillMana;

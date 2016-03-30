@@ -16,7 +16,7 @@
         MinWidth="620"
         MaxWidth="720"
         MouseLeftButtonDown="EntityStats_OnMouseLeftButtonDown"
-        Title="EntityStats" Height="200">
+        Title="EntityStats" Height="800">
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
     </Window.Background>

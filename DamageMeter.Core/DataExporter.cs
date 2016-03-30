@@ -105,8 +105,8 @@ namespace DamageMeter
                     teradpsUser.playerDeathDuration = 0;
                 }
                 else {
-                    teradpsUser.playerDeaths = user.DeathCounter.Count;
-                    teradpsUser.playerDeathDuration = (death.Duration(firstHit, lastHit) * 100 / interval);
+                    teradpsUser.playerDeaths = user.DeathCounter.Count(firstHit, lastHit);
+                    teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit);
                 }
 
                 skills = user.Dealt.GetSkillsByTime(entity);

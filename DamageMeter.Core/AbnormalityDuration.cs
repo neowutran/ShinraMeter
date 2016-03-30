@@ -93,7 +93,18 @@ namespace DamageMeter
             return _listDuration[_listDuration.Count - 1].End;
         }
 
-        public int Count => _listDuration.Count;
+        public int Count(long begin, long end) {
+            int count = 0;
+            foreach (var duration in _listDuration)
+            {
+                if (begin > duration.End || end < duration.Begin)
+                {
+                    continue;
+                }
+                count++;
+            }
+            return count;
+        }
 
 
         public bool Ended()

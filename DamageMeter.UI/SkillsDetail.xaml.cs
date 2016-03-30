@@ -414,10 +414,11 @@ namespace DamageMeter.UI
         }
 
 
-        public void Update(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, Entity currentBoss)
+        public void Update(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, Entity currentBoss, bool timedEncounter)
         {
             _skills = skills;
             _currentBoss = currentBoss;
+            _timedEncounter = timedEncounter;
             Repaint();
         }
 

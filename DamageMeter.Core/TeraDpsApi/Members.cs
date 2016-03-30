@@ -12,7 +12,7 @@ namespace DamageMeter.TeraDpsApi
 
         public string playerServer;
         public int playerDeaths;
-        public double playerDeathDuration;
+        public long playerDeathDuration;
 
         public string playerName;
         public long playerDps;

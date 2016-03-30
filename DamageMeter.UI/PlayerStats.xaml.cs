@@ -72,7 +72,7 @@ namespace DamageMeter.UI
 
             var skills = Skills(_timedEncounter);
             var allskills = AllSkills(_timedEncounter);
-            _windowSkill?.Update(skills,allskills, playerInfo, _currentBoss);
+            _windowSkill?.Update(skills,allskills, playerInfo, _currentBoss, _timedEncounter, firstHit, lastHit);
             LabelDamage.Content = Damage;
             DpsIndicator.Width = 450*PlayerInfo.Dealt.DamageFraction(_currentBoss,totalDamage, _timedEncounter) /100;
         }
@@ -148,7 +148,7 @@ namespace DamageMeter.UI
 
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(skills, allSkills, this, PlayerInfo, _currentBoss, _timedEncounter)
+                _windowSkill = new Skills(skills, allSkills, this, PlayerInfo, _currentBoss, _timedEncounter, _firstHit, _lastHit)
                 {
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}
@@ -157,7 +157,7 @@ namespace DamageMeter.UI
                 return;
             }
 
-            _windowSkill.Update(skills,allSkills, PlayerInfo, _currentBoss);
+            _windowSkill.Update(skills,allSkills, PlayerInfo, _currentBoss, _timedEncounter, _firstHit, _lastHit);
             _windowSkill.Show();
         }
 
