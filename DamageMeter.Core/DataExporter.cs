@@ -46,6 +46,8 @@ namespace DamageMeter
             
             var stats = DamageTracker.Instance.GetPlayerStats();
             var interval = DamageTracker.Instance.Interval(entity);
+            var firstHit = DamageTracker.Instance.FirstHit(entity);
+            var lastHit = DamageTracker.Instance.LastHit(entity);
 
 
             long partyDps;
@@ -90,11 +92,23 @@ namespace DamageMeter
                 teradpsUser.playerClass = user.Class.ToString();
                 teradpsUser.playerName = user.Name;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
-                Dictionary < long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> skills;
+                Dictionary < long, Dictionary<Skills.Skill.Skill, SkillStats>> skills;
 
                 teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter);
                 teradpsUser.playerDps = user.Dealt.Dps(entity, timedEncounter);
                 teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter);
+
+                var death = user.DeathCounter;
+                if (death == null)
+                {
+                    teradpsUser.playerDeaths = 0;
+                    teradpsUser.playerDeathDuration = 0;
+                }
+                else {
+                    teradpsUser.playerDeaths = user.DeathCounter.Count;
+                    teradpsUser.playerDeathDuration = (death.Duration(firstHit, lastHit) * 100 / interval);
+                }
+
                 skills = user.Dealt.GetSkillsByTime(entity);
 
 

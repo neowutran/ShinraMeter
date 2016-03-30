@@ -26,7 +26,7 @@ namespace DamageMeter
 
         public PlayerClass Class => Player.Class;
 
-        public int DeathCounter { get; set; }
+        public AbnormalityDuration DeathCounter { get; set; }
 
         public EntitiesTaken Received { get; private set; }
         public EntitiesDealt Dealt { get; private set; }

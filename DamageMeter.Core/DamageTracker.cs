@@ -52,13 +52,28 @@ namespace DamageMeter
             if (user != null)
             {
                 var player = NetworkController.Instance.PlayerTracker.GetOrUpdate(user);
+                var time = dead.Time.Ticks / TimeSpan.TicksPerSecond;
                 if (dead.Dead)
                 {
-                    UsersStats[player].DeathCounter++;
+                    if (UsersStats[player].DeathCounter == null)
+                    {
+                        UsersStats[player].DeathCounter = new AbnormalityDuration(PlayerClass.Common, time);
+                    }else {
+                        UsersStats[player].DeathCounter.Start(time);
+                    }
                     Console.WriteLine(player.Name + " is dead");
-                }else
+                }
+                else
                 {
                     Console.WriteLine(player.Name + " is alive");
+                    if (UsersStats[player].DeathCounter == null)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        UsersStats[player].DeathCounter.End(time);
+                    }
                 }
             }
         }
@@ -163,8 +178,8 @@ namespace DamageMeter
                     {
                         continue;
                     }
-                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
-                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count - 1]);
+                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass, abnormality.Value.LastStart());
+                    duration.End(abnormality.Value.LastEnd());
                     newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
                     add = true;
                 }
@@ -220,8 +235,8 @@ namespace DamageMeter
                     {
                         continue;
                     }
-                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
-                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count - 1]);
+                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass, abnormality.Value.LastStart());
+                    duration.End(abnormality.Value.LastEnd());
                     newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
                     add = true;
                 }
@@ -243,8 +258,8 @@ namespace DamageMeter
                     {
                         continue;
                     }
-                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass);
-                    duration.ListDuration.Add(abnormality.Value.ListDuration[abnormality.Value.ListDuration.Count - 1]);
+                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass, abnormality.Value.LastStart());
+                    duration.End(abnormality.Value.LastEnd());
                     newUserStat.AbnormalityTime.Add(abnormality.Key, duration);
                     add = true;
                 }

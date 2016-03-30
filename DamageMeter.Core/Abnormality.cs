@@ -77,17 +77,13 @@ namespace DamageMeter
                 return;
             }
 
-            //TODO: bug here, try to fix
-            DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration[
-                DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration.Count - 1].Update(
-                    lastTicks);
+            DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].End(lastTicks);
         }
 
 
         private void RegisterEnduranceDebuff()
         {
             if (HotDot.Type != "Endurance" || HotDot.Amount > 1) return;
-            var duration = new Duration(FirstHit, long.MaxValue);
             var entityGame = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Target);
             Entity entity = null;
             var game = entityGame as NpcEntity;
@@ -115,15 +111,13 @@ namespace DamageMeter
                     return;
                 }
                 var user = (UserEntity) npcEntity;
-                var abnormalityInitDuration = new AbnormalityDuration(user.RaceGenderClass.Class);
-                abnormalityInitDuration.ListDuration.Add(duration);
-
+                var abnormalityInitDuration = new AbnormalityDuration(user.RaceGenderClass.Class, FirstHit);
                 DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.Add(HotDot, abnormalityInitDuration);
                 _enduranceDebuffRegistered = true;
                 return;
             }
 
-            DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].ListDuration.Add(duration);
+            DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime[HotDot].Start(FirstHit);
             _enduranceDebuffRegistered = true;
         }
 
@@ -143,8 +137,6 @@ namespace DamageMeter
                 DamageTracker.Instance.UsersStats.Add(player, new PlayerInfo(player));
             }
 
-            var duration = new Duration(FirstHit, long.MaxValue);
-
             if (!DamageTracker.Instance.UsersStats[player].AbnormalityTime.ContainsKey(HotDot))
             {
                 var npcEntity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Source);
@@ -157,26 +149,14 @@ namespace DamageMeter
                 {
                     playerClass = ((UserEntity) npcEntity).RaceGenderClass.Class;
                 }
-                var abnormalityInitDuration = new AbnormalityDuration(playerClass);
-                abnormalityInitDuration.ListDuration.Add(duration);
+                var abnormalityInitDuration = new AbnormalityDuration(playerClass, FirstHit);
                 DamageTracker.Instance.UsersStats[player].AbnormalityTime.Add(HotDot, abnormalityInitDuration);
                 _buffRegistered = true;
                 return;
             }
 
-            ////////// !! WARNING !!
-            var count = DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration.Count;
-            if (count > 0)
-            {
-                if (DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration[count - 1].End ==
-                    long.MaxValue)
-                {
-                    return;
-                }
-            }
-            ////////////
-
-            DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration.Add(duration);
+          
+            DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].Start(FirstHit);
             _buffRegistered = true;
         }
 
@@ -190,9 +170,7 @@ namespace DamageMeter
                 return;
             }
             var player = NetworkController.Instance.PlayerTracker.GetOrUpdate((UserEntity)userEntity);
-            DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration[
-                DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].ListDuration.Count - 1].Update(
-                    lastTicks);
+            DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].End(lastTicks);
         }
 
         public void Refresh(int stackCounter, int duration, long time)

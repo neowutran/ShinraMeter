@@ -7,9 +7,15 @@ namespace DamageMeter
 {
     public class AbnormalityDuration : ICloneable
     {
-        public List<Duration> ListDuration = new List<Duration>();
+        private List<Duration> _listDuration = new List<Duration>();
 
-        public AbnormalityDuration(PlayerClass playerClass)
+        public AbnormalityDuration(PlayerClass playerClass, long start)
+        {
+            InitialPlayerClass = playerClass;
+            Start(start);
+        }
+
+        private AbnormalityDuration(PlayerClass playerClass)
         {
             InitialPlayerClass = playerClass;
         }
@@ -18,45 +24,18 @@ namespace DamageMeter
 
         public object Clone()
         {
-            var newListDuration = ListDuration.Select(duration => (Duration) duration.Clone()).ToList();
+            var newListDuration = _listDuration.Select(duration => (Duration) duration.Clone()).ToList();
             var abnormalityDuration = new AbnormalityDuration(InitialPlayerClass)
             {
-                ListDuration = newListDuration
+                _listDuration = newListDuration
             };
             return abnormalityDuration;
-        }
-
-        public long Duration()
-        {
-            var end = DateTime.Now.Ticks/TimeSpan.TicksPerSecond;
-
-            long totalDuration = 0;
-
-            foreach (var duration in ListDuration)
-            {
-                if (end < duration.Begin)
-                {
-                    continue;
-                }
-
-                var abnormalityBegin = duration.Begin;
-                var abnormalityEnd = duration.End;
-
-                if (end < abnormalityEnd)
-                {
-                    abnormalityEnd = end;
-                }
-
-                totalDuration += abnormalityEnd - abnormalityBegin;
-            }
-            return totalDuration;
         }
 
         public long Duration(long begin, long end)
         {
             long totalDuration = 0;
-            var maxTime = false;
-            foreach (var duration in ListDuration)
+            foreach (var duration in _listDuration)
             {
                 if (begin > duration.End || end < duration.Begin)
                 {
@@ -65,18 +44,6 @@ namespace DamageMeter
 
                 var abnormalityBegin = duration.Begin;
                 var abnormalityEnd = duration.End;
-
-                if (maxTime && duration.End == long.MaxValue)
-                {
-                    Console.WriteLine("!!!!! Big issue !!!!!!");
-                  //  throw new Exception("!!! Big issue !!!!!! Abnormality Duration fucked up");
-                }
-
-                if (duration.End == long.MaxValue)
-                {
-                    maxTime = true;
-                }
-
 
                 if (begin > abnormalityBegin)
                 {
@@ -93,10 +60,45 @@ namespace DamageMeter
             return totalDuration;
         }
 
+        public void Start(long start)
+        {
+            if (_listDuration.Count != 0) {
+                if (!Ended())
+                {
+                    Console.WriteLine("Can't restart something that has not been ended yet");
+                    return;
+                }
+           }
+            _listDuration.Add(new Duration(start, long.MaxValue));
+        }
+
+        public void End(long end)
+        {
+            if (Ended())
+            {
+                Console.WriteLine("Can't end something that has already been ended");
+                return;
+            }
+
+            _listDuration[_listDuration.Count - 1].End = end;
+        }
+
+        public long LastStart()
+        {
+            return _listDuration[_listDuration.Count - 1].Begin;
+        }
+
+        public long LastEnd()
+        {
+            return _listDuration[_listDuration.Count - 1].End;
+        }
+
+        public int Count => _listDuration.Count;
+
 
         public bool Ended()
         {
-            return ListDuration[ListDuration.Count - 1].End != long.MaxValue;
+            return _listDuration[_listDuration.Count - 1].End != long.MaxValue;
         }
     }
 }
