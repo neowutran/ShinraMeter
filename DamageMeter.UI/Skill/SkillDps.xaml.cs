@@ -7,6 +7,7 @@ using System.Windows.Media;
 using DamageMeter.Skills.Skill;
 using DamageMeter.Skills.Skill.SkillDetail;
 using DamageMeter.UI.SkillDetail;
+using Data;
 
 namespace DamageMeter.UI.Skill
 {
@@ -20,6 +21,7 @@ namespace DamageMeter.UI.Skill
             InitializeComponent();
 
             LabelName.Content = skill.SkillName;
+            SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skill.IconName);
             Update(skill, stats, currentBoss, timedEncounter);
         }
 
@@ -49,7 +51,6 @@ namespace DamageMeter.UI.Skill
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.DmgBiggestCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.DmgAverageHit);
             LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(stats.DmgAverageTotal);
-
 
             IEnumerable<KeyValuePair<int, SkillDetailStats>> listStats = stats.SkillDetails.ToList();
             listStats = listStats.OrderByDescending(stat => stat.Value.Damage);

@@ -7,13 +7,15 @@ namespace DamageMeter.Skills.Skill
     {
         public List<int> SkillId;
 
-        public Skill(string skill, List<int> skillId)
+        public Skill(string skill, List<int> skillId,string iconName)
         {
             SkillId = skillId;
             SkillName = skill;
+            IconName = iconName;
         }
 
         public string SkillName { get; }
+        public string IconName { get; }
 
         public override bool Equals(object obj)
         {

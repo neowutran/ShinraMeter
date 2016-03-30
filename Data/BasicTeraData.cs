@@ -26,6 +26,7 @@ namespace Data
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
             Servers = new ServerDatabase(Path.Combine(ResourceDirectory,"data"));
             ImageDatabase = new ImageDatabase(Path.Combine(ResourceDirectory, "img/"));
+            Icons=new IconsDatabase(Path.Combine(ResourceDirectory, "data/"));
         }
 
         public HotDotDatabase HotDotDatabase { get; set; }
@@ -39,6 +40,7 @@ namespace Data
         public string ResourceDirectory { get; }
         public ServerDatabase Servers { get; private set; }
         public CharmsDatabase Charms { get; set; }
+        public IconsDatabase Icons { get; set; }
 
         public TeraData DataForRegion(string region)
         {

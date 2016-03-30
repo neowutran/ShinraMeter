@@ -17,6 +17,7 @@ namespace DamageMeter.UI.EntityStats
 
         public void Update(HotDot hotdot, AbnormalityDuration abnormalityDuration, long firstHit, long lastHit)
         {
+            SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(hotdot.IconName);
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
             var intervalEntity = lastHit - firstHit;
             //   Console.WriteLine("f:"+firstHit+";l:"+lastHit+";i:"+intervalEntity);

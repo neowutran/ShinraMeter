@@ -7,6 +7,7 @@
     <Grid>
         <Grid MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="25" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="65" />
@@ -14,21 +15,21 @@
                 <ColumnDefinition Width="300" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
                    Foreground="Yellow"
                    MinHeight="29" />
 
 
-            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelTotalMana" VerticalAlignment="Center"
                    MinHeight="29"
                    Foreground="DeepSkyBlue" />
-            <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelNumberHitMana" VerticalAlignment="Center"
                    MinHeight="29"
                    Foreground="DeepSkyBlue" />
-            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
                    Foreground="Yellow"
                    MinHeight="29" />

@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             Width="1110"
-             d:DesignWidth="1110"
-             MaxWidth="1110">
+             Width="1150"
+             d:DesignWidth="1150"
+             MaxWidth="1150">
     <StackPanel>
 
         <Grid MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">

@@ -12,9 +12,9 @@
         Topmost="True"
         Icon="../shinra.ico"
         MinHeight="50"
-        Width="580"
-        MinWidth="580"
-        MaxWidth="680"
+        Width="620"
+        MinWidth="620"
+        MaxWidth="720"
         MouseLeftButtonDown="EntityStats_OnMouseLeftButtonDown"
         Title="EntityStats" Height="200">
     <Window.Background>

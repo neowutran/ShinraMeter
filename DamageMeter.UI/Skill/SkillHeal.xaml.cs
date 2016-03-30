@@ -7,6 +7,7 @@ using System.Windows.Media;
 using DamageMeter.Skills.Skill;
 using DamageMeter.Skills.Skill.SkillDetail;
 using DamageMeter.UI.SkillDetail;
+using Data;
 
 namespace DamageMeter.UI.Skill
 {
@@ -20,6 +21,7 @@ namespace DamageMeter.UI.Skill
             InitializeComponent();
 
             LabelName.Content = skill.SkillName;
+            SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skill.IconName);
             Update(skill, stats, currentBoss, timedEncounter);
         }
 

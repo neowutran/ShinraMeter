@@ -253,7 +253,7 @@ namespace DamageMeter
                 {
                     if (NpcStatus.Enraged)
                     {
-                        AbnormalityTracker.Instance.AddAbnormality(NpcStatus.Npc, NpcStatus.Target,100000,0,8888888,NpcStatus.Time.Ticks);
+                        AbnormalityTracker.Instance.AddAbnormality(NpcStatus.Npc, NpcStatus.Target,0,0,8888888,NpcStatus.Time.Ticks);
                         continue;
                     }
                     else

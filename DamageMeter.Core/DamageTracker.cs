@@ -399,11 +399,13 @@ namespace DamageMeter
             entities.AddStats(time, entityTarget, new SkillsStats(playerInfo));
 
             var skillName = message.SkillId.ToString();
+            var iconName = "";
             if (message.Skill != null)
             {
                 skillName = message.Skill.Name;
+                iconName = message.Skill.IconName;
             }
-            var skillKey = new Skill(skillName, new List<int> {message.SkillId});
+            var skillKey = new Skill(skillName, new List<int> {message.SkillId}, iconName);
 
 
             SkillStats skillStats;

@@ -30,7 +30,7 @@ namespace DamageMeter
                     return;
                 }
                 Skill = new UserSkill(skillId, PlayerClass.Common,
-                    hotdot.Name, "DOT", null);
+                    hotdot.Name, "DOT", null, hotdot.IconName);
             }
 
             if (sourceUser != null)
@@ -42,7 +42,8 @@ namespace DamageMeter
                     if (Skill == null && npc != null)
                     {
                         Skill = new UserSkill(skillId, sourceUser.RaceGenderClass.Class, npc.Info.Name,
-                            BasicTeraData.Instance.PetSkillDatabase.Get(npc.Info.Name, skillId), null);
+                            BasicTeraData.Instance.PetSkillDatabase.Get(npc.Info.Name, skillId), null,
+                            BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(npc.Info.Name,sourceUser.RaceGenderClass).IconName);
                     }
                 }
             }
