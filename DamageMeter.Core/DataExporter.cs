@@ -72,9 +72,13 @@ namespace DamageMeter
                 var entityStats = entities[entity];
                 foreach (var debuff in entityStats.AbnormalityTime)
                 {
+                    long percentage = (debuff.Value.Duration(entityStats.FirstHit / TimeSpan.TicksPerSecond, entityStats.LastHit / TimeSpan.TicksPerSecond) * 100 / interval);
+                    if(percentage == 0)
+                    {
+                        continue;
+                    }
                     teradpsData.debuffUptime.Add(new KeyValuePair<int, long>(
-                        debuff.Key.Id,
-                        (debuff.Value.Duration(entityStats.FirstHit / TimeSpan.TicksPerSecond, entityStats.LastHit / TimeSpan.TicksPerSecond) * 100 / interval)
+                        debuff.Key.Id, percentage
                         ));
                 }
             }
@@ -113,9 +117,14 @@ namespace DamageMeter
 
 
                 foreach (var buff in user.AbnormalityTime) {
+                    long percentage = (buff.Value.Duration(user.Dealt.GetFirstHit(entity), user.Dealt.GetLastHit(entity)) * 100 / interval);
+                    if(percentage == 0)
+                    {
+                        continue;
+                    }
                     teradpsUser.buffUptime.Add(new KeyValuePair<int, long>(
-                        buff.Key.Id,
-                        (buff.Value.Duration(user.Dealt.GetFirstHit(entity), user.Dealt.GetLastHit(entity)) * 100 / interval)
+                        buff.Key.Id, percentage
+                        
                     ));
                 }
                 var notimedskills = NoTimedSkills(skills);
@@ -125,17 +134,18 @@ namespace DamageMeter
                     var skillLog = new SkillLog();
                     skillLog.skillAverageCrit = skill.Value.DmgAverageCrit;
                     skillLog.skillAverageWhite = skill.Value.DmgAverageHit;
-                    skillLog.skillCritRate = skill.Value.CritRateDmg;
-
-                   
+                    skillLog.skillCritRate = skill.Value.CritRateDmg;                
                     skillLog.skillDamagePercent = skill.Value.DamagePercentage(entity, timedEncounter);
-                 
-
                     skillLog.skillHighestCrit = skill.Value.DmgBiggestCrit;
                     skillLog.skillHits = skill.Value.HitsDmg;
                     skillLog.skillId = skill.Key.SkillId.ElementAt(0);
                     skillLog.skillLowestCrit = skill.Value.DmgLowestCrit;
                     skillLog.skillTotalDamage = skill.Value.Damage;
+
+                    if (skillLog.skillTotalDamage == 0)
+                    {
+                        continue;
+                    }
 
                     teradpsUser.skillLog.Add(skillLog);
                     
