@@ -37,9 +37,9 @@ namespace DamageMeter
             {
                 return;
             }
-
-            if (_abnormalities[target].Where(x => x.HotDot.Id == abnormalityId).Count() == 0) //dont add existing abnormalities (!!! Big issue !!!!!! Abnormality Duration fucked up)
-                _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
+          
+            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
+          
         }
 
         public void RefreshAbnormality(SAbnormalityRefresh message)
@@ -89,6 +89,7 @@ namespace DamageMeter
                 {
                     abnormalityUser[i].ApplyBuffDebuff(ticks);
                     abnormalityUser.Remove(abnormalityUser[i]);
+                    break;
                 }
             }
 

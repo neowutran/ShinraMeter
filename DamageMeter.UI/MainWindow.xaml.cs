@@ -340,7 +340,7 @@ namespace DamageMeter.UI
                         item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit, currentBoss, timedEncounter);
                     }
 
-                    Height = Controls.Count*29 + 29;
+                    Height = Controls.Count*29 + 60;
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
                     {
@@ -454,10 +454,6 @@ namespace DamageMeter.UI
             Left = 0;
         }
 
-        private void Button_OnClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
 
         private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -540,6 +536,11 @@ namespace DamageMeter.UI
         private void ListEncounter_OnDropDownClosed(object sender, EventArgs e)
         {
             _topMost = true;
+        }
+
+        private void Close_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            VerifyClose();
         }
     }
 }

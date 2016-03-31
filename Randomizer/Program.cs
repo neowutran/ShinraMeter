@@ -45,10 +45,10 @@ namespace Randomizer
         public static void DetectReplace()
         {
 
-            using (var stream = new FileStream(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+@"\ShinraMeter.exe", FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+            using (var stream = new FileStream(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\ShinraMeter.exe", FileMode.Open, FileAccess.ReadWrite, FileShare.None))
             {
                 KeyValuePair<long, long>? detected = Detect(stream);
-                if(detected == null)
+                if (detected == null)
                 {
                     Console.WriteLine("The file as already been randomized or randomization impossible. Exiting");
                     Console.ReadKey();
@@ -65,18 +65,18 @@ namespace Randomizer
         public static void Randomize(FileStream stream, KeyValuePair<long, long> positions)
         {
             long size = positions.Value - positions.Key;
-            long beginRandomize = RandomLong(positions.Value, positions.Key-1);
+            long beginRandomize = RandomLong(positions.Key, positions.Value-2);
             long sizeRandomize = RandomLong(2, positions.Key - beginRandomize);
 
             stream.Position = beginRandomize;
-            if(stream.ReadByte() != 0)
+            if (stream.ReadByte() != 0)
             {
                 stream.Position--;
             }
-            while(stream.Position < beginRandomize + sizeRandomize)
+            while (stream.Position < beginRandomize + sizeRandomize)
             {
                 stream.WriteByte(Convert.ToByte(RandomChar()));
-                stream.Position = stream.Position+2;
+                stream.Position = stream.Position + 2;
             }
         }
 
@@ -84,7 +84,7 @@ namespace Randomizer
         {
             int byteCheckPosition = 0;
             long beginPosition = 0;
-            while(stream.Position < stream.Length)
+            while (stream.Position < stream.Length)
             {
                 if (byteCheckPosition == 0)
                 {
@@ -99,9 +99,9 @@ namespace Randomizer
                 {
                     byteCheckPosition = 0;
                 }
-                if(byteCheckPosition == randomizeString.Length)
+                if (byteCheckPosition == randomizeString.Length)
                 {
-                    return new KeyValuePair<long, long>(beginPosition, stream.Position-1);
+                    return new KeyValuePair<long, long>(beginPosition, stream.Position - 1);
                 }
 
             }

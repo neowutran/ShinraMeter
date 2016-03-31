@@ -32,6 +32,7 @@ namespace DamageMeter.UI
 
         public string Damage => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.Damage(_currentBoss, _timedEncounter));
 
+        public string GlobalDps => FormatHelpers.Instance.FormatValue(PlayerInfo.Dealt.GlobalDps(_currentBoss, _timedEncounter, _lastHit - _firstHit)) + "/s";
 
         public string DamageReceived => FormatHelpers.Instance.FormatValue(PlayerInfo.Received.Damage(_currentBoss, _firstHit, _lastHit, _timedEncounter));
 
@@ -58,22 +59,22 @@ namespace DamageMeter.UI
         {
             PlayerInfo = playerInfo;
             _currentBoss = currentBoss;
-            LabelDps.Content = Dps;
             _firstHit = firstHit;
             _lastHit = lastHit;
             _timedEncounter = timedEncounter;
 
+            LabelDps.Content = Dps;
+            LabelDps.ToolTip = "Global dps: " +GlobalDps;
             LabelCritRate.Content = CritRate;
-            LabelDamagePart.Content = DamagePart(totalDamage);
-            LabelDamageReceived.Content = DamageReceived;
-            LabelHitsReceived.Content = HitReceived;
             var intervalTimespan = TimeSpan.FromSeconds(playerInfo.Dealt.Interval(_currentBoss));
-            Timer.Content = intervalTimespan.ToString(@"mm\:ss");
+            LabelCritRate.ToolTip = "Hits received: " + HitReceived+" - Damage received: "+DamageReceived+" - Fight Duration: "+ intervalTimespan.ToString(@"mm\:ss");
+            LabelDamagePart.Content = DamagePart(totalDamage);
+            LabelDamagePart.ToolTip = "Damage done: " + Damage;
+        
 
             var skills = Skills(_timedEncounter);
             var allskills = AllSkills(_timedEncounter);
             _windowSkill?.Update(skills,allskills, playerInfo, _currentBoss, _timedEncounter, firstHit, lastHit);
-            LabelDamage.Content = Damage;
             DpsIndicator.Width = 450*PlayerInfo.Dealt.DamageFraction(_currentBoss,totalDamage, _timedEncounter) /100;
         }
 

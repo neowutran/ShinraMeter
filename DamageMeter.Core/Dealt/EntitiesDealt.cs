@@ -56,6 +56,16 @@ namespace DamageMeter.Dealt
             
         }
 
+        public long GlobalDps(Entity entity, bool timedEncounter, long interval)
+        {
+            if (interval == 0)
+            {
+                return Damage(entity, timedEncounter);
+            }
+
+            return Damage(entity, timedEncounter) / interval;
+        }
+
         public long Dps(Entity entity, bool timedEncounter)
         {
        

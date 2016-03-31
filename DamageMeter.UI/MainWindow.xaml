@@ -6,16 +6,16 @@
         xmlns:ui="clr-namespace:DamageMeter.UI"
         mc:Ignorable="d"
         Title="Shinra Meter"
-        Height="60"
-        MinHeight="60"
-        MaxHeight="320"
+        Height="90"
+        MinHeight="90"
+        MaxHeight="350"
         WindowStyle="None"
         ResizeMode="NoResize"
         BorderThickness="0"
         Icon="shinra.jpg"
-        MinWidth="450"
+        MinWidth="265"
         ShowActivated="False"
-        MaxWidth="450"
+        MaxWidth="265"
         MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
@@ -211,7 +211,7 @@
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.5" />
     </Window.Background>
-    <Grid HorizontalAlignment="Left" Width="450">
+    <Grid HorizontalAlignment="Left" Width="265">
 
 
         <Image x:Name="PinImage" PreviewMouseLeftButtonDown="PinImage_OnPreviewMouseLeftButtonDown"  Stretch="Fill"
@@ -219,30 +219,31 @@
                Height="29" VerticalAlignment="Top" Width="29" />
         <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened" SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="30,0,0,0" VerticalAlignment="Top" Width="195" HorizontalContentAlignment="Stretch"
+                  Margin="30,0,0,0" VerticalAlignment="Top" Width="205" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
-        
+        <Label MouseLeftButtonDown="Close_MouseLeftButtonDown"  Focusable="False" x:Name="Close" HorizontalAlignment="Left" Margin="236,0,0,61" FontSize="14" Foreground="White"
+               VerticalAlignment="Center" Content="X" MinHeight="29" Height="29" Width="29" HorizontalContentAlignment="Center" />
         <Image x:Name="Chrono" PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown" 
                Stretch="Fill"
                HorizontalAlignment="Left"
-               Height="29" VerticalAlignment="Top" Width="29" Margin="225,0,0,0" />
-        
+               Height="29" VerticalAlignment="Top" Width="29" Margin="236,30,0,0" />
+
         <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown" 
                Stretch="Fill"
                HorizontalAlignment="Left"
-               Height="29" VerticalAlignment="Top" Width="29" Margin="255,0,0,0" />
+               Height="29" VerticalAlignment="Top" Width="29" Margin="1,30,0,0" />
 
-        <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Margin="336,0,0,0" FontSize="14" Foreground="White"
+        <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Margin="40,30,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-        <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Margin="285,0,0,0" FontSize="14" Foreground="White"
+        <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Margin="176,30,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-        <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Margin="386,0,-1,0" FontSize="14" Foreground="White"
+        <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Margin="101,30,0,0" FontSize="14" Foreground="White"
         	VerticalAlignment="Top" MinHeight="29" Height="29" Width="65" HorizontalContentAlignment="Center" />
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,28,0,0"
+                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,60,0,0"
                       HorizontalAlignment="Left" MaxHeight="290" />
-      
+
     </Grid>
 </ui:ClickThrouWindow>
