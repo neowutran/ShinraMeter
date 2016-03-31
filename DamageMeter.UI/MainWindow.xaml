@@ -221,8 +221,12 @@
                   x:Name="ListEncounter" HorizontalAlignment="Left"
                   Margin="30,0,0,0" VerticalAlignment="Top" Width="205" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
-        <Label MouseLeftButtonDown="Close_MouseLeftButtonDown"  Focusable="False" x:Name="Close" HorizontalAlignment="Left" Margin="236,0,0,61" FontSize="14" Foreground="White"
-               VerticalAlignment="Center" Content="X" MinHeight="29" Height="29" Width="29" HorizontalContentAlignment="Center" />
+
+        <Button Focusable="False" Style="{StaticResource ShinraButtonStyle}" Background="Transparent" x:Name="Close"
+                Content="X" Foreground="White" BorderThickness="0" Click="Close_MouseLeftButtonDown" FontSize="14"
+                HorizontalAlignment="Left" Height="29" MinHeight="29"
+                Margin="236,0,0,0" VerticalAlignment="Top" Width="29" />
+        
         <Image x:Name="Chrono" PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown" 
                Stretch="Fill"
                HorizontalAlignment="Left"

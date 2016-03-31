@@ -538,7 +538,7 @@ namespace DamageMeter.UI
             _topMost = true;
         }
 
-        private void Close_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Close_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             VerifyClose();
         }

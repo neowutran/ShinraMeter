@@ -157,8 +157,8 @@ namespace DamageMeter
             Console.WriteLine(json);
 
             
-            var sendThread = new Thread(() => Send(json, 3));
-            sendThread.Start();
+          //  var sendThread = new Thread(() => Send(json, 3));
+           // sendThread.Start();
         }
 
         private static void Send(string json, int numberTry)
