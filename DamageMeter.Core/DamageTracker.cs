@@ -61,11 +61,14 @@ namespace DamageMeter
                     }else {
                         UsersStats[player].DeathCounter.Start(time);
                     }
-                    Console.WriteLine(player.Name + " is dead");
                 }
                 else
                 {
-                    Console.WriteLine(player.Name + " is alive");
+                    if(UsersStats[player] == null)
+                    {
+                        return;
+                    }
+
                     if (UsersStats[player].DeathCounter == null)
                     {
                         return;
@@ -89,22 +92,19 @@ namespace DamageMeter
             return damage / interval;
         }
 
-
-     
-
         public long FirstHit(Entity currentBoss)
         {
            
-                long firsthit = 0;
-                foreach (var userstat in UsersStats)
+            long firsthit = 0;
+            foreach (var userstat in UsersStats)
+            {
+                if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit(currentBoss) < firsthit)) &&
+                    userstat.Value.Dealt.FirstHit(currentBoss) != 0)
                 {
-                    if (((firsthit == 0) || (userstat.Value.Dealt.FirstHit(currentBoss) < firsthit)) &&
-                        userstat.Value.Dealt.FirstHit(currentBoss) != 0)
-                    {
-                        firsthit = userstat.Value.Dealt.FirstHit(currentBoss);
-                    }
+                    firsthit = userstat.Value.Dealt.FirstHit(currentBoss);
                 }
-                return firsthit;
+            }
+            return firsthit;
             
         }
 
@@ -162,36 +162,24 @@ namespace DamageMeter
 
         public void DeleteEntity(Entity entity)
         {
+            if(entity == null)
+            {
+                return;
+            }
             if (NetworkController.Instance.Encounter == entity)
             {
                 NetworkController.Instance.NewEncounter = null;
             }
 
-            var add = false;
             var newEntityStat = new EntityInfo();
             if (EntitiesStats.ContainsKey(entity))
             {
-                foreach (var abnormality in EntitiesStats[entity].AbnormalityTime)
-                {
-                   
-                    if (!AbnormalityTracker.Instance.AbnormalityExist(entity.Id, abnormality.Key))
-                    {
-                        continue;
-                    }
-                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass, abnormality.Value.LastStart());
-                    duration.End(abnormality.Value.LastEnd());
-                    newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
-                    add = true;
-                }
+                newEntityStat.AbnormalityTime = EntitiesStats[entity].AbnormalityTime;
             }
 
             EntitiesStats.Remove(entity);
-            if (add)
-            {
-                EntitiesStats.Add(entity, newEntityStat);
-            }
-
-
+            EntitiesStats.Add(entity, newEntityStat);
+            
             foreach (var stats in UsersStats)
             {
                 stats.Value.Dealt.RemoveEntity(entity);
@@ -224,49 +212,18 @@ namespace DamageMeter
         {
             var newUserStats = new Dictionary<Player, PlayerInfo>();
             var newEntityStats = new Dictionary<Entity, EntityInfo>();
-            bool add;
             foreach (var entity in EntitiesStats)
             {
-                add = false;
                 var newEntityStat = new EntityInfo();
-                foreach (var abnormality in entity.Value.AbnormalityTime)
-                {
-                    if (abnormality.Value.Ended())
-                    {
-                        continue;
-                    }
-                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass, abnormality.Value.LastStart());
-                    duration.End(abnormality.Value.LastEnd());
-                    newEntityStat.AbnormalityTime.Add(abnormality.Key, duration);
-                    add = true;
-                }
-
-                if (add)
-                {
-                    newEntityStats.Add(entity.Key, newEntityStat);
-                }
+                newEntityStat.AbnormalityTime = entity.Value.AbnormalityTime;
+                newEntityStats.Add(entity.Key, newEntityStat);
             }
 
             foreach (var user in UsersStats)
             {
-                add = false;
                 var newUserStat = new PlayerInfo(user.Key);
-
-                foreach (var abnormality in user.Value.AbnormalityTime)
-                {
-                    if (abnormality.Value.Ended())
-                    {
-                        continue;
-                    }
-                    var duration = new AbnormalityDuration(abnormality.Value.InitialPlayerClass, abnormality.Value.LastStart());
-                    duration.End(abnormality.Value.LastEnd());
-                    newUserStat.AbnormalityTime.Add(abnormality.Key, duration);
-                    add = true;
-                }
-                if (add)
-                {
-                    newUserStats.Add(user.Key, newUserStat);
-                }
+                newUserStat.AbnormalityTime = user.Value.AbnormalityTime;
+                newUserStats.Add(user.Key, newUserStat);
             }
 
             UsersStats = newUserStats;
@@ -287,7 +244,6 @@ namespace DamageMeter
 
             playerStats = new PlayerInfo(player);
             UsersStats.Add(player, playerStats);
-
 
             return playerStats;
         }
@@ -348,7 +304,6 @@ namespace DamageMeter
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
 
-
                 UpdateStatsDealt(playerStats, skillResult, entityTarget, time);
             }
 
@@ -393,14 +348,12 @@ namespace DamageMeter
             {
                 return;
             }
-
           
             if (_toDelete.Contains(entityTarget))
             {
                 DeleteEntity(entityTarget);
                 _toDelete.Remove(entityTarget);
             }
-
 
             UpdateEncounter(entityTarget, message);
             UpdateSkillStats(message, entityTarget, playerInfo, time);
