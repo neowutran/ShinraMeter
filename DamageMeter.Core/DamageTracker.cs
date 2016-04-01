@@ -53,9 +53,10 @@ namespace DamageMeter
             {
                 var player = NetworkController.Instance.PlayerTracker.GetOrUpdate(user);
                 var time = dead.Time.Ticks / TimeSpan.TicksPerSecond;
+                PlayerInfo info = GetOrCreate(player);
                 if (dead.Dead)
                 {
-                    if (UsersStats[player].DeathCounter == null)
+                    if (info.DeathCounter == null)
                     {
                         UsersStats[player].DeathCounter = new AbnormalityDuration(PlayerClass.Common, time);
                     }else {
@@ -64,12 +65,7 @@ namespace DamageMeter
                 }
                 else
                 {
-                    if(UsersStats[player] == null)
-                    {
-                        return;
-                    }
-
-                    if (UsersStats[player].DeathCounter == null)
+                    if (info.DeathCounter == null)
                     {
                         return;
                     }
