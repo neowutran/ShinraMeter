@@ -43,7 +43,7 @@ namespace DamageMeter
                     {
                         Skill = new UserSkill(skillId, sourceUser.RaceGenderClass.Class, npc.Info.Name,
                             BasicTeraData.Instance.PetSkillDatabase.Get(npc.Info.Name, skillId), null,
-                            BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(npc.Info.Name,sourceUser.RaceGenderClass).IconName);
+                            BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(npc.Info.Name,sourceUser.RaceGenderClass)?.IconName??"");
                     }
                 }
             }
