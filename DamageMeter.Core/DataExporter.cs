@@ -46,6 +46,10 @@ namespace DamageMeter
             
             var stats = DamageTracker.Instance.GetPlayerStats();
             var interval = DamageTracker.Instance.Interval(entity);
+            if(interval == 0)
+            {
+                return;
+            }
             var firstHit = DamageTracker.Instance.FirstHit(entity);
             var lastHit = DamageTracker.Instance.LastHit(entity);
 
@@ -122,7 +126,7 @@ namespace DamageMeter
                     if(percentage == 0)
                     {
                         continue;
-                    }
+                    }   
                     teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(
                         buff.Key.Id+"", percentage+""
                         

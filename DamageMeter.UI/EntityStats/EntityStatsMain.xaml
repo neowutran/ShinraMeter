@@ -58,10 +58,9 @@
                 Content="X" Foreground="White" Click="CloseMeter_OnClick" HorizontalContentAlignment="Stretch"
                 VerticalAlignment="Top" Margin="0" />
 
-        <ItemsControl Margin="0,25,0,0" Name="EnduranceAbnormality" Background="Transparent" BorderThickness="0"
+        <ItemsControl  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,25,0,0" Name="EnduranceAbnormality" Background="Transparent" BorderThickness="0"
                       Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left" />
 
     </Grid>
