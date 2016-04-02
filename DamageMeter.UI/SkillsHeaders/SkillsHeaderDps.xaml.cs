@@ -11,7 +11,6 @@ namespace DamageMeter.UI.SkillsHeaders
     public partial class SkillsHeaderDps : UserControl
     {
         public static readonly string SkillName = "Skill name";
-        public static readonly string SkillId = "Skill Id";
         public static readonly string CritRateDmg = "CCdmg";
         public static readonly string TotalDamage = "Dmg";
         public static readonly string DamagePercentage = "% Dmg";
@@ -26,7 +25,6 @@ namespace DamageMeter.UI.SkillsHeaders
         {
             InitializeComponent();
             LabelName.Content = SkillName;
-            LabelId.Content = SkillId;
             LabelCritRateDmg.Content = CritRateDmg;
 
             LabelTotalDamage.Content = TotalDamage + "↓";

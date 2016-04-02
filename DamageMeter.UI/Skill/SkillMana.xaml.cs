@@ -42,7 +42,7 @@ namespace DamageMeter.UI.Skill
                 }
             }
 
-            LabelId.Content = skillsId;
+            LabelName.ToolTip = skillsId;
             LabelNumberHitMana.Content = stats.HitsMana;
             LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(stats.Mana);
 

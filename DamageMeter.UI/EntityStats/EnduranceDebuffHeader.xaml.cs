@@ -18,7 +18,6 @@ namespace DamageMeter.UI.EntityStats
             LabelInterval.Content = "Fight";
             LabelAbnormalityDurationPercentage.Content = "% Fight";
             LabelName.Content = "Name";
-            LabelId.Content = "Id";
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -21,9 +21,7 @@ namespace DamageMeter.UI.EntityStats
             SkillIcon.ToolTip = string.IsNullOrEmpty(hotdot.ItemName) ? null : hotdot.ItemName;
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
             var intervalEntity = lastHit - firstHit;
-            //   Console.WriteLine("f:"+firstHit+";l:"+lastHit+";i:"+intervalEntity);
             var second = abnormalityDuration.Duration(firstHit, lastHit);
-            // Console.WriteLine(second);
             var interval = TimeSpan.FromSeconds(second);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
@@ -41,7 +39,7 @@ namespace DamageMeter.UI.EntityStats
 
             LabelName.Content = hotdot.Name;
             LabelName.ToolTip = string.IsNullOrEmpty(hotdot.Tooltip)? null : hotdot.Tooltip;
-            LabelId.Content = hotdot.Id;
+            SkillIcon.ToolTip = hotdot.Id;
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

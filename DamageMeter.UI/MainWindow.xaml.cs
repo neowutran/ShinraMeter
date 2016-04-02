@@ -64,7 +64,7 @@ namespace DamageMeter.UI
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
-            UpdateComboboxEncounter(new LinkedList<Entity>(), null);
+            UpdateComboboxEncounter(new LinkedList<KeyValuePair<Entity,EntityInfo>>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
@@ -284,13 +284,8 @@ namespace DamageMeter.UI
                     List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter)
                 {
                     StayTopMost();
-                    var entitiesStats = entities.ToList().OrderByDescending(e => e.Value.LastHit).ToList();
-                    var encounterList = new LinkedList<Entity>();
-                    foreach (var entityStats in entitiesStats)
-                    {
-                        encounterList.AddLast(entityStats.Key);
-                    }
-                    UpdateComboboxEncounter(encounterList, currentBoss);
+                    var entitiesStats = new LinkedList<KeyValuePair<Entity, EntityInfo>>(entities.ToList().OrderByDescending(e => e.Value.LastHit));
+                    UpdateComboboxEncounter(entitiesStats, currentBoss);
                     _entityStats.Update(entities, currentBoss);
                     PartyDps.Content = FormatHelpers.Instance.FormatValue(partyDps) + "/s";
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
@@ -339,8 +334,6 @@ namespace DamageMeter.UI
                         
                         item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit, currentBoss, timedEncounter);
                     }
-
-                    Height = Controls.Count*29 + 60;
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
                     {
@@ -371,7 +364,7 @@ namespace DamageMeter.UI
             
         }
 
-        private bool NeedUpdateEncounter(IReadOnlyList<Entity> entities)
+        private bool NeedUpdateEncounter(List<KeyValuePair<Entity, EntityInfo>> entities)
         {
             if (entities.Count != ListEncounter.Items.Count)
             {
@@ -379,7 +372,7 @@ namespace DamageMeter.UI
             }
             for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
             {
-                if (((Entity)((ComboBoxItem)ListEncounter.Items[i]).Content) != entities[i - 1])
+                if (((Entity)((ComboBoxItem)ListEncounter.Items[i]).Content) != entities[i - 1].Key)
                 {
                     return true;
                 }
@@ -402,7 +395,7 @@ namespace DamageMeter.UI
             return false;
         }
 
-        private void UpdateComboboxEncounter(IEnumerable<Entity> entities, Entity currentBoss)
+        private void UpdateComboboxEncounter(LinkedList<KeyValuePair<Entity, EntityInfo>> entities, Entity currentBoss)
         {
             var entityList = entities.ToList();
             if (!NeedUpdateEncounter(entityList))
@@ -422,13 +415,13 @@ namespace DamageMeter.UI
             var selected = false;
             foreach (var entity in entityList)
             {
-                var item = new ComboBoxItem {Content = entity};
-                if (entity.IsBoss)
+                var item = new ComboBoxItem {Content = entity.Key};
+                if (!entity.Key.IsBoss ||  entity.Value.FirstHit == 0)
                 {
-                    item.Foreground = Brushes.Red;
+                    continue;
                 }
                 ListEncounter.Items.Add(item);
-                if (entity != selectedEntity) continue;
+                if (entity.Key != selectedEntity) continue;
                 ListEncounter.SelectedItem = ListEncounter.Items[ListEncounter.Items.Count - 1];
                 selected = true;
             }

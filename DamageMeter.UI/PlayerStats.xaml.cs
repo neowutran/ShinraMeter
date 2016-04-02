@@ -75,7 +75,7 @@ namespace DamageMeter.UI
             var skills = Skills(_timedEncounter);
             var allskills = AllSkills(_timedEncounter);
             _windowSkill?.Update(skills,allskills, playerInfo, _currentBoss, _timedEncounter, firstHit, lastHit);
-            DpsIndicator.Width = 450*PlayerInfo.Dealt.DamageFraction(_currentBoss,totalDamage, _timedEncounter) /100;
+            DpsIndicator.Width = 265*PlayerInfo.Dealt.DamageFraction(_currentBoss,totalDamage, _timedEncounter) /100;
         }
 
 

@@ -3,9 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d"
-             d:DesignWidth="1150"
-             Width="1150">
+             mc:Ignorable="d">
     <StackPanel>
 
         <Grid MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
@@ -18,12 +16,10 @@
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="65" />
-
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="300" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
                    BorderThickness="1" BorderBrush="Gray" FontSize="14" VerticalAlignment="Center"
@@ -75,11 +71,6 @@
                    BorderThickness="1" BorderBrush="Gray" x:Name="LabelNumberCritHeal" VerticalAlignment="Center"
                    MinHeight="40"
                    Foreground="LawnGreen" />
-
-            <Label Grid.Column="12" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" FontSize="14"
-                   BorderThickness="1" BorderBrush="Gray" x:Name="LabelId"
-                   VerticalAlignment="Center" Foreground="Yellow"
-                   MinHeight="40" />
         </Grid>
     </StackPanel>
 </UserControl>

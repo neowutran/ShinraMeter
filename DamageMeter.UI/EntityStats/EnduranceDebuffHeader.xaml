@@ -13,7 +13,6 @@
                 <ColumnDefinition Width="70" />
                 <ColumnDefinition Width="70" />
                 <ColumnDefinition Width="70" />
-                <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelClass"
@@ -44,11 +43,6 @@
                    MinHeight="29"
                    BorderThickness="1" BorderBrush="Gray"
                    Foreground="White" />
-            <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
-                   HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
-                   MinHeight="29"
-                   BorderThickness="1" BorderBrush="Gray"
-                   Foreground="Yellow" />
         </Grid>
     </StackPanel>
 </UserControl>

@@ -41,7 +41,7 @@ namespace DamageMeter.UI.SkillDetail
                 LabelName.Content += " Chained";
             }
 
-            LabelId.Content = skill.Id;
+            LabelName.ToolTip = skill.Id;
             LabelNumberHitMana.Content = skill.HitsMana;
             LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skill.Mana);
         }

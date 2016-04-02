@@ -37,7 +37,7 @@ namespace DamageMeter.UI.Skill
                 }
             }
 
-            LabelId.Content = skillsId;
+            LabelName.ToolTip = skillsId;
             LabelCritRateHeal.Content = stats.CritRateHeal + "%";
 
 

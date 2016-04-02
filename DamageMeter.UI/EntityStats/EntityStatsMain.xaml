@@ -7,16 +7,12 @@
         mc:Ignorable="d"
         WindowStyle="None"
         Focusable="False"
-        ResizeMode="CanResizeWithGrip"
         BorderThickness="0"
         Topmost="True"
         Icon="../shinra.ico"
-        MinHeight="50"
-        Width="620"
-        MinWidth="620"
-        MaxWidth="720"
+        SizeToContent="WidthAndHeight"
         MouseLeftButtonDown="EntityStats_OnMouseLeftButtonDown"
-        Title="EntityStats" Height="800">
+        Title="EntityStats">
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
     </Window.Background>

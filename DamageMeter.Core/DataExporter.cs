@@ -62,10 +62,10 @@ namespace DamageMeter
             partyDps = DamageTracker.Instance.PartyDps(entity, timedEncounter);
          
             var teradpsData = new EncounterBase();
-            teradpsData.areaId = entity.NpcE.Info.HuntingZoneId;
-            teradpsData.bossId = (int) entity.NpcE.Info.TemplateId;
-            teradpsData.fightDuration = interval;
-            teradpsData.partyDps = partyDps;
+            teradpsData.areaId = entity.NpcE.Info.HuntingZoneId+"";
+            teradpsData.bossId = entity.NpcE.Info.TemplateId+"";
+            teradpsData.fightDuration = interval+"";
+            teradpsData.partyDps = partyDps+"";
     
             if (entities.ContainsKey(entity))
             {
@@ -77,8 +77,8 @@ namespace DamageMeter
                     {
                         continue;
                     }
-                    teradpsData.debuffUptime.Add(new KeyValuePair<int, long>(
-                        debuff.Key.Id, percentage
+                    teradpsData.debuffUptime.Add(new KeyValuePair<string, string>(
+                        debuff.Key.Id+"", percentage+""
                         ));
                 }
             }
@@ -86,10 +86,11 @@ namespace DamageMeter
             foreach(var user in stats)
             {
                 var teradpsUser = new Members();
-                               
-                teradpsUser.playerTotalDamage = user.Dealt.Damage(entity, timedEncounter);
+
+                var damage = user.Dealt.Damage(entity, timedEncounter);
+                teradpsUser.playerTotalDamage = damage+"";
                 
-               if(teradpsUser.playerTotalDamage <= 0)
+               if(damage <= 0)
                 {
                     continue;
                 }
@@ -98,19 +99,19 @@ namespace DamageMeter
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
                 Dictionary < long, Dictionary<Skills.Skill.Skill, SkillStats>> skills;
 
-                teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter);
-                teradpsUser.playerDps = user.Dealt.Dps(entity, timedEncounter);
-                teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter);
+                teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter)+"";
+                teradpsUser.playerDps = user.Dealt.Dps(entity, timedEncounter)+"";
+                teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter)+"";
 
                 var death = user.DeathCounter;
                 if (death == null)
                 {
-                    teradpsUser.playerDeaths = 0;
-                    teradpsUser.playerDeathDuration = 0;
+                    teradpsUser.playerDeaths = "0";
+                    teradpsUser.playerDeathDuration = "0";
                 }
                 else {
-                    teradpsUser.playerDeaths = user.DeathCounter.Count(firstHit, lastHit);
-                    teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit);
+                    teradpsUser.playerDeaths = user.DeathCounter.Count(firstHit, lastHit)+"";
+                    teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit)+"";
                 }
 
                 skills = user.Dealt.GetSkillsByTime(entity);
@@ -122,8 +123,8 @@ namespace DamageMeter
                     {
                         continue;
                     }
-                    teradpsUser.buffUptime.Add(new KeyValuePair<int, long>(
-                        buff.Key.Id, percentage
+                    teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(
+                        buff.Key.Id+"", percentage+""
                         
                     ));
                 }
@@ -132,17 +133,19 @@ namespace DamageMeter
                 foreach (var skill in notimedskills)
                 {
                     var skillLog = new SkillLog();
-                    skillLog.skillAverageCrit = skill.Value.DmgAverageCrit;
-                    skillLog.skillAverageWhite = skill.Value.DmgAverageHit;
-                    skillLog.skillCritRate = skill.Value.CritRateDmg;                
-                    skillLog.skillDamagePercent = skill.Value.DamagePercentage(entity, timedEncounter);
-                    skillLog.skillHighestCrit = skill.Value.DmgBiggestCrit;
-                    skillLog.skillHits = skill.Value.HitsDmg;
-                    skillLog.skillId = skill.Key.SkillId.ElementAt(0);
-                    skillLog.skillLowestCrit = skill.Value.DmgLowestCrit;
-                    skillLog.skillTotalDamage = skill.Value.Damage;
+                    var skilldamage = skill.Value.Damage;
 
-                    if (skillLog.skillTotalDamage == 0)
+                    skillLog.skillAverageCrit = skill.Value.DmgAverageCrit+"";
+                    skillLog.skillAverageWhite = skill.Value.DmgAverageHit+"";
+                    skillLog.skillCritRate = skill.Value.CritRateDmg+"";                
+                    skillLog.skillDamagePercent = skill.Value.DamagePercentage(entity, timedEncounter)+"";
+                    skillLog.skillHighestCrit = skill.Value.DmgBiggestCrit+"";
+                    skillLog.skillHits = skill.Value.HitsDmg+"";
+                    skillLog.skillId = skill.Key.SkillId.ElementAt(0)+"";
+                    skillLog.skillLowestCrit = skill.Value.DmgLowestCrit+"";
+                    skillLog.skillTotalDamage = skilldamage+"";
+
+                    if (skilldamage == 0)
                     {
                         continue;
                     }
@@ -157,8 +160,8 @@ namespace DamageMeter
             Console.WriteLine(json);
 
             
-          //  var sendThread = new Thread(() => Send(json, 3));
-           // sendThread.Start();
+            var sendThread = new Thread(() => Send(json, 3));
+            sendThread.Start();
         }
 
         private static void Send(string json, int numberTry)

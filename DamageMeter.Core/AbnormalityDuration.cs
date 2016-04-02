@@ -65,7 +65,7 @@ namespace DamageMeter
             if (_listDuration.Count != 0) {
                 if (!Ended())
                 {
-                    Console.WriteLine("Can't restart something that has not been ended yet");
+                    //Console.WriteLine("Can't restart something that has not been ended yet");
                     return;
                 }
            }
@@ -76,7 +76,7 @@ namespace DamageMeter
         {
             if (Ended())
             {
-                Console.WriteLine("Can't end something that has already been ended");
+                //Console.WriteLine("Can't end something that has already been ended");
                 return;
             }
 

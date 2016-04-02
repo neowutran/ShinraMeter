@@ -37,7 +37,7 @@ namespace DamageMeter.UI.Skill
                 }
             }
 
-            LabelId.Content = skillsId;
+            LabelName.ToolTip = skillsId;
             LabelCritRateDmg.Content = stats.CritRateDmg + "%";
 
             LabelDamagePercentage.Content = stats.DamagePercentage(currentBoss, timedEncounter) + "%";

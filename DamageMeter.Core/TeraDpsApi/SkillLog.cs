@@ -8,15 +8,15 @@ namespace DamageMeter.TeraDpsApi
 {
     public class SkillLog
     {
-        public int skillId;
-        public int skillHits;
-        public long skillTotalDamage;
-        public double skillCritRate;
-        public double skillDamagePercent;
-        public long skillHighestCrit;
-        public long skillLowestCrit;
-        public long skillAverageCrit;
-        public long skillAverageWhite;
+        public string skillId;
+        public string skillHits;
+        public string skillTotalDamage;
+        public string skillCritRate;
+        public string skillDamagePercent;
+        public string skillHighestCrit;
+        public string skillLowestCrit;
+        public string skillAverageCrit;
+        public string skillAverageWhite;
 
     }
 }

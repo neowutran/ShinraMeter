@@ -41,18 +41,13 @@ namespace DamageMeter.UI.SkillDetail
             }
 
 
-            LabelId.Content = skill.Id;
+            LabelName.ToolTip = skill.Id;
             LabelCritRateHeal.Content = skill.CritRateHeal + "%";
-
-
             LabelNumberHitHeal.Content = skill.HitsHeal;
             LabelNumberCritHeal.Content = skill.CritsHeal;
-
             LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(skill.Heal);
             LabelBiggestHit.Content = FormatHelpers.Instance.FormatValue(skill.HealBiggestHit);
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.HealBiggestCrit);
-
-
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageCrit);
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageHit);
             LabelAverage.Content = FormatHelpers.Instance.FormatValue(skill.HealAverageTotal);

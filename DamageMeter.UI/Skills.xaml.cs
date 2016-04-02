@@ -68,29 +68,12 @@ namespace DamageMeter.UI
         private void TabControlOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
             var tabitem = (TabItem) ((TabControl) selectionChangedEventArgs.Source).SelectedItem;
-
-            double width = 0;
-            if (tabitem.Content is SkillsDetail)
-            {
-                width = ((SkillsDetail) tabitem.Content).ContentWidth;
-            }
-            else
-            {
-                width = ((Buff) tabitem.Content).ContentWidth;
-            }
-
-            MaxWidth = width + 50;
-            MinWidth = width - 300;
-            Width = width - 300;
         }
 
         public void Update(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills,
             PlayerInfo playerinfo, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
-            // Console.WriteLine("thread id:"+Thread.CurrentThread.ManagedThreadId);
-
-
             var death = playerinfo.DeathCounter;
             if (death == null)
             {

@@ -11,16 +11,16 @@ namespace DamageMeter.TeraDpsApi
 
 
         public string playerServer;
-        public int playerDeaths;
-        public long playerDeathDuration;
+        public string playerDeaths;
+        public string playerDeathDuration;
 
         public string playerName;
-        public long playerDps;
+        public string playerDps;
         public string playerClass;
-        public long playerTotalDamage;
-        public double playerTotalDamagePercentage;
-        public double playerAverageCritRate;
-        public List<KeyValuePair<int, long>> buffUptime = new List<KeyValuePair<int, long>>();
+        public string playerTotalDamage;
+        public string playerTotalDamagePercentage;
+        public string playerAverageCritRate;
+        public List<KeyValuePair<string, string>> buffUptime = new List<KeyValuePair<string, string>>();
         public List<SkillLog> skillLog = new List<SkillLog>();
     }
 }

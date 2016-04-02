@@ -10,13 +10,13 @@ namespace DamageMeter.TeraDpsApi
     public class EncounterBase
     {
 
-        public int areaId;
-        public int bossId;
-        public long fightDuration;
+        public string areaId;
+        public string bossId;
+        public string fightDuration;
         public string meterName =  "ShinraMeter";
         public string meterVersion = UpdateManager.Version;
-        public double partyDps;
-        public List<KeyValuePair<int, long>> debuffUptime = new List<KeyValuePair<int, long>>();
+        public string partyDps;
+        public List<KeyValuePair<string, string>> debuffUptime = new List<KeyValuePair<string, string>>();
         public List<Members> members = new List<Members>();
 
     }

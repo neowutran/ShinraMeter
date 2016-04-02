@@ -6,16 +6,12 @@
         xmlns:ui="clr-namespace:DamageMeter.UI"
         mc:Ignorable="d"
         Title="Shinra Meter"
-        Height="90"
-        MinHeight="90"
-        MaxHeight="350"
+        SizeToContent="WidthAndHeight"
         WindowStyle="None"
         ResizeMode="NoResize"
         BorderThickness="0"
         Icon="shinra.jpg"
-        MinWidth="265"
         ShowActivated="False"
-        MaxWidth="265"
         MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
@@ -222,7 +218,7 @@
                   Margin="30,0,0,0" VerticalAlignment="Top" Width="205" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
 
-        <Button Focusable="False" Style="{StaticResource ShinraButtonStyle}" Background="Transparent" x:Name="Close"
+        <Button Focusable="False" Style="{StaticResource ShinraButtonStyle}" Background="Transparent" x:Name="CloseWindow"
                 Content="X" Foreground="White" BorderThickness="0" Click="Close_MouseLeftButtonDown" FontSize="14"
                 HorizontalAlignment="Left" Height="29" MinHeight="29"
                 Margin="236,0,0,0" VerticalAlignment="Top" Width="29" />
@@ -247,7 +243,7 @@
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,60,0,0"
-                      HorizontalAlignment="Left" MaxHeight="290" />
+                      HorizontalAlignment="Left" />
 
     </Grid>
 </ui:ClickThrouWindow>

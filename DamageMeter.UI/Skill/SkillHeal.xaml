@@ -22,7 +22,6 @@
                         <ColumnDefinition Width="65" />
 
                         <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="300" />
                     </Grid.ColumnDefinitions>
                     <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
                     Height="40" VerticalAlignment="Top" Width="40" />
@@ -73,10 +72,6 @@
                            HorizontalAlignment="Stretch" x:Name="LabelNumberCritHeal" VerticalAlignment="Center"
                            MinHeight="40"
                            Foreground="LawnGreen" />
-                    <Label Grid.Column="11" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
-                           Foreground="Yellow"
-                           MinHeight="40" />
                 </Grid>
             </Expander.Header>
             <Expander.Content>

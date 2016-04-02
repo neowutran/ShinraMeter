@@ -19,7 +19,6 @@
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="65" />
                 <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="300" />
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
@@ -65,11 +64,6 @@
                    HorizontalAlignment="Stretch" x:Name="LabelNumberCritDmg" VerticalAlignment="Center"
                    MinHeight="29"
                    Foreground="white" />
-
-            <Label Grid.Column="12" FontSize="14" HorizontalContentAlignment="Center"
-                   HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
-                   Foreground="Yellow"
-                   MinHeight="29" />
         </Grid>
     </Grid>
 </UserControl>

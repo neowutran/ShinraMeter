@@ -12,7 +12,6 @@
             <ColumnDefinition Width="70" />
             <ColumnDefinition Width="70" />
             <ColumnDefinition Width="70" />
-            <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
         <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
                     Height="40" VerticalAlignment="Top" Width="40" />
@@ -40,9 +39,5 @@
                HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDurationPercentage" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="White" />
-        <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
-               HorizontalAlignment="Stretch" x:Name="LabelId" VerticalAlignment="Center"
-               MinHeight="29"
-               Foreground="Yellow" />
     </Grid>
 </UserControl>

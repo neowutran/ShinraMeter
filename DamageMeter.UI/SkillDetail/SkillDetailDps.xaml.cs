@@ -40,7 +40,7 @@ namespace DamageMeter.UI.SkillDetail
                 LabelName.Content += " Chained";
             }
 
-            LabelId.Content = skill.Id;
+            LabelName.ToolTip = skill.Id;
             LabelCritRateDmg.Content = skill.CritRateDmg + "%";
 
             LabelDamagePercentage.Content = skill.GetDamagePercentage(currentBoss, timedEncounter) + "%";

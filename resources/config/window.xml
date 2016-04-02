@@ -1,7 +1,7 @@
 <window>
   <location>
-    <x>0</x>
-    <y>148</y>
+    <x>2</x>
+    <y>139</y>
   </location>
   <language>Auto</language>
   <opacity>
@@ -11,7 +11,7 @@
   <autoupdate>true</autoupdate>
   <remember_position>true</remember_position>
   <winpcap>true</winpcap>
-  <invisible_ui>false</invisible_ui>
+  <invisible_ui>true</invisible_ui>
   <allow_transparency>true</allow_transparency>
   <topmost>true</topmost>
   <teradps.io>
