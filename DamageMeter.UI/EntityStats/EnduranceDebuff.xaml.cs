@@ -39,7 +39,7 @@ namespace DamageMeter.UI.EntityStats
 
             LabelName.Content = hotdot.Name;
             LabelName.ToolTip = string.IsNullOrEmpty(hotdot.Tooltip)? null : hotdot.Tooltip;
-            SkillIcon.ToolTip = hotdot.Id;
+            LabelAbnormalityDurationPercentage.ToolTip = hotdot.Id;
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

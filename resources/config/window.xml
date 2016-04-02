@@ -11,8 +11,8 @@
   <autoupdate>true</autoupdate>
   <remember_position>true</remember_position>
   <winpcap>true</winpcap>
-  <invisible_ui>true</invisible_ui>
-  <allow_transparency>true</allow_transparency>
+  <invisible_ui>false</invisible_ui>
+  <allow_transparency>false</allow_transparency>
   <topmost>true</topmost>
   <teradps.io>
     <user>crdChGPz6PndHvMYh</user>
