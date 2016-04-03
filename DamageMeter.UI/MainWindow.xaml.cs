@@ -63,12 +63,15 @@ namespace DamageMeter.UI
             PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
+            CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
+            History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new LinkedList<KeyValuePair<Entity,EntityInfo>>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             _entityStats = new EntityStatsMain(this);
+            _windowHistory = new TeradpsHistory(this, new Dictionary<string, Entity>());
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
         }
@@ -277,16 +280,17 @@ namespace DamageMeter.UI
         }
 
         public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
-            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter)
+            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Dictionary<string, Entity> nbossHistory)
         {
             NetworkController.UpdateUiHandler changeUi =
                 delegate(long firstHit, long lastHit, long totalDamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter)
+                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string, Entity> bossHistory)
                 {
                     StayTopMost();
                     var entitiesStats = new LinkedList<KeyValuePair<Entity, EntityInfo>>(entities.ToList().OrderByDescending(e => e.Value.LastHit));
                     UpdateComboboxEncounter(entitiesStats, currentBoss);
                     _entityStats.Update(entities, currentBoss);
+                    _windowHistory.Update(bossHistory);
                     PartyDps.Content = FormatHelpers.Instance.FormatValue(partyDps) + "/s";
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
@@ -340,7 +344,21 @@ namespace DamageMeter.UI
                         Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
                     }
                 };
-            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter);
+            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter, nbossHistory);
+        }
+
+        private TeradpsHistory _windowHistory;
+
+        private void ShowHistory(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            _windowHistory.Show();
+        }
+
+
+        public void CloseHistory()
+        {
+            _windowHistory.Visibility = Visibility.Hidden;
         }
 
 
@@ -355,7 +373,6 @@ namespace DamageMeter.UI
         }
 
         private void StayTopMost()
-
         {
             
             if (!Topmost || !_topMost) return;
@@ -460,8 +477,6 @@ namespace DamageMeter.UI
             }
         }
 
-
-
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count != 1) return;
@@ -535,5 +550,6 @@ namespace DamageMeter.UI
         {
             VerifyClose();
         }
+
     }
 }

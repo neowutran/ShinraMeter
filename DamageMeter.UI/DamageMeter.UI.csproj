@@ -112,6 +112,9 @@
     <Compile Include="SkillsHeaders\SkillsHeaderDps.xaml.cs">
       <DependentUpon>SkillsHeaderDps.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TeradpsHistory.xaml.cs">
+      <DependentUpon>TeradpsHistory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowServices.cs" />
     <Page Include="EntityStats\EnduranceDebuffHeader.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -186,6 +189,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SkillsHeaders\SkillsHeaderDps.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TeradpsHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,7 +1,7 @@
 <window>
   <location>
-    <x>2</x>
-    <y>139</y>
+    <x>588</x>
+    <y>219</y>
   </location>
   <language>Auto</language>
   <opacity>
@@ -12,10 +12,10 @@
   <remember_position>true</remember_position>
   <winpcap>true</winpcap>
   <invisible_ui>false</invisible_ui>
-  <allow_transparency>false</allow_transparency>
+  <allow_transparency>true</allow_transparency>
   <topmost>true</topmost>
   <teradps.io>
-    <user>crdChGPz6PndHvMYh</user>
-    <token>8PBcPuHHhRK_57tk3Ryc9IP_XtOIRXh_4-j9A9QUBxu</token>
+    <user>j8whTKSXgdCoX5a3N</user>
+    <token>uqkCa4DsDTqx14WtGS5_oZVGuk_MgMxhc4KZs8pk8Pw</token>
   </teradps.io>
 </window>

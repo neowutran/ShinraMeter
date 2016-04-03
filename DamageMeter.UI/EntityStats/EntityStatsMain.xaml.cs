@@ -22,6 +22,7 @@ namespace DamageMeter.UI.EntityStats
         {
             InitializeComponent();
             _parent = parent;
+            CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             _header = new EnduranceDebuffHeader();
 
         }

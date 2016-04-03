@@ -23,7 +23,7 @@ namespace DamageMeter
 
         public delegate void UpdateUiHandler(
             long firsthit, long lastHit, long totaldamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter);
+            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string ,Entity> bossHistory);
 
         private static NetworkController _instance;
 
@@ -39,6 +39,8 @@ namespace DamageMeter
 
             packetAnalysis.Start();
         }
+
+        public Dictionary<string, Entity> BossLink = new Dictionary<string, Entity>();
 
         public TeraData TeraData { get; private set; }
 
@@ -106,7 +108,8 @@ namespace DamageMeter
             var entities =
                 DamageTracker.Instance.GetEntityStats();
             var partyDps = DamageTracker.Instance.PartyDps(currentBossFight, timedEncounter);
-            handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight , timedEncounter);
+            var teradpsHistory = BossLink.ToDictionary(x=>x.Key, x=>x.Value);
+            handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight , timedEncounter, teradpsHistory);
         }
 
         private bool _clickThrou = false;

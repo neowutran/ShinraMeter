@@ -1,4 +1,4 @@
-﻿<ui:ClickThrouWindow x:Class="DamageMeter.UI.EntityStats.EntityStatsMain"
+﻿<ui:ClickThrouWindow x:Class="DamageMeter.UI.TeradpsHistory"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,11 +9,11 @@
         Focusable="False"
         BorderThickness="0"
         Topmost="True"
-        Icon="../shinra.ico"
+        Icon="./shinra.ico"
         SizeToContent="WidthAndHeight"
         MaxHeight="800"
-        MouseLeftButtonDown="EntityStats_OnMouseLeftButtonDown"
-        Title="EntityStats">
+        MouseLeftButtonDown="OnMouseLeftButtonDown"
+        Title="TeradpsHistory">
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
     </Window.Background>
@@ -54,17 +54,17 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid MouseLeftButtonDown="EntityStats_OnMouseLeftButtonDown">
+    <Grid MouseLeftButtonDown="OnMouseLeftButtonDown">
         <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
-                Foreground="White" Click="CloseMeter_OnClick" HorizontalContentAlignment="Stretch"
+                 Foreground="White" Click="Close_OnClick" HorizontalContentAlignment="Stretch"
                 VerticalAlignment="Top" Margin="0">
             <Image x:Name="CloseWindow"
                Stretch="Fill"
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" />
         </Button>
-
-        <ItemsControl  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,30,0,0" Name="EnduranceAbnormality" Background="Transparent" BorderThickness="0"
+        
+        <ItemsControl  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,29,0,0" Name="TeraDpsHistory" Background="Transparent" BorderThickness="0"
                       Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left" />

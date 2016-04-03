@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Tera.Game;
 using DamageMeter.Skills.Skill;
 using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace DamageMeter
 {
@@ -163,12 +164,11 @@ namespace DamageMeter
             string json = JsonConvert.SerializeObject(teradpsData);
             Console.WriteLine(json);
 
-            
-            var sendThread = new Thread(() => Send(json, 3));
+            var sendThread = new Thread(() => Send(entity, json, 3));
             sendThread.Start();
         }
 
-        private static void Send(string json, int numberTry)
+        private static void Send(Entity boss, string json, int numberTry)
         {
             if(numberTry == 0)
             {
@@ -190,6 +190,11 @@ namespace DamageMeter
 
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Console.WriteLine(responseString.Result);
+                    Dictionary<string, object> responseObject = JsonConvert.DeserializeObject<Dictionary<string,object>>(responseString.Result);
+                    if(responseObject.ContainsKey("id"))
+                    {
+                        NetworkController.Instance.BossLink.Add((string)responseObject["id"], boss);
+                    }
 
 
                 }
@@ -198,7 +203,7 @@ namespace DamageMeter
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
-                Send(json, numberTry - 1);
+                Send(boss, json, numberTry - 1);
             }
         }
 

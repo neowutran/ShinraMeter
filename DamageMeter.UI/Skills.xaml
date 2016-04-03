@@ -12,6 +12,7 @@
         Topmost="True"
         Icon="shinra.jpg"
         SizeToContent="WidthAndHeight"
+        MaxHeight="800"
         MouseLeftButtonDown="Skills_OnMouseLeftButtonDown"
         Title="Skills">
     <Window.Background>
@@ -88,17 +89,22 @@
     <Grid MouseLeftButtonDown="Skills_OnMouseLeftButtonDown">
 
         <Button x:Name="CloseMeter" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
-                Content="X" Foreground="White" Click="Button_OnClick" HorizontalContentAlignment="Stretch"
-                VerticalAlignment="Top" Margin="0" />
-        <Label Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="0,16,0,0" FontSize="14" Foreground="White"
+                Foreground="White" Click="Button_OnClick" HorizontalContentAlignment="Stretch"
+                VerticalAlignment="Top" Margin="0">
+            <Image x:Name="CloseWindow"
+               Stretch="Fill"
+               HorizontalAlignment="Left"
+               Height="29" VerticalAlignment="Top" Width="29" />
+        </Button>
+        <Label Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="0,30,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="105" HorizontalContentAlignment="Center">Death counter:</Label>
-        <Label x:Name="DeathCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="107,16,0,0" FontSize="14" Foreground="White"
+        <Label x:Name="DeathCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="107,30,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="88" HorizontalContentAlignment="Center" />
-        <Label Focusable="False" HorizontalAlignment="Left" Margin="197,16,0,0" FontSize="14" Foreground="White"
+        <Label Focusable="False" HorizontalAlignment="Left" Margin="197,30,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="106" HorizontalContentAlignment="Center" Background="Transparent">Death duration:</Label>
-        <Label x:Name="DeathDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="305,16,0,0" FontSize="14" Foreground="White"
+        <Label x:Name="DeathDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="305,30,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="115" HorizontalContentAlignment="Center"/>
-        <TabControl Background="Transparent" BorderThickness="0" x:Name="TabControl" Margin="0,45,0,0">
+        <TabControl Background="Transparent" BorderThickness="0" x:Name="TabControl" Margin="0,60,0,0">
             <TabItem FontSize="14" Header="Dps" x:Name="DpsPanel" Background="Transparent" Foreground="White" />
             <TabItem FontSize="14" Header="Heal" x:Name="HealPanel" Background="Transparent" Foreground="White" />
             <TabItem FontSize="14" Header="Mana" x:Name="ManaPanel" Background="Transparent" Foreground="White" />

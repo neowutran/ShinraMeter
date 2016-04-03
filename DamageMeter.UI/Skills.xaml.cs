@@ -30,6 +30,7 @@ namespace DamageMeter.UI
                  
             TabControl.SelectionChanged += TabControlOnSelectionChanged;
             _parent = parent;
+            CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
             Update(timedSkills, timedAllSkills, playerInfo, currentBoss, timedEncounter, firstHit, lastHit);
         }

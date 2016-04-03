@@ -81,8 +81,6 @@ namespace Data
             Winpcap = true;
             Topmost = true;
             AllowTransparency = true;
-            TeraDpsToken = "H0XJ9RGZO8qkkP2Nl6pl_YkARjC81wkCdETY3mNLKGF";
-            TeraDpsUser = "KxjWQFyQJp5CMhXmy";
         }
 
         private void ParseTeraDps()

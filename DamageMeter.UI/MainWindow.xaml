@@ -218,26 +218,31 @@
                   Margin="30,0,0,0" VerticalAlignment="Top" Width="205" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
 
-        <Button Focusable="False" Style="{StaticResource ShinraButtonStyle}" Background="Transparent" x:Name="CloseWindow"
-                Content="X" Foreground="White" BorderThickness="0" Click="Close_MouseLeftButtonDown" FontSize="14"
-                HorizontalAlignment="Left" Height="29" MinHeight="29"
-                Margin="236,0,0,0" VerticalAlignment="Top" Width="29" />
-        
+        <Image x:Name="CloseWindow" PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown"
+               Stretch="Fill"
+               HorizontalAlignment="Left"
+               Height="29" VerticalAlignment="Top" Width="29"  Margin="236,0,0,0" />
+
         <Image x:Name="Chrono" PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown" 
                Stretch="Fill"
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" Margin="236,30,0,0" />
+
+        <Image x:Name="History" PreviewMouseLeftButtonDown="ShowHistory" 
+               Stretch="Fill"
+               HorizontalAlignment="Left"
+               Height="29" VerticalAlignment="Top" Width="29" Margin="151,31,0,0" />
 
         <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown" 
                Stretch="Fill"
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" Margin="1,30,0,0" />
 
-        <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Margin="40,30,0,0" FontSize="14" Foreground="White"
+        <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Margin="31,30,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-        <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Margin="176,30,0,0" FontSize="14" Foreground="White"
+        <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Margin="185,30,0,0" FontSize="14" Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-        <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Margin="101,30,0,0" FontSize="14" Foreground="White"
+        <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Margin="82,30,0,0" FontSize="14" Foreground="White"
         	VerticalAlignment="Top" MinHeight="29" Height="29" Width="65" HorizontalContentAlignment="Center" />
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
