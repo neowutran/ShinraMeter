@@ -45,6 +45,7 @@ namespace Data
             ParseAllowTrasparency();
             ParseTopmost();
             ParseTeraDps();
+            ParseDebug();
         }
 
 
@@ -69,6 +70,8 @@ namespace Data
 
         public bool Topmost { get; set; }
 
+        public bool Debug { get; set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -81,6 +84,7 @@ namespace Data
             Winpcap = true;
             Topmost = true;
             AllowTransparency = true;
+            Debug = true;
         }
 
         private void ParseTeraDps()
@@ -107,6 +111,19 @@ namespace Data
             if (parseSuccess)
             {
                 RememberPosition = remember;
+            }
+        }
+
+        public void ParseDebug()
+        {
+            var root = _xml.Root;
+            var debug = root?.Element("debug");
+            if (debug == null) return;
+            bool remember;
+            var parseSuccess = bool.TryParse(debug.Value, out remember);
+            if (parseSuccess)
+            {
+                Debug = remember;
             }
         }
 
@@ -251,6 +268,7 @@ namespace Data
             xml.Root.Add(new XElement("teradps.io"));
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
             xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
+            xml.Root.Add(new XElement("debug", Debug));
 
             _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))

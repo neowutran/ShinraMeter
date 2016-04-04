@@ -274,6 +274,11 @@ namespace DamageMeter.UI
             {
                 var log = LogManager.GetLogger(typeof(Program));
                 log.Error(error);
+                if (!BasicTeraData.Instance.WindowData.Debug)
+                {
+                    return;
+                }
+
                 using (var client = new HttpClient())
                 {
                    
