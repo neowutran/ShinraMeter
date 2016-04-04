@@ -12,7 +12,7 @@
         Icon="./shinra.ico"
         SizeToContent="WidthAndHeight"
         MaxHeight="800"
-        MouseLeftButtonDown="OnMouseLeftButtonDown"
+        MouseLeftButtonDown="Move"
         Title="TeradpsHistory">
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
@@ -54,8 +54,8 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid MouseLeftButtonDown="OnMouseLeftButtonDown">
-        <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
+    <Grid MouseLeftButtonDown="Move">
+        <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Transparent" Opacity="0.5" 
                  Foreground="White" Click="Close_OnClick" HorizontalContentAlignment="Stretch"
                 VerticalAlignment="Top" Margin="0">
             <Image x:Name="CloseWindow"

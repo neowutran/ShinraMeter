@@ -13,7 +13,7 @@
         Icon="shinra.jpg"
         SizeToContent="WidthAndHeight"
         MaxHeight="800"
-        MouseLeftButtonDown="Skills_OnMouseLeftButtonDown"
+        MouseLeftButtonDown="Move"
         Title="Skills">
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
@@ -86,9 +86,9 @@
         </Style>
 
     </Window.Resources>
-    <Grid MouseLeftButtonDown="Skills_OnMouseLeftButtonDown">
+    <Grid MouseLeftButtonDown="Move">
 
-        <Button x:Name="CloseMeter" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
+        <Button x:Name="CloseMeter" Style="{StaticResource ShinraButtonStyle}" Background="Transparent" Opacity="0.5"
                 Foreground="White" Click="Button_OnClick" HorizontalContentAlignment="Stretch"
                 VerticalAlignment="Top" Margin="0">
             <Image x:Name="CloseWindow"

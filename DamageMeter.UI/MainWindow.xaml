@@ -12,7 +12,7 @@
         BorderThickness="0"
         Icon="shinra.jpg"
         ShowActivated="False"
-        MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
+        MouseLeftButtonDown="Move"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
 

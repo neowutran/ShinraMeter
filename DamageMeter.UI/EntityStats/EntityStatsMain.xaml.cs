@@ -77,18 +77,6 @@ namespace DamageMeter.UI.EntityStats
             }
         }
      
-        private void EntityStats_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
-        }
-
         private void CloseMeter_OnClick(object sender, RoutedEventArgs e)
         {
             _parent.CloseEntityStats();

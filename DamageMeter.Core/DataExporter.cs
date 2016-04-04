@@ -105,7 +105,7 @@ namespace DamageMeter
                 Dictionary < long, Dictionary<Skills.Skill.Skill, SkillStats>> skills;
 
                 teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter)+"";
-                teradpsUser.playerDps = user.Dealt.Dps(entity, timedEncounter)+"";
+                teradpsUser.playerDps = user.Dealt.GlobalDps(entity, timedEncounter, interval)+"";
                 teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter)+"";
 
                 var death = user.DeathCounter;

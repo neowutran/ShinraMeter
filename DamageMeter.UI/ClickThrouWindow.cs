@@ -7,12 +7,23 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using Data;
+using System.Windows.Input;
 
 namespace DamageMeter.UI
 {
     public class ClickThrouWindow: Window
     {
-
+        protected void Move(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                DragMove();
+            }
+            catch
+            {
+                Console.WriteLine(@"Exception Move");
+            }
+        }
         public ClickThrouWindow()
         {
             AllowsTransparency = BasicTeraData.Instance.WindowData.AllowTransparency;

@@ -22,6 +22,8 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
+using System.Net.Http;
+using System.Text;
 
 namespace DamageMeter.UI
 {
@@ -246,24 +248,49 @@ namespace DamageMeter.UI
 
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
-            MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
             var ex = default(Exception);
             ex = (Exception) e.ExceptionObject;
-            var log = LogManager.GetLogger(typeof (Program));
-            log.Error("##### CRASH (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
+            LogError("##### CRASH (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
                       ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                       "\r\n" + ex.TargetSite);
+            MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
+
         }
 
         private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
         {
-            MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
             var ex = default(Exception);
             ex = e.Exception;
-            var log = LogManager.GetLogger(typeof (Program)); //Log4NET
-            log.Error("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
+            LogError("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
                       ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                       "\r\n" + ex.TargetSite);
+            MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
+
+        }
+
+        private static void LogError(string error)
+        {
+            try
+            {
+                var log = LogManager.GetLogger(typeof(Program));
+                log.Error(error);
+                using (var client = new HttpClient())
+                {
+                   
+                    var formContent = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("error", error),
+                    });
+
+                    var response = client.PostAsync("http://diclah.com/~yukikoo/debug/debug.php", formContent);
+                    var responseString = response.Result.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseString.Result);
+                }
+            }
+            catch 
+            {
+             // Ignore
+            }
         }
 
         public void UpdateKeyboard(object o, EventArgs args)
@@ -465,17 +492,7 @@ namespace DamageMeter.UI
         }
 
 
-        private void MainWindow_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception Move");
-            }
-        }
+      
 
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {

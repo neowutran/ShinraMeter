@@ -116,16 +116,5 @@ namespace DamageMeter.UI
             _parent.CloseSkills();
         }
 
-        private void Skills_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
-        }
     }
 }

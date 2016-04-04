@@ -29,18 +29,6 @@ namespace DamageMeter.UI
             _parent.CloseHistory();
         }
 
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
-        }
-
         public void Update(Dictionary<string, Entity> bossHistory)
         {
             TeraDpsHistory.Items.Clear();
@@ -48,8 +36,7 @@ namespace DamageMeter.UI
             {
                 var button = new Button();
                 button.Style = FindResource("ShinraButtonStyle") as Style;
-                button.Background = System.Windows.Media.Brushes.Black;
-                button.Opacity = 0.5;
+                button.Background = System.Windows.Media.Brushes.Transparent;
                 button.Foreground = System.Windows.Media.Brushes.White;
                 button.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 button.VerticalAlignment = VerticalAlignment.Top;
