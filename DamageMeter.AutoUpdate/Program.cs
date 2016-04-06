@@ -13,6 +13,8 @@ namespace DamageMeter.AutoUpdate
 
             if(args.Length == 0)
             {
+                Console.WriteLine("The update system have been modified and is not compatible with your meter version. Download the new version directly from the website.");
+                Console.ReadLine();
                 return;
             }
 
