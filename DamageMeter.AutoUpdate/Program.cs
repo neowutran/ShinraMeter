@@ -8,8 +8,14 @@ namespace DamageMeter.AutoUpdate
 {
     public class Program
     {
-        private static void Main()
+        private static void Main(string[] args)
         {
+
+            if(args.Length == 0)
+            {
+                return;
+            }
+
             bool aIsNewInstance, isUpdating;
             var _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             while (!aIsNewInstance)

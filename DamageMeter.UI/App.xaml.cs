@@ -8,6 +8,8 @@ using System.Windows;
 using DamageMeter.AutoUpdate;
 using Data;
 using log4net;
+using System.IO;
+using System.Reflection;
 
 namespace DamageMeter.UI
 {
@@ -30,8 +32,17 @@ namespace DamageMeter.UI
             bool isUpdating;
             var updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
+
+
+            if (Directory.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+@"\tmp\"))
+            {
+                Directory.Delete(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+@"\tmp\", true);
+            }
+
+
             if (aIsNewInstance)
             {
+             
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
                 {
                     return;
