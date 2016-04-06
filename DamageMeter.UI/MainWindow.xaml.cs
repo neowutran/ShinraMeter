@@ -224,6 +224,7 @@ namespace DamageMeter.UI
 
         public void VerifyClose()
         {
+            SetForegroundWindow(new WindowInteropHelper(this).Handle);
             if (MessageBox.Show("Do you want to close the application?", "Close Shinra Meter V" + UpdateManager.Version,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question) == MessageBoxResult.Yes)
