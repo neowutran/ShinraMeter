@@ -86,7 +86,7 @@ namespace DamageMeter.AutoUpdate
             Console.WriteLine("Decompressing");
             Decompress(latestVersion + ".zip");
             Console.WriteLine("Decompressed");
-            Process.Start("Explorer.exe", ExecutableDirectory + @"\tmp\" + latestVersion + @"\Autoupdate.exe");
+            Process.Start("Explorer.exe", ExecutableDirectory + @"\tmp\" + latestVersion + @"\Autoupdate.exe pass");
             Console.WriteLine("Start upgrading");
         }
 
