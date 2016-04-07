@@ -183,7 +183,7 @@ namespace DamageMeter.UI
 
         private void ResetOnClick(object sender, EventArgs eventArgs)
         {
-            NetworkController.Instance.Reset();
+            NetworkController.Instance.NeedToReset=true;
         }
 
         private void ForumOnClick(object sender, EventArgs eventArgs)
