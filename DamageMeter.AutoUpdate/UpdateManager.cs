@@ -16,7 +16,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "0.83";
+        public static readonly string Version = "0.85";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -86,7 +86,7 @@ namespace DamageMeter.AutoUpdate
             Console.WriteLine("Decompressing");
             Decompress(latestVersion + ".zip");
             Console.WriteLine("Decompressed");
-            Process.Start("Explorer.exe", ExecutableDirectory + @"\tmp\" + latestVersion + @"\Autoupdate.exe pass");
+            Process.Start(ExecutableDirectory + @"\tmp\" + latestVersion + @"\Autoupdate.exe", "pass");
             Console.WriteLine("Start upgrading");
         }
 

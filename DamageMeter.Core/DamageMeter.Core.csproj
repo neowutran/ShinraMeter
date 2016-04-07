@@ -55,6 +55,7 @@
     <Compile Include="DamageTracker.cs" />
     <Compile Include="DataExporter.cs" />
     <Compile Include="Dealt\EntitiesDealt.cs" />
+    <Compile Include="Death.cs" />
     <Compile Include="Duration.cs" />
     <Compile Include="EntityInfo.cs" />
     <Compile Include="FormatHelpers.cs" />

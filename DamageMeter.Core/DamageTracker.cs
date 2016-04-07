@@ -56,23 +56,11 @@ namespace DamageMeter
                 PlayerInfo info = GetOrCreate(player);
                 if (dead.Dead)
                 {
-                    if (info.DeathCounter == null)
-                    {
-                        UsersStats[player].DeathCounter = new AbnormalityDuration(PlayerClass.Common, time);
-                    }else {
-                        UsersStats[player].DeathCounter.Start(time);
-                    }
+                    UsersStats[player].Death.Start(time);
                 }
                 else
                 {
-                    if (info.DeathCounter == null)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        UsersStats[player].DeathCounter.End(time);
-                    }
+                    UsersStats[player].Death.End(time);
                 }
             }
         }

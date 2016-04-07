@@ -75,7 +75,7 @@ namespace DamageMeter.UI
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills,
             PlayerInfo playerinfo, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
-            var death = playerinfo.DeathCounter;
+            var death = playerinfo.Death;
             if (death == null)
             {
                 DeathCounter.Content = 0;

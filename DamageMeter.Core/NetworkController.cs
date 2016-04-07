@@ -180,7 +180,9 @@ namespace DamageMeter
                     var tmpcopy = NeedToCopy;
                     var pasteThread = new Thread(() => CopyThread(stats, totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
                     pasteThread.SetApartmentState(ApartmentState.STA);
+                    pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
+
                     NeedToCopy = null;
                     
                 }

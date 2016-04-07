@@ -112,14 +112,16 @@ namespace DamageMeter
 
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps(currentBoss, timedEncounter)) + "/s");
+                currentContent = currentContent.Replace("{global_dps}",
+                   FormatHelpers.Instance.FormatValue(playerStats.Dealt.GlobalDps(currentBoss, timedEncounter, totalDamage)) + "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval(currentBoss) + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage(currentBoss, timedEncounter)));
                 currentContent = currentContent.Replace("{class}", playerStats.Class + "");
                 currentContent = currentContent.Replace("{fullname}", playerStats.Player.FullName);
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
-                currentContent = currentContent.Replace("{deaths}", playerStats.DeathCounter.Count(firstHit, lastHit) + "");
-                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.DeathCounter.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
+                currentContent = currentContent.Replace("{deaths}", playerStats.Death.Count(firstHit, lastHit) + "");
+                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.Death.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate(currentBoss, timedEncounter) + "%");

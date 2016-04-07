@@ -108,20 +108,11 @@ namespace DamageMeter
                 teradpsUser.playerDps = user.Dealt.GlobalDps(entity, timedEncounter, interval)+"";
                 teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter)+"";
 
-                var death = user.DeathCounter;
-                if (death == null)
-                {
-                    teradpsUser.playerDeaths = "0";
-                    teradpsUser.playerDeathDuration = "0";
-                }
-                else {
-                    teradpsUser.playerDeaths = user.DeathCounter.Count(firstHit, lastHit)+"";
-                    teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit)+"";
-                }
-
+                var death = user.Death;
+                teradpsUser.playerDeaths = user.Death.Count(firstHit, lastHit)+"";
+                teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit)+"";
                 skills = user.Dealt.GetSkillsByTime(entity);
-
-
+                
                 foreach (var buff in user.AbnormalityTime) {
                     long percentage = (buff.Value.Duration(user.Dealt.GetFirstHit(entity), user.Dealt.GetLastHit(entity)) * 100 / interval);
                     if(percentage == 0)
