@@ -118,8 +118,8 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{class}", playerStats.Class + "");
                 currentContent = currentContent.Replace("{fullname}", playerStats.Player.FullName);
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
-                currentContent = currentContent.Replace("{deaths}", playerStats.DeathCounter.Count(firstHit, lastHit) + "");
-                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.DeathCounter.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
+                currentContent = currentContent.Replace("{deaths}", (playerStats.DeathCounter?.Count(firstHit, lastHit)??0) + "");
+                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.DeathCounter?.Duration(firstHit, lastHit)??0).ToString(@"mm\:ss"));
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate(currentBoss, timedEncounter) + "%");
