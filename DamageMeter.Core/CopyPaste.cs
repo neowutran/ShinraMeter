@@ -113,7 +113,7 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps(currentBoss, timedEncounter)) + "/s");
                 currentContent = currentContent.Replace("{global_dps}",
-                   FormatHelpers.Instance.FormatValue(playerStats.Dealt.GlobalDps(currentBoss, timedEncounter, totalDamage)) + "/s");
+                   FormatHelpers.Instance.FormatValue(playerStats.Dealt.GlobalDps(currentBoss, timedEncounter, lastHit - firstHit)) + "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval(currentBoss) + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage(currentBoss, timedEncounter)));
