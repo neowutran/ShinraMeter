@@ -100,10 +100,11 @@ namespace NetworkSniffer
         {
             var linkPacket = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
 
-            var ipPacket = linkPacket.PayloadPacket as IpPacket;
+            var ipPacket = linkPacket.PayloadPacket as IPv4Packet;
             if (ipPacket == null)
                 return;
-
+            if (!ipPacket.ValidChecksum)
+                return;
             var ipData = ipPacket.BytesHighPerformance;
             var ipData2 = new ArraySegment<byte>(ipData.Bytes, ipData.Offset, ipData.Length);
 
