@@ -41,6 +41,11 @@ namespace DamageMeter.UI
                 button.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 button.VerticalAlignment = VerticalAlignment.Top;
                 button.Content = boss.Value.Name;
+                if (boss.Key.StartsWith("!"))
+                {
+                    button.Foreground = System.Windows.Media.Brushes.Red;
+                    button.ToolTip = boss.Key;
+                }
                 button.Tag = boss.Key;
                 button.Click += Button_Click;
                 TeraDpsHistory.Items.Add(button);
@@ -49,7 +54,8 @@ namespace DamageMeter.UI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("explorer.exe", "http://teradps.io/party/rank/"+((Button)sender).Tag);
+            if (!((Button)sender).Tag.ToString().StartsWith("!"))
+                Process.Start("explorer.exe", "http://teradps.io/party/rank/"+((Button)sender).Tag);
         }
     }
 }

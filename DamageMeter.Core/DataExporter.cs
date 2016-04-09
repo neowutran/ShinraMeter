@@ -102,7 +102,6 @@ namespace DamageMeter
                 teradpsUser.playerClass = user.Class.ToString();
                 teradpsUser.playerName = user.Name;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
-                Dictionary < long, Dictionary<Skills.Skill.Skill, SkillStats>> skills;
 
                 teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter)+"";
                 teradpsUser.playerDps = user.Dealt.GlobalDps(entity, timedEncounter, interval)+"";
@@ -111,7 +110,6 @@ namespace DamageMeter
                 var death = user.Death;
                 teradpsUser.playerDeaths = user.Death.Count(firstHit, lastHit)+"";
                 teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit)+"";
-                skills = user.Dealt.GetSkillsByTime(entity);
                 
                 foreach (var buff in user.AbnormalityTime) {
                     long percentage = (buff.Value.Duration(user.Dealt.GetFirstHit(entity), user.Dealt.GetLastHit(entity)) * 100 / interval);
@@ -124,7 +122,9 @@ namespace DamageMeter
                         
                     ));
                 }
-                var notimedskills = NoTimedSkills(skills);
+                Dictionary<Skills.Skill.Skill, SkillStats> notimedskills;
+                if (timedEncounter) notimedskills = NoTimedSkills(user.Dealt.GetSkillsByTime(entity));
+                else                notimedskills = NoTimedSkills(user.Dealt.GetSkills(entity));
 
                 foreach (var skill in notimedskills)
                 {
@@ -182,12 +182,10 @@ namespace DamageMeter
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Console.WriteLine(responseString.Result);
                     Dictionary<string, object> responseObject = JsonConvert.DeserializeObject<Dictionary<string,object>>(responseString.Result);
-                    if(responseObject.ContainsKey("id"))
-                    {
+                    if (responseObject.ContainsKey("id"))
                         NetworkController.Instance.BossLink.Add((string)responseObject["id"], boss);
-                    }
-
-
+                    else
+                        NetworkController.Instance.BossLink.Add("!" + (string)responseObject["message"], boss);
                 }
             }
             catch(Exception e)
