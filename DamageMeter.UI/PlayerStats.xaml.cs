@@ -63,8 +63,8 @@ namespace DamageMeter.UI
             _lastHit = lastHit;
             _timedEncounter = timedEncounter;
 
-            LabelDps.Content = Dps;
-            LabelDps.ToolTip = "Global dps: " +GlobalDps;
+            LabelDps.Content = GlobalDps;
+            LabelDps.ToolTip = "Individual dps: " +Dps;
             LabelCritRate.Content = CritRate;
             var intervalTimespan = TimeSpan.FromSeconds(playerInfo.Dealt.Interval(_currentBoss));
             LabelCritRate.ToolTip = "Hits received: " + HitReceived+" - Damage received: "+DamageReceived+" - Fight Duration: "+ intervalTimespan.ToString(@"mm\:ss");

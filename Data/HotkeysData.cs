@@ -145,7 +145,7 @@ namespace Data
                 new CopyKey(
                     @"Damage Taken @ {encounter}:\",
                     "",
-                    @"[{class}] {name}: Hits: {hits_received} = {damage_received}\",
+                    @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration}\",
                     ModifierKeys.Control,
                     Keys.End,
                     "hits_received",
@@ -154,7 +154,7 @@ namespace Data
                 new CopyKey(
                     @"Damage Done @ {encounter} {timer} {partyDps}:\",
                     "",
-                    @"[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {dps}\",
+                    @"[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {global_dps}\",
                     ModifierKeys.Shift,
                     Keys.End,
                     "damage_percentage",
