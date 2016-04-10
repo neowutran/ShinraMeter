@@ -59,7 +59,7 @@ namespace NetworkSniffer
             foreach (var device in interestingDevices)
             {
                 device.OnPacketArrival += device_OnPacketArrival;
-                device.Open(DeviceMode.Promiscuous, 1000);
+                device.Open(DeviceMode.Normal, 1000);
                 device.Filter = _filter;
                 if (BufferSize != null)
                 {
@@ -104,7 +104,10 @@ namespace NetworkSniffer
             if (ipPacket == null)
                 return;
             if (!ipPacket.ValidChecksum)
-                return;
+            {
+                throw new Exception("Wrong checksum, abording");
+            }
+            
             var ipData = ipPacket.BytesHighPerformance;
             var ipData2 = new ArraySegment<byte>(ipData.Bytes, ipData.Offset, ipData.Length);
 
