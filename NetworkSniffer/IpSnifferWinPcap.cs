@@ -108,7 +108,7 @@ namespace NetworkSniffer
 
             if (!ipPacket.ValidChecksum)
             {
-                if (_servers.IndexOf(ipPacket.DestinationAddress.ToString()) == -1)
+                if (_servers.IndexOf(ipPacket.DestinationAddress.ToString()) != -1)
                 {
                     return;
                 }
