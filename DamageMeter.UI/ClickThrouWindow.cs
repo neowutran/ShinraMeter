@@ -25,7 +25,7 @@ namespace DamageMeter.UI
             }
         }
 
-        private void ClickThrouWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        protected void ClickThrouWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
             Visibility = Visibility.Hidden;

@@ -71,6 +71,7 @@ namespace DamageMeter.UI
             UpdateComboboxEncounter(new LinkedList<KeyValuePair<Entity,EntityInfo>>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
+            Closing -= ClickThrouWindow_Closing;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             _entityStats = new EntityStatsMain(this);
             _windowHistory = new TeradpsHistory(new Dictionary<string, Entity>());
