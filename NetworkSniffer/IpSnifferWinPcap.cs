@@ -23,10 +23,12 @@ namespace NetworkSniffer
         private WinPcapDeviceList _devices;
         private volatile uint _droppedPackets;
         private volatile uint _interfaceDroppedPackets;
+        private List<string> _servers;
 
-        public IpSnifferWinPcap(string filter)
+        public IpSnifferWinPcap(string filter, List<string> servers)
         {
             _filter = filter;
+            _servers = servers;
             BufferSize = 8192*1024;
         }
 
@@ -103,8 +105,13 @@ namespace NetworkSniffer
             var ipPacket = linkPacket.PayloadPacket as IPv4Packet;
             if (ipPacket == null)
                 return;
+
             if (!ipPacket.ValidChecksum)
             {
+                if (_servers.IndexOf(ipPacket.DestinationAddress.ToString()) == -1)
+                {
+                    return;
+                }
                 throw new Exception("Wrong checksum, abording");
             }
             

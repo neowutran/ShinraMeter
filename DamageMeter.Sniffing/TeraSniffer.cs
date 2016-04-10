@@ -44,7 +44,7 @@ namespace DamageMeter.Sniffing
                 var filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
                 filter = "tcp and (" + filter + ")";
 
-                _ipSniffer = new IpSnifferWinPcap(filter);
+                _ipSniffer = new IpSnifferWinPcap(filter, _serversByIp.Keys.ToList());
             }
             else
             {
