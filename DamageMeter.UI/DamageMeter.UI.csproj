@@ -256,7 +256,9 @@
     <Resource Include="shinra.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="shinra.ico" />
+    <Content Include="shinra.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

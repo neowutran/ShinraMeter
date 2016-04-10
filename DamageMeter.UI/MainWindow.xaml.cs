@@ -73,7 +73,7 @@ namespace DamageMeter.UI
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             _entityStats = new EntityStatsMain(this);
-            _windowHistory = new TeradpsHistory(this, new Dictionary<string, Entity>());
+            _windowHistory = new TeradpsHistory(new Dictionary<string, Entity>());
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
         }
@@ -387,13 +387,6 @@ namespace DamageMeter.UI
             e.Handled = true;
             _windowHistory.Show();
         }
-
-
-        public void CloseHistory()
-        {
-            _windowHistory.Visibility = Visibility.Hidden;
-        }
-
 
         public void HandleConnected(string serverName)
         {

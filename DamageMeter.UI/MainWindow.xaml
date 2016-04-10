@@ -6,13 +6,6 @@
         xmlns:ui="clr-namespace:DamageMeter.UI"
         mc:Ignorable="d"
         Title="Shinra Meter"
-        SizeToContent="WidthAndHeight"
-        WindowStyle="None"
-        ResizeMode="NoResize"
-        BorderThickness="0"
-        Icon="shinra.jpg"
-        ShowActivated="False"
-        MouseLeftButtonDown="Move"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
 

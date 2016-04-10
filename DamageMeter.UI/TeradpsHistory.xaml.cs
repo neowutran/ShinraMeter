@@ -14,19 +14,17 @@ namespace DamageMeter.UI
     public partial class TeradpsHistory
     {
 
-        private MainWindow _parent;
 
-        public TeradpsHistory(MainWindow parent, Dictionary<string, Entity> bossHistory)
+        public TeradpsHistory(Dictionary<string, Entity> bossHistory)
         {
             InitializeComponent();
-            _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             Update(bossHistory);
         }
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            _parent.CloseHistory();
+            Close();
         }
 
         public void Update(Dictionary<string, Entity> bossHistory)

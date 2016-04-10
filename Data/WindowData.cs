@@ -85,6 +85,8 @@ namespace Data
             Topmost = true;
             AllowTransparency = true;
             Debug = true;
+            TeraDpsToken = "";
+            TeraDpsUser = "";
         }
 
         private void ParseTeraDps()
@@ -98,6 +100,12 @@ namespace Data
 
             TeraDpsToken = token.Value;
             TeraDpsUser = user.Value;
+
+            if(TeraDpsToken == null || TeraDpsUser == null)
+            {
+                TeraDpsToken = "";
+                TeraDpsUser = "";
+            }
         }
 
 

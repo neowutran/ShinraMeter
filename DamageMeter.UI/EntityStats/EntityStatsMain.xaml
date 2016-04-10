@@ -5,14 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="clr-namespace:DamageMeter.UI"
         mc:Ignorable="d"
-        WindowStyle="None"
-        Focusable="False"
-        BorderThickness="0"
-        Topmost="True"
-        Icon="../shinra.ico"
-        SizeToContent="WidthAndHeight"
-        MaxHeight="800"
-        MouseLeftButtonDown="Move"
         Title="EntityStats">
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
@@ -55,7 +47,9 @@
         </Style>
     </Window.Resources>
     <Grid MouseLeftButtonDown="Move">
-        <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
+        <ScrollViewer VerticalScrollBarVisibility="Auto" >
+            <Grid>
+            <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
                 Foreground="White" Click="CloseMeter_OnClick" HorizontalContentAlignment="Stretch"
                 VerticalAlignment="Top" Margin="0">
             <Image x:Name="CloseWindow"
@@ -63,11 +57,12 @@
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" />
         </Button>
-
-        <ItemsControl  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,30,0,0" Name="EnduranceAbnormality" Background="Transparent" BorderThickness="0"
+         
+                <ItemsControl  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,30,0,0" Name="EnduranceAbnormality" Background="Transparent" BorderThickness="0"
                       Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left" />
-
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </ui:ClickThrouWindow>

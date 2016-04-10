@@ -144,9 +144,8 @@ namespace DamageMeter
 
         public static void CopyThread(List<PlayerInfo> stats, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
         {
-                   
-            CopyPaste.Copy(stats, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
-            var text = Clipboard.GetText();
+
+            var text = CopyPaste.Copy(stats, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
             
         }

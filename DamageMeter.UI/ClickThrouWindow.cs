@@ -24,9 +24,30 @@ namespace DamageMeter.UI
                 Console.WriteLine(@"Exception Move");
             }
         }
+
+        private void ClickThrouWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Visibility = Visibility.Hidden;
+        }
+
         public ClickThrouWindow()
         {
             AllowsTransparency = BasicTeraData.Instance.WindowData.AllowTransparency;
+            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 200;
+            Closing += ClickThrouWindow_Closing;
+            WindowStyle = WindowStyle.None;
+            Focusable = false;
+            BorderThickness = new Thickness(0);
+            Topmost = true;
+            Icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("shinra.ico", UriKind.Relative));
+            SizeToContent = SizeToContent.WidthAndHeight;
+            MouseLeftButtonDown += Move;
+            ShowActivated = false;
+            ResizeMode = ResizeMode.NoResize;
+            
+
+
         }
 
         protected override void OnSourceInitialized(EventArgs e)

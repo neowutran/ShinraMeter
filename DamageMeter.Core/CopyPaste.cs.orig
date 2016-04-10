@@ -18,12 +18,12 @@ namespace DamageMeter
         }
 
 
-        public static string Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, string header,
+        public static void Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, string header,
             string content, string footer,
             string orderby, string order)
         {
             //stop if nothing to paste
-            if (playerInfos == null) return "";
+            if (playerInfos == null) return;
             IEnumerable<PlayerInfo> playerInfosOrdered;
             if (order == "ascending")
             {
@@ -113,15 +113,20 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps(currentBoss, timedEncounter)) + "/s");
                 currentContent = currentContent.Replace("{global_dps}",
-                   FormatHelpers.Instance.FormatValue(playerStats.Dealt.GlobalDps(currentBoss, timedEncounter, lastHit - firstHit)) + "/s");
+                   FormatHelpers.Instance.FormatValue(playerStats.Dealt.GlobalDps(currentBoss, timedEncounter, totalDamage)) + "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.Dealt.Interval(currentBoss) + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Damage(currentBoss, timedEncounter)));
                 currentContent = currentContent.Replace("{class}", playerStats.Class + "");
                 currentContent = currentContent.Replace("{fullname}", playerStats.Player.FullName);
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
+<<<<<<< HEAD
                 currentContent = currentContent.Replace("{deaths}", playerStats.Death.Count(firstHit, lastHit) + "");
                 currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.Death.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
+=======
+                currentContent = currentContent.Replace("{deaths}", (playerStats.DeathCounter?.Count(firstHit, lastHit)??0) + "");
+                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.DeathCounter?.Duration(firstHit, lastHit)??0).ToString(@"mm\:ss"));
+>>>>>>> 367fac8caeba65160022294cfa9b06233d70c76a
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate(currentBoss, timedEncounter) + "%");
@@ -134,7 +139,10 @@ namespace DamageMeter
                 dpsString += currentContent;
             }
             dpsString += footer;
-            return dpsString;
+            if (dpsString != "")
+            {
+                Clipboard.SetText(dpsString);
+            }
         }
     }
 }
