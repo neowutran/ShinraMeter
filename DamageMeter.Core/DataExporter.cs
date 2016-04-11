@@ -164,6 +164,7 @@ namespace DamageMeter
             if(numberTry == 0)
             {
                 Console.WriteLine("API ERROR");
+                NetworkController.Instance.BossLink.Add("!Api error or timeout.", boss);
                 return;
             }
             try {
