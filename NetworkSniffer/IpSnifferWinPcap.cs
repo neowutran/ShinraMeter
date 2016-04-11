@@ -106,13 +106,12 @@ namespace NetworkSniffer
             if (ipPacket == null)
                 return;
 
-            if (!ipPacket.ValidChecksum)
+            if (_servers.IndexOf(ipPacket.SourceAddress.ToString()) != -1)
             {
-                if (_servers.IndexOf(ipPacket.DestinationAddress.ToString()) != -1)
+                if (!ipPacket.ValidChecksum)
                 {
-                    return;
+                    throw new Exception("Wrong checksum, abording");
                 }
-                throw new Exception("Wrong checksum, abording");
             }
             
             var ipData = ipPacket.BytesHighPerformance;
