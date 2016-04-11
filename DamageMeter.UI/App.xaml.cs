@@ -34,9 +34,15 @@ namespace DamageMeter.UI
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
 
 
-            if (Directory.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+@"\tmp\"))
+            try {
+                if (Directory.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\"))
+                {
+                    Directory.Delete(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\", true);
+                }
+            }
+            catch
             {
-                Directory.Delete(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)+@"\tmp\", true);
+                //Ignore
             }
 
 
