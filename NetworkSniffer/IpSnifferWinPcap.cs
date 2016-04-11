@@ -76,6 +76,7 @@ namespace NetworkSniffer
                     }
                 }
                 device.StartCapture();
+                Console.WriteLine("winpcap capture");
             }
         }
 
@@ -108,11 +109,11 @@ namespace NetworkSniffer
 
             if (!ipPacket.ValidChecksum)
             {
-                if (_servers.IndexOf(ipPacket.DestinationAddress.ToString()) != -1)
+                if (_servers.IndexOf(ipPacket.DestinationAddress.ToString()) == -1)
                 {
+                    //Bad checksum on incoming packet
                     return;
                 }
-                throw new Exception("Wrong checksum, abording");
             }
             
             var ipData = ipPacket.BytesHighPerformance;

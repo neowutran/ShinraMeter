@@ -18,10 +18,12 @@ namespace Data
             Close = new Image { Source = new BitmapImage(new Uri(folder + "close.png")) };
             History = new Image { Source = new BitmapImage(new Uri(folder + "historic.png")) };
 
+            Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
             Tray = new Icon(folder + "shinra.ico");
 
         }
 
+        public BitmapImage Icon { get; private set; }
         public Image Chrono { get; private set; }
 
         public Image History { get; private set; }

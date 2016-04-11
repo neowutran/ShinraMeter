@@ -40,14 +40,12 @@ namespace DamageMeter.UI
             Focusable = false;
             BorderThickness = new Thickness(0);
             Topmost = true;
-            Icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("shinra.ico", UriKind.Relative));
+            Icon = BasicTeraData.Instance.ImageDatabase.Icon;
             SizeToContent = SizeToContent.WidthAndHeight;
             MouseLeftButtonDown += Move;
             ShowActivated = false;
             ResizeMode = ResizeMode.NoResize;
-            
-
-
+           
         }
 
         protected override void OnSourceInitialized(EventArgs e)
