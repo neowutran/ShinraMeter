@@ -107,15 +107,14 @@ namespace NetworkSniffer
             if (ipPacket == null)
                 return;
 
-            if (!ipPacket.ValidChecksum)
+            if (_servers.IndexOf(ipPacket.SourceAddress.ToString()) != -1)
             {
-                if (_servers.IndexOf(ipPacket.DestinationAddress.ToString()) == -1)
+                if (!ipPacket.ValidChecksum)
                 {
-                    //Bad checksum on incoming packet
-                    return;
+                    throw new Exception("Wrong checksum, abording");
                 }
             }
-            
+
             var ipData = ipPacket.BytesHighPerformance;
             var ipData2 = new ArraySegment<byte>(ipData.Bytes, ipData.Offset, ipData.Length);
 

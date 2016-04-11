@@ -200,14 +200,16 @@ namespace DamageMeter
             {
                 var newEntityStat = new EntityInfo();
                 newEntityStat.AbnormalityTime = entity.Value.AbnormalityTime;
-                newEntityStats.Add(entity.Key, newEntityStat);
+                newEntityStats[entity.Key] = newEntityStat;
             }
 
+
+            //!!!! IMPORTANT, YUKI, IF YOU SEARCH FOR STRANGE BUG, LOOK HERE
             foreach (var user in UsersStats)
             {
                 var newUserStat = new PlayerInfo(user.Key);
                 newUserStat.AbnormalityTime = user.Value.AbnormalityTime;
-                newUserStats.Add(user.Key, newUserStat);
+                newUserStats[user.Key] = newUserStat;
             }
 
             UsersStats = newUserStats;
