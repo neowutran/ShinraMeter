@@ -227,6 +227,7 @@ namespace Data
             var languageElement = root?.Element("language");
             if (languageElement == null) return;
             Language = languageElement.Value;
+            if (!Array.Exists(new[] { "Auto", "EU-EN", "EU-FR", "EU-GER", "NA", "RU", "JP", "TW", "KR" }, s => s.Equals(Language))) Language = "Auto";
         }
 
         private void ParseMainWindowOpacity()
