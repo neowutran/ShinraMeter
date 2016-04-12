@@ -1,7 +1,7 @@
 <window>
   <location>
-    <x>1</x>
-    <y>88</y>
+    <x>2</x>
+    <y>120</y>
   </location>
   <language>Auto</language>
   <opacity>
@@ -10,7 +10,7 @@
   </opacity>
   <autoupdate>true</autoupdate>
   <remember_position>true</remember_position>
-  <winpcap>true</winpcap>
+  <winpcap>false</winpcap>
   <invisible_ui>false</invisible_ui>
   <allow_transparency>true</allow_transparency>
   <topmost>true</topmost>
