@@ -164,7 +164,7 @@ namespace DamageMeter
             if(numberTry == 0)
             {
                 Console.WriteLine("API ERROR");
-                NetworkController.Instance.BossLink.Add("!Api error or timeout.", boss);
+                NetworkController.Instance.BossLink.Add("!Api error or timeout." + " " + boss.Name + " " + DateTime.Now.Ticks, boss);
                 return;
             }
             try {
@@ -184,9 +184,12 @@ namespace DamageMeter
                     Console.WriteLine(responseString.Result);
                     Dictionary<string, object> responseObject = JsonConvert.DeserializeObject<Dictionary<string,object>>(responseString.Result);
                     if (responseObject.ContainsKey("id"))
+                    {
                         NetworkController.Instance.BossLink.Add((string)responseObject["id"], boss);
-                    else
-                        NetworkController.Instance.BossLink.Add("!" + (string)responseObject["message"], boss);
+                    }
+                    else {
+                        NetworkController.Instance.BossLink.Add("!" + (string)responseObject["message"] +" "+ boss.Name + " "+DateTime.Now.Ticks, boss);
+                   }
                 }
             }
             catch(Exception e)

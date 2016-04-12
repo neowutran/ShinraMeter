@@ -45,15 +45,10 @@ namespace DamageMeter.UI
                 }
                 button.Tag = boss.Key;
                 button.Click += Button_Click;
-                button.MouseLeftButtonDown += Move;
-                button.MouseRightButtonDown += Remove;
                 TeraDpsHistory.Items.Add(button);
             }
         }
-        private void Remove(object sender, RoutedEventArgs e)
-        {
-            TeraDpsHistory.Items.Remove(sender);
-        }
+    
         
         private void Button_Click(object sender, RoutedEventArgs e)
         {

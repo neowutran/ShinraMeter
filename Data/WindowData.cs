@@ -286,6 +286,7 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
             xml.Root.Add(new XElement("debug", Debug));
             
+
             _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))
             {
