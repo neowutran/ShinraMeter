@@ -111,7 +111,7 @@ namespace NetworkSniffer
             {
                 if (!ipPacket.ValidChecksum)
                 {
-                    throw new Exception("Wrong checksum, abording");
+                    return;
                 }
             }
 

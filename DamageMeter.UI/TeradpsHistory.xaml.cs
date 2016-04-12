@@ -13,8 +13,6 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class TeradpsHistory
     {
-
-
         public TeradpsHistory(Dictionary<string, Entity> bossHistory)
         {
             InitializeComponent();
@@ -43,13 +41,20 @@ namespace DamageMeter.UI
                 {
                     button.Foreground = System.Windows.Media.Brushes.Red;
                     button.ToolTip = boss.Key;
+                    
                 }
                 button.Tag = boss.Key;
                 button.Click += Button_Click;
+                button.MouseLeftButtonDown += Move;
+                button.MouseRightButtonDown += Remove;
                 TeraDpsHistory.Items.Add(button);
             }
         }
-
+        private void Remove(object sender, RoutedEventArgs e)
+        {
+            TeraDpsHistory.Items.Remove(sender);
+        }
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (!((Button)sender).Tag.ToString().StartsWith("!"))

@@ -33,22 +33,10 @@ namespace DamageMeter.UI
             var updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
 
-
-            try {
-                if (Directory.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\"))
-                {
-                    Directory.Delete(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\", true);
-                }
-            }
-            catch
-            {
-                //Ignore
-            }
-
-
+         
             if (aIsNewInstance)
             {
-             
+                DeleteTmp();
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
                 {
                     return;
@@ -92,8 +80,26 @@ namespace DamageMeter.UI
                 Thread.Sleep(1000);
                 updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             }
+
+            DeleteTmp();
             updating.Close();
             waitUpdateEnd.Close();
+        }
+
+        private void DeleteTmp()
+        {
+            try
+            {
+                if (Directory.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\"))
+                {
+                    Directory.Delete(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\", true);
+                }
+            }
+            catch
+            {
+                //Ignore
+            }
+
         }
 
         private static void SetForeground()

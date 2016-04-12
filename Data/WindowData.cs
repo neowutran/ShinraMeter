@@ -260,6 +260,13 @@ namespace Data
 
         public void Save()
         {
+            
+            if(_filestream == null)
+            {
+                return;
+            }
+            
+
             var xml = new XDocument(new XElement("window"));
             xml.Root.Add(new XElement("location"));
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
@@ -278,7 +285,7 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
             xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
             xml.Root.Add(new XElement("debug", Debug));
-
+            
             _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))
             {
