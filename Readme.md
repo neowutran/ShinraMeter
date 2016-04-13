@@ -6,10 +6,6 @@ Wiki: https://github.com/neowutran/TeraDamageMeter/wiki
 
 Download: https://cloud.neowutran.ovh/index.php/s/e7arRRxkHEIkzU1
 
-This DPS meter has an autoupdate feature, download once, always stay up to date. 
-For now, configuration files are destroyed at each new update, so if you make modifications, save the file elsewhere before updating.
-
-
 TERADATA: https://github.com/neowutran/TeraDpsMeterData
 
 Original Readme
