@@ -561,6 +561,7 @@ namespace DamageMeter.UI
         private void ListEncounter_OnDropDownClosed(object sender, EventArgs e)
         {
             _topMost = true;
+            ListEncounter.GetType().GetField("_highlightedInfo", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(ListEncounter, null);
         }
 
         private void Close_MouseLeftButtonDown(object sender, RoutedEventArgs e)
