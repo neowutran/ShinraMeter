@@ -8,6 +8,8 @@ Download: https://cloud.neowutran.ovh/index.php/s/e7arRRxkHEIkzU1
 
 TERADATA: https://github.com/neowutran/TeraDpsMeterData
 
+ShinraMeter is dev by Gl0 and Yukikoo/Neowutran
+
 Original Readme
 ================
 
