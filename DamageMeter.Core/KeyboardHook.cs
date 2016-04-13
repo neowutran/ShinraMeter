@@ -113,6 +113,7 @@ namespace DamageMeter
         /// <param name="key">The key itself that is associated with the hot key.</param>
         public void RegisterHotKey(HotkeysData.ModifierKeys modifier, Keys key)
         {
+            if (key == Keys.None) return;//allow disable hotkeys using "None" key
             // increment the counter.
             _currentId++;
 
