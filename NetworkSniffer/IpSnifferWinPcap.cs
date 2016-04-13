@@ -85,7 +85,7 @@ namespace NetworkSniffer
             Debug.Assert(_devices != null);
             foreach (var device in _devices.Where(device => device.Opened))
             {
-                device.StopCapture();
+                try { device.StopCapture(); } catch { };//SharpPcap.PcapException: captureThread was aborted after 00:00:02 - it's normal when there is no traffic while stopping
                 device.Close();
             }
             _devices = null;
