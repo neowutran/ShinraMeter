@@ -30,6 +30,8 @@ namespace NetworkSniffer
             _filter = filter;
             _servers = servers;
             BufferSize = 8192*1024;
+            _devices = WinPcapDeviceList.New();//check for winpcap installed if not - exception to fallback to rawsockets
+            _devices = null;
         }
 
         public int? BufferSize { get; set; }
