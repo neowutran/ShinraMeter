@@ -439,8 +439,16 @@ namespace DamageMeter.UI
             return false;
         }
 
+        
         private void UpdateComboboxEncounter(LinkedList<KeyValuePair<Entity, EntityInfo>> entities, Entity currentBoss)
         {
+
+            //http://stackoverflow.com/questions/12164488/system-reflection-targetinvocationexception-occurred-in-presentationframework
+            if (ListEncounter == null || !ListEncounter.IsLoaded)
+            {
+                return;
+            }
+
             var entityList = entities.ToList();
             if (!NeedUpdateEncounter(entityList))
             {
