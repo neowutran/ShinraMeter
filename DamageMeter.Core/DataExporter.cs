@@ -24,6 +24,8 @@ namespace DamageMeter
 
         }
 
+        
+
         public static void ToTeraDpsApi(SDespawnNpc despawnNpc)
         {
             if(string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser))
@@ -153,7 +155,6 @@ namespace DamageMeter
             }
 
             string json = JsonConvert.SerializeObject(teradpsData);
-            Console.WriteLine(json);
 
             var sendThread = new Thread(() => Send(entity, json, 3));
             sendThread.Start();
