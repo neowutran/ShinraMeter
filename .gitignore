@@ -2,7 +2,7 @@ bin/
 obj/
 /release/
 resources/config/*
-resources/log/*
+resources/logs/*
 /debug/
 *.suo
 *.user

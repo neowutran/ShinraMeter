@@ -16,6 +16,10 @@ namespace DamageMeter
         private AbnormalityTracker()
         {
         }
+        public void Renew()
+        {
+            _instance = new AbnormalityTracker();
+        }
 
         public static AbnormalityTracker Instance => _instance ?? (_instance = new AbnormalityTracker());
 
