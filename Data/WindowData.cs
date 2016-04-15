@@ -46,6 +46,7 @@ namespace Data
             ParseTopmost();
             ParseTeraDps();
             ParseDebug();
+            ParseExcel();
         }
 
 
@@ -72,6 +73,8 @@ namespace Data
 
         public bool Debug { get; set; }
 
+        public bool Excel { get; set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -87,6 +90,20 @@ namespace Data
             Debug = true;
             TeraDpsToken = "";
             TeraDpsUser = "";
+            Excel = false;
+        }
+
+        public void ParseExcel()
+        {
+            var root = _xml.Root;
+            var excelxml = root?.Element("excel");
+            if (excelxml == null) return;
+            bool excel;
+            var parseSuccess = bool.TryParse(excelxml.Value, out excel);
+            if (parseSuccess)
+            {
+                Excel = excel;
+            }
         }
 
         private void ParseTeraDps()
@@ -285,7 +302,7 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
             xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
             xml.Root.Add(new XElement("debug", Debug));
-            
+            xml.Root.Add(new XElement("excel", Excel));
 
             _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))

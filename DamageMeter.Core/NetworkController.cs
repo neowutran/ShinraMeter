@@ -72,6 +72,7 @@ namespace DamageMeter
             BasicTeraData.Instance.Servers.Region = server.Region;
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
             PlayerTracker = new PlayerTracker(EntityTracker,BasicTeraData.Instance.Servers);
+            AbnormalityTracker.Instance.Renew();
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
             var handler = Connected;
             handler?.Invoke(server.Name);
@@ -224,6 +225,7 @@ namespace DamageMeter
                 var sLogin = message as LoginServerMessage;
                 if (sLogin != null)
                 {
+                    AbnormalityTracker.Instance.Renew();
                     Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId,Server));
                     //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;

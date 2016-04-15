@@ -6,6 +6,7 @@ set variant=Release
 rmdir /Q /S "%output%"
 md "%output%
 md "%output%\resources"
+md "%output%\resources\config"
 
 copy "%source%\DamageMeter.Sniffing\bin\%variant%\*" "%output%\"
 copy "%source%\DamageMeter.UI\bin\%variant%\*" "%output%\"

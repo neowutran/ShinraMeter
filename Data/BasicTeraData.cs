@@ -20,6 +20,7 @@ namespace Data
         private BasicTeraData(string resourceDirectory)
         {
             ResourceDirectory = resourceDirectory;
+            Directory.CreateDirectory(Path.Combine(resourceDirectory, "config"));//ensure config dir is created
             XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
