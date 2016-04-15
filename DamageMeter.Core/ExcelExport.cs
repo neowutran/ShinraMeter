@@ -46,9 +46,10 @@ namespace DamageMeter
                 ws.Cells[2, 6].Value = "Crit %";
                 ws.Cells[2, 7].Value = "Deaths";
                 ws.Cells[2, 8].Value = "Death time";
-                int i = 3;
+                int i = 2;
                 foreach (var user in data.members)
                 {
+                    i++;
                     AddImage(ws, i, 1, ClassIcons.Instance.GetBitmap((PlayerClass)Enum.Parse(typeof(PlayerClass),user.playerClass)));
                     ws.Cells[i, 2].Value = $"{user.playerServer}: {user.playerName}";
                     ws.Cells[i, 3].Value = double.Parse(user.playerTotalDamagePercentage)/100;
@@ -61,7 +62,7 @@ namespace DamageMeter
                     ws.Cells[i, 6].Style.Numberformat.Format = "0.0%";
                     ws.Cells[i, 7].Value = long.Parse(user.playerDeaths);
                     ws.Cells[i, 8].Value = long.Parse(user.playerDeathDuration);
-                    ws.Cells[i, 8].Style.Numberformat.Format = @"00\s";
+                    ws.Cells[i, 8].Style.Numberformat.Format = @"0\s";
                 }
                 ws.Column(1).Width=5.5;
                 ws.Column(2).AutoFit();
@@ -71,6 +72,8 @@ namespace DamageMeter
                 ws.Column(6).AutoFit();
                 ws.Column(7).AutoFit();
                 ws.Column(8).AutoFit();
+                ws.Cells[1, 1, i, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                ws.Cells[1, 1, i, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 var border = ws.Cells[1, 1, i, 8].Style.Border;
                 border.Bottom.Style = border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thick;
                 border.Bottom.Color.SetColor(Color.White);
