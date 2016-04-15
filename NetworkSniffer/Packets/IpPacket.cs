@@ -37,7 +37,7 @@ namespace NetworkSniffer.Packets
             get
             {
                 var headerLength = HeaderLength;
-                if ((Packet.Offset + TotalLength) >= Packet.Array.Length || TotalLength <= headerLength)
+                if ((Packet.Offset + TotalLength) > Packet.Array.Length || TotalLength <= headerLength)
                 { throw new Exception($"Wrong packet TotalLength:{TotalLength} headerLength:{headerLength} Packet.Array.Length:{Packet.Array.Length} SourceIp:{SourceIp} DestinationIp:{DestinationIp}"); }
                 return new ArraySegment<byte>(Packet.Array, Packet.Offset + headerLength, TotalLength - headerLength);
             }
