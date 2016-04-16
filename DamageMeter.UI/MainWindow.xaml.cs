@@ -67,6 +67,8 @@ namespace DamageMeter.UI
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
+            Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
+            this.Chatbox.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new LinkedList<KeyValuePair<Entity,EntityInfo>>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
@@ -74,6 +76,7 @@ namespace DamageMeter.UI
             Closing -= ClickThrouWindow_Closing;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             _entityStats = new EntityStatsMain(this);
+            _chatbox = new Chatbox(new List<ChatMessage>());
             _windowHistory = new TeradpsHistory(new Dictionary<string, Entity>());
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
@@ -82,6 +85,8 @@ namespace DamageMeter.UI
         {
             Exit();
         }
+
+        private Chatbox _chatbox; 
 
         public void SetClickThrou()
         {
@@ -122,7 +127,6 @@ namespace DamageMeter.UI
             };
             _trayIcon.Click += TrayIconOnClick;
 
-
             var reset = new MenuItem {Text = "Reset"};
             reset.Click += ResetOnClick;
             var exit = new MenuItem {Text = "Close"};
@@ -132,19 +136,14 @@ namespace DamageMeter.UI
             var patch = new MenuItem {Text = "Patch note"};
             patch.Click += PatchOnClick;
             var issues = new MenuItem {Text = "Report issue"};
-
             issues.Click += IssuesOnClick;
             var forum = new MenuItem {Text = "Forum"};
-
             forum.Click += ForumOnClick;
-
             var teradps = new MenuItem { Text = "TeraDps.io" };
             teradps.Click += TeraDpsOnClick;
-
             _clickThrou = new MenuItem {Text = "Activate click throu"};
             _clickThrou.Click += ClickThrouOnClick;
-
-
+                  
             var context = new ContextMenu();
             context.MenuItems.Add(_clickThrou);
             context.MenuItems.Add(reset);
@@ -154,9 +153,6 @@ namespace DamageMeter.UI
             context.MenuItems.Add(forum);
             context.MenuItems.Add(teradps);
             context.MenuItems.Add(exit);
-
-
-
             _trayIcon.ContextMenu = context;
         }
 
@@ -314,17 +310,18 @@ namespace DamageMeter.UI
         }
 
         public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
-            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Dictionary<string, Entity> nbossHistory)
+            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Dictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)
         {
             NetworkController.UpdateUiHandler changeUi =
                 delegate(long firstHit, long lastHit, long totalDamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string, Entity> bossHistory)
+                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string, Entity> bossHistory, List<ChatMessage> chatbox)
                 {
                     StayTopMost();
                     var entitiesStats = new LinkedList<KeyValuePair<Entity, EntityInfo>>(entities.ToList().OrderByDescending(e => e.Value.LastHit));
                     UpdateComboboxEncounter(entitiesStats, currentBoss);
                     _entityStats.Update(entities, currentBoss);
                     _windowHistory.Update(bossHistory);
+                    _chatbox.Update(chatbox);
                     PartyDps.Content = FormatHelpers.Instance.FormatValue(partyDps) + "/s";
                     var visiblePlayerStats = new HashSet<PlayerInfo>();
                     var counter = 0;
@@ -378,7 +375,7 @@ namespace DamageMeter.UI
                         Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
                     }
                 };
-            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter, nbossHistory);
+            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter, nbossHistory, nchatbox);
         }
 
         private TeradpsHistory _windowHistory;
@@ -387,6 +384,11 @@ namespace DamageMeter.UI
         {
             e.Handled = true;
             _windowHistory.Show();
+        }
+        private void ShowChat(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            _chatbox.Show();
         }
 
         public void HandleConnected(string serverName)
@@ -499,9 +501,6 @@ namespace DamageMeter.UI
             Left = 0;
         }
 
-
-      
-
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count != 1) return;
@@ -568,8 +567,12 @@ namespace DamageMeter.UI
 
         private void ListEncounter_OnDropDownClosed(object sender, EventArgs e)
         {
+            //.NET 4.6 bug: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
+            if (Environment.OSVersion.Version.Major >= 10)
+            {
+                this.ListEncounter.GetType().GetField("_highlightedInfo", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(this.ListEncounter, null);
+            }
             _topMost = true;
-            ListEncounter.GetType().GetField("_highlightedInfo", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(ListEncounter, null);
         }
 
         private void Close_MouseLeftButtonDown(object sender, RoutedEventArgs e)
@@ -577,5 +580,9 @@ namespace DamageMeter.UI
             VerifyClose();
         }
 
+        private void Config_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            popupMenu.IsOpen = true;
+        }
     }
 }

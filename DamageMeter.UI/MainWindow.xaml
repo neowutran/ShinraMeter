@@ -83,6 +83,38 @@
             <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
         </ControlTemplate>
 
+
+        <Style x:Key="ShinraContext" TargetType="{x:Type ContextMenu}">
+            <Setter Property="SnapsToDevicePixels"
+          Value="True" />
+            <Setter Property="OverridesDefaultStyle"
+          Value="True" />
+            <Setter Property="Grid.IsSharedSizeScope"
+          Value="true" />
+            <Setter Property="HasDropShadow"
+          Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContextMenu}">
+                        <Border x:Name="Border"
+                BorderThickness="0">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="Transparent" />
+                            </Border.BorderBrush>
+                            <StackPanel IsItemsHost="True"
+                      KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasDropShadow"
+                   Value="false">
+                            
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="SnapsToDevicePixels" Value="true" />
             <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -221,10 +253,26 @@
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" Margin="236,30,0,0" />
 
-        <Image x:Name="History" PreviewMouseLeftButtonDown="ShowHistory" 
+        <Image x:Name="Config"
                Stretch="Fill"
                HorizontalAlignment="Left"
-               Height="29" VerticalAlignment="Top" Width="29" Margin="151,31,0,0" />
+               MouseLeftButtonDown="Config_MouseLeftButtonDown"
+               Height="29" VerticalAlignment="Top" Width="29" Margin="151,31,0,0">
+            <Image.ContextMenu>
+
+                <ContextMenu Style="{DynamicResource ShinraContext}" x:Name="popupMenu" Background="Black">
+                    <Image x:Name="History" PreviewMouseLeftButtonDown="ShowHistory" 
+               Stretch="Fill"
+               HorizontalAlignment="Left"
+               Height="29" VerticalAlignment="Top" Width="29"/>
+                    <Image x:Name="Chatbox" PreviewMouseLeftButtonDown="ShowChat" 
+               Stretch="Fill"
+               HorizontalAlignment="Left"
+               Height="29" VerticalAlignment="Top" Width="29" />
+                </ContextMenu>
+            </Image.ContextMenu>
+
+        </Image>
 
         <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown" 
                Stretch="Fill"

@@ -17,6 +17,9 @@ namespace Data
             Chronobar = new Image { Source = new BitmapImage(new Uri(folder + "chronobar.png")) };
             Close = new Image { Source = new BitmapImage(new Uri(folder + "close.png")) };
             History = new Image { Source = new BitmapImage(new Uri(folder + "historic.png")) };
+            Copy = new Image { Source = new BitmapImage(new Uri(folder + "copy.png")) };
+            Config = new Image { Source = new BitmapImage(new Uri(folder + "config.png")) };
+            Chat = new Image { Source = new BitmapImage(new Uri(folder + "chat.png")) };
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
             Tray = new Icon(folder + "shinra.ico");
@@ -25,6 +28,9 @@ namespace Data
 
         public BitmapImage Icon { get; private set; }
         public Image Chrono { get; private set; }
+        public Image Copy { get; private set; }
+        public Image Config { get; private set; }
+        public Image Chat { get; private set; }
 
         public Image History { get; private set; }
         public Image Close { get; private set; }

@@ -66,6 +66,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Chatbox.xaml.cs">
+      <DependentUpon>Chatbox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ChatMessageUI.xaml.cs">
+      <DependentUpon>ChatMessageUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClickThrouWindow.cs" />
     <Compile Include="EntityStats\EnduranceDebuffHeader.xaml.cs">
       <DependentUpon>EnduranceDebuffHeader.xaml</DependentUpon>
@@ -117,6 +123,14 @@
       <DependentUpon>TeradpsHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowServices.cs" />
+    <Page Include="Chatbox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChatMessageUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EntityStats\EnduranceDebuffHeader.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

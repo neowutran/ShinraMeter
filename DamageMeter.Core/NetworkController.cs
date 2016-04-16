@@ -23,7 +23,7 @@ namespace DamageMeter
 
         public delegate void UpdateUiHandler(
             long firsthit, long lastHit, long totaldamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string ,Entity> bossHistory);
+            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string ,Entity> bossHistory, List<ChatMessage> chatbox);
 
         private static NetworkController _instance;
 
@@ -110,7 +110,8 @@ namespace DamageMeter
                 DamageTracker.Instance.GetEntityStats();
             var partyDps = DamageTracker.Instance.PartyDps(currentBossFight, timedEncounter);
             var teradpsHistory = BossLink.ToDictionary(x=>x.Key, x=>x.Value);
-            handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight , timedEncounter, teradpsHistory);
+            var chatbox = Chat.Instance.Get();
+            handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight , timedEncounter, teradpsHistory, chatbox);
         }
 
         private bool _clickThrou = false;
@@ -294,6 +295,13 @@ namespace DamageMeter
                 {
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnNpc);
                     DataExporter.ToTeraDpsApi(despawnNpc);
+                    continue;
+                }
+
+                var chatMessage = message as S_CHAT;
+                if(chatMessage != null)
+                {
+                    Chat.Instance.Add(chatMessage);
                     continue;
                 }
 
