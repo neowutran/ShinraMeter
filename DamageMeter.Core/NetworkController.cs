@@ -305,6 +305,13 @@ namespace DamageMeter
                     continue;
                 }
 
+                var whisperMessage = message as S_WHISPER;
+                if(whisperMessage != null)
+                {
+                    Chat.Instance.Add(whisperMessage);
+                    continue;
+                }
+
                 var despawnUser = message as SDespawnUser;
                 if (despawnUser != null)
                 {
