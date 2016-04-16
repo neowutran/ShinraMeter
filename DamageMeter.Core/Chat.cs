@@ -26,7 +26,11 @@ namespace DamageMeter
                 _chat.RemoveFirst();
             }
 
-            ChatMessage chatMessage = new ChatMessage(message.Username, message.Text);
+            var text = message.Text;
+            text = text.Replace("<FONT>", "");
+            text = text.Replace("</FONT>", "");
+
+            ChatMessage chatMessage = new ChatMessage(message.Username, text);
             _chat.AddLast(chatMessage);
 
         }

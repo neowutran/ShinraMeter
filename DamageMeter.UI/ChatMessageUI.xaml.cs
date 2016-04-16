@@ -38,5 +38,18 @@ namespace DamageMeter.UI
         {
             Clipboard.SetText((string)Message.Content);
         }
+
+        private void Sender_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var w = Window.GetWindow(this);
+            try
+            {
+                w?.DragMove();
+            }
+            catch
+            {
+                Console.WriteLine(@"Exception move");
+            }
+        }
     }
 }

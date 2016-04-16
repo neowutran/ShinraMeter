@@ -582,6 +582,8 @@ namespace DamageMeter.UI
 
         private void Config_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            Style style = this.FindResource("ShinraContext") as Style;
+            popupMenu.Style = style;
             popupMenu.IsOpen = true;
         }
     }
