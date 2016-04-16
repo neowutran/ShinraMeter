@@ -8,7 +8,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="90" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="500" />
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Label Focusable="False" Grid.Column="0" FontSize="14" x:Name="Sender" HorizontalContentAlignment="Left"

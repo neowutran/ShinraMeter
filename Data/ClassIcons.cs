@@ -22,7 +22,15 @@ namespace Data
                 var image = new System.Windows.Controls.Image { Source = new BitmapImage(new Uri(filename))};
                 _images.Add(playerClass, image);
                 var drawing = new Bitmap(filename);
-                _drawings.Add(playerClass, drawing);
+                for (int i = 0; i < drawing.Width; i++)
+                {
+                    for (int j = 0; j < drawing.Height; j++)
+                    {
+                        var col = drawing.GetPixel(i, j);
+                        drawing.SetPixel(i,j,Color.FromArgb(col.A,255-col.R,255-col.G,255-col.B));
+                    }
+                }
+                        _drawings.Add(playerClass, drawing);
             }
         }
 
