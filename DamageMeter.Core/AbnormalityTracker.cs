@@ -79,7 +79,7 @@ namespace DamageMeter
             return false;
         }
 
-        private void DeleteAbnormality(EntityId target, int abnormalityId, long ticks)
+        public void DeleteAbnormality(EntityId target, int abnormalityId, long ticks)
         {
             if (!_abnormalities.ContainsKey(target))
             {
@@ -121,11 +121,6 @@ namespace DamageMeter
         }
 
         public void DeleteAbnormality(SCreatureChangeHp message)
-        {
-            DeleteAbnormality(message.TargetId, 8888889, message.Time.Ticks);
-        }
-
-        public void DeleteAbnormality(SPartyMemberChangeHp message)
         {
             DeleteAbnormality(message.TargetId, 8888889, message.Time.Ticks);
         }

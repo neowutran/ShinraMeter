@@ -262,13 +262,16 @@ namespace DamageMeter
                 var pchangeHp = message as SPartyMemberChangeHp;
                 if (pchangeHp != null)
                 {
+                    var user = PlayerTracker.GetOrNull(pchangeHp.PlayerId);
+                    if (user == null) continue;//have not seen user yet, cause he is far away, but in party.
+                    //Console.WriteLine(user.Name + " :" + pchangeHp.Slaying);
                     if (pchangeHp.Slaying)
                     {
-                        AbnormalityTracker.Instance.AddAbnormality(pchangeHp.TargetId, pchangeHp.TargetId, 0, 0, 8888889, pchangeHp.Time.Ticks);
+                        AbnormalityTracker.Instance.AddAbnormality(user.User.Id, user.User.Id, 0, 0, 8888889, pchangeHp.Time.Ticks);
                     }
                     else
                     {
-                        AbnormalityTracker.Instance.DeleteAbnormality(pchangeHp);
+                        AbnormalityTracker.Instance.DeleteAbnormality(user.User.Id, 8888889, message.Time.Ticks);
                     }
                     continue;
                 }
