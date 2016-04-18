@@ -262,17 +262,13 @@ namespace DamageMeter
                 var pchangeHp = message as SPartyMemberChangeHp;
                 if (pchangeHp != null)
                 {
-                    var user = EntityTracker.GetOrPlaceholder(pchangeHp.TargetId);
-                    if (user is UserEntity)
+                    if (pchangeHp.Slaying)
                     {
-                        if (pchangeHp.Slaying)
-                        {
-                            AbnormalityTracker.Instance.AddAbnormality(pchangeHp.TargetId, pchangeHp.TargetId, 0, 0, 8888889, pchangeHp.Time.Ticks);
-                        }
-                        else
-                        {
-                            AbnormalityTracker.Instance.DeleteAbnormality(pchangeHp);
-                        }
+                        AbnormalityTracker.Instance.AddAbnormality(pchangeHp.TargetId, pchangeHp.TargetId, 0, 0, 8888889, pchangeHp.Time.Ticks);
+                    }
+                    else
+                    {
+                        AbnormalityTracker.Instance.DeleteAbnormality(pchangeHp);
                     }
                     continue;
                 }
