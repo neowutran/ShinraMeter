@@ -256,6 +256,7 @@
 
         <Image x:Name="Config"
                Stretch="Fill"
+               
                HorizontalAlignment="Left"
                MouseLeftButtonDown="Config_MouseLeftButtonDown"
                Height="29" VerticalAlignment="Top" Width="29" Margin="151,31,0,0">

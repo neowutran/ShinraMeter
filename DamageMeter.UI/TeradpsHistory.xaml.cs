@@ -30,30 +30,9 @@ namespace DamageMeter.UI
             TeraDpsHistory.Items.Clear();
             foreach(var boss in bossHistory)
             {
-                var button = new Button();
-                button.Style = FindResource("ShinraButtonStyle") as Style;
-                button.Background = System.Windows.Media.Brushes.Transparent;
-                button.Foreground = System.Windows.Media.Brushes.White;
-                button.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                button.VerticalAlignment = VerticalAlignment.Top;
-                button.Content = boss.Value.Name;
-                if (boss.Key.StartsWith("!"))
-                {
-                    button.Foreground = System.Windows.Media.Brushes.Red;
-                    button.ToolTip = boss.Key;
-                    
-                }
-                button.Tag = boss.Key;
-                button.Click += Button_Click;
-                TeraDpsHistory.Items.Add(button);
+                TeraDpsHistory.Items.Add(new HistoryLink(boss.Key, boss.Value));
             }
         }
     
-        
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (!((Button)sender).Tag.ToString().StartsWith("!"))
-                Process.Start("explorer.exe", "http://teradps.io/party/rank/"+((Button)sender).Tag);
-        }
     }
 }

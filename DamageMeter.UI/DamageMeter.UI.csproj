@@ -82,6 +82,9 @@
     <Compile Include="EntityStats\EntityStatsMain.xaml.cs">
       <DependentUpon>EntityStatsMain.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HistoryLink.xaml.cs">
+      <DependentUpon>HistoryLink.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Skill.cs" />
     <Compile Include="SkillDetail\SkillDetailMana.xaml.cs">
       <DependentUpon>SkillDetailMana.xaml</DependentUpon>
@@ -140,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EntityStats\EntityStatsMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HistoryLink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

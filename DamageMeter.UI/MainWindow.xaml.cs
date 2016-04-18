@@ -309,6 +309,8 @@ namespace DamageMeter.UI
             }
         }
 
+         
+
         public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
             List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Dictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)
         {
@@ -401,9 +403,14 @@ namespace DamageMeter.UI
             Dispatcher.Invoke(changeTitle, serverName);
         }
 
+        private long _lastStayTopMost = 0;
+
         private void StayTopMost()
         {
-            
+            //slow down the topmost
+            var time = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
+            if (time - 10 <= _lastStayTopMost) return;
+            _lastStayTopMost = time;
             if (!Topmost || !_topMost) return;
             Topmost = false;
             Topmost = true;

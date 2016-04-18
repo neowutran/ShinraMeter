@@ -20,6 +20,7 @@ namespace Data
             Copy = new Image { Source = new BitmapImage(new Uri(folder + "copy.png")) };
             Config = new Image { Source = new BitmapImage(new Uri(folder + "config.png")) };
             Chat = new Image { Source = new BitmapImage(new Uri(folder + "chat.png")) };
+            Link = new Image { Source = new BitmapImage(new Uri(folder + "link.png")) };
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
             Tray = new Icon(folder + "shinra.ico");
@@ -28,6 +29,8 @@ namespace Data
 
         public BitmapImage Icon { get; private set; }
         public Image Chrono { get; private set; }
+        public Image Link { get; private set; }
+
         public Image Copy { get; private set; }
         public Image Config { get; private set; }
         public Image Chat { get; private set; }
