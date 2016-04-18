@@ -41,9 +41,10 @@ namespace DamageMeter
             {
                 return;
             }
-          
-            _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
-          
+
+            if (_abnormalities[target].Where(x => x.HotDot.Id == abnormalityId).Count() == 0) //dont add existing abnormalities since we don't delete them all, that may cause many untrackable issues.
+                _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
+
         }
 
         public void RefreshAbnormality(SAbnormalityRefresh message)
@@ -117,6 +118,16 @@ namespace DamageMeter
         public void DeleteAbnormality(SNpcStatus message)
         {
             DeleteAbnormality(message.Npc, 8888888, message.Time.Ticks);
+        }
+
+        public void DeleteAbnormality(SCreatureChangeHp message)
+        {
+            DeleteAbnormality(message.TargetId, 8888889, message.Time.Ticks);
+        }
+
+        public void DeleteAbnormality(SPartyMemberChangeHp message)
+        {
+            DeleteAbnormality(message.TargetId, 8888889, message.Time.Ticks);
         }
 
         public void DeleteAbnormality(SDespawnUser message)
