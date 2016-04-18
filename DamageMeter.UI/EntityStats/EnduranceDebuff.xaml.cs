@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using Data;
+using Tera.Game;
 
 namespace DamageMeter.UI.EntityStats
 {
