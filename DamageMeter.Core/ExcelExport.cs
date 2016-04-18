@@ -87,7 +87,7 @@ namespace DamageMeter
                 {
                     j++;
                     var hotdot = BTD.HotDotDatabase.Get(int.Parse(buf.Key));
-                    ws.Cells[j, 1].Value = j - i + 3;
+                    ws.Cells[j, 1].Value = j - i - 3;
                     AddImage(ws, j, 1, BTD.Icons.GetBitmap(hotdot.IconName));
                     ws.Cells[j, 2].Value = hotdot.Name;
                     if (!string.IsNullOrEmpty(hotdot.Tooltip)) ws.Cells[j, 2].AddComment(""+hotdot.Tooltip,"info");
@@ -194,7 +194,7 @@ namespace DamageMeter
             {
                 j++;
                 var hotdot = BTD.HotDotDatabase.Get(int.Parse(buf.Key));
-                ws.Cells[j, 1].Value = j - i + 3;
+                ws.Cells[j, 1].Value = j - i - 3;
                 AddImage(ws, j, 1, BTD.Icons.GetBitmap(hotdot.IconName));
                 ws.Cells[j, 2].Value = hotdot.Name;
                 if (!string.IsNullOrEmpty(hotdot.Tooltip)) ws.Cells[j, 2].AddComment("" + hotdot.Tooltip, "info");
