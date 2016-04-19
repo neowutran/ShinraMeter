@@ -315,6 +315,7 @@ namespace DamageMeter.UI
         public void UpdateKeyboard(object o, EventArgs args)
         {
             var teraWindowActive = TeraWindow.IsTeraActive();
+            var meterWindowActive = TeraWindow.IsMeterActive();
             if (!_keyboardInitialized)
             {
                 KeyboardHook.Instance.RegisterKeyboardHook();
@@ -322,33 +323,23 @@ namespace DamageMeter.UI
             }
             else
             {
-                KeyboardHook.Instance.SetHotkeys(teraWindowActive);
+                if (KeyboardHook.Instance.SetHotkeys(teraWindowActive))
+                {
+                    StayTopMost();
+                }
             }
 
-            if(!TeraWindow.IsTeraActive() && !TeraWindow.IsMeterActive())
+            if(!teraWindowActive && !meterWindowActive)
             {
                 Visibility = Visibility.Hidden;
                 _forceWindowVisibilityHidden = true;
             }
 
-            if(TeraWindow.IsTeraActive() || TeraWindow.IsTeraActive())
+            if(meterWindowActive || teraWindowActive)
             {
                 Visibility = Visibility.Visible;
             }
-
-            if (!teraWindowActive)
-            {
-                _teraActive = false;
-            }
-
-            if(teraWindowActive && !_teraActive)
-            {
-                StayTopMost();
-                _teraActive = true;
-            }
         }
-
-        private bool _teraActive;
 
         public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
             List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Dictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)

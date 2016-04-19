@@ -26,17 +26,19 @@ namespace DamageMeter
 
         public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
 
-        public void SetHotkeys(bool value)
+        public bool SetHotkeys(bool value)
         {
             if (value && !_isRegistered)
             {
                 Register();
-                return;
+                return true;
             }
             if (!value && _isRegistered)
             {
                 ClearHotkeys();
+                
             }
+            return false;
         }
 
         private static void hook_KeyPressed(object sender, KeyPressedEventArgs e)
