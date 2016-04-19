@@ -352,8 +352,8 @@ namespace DamageMeter
                 var despawnUser = message as SDespawnUser;
                 if (despawnUser != null)
                 {
-                    AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
                     CharmTracker.Instance.CharmReset(despawnUser.User, new List<CharmStatus>(), despawnUser.Time.Ticks);
+                    AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
                     continue;
                 }
 
@@ -422,10 +422,18 @@ namespace DamageMeter
                 //    continue;
                 //}
 
+                var spawnMe = message as SpawnMeServerMessage;
+                if (spawnMe != null)
+                {
+                    AbnormalityTracker.Instance.Renew();
+                    CharmTracker.Instance.Renew();
+                    continue;
+                }
                 var sLogin = message as LoginServerMessage;
                 if (sLogin != null)
                 {
                     AbnormalityTracker.Instance.Renew();
+                    CharmTracker.Instance.Renew();
                     Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
                     //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;

@@ -142,11 +142,15 @@ namespace DamageMeter.UI
             forum.Click += ForumOnClick;
             var teradps = new MenuItem { Text = "TeraDps.io" };
             teradps.Click += TeraDpsOnClick;
-        
+            var excel = new MenuItem { Text = "Excel export" };
+            excel.Click += ExcelOnClick;
+            excel.Checked = BasicTeraData.Instance.WindowData.Excel;
+
             _clickThrou = new MenuItem {Text = "Activate click throu"};
             _clickThrou.Click += ClickThrouOnClick;
-            _switchNoStatsVisibility = new MenuItem { Text = "Switch no stats visibility" };
+            _switchNoStatsVisibility = new MenuItem { Text = "Invisible when no stats" };
             _switchNoStatsVisibility.Click += SwitchNoStatsVisibility;
+            _switchNoStatsVisibility.Checked = BasicTeraData.Instance.WindowData.InvisibleUI;
 
             var context = new ContextMenu();
             context.MenuItems.Add(_clickThrou);
@@ -157,8 +161,14 @@ namespace DamageMeter.UI
             context.MenuItems.Add(issues);
             context.MenuItems.Add(forum);
             context.MenuItems.Add(teradps);
+            context.MenuItems.Add(excel);
             context.MenuItems.Add(exit);
             _trayIcon.ContextMenu = context;
+        }
+        private void ExcelOnClick(object sender, EventArgs eventArgs)
+        {
+            BasicTeraData.Instance.WindowData.Excel = !BasicTeraData.Instance.WindowData.Excel;
+            (sender as MenuItem).Checked = BasicTeraData.Instance.WindowData.Excel;
         }
 
         private void _trayIcon_DoubleClick(object sender, EventArgs e)
@@ -221,6 +231,7 @@ namespace DamageMeter.UI
            
             var invisibleUi = BasicTeraData.Instance.WindowData.InvisibleUI;
             BasicTeraData.Instance.WindowData.InvisibleUI = !invisibleUi;
+            (sender as MenuItem).Checked = BasicTeraData.Instance.WindowData.InvisibleUI;
             if (_forceWindowVisibilityHidden) return;
 
             if (invisibleUi)
