@@ -14,6 +14,11 @@ namespace DamageMeter
         public static CharmTracker Instance => _instance ?? (_instance = new CharmTracker());
         private readonly Dictionary<EntityId, List<uint>> _charms = new Dictionary<EntityId, List<uint>>();
 
+        public void Renew()
+        {
+            _instance = new CharmTracker();
+        }
+
         internal void CharmAdd(EntityId target, uint charmId, byte status, long ticks)
         {
             if (status == 1)
