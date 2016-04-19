@@ -55,6 +55,7 @@
     <Compile Include="Abnormality.cs" />
     <Compile Include="AbnormalityDuration.cs" />
     <Compile Include="AbnormalityTracker.cs" />
+    <Compile Include="CharmTracker.cs" />
     <Compile Include="Chat.cs" />
     <Compile Include="ChatBuilder.cs" />
     <Compile Include="ChatMessage.cs" />

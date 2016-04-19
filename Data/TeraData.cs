@@ -16,7 +16,6 @@ namespace Data
             BasicTeraData.Instance.PetSkillDatabase = new PetSkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
             BasicTeraData.Instance.SkillDatabase = new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
             BasicTeraData.Instance.HotDotDatabase = new HotDotDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
-            BasicTeraData.Instance.Charms = new CharmsDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language, BasicTeraData.Instance.HotDotDatabase);
         }
 
         public string GetLanguage(string region)
