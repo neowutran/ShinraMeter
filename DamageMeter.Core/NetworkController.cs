@@ -216,6 +216,26 @@ namespace DamageMeter
                 var message = _messageFactory.Create(obj);
                 EntityTracker.Update(message);
 
+                var skillResultMessage = message as EachSkillResultServerMessage;
+                if (skillResultMessage != null)
+                {
+
+                    var amount = skillResultMessage.Amount;
+                    if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
+                    {
+                        amount *= -1;
+                    }
+                    var skillResult = ForgeSkillResult(
+                        false,
+                        amount,
+                        skillResultMessage.IsCritical,
+                        skillResultMessage.IsHp,
+                        skillResultMessage.SkillId,
+                        skillResultMessage.Source,
+                        skillResultMessage.Target);
+                    DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
+                }
+
                 //var sSpawnUser = message as SpawnUserServerMessage;
                 //if (sSpawnUser != null)
                 //{
@@ -223,15 +243,7 @@ namespace DamageMeter
                 //    continue;
                 //}
 
-                var sLogin = message as LoginServerMessage;
-                if (sLogin != null)
-                {
-                    AbnormalityTracker.Instance.Renew();
-                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId,Server));
-                    //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
-                    continue;
-                }
-
+         
                 var npcOccupier = message as SNpcOccupierInfo;
                 if (npcOccupier != null)
                 {
@@ -298,6 +310,13 @@ namespace DamageMeter
                     }
                 }
 
+                var dead = message as SCreatureLife;
+                if (dead != null)
+                {
+                    DamageTracker.Instance.RegisterDead(dead);
+                    continue;
+                }
+
                 var abnormalityBegin = message as SAbnormalityBegin;
                 if (abnormalityBegin != null)
                 {
@@ -348,31 +367,18 @@ namespace DamageMeter
                     continue;
                 }
 
-                var dead = message as SCreatureLife;
-                if(dead != null)
+                
+
+                var sLogin = message as LoginServerMessage;
+                if (sLogin != null)
                 {
-                    DamageTracker.Instance.RegisterDead(dead);
+                    AbnormalityTracker.Instance.Renew();
+                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
+                    //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;
                 }
 
 
-                var skillResultMessage = message as EachSkillResultServerMessage;
-                if (skillResultMessage == null) continue;
-
-                var amount = skillResultMessage.Amount;
-                if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
-                {
-                    amount *= -1;
-                }
-                var skillResult = ForgeSkillResult(
-                    false,
-                    amount,
-                    skillResultMessage.IsCritical,
-                    skillResultMessage.IsHp,
-                    skillResultMessage.SkillId,
-                    skillResultMessage.Source,
-                    skillResultMessage.Target);
-                DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
             }
         }
 

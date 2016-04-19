@@ -3,8 +3,11 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows;
+using System.Windows.Interop;
 
 namespace DamageMeter
 {
@@ -94,6 +97,21 @@ namespace DamageMeter
             var teraWindow = FindTeraWindow();
             var activeWindow = GetForegroundWindow();
             return (teraWindow != IntPtr.Zero) && (teraWindow == activeWindow);
+        }
+
+        public static bool IsMeterActive()
+        {
+            var activeWindow = GetForegroundWindow();
+            foreach(Window window in Application.Current.Windows)
+            {
+                var wih = new WindowInteropHelper(window);
+                IntPtr hWnd = wih.Handle;
+                if(hWnd == activeWindow)
+                {
+                    return true;
+                }
+            }
+            return false;            
         }
     }
 }

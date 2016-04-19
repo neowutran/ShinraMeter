@@ -116,7 +116,7 @@ namespace DamageMeter.UI
 
         public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
 
-
+        private MenuItem _switchNoStatsVisibility;
         private void TrayConfiguration()
         {
             _trayIcon = new NotifyIcon
@@ -143,9 +143,12 @@ namespace DamageMeter.UI
             teradps.Click += TeraDpsOnClick;
             _clickThrou = new MenuItem {Text = "Activate click throu"};
             _clickThrou.Click += ClickThrouOnClick;
-                  
+            _switchNoStatsVisibility = new MenuItem { Text = "Switch no stats visibility" };
+            _switchNoStatsVisibility.Click += SwitchNoStatsVisibility;
+
             var context = new ContextMenu();
             context.MenuItems.Add(_clickThrou);
+            context.MenuItems.Add(_switchNoStatsVisibility);
             context.MenuItems.Add(reset);
             context.MenuItems.Add(wiki);
             context.MenuItems.Add(patch);
@@ -199,15 +202,12 @@ namespace DamageMeter.UI
             Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki");
         }
 
-        private void TrayIconOnClick(object sender, EventArgs eventArgs)
+        private void SwitchNoStatsVisibility(object sender, EventArgs eventArgs)
         {
-            var e = (MouseEventArgs) eventArgs;
-            if (e.Button.ToString() == "Right")
-            {
-                return;
-            }
+           
             var invisibleUi = BasicTeraData.Instance.WindowData.InvisibleUI;
             BasicTeraData.Instance.WindowData.InvisibleUI = !invisibleUi;
+            if (_forceWindowVisibilityHidden) return;
 
             if (invisibleUi)
             {
@@ -217,6 +217,20 @@ namespace DamageMeter.UI
             {
                 Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
             }
+
+        }
+
+        private void TrayIconOnClick(object sender, EventArgs eventArgs)
+        {
+            /* //no need
+            var e = (MouseEventArgs)eventArgs;
+            if (e.Button.ToString() == "Right")
+            {
+                return;
+            }
+            */
+            StayTopMost();
+
         }
 
         public void VerifyClose()
@@ -296,8 +310,11 @@ namespace DamageMeter.UI
             }
         }
 
+        private bool _forceWindowVisibilityHidden = false;
+
         public void UpdateKeyboard(object o, EventArgs args)
         {
+            var teraWindowActive = TeraWindow.IsTeraActive();
             if (!_keyboardInitialized)
             {
                 KeyboardHook.Instance.RegisterKeyboardHook();
@@ -305,11 +322,33 @@ namespace DamageMeter.UI
             }
             else
             {
-                KeyboardHook.Instance.SetHotkeys(TeraWindow.IsTeraActive());
+                KeyboardHook.Instance.SetHotkeys(teraWindowActive);
+            }
+
+            if(!TeraWindow.IsTeraActive() && !TeraWindow.IsMeterActive())
+            {
+                Visibility = Visibility.Hidden;
+                _forceWindowVisibilityHidden = true;
+            }
+
+            if(TeraWindow.IsTeraActive() || TeraWindow.IsTeraActive())
+            {
+                Visibility = Visibility.Visible;
+            }
+
+            if (!teraWindowActive)
+            {
+                _teraActive = false;
+            }
+
+            if(teraWindowActive && !_teraActive)
+            {
+                StayTopMost();
+                _teraActive = true;
             }
         }
 
-         
+        private bool _teraActive;
 
         public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
             List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Dictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)
@@ -318,7 +357,6 @@ namespace DamageMeter.UI
                 delegate(long firstHit, long lastHit, long totalDamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
                     List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string, Entity> bossHistory, List<ChatMessage> chatbox)
                 {
-                    StayTopMost();
                     var entitiesStats = new LinkedList<KeyValuePair<Entity, EntityInfo>>(entities.ToList().OrderByDescending(e => e.Value.LastHit));
                     UpdateComboboxEncounter(entitiesStats, currentBoss);
                     _entityStats.Update(entities, currentBoss);
@@ -374,7 +412,17 @@ namespace DamageMeter.UI
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
                     {
-                        Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
+
+                        if(Controls.Count > 0 && !_forceWindowVisibilityHidden)
+                        {
+
+                            Visibility = Visibility.Visible;
+                        }
+                        if(Controls.Count == 0)
+                        {
+                            Visibility = Visibility.Hidden;
+                        }
+
                     }
                 };
             Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter, nbossHistory, nchatbox);
@@ -403,14 +451,8 @@ namespace DamageMeter.UI
             Dispatcher.Invoke(changeTitle, serverName);
         }
 
-        private long _lastStayTopMost = 0;
-
         private void StayTopMost()
         {
-            //slow down the topmost
-            var time = DateTime.Now.Ticks / TimeSpan.TicksPerSecond;
-            if (time - 10 <= _lastStayTopMost) return;
-            _lastStayTopMost = time;
             if (!Topmost || !_topMost) return;
             Topmost = false;
             Topmost = true;
