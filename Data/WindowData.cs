@@ -47,6 +47,7 @@ namespace Data
             ParseTeraDps();
             ParseDebug();
             ParseExcel();
+            ParseAlwaysVisible();
         }
 
 
@@ -68,6 +69,8 @@ namespace Data
 
         public string TeraDpsUser { get; private set; }
         public string TeraDpsToken { get; private set; }
+
+        public bool AlwaysVisible { get;  set; }
 
         public bool Topmost { get; set; }
 
@@ -91,6 +94,7 @@ namespace Data
             TeraDpsToken = "";
             TeraDpsUser = "";
             Excel = false;
+            AlwaysVisible = false;
         }
 
         public void ParseExcel()
@@ -103,6 +107,19 @@ namespace Data
             if (parseSuccess)
             {
                 Excel = excel;
+            }
+        }
+
+        public void ParseAlwaysVisible()
+        {
+            var root = _xml.Root;
+            var alwaysvisible = root?.Element("always_visible");
+            if (alwaysvisible == null) return;
+            bool visible;
+            var parseSuccess = bool.TryParse(alwaysvisible.Value, out visible);
+            if (parseSuccess)
+            {
+                AlwaysVisible = visible;
             }
         }
 
@@ -169,7 +186,7 @@ namespace Data
         public void ParseInvisibleUi()
         {
             var root = _xml.Root;
-            var invisibleUI = root?.Element("invisible_ui");
+            var invisibleUI = root?.Element("invisible_ui_when_no_stats");
             if (invisibleUI == null) return;
             bool invisibleUi;
             var parseSuccess = bool.TryParse(invisibleUI.Value, out invisibleUi);
@@ -295,7 +312,7 @@ namespace Data
             xml.Root.Add(new XElement("autoupdate", AutoUpdate));
             xml.Root.Add(new XElement("remember_position", RememberPosition));
             xml.Root.Add(new XElement("winpcap", Winpcap));
-            xml.Root.Add(new XElement("invisible_ui", InvisibleUI));
+            xml.Root.Add(new XElement("invisible_ui_when_no_stats", InvisibleUI));
             xml.Root.Add(new XElement("allow_transparency", AllowTransparency));
             xml.Root.Add(new XElement("topmost", Topmost));
             xml.Root.Add(new XElement("teradps.io"));
@@ -303,6 +320,7 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
+            xml.Root.Add(new XElement("always_visible", AlwaysVisible));
 
             _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))

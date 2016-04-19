@@ -126,6 +126,7 @@ namespace DamageMeter.UI
                 Text = "Shinra Meter V" + UpdateManager.Version + ": No server"
             };
             _trayIcon.Click += TrayIconOnClick;
+            _trayIcon.DoubleClick += _trayIcon_DoubleClick;
 
             var reset = new MenuItem {Text = "Reset"};
             reset.Click += ResetOnClick;
@@ -141,6 +142,7 @@ namespace DamageMeter.UI
             forum.Click += ForumOnClick;
             var teradps = new MenuItem { Text = "TeraDps.io" };
             teradps.Click += TeraDpsOnClick;
+        
             _clickThrou = new MenuItem {Text = "Activate click throu"};
             _clickThrou.Click += ClickThrouOnClick;
             _switchNoStatsVisibility = new MenuItem { Text = "Switch no stats visibility" };
@@ -157,6 +159,18 @@ namespace DamageMeter.UI
             context.MenuItems.Add(teradps);
             context.MenuItems.Add(exit);
             _trayIcon.ContextMenu = context;
+        }
+
+        private void _trayIcon_DoubleClick(object sender, EventArgs e)
+        {
+            if (BasicTeraData.Instance.WindowData.AlwaysVisible)
+            {
+                BasicTeraData.Instance.WindowData.AlwaysVisible = false;
+            }
+            else
+            {
+                BasicTeraData.Instance.WindowData.AlwaysVisible = true;
+            }
         }
 
         private MenuItem _clickThrou;
@@ -329,15 +343,24 @@ namespace DamageMeter.UI
                 }
             }
 
-            if(!teraWindowActive && !meterWindowActive)
+            if (!BasicTeraData.Instance.WindowData.AlwaysVisible)
             {
-                Visibility = Visibility.Hidden;
-                _forceWindowVisibilityHidden = true;
-            }
 
-            if(meterWindowActive || teraWindowActive)
+                if (!teraWindowActive && !meterWindowActive)
+                {
+                    Visibility = Visibility.Hidden;
+                    _forceWindowVisibilityHidden = true;
+                }
+
+                if ((meterWindowActive || teraWindowActive) && ((BasicTeraData.Instance.WindowData.InvisibleUI && Controls.Count > 0) || !BasicTeraData.Instance.WindowData.InvisibleUI))
+                {
+                    _forceWindowVisibilityHidden = false;
+                    Visibility = Visibility.Visible;
+                }
+            }
+            else
             {
-                Visibility = Visibility.Visible;
+                _forceWindowVisibilityHidden = false;
             }
         }
 
@@ -403,17 +426,21 @@ namespace DamageMeter.UI
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
                     {
-
                         if(Controls.Count > 0 && !_forceWindowVisibilityHidden)
                         {
-
                             Visibility = Visibility.Visible;
                         }
                         if(Controls.Count == 0)
                         {
                             Visibility = Visibility.Hidden;
                         }
-
+                    }
+                    else
+                    {
+                        if (!_forceWindowVisibilityHidden)
+                        {
+                            Visibility = Visibility.Visible;
+                        }
                     }
                 };
             Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter, nbossHistory, nchatbox);
