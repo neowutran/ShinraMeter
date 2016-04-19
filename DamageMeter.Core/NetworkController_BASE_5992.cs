@@ -214,26 +214,32 @@ namespace DamageMeter
                 }
 
                 var message = _messageFactory.Create(obj);
+                EntityTracker.Update(message);
 
-                var skillResultMessage = message as EachSkillResultServerMessage;
-                if (skillResultMessage != null)
+                //var sSpawnUser = message as SpawnUserServerMessage;
+                //if (sSpawnUser != null)
+                //{
+                //    Console.WriteLine(sSpawnUser.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.Id.Id))+" : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.ServerId)) + " " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.PlayerId)));
+                //    continue;
+                //}
+
+                var sLogin = message as LoginServerMessage;
+                if (sLogin != null)
                 {
-                    var amount = skillResultMessage.Amount;
-                    if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
-                    {
-                        amount *= -1;
-                    }
-                    var skillResult = ForgeSkillResult(
-                        false,
-                        amount,
-                        skillResultMessage.IsCritical,
-                        skillResultMessage.IsHp,
-                        skillResultMessage.SkillId,
-                        skillResultMessage.Source,
-                        skillResultMessage.Target);
-                    DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
+                    AbnormalityTracker.Instance.Renew();
+                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId,Server));
+                    //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;
                 }
+
+                var npcOccupier = message as SNpcOccupierInfo;
+                if (npcOccupier != null)
+                {
+                    DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier), npcOccupier.Time.Ticks);
+                    continue;
+                }
+
+
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
                 {
@@ -258,6 +264,7 @@ namespace DamageMeter
                 {
                     var user = PlayerTracker.GetOrNull(pchangeHp.PlayerId);
                     if (user == null) continue;//have not seen user yet, cause he is far away, but in party.
+                    //Console.WriteLine(user.Name + " :" + pchangeHp.Slaying);
                     if (pchangeHp.Slaying)
                     {
                         AbnormalityTracker.Instance.AddAbnormality(user.User.Id, user.User.Id, 0, 0, 8888889, pchangeHp.Time.Ticks);
@@ -291,13 +298,6 @@ namespace DamageMeter
                     }
                 }
 
-                var dead = message as SCreatureLife;
-                if (dead != null)
-                {
-                    DamageTracker.Instance.RegisterDead(dead);
-                    continue;
-                }
-
                 var abnormalityBegin = message as SAbnormalityBegin;
                 if (abnormalityBegin != null)
                 {
@@ -316,13 +316,6 @@ namespace DamageMeter
                 if (abnormalityRefresh != null)
                 {
                     AbnormalityTracker.Instance.RefreshAbnormality(abnormalityRefresh);
-                    continue;
-                }
-
-                var npcOccupier = message as SNpcOccupierInfo;
-                if (npcOccupier != null)
-                {
-                    DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(npcOccupier), npcOccupier.Time.Ticks);
                     continue;
                 }
 
@@ -352,83 +345,34 @@ namespace DamageMeter
                 if (despawnUser != null)
                 {
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
-                    CharmTracker.Instance.CharmReset(despawnUser.User, new List<CharmStatus>(), despawnUser.Time.Ticks);
                     continue;
                 }
 
-                var charmEnable = message as SEnableCharmStatus;
-                if (charmEnable != null)
+                var dead = message as SCreatureLife;
+                if(dead != null)
                 {
-                    CharmTracker.Instance.CharmEnable(EntityTracker.MeterUser.Id, charmEnable.CharmId,charmEnable.Time.Ticks);
-                    continue;
-                }
-                var pcharmEnable = message as SPartyMemberCharmEnable;
-                if (pcharmEnable != null)
-                {
-                    var player = PlayerTracker.GetOrNull(pcharmEnable.PlayerId);
-                    if (player == null) continue;
-                    CharmTracker.Instance.CharmEnable(player.User.Id, pcharmEnable.CharmId, pcharmEnable.Time.Ticks);
-                    continue;
-                }
-                var charmReset = message as SResetCharmStatus;
-                if (charmReset != null)
-                {
-                    CharmTracker.Instance.CharmReset(charmReset.TargetId, charmReset.Charms, charmReset.Time.Ticks);
-                    continue;
-                }
-                var pcharmReset = message as SPartyMemberCharmReset;
-                if (pcharmReset != null)
-                {
-                    var player = PlayerTracker.GetOrNull(pcharmReset.PlayerId);
-                    if (player == null) continue;
-                    CharmTracker.Instance.CharmReset(player.User.Id, pcharmReset.Charms, pcharmReset.Time.Ticks);
-                    continue;
-                }
-                var charmDel = message as SRemoveCharmStatus;
-                if (charmDel != null)
-                {
-                    CharmTracker.Instance.CharmDel(EntityTracker.MeterUser.Id, charmDel.CharmId, charmDel.Time.Ticks);
-                    continue;
-                }
-                var pcharmDel = message as SPartyMemberCharmDel;
-                if (pcharmDel != null)
-                {
-                    var player = PlayerTracker.GetOrNull(pcharmDel.PlayerId);
-                    if (player == null) continue;
-                    CharmTracker.Instance.CharmDel(player.User.Id, pcharmDel.CharmId, pcharmDel.Time.Ticks);
-                    continue;
-                }
-                var charmAdd = message as SAddCharmStatus;
-                if (charmAdd != null)
-                {
-                    CharmTracker.Instance.CharmAdd(charmAdd.TargetId, charmAdd.CharmId, charmAdd.Status, charmAdd.Time.Ticks);
-                    continue;
-                }
-                var pcharmAdd = message as SPartyMemberCharmAdd;
-                if (pcharmAdd != null)
-                {
-                    var player = PlayerTracker.GetOrNull(pcharmAdd.PlayerId);
-                    if (player == null) continue;
-                    CharmTracker.Instance.CharmAdd(player.User.Id, pcharmAdd.CharmId, pcharmAdd.Status, pcharmAdd.Time.Ticks);
+                    DamageTracker.Instance.RegisterDead(dead);
                     continue;
                 }
 
-                EntityTracker.Update(message);
-                //var sSpawnUser = message as SpawnUserServerMessage;
-                //if (sSpawnUser != null)
-                //{
-                //    Console.WriteLine(sSpawnUser.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.Id.Id))+" : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.ServerId)) + " " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.PlayerId)));
-                //    continue;
-                //}
 
-                var sLogin = message as LoginServerMessage;
-                if (sLogin != null)
+                var skillResultMessage = message as EachSkillResultServerMessage;
+                if (skillResultMessage == null) continue;
+
+                var amount = skillResultMessage.Amount;
+                if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
                 {
-                    AbnormalityTracker.Instance.Renew();
-                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
-                    //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
-                    continue;
+                    amount *= -1;
                 }
+                var skillResult = ForgeSkillResult(
+                    false,
+                    amount,
+                    skillResultMessage.IsCritical,
+                    skillResultMessage.IsHp,
+                    skillResultMessage.SkillId,
+                    skillResultMessage.Source,
+                    skillResultMessage.Target);
+                DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
             }
         }
 

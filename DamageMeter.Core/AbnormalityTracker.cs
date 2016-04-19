@@ -180,7 +180,7 @@ namespace DamageMeter
                         ) continue;
                 }
 
-                if ((int) HotDotDatabase.HotDot.Dot != type && (int) HotDotDatabase.HotDot.Hot != type)
+                if ((int) HotDotDatabase.HotOrDot.Dot != type && (int) HotDotDatabase.HotOrDot.Hot != type)
                 {
                     continue;
                 }

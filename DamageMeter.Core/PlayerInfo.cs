@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DamageMeter.Dealt;
 using DamageMeter.Taken;
-using Data;
 using Tera.Game;
 
 namespace DamageMeter

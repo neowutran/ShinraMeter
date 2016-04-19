@@ -217,6 +217,37 @@ namespace DamageMeter
 
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
+<<<<<<< HEAD
+                {
+
+                    var amount = skillResultMessage.Amount;
+                    if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
+                    {
+                        amount *= -1;
+                    }
+                    var skillResult = ForgeSkillResult(
+                        false,
+                        amount,
+                        skillResultMessage.IsCritical,
+                        skillResultMessage.IsHp,
+                        skillResultMessage.SkillId,
+                        skillResultMessage.Source,
+                        skillResultMessage.Target);
+                    DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
+                }
+
+                //var sSpawnUser = message as SpawnUserServerMessage;
+                //if (sSpawnUser != null)
+                //{
+                //    Console.WriteLine(sSpawnUser.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.Id.Id))+" : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.ServerId)) + " " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.PlayerId)));
+                //    continue;
+                //}
+
+         
+                var npcOccupier = message as SNpcOccupierInfo;
+                if (npcOccupier != null)
+=======
+>>>>>>> d964f878ba8704e99de5dd3cbd57c69fa5fed00e
                 {
                     var amount = skillResultMessage.Amount;
                     if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
@@ -356,6 +387,17 @@ namespace DamageMeter
                     continue;
                 }
 
+                
+
+                var sLogin = message as LoginServerMessage;
+                if (sLogin != null)
+                {
+                    AbnormalityTracker.Instance.Renew();
+                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
+                    //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
+                    continue;
+                }
+
                 var charmEnable = message as SEnableCharmStatus;
                 if (charmEnable != null)
                 {
@@ -413,6 +455,8 @@ namespace DamageMeter
                     continue;
                 }
 
+<<<<<<< HEAD
+=======
                 EntityTracker.Update(message);
                 //var sSpawnUser = message as SpawnUserServerMessage;
                 //if (sSpawnUser != null)
@@ -429,6 +473,7 @@ namespace DamageMeter
                     //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;
                 }
+>>>>>>> d964f878ba8704e99de5dd3cbd57c69fa5fed00e
             }
         }
 

@@ -291,13 +291,6 @@ namespace DamageMeter
                     }
                 }
 
-                var dead = message as SCreatureLife;
-                if (dead != null)
-                {
-                    DamageTracker.Instance.RegisterDead(dead);
-                    continue;
-                }
-
                 var abnormalityBegin = message as SAbnormalityBegin;
                 if (abnormalityBegin != null)
                 {
@@ -353,6 +346,13 @@ namespace DamageMeter
                 {
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
                     CharmTracker.Instance.CharmReset(despawnUser.User, new List<CharmStatus>(), despawnUser.Time.Ticks);
+                    continue;
+                }
+
+                var dead = message as SCreatureLife;
+                if(dead != null)
+                {
+                    DamageTracker.Instance.RegisterDead(dead);
                     continue;
                 }
 
