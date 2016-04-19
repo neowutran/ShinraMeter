@@ -151,10 +151,14 @@ namespace DamageMeter.UI
             _switchNoStatsVisibility = new MenuItem { Text = "Invisible when no stats" };
             _switchNoStatsVisibility.Click += SwitchNoStatsVisibility;
             _switchNoStatsVisibility.Checked = BasicTeraData.Instance.WindowData.InvisibleUI;
+            _alwaysOn = new MenuItem { Text = "Show always" };
+            _alwaysOn.Click += _trayIcon_DoubleClick;
+            _alwaysOn.Checked = BasicTeraData.Instance.WindowData.AlwaysVisible;
 
             var context = new ContextMenu();
             context.MenuItems.Add(_clickThrou);
             context.MenuItems.Add(_switchNoStatsVisibility);
+            context.MenuItems.Add(_alwaysOn);
             context.MenuItems.Add(reset);
             context.MenuItems.Add(wiki);
             context.MenuItems.Add(patch);
@@ -173,17 +177,12 @@ namespace DamageMeter.UI
 
         private void _trayIcon_DoubleClick(object sender, EventArgs e)
         {
-            if (BasicTeraData.Instance.WindowData.AlwaysVisible)
-            {
-                BasicTeraData.Instance.WindowData.AlwaysVisible = false;
-            }
-            else
-            {
-                BasicTeraData.Instance.WindowData.AlwaysVisible = true;
-            }
+            BasicTeraData.Instance.WindowData.AlwaysVisible = !BasicTeraData.Instance.WindowData.AlwaysVisible;
+            _alwaysOn.Checked = BasicTeraData.Instance.WindowData.AlwaysVisible;
         }
 
         private MenuItem _clickThrou;
+        private MenuItem _alwaysOn;
 
         private static void ClickThrouOnClick(object sender, EventArgs eventArgs)
         {
