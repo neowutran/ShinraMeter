@@ -21,7 +21,7 @@
 
         <Image PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class" Focusable="False"
                Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
-               Height="25" VerticalAlignment="Top" Width="25" Margin="0,0,0,0" />
+               Height="25" VerticalAlignment="Top" Width="25" Margin="0,2,0,0" />
 
         <Grid Focusable="False" PreviewMouseRightButtonDown="ShowSkills"  MouseLeftButtonDown="MoveWindow" x:Name="GridStats"
               Width="Auto"

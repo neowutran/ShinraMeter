@@ -12,9 +12,16 @@ namespace DamageMeter
 
         public Death()
         {
-
+        }
+        public Death(AbnormalityDuration death)
+        {
+            _death = death;
         }
 
+        public Death Clone()
+        {
+            return new Death((AbnormalityDuration)_death?.Clone());
+        }
         public int Count(long begin, long end)
         {
             if(_death == null)

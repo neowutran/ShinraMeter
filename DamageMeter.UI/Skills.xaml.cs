@@ -87,6 +87,19 @@ namespace DamageMeter.UI
                 var interval = TimeSpan.FromSeconds(duration);
                 DeathDuration.Content = interval.ToString(@"mm\:ss");
             }
+            var aggro = playerinfo.Dealt.Aggro(currentBoss);
+            if (aggro == null)
+            {
+                AggroCounter.Content = 0;
+                AggroDuration.Content = "0s";
+            }
+            else
+            {
+                AggroCounter.Content = aggro.Count(firstHit, lastHit);
+                var duration = aggro.Duration(firstHit, lastHit);
+                var interval = TimeSpan.FromSeconds(duration);
+                AggroDuration.Content = interval.ToString(@"mm\:ss");
+            }
 
             var skills = NoTimedSkills(timedSkills);
             var allSkills = NoTimedSkills(timedAllSkills);

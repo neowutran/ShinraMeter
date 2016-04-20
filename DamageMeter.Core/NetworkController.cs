@@ -280,6 +280,7 @@ namespace DamageMeter
                 var NpcStatus = message as SNpcStatus;
                 if (NpcStatus != null)
                 {
+                    DamageTracker.Instance.RegisterAggro(NpcStatus);
                     if (NpcStatus.Enraged)
                     {
                         AbnormalityTracker.Instance.AddAbnormality(NpcStatus.Npc, NpcStatus.Target,0,0,8888888,NpcStatus.Time.Ticks);
@@ -330,6 +331,7 @@ namespace DamageMeter
                 var despawnNpc = message as SDespawnNpc;
                 if (despawnNpc != null)
                 {
+                    DamageTracker.Instance.StopAggro(despawnNpc);
                     AbnormalityTracker.Instance.DeleteAbnormality(despawnNpc);
                     DataExporter.ToTeraDpsApi(despawnNpc);
                     continue;

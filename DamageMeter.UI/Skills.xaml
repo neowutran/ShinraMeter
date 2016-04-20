@@ -90,13 +90,22 @@
                Height="29" VerticalAlignment="Top" Width="29" />
         </Button>
         <Label Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="0,30,0,0" FontSize="14" Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="105" HorizontalContentAlignment="Center">Death counter:</Label>
-        <Label x:Name="DeathCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="107,30,0,0" FontSize="14" Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="88" HorizontalContentAlignment="Center" />
-        <Label Focusable="False" HorizontalAlignment="Left" Margin="197,30,0,0" FontSize="14" Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="106" HorizontalContentAlignment="Center" Background="Transparent">Death duration:</Label>
-        <Label x:Name="DeathDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="305,30,0,0" FontSize="14" Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="115" HorizontalContentAlignment="Center"/>
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="60" HorizontalContentAlignment="Center" ToolTip="Death count">Deaths:</Label>
+        <Label x:Name="DeathCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="60,30,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="40" HorizontalContentAlignment="Center" />
+        <Label Focusable="False" HorizontalAlignment="Left" Margin="100,30,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="80" HorizontalContentAlignment="Center" Background="Transparent" ToolTip="Time spent on the floor">Death time:</Label>
+        <Label x:Name="DeathDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="180,30,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="80" HorizontalContentAlignment="Center"/>
+        <Label Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="260,30,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="55" HorizontalContentAlignment="Center" ToolTip="Aggro take count">Aggro:</Label>
+        <Label x:Name="AggroCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="315,30,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="40" HorizontalContentAlignment="Center" />
+        <Label Focusable="False" HorizontalAlignment="Left" Margin="355,30,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="85" HorizontalContentAlignment="Center" Background="Transparent" ToolTip="Time holding boss aggro">Aggro time:</Label>
+        <Label x:Name="AggroDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="440,30,0,0" FontSize="14" Foreground="White"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="80" HorizontalContentAlignment="Center"/>
+
         <TabControl Background="Transparent" BorderThickness="0" x:Name="TabControl" Margin="0,60,0,0">
             <TabItem FontSize="14" Header="Dps" x:Name="DpsPanel" Background="Transparent" Foreground="White" />
             <TabItem FontSize="14" Header="Heal" x:Name="HealPanel" Background="Transparent" Foreground="White" />

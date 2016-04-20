@@ -10,6 +10,7 @@ namespace DamageMeter.Dealt
     {
         private Dictionary<long, Dictionary<Entity, SkillsStats>> _entitiesStats =
             new Dictionary<long, Dictionary<Entity, SkillsStats>>();
+        private Dictionary<Entity, Death> _aggrolist = new Dictionary<Entity, Death>();
 
         public PlayerInfo PlayerInfo;
 
@@ -225,7 +226,8 @@ namespace DamageMeter.Dealt
             {
                 _entitiesStats =
                     _entitiesStats.ToDictionary(i => i.Key,
-                        i => i.Value.ToDictionary(j => j.Key, j => (SkillsStats) j.Value.Clone()))
+                        i => i.Value.ToDictionary(j => j.Key, j => (SkillsStats)j.Value.Clone())),
+                _aggrolist = _aggrolist.ToDictionary(i => i.Key, i => i.Value.Clone())
             };
 
             return clone;
@@ -389,5 +391,33 @@ namespace DamageMeter.Dealt
                 }
             }
         }
+        public Death Aggro(Entity target)
+        {
+            if (target == null) return null;
+            Death result;
+            _aggrolist.TryGetValue(target, out result);
+            if (result == null)
+            {
+                result = new Death();
+                _aggrolist[target] = result;
+            }
+            return result;
+        }
+        public void AggroStart(Entity target, long start)
+        {
+            if(!_aggrolist.ContainsKey(target))
+            {
+                Death aggro = new Death();
+                _aggrolist[target] = aggro;
+            }
+            _aggrolist[target].Start(start);
+        }
+
+        public void AggroEnd(Entity target, long end)
+        {
+            if (_aggrolist.ContainsKey(target))
+                _aggrolist[target].End(end);
+        }
+
     }
 }

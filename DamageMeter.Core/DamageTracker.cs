@@ -65,6 +65,56 @@ namespace DamageMeter
             }
         }
 
+        public void RegisterAggro(SNpcStatus aggro)
+        {
+            var time = aggro.Time.Ticks / TimeSpan.TicksPerSecond;
+            var entity = GetActorEntity(aggro.Npc);
+            if (!EntitiesStats.ContainsKey(entity))
+            {
+                EntitiesStats.Add(entity, new EntityInfo());
+            }
+            var user = (UserEntity)NetworkController.Instance.EntityTracker.GetOrNull(aggro.Target);
+            if (user != null)
+            {
+                var player = NetworkController.Instance.PlayerTracker.GetOrUpdate(user);
+                PlayerInfo info = GetOrCreate(player);
+//                Console.WriteLine($"{entity.Id} {player.Name} {EntitiesStats[entity].LastAggro}");
+                if (EntitiesStats[entity].LastAggro != player)
+                {
+                    if(EntitiesStats[entity].LastAggro != null)
+                        if (UsersStats.ContainsKey(EntitiesStats[entity].LastAggro))
+                            UsersStats[EntitiesStats[entity].LastAggro].Dealt.AggroEnd(entity, time);
+                    UsersStats[player].Dealt.AggroStart(entity, time);
+                    EntitiesStats[entity].LastAggro = player;
+                }
+            }
+            else
+            {
+//                Console.WriteLine($"{entity.Id} {EntitiesStats[entity].LastAggro}");
+                if (EntitiesStats[entity].LastAggro != null)
+                {
+                    if (UsersStats.ContainsKey(EntitiesStats[entity].LastAggro))
+                        UsersStats[EntitiesStats[entity].LastAggro].Dealt.AggroEnd(entity, time);
+                    EntitiesStats[entity].LastAggro = null;
+                }
+            }
+        }
+        
+        public void StopAggro(SDespawnNpc aggro)
+        {
+            var time = aggro.Time.Ticks / TimeSpan.TicksPerSecond;
+            var entity = GetActorEntity(aggro.NPC);
+            if (EntitiesStats.ContainsKey(entity))
+            {
+                if (EntitiesStats[entity].LastAggro != null)
+                {
+                    if (UsersStats.ContainsKey(EntitiesStats[entity].LastAggro))
+                        UsersStats[EntitiesStats[entity].LastAggro].Dealt.AggroEnd(entity, time);
+                    EntitiesStats[entity].LastAggro = null;
+                }
+            }
+        }
+
         public long PartyDps(Entity entity, bool timedEncounter)
         {
             var interval = Interval(entity);

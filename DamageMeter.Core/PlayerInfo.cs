@@ -38,7 +38,7 @@ namespace DamageMeter
             {
                 Received = (EntitiesTaken) Received.Clone(),
                 Dealt = (EntitiesDealt) Dealt.Clone(),
-                Death = Death,
+                Death = Death.Clone(),
                 AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => (AbnormalityDuration) i.Value.Clone())
             };
             clone.Dealt.SetPlayerInfo(clone);
