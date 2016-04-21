@@ -255,6 +255,7 @@ namespace DamageMeter.Dealt
             {
                 timedStats.Value.Remove(entity);
             }
+            _aggrolist.Remove(entity);
         }
 
 

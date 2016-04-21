@@ -1,6 +1,7 @@
 ﻿using System;
 using Data;
 using Tera.Game;
+using System.Collections.Generic;
 
 namespace DamageMeter
 {
@@ -159,6 +160,10 @@ namespace DamageMeter
             DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].Start(FirstHit);
             _buffRegistered = true;
         }
+        private void testerr(Dictionary<HotDot, AbnormalityDuration> testerror,long lastTicks)
+        {
+            testerror[HotDot].End(lastTicks);
+        }
 
         private void ApplyBuff(long lastTicks)
         {
@@ -170,7 +175,9 @@ namespace DamageMeter
                 return;
             }
             var player = NetworkController.Instance.PlayerTracker.GetOrUpdate((UserEntity)userEntity);
-            DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].End(lastTicks);
+            //DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].End(lastTicks);
+            var testerror = DamageTracker.Instance.UsersStats[player].AbnormalityTime;
+            testerr(testerror,lastTicks);
         }
 
         public void Refresh(int stackCounter, int duration, long time)
