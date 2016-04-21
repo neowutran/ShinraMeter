@@ -394,7 +394,7 @@ namespace DamageMeter.Dealt
         }
         public Death Aggro(Entity target)
         {
-            if (target == null) return null;
+            if (target == null) return new Death();
             Death result;
             _aggrolist.TryGetValue(target, out result);
             if (result == null)

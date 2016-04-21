@@ -122,6 +122,8 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
                 currentContent = currentContent.Replace("{deaths}", playerStats.Death.Count(firstHit, lastHit) + "");
                 currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.Death.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
+                currentContent = currentContent.Replace("{aggro}", playerStats.Dealt.Aggro(currentBoss).Count(firstHit, lastHit) + "");
+                currentContent = currentContent.Replace("{aggro_duration}", TimeSpan.FromSeconds(playerStats.Dealt.Aggro(currentBoss).Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate(currentBoss, timedEncounter) + "%");

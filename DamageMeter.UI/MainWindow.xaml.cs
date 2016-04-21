@@ -489,13 +489,14 @@ namespace DamageMeter.UI
 
         private bool NeedUpdateEncounter(List<KeyValuePair<Entity, EntityInfo>> entities)
         {
-            if (entities.Count != ListEncounter.Items.Count)
+            var list = entities.Where(x => (x.Key.IsBoss && x.Value.FirstHit != 0)).ToList();
+            if (list.Count != ListEncounter.Items.Count-1)
             {
                 return true;
             }
             for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
             {
-                if (((Entity)((ComboBoxItem)ListEncounter.Items[i]).Content) != entities[i - 1].Key)
+                if (((Entity)((ComboBoxItem)ListEncounter.Items[i]).Content) != list[i - 1].Key)
                 {
                     return true;
                 }
