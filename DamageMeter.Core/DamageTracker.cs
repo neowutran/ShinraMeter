@@ -48,7 +48,7 @@ namespace DamageMeter
 
         public void RegisterDead(SCreatureLife dead)
         {
-            var user = (UserEntity)NetworkController.Instance.EntityTracker.GetOrNull(dead.User);
+            var user = NetworkController.Instance.EntityTracker.GetOrNull(dead.User) as UserEntity;
             if (user != null)
             {
                 var player = NetworkController.Instance.PlayerTracker.GetOrUpdate(user);
@@ -73,7 +73,7 @@ namespace DamageMeter
             {
                 EntitiesStats.Add(entity, new EntityInfo());
             }
-            var user = (UserEntity)NetworkController.Instance.EntityTracker.GetOrNull(aggro.Target);
+            var user = NetworkController.Instance.EntityTracker.GetOrNull(aggro.Target) as UserEntity;
             if (user != null)
             {
                 var player = NetworkController.Instance.PlayerTracker.GetOrUpdate(user);
