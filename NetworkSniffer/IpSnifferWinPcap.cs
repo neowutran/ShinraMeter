@@ -118,7 +118,7 @@ namespace NetworkSniffer
             }
 
             var ipData = ipPacket.BytesHighPerformance;
-            var ipData2 = new ArraySegment<byte>(ipData.Bytes, ipData.Offset, ipData.Length);
+            var ipData2 = new ArraySegment<byte>(ipData.ActualBytes());
 
             OnPacketReceived(ipData2);
 
