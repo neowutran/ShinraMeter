@@ -145,10 +145,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(List<PlayerInfo> stats, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
+        public static void CopyThread(EntityInfo info, List<PlayerInfo> stats, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
         {
 
-            var text = CopyPaste.Copy(stats, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = CopyPaste.Copy(info, stats, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
             
         }
@@ -174,13 +174,14 @@ namespace DamageMeter
                 {
                     var stats = DamageTracker.Instance.GetPlayerStats();
                     var currentBoss = Encounter;
+                    var info = currentBoss==null?new EntityInfo():DamageTracker.Instance.GetEntityStats()[currentBoss];
                     var timedEncounter = TimedEncounter;
                     var totaldamage = DamageTracker.Instance.TotalDamage(currentBoss, timedEncounter);
                     var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
                     var lastHit = DamageTracker.Instance.LastHit(currentBoss);
                     var partyDps = DamageTracker.Instance.PartyDps(currentBoss, timedEncounter);
                     var tmpcopy = NeedToCopy;
-                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
+                    var pasteThread = new Thread(() => CopyThread(info, stats, totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
                     pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
 
