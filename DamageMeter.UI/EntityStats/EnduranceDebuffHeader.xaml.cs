@@ -14,7 +14,7 @@ namespace DamageMeter.UI.EntityStats
             InitializeComponent();
 
             LabelClass.Content = "Class";
-            LabelAbnormalityDuration.Content = "DOT";
+            LabelAbnormalityDuration.Content = "Eff Time";
             LabelInterval.Content = "Fight";
             LabelAbnormalityDurationPercentage.Content = "% Fight";
             LabelName.Content = "Name";

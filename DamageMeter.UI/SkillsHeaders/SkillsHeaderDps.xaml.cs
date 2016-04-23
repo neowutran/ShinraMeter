@@ -11,15 +11,15 @@ namespace DamageMeter.UI.SkillsHeaders
     public partial class SkillsHeaderDps : UserControl
     {
         public static readonly string SkillName = "Skill name";
-        public static readonly string CritRateDmg = "CCdmg";
+        public static readonly string CritRateDmg = "% Crit";
         public static readonly string TotalDamage = "Dmg";
         public static readonly string DamagePercentage = "% Dmg";
-        public static readonly string AverageCrit = "Avg Crit";
-        public static readonly string BiggestCrit = "Big Crit";
-        public static readonly string AverageHit = "Avg Blk";
+        public static readonly string AverageCrit = "Avg crit";
+        public static readonly string BiggestCrit = "Max crit";
+        public static readonly string AverageHit = "Avg white";
         public static readonly string AverageTotal = "Avg";
-        public static readonly string HitsDmg = "HDmg";
-        public static readonly string CritsDmg = "Cdmg";
+        public static readonly string HitsDmg = "Hits";
+        public static readonly string CritsDmg = "Crits";
 
         public SkillsHeaderDps()
         {
