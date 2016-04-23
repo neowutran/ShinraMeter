@@ -12,6 +12,8 @@ using Tera.Game;
 using DamageMeter.Skills.Skill;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Globalization;
 
 namespace DamageMeter
 {
@@ -19,13 +21,29 @@ namespace DamageMeter
     {
 
      
-        public static void ToJsonFile()
+        public static void JsonExport(string json)
         {
-
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = client.PostAsync("http://cloud.neowutran.ovh:8083/store.php", new StringContent(
+                    json,
+                    Encoding.UTF8,
+                    "application/json")
+                    );
+                    var responseString = response.Result.Content.ReadAsStringAsync();
+                    Console.WriteLine(responseString.Result);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
         }
 
-        
-
+       
         public static void ToTeraDpsApi(SDespawnNpc despawnNpc)
         {
             if(!BasicTeraData.Instance.WindowData.Excel && 
@@ -156,7 +174,6 @@ namespace DamageMeter
             }
 
             string json = JsonConvert.SerializeObject(teradpsData);
-
             if (BasicTeraData.Instance.WindowData.Excel)
             {
                 var excelThread = new Thread(() => ExcelExport.ExcelSave(teradpsData));
@@ -165,6 +182,8 @@ namespace DamageMeter
             if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)) return;
             var sendThread = new Thread(() => Send(entity, json, 3));
             sendThread.Start();
+            var jsonThread = new Thread(() => JsonExport(json));
+            jsonThread.Start();
         }
 
         private static void Send(Entity boss, string json, int numberTry)

@@ -18,4 +18,5 @@ xcopy "%source%\resources" "%output%\resources\" /E
 del "%output%\*.xml"
 del "%output%\*.vshost*"
 del "%output%\*.pdb"
+del "%output%\resources\logs\*"
 del "%output%\resources\config\*.xml"
