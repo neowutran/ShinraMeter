@@ -9,15 +9,9 @@ namespace DamageMeter
 {
     public class CharmTracker
     {
-        private static CharmTracker _instance;
-        private CharmTracker() { }
-        public static CharmTracker Instance => _instance ?? (_instance = new CharmTracker());
         private readonly Dictionary<EntityId, List<uint>> _charms = new Dictionary<EntityId, List<uint>>();
-
-        public void Renew()
-        {
-            _instance = new CharmTracker();
-        }
+        private AbnormalityTracker _abnormalityTracker;
+        public CharmTracker(AbnormalityTracker tracker) { _abnormalityTracker = tracker; }
 
         internal void CharmAdd(EntityId target, uint charmId, byte status, long ticks)
         {
@@ -25,14 +19,14 @@ namespace DamageMeter
             {
                 if (!_charms.ContainsKey(target)) _charms[target] = new List<uint>();
                 _charms[target].Add(charmId);
-                AbnormalityTracker.Instance.AddAbnormality(target, new EntityId(0), 0, 0, (int)charmId, ticks);
+                _abnormalityTracker.AddAbnormality(target, new EntityId(0), 0, 0, (int)charmId, ticks);
                 //Console.WriteLine(BitConverter.ToString(BitConverter.GetBytes(target.Id)) + " AAdd :" + charmId);
             }
             else
             {
                 if (_charms.ContainsKey(target))
                     if (_charms[target].Contains(charmId)) _charms[target].Remove(charmId);
-                AbnormalityTracker.Instance.DeleteAbnormality(target, (int)charmId, ticks);
+                _abnormalityTracker.DeleteAbnormality(target, (int)charmId, ticks);
                 //Console.WriteLine(BitConverter.ToString(BitConverter.GetBytes(target.Id)) + " ADel :" + charmId);
             }
         }
@@ -40,7 +34,7 @@ namespace DamageMeter
         {
             if (!_charms.ContainsKey(target)) _charms[target] = new List<uint>();
             _charms[target].Add(charmId);
-            AbnormalityTracker.Instance.AddAbnormality(target, new EntityId(0), 0, 0, (int)charmId, ticks);
+            _abnormalityTracker.AddAbnormality(target, new EntityId(0), 0, 0, (int)charmId, ticks);
             //Console.WriteLine(BitConverter.ToString(BitConverter.GetBytes(target.Id))+" Enb :"+charmId);
         }
 
@@ -50,7 +44,7 @@ namespace DamageMeter
             {
                 foreach (var charm in _charms[target])
                 {
-                    AbnormalityTracker.Instance.DeleteAbnormality(target, (int)charm, ticks);
+                    _abnormalityTracker.DeleteAbnormality(target, (int)charm, ticks);
                     //Console.WriteLine(BitConverter.ToString(BitConverter.GetBytes(target.Id)) + " reset :" + charm);
                 }
             }
@@ -59,7 +53,7 @@ namespace DamageMeter
             {
                 if (charm.Status == 1)
                 {
-                    AbnormalityTracker.Instance.AddAbnormality(target, new EntityId(0), 0, 0, (int)charm.CharmId, ticks);
+                    _abnormalityTracker.AddAbnormality(target, new EntityId(0), 0, 0, (int)charm.CharmId, ticks);
                     _charms[target].Add(charm.CharmId);
                     //Console.WriteLine($"{BitConverter.ToString(BitConverter.GetBytes(target.Id))} {charm.Status == 1} : {charm.CharmId}");
                 }
@@ -72,7 +66,7 @@ namespace DamageMeter
             //Console.WriteLine(BitConverter.ToString(BitConverter.GetBytes(target.Id)) + " Del :" + charmId);
             if (_charms.ContainsKey(target))
                 if (_charms[target].Contains(charmId)) _charms[target].Remove(charmId);
-            AbnormalityTracker.Instance.DeleteAbnormality(target, (int)charmId, ticks);
+            _abnormalityTracker.DeleteAbnormality(target, (int)charmId, ticks);
         }
     }
 }

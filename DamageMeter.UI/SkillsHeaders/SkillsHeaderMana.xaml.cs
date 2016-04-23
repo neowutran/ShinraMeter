@@ -20,7 +20,7 @@ namespace DamageMeter.UI.SkillsHeaders
         public static readonly string AverageTotal = "Avg";
         public static readonly string HitsDmg = "HDmg";
         public static readonly string HitsHeal = "Hheal";
-        public static readonly string HitsMana = "Hmana";
+        public static readonly string HitsMana = "Hits";
         public static readonly string CritsDmg = "Cdmg";
         public static readonly string CritsHeal = "Cheal";
         public static readonly string Mana = "Mana";

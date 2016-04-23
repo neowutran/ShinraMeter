@@ -10,8 +10,8 @@ namespace DamageMeter
         private bool _buffRegistered;
 
         private bool _enduranceDebuffRegistered;
-
-        public Abnormality(HotDot hotdot, EntityId source, EntityId target, int duration, int stack, long ticks)
+        private AbnormalityTracker _abnormalityTracker;
+        public Abnormality(HotDot hotdot, EntityId source, EntityId target, int duration, int stack, long ticks, AbnormalityTracker abnormalityTracker)
         {
             HotDot = hotdot;
             Source = source;
@@ -20,6 +20,7 @@ namespace DamageMeter
             Stack = stack == 0 ? 1 : stack;
             FirstHit = ticks/TimeSpan.TicksPerSecond;
             if (HotDot.Name == "") return;
+            _abnormalityTracker = abnormalityTracker;
             RegisterBuff();
             RegisterEnduranceDebuff();
         }
@@ -40,15 +41,19 @@ namespace DamageMeter
 
         public void Apply(int amount, bool critical, bool isHp, long time)
         {
-            var skillResult = NetworkController.Instance.ForgeSkillResult(
+            var skillResult =
+                new SkillResult(
                 true,
                 amount,
                 critical,
                 isHp,
                 HotDot.Id,
                 Source,
-                Target);
-            DamageTracker.Instance.Update(skillResult, time);
+                Target,
+                _abnormalityTracker.EntityTracker
+                );
+
+            if (_abnormalityTracker.UpdateDamageTracker != null) _abnormalityTracker.UpdateDamageTracker(skillResult, time);
             LastApply = time;
         }
 
@@ -64,7 +69,7 @@ namespace DamageMeter
         {
             if (HotDot.Type != "Endurance" || HotDot.Amount > 1) return;
             if (_enduranceDebuffRegistered == false) return;
-            var entityGame = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Target);
+            var entityGame = _abnormalityTracker.EntityTracker.GetOrPlaceholder(Target);
             Entity entity = null;
             var game = entityGame as NpcEntity;
             if (game != null)
@@ -85,7 +90,7 @@ namespace DamageMeter
         private void RegisterEnduranceDebuff()
         {
             if (HotDot.Type != "Endurance" || HotDot.Amount > 1) return;
-            var entityGame = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Target);
+            var entityGame = _abnormalityTracker.EntityTracker.GetOrPlaceholder(Target);
             Entity entity = null;
             var game = entityGame as NpcEntity;
             if (game != null)
@@ -106,7 +111,7 @@ namespace DamageMeter
 
             if (!DamageTracker.Instance.EntitiesStats[entity].AbnormalityTime.ContainsKey(HotDot))
             {
-                var npcEntity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Source);
+                var npcEntity = _abnormalityTracker.EntityTracker.GetOrPlaceholder(Source);
                 if (!(npcEntity is UserEntity))
                 {
                     return;
@@ -125,13 +130,13 @@ namespace DamageMeter
         private void RegisterBuff()
         {
             if (HotDot.Type == "HPChange" || HotDot.Type == "MPChange") return;
-            var userEntity = NetworkController.Instance.EntityTracker.GetOrNull(Target);
+            var userEntity = _abnormalityTracker.EntityTracker.GetOrNull(Target);
 
             if (!(userEntity is UserEntity))
             {
                 return;
             }
-            var player = NetworkController.Instance.PlayerTracker.GetOrUpdate((UserEntity) userEntity);
+            var player = _abnormalityTracker.PlayerTracker.GetOrUpdate((UserEntity) userEntity);
 
             if (!DamageTracker.Instance.UsersStats.ContainsKey(player))
             {
@@ -140,7 +145,7 @@ namespace DamageMeter
 
             if (!DamageTracker.Instance.UsersStats[player].AbnormalityTime.ContainsKey(HotDot))
             {
-                var npcEntity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(Source);
+                var npcEntity = _abnormalityTracker.EntityTracker.GetOrPlaceholder(Source);
                 PlayerClass playerClass;
                 if (!(npcEntity is UserEntity))
                 {
@@ -169,12 +174,12 @@ namespace DamageMeter
         {
             if (HotDot.Type == "HPChange" || HotDot.Type == "MPChange") return;
             if (_buffRegistered == false) return;
-            var userEntity = NetworkController.Instance.EntityTracker.GetOrNull(Target);
+            var userEntity = _abnormalityTracker.EntityTracker.GetOrNull(Target);
             if (!(userEntity is UserEntity))
             {
                 return;
             }
-            var player = NetworkController.Instance.PlayerTracker.GetOrUpdate((UserEntity)userEntity);
+            var player = _abnormalityTracker.PlayerTracker.GetOrUpdate((UserEntity)userEntity);
             //DamageTracker.Instance.UsersStats[player].AbnormalityTime[HotDot].End(lastTicks);
             var testerror = DamageTracker.Instance.UsersStats[player].AbnormalityTime;
             testerr(testerror,lastTicks);

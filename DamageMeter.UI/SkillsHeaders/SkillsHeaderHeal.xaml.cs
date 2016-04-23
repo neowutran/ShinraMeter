@@ -10,16 +10,16 @@ namespace DamageMeter.UI.SkillsHeaders
     public partial class SkillsHeaderHeal
     {
         public static readonly string SkillName = "Skill name";
-        public static readonly string CritRateHeal = "CCheal";
+        public static readonly string CritRateHeal = "% Crit";
         public static readonly string TotalDamage = "Dmg";
         public static readonly string DamagePercentage = "% Dmg";
         public static readonly string AverageCrit = "Avg Crit";
-        public static readonly string BiggestCrit = "Big Crit";
-        public static readonly string BiggestHit = "Big Blk";
-        public static readonly string AverageHit = "Avg Blk";
+        public static readonly string BiggestCrit = "Max Crit";
+        public static readonly string BiggestHit = "Max white";
+        public static readonly string AverageHit = "Avg white";
         public static readonly string AverageTotal = "Avg";
-        public static readonly string HitsHeal = "Hheal";
-        public static readonly string CritsHeal = "Cheal";
+        public static readonly string HitsHeal = "Hits";
+        public static readonly string CritsHeal = "Crits";
         public static readonly string Heal = "Heal";
 
         public SkillsHeaderHeal()

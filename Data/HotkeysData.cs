@@ -143,16 +143,16 @@ namespace Data
             Copy = new List<CopyKey>
             {
                 new CopyKey(
-                    @"Damage Taken @ {encounter}:\",
+                    @"Damage Taken @ {encounter} {timer}:\",
                     "",
-                    @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration}\",
+                    @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\",
                     ModifierKeys.Control,
                     Keys.End,
                     "hits_received",
                     "descending"
                     ),
                 new CopyKey(
-                    @"Damage Done @ {encounter} {timer} {partyDps}:\",
+                    @"Damage Done @ {encounter} {timer} {partyDps} {enrage}:\",
                     "",
                     @"[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {global_dps}\",
                     ModifierKeys.Shift,

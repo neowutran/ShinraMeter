@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Tera.Game;
@@ -8,20 +9,18 @@ namespace DamageMeter
 {
     public class AbnormalityTracker
     {
-        private static AbnormalityTracker _instance;
-
         private readonly Dictionary<EntityId, List<Abnormality>> _abnormalities =
             new Dictionary<EntityId, List<Abnormality>>();
+        public Action<SkillResult, long> UpdateDamageTracker;
+        internal EntityTracker EntityTracker;
+        internal PlayerTracker PlayerTracker;
 
-        private AbnormalityTracker()
+        public AbnormalityTracker(EntityTracker entityTracker, PlayerTracker playerTracker, Action<SkillResult, long> update=null)
         {
+            EntityTracker = entityTracker;
+            PlayerTracker = playerTracker;
+            UpdateDamageTracker = update;
         }
-        public void Renew()
-        {
-            _instance = new AbnormalityTracker();
-        }
-
-        public static AbnormalityTracker Instance => _instance ?? (_instance = new AbnormalityTracker());
 
         public void AddAbnormality(SAbnormalityBegin message)
         {
@@ -43,7 +42,7 @@ namespace DamageMeter
             }
 
             if (_abnormalities[target].Where(x => x.HotDot.Id == abnormalityId).Count() == 0) //dont add existing abnormalities since we don't delete them all, that may cause many untrackable issues.
-                _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks));
+                _abnormalities[target].Add(new Abnormality(hotdot, source, target, duration, stack, ticks, this));
 
         }
 

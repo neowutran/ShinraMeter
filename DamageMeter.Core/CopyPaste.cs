@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Data;
 using System.Windows.Forms;
 
 namespace DamageMeter
@@ -18,7 +19,7 @@ namespace DamageMeter
         }
 
 
-        public static string Copy(IEnumerable<PlayerInfo> playerInfos, long totalDamage, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, string header,
+        public static string Copy(EntityInfo info, IEnumerable<PlayerInfo> playerInfos, long totalDamage, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, string header,
             string content, string footer,
             string orderby, string order)
         {
@@ -104,12 +105,20 @@ namespace DamageMeter
             var interval = TimeSpan.FromSeconds(lastHit - firstHit);
             dpsString = dpsString.Replace("{timer}", interval.ToString(@"mm\:ss"));
             dpsString = dpsString.Replace("{partyDps}", FormatHelpers.Instance.FormatValue(partyDps)+"/s");
+            AbnormalityDuration enrage;
+            info.AbnormalityTime.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888888), out enrage);
+            double enrageperc = (lastHit - firstHit)==0?0:(((double)(enrage?.Duration(firstHit, lastHit)??0) / (lastHit - firstHit)));
+            dpsString = dpsString.Replace("{enrage}", FormatHelpers.Instance.FormatPercent(enrageperc));
 
             foreach (var playerStats in playerInfosOrdered)
             {
                 var currentContent = content;
                 if (playerStats.Dealt.Damage(currentBoss, timedEncounter) == 0) continue;
 
+                AbnormalityDuration slaying;
+                playerStats.AbnormalityTime.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
+                double slayingperc = (lastHit - firstHit) == 0 ? 0 : (((double)(slaying?.Duration(firstHit, lastHit) ?? 0) / (lastHit - firstHit)));
+                currentContent = currentContent.Replace("{slaying}", FormatHelpers.Instance.FormatPercent(slayingperc));
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps(currentBoss, timedEncounter)) + "/s");
                 currentContent = currentContent.Replace("{global_dps}",
@@ -122,6 +131,8 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
                 currentContent = currentContent.Replace("{deaths}", playerStats.Death.Count(firstHit, lastHit) + "");
                 currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.Death.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
+                currentContent = currentContent.Replace("{aggro}", playerStats.Dealt.Aggro(currentBoss).Count(firstHit, lastHit) + "");
+                currentContent = currentContent.Replace("{aggro_duration}", TimeSpan.FromSeconds(playerStats.Dealt.Aggro(currentBoss).Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate(currentBoss, timedEncounter) + "%");

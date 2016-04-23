@@ -31,6 +31,8 @@ namespace DamageMeter
         private MessageFactory _messageFactory;
         public PlayerTracker PlayerTracker;
         public Server Server;
+        private CharmTracker CharmTracker;
+        private AbnormalityTracker AbnormalityTracker;
 
         private NetworkController()
         {
@@ -69,11 +71,10 @@ namespace DamageMeter
         {
             Server = server;
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
-            BasicTeraData.Instance.Servers.Region = server.Region;
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
             PlayerTracker = new PlayerTracker(EntityTracker,BasicTeraData.Instance.Servers);
-            AbnormalityTracker.Instance.Renew();
-            CharmTracker.Instance.Renew();
+            AbnormalityTracker= new AbnormalityTracker(EntityTracker, PlayerTracker, DamageTracker.Instance.Update);
+            CharmTracker = new CharmTracker(AbnormalityTracker);
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
             var handler = Connected;
             handler?.Invoke(server.Name);
@@ -145,10 +146,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(List<PlayerInfo> stats, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
+        public static void CopyThread(EntityInfo info, List<PlayerInfo> stats, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
         {
 
-            var text = CopyPaste.Copy(stats, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = CopyPaste.Copy(info, stats, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
             
         }
@@ -174,13 +175,14 @@ namespace DamageMeter
                 {
                     var stats = DamageTracker.Instance.GetPlayerStats();
                     var currentBoss = Encounter;
+                    var info = currentBoss==null?new EntityInfo():DamageTracker.Instance.GetEntityStats()[currentBoss];
                     var timedEncounter = TimedEncounter;
                     var totaldamage = DamageTracker.Instance.TotalDamage(currentBoss, timedEncounter);
                     var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
                     var lastHit = DamageTracker.Instance.LastHit(currentBoss);
                     var partyDps = DamageTracker.Instance.PartyDps(currentBoss, timedEncounter);
                     var tmpcopy = NeedToCopy;
-                    var pasteThread = new Thread(() => CopyThread(stats, totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
+                    var pasteThread = new Thread(() => CopyThread(info, stats, totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
                     pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
 
@@ -238,17 +240,17 @@ namespace DamageMeter
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
                 {
-                    AbnormalityTracker.Instance.Update(changeHp);
+                    AbnormalityTracker.Update(changeHp);
                     var user=EntityTracker.GetOrPlaceholder(changeHp.TargetId);
                     if (user is UserEntity)
                     {
                         if (changeHp.Slaying)
                         {
-                            AbnormalityTracker.Instance.AddAbnormality(changeHp.TargetId, changeHp.TargetId, 0, 0, 8888889, changeHp.Time.Ticks);
+                            AbnormalityTracker.AddAbnormality(changeHp.TargetId, changeHp.TargetId, 0, 0, 8888889, changeHp.Time.Ticks);
                         }
                         else
                         {
-                            AbnormalityTracker.Instance.DeleteAbnormality(changeHp);
+                            AbnormalityTracker.DeleteAbnormality(changeHp);
                         }
                     }
                     continue;
@@ -261,11 +263,11 @@ namespace DamageMeter
                     if (user == null) continue;//have not seen user yet, cause he is far away, but in party.
                     if (pchangeHp.Slaying)
                     {
-                        AbnormalityTracker.Instance.AddAbnormality(user.User.Id, user.User.Id, 0, 0, 8888889, pchangeHp.Time.Ticks);
+                        AbnormalityTracker.AddAbnormality(user.User.Id, user.User.Id, 0, 0, 8888889, pchangeHp.Time.Ticks);
                     }
                     else
                     {
-                        AbnormalityTracker.Instance.DeleteAbnormality(user.User.Id, 8888889, message.Time.Ticks);
+                        AbnormalityTracker.DeleteAbnormality(user.User.Id, 8888889, message.Time.Ticks);
                     }
                     continue;
                 }
@@ -273,7 +275,7 @@ namespace DamageMeter
                 var changeMp = message as SPlayerChangeMp;
                 if (changeMp != null)
                 {
-                    AbnormalityTracker.Instance.Update(changeMp);
+                    AbnormalityTracker.Update(changeMp);
                     continue;
                 }
 
@@ -283,12 +285,12 @@ namespace DamageMeter
                     DamageTracker.Instance.RegisterAggro(NpcStatus);
                     if (NpcStatus.Enraged)
                     {
-                        AbnormalityTracker.Instance.AddAbnormality(NpcStatus.Npc, NpcStatus.Target,0,0,8888888,NpcStatus.Time.Ticks);
+                        AbnormalityTracker.AddAbnormality(NpcStatus.Npc, NpcStatus.Target,0,0,8888888,NpcStatus.Time.Ticks);
                         continue;
                     }
                     else
                     {
-                        AbnormalityTracker.Instance.DeleteAbnormality(NpcStatus);
+                        AbnormalityTracker.DeleteAbnormality(NpcStatus);
                         continue;
                     }
                 }
@@ -303,21 +305,21 @@ namespace DamageMeter
                 var abnormalityBegin = message as SAbnormalityBegin;
                 if (abnormalityBegin != null)
                 {
-                    AbnormalityTracker.Instance.AddAbnormality(abnormalityBegin);
+                    AbnormalityTracker.AddAbnormality(abnormalityBegin);
                     continue;
                 }
 
                 var abnormalityEnd = message as SAbnormalityEnd;
                 if (abnormalityEnd != null)
                 {
-                    AbnormalityTracker.Instance.DeleteAbnormality(abnormalityEnd);
+                    AbnormalityTracker.DeleteAbnormality(abnormalityEnd);
                     continue;
                 }
 
                 var abnormalityRefresh = message as SAbnormalityRefresh;
                 if (abnormalityRefresh != null)
                 {
-                    AbnormalityTracker.Instance.RefreshAbnormality(abnormalityRefresh);
+                    AbnormalityTracker.RefreshAbnormality(abnormalityRefresh);
                     continue;
                 }
 
@@ -332,7 +334,7 @@ namespace DamageMeter
                 if (despawnNpc != null)
                 {
                     DamageTracker.Instance.StopAggro(despawnNpc);
-                    AbnormalityTracker.Instance.DeleteAbnormality(despawnNpc);
+                    AbnormalityTracker.DeleteAbnormality(despawnNpc);
                     DataExporter.ToTeraDpsApi(despawnNpc);
                     continue;
                 }
@@ -354,15 +356,15 @@ namespace DamageMeter
                 var despawnUser = message as SDespawnUser;
                 if (despawnUser != null)
                 {
-                    CharmTracker.Instance.CharmReset(despawnUser.User, new List<CharmStatus>(), despawnUser.Time.Ticks);
-                    AbnormalityTracker.Instance.DeleteAbnormality(despawnUser);
+                    CharmTracker.CharmReset(despawnUser.User, new List<CharmStatus>(), despawnUser.Time.Ticks);
+                    AbnormalityTracker.DeleteAbnormality(despawnUser);
                     continue;
                 }
 
                 var charmEnable = message as SEnableCharmStatus;
                 if (charmEnable != null)
                 {
-                    CharmTracker.Instance.CharmEnable(EntityTracker.MeterUser.Id, charmEnable.CharmId,charmEnable.Time.Ticks);
+                    CharmTracker.CharmEnable(EntityTracker.MeterUser.Id, charmEnable.CharmId,charmEnable.Time.Ticks);
                     continue;
                 }
                 var pcharmEnable = message as SPartyMemberCharmEnable;
@@ -370,13 +372,13 @@ namespace DamageMeter
                 {
                     var player = PlayerTracker.GetOrNull(pcharmEnable.PlayerId);
                     if (player == null) continue;
-                    CharmTracker.Instance.CharmEnable(player.User.Id, pcharmEnable.CharmId, pcharmEnable.Time.Ticks);
+                    CharmTracker.CharmEnable(player.User.Id, pcharmEnable.CharmId, pcharmEnable.Time.Ticks);
                     continue;
                 }
                 var charmReset = message as SResetCharmStatus;
                 if (charmReset != null)
                 {
-                    CharmTracker.Instance.CharmReset(charmReset.TargetId, charmReset.Charms, charmReset.Time.Ticks);
+                    CharmTracker.CharmReset(charmReset.TargetId, charmReset.Charms, charmReset.Time.Ticks);
                     continue;
                 }
                 var pcharmReset = message as SPartyMemberCharmReset;
@@ -384,13 +386,13 @@ namespace DamageMeter
                 {
                     var player = PlayerTracker.GetOrNull(pcharmReset.PlayerId);
                     if (player == null) continue;
-                    CharmTracker.Instance.CharmReset(player.User.Id, pcharmReset.Charms, pcharmReset.Time.Ticks);
+                    CharmTracker.CharmReset(player.User.Id, pcharmReset.Charms, pcharmReset.Time.Ticks);
                     continue;
                 }
                 var charmDel = message as SRemoveCharmStatus;
                 if (charmDel != null)
                 {
-                    CharmTracker.Instance.CharmDel(EntityTracker.MeterUser.Id, charmDel.CharmId, charmDel.Time.Ticks);
+                    CharmTracker.CharmDel(EntityTracker.MeterUser.Id, charmDel.CharmId, charmDel.Time.Ticks);
                     continue;
                 }
                 var pcharmDel = message as SPartyMemberCharmDel;
@@ -398,13 +400,13 @@ namespace DamageMeter
                 {
                     var player = PlayerTracker.GetOrNull(pcharmDel.PlayerId);
                     if (player == null) continue;
-                    CharmTracker.Instance.CharmDel(player.User.Id, pcharmDel.CharmId, pcharmDel.Time.Ticks);
+                    CharmTracker.CharmDel(player.User.Id, pcharmDel.CharmId, pcharmDel.Time.Ticks);
                     continue;
                 }
                 var charmAdd = message as SAddCharmStatus;
                 if (charmAdd != null)
                 {
-                    CharmTracker.Instance.CharmAdd(charmAdd.TargetId, charmAdd.CharmId, charmAdd.Status, charmAdd.Time.Ticks);
+                    CharmTracker.CharmAdd(charmAdd.TargetId, charmAdd.CharmId, charmAdd.Status, charmAdd.Time.Ticks);
                     continue;
                 }
                 var pcharmAdd = message as SPartyMemberCharmAdd;
@@ -412,7 +414,7 @@ namespace DamageMeter
                 {
                     var player = PlayerTracker.GetOrNull(pcharmAdd.PlayerId);
                     if (player == null) continue;
-                    CharmTracker.Instance.CharmAdd(player.User.Id, pcharmAdd.CharmId, pcharmAdd.Status, pcharmAdd.Time.Ticks);
+                    CharmTracker.CharmAdd(player.User.Id, pcharmAdd.CharmId, pcharmAdd.Status, pcharmAdd.Time.Ticks);
                     continue;
                 }
 
@@ -427,15 +429,15 @@ namespace DamageMeter
                 var spawnMe = message as SpawnMeServerMessage;
                 if (spawnMe != null)
                 {
-                    AbnormalityTracker.Instance.Renew();
-                    CharmTracker.Instance.Renew();
+                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, DamageTracker.Instance.Update);
+                    CharmTracker = new CharmTracker(AbnormalityTracker);
                     continue;
                 }
                 var sLogin = message as LoginServerMessage;
                 if (sLogin != null)
                 {
-                    AbnormalityTracker.Instance.Renew();
-                    CharmTracker.Instance.Renew();
+                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, DamageTracker.Instance.Update);
+                    CharmTracker = new CharmTracker(AbnormalityTracker);
                     Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
                     //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;
