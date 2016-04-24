@@ -104,6 +104,7 @@ namespace DamageMeter
         {
             var time = aggro.Time.Ticks / TimeSpan.TicksPerSecond;
             var entity = GetActorEntity(aggro.NPC);
+            if (entity == null) return;// Strange, but seems there are not only NPC
             if (EntitiesStats.ContainsKey(entity))
             {
                 if (EntitiesStats[entity].LastAggro != null)
