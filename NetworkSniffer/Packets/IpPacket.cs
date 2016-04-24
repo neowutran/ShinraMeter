@@ -8,7 +8,8 @@ namespace NetworkSniffer.Packets
     public enum IpProtocol : byte
     {
         Tcp = 6,
-        Udp = 17
+        Udp = 17,
+        Error = 255
     }
 
     public struct Ip4Packet
@@ -18,13 +19,13 @@ namespace NetworkSniffer.Packets
         public byte DscpAndEcn => Packet.Array[Packet.Offset + 1];
         public ushort TotalLength => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 2);
         public ushort Identification => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 4);
-        public byte Flags => (byte) (Packet.Array[Packet.Offset + 6] >> 13);
+        public byte Flags => (byte)(Packet.Array[Packet.Offset + 6] >> 13);
 
         public ushort FragmentOffset
-            => (ushort) (ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 6) & 0x1FFF);
+            => (ushort)(ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 6) & 0x1FFF);
 
         public byte TimeToLive => Packet.Array[Packet.Offset + 8];
-        public IpProtocol Protocol => (IpProtocol) Packet.Array[Packet.Offset + 9];
+        public IpProtocol Protocol => ((Packet.Offset + TotalLength) > Packet.Array.Length || TotalLength <= HeaderLength) ? IpProtocol.Error : (IpProtocol) Packet.Array[Packet.Offset + 9];
         public ushort HeaderChecksum => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 10);
         public uint SourceIp => ParserHelpers.GetUInt32BigEndian(Packet.Array, Packet.Offset + 12);
         public uint DestinationIp => ParserHelpers.GetUInt32BigEndian(Packet.Array, Packet.Offset + 16);
