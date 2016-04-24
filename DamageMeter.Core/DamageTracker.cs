@@ -328,7 +328,7 @@ namespace DamageMeter
             return null;
         }
 
-        public void Update(SkillResult skillResult, long time)
+        public void Update(SkillResult skillResult)
         {
             PlayerInfo playerStats;
             if (skillResult.SourcePlayer != null)
@@ -340,7 +340,7 @@ namespace DamageMeter
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
 
-                UpdateStatsDealt(playerStats, skillResult, entityTarget, time);
+                UpdateStatsDealt(playerStats, skillResult, entityTarget, skillResult.Time.Ticks);
             }
 
             if (skillResult.TargetPlayer == null) return;
@@ -350,12 +350,12 @@ namespace DamageMeter
             {
                 entitySource = GetEntity(skillResult.Source.Id) ?? new Entity("UNKNOW");
             }
-            UpdateStatsReceived(playerStats, skillResult, entitySource, time);
+            UpdateStatsReceived(playerStats, skillResult, entitySource, skillResult.Time.Ticks);
         }
 
         private static bool IsValidAttack(SkillResult message)
         {
-            if (message.Amount == 0)
+            if (message.Amount == 0) // to count buff skills/consumable usage - need additional hitstat for it (damage/heal/mana/uses)
             {
                 return false;
             }
@@ -421,7 +421,7 @@ namespace DamageMeter
             }
             if (message.IsHp)
             {
-                if (message.Amount > 0)
+                if (message.IsHeal)
                 {
                     skillStats.AddData(message.SkillId, message.Heal, message.IsCritical, SkillStats.Type.Heal, time);
                 }
@@ -458,7 +458,7 @@ namespace DamageMeter
             }
 
             //Not damage & if you are a healer, don't show heal / mana regen affecting you, as that will modify your crit rate and other stats. 
-            if ((message.IsHp && message.Amount > 0 || !message.IsHp) && !playerInfo.IsHealer &&
+            if ((message.IsHp && message.IsHeal || !message.IsHp) && !playerInfo.IsHealer &&
                 (UserEntity.ForEntity(message.Source)["user"] != UserEntity.ForEntity(message.Target)["user"]))
             {
                 UpdateSkillStats(message, new Entity(playerInfo.Player.User.Name), playerInfo, time);

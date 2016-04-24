@@ -11,11 +11,11 @@ namespace DamageMeter
     {
         private readonly Dictionary<EntityId, List<Abnormality>> _abnormalities =
             new Dictionary<EntityId, List<Abnormality>>();
-        public Action<SkillResult, long> UpdateDamageTracker;
+        public Action<SkillResult> UpdateDamageTracker;
         internal EntityTracker EntityTracker;
         internal PlayerTracker PlayerTracker;
 
-        public AbnormalityTracker(EntityTracker entityTracker, PlayerTracker playerTracker, Action<SkillResult, long> update=null)
+        public AbnormalityTracker(EntityTracker entityTracker, PlayerTracker playerTracker, Action<SkillResult> update=null)
         {
             EntityTracker = entityTracker;
             PlayerTracker = playerTracker;

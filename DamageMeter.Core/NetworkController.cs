@@ -221,20 +221,8 @@ namespace DamageMeter
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
                 {
-                    var amount = skillResultMessage.Amount;
-                    if (!skillResultMessage.IsHeal && skillResultMessage.IsHp && amount > 0)
-                    {
-                        amount *= -1;
-                    }
-                    var skillResult = ForgeSkillResult(
-                        false,
-                        amount,
-                        skillResultMessage.IsCritical,
-                        skillResultMessage.IsHp,
-                        skillResultMessage.SkillId,
-                        skillResultMessage.Source,
-                        skillResultMessage.Target);
-                    DamageTracker.Instance.Update(skillResult, skillResultMessage.Time.Ticks);
+                    var skillResult = new SkillResult(skillResultMessage, EntityTracker, PlayerTracker, BasicTeraData.Instance.SkillDatabase);
+                    DamageTracker.Instance.Update(skillResult);
                     continue;
                 }
                 var changeHp = message as SCreatureChangeHp;
@@ -450,21 +438,6 @@ namespace DamageMeter
             var second = Utils.Now();
             if (second - _lastTick < 1) return;
             UpdateUi();
-        }
-
-        public SkillResult ForgeSkillResult(bool abnormality, int amount, bool isCritical, bool isHeal,
-            int skillId, EntityId source, EntityId target)
-        {
-            return new SkillResult(
-                abnormality,
-                amount,
-                isCritical,
-                isHeal,
-                skillId,
-                source,
-                target,
-                EntityTracker
-                );
         }
     }
 }

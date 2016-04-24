@@ -41,19 +41,20 @@ namespace DamageMeter
 
         public void Apply(int amount, bool critical, bool isHp, long time)
         {
-            var skillResult =
-                new SkillResult(
-                true,
-                amount,
+           var skillResult = new SkillResult(
+                Math.Abs(amount),
                 critical,
                 isHp,
-                HotDot.Id,
+                amount>0,
+                HotDot,
                 Source,
                 Target,
-                _abnormalityTracker.EntityTracker
-                );
+                new DateTime(time),
+                _abnormalityTracker.EntityTracker,
+                _abnormalityTracker.PlayerTracker
+            );
 
-            if (_abnormalityTracker.UpdateDamageTracker != null) _abnormalityTracker.UpdateDamageTracker(skillResult, time);
+            if (_abnormalityTracker.UpdateDamageTracker != null) _abnormalityTracker.UpdateDamageTracker(skillResult);
             LastApply = time;
         }
 
