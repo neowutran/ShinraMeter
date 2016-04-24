@@ -63,7 +63,8 @@ namespace NetworkSniffer
             foreach (var device in interestingDevices)
             {
                 device.OnPacketArrival += device_OnPacketArrival;
-                device.Open(DeviceMode.Normal, 1000);
+                try { device.Open(DeviceMode.Normal, 1000);}
+                catch (Exception e) { Logger.Warn($"Failed to open device {device.Name}. {e.Message}"); continue; }
                 device.Filter = _filter;
                 if (BufferSize != null)
                 {
