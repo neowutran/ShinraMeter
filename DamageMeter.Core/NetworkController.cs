@@ -114,7 +114,7 @@ namespace DamageMeter
             var partyDps = DamageTracker.Instance.PartyDps(currentBossFight, timedEncounter);
             var teradpsHistory = BossLink.ToDictionary(x=>x.Key, x=>x.Value);
             var chatbox = Chat.Instance.Get();
-            var abnormals = _abnormalityStorage.Clone();//not sure we need to clone it here, since we get individual stat clones when we read data, same in Copy()
+            var abnormals = _abnormalityStorage.Clone(currentBossFight?.NpcE);
             handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight, timedEncounter, abnormals, teradpsHistory, chatbox);
         }
 
@@ -184,7 +184,7 @@ namespace DamageMeter
                     var lastHit = DamageTracker.Instance.LastHit(currentBoss);
                     var partyDps = DamageTracker.Instance.PartyDps(currentBoss, timedEncounter);
                     var tmpcopy = NeedToCopy;
-                    var pasteThread = new Thread(() => CopyThread(info, stats, _abnormalityStorage.Clone(), totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
+                    var pasteThread = new Thread(() => CopyThread(info, stats, _abnormalityStorage.Clone(currentBoss?.NpcE), totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
                     pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
 

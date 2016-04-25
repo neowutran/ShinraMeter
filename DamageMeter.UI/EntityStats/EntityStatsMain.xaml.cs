@@ -57,7 +57,7 @@ namespace DamageMeter.UI.EntityStats
             EnduranceAbnormality.Items.Add(_header);
 
             var count = 0;
-            foreach (var abnormality in abnormals.Clone(entity.NpcE))
+            foreach (var abnormality in abnormals.Get(entity.NpcE))
             {
                 EnduranceDebuff abnormalityUi;
                 if (_enduranceDebuffsList.Count > count)

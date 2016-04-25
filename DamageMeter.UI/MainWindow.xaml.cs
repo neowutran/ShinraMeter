@@ -399,7 +399,7 @@ namespace DamageMeter.UI
                         }
                         visiblePlayerStats.Add(playerStats);
                         if (playerStatsControl != null) continue;
-                        playerStatsControl = new PlayerStats(playerStats, abnormals.Clone(playerStats.Player));
+                        playerStatsControl = new PlayerStats(playerStats, abnormals.Get(playerStats.Player));
                         Controls.Add(playerStats, playerStatsControl);
 
                         if (counter == 9)
@@ -431,7 +431,7 @@ namespace DamageMeter.UI
                         Players.Items.Add(item.Value);
                         var data = stats.IndexOf(item.Value.PlayerInfo);
                         
-                        item.Value.Repaint(stats[data],abnormals.Clone(stats[data].Player), totalDamage, firstHit, lastHit, currentBoss, timedEncounter);
+                        item.Value.Repaint(stats[data],abnormals.Get(stats[data].Player), totalDamage, firstHit, lastHit, currentBoss, timedEncounter);
                     }
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)

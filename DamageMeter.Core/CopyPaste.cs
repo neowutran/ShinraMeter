@@ -102,7 +102,7 @@ namespace DamageMeter
             {
                 name = currentBoss.Name;
                 AbnormalityDuration enrage;
-                abnormals.Clone(currentBoss.NpcE).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888888), out enrage);
+                abnormals.Get(currentBoss.NpcE).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888888), out enrage);
                 enrageperc = (lastHit - firstHit) == 0 ? 0 : (((double)(enrage?.Duration(firstHit, lastHit) ?? 0) / (lastHit - firstHit)));
             }
 
@@ -118,7 +118,7 @@ namespace DamageMeter
                 if (playerStats.Dealt.Damage(currentBoss, timedEncounter) == 0) continue;
 
                 AbnormalityDuration slaying;
-                abnormals.Clone(playerStats.Player).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
+                abnormals.Get(playerStats.Player).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
                 double slayingperc = (lastHit - firstHit) == 0 ? 0 : (((double)(slaying?.Duration(firstHit, lastHit) ?? 0) / (lastHit - firstHit)));
                 currentContent = currentContent.Replace("{slaying}", FormatHelpers.Instance.FormatPercent(slayingperc));
                 currentContent = currentContent.Replace("{dps}",

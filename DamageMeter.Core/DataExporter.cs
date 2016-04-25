@@ -93,7 +93,7 @@ namespace DamageMeter
             teradpsData.fightDuration = interval+"";
             teradpsData.partyDps = partyDps+"";
     
-            foreach (var debuff in abnormals.Clone(entity.NpcE))
+            foreach (var debuff in abnormals.Get(entity.NpcE))
             {
                 long percentage = (debuff.Value.Duration(firstHit, lastHit) * 100 / interval);
                 if(percentage == 0)
@@ -128,7 +128,7 @@ namespace DamageMeter
                 teradpsUser.playerDeaths = user.Death.Count(firstHit, lastHit)+"";
                 teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit)+"";
                 
-                foreach (var buff in abnormals.Clone(user.Player)) {
+                foreach (var buff in abnormals.Get(user.Player)) {
                     long percentage = (buff.Value.Duration(user.Dealt.GetFirstHit(entity), user.Dealt.GetLastHit(entity)) * 100 / interval);
                     if(percentage == 0)
                     {
