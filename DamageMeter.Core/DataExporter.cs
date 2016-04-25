@@ -169,13 +169,13 @@ namespace DamageMeter
                 teradpsData.members.Add(teradpsUser);
             }
 
-            string json = JsonConvert.SerializeObject(teradpsData);
             if (BasicTeraData.Instance.WindowData.Excel)
             {
                 var excelThread = new Thread(() => ExcelExport.ExcelSave(teradpsData));
                 excelThread.Start();
             }
             if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)) return;
+            string json = JsonConvert.SerializeObject(teradpsData);
             var sendThread = new Thread(() => Send(entity, json, 3));
             sendThread.Start();
             var jsonThread = new Thread(() => JsonExport(json));

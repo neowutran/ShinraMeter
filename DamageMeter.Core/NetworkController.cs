@@ -98,7 +98,7 @@ namespace DamageMeter
 
         private void UpdateUi()
         {
-            _lastTick = Utils.Now();
+            _lastTick = DateTime.UtcNow.Ticks;
             var handler = TickUpdated;
             var currentBossFight = Encounter;
             var timedEncounter = TimedEncounter;
@@ -207,7 +207,7 @@ namespace DamageMeter
                 var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out obj);
                 if (!successDequeue)
                 {
-                    Thread.Sleep(10);
+                    Thread.Sleep(1);
                     continue;
                 }
 
@@ -439,8 +439,8 @@ namespace DamageMeter
 
         public void CheckUpdateUi()
         {
-            var second = Utils.Now();
-            if (second - _lastTick < 1) return;
+            var second = DateTime.UtcNow.Ticks;
+            if (second - _lastTick < TimeSpan.TicksPerSecond) return;
             UpdateUi();
         }
     }
