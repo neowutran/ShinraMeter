@@ -375,15 +375,15 @@ namespace DamageMeter.UI
         }
 
         public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
-            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Dictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)
+            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Tera.Game.AbnormalityStorage nabnormals , Dictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)
         {
             NetworkController.UpdateUiHandler changeUi =
                 delegate(long firstHit, long lastHit, long totalDamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string, Entity> bossHistory, List<ChatMessage> chatbox)
+                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Tera.Game.AbnormalityStorage abnormals, Dictionary<string, Entity> bossHistory, List<ChatMessage> chatbox)
                 {
                     var entitiesStats = new LinkedList<KeyValuePair<Entity, EntityInfo>>(entities.ToList().OrderByDescending(e => e.Value.LastHit));
                     UpdateComboboxEncounter(entitiesStats, currentBoss);
-                    _entityStats.Update(entities, currentBoss);
+                    _entityStats.Update(entities, abnormals, currentBoss);
                     _windowHistory.Update(bossHistory);
                     _chatbox.Update(chatbox);
                     PartyDps.Content = FormatHelpers.Instance.FormatValue(partyDps) + "/s";
@@ -399,7 +399,7 @@ namespace DamageMeter.UI
                         }
                         visiblePlayerStats.Add(playerStats);
                         if (playerStatsControl != null) continue;
-                        playerStatsControl = new PlayerStats(playerStats);
+                        playerStatsControl = new PlayerStats(playerStats, abnormals.Clone(playerStats.Player));
                         Controls.Add(playerStats, playerStatsControl);
 
                         if (counter == 9)
@@ -431,7 +431,7 @@ namespace DamageMeter.UI
                         Players.Items.Add(item.Value);
                         var data = stats.IndexOf(item.Value.PlayerInfo);
                         
-                        item.Value.Repaint(stats[data], totalDamage, firstHit, lastHit, currentBoss, timedEncounter);
+                        item.Value.Repaint(stats[data],abnormals.Clone(stats[data].Player), totalDamage, firstHit, lastHit, currentBoss, timedEncounter);
                     }
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
@@ -453,7 +453,7 @@ namespace DamageMeter.UI
                         }
                     }
                 };
-            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter, nbossHistory, nchatbox);
+            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter, nabnormals, nbossHistory, nchatbox);
         }
 
         private TeradpsHistory _windowHistory;

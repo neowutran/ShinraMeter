@@ -69,6 +69,7 @@ namespace DamageMeter
         {
             var time = aggro.Time.Ticks / TimeSpan.TicksPerSecond;
             var entity = GetActorEntity(aggro.Npc);
+            if (entity == null) return;//not sure why, but sometimes it fails
             if (!EntitiesStats.ContainsKey(entity))
             {
                 EntitiesStats.Add(entity, new EntityInfo());
@@ -104,7 +105,7 @@ namespace DamageMeter
         {
             var time = aggro.Time.Ticks / TimeSpan.TicksPerSecond;
             var entity = GetActorEntity(aggro.NPC);
-            if (entity == null) return;// Strange, but seems there are not only NPC
+            if (entity == null) return;// Strange, but seems there are not only NPC or something wrong with trackers
             if (EntitiesStats.ContainsKey(entity))
             {
                 if (EntitiesStats[entity].LastAggro != null)
@@ -206,14 +207,9 @@ namespace DamageMeter
                 NetworkController.Instance.NewEncounter = null;
             }
 
-            var newEntityStat = new EntityInfo();
-            if (EntitiesStats.ContainsKey(entity))
-            {
-                newEntityStat.AbnormalityTime = EntitiesStats[entity].AbnormalityTime;
-            }
-
+//            var newEntityStat = new EntityInfo();
             EntitiesStats.Remove(entity);
-            EntitiesStats.Add(entity, newEntityStat);
+//            EntitiesStats.Add(entity, newEntityStat);
             
             foreach (var stats in UsersStats)
             {
@@ -247,21 +243,21 @@ namespace DamageMeter
         {
             var newUserStats = new Dictionary<Player, PlayerInfo>();
             var newEntityStats = new Dictionary<Entity, EntityInfo>();
-            foreach (var entity in EntitiesStats)
-            {
-                var newEntityStat = new EntityInfo();
-                newEntityStat.AbnormalityTime = entity.Value.AbnormalityTime;
-                newEntityStats[entity.Key] = newEntityStat;
-            }
+            //foreach (var entity in EntitiesStats)
+            //{
+            //    var newEntityStat = new EntityInfo();
+            //    newEntityStat.AbnormalityTime = entity.Value.AbnormalityTime;
+            //    newEntityStats[entity.Key] = newEntityStat;
+            //}
 
 
-            //!!!! IMPORTANT, YUKI, IF YOU SEARCH FOR STRANGE BUG, LOOK HERE
-            foreach (var user in UsersStats)
-            {
-                var newUserStat = new PlayerInfo(user.Key);
-                newUserStat.AbnormalityTime = user.Value.AbnormalityTime;
-                newUserStats[user.Key] = newUserStat;
-            }
+            ////!!!! IMPORTANT, YUKI, IF YOU SEARCH FOR STRANGE BUG, LOOK HERE
+            //foreach (var user in UsersStats)
+            //{
+            //    var newUserStat = new PlayerInfo(user.Key);
+            //    newUserStat.AbnormalityTime = user.Value.AbnormalityTime;
+            //    newUserStats[user.Key] = newUserStat;
+            //}
 
             UsersStats = newUserStats;
             EntitiesStats = newEntityStats;

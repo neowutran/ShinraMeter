@@ -9,8 +9,6 @@ namespace DamageMeter
 {
     public class PlayerInfo : ICloneable, IEquatable<object>
     {
-        public Dictionary<HotDot, AbnormalityDuration> AbnormalityTime = new Dictionary<HotDot, AbnormalityDuration>();
-
         public PlayerInfo(Player user)
         {
             Player = user;
@@ -39,7 +37,6 @@ namespace DamageMeter
                 Received = (EntitiesTaken) Received.Clone(),
                 Dealt = (EntitiesDealt) Dealt.Clone(),
                 Death = Death.Clone(),
-                AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => (AbnormalityDuration) i.Value.Clone())
             };
             clone.Dealt.SetPlayerInfo(clone);
             return clone;

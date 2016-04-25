@@ -7,7 +7,6 @@ namespace DamageMeter
 {
     public class EntityInfo : ICloneable
     {
-        public Dictionary<HotDot, AbnormalityDuration> AbnormalityTime = new Dictionary<HotDot, AbnormalityDuration>();
         public long FirstHit { get; set; }
         public long LastHit { get; set; }
         public Player LastAggro { get; set; }
@@ -20,7 +19,6 @@ namespace DamageMeter
             {
                 FirstHit = FirstHit,
                 LastHit = LastHit,
-                AbnormalityTime = AbnormalityTime.ToDictionary(i => i.Key, i => (AbnormalityDuration)i.Value.Clone()),
                 LastAggro = LastAggro
             };
             return newEntityInfo;

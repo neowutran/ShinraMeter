@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using DamageMeter.Skills.Skill;
 using Data;
+using Tera.Game;
 
 namespace DamageMeter.UI
 {
@@ -24,7 +25,7 @@ namespace DamageMeter.UI
 
         public Skills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent,
-            PlayerInfo playerInfo, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
+            PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration> buffs, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
             InitializeComponent();
                  
@@ -32,7 +33,7 @@ namespace DamageMeter.UI
             _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
-            Update(timedSkills, timedAllSkills, playerInfo, currentBoss, timedEncounter, firstHit, lastHit);
+            Update(timedSkills, timedAllSkills, playerInfo, buffs, currentBoss, timedEncounter, firstHit, lastHit);
         }
 
         private Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> NoTimedSkills(
@@ -73,7 +74,7 @@ namespace DamageMeter.UI
 
         public void Update(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills,
-            PlayerInfo playerinfo, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
+            PlayerInfo playerinfo, Dictionary<HotDot, AbnormalityDuration> buffs, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
             var death = playerinfo.Death;
             if (death == null)
@@ -109,14 +110,14 @@ namespace DamageMeter.UI
                 _skillDps = new SkillsDetail(skills, SkillsDetail.Type.Dps, currentBoss, timedEncounter);
                 _skillHeal = new SkillsDetail(allSkills, SkillsDetail.Type.Heal, currentBoss, timedEncounter);
                 _skillMana = new SkillsDetail(allSkills, SkillsDetail.Type.Mana, currentBoss, timedEncounter);
-                _buff = new Buff(playerinfo, currentBoss);
+                _buff = new Buff(playerinfo, buffs, currentBoss);
 
             }
             else {
                 _skillDps.Update(skills, currentBoss, timedEncounter);
                 _skillHeal.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills), currentBoss, timedEncounter);
                 _skillMana.Update(new Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>(allSkills), currentBoss, timedEncounter);
-                _buff.Update(playerinfo, currentBoss);
+                _buff.Update(playerinfo, buffs, currentBoss);
             }
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;

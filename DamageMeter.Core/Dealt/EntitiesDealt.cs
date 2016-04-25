@@ -10,7 +10,7 @@ namespace DamageMeter.Dealt
     {
         private Dictionary<long, Dictionary<Entity, SkillsStats>> _entitiesStats =
             new Dictionary<long, Dictionary<Entity, SkillsStats>>();
-        private Dictionary<Entity, Death> _aggrolist = new Dictionary<Entity, Death>();
+        private Dictionary<Entity, Tera.Game.Death> _aggrolist = new Dictionary<Entity, Tera.Game.Death>();
 
         public PlayerInfo PlayerInfo;
 
@@ -392,14 +392,14 @@ namespace DamageMeter.Dealt
                 }
             }
         }
-        public Death Aggro(Entity target)
+        public Tera.Game.Death Aggro(Entity target)
         {
-            if (target == null) return new Death();
-            Death result;
+            if (target == null) return new Tera.Game.Death();
+            Tera.Game.Death result;
             _aggrolist.TryGetValue(target, out result);
             if (result == null)
             {
-                result = new Death();
+                result = new Tera.Game.Death();
                 _aggrolist[target] = result;
             }
             return result;
@@ -408,7 +408,7 @@ namespace DamageMeter.Dealt
         {
             if(!_aggrolist.ContainsKey(target))
             {
-                Death aggro = new Death();
+                Tera.Game.Death aggro = new Tera.Game.Death();
                 _aggrolist[target] = aggro;
             }
             _aggrolist[target].Start(start);

@@ -23,7 +23,7 @@ namespace DamageMeter
 
         public delegate void UpdateUiHandler(
             long firsthit, long lastHit, long totaldamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Dictionary<string ,Entity> bossHistory, List<ChatMessage> chatbox);
+            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, AbnormalityStorage abnormals, Dictionary<string ,Entity> bossHistory, List<ChatMessage> chatbox);
 
         private static NetworkController _instance;
 
@@ -33,10 +33,12 @@ namespace DamageMeter
         public Server Server;
         private CharmTracker CharmTracker;
         private AbnormalityTracker AbnormalityTracker;
+        private AbnormalityStorage _abnormalityStorage;
 
         private NetworkController()
         {
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
+            _abnormalityStorage = new AbnormalityStorage();
             var packetAnalysis = new Thread(PacketAnalysisLoop);
 
             packetAnalysis.Start();
@@ -73,8 +75,6 @@ namespace DamageMeter
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
             PlayerTracker = new PlayerTracker(EntityTracker,BasicTeraData.Instance.Servers);
-            AbnormalityTracker= new AbnormalityTracker(EntityTracker, PlayerTracker, DamageTracker.Instance.Update);
-            CharmTracker = new CharmTracker(AbnormalityTracker);
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
             var handler = Connected;
             handler?.Invoke(server.Name);
@@ -86,6 +86,7 @@ namespace DamageMeter
         public void Reset()
         {
             DamageTracker.Instance.Reset();
+            _abnormalityStorage.ClearEnded();
             _forceUiUpdate = true;
         }
 
@@ -113,7 +114,8 @@ namespace DamageMeter
             var partyDps = DamageTracker.Instance.PartyDps(currentBossFight, timedEncounter);
             var teradpsHistory = BossLink.ToDictionary(x=>x.Key, x=>x.Value);
             var chatbox = Chat.Instance.Get();
-            handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight , timedEncounter, teradpsHistory, chatbox);
+            var abnormals = _abnormalityStorage.Clone();//not sure we need to clone it here, since we get individual stat clones when we read data, same in Copy()
+            handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight, timedEncounter, abnormals, teradpsHistory, chatbox);
         }
 
         private bool _clickThrou = false;
@@ -146,10 +148,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(EntityInfo info, List<PlayerInfo> stats, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
+        public static void CopyThread(EntityInfo info, List<PlayerInfo> stats, AbnormalityStorage abnormals, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
         {
 
-            var text = CopyPaste.Copy(info, stats, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = CopyPaste.Copy(info, stats, abnormals, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
             
         }
@@ -182,7 +184,7 @@ namespace DamageMeter
                     var lastHit = DamageTracker.Instance.LastHit(currentBoss);
                     var partyDps = DamageTracker.Instance.PartyDps(currentBoss, timedEncounter);
                     var tmpcopy = NeedToCopy;
-                    var pasteThread = new Thread(() => CopyThread(info, stats, totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
+                    var pasteThread = new Thread(() => CopyThread(info, stats, _abnormalityStorage.Clone(), totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
                     pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
 
@@ -221,7 +223,7 @@ namespace DamageMeter
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
                 {
-                    var skillResult = new SkillResult(skillResultMessage, EntityTracker, PlayerTracker, BasicTeraData.Instance.SkillDatabase);
+                    var skillResult = new SkillResult(skillResultMessage, EntityTracker, PlayerTracker, BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.PetSkillDatabase);
                     DamageTracker.Instance.Update(skillResult);
                     continue;
                 }
@@ -323,7 +325,7 @@ namespace DamageMeter
                 {
                     DamageTracker.Instance.StopAggro(despawnNpc);
                     AbnormalityTracker.DeleteAbnormality(despawnNpc);
-                    DataExporter.ToTeraDpsApi(despawnNpc);
+                    DataExporter.ToTeraDpsApi(despawnNpc, _abnormalityStorage);
                     continue;
                 }
 
@@ -417,14 +419,16 @@ namespace DamageMeter
                 var spawnMe = message as SpawnMeServerMessage;
                 if (spawnMe != null)
                 {
-                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, DamageTracker.Instance.Update);
+                    _abnormalityStorage.EndAll(message.Time.Ticks);
+                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
                     CharmTracker = new CharmTracker(AbnormalityTracker);
                     continue;
                 }
                 var sLogin = message as LoginServerMessage;
                 if (sLogin != null)
                 {
-                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, DamageTracker.Instance.Update);
+                    _abnormalityStorage.EndAll(message.Time.Ticks);
+                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
                     CharmTracker = new CharmTracker(AbnormalityTracker);
                     Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
                     //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));

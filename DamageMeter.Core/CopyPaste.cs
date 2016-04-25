@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Data;
+using Tera.Game;
 using System.Windows.Forms;
 
 namespace DamageMeter
@@ -19,7 +20,7 @@ namespace DamageMeter
         }
 
 
-        public static string Copy(EntityInfo info, IEnumerable<PlayerInfo> playerInfos, long totalDamage, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, string header,
+        public static string Copy(EntityInfo info, IEnumerable<PlayerInfo> playerInfos,AbnormalityStorage abnormals, long totalDamage, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, string header,
             string content, string footer,
             string orderby, string order)
         {
@@ -96,18 +97,19 @@ namespace DamageMeter
 
             var dpsString = header;
             var name = "";
+            double enrageperc = 0;
             if (currentBoss != null)
             {
                 name = currentBoss.Name;
+                AbnormalityDuration enrage;
+                abnormals.Clone(currentBoss.NpcE).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888888), out enrage);
+                enrageperc = (lastHit - firstHit) == 0 ? 0 : (((double)(enrage?.Duration(firstHit, lastHit) ?? 0) / (lastHit - firstHit)));
             }
 
             dpsString = dpsString.Replace("{encounter}", name);
             var interval = TimeSpan.FromSeconds(lastHit - firstHit);
             dpsString = dpsString.Replace("{timer}", interval.ToString(@"mm\:ss"));
             dpsString = dpsString.Replace("{partyDps}", FormatHelpers.Instance.FormatValue(partyDps)+"/s");
-            AbnormalityDuration enrage;
-            info.AbnormalityTime.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888888), out enrage);
-            double enrageperc = (lastHit - firstHit)==0?0:(((double)(enrage?.Duration(firstHit, lastHit)??0) / (lastHit - firstHit)));
             dpsString = dpsString.Replace("{enrage}", FormatHelpers.Instance.FormatPercent(enrageperc));
 
             foreach (var playerStats in playerInfosOrdered)
@@ -116,7 +118,7 @@ namespace DamageMeter
                 if (playerStats.Dealt.Damage(currentBoss, timedEncounter) == 0) continue;
 
                 AbnormalityDuration slaying;
-                playerStats.AbnormalityTime.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
+                abnormals.Clone(playerStats.Player).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
                 double slayingperc = (lastHit - firstHit) == 0 ? 0 : (((double)(slaying?.Duration(firstHit, lastHit) ?? 0) / (lastHit - firstHit)));
                 currentContent = currentContent.Replace("{slaying}", FormatHelpers.Instance.FormatPercent(slayingperc));
                 currentContent = currentContent.Replace("{dps}",

@@ -44,7 +44,7 @@ namespace DamageMeter
         }
 
        
-        public static void ToTeraDpsApi(SDespawnNpc despawnNpc)
+        public static void ToTeraDpsApi(SDespawnNpc despawnNpc, AbnormalityStorage abnormals)
         {
             if(!BasicTeraData.Instance.WindowData.Excel && 
                 (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)))
@@ -93,20 +93,16 @@ namespace DamageMeter
             teradpsData.fightDuration = interval+"";
             teradpsData.partyDps = partyDps+"";
     
-            if (entities.ContainsKey(entity))
+            foreach (var debuff in abnormals.Clone(entity.NpcE))
             {
-                var entityStats = entities[entity];
-                foreach (var debuff in entityStats.AbnormalityTime)
+                long percentage = (debuff.Value.Duration(firstHit, lastHit) * 100 / interval);
+                if(percentage == 0)
                 {
-                    long percentage = (debuff.Value.Duration(entityStats.FirstHit / TimeSpan.TicksPerSecond, entityStats.LastHit / TimeSpan.TicksPerSecond) * 100 / interval);
-                    if(percentage == 0)
-                    {
-                        continue;
-                    }
-                    teradpsData.debuffUptime.Add(new KeyValuePair<string, string>(
-                        debuff.Key.Id+"", percentage+""
-                        ));
+                    continue;
                 }
+                teradpsData.debuffUptime.Add(new KeyValuePair<string, string>(
+                    debuff.Key.Id+"", percentage+""
+                    ));
             }
 
             foreach(var user in stats)
@@ -132,7 +128,7 @@ namespace DamageMeter
                 teradpsUser.playerDeaths = user.Death.Count(firstHit, lastHit)+"";
                 teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit)+"";
                 
-                foreach (var buff in user.AbnormalityTime) {
+                foreach (var buff in abnormals.Clone(user.Player)) {
                     long percentage = (buff.Value.Duration(user.Dealt.GetFirstHit(entity), user.Dealt.GetLastHit(entity)) * 100 / interval);
                     if(percentage == 0)
                     {

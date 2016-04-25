@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DamageMeter.Skills.Skill;
 using Data;
+using Tera.Game;
 
 namespace DamageMeter.UI
 {
@@ -16,10 +17,11 @@ namespace DamageMeter.UI
         private Skills _windowSkill;
         public ImageSource Image;
 
-        public PlayerStats(PlayerInfo playerInfo)
+        public PlayerStats(PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration> buffs)
         {
             InitializeComponent();
             PlayerInfo = playerInfo;
+            _buffs = buffs;
             Image = ClassIcons.Instance.GetImage(PlayerInfo.Class).Source;
             Class.Source = Image;
             LabelName.Content = PlayerName;
@@ -52,12 +54,14 @@ namespace DamageMeter.UI
         private Entity _currentBoss;
         private long _firstHit;
         private long _lastHit;
+        private Dictionary<HotDot, AbnormalityDuration> _buffs;
 
         private bool _timedEncounter;
 
-        public void Repaint(PlayerInfo playerInfo, long totalDamage, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter)
+        public void Repaint(PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration> buffs, long totalDamage, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter)
         {
             PlayerInfo = playerInfo;
+            _buffs = buffs;
             _currentBoss = currentBoss;
             _firstHit = firstHit;
             _lastHit = lastHit;
@@ -74,8 +78,8 @@ namespace DamageMeter.UI
 
             var skills = Skills(_timedEncounter);
             var allskills = AllSkills(_timedEncounter);
-            _windowSkill?.Update(skills,allskills, playerInfo, _currentBoss, _timedEncounter, firstHit, lastHit);
-            DpsIndicator.Width = 265*PlayerInfo.Dealt.DamageFraction(_currentBoss,totalDamage, _timedEncounter) /100;
+            _windowSkill?.Update(skills,allskills, playerInfo, _buffs, _currentBoss, _timedEncounter, firstHit, lastHit);
+            DpsIndicator.Width = 265*PlayerInfo.Dealt.DamageFraction(_currentBoss, totalDamage, _timedEncounter) /100;
         }
 
 
@@ -149,7 +153,7 @@ namespace DamageMeter.UI
 
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(skills, allSkills, this, PlayerInfo, _currentBoss, _timedEncounter, _firstHit, _lastHit)
+                _windowSkill = new Skills(skills, allSkills, this, PlayerInfo, _buffs, _currentBoss, _timedEncounter, _firstHit, _lastHit)
                 {
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerInfo.Class + " " + PlayerName + ": CLOSE"}
@@ -158,7 +162,7 @@ namespace DamageMeter.UI
                 return;
             }
 
-            _windowSkill.Update(skills,allSkills, PlayerInfo, _currentBoss, _timedEncounter, _firstHit, _lastHit);
+            _windowSkill.Update(skills,allSkills, PlayerInfo, _buffs, _currentBoss, _timedEncounter, _firstHit, _lastHit);
             _windowSkill.Show();
         }
 

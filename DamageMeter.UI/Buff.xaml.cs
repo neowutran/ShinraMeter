@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DamageMeter.UI.EntityStats;
+using Tera.Game;
 
 namespace DamageMeter.UI
 {
@@ -12,23 +13,23 @@ namespace DamageMeter.UI
 
         private readonly EnduranceDebuffHeader _header;
 
-        public Buff(PlayerInfo playerInfo, Entity currentBoss)
+        public Buff(PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration>buffs, Entity currentBoss)
         {
             InitializeComponent();
             _header = new EnduranceDebuffHeader();
             ContentWidth = 1020;
-            Update(playerInfo, currentBoss);
+            Update(playerInfo, buffs, currentBoss);
         }
 
         public double ContentWidth { get; private set; }
 
-        public void Update(PlayerInfo playerInfo, Entity currentBoss)
+        public void Update(PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration> buffs, Entity currentBoss)
         {
             EnduranceAbnormality.Items.Clear();
 
             EnduranceAbnormality.Items.Add(_header);
             var counter = 0;
-            foreach (var abnormality in playerInfo.AbnormalityTime)
+            foreach (var abnormality in buffs)
             {
                 EnduranceDebuff abnormalityUi;
                 if (_enduranceDebuffsList.Count > counter)
