@@ -234,7 +234,11 @@
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.5" />
     </Window.Background>
     <Grid HorizontalAlignment="Left" Width="265">
-
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0" CenterY="0" 
+                            ScaleX="{DynamicResource Scale}" 
+                            ScaleY="{DynamicResource Scale}"/>
+        </Grid.LayoutTransform>
 
         <Image x:Name="PinImage" PreviewMouseLeftButtonDown="PinImage_OnPreviewMouseLeftButtonDown"  Stretch="Fill"
                HorizontalAlignment="Left"

@@ -17,7 +17,7 @@ namespace DamageMeter.UI
         private Skills _windowSkill;
         public ImageSource Image;
 
-        public PlayerStats(PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration> buffs)
+        public PlayerStats(PlayerInfo playerInfo, PlayerAbnormals buffs)
         {
             InitializeComponent();
             PlayerInfo = playerInfo;
@@ -54,11 +54,11 @@ namespace DamageMeter.UI
         private Entity _currentBoss;
         private long _firstHit;
         private long _lastHit;
-        private Dictionary<HotDot, AbnormalityDuration> _buffs;
+        private PlayerAbnormals _buffs;
 
         private bool _timedEncounter;
 
-        public void Repaint(PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration> buffs, long totalDamage, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter)
+        public void Repaint(PlayerInfo playerInfo, PlayerAbnormals buffs, long totalDamage, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter)
         {
             PlayerInfo = playerInfo;
             _buffs = buffs;

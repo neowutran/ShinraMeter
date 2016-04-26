@@ -48,11 +48,12 @@ namespace Data
             ParseDebug();
             ParseExcel();
             ParseAlwaysVisible();
+            ParseScale();
         }
 
 
         public Point Location { get; set; }
-
+        public double Scale { get; set; }
         public double MainWindowOpacity { get; private set; }
         public double SkillWindowOpacity { get; private set; }
 
@@ -95,6 +96,7 @@ namespace Data
             TeraDpsUser = "";
             Excel = false;
             AlwaysVisible = false;
+            Scale = 1;
         }
 
         public void ParseExcel()
@@ -109,7 +111,18 @@ namespace Data
                 Excel = excel;
             }
         }
-
+        public void ParseScale()
+        {
+            var root = _xml.Root;
+            var scalexml = root?.Element("scale");
+            if (scalexml == null) return;
+            double scale;
+            var parseSuccess = double.TryParse(scalexml.Value, out scale);
+            if (parseSuccess)
+            {
+                Scale = scale;
+            }
+        }
         public void ParseAlwaysVisible()
         {
             var root = _xml.Root;
@@ -321,6 +334,7 @@ namespace Data
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
+            xml.Root.Add(new XElement("scale", Scale));
 
             _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))

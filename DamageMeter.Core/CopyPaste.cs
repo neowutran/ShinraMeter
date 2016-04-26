@@ -117,8 +117,9 @@ namespace DamageMeter
                 var currentContent = content;
                 if (playerStats.Dealt.Damage(currentBoss, timedEncounter) == 0) continue;
 
+                var buffs = abnormals.Get(playerStats.Player);
                 AbnormalityDuration slaying;
-                abnormals.Get(playerStats.Player).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
+                buffs.Times.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
                 double slayingperc = (lastHit - firstHit) == 0 ? 0 : (((double)(slaying?.Duration(firstHit, lastHit) ?? 0) / (lastHit - firstHit)));
                 currentContent = currentContent.Replace("{slaying}", FormatHelpers.Instance.FormatPercent(slayingperc));
                 currentContent = currentContent.Replace("{dps}",
@@ -131,10 +132,10 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{class}", playerStats.Class + "");
                 currentContent = currentContent.Replace("{fullname}", playerStats.Player.FullName);
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
-                currentContent = currentContent.Replace("{deaths}", playerStats.Death.Count(firstHit, lastHit) + "");
-                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(playerStats.Death.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
-                currentContent = currentContent.Replace("{aggro}", playerStats.Dealt.Aggro(currentBoss).Count(firstHit, lastHit) + "");
-                currentContent = currentContent.Replace("{aggro_duration}", TimeSpan.FromSeconds(playerStats.Dealt.Aggro(currentBoss).Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
+                currentContent = currentContent.Replace("{deaths}", buffs.Death.Count(firstHit, lastHit) + "");
+                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(buffs.Death.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
+                currentContent = currentContent.Replace("{aggro}", buffs.Aggro(currentBoss?.NpcE).Count(firstHit, lastHit) + "");
+                currentContent = currentContent.Replace("{aggro_duration}", TimeSpan.FromSeconds(buffs.Aggro(currentBoss?.NpcE).Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate(currentBoss, timedEncounter) + "%");

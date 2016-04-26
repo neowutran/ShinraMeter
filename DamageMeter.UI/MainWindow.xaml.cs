@@ -52,6 +52,7 @@ namespace DamageMeter.UI
             {
                 Visibility = Visibility.Hidden;
             }
+            App.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;

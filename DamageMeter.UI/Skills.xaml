@@ -78,6 +78,11 @@
 
     </Window.Resources>
     <Grid MouseLeftButtonDown="Move">
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0" CenterY="0" 
+                            ScaleX="{DynamicResource Scale}" 
+                            ScaleY="{DynamicResource Scale}"/>
+        </Grid.LayoutTransform>
         <ScrollViewer VerticalScrollBarVisibility="Auto" >
 
             <Grid>

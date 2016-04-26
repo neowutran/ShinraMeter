@@ -47,6 +47,11 @@
         </Style>
     </Window.Resources>
     <Grid MouseLeftButtonDown="Move">
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0" CenterY="0" 
+                            ScaleX="{DynamicResource Scale}" 
+                            ScaleY="{DynamicResource Scale}"/>
+        </Grid.LayoutTransform>
         <ScrollViewer VerticalScrollBarVisibility="Auto" >
             <Grid>
             <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"

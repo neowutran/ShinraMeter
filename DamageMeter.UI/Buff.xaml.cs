@@ -13,7 +13,7 @@ namespace DamageMeter.UI
 
         private readonly EnduranceDebuffHeader _header;
 
-        public Buff(PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration>buffs, Entity currentBoss)
+        public Buff(PlayerInfo playerInfo, PlayerAbnormals buffs, Entity currentBoss)
         {
             InitializeComponent();
             _header = new EnduranceDebuffHeader();
@@ -23,13 +23,13 @@ namespace DamageMeter.UI
 
         public double ContentWidth { get; private set; }
 
-        public void Update(PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration> buffs, Entity currentBoss)
+        public void Update(PlayerInfo playerInfo, PlayerAbnormals buffs, Entity currentBoss)
         {
             EnduranceAbnormality.Items.Clear();
 
             EnduranceAbnormality.Items.Add(_header);
             var counter = 0;
-            foreach (var abnormality in buffs)
+            foreach (var abnormality in buffs.Times)
             {
                 EnduranceDebuff abnormalityUi;
                 if (_enduranceDebuffsList.Count > counter)

@@ -189,7 +189,6 @@ namespace DamageMeter
                     pasteThread.Start();
 
                     NeedToCopy = null;
-                    
                 }
 
                 Encounter = NewEncounter;
@@ -231,18 +230,6 @@ namespace DamageMeter
                 if (changeHp != null)
                 {
                     AbnormalityTracker.Update(changeHp);
-                    var user=EntityTracker.GetOrPlaceholder(changeHp.TargetId);
-                    if (user is UserEntity)
-                    {
-                        if (changeHp.Slaying)
-                        {
-                            AbnormalityTracker.AddAbnormality(changeHp.TargetId, changeHp.TargetId, 0, 0, 8888889, changeHp.Time.Ticks);
-                        }
-                        else
-                        {
-                            AbnormalityTracker.DeleteAbnormality(changeHp);
-                        }
-                    }
                     continue;
                 }
 
@@ -250,15 +237,7 @@ namespace DamageMeter
                 if (pchangeHp != null)
                 {
                     var user = PlayerTracker.GetOrNull(pchangeHp.PlayerId);
-                    if (user == null) continue;//have not seen user yet, cause he is far away, but in party.
-                    if (pchangeHp.Slaying)
-                    {
-                        AbnormalityTracker.AddAbnormality(user.User.Id, user.User.Id, 0, 0, 8888889, pchangeHp.Time.Ticks);
-                    }
-                    else
-                    {
-                        AbnormalityTracker.DeleteAbnormality(user.User.Id, 8888889, message.Time.Ticks);
-                    }
+                    AbnormalityTracker.RegisterSlaying(user?.User, pchangeHp.Slaying, pchangeHp.Time.Ticks);
                     continue;
                 }
 
@@ -272,23 +251,14 @@ namespace DamageMeter
                 var NpcStatus = message as SNpcStatus;
                 if (NpcStatus != null)
                 {
-                    DamageTracker.Instance.RegisterAggro(NpcStatus);
-                    if (NpcStatus.Enraged)
-                    {
-                        AbnormalityTracker.AddAbnormality(NpcStatus.Npc, NpcStatus.Target,0,0,8888888,NpcStatus.Time.Ticks);
-                        continue;
-                    }
-                    else
-                    {
-                        AbnormalityTracker.DeleteAbnormality(NpcStatus);
-                        continue;
-                    }
+                    AbnormalityTracker.RegisterNpcStatus(NpcStatus);
+                    continue;
                 }
 
                 var dead = message as SCreatureLife;
                 if (dead != null)
                 {
-                    DamageTracker.Instance.RegisterDead(dead);
+                    AbnormalityTracker.RegisterDead(dead);
                     continue;
                 }
 
@@ -323,7 +293,7 @@ namespace DamageMeter
                 var despawnNpc = message as SDespawnNpc;
                 if (despawnNpc != null)
                 {
-                    DamageTracker.Instance.StopAggro(despawnNpc);
+                    AbnormalityTracker.StopAggro(despawnNpc);
                     AbnormalityTracker.DeleteAbnormality(despawnNpc);
                     DataExporter.ToTeraDpsApi(despawnNpc, _abnormalityStorage);
                     continue;

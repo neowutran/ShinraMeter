@@ -25,7 +25,7 @@ namespace DamageMeter.UI
 
         public Skills(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills, PlayerStats parent,
-            PlayerInfo playerInfo, Dictionary<HotDot, AbnormalityDuration> buffs, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
+            PlayerInfo playerInfo, PlayerAbnormals buffs, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
             InitializeComponent();
                  
@@ -74,9 +74,9 @@ namespace DamageMeter.UI
 
         public void Update(Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedSkills,
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills,
-            PlayerInfo playerinfo, Dictionary<HotDot, AbnormalityDuration> buffs, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
+            PlayerInfo playerinfo, PlayerAbnormals buffs, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
-            var death = playerinfo.Death;
+            var death = buffs.Death;
             if (death == null)
             {
                 DeathCounter.Content = 0;
@@ -88,7 +88,7 @@ namespace DamageMeter.UI
                 var interval = TimeSpan.FromSeconds(duration);
                 DeathDuration.Content = interval.ToString(@"mm\:ss");
             }
-            var aggro = playerinfo.Dealt.Aggro(currentBoss);
+            var aggro = buffs.Aggro(currentBoss?.NpcE);
             if (aggro == null)
             {
                 AggroCounter.Content = 0;

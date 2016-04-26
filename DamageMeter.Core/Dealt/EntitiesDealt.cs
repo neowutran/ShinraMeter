@@ -10,7 +10,6 @@ namespace DamageMeter.Dealt
     {
         private Dictionary<long, Dictionary<Entity, SkillsStats>> _entitiesStats =
             new Dictionary<long, Dictionary<Entity, SkillsStats>>();
-        private Dictionary<Entity, Tera.Game.Death> _aggrolist = new Dictionary<Entity, Tera.Game.Death>();
 
         public PlayerInfo PlayerInfo;
 
@@ -227,7 +226,6 @@ namespace DamageMeter.Dealt
                 _entitiesStats =
                     _entitiesStats.ToDictionary(i => i.Key,
                         i => i.Value.ToDictionary(j => j.Key, j => (SkillsStats)j.Value.Clone())),
-                _aggrolist = _aggrolist.ToDictionary(i => i.Key, i => i.Value.Clone())
             };
 
             return clone;
@@ -255,7 +253,6 @@ namespace DamageMeter.Dealt
             {
                 timedStats.Value.Remove(entity);
             }
-            _aggrolist.Remove(entity);
         }
 
 
@@ -347,8 +344,6 @@ namespace DamageMeter.Dealt
                             stats[i][skills.Key] += skills.Value;
                         }
                     }
-                  
-                    
                 }
             }
 
@@ -392,33 +387,5 @@ namespace DamageMeter.Dealt
                 }
             }
         }
-        public Tera.Game.Death Aggro(Entity target)
-        {
-            if (target == null) return new Tera.Game.Death();
-            Tera.Game.Death result;
-            _aggrolist.TryGetValue(target, out result);
-            if (result == null)
-            {
-                result = new Tera.Game.Death();
-                _aggrolist[target] = result;
-            }
-            return result;
-        }
-        public void AggroStart(Entity target, long start)
-        {
-            if(!_aggrolist.ContainsKey(target))
-            {
-                Tera.Game.Death aggro = new Tera.Game.Death();
-                _aggrolist[target] = aggro;
-            }
-            _aggrolist[target].Start(start);
-        }
-
-        public void AggroEnd(Entity target, long end)
-        {
-            if (_aggrolist.ContainsKey(target))
-                _aggrolist[target].End(end);
-        }
-
     }
 }
