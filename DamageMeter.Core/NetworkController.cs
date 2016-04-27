@@ -236,7 +236,7 @@ namespace DamageMeter
                 var pchangeHp = message as SPartyMemberChangeHp;
                 if (pchangeHp != null)
                 {
-                    var user = PlayerTracker.GetOrNull(pchangeHp.PlayerId);
+                    var user = PlayerTracker.GetOrNull(pchangeHp.ServerId, pchangeHp.PlayerId);
                     AbnormalityTracker.RegisterSlaying(user?.User, pchangeHp.Slaying, pchangeHp.Time.Ticks);
                     continue;
                 }
@@ -330,7 +330,7 @@ namespace DamageMeter
                 var pcharmEnable = message as SPartyMemberCharmEnable;
                 if (pcharmEnable != null)
                 {
-                    var player = PlayerTracker.GetOrNull(pcharmEnable.PlayerId);
+                    var player = PlayerTracker.GetOrNull(pcharmEnable.ServerId, pcharmEnable.PlayerId);
                     if (player == null) continue;
                     CharmTracker.CharmEnable(player.User.Id, pcharmEnable.CharmId, pcharmEnable.Time.Ticks);
                     continue;
@@ -344,7 +344,7 @@ namespace DamageMeter
                 var pcharmReset = message as SPartyMemberCharmReset;
                 if (pcharmReset != null)
                 {
-                    var player = PlayerTracker.GetOrNull(pcharmReset.PlayerId);
+                    var player = PlayerTracker.GetOrNull(pcharmReset.ServerId, pcharmReset.PlayerId);
                     if (player == null) continue;
                     CharmTracker.CharmReset(player.User.Id, pcharmReset.Charms, pcharmReset.Time.Ticks);
                     continue;
@@ -358,7 +358,7 @@ namespace DamageMeter
                 var pcharmDel = message as SPartyMemberCharmDel;
                 if (pcharmDel != null)
                 {
-                    var player = PlayerTracker.GetOrNull(pcharmDel.PlayerId);
+                    var player = PlayerTracker.GetOrNull(pcharmDel.ServerId, pcharmDel.PlayerId);
                     if (player == null) continue;
                     CharmTracker.CharmDel(player.User.Id, pcharmDel.CharmId, pcharmDel.Time.Ticks);
                     continue;
@@ -372,7 +372,7 @@ namespace DamageMeter
                 var pcharmAdd = message as SPartyMemberCharmAdd;
                 if (pcharmAdd != null)
                 {
-                    var player = PlayerTracker.GetOrNull(pcharmAdd.PlayerId);
+                    var player = PlayerTracker.GetOrNull(pcharmAdd.ServerId, pcharmAdd.PlayerId);
                     if (player == null) continue;
                     CharmTracker.CharmAdd(player.User.Id, pcharmAdd.CharmId, pcharmAdd.Status, pcharmAdd.Time.Ticks);
                     continue;
