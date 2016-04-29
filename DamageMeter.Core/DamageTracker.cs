@@ -4,7 +4,7 @@ using System.Linq;
 using DamageMeter.Skills;
 using DamageMeter.Skills.Skill;
 using Tera.Game;
-using Tera.Game.Messages;
+using Data;
 using Skill = DamageMeter.Skills.Skill.Skill;
 
 namespace DamageMeter
@@ -259,24 +259,32 @@ namespace DamageMeter
             PlayerInfo playerStats;
             if (skillResult.SourcePlayer != null)
             {
-                playerStats = GetOrCreate(skillResult.SourcePlayer);
-                var entityTarget = GetActorEntity(skillResult.Target.Id);
-                if (entityTarget == null)
+                if (!BasicTeraData.Instance.WindowData.PartyOnly || NetworkController.Instance.PlayerTracker.MyParty(skillResult.SourcePlayer))
                 {
-                    throw new Exception("Unknow target" + skillResult.Target.GetType());
-                }
+                    playerStats = GetOrCreate(skillResult.SourcePlayer);
+                    var entityTarget = GetActorEntity(skillResult.Target.Id);
+                    if (entityTarget == null)
+                    {
+                        throw new Exception("Unknow target" + skillResult.Target.GetType());
+                    }
 
-                UpdateStatsDealt(playerStats, skillResult, entityTarget, skillResult.Time.Ticks);
+                    UpdateStatsDealt(playerStats, skillResult, entityTarget, skillResult.Time.Ticks);
+                }
             }
 
             if (skillResult.TargetPlayer == null) return;
-            playerStats = GetOrCreate(skillResult.TargetPlayer);
-            var entitySource = new Entity("UNKNOW");
-            if (skillResult.Source != null)
+            if (!BasicTeraData.Instance.WindowData.PartyOnly 
+                || ((skillResult.SourcePlayer == null)?false:NetworkController.Instance.PlayerTracker.MyParty(skillResult.SourcePlayer))
+                || NetworkController.Instance.PlayerTracker.MyParty(skillResult.TargetPlayer))
             {
-                entitySource = GetEntity(skillResult.Source.Id) ?? new Entity("UNKNOW");
+                playerStats = GetOrCreate(skillResult.TargetPlayer);
+                var entitySource = new Entity("UNKNOW");
+                if (skillResult.Source != null)
+                {
+                    entitySource = GetEntity(skillResult.Source.Id) ?? new Entity("UNKNOW");
+                }
+                UpdateStatsReceived(playerStats, skillResult, entitySource, skillResult.Time.Ticks);
             }
-            UpdateStatsReceived(playerStats, skillResult, entitySource, skillResult.Time.Ticks);
         }
 
         private static bool IsValidAttack(SkillResult message)

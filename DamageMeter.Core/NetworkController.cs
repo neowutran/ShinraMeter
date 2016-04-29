@@ -379,6 +379,7 @@ namespace DamageMeter
                 }
 
                 EntityTracker.Update(message);
+                PlayerTracker.UpdateParty(message);
                 //var sSpawnUser = message as SpawnUserServerMessage;
                 //if (sSpawnUser != null)
                 //{

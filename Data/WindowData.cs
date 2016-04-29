@@ -49,11 +49,13 @@ namespace Data
             ParseExcel();
             ParseAlwaysVisible();
             ParseScale();
+            ParsePartyOnly();
         }
 
 
         public Point Location { get; set; }
         public double Scale { get; set; }
+        public bool PartyOnly { get; set; }
         public double MainWindowOpacity { get; private set; }
         public double SkillWindowOpacity { get; private set; }
 
@@ -97,6 +99,20 @@ namespace Data
             Excel = false;
             AlwaysVisible = false;
             Scale = 1;
+            PartyOnly = false;
+        }
+
+        public void ParsePartyOnly()
+        {
+            var root = _xml.Root;
+            var xml = root?.Element("partyonly");
+            if (xml == null) return;
+            bool party;
+            var parseSuccess = bool.TryParse(xml.Value, out party);
+            if (parseSuccess)
+            {
+                PartyOnly = party;
+            }
         }
 
         public void ParseExcel()
