@@ -343,7 +343,7 @@ namespace DamageMeter
                 skillName = message.Skill.Name;
                 iconName = message.Skill.IconName;
             }
-            var skillKey = new Skill(skillName, new List<int> {message.SkillId}, iconName);
+            var skillKey = new Skill(skillName, new List<int> {message.SkillId}, iconName, message.Skill?.NpcInfo);
 
 
             SkillStats skillStats;

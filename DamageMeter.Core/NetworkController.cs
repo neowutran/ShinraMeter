@@ -246,14 +246,14 @@ namespace DamageMeter
                 {
                     var user = PlayerTracker.GetOrNull(pmstatupd.ServerId, pmstatupd.PlayerId);
                     AbnormalityTracker.RegisterSlaying(user?.User, pmstatupd.Slaying, pmstatupd.Time.Ticks);
-                    return;
+                    continue;
                 }
 
                 var pstatupd = message as S_PLAYER_STAT_UPDATE;
                 if (pstatupd != null)
                 {
                     AbnormalityTracker.RegisterSlaying(EntityTracker.MeterUser, pstatupd.Slaying, pstatupd.Time.Ticks);
-                    return;
+                    continue;
                 }
 
                 var changeMp = message as SPlayerChangeMp;

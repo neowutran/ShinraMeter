@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Tera.Game;
 
 namespace DamageMeter.Skills.Skill
 {
@@ -7,15 +8,17 @@ namespace DamageMeter.Skills.Skill
     {
         public List<int> SkillId;
 
-        public Skill(string skill, List<int> skillId,string iconName)
+        public Skill(string skill, List<int> skillId,string iconName, NpcInfo npcInfo)
         {
             SkillId = skillId;
             SkillName = skill;
             IconName = iconName;
+            NpcInfo = npcInfo;
         }
 
         public string SkillName { get; }
         public string IconName { get; }
+        public NpcInfo NpcInfo { get; }
 
         public override bool Equals(object obj)
         {

@@ -130,9 +130,7 @@ namespace DamageMeter
                         buff.Key.Id + "", percentage + ""
                     ));
                 }
-                Dictionary<Skills.Skill.Skill, SkillStats> notimedskills;
-                if (timedEncounter) notimedskills = NoTimedSkills(user.Dealt.GetSkillsByTime(entity));
-                else                notimedskills = NoTimedSkills(user.Dealt.GetSkills(entity));
+                var notimedskills = NoTimedSkills(timedEncounter ? user.Dealt.GetSkillsByTime(entity) : user.Dealt.GetSkills(entity));
 
                 foreach (var skill in notimedskills)
                 {
@@ -145,7 +143,7 @@ namespace DamageMeter
                     skillLog.skillDamagePercent = skill.Value.DamagePercentage(entity, timedEncounter) + "";
                     skillLog.skillHighestCrit = skill.Value.DmgBiggestCrit + "";
                     skillLog.skillHits = skill.Value.HitsDmg + "";
-                    skillLog.skillId = skill.Key.SkillId.ElementAt(0) + "";
+                    skillLog.skillId = BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(skill.Key.NpcInfo?.Name,user.Player.RaceGenderClass)?.Id.ToString() ?? skill.Key.SkillId.ElementAt(0).ToString();
                     skillLog.skillLowestCrit = skill.Value.DmgLowestCrit + "";
                     skillLog.skillTotalDamage = skilldamage + "";
 
