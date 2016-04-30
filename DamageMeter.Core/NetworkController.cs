@@ -241,6 +241,21 @@ namespace DamageMeter
                     continue;
                 }
 
+                var pmstatupd = message as S_PARTY_MEMBER_STAT_UPDATE;
+                if (pmstatupd != null)
+                {
+                    var user = PlayerTracker.GetOrNull(pmstatupd.ServerId, pmstatupd.PlayerId);
+                    AbnormalityTracker.RegisterSlaying(user?.User, pmstatupd.Slaying, pmstatupd.Time.Ticks);
+                    return;
+                }
+
+                var pstatupd = message as S_PLAYER_STAT_UPDATE;
+                if (pstatupd != null)
+                {
+                    AbnormalityTracker.RegisterSlaying(EntityTracker.MeterUser, pstatupd.Slaying, pstatupd.Time.Ticks);
+                    return;
+                }
+
                 var changeMp = message as SPlayerChangeMp;
                 if (changeMp != null)
                 {
