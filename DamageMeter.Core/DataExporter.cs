@@ -119,6 +119,9 @@ namespace DamageMeter
                 teradpsUser.playerDeaths = death.Count(firstTick, lastTick) + "";
                 teradpsUser.playerDeathDuration = death.Duration(firstTick, lastTick) / TimeSpan.TicksPerSecond + "";
 
+                var aggro = buffs.Aggro(entity.NpcE);
+                teradpsUser.aggro = aggro.Duration(firstTick, lastTick) / TimeSpan.TicksPerSecond + "";
+
                 foreach (var buff in buffs.Times)
                 {
                     long percentage = (buff.Value.Duration(firstTick, lastTick) * 100 / interTick);

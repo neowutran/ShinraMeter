@@ -17,7 +17,7 @@ namespace NetworkSniffer.Packets
         public ushort WindowSize => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 14);
         public ushort Checksum => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 16);
         public ushort UrgentPointer => ParserHelpers.GetUInt16BigEndian(Packet.Array, Packet.Offset + 18);
-
+        public bool Bad => Packet.Count < HeaderLength;
         public int HeaderLength
         {
             get
