@@ -20,12 +20,17 @@ namespace DamageMeter
         }
 
 
-        public static string Copy(EntityInfo info, IEnumerable<PlayerInfo> playerInfos,AbnormalityStorage abnormals, long totalDamage, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, string header,
+        public static string Copy(EntityInfo info, IEnumerable<PlayerInfo> playerInfos,AbnormalityStorage abnormals, long totalDamage, Entity currentBoss, bool timedEncounter, string header,
             string content, string footer,
             string orderby, string order)
         {
             //stop if nothing to paste
             if (playerInfos == null) return "";
+            var firstTick = info.FirstHit;
+            var lastTick =  info.LastHit;
+            var firstHit = firstTick / TimeSpan.TicksPerSecond;
+            var lastHit = lastTick / TimeSpan.TicksPerSecond;
+
             IEnumerable<PlayerInfo> playerInfosOrdered;
             if (order == "ascending")
             {
@@ -103,13 +108,13 @@ namespace DamageMeter
                 name = currentBoss.Name;
                 AbnormalityDuration enrage;
                 abnormals.Get(currentBoss.NpcE).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888888), out enrage);
-                enrageperc = (lastHit - firstHit) == 0 ? 0 : (((double)(enrage?.Duration(firstHit, lastHit) ?? 0) / (lastHit - firstHit)));
+                enrageperc = (lastTick - firstTick) == 0 ? 0 : (((double)(enrage?.Duration(firstTick, lastTick) ?? 0) / (lastTick - firstTick)));
             }
 
             dpsString = dpsString.Replace("{encounter}", name);
             var interval = TimeSpan.FromSeconds(lastHit - firstHit);
             dpsString = dpsString.Replace("{timer}", interval.ToString(@"mm\:ss"));
-            dpsString = dpsString.Replace("{partyDps}", FormatHelpers.Instance.FormatValue(partyDps)+"/s");
+            dpsString = dpsString.Replace("{partyDps}", FormatHelpers.Instance.FormatValue((lastHit - firstHit)>0?totalDamage/(lastHit - firstHit):0)+"/s");
             dpsString = dpsString.Replace("{enrage}", FormatHelpers.Instance.FormatPercent(enrageperc));
 
             foreach (var playerStats in playerInfosOrdered)
@@ -120,7 +125,7 @@ namespace DamageMeter
                 var buffs = abnormals.Get(playerStats.Player);
                 AbnormalityDuration slaying;
                 buffs.Times.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
-                double slayingperc = (lastHit - firstHit) == 0 ? 0 : (((double)(slaying?.Duration(firstHit, lastHit) ?? 0) / (lastHit - firstHit)));
+                double slayingperc = (lastTick - firstTick) == 0 ? 0 : (((double)(slaying?.Duration(firstTick, lastTick) ?? 0) / (lastTick - firstTick)));
                 currentContent = currentContent.Replace("{slaying}", FormatHelpers.Instance.FormatPercent(slayingperc));
                 currentContent = currentContent.Replace("{dps}",
                     FormatHelpers.Instance.FormatValue(playerStats.Dealt.Dps(currentBoss, timedEncounter)) + "/s");
@@ -132,10 +137,10 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{class}", playerStats.Class + "");
                 currentContent = currentContent.Replace("{fullname}", playerStats.Player.FullName);
                 currentContent = currentContent.Replace("{name}", playerStats.Name);
-                currentContent = currentContent.Replace("{deaths}", buffs.Death.Count(firstHit, lastHit) + "");
-                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromSeconds(buffs.Death.Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
-                currentContent = currentContent.Replace("{aggro}", buffs.Aggro(currentBoss?.NpcE).Count(firstHit, lastHit) + "");
-                currentContent = currentContent.Replace("{aggro_duration}", TimeSpan.FromSeconds(buffs.Aggro(currentBoss?.NpcE).Duration(firstHit, lastHit)).ToString(@"mm\:ss"));
+                currentContent = currentContent.Replace("{deaths}", buffs.Death.Count(firstTick, lastTick) + "");
+                currentContent = currentContent.Replace("{death_duration}", TimeSpan.FromTicks(buffs.Death.Duration(firstTick, lastTick)).ToString(@"mm\:ss"));
+                currentContent = currentContent.Replace("{aggro}", buffs.Aggro(currentBoss?.NpcE).Count(firstTick, lastTick) + "");
+                currentContent = currentContent.Replace("{aggro_duration}", TimeSpan.FromTicks(buffs.Aggro(currentBoss?.NpcE).Duration(firstTick, lastTick)).ToString(@"mm\:ss"));
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate(currentBoss, timedEncounter) + "%");

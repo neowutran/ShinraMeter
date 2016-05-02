@@ -71,8 +71,8 @@ namespace DamageMeter.UI.EntityStats
                 }
 
                 abnormalityUi.Update(abnormality.Key, abnormality.Value,
-                    statsAbnormalities.FirstHit/TimeSpan.TicksPerSecond,
-                    statsAbnormalities.LastHit/TimeSpan.TicksPerSecond);
+                    statsAbnormalities.FirstHit,
+                    statsAbnormalities.LastHit);
                 EnduranceAbnormality.Items.Add(abnormalityUi);
                 count++;
             }

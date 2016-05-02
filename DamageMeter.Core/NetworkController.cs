@@ -148,10 +148,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(EntityInfo info, List<PlayerInfo> stats, AbnormalityStorage abnormals, long total, long partyDps, long firstHit, long lastHit, Entity currentBoss, bool timedEncounter, CopyKey copy)
+        public static void CopyThread(EntityInfo info, List<PlayerInfo> stats, AbnormalityStorage abnormals, long total, Entity currentBoss, bool timedEncounter, CopyKey copy)
         {
 
-            var text = CopyPaste.Copy(info, stats, abnormals, total, partyDps, firstHit, lastHit, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = CopyPaste.Copy(info, stats, abnormals, total, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
             
         }
@@ -177,14 +177,14 @@ namespace DamageMeter
                 {
                     var stats = DamageTracker.Instance.GetPlayerStats();
                     var currentBoss = Encounter;
-                    var info = currentBoss==null?new EntityInfo():DamageTracker.Instance.GetEntityStats()[currentBoss];
                     var timedEncounter = TimedEncounter;
                     var totaldamage = DamageTracker.Instance.TotalDamage(currentBoss, timedEncounter);
                     var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
                     var lastHit = DamageTracker.Instance.LastHit(currentBoss);
-                    var partyDps = DamageTracker.Instance.PartyDps(currentBoss, timedEncounter);
+                    var info = currentBoss == null ? new EntityInfo { FirstHit = firstHit*TimeSpan.TicksPerSecond, LastHit = (lastHit+1) * TimeSpan.TicksPerSecond-1 } : DamageTracker.Instance.GetEntityStats()[currentBoss];
                     var tmpcopy = NeedToCopy;
-                    var pasteThread = new Thread(() => CopyThread(info, stats, _abnormalityStorage.Clone(currentBoss?.NpcE), totaldamage, partyDps, firstHit, lastHit, currentBoss , timedEncounter, tmpcopy));
+                    var abnormals = _abnormalityStorage.Clone(currentBoss?.NpcE);
+                    var pasteThread = new Thread(() => CopyThread(info, stats, abnormals, totaldamage, currentBoss , timedEncounter, tmpcopy));
                     pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
 
@@ -237,7 +237,8 @@ namespace DamageMeter
                 if (pchangeHp != null)
                 {
                     var user = PlayerTracker.GetOrNull(pchangeHp.ServerId, pchangeHp.PlayerId);
-                    AbnormalityTracker.RegisterSlaying(user?.User, pchangeHp.Slaying, pchangeHp.Time.Ticks);
+                    if (user==null)continue;
+                    AbnormalityTracker.RegisterSlaying(user.User, pchangeHp.Slaying, pchangeHp.Time.Ticks);
                     continue;
                 }
 
@@ -245,7 +246,8 @@ namespace DamageMeter
                 if (pmstatupd != null)
                 {
                     var user = PlayerTracker.GetOrNull(pmstatupd.ServerId, pmstatupd.PlayerId);
-                    AbnormalityTracker.RegisterSlaying(user?.User, pmstatupd.Slaying, pmstatupd.Time.Ticks);
+                    if (user == null) continue;
+                    AbnormalityTracker.RegisterSlaying(user.User, pmstatupd.Slaying, pmstatupd.Time.Ticks);
                     continue;
                 }
 
@@ -263,10 +265,10 @@ namespace DamageMeter
                     continue;
                 }
 
-                var NpcStatus = message as SNpcStatus;
-                if (NpcStatus != null)
+                var npcStatus = message as SNpcStatus;
+                if (npcStatus != null)
                 {
-                    AbnormalityTracker.RegisterNpcStatus(NpcStatus);
+                    AbnormalityTracker.RegisterNpcStatus(npcStatus);
                     continue;
                 }
 

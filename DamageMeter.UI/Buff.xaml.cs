@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DamageMeter.UI.EntityStats;
 using Tera.Game;
 
@@ -41,8 +42,8 @@ namespace DamageMeter.UI
                     abnormalityUi = new EnduranceDebuff();
                     _enduranceDebuffsList.Add(abnormalityUi);
                 }
-                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerInfo.Dealt.FirstHit(currentBoss),
-                    playerInfo.Dealt.LastHit(currentBoss));
+                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerInfo.Dealt.FirstHit(currentBoss)*TimeSpan.TicksPerSecond,
+                    (playerInfo.Dealt.LastHit(currentBoss)+1)*TimeSpan.TicksPerSecond-1);
                 EnduranceAbnormality.Items.Add(abnormalityUi);
 
                 counter++;

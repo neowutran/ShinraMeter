@@ -56,7 +56,7 @@ namespace DamageMeter
             
             var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
 
-            if (!entity.IsBoss) return;
+            if (!entity.IsBoss || !DamageTracker.Instance.EntitiesStats.ContainsKey(entity)) return;
 
             bool timedEncounter = false;
 
@@ -65,18 +65,18 @@ namespace DamageMeter
             {
                 timedEncounter = true;
             }
-            
-            var interval = DamageTracker.Instance.Interval(entity);
+
+            var firstTick = DamageTracker.Instance.EntitiesStats[entity].FirstHit;
+            var lastTick = DamageTracker.Instance.EntitiesStats[entity].LastHit;
+            var interTick = lastTick - firstTick;
+            var interval = interTick/TimeSpan.TicksPerSecond;
             if(interval == 0)
             {
                 return;
             }
             var stats = DamageTracker.Instance.GetPlayerStats();
-            var firstHit = DamageTracker.Instance.FirstHit(entity);
-            var lastHit = DamageTracker.Instance.LastHit(entity);
-            var entities = DamageTracker.Instance.GetEntityStats();
             var totaldamage = DamageTracker.Instance.TotalDamage(entity, timedEncounter);
-            var partyDps = DamageTracker.Instance.PartyDps(entity, timedEncounter);
+            var partyDps = TimeSpan.TicksPerSecond * totaldamage / interTick;
          
             var teradpsData = new EncounterBase();
             teradpsData.areaId = entity.NpcE.Info.HuntingZoneId+"";
@@ -86,7 +86,7 @@ namespace DamageMeter
     
             foreach (var debuff in abnormals.Get(entity.NpcE))
             {
-                long percentage = (debuff.Value.Duration(firstHit, lastHit) * 100 / interval);
+                long percentage = (debuff.Value.Duration(firstTick, lastTick) * 100 / interTick);
                 if(percentage == 0)
                 {
                     continue;
@@ -112,16 +112,16 @@ namespace DamageMeter
                 teradpsUser.playerName = user.Name;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
                 teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter) + "";
-                teradpsUser.playerDps = user.Dealt.GlobalDps(entity, timedEncounter, interval) + "";
+                teradpsUser.playerDps = TimeSpan.TicksPerSecond * damage / interTick + "";
                 teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter) + "";
 
                 var death = buffs.Death;
-                teradpsUser.playerDeaths = death.Count(firstHit, lastHit) + "";
-                teradpsUser.playerDeathDuration = death.Duration(firstHit, lastHit) + "";
+                teradpsUser.playerDeaths = death.Count(firstTick, lastTick) + "";
+                teradpsUser.playerDeathDuration = death.Duration(firstTick, lastTick) / TimeSpan.TicksPerSecond + "";
 
                 foreach (var buff in buffs.Times)
                 {
-                    long percentage = (buff.Value.Duration(user.Dealt.GetFirstHit(entity), user.Dealt.GetLastHit(entity)) * 100 / interval);
+                    long percentage = (buff.Value.Duration(firstTick, lastTick) * 100 / interTick);
                     if (percentage == 0)
                     {
                         continue;

@@ -22,8 +22,8 @@ namespace DamageMeter.UI.EntityStats
             SkillIcon.ToolTip = string.IsNullOrEmpty(hotdot.ItemName) ? null : hotdot.ItemName;
             LabelClass.Content = abnormalityDuration.InitialPlayerClass;
             var intervalEntity = lastHit - firstHit;
-            var second = abnormalityDuration.Duration(firstHit, lastHit);
-            var interval = TimeSpan.FromSeconds(second);
+            var ticks = abnormalityDuration.Duration(firstHit, lastHit);
+            var interval = TimeSpan.FromTicks(ticks);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
             if (intervalEntity == 0)
@@ -35,7 +35,7 @@ namespace DamageMeter.UI.EntityStats
                 LabelAbnormalityDurationPercentage.Content = abnormalityDuration.Duration(firstHit, lastHit)*100/
                                                              intervalEntity + "%";
             }
-            interval = TimeSpan.FromSeconds(intervalEntity);
+            interval = TimeSpan.FromTicks(intervalEntity);
             LabelInterval.Content = interval.ToString(@"mm\:ss");
 
             LabelName.Content = hotdot.Name;

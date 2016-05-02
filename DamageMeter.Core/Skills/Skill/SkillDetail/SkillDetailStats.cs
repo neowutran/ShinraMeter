@@ -74,7 +74,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             get { return _dmgLowestCrit; }
             private set
             {
-                if ((_dmgLowestCrit > 0 && value < _dmgLowestCrit) || _dmgLowestCrit == 0)
+                if ((value > 0 && value < _dmgLowestCrit) || _dmgLowestCrit == 0)
                 {
                     _dmgLowestCrit = value;
                 }
@@ -187,7 +187,7 @@ namespace DamageMeter.Skills.Skill.SkillDetail
             get { return _dmgLowestHit; }
             private set
             {
-                if ((_dmgLowestHit > 0 && value < _dmgLowestHit) || _dmgLowestHit == 0)
+                if ((value > 0 && value < _dmgLowestHit) || _dmgLowestHit == 0)
                 {
                     _dmgLowestHit = value;
                 }
