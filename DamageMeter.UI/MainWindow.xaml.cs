@@ -146,6 +146,9 @@ namespace DamageMeter.UI
             var excel = new MenuItem { Text = "Excel export" };
             excel.Click += ExcelOnClick;
             excel.Checked = BasicTeraData.Instance.WindowData.Excel;
+            var siteExport = new MenuItem { Text = "Site export" };
+            siteExport.Click += SiteOnClick;
+            siteExport.Checked = BasicTeraData.Instance.WindowData.SiteExport;
             var party = new MenuItem { Text = "Count only party members" };
             party.Click += PartyOnClick;
             party.Checked = BasicTeraData.Instance.WindowData.PartyOnly;
@@ -170,9 +173,15 @@ namespace DamageMeter.UI
             context.MenuItems.Add(forum);
             context.MenuItems.Add(teradps);
             context.MenuItems.Add(excel);
+            context.MenuItems.Add(siteExport);
             context.MenuItems.Add(party);
             context.MenuItems.Add(exit);
             _trayIcon.ContextMenu = context;
+        }
+        private void SiteOnClick(object sender, EventArgs eventArgs)
+        {
+            BasicTeraData.Instance.WindowData.SiteExport = !BasicTeraData.Instance.WindowData.SiteExport;
+            (sender as MenuItem).Checked = BasicTeraData.Instance.WindowData.SiteExport;
         }
         private void PartyOnClick(object sender, EventArgs eventArgs)
         {

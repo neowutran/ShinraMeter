@@ -81,6 +81,8 @@ namespace Data
 
         public bool Excel { get; set; }
 
+        public bool SiteExport { get; set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -100,6 +102,7 @@ namespace Data
             AlwaysVisible = false;
             Scale = 1;
             PartyOnly = false;
+            SiteExport = true;
         }
 
         public void ParsePartyOnly()
@@ -168,6 +171,14 @@ namespace Data
             {
                 TeraDpsToken = "";
                 TeraDpsUser = "";
+            }
+            var exp = teradps?.Element("export");
+            if (exp==null)return;
+            bool val;
+            var parseSuccess = bool.TryParse(exp.Value, out val);
+            if (parseSuccess)
+            {
+                SiteExport = val;
             }
         }
 
@@ -347,6 +358,7 @@ namespace Data
             xml.Root.Add(new XElement("teradps.io"));
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
             xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
+            xml.Root.Element("teradps.io").Add(new XElement("export", SiteExport));
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));

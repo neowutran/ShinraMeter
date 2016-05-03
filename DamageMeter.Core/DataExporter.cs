@@ -47,7 +47,9 @@ namespace DamageMeter
         public static void ToTeraDpsApi(SDespawnNpc despawnNpc, AbnormalityStorage abnormals)
         {
             if(!BasicTeraData.Instance.WindowData.Excel && 
-                (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)))
+                (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) 
+                    || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
+                    || !BasicTeraData.Instance.WindowData.SiteExport) )
             {
                 return;
             }
@@ -120,7 +122,7 @@ namespace DamageMeter
                 teradpsUser.playerDeathDuration = death.Duration(firstTick, lastTick) / TimeSpan.TicksPerSecond + "";
 
                 var aggro = buffs.Aggro(entity.NpcE);
-                teradpsUser.aggro = 100* aggro.Duration(firstTick, lastTick) / interTick + "";
+                teradpsUser.aggro = 100 * aggro.Duration(firstTick, lastTick) / interTick + "";
 
                 foreach (var buff in buffs.Times)
                 {
