@@ -166,7 +166,7 @@ namespace DamageMeter
                 var excelThread = new Thread(() => ExcelExport.ExcelSave(teradpsData));
                 excelThread.Start();
             }
-            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)) return;
+            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) || !BasicTeraData.Instance.WindowData.SiteExport) return;
             string json = JsonConvert.SerializeObject(teradpsData);
             var sendThread = new Thread(() => Send(entity, json, 3));
             sendThread.Start();
