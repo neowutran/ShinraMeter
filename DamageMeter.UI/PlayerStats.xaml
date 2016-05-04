@@ -43,7 +43,7 @@
                    MinHeight="29" />
            
             <Label Focusable="False" Grid.Column="4" FontSize="14" x:Name="LabelCritRate" HorizontalContentAlignment="Right"
-                   VerticalAlignment="Center" Foreground="LightCoral"
+                   VerticalAlignment="Center" Foreground="LightCoral" PreviewMouseLeftButtonDown="ChangeHeal"
                    MinHeight="25" />
           
         </Grid>

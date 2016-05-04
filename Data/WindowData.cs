@@ -50,6 +50,7 @@ namespace Data
             ParseAlwaysVisible();
             ParseScale();
             ParsePartyOnly();
+            ParseShowHealCrit();
         }
 
 
@@ -82,6 +83,7 @@ namespace Data
         public bool Excel { get; set; }
 
         public bool SiteExport { get; set; }
+        public bool ShowHealCrit { get; set; }
 
         private void DefaultValue()
         {
@@ -103,8 +105,21 @@ namespace Data
             Scale = 1;
             PartyOnly = false;
             SiteExport = true;
+            ShowHealCrit = true;
         }
 
+        public void ParseShowHealCrit()
+        {
+            var root = _xml.Root;
+            var xml = root?.Element("showhealcrit");
+            if (xml == null) return;
+            bool val;
+            var parseSuccess = bool.TryParse(xml.Value, out val);
+            if (parseSuccess)
+            {
+                ShowHealCrit = val;
+            }
+        }
         public void ParsePartyOnly()
         {
             var root = _xml.Root;
@@ -363,6 +378,7 @@ namespace Data
             xml.Root.Add(new XElement("excel", Excel));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
             xml.Root.Add(new XElement("scale", Scale));
+            xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
 
             _filestream.SetLength(0);
             using (StreamWriter sr = new StreamWriter(_filestream))

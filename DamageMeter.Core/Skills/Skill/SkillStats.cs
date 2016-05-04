@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DamageMeter.Skills.Skill.SkillDetail;
+using Data;
 
 namespace DamageMeter.Skills.Skill
 {
@@ -219,7 +220,7 @@ namespace DamageMeter.Skills.Skill
 
         public int HitsAll => HitsDmg + HitsHeal;
 
-        public int Hits => _playerInfo.IsHealer ? HitsHeal : HitsDmg;
+        public int Hits => _playerInfo.IsHealer&&BasicTeraData.Instance.WindowData.ShowHealCrit ? HitsHeal : HitsDmg;
 
         public int HitsDmg
         {
@@ -238,7 +239,7 @@ namespace DamageMeter.Skills.Skill
 
         public int CritsAll => CritsDmg + CritsHeal;
 
-        public int Crits => _playerInfo.IsHealer ? CritsHeal : CritsDmg;
+        public int Crits => _playerInfo.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit ? CritsHeal : CritsDmg;
 
         public int CritsHeal
         {

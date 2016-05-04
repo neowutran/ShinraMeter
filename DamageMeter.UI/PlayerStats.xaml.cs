@@ -72,6 +72,7 @@ namespace DamageMeter.UI
             LabelCritRate.Content = CritRate;
             var intervalTimespan = TimeSpan.FromSeconds(playerInfo.Dealt.Interval(_currentBoss));
             LabelCritRate.ToolTip = "Hits received: " + HitReceived+" - Damage received: "+DamageReceived+" - Fight Duration: "+ intervalTimespan.ToString(@"mm\:ss");
+            LabelCritRate.Foreground = playerInfo.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit ? Brushes.LawnGreen : Brushes.LightCoral;
             LabelDamagePart.Content = DamagePart(totalDamage);
             LabelDamagePart.ToolTip = "Damage done: " + Damage;
         
@@ -166,6 +167,11 @@ namespace DamageMeter.UI
             _windowSkill.Show();
         }
 
+        private void ChangeHeal(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount==2)
+            BasicTeraData.Instance.WindowData.ShowHealCrit = !BasicTeraData.Instance.WindowData.ShowHealCrit;
+        }
 
         public void CloseSkills()
         {

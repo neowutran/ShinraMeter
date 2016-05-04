@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DamageMeter.Skills;
 using DamageMeter.Skills.Skill;
+using Data;
 
 namespace DamageMeter.Dealt
 {
@@ -160,8 +161,8 @@ namespace DamageMeter.Dealt
                 {
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Crits));
                 }
-           
-                if (!timedEncounter && !PlayerInfo.IsHealer)
+
+                if (!timedEncounter && !(PlayerInfo.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit))
                 {
                     return _entitiesStats.Sum(
                              timedStats =>
@@ -199,7 +200,7 @@ namespace DamageMeter.Dealt
                  return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Hits));
             }
 
-            if (!timedEncounter && !PlayerInfo.IsHealer)
+            if (!timedEncounter && !(PlayerInfo.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit))
             {
                 return
                      _entitiesStats.Sum(
