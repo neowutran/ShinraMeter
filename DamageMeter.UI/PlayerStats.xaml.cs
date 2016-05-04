@@ -41,6 +41,7 @@ namespace DamageMeter.UI
         public string HitReceived => PlayerInfo.Received.Hits(_currentBoss, _firstHit, _lastHit, _timedEncounter).ToString();
 
         public string CritRate => Math.Round(PlayerInfo.Dealt.CritRate(_currentBoss, _timedEncounter)) + "%";
+        public string CritRateHeal => Math.Round(PlayerInfo.Dealt.CritRateHeal(_currentBoss, _timedEncounter)) + "%";
 
 
         public string PlayerName => PlayerInfo.Name;
@@ -69,7 +70,7 @@ namespace DamageMeter.UI
 
             LabelDps.Content = GlobalDps;
             LabelDps.ToolTip = "Individual dps: " +Dps;
-            LabelCritRate.Content = CritRate;
+            LabelCritRate.Content = playerInfo.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit ? CritRateHeal : CritRate;
             var intervalTimespan = TimeSpan.FromSeconds(playerInfo.Dealt.Interval(_currentBoss));
             LabelCritRate.ToolTip = "Hits received: " + HitReceived+" - Damage received: "+DamageReceived+" - Fight Duration: "+ intervalTimespan.ToString(@"mm\:ss");
             LabelCritRate.Foreground = playerInfo.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit ? Brushes.LawnGreen : Brushes.LightCoral;

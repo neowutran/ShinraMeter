@@ -123,12 +123,20 @@ namespace DamageMeter.Skills
 
         public int Crits
         {
-            get { return Skills.Sum(skill => skill.Value.Crits); }
+            get { return Skills.Sum(skill => skill.Value.CritsDmg); }
+        }
+        public int CritsHeal
+        {
+            get { return Skills.Sum(skill => skill.Value.CritsHeal); }
         }
 
         public int Hits
         {
-            get { return Skills.Sum(skill => skill.Value.Hits); }
+            get { return Skills.Sum(skill => skill.Value.HitsDmg); }
+        }
+        public int HitsHeal
+        {
+            get { return Skills.Sum(skill => skill.Value.HitsHeal); }
         }
 
         public object Clone()

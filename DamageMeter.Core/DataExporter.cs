@@ -114,6 +114,7 @@ namespace DamageMeter
                 teradpsUser.playerName = user.Name;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
                 teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter) + "";
+                teradpsUser.healCrit = user.IsHealer ? user.Dealt.CritRateHeal(entity, timedEncounter) +"" : null;
                 teradpsUser.playerDps = TimeSpan.TicksPerSecond * damage / interTick + "";
                 teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter) + "";
 

@@ -153,7 +153,31 @@ namespace DamageMeter.Dealt
             return hits == 0 ? 0 : Math.Round((double)Crits(entity, timedEncounter) * 100 / hits, 1);
         }
 
+        public double CritRateHeal(Entity entity, bool timedEncounter)
+        {
+            var hits = HitsHeal(entity, timedEncounter);
+            return hits == 0 ? 0 : Math.Round((double)CritsHeal(entity, timedEncounter) * 100 / hits, 1);
+        }
 
+        public int CritsHeal(Entity currentBoss, bool timedEncounter)
+        {
+
+            if (currentBoss == null)
+            {
+                return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.CritsHeal));
+            }
+
+            var crit = 0;
+            var lastHit = GetLastHit(currentBoss);
+            for (var i = GetFirstHit(currentBoss); i <= lastHit; i++)
+            {
+                if (!_entitiesStats.ContainsKey(i)) continue;
+                crit += _entitiesStats[i].Sum(stat => stat.Value.CritsHeal);
+            }
+            return crit;
+
+
+        }
         public int Crits(Entity currentBoss, bool timedEncounter)
         {
             
@@ -162,7 +186,7 @@ namespace DamageMeter.Dealt
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Crits));
                 }
 
-                if (!timedEncounter && !(PlayerInfo.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit))
+                if (!timedEncounter)
                 {
                     return _entitiesStats.Sum(
                              timedStats =>
@@ -192,6 +216,25 @@ namespace DamageMeter.Dealt
             
         }
 
+        public int HitsHeal(Entity currentBoss, bool timedEncounter)
+        {
+
+            if (currentBoss == null)
+            {
+                return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.HitsHeal));
+            }
+
+            var hits = 0;
+            var lastHit = GetLastHit(currentBoss);
+            for (var i = GetFirstHit(currentBoss); i <= lastHit; i++)
+            {
+                if (!_entitiesStats.ContainsKey(i)) continue;
+                hits += _entitiesStats[i].Sum(stat => stat.Value.HitsHeal);
+            }
+            return hits;
+
+        }
+
         public int Hits(Entity currentBoss, bool timedEncounter)
         {
           
@@ -200,7 +243,7 @@ namespace DamageMeter.Dealt
                  return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Hits));
             }
 
-            if (!timedEncounter && !(PlayerInfo.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit))
+            if (!timedEncounter)
             {
                 return
                      _entitiesStats.Sum(

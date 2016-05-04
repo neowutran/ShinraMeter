@@ -144,6 +144,7 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{damage_percentage}",
                     playerStats.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.Dealt.CritRate(currentBoss, timedEncounter) + "%");
+                currentContent = currentContent.Replace("{crit_rate_heal}", playerStats.Dealt.CritRateHeal(currentBoss, timedEncounter) + "%");
                 currentContent = currentContent.Replace("{biggest_crit}", FormatHelpers.Instance.FormatValue(playerStats.Dealt.DmgBiggestCrit(currentBoss, timedEncounter)));
                 currentContent = currentContent.Replace("{damage_received}",
                     FormatHelpers.Instance.FormatValue(playerStats.Received.Damage(currentBoss, firstHit, lastHit, timedEncounter)));
