@@ -156,12 +156,12 @@ namespace DamageMeter.Dealt
         public int Crits(Entity currentBoss, bool timedEncounter)
         {
             
-                if (currentBoss == null || (PlayerInfo.IsHealer && !timedEncounter))
+                if (currentBoss == null)
                 {
                     return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Crits));
                 }
            
-                if (!timedEncounter)
+                if (!timedEncounter && !PlayerInfo.IsHealer)
                 {
                     return _entitiesStats.Sum(
                              timedStats =>
@@ -194,28 +194,27 @@ namespace DamageMeter.Dealt
         public int Hits(Entity currentBoss, bool timedEncounter)
         {
           
-                if (currentBoss == null || (PlayerInfo.IsHealer && !timedEncounter))
-                {
-                    return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Hits));
-                }
-                
-                if (!timedEncounter)
-                {
-                    return
+            if (currentBoss == null)
+            {
+                 return _entitiesStats.Sum(skills => skills.Value.Sum(stat => stat.Value.Hits));
+            }
+
+            if (!timedEncounter && !PlayerInfo.IsHealer)
+            {
+                return
                      _entitiesStats.Sum(
                          timedStats =>
                              timedStats.Value.Where(stats => stats.Key == currentBoss)
                                  .Sum(stats => stats.Value.Hits));
             }
-                var hits = 0;
-                var lastHit = GetLastHit(currentBoss);
-                for (var i = GetFirstHit(currentBoss); i <= lastHit; i++)
-                {
-                    if (!_entitiesStats.ContainsKey(i)) continue;
-                    hits += _entitiesStats[i].Sum(stat => stat.Value.Hits);
-                }
-                return hits;
-
+            var hits = 0;
+            var lastHit = GetLastHit(currentBoss);
+            for (var i = GetFirstHit(currentBoss); i <= lastHit; i++)
+            {
+                if (!_entitiesStats.ContainsKey(i)) continue;
+                hits += _entitiesStats[i].Sum(stat => stat.Value.Hits);
+            }
+            return hits;
             
         }
 
