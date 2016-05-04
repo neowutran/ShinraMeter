@@ -76,6 +76,8 @@ namespace DamageMeter.UI
             Dictionary<long, Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats>> timedAllSkills,
             PlayerInfo playerinfo, PlayerAbnormals buffs, Entity currentBoss, bool timedEncounter, long firstHit, long lastHit)
         {
+            var lastTick = (lastHit + 1) * TimeSpan.TicksPerSecond - 1;
+            var firstTick = firstHit * TimeSpan.TicksPerSecond;
             var death = buffs.Death;
             if (death == null)
             {
@@ -83,9 +85,9 @@ namespace DamageMeter.UI
                 DeathDuration.Content = "0s";
             }
             else {
-                DeathCounter.Content = death.Count(firstHit, lastHit);
-                var duration = death.Duration(firstHit, lastHit);
-                var interval = TimeSpan.FromSeconds(duration);
+                DeathCounter.Content = death.Count(firstTick, lastTick);
+                var duration = death.Duration(firstTick, lastTick);
+                var interval = TimeSpan.FromTicks(duration);
                 DeathDuration.Content = interval.ToString(@"mm\:ss");
             }
             var aggro = buffs.Aggro(currentBoss?.NpcE);
@@ -96,9 +98,9 @@ namespace DamageMeter.UI
             }
             else
             {
-                AggroCounter.Content = aggro.Count(firstHit, lastHit);
-                var duration = aggro.Duration(firstHit, lastHit);
-                var interval = TimeSpan.FromSeconds(duration);
+                AggroCounter.Content = aggro.Count(firstTick, lastTick);
+                var duration = aggro.Duration(firstTick, lastTick);
+                var interval = TimeSpan.FromTicks(duration);
                 AggroDuration.Content = interval.ToString(@"mm\:ss");
             }
 
