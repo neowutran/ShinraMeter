@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using Tera.Game.Messages;
 using Data;
@@ -11,9 +10,7 @@ using Newtonsoft.Json;
 using Tera.Game;
 using DamageMeter.Skills.Skill;
 using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Globalization;
+
 
 namespace DamageMeter
 {
@@ -157,18 +154,30 @@ namespace DamageMeter
 
         }
 
+        public static void Export(SDespawnNpc despawnNpc, AbnormalityStorage abnormality)
+        {
+            var stats = GenerateStats(despawnNpc, abnormality);
+            if (stats == null)
+            {
+                return;
+            }
+            ToTeraDpsApi(stats, despawnNpc);
+            ToAnonymousStatistics(stats);
+        }
+
         /**
             The datastorage cost almost nothing, so I will use it to provide statistics about most played class, average dps for each class etc. 
             Mostly to expose overpowered class 
             Playername are wiped out client side & server side. No IP address are stored, so it s anonymous. 
         */
-        public static void ToAnonymousStatistics(SDespawnNpc despawnNpc, AbnormalityStorage abnormals)
+        private static void ToAnonymousStatistics(EncounterBase teradpsData)
         {
-            EncounterBase teradpsData = GenerateStats(despawnNpc, abnormals);
-            if (teradpsData == null)
+            //Leveling area only, don't care about that
+            if(int.Parse(teradpsData.areaId) < 400)
             {
                 return;
             }
+
             foreach(var member in teradpsData.members)
             {
                 member.playerName = "";
@@ -179,7 +188,7 @@ namespace DamageMeter
         }
 
 
-        public static void ToTeraDpsApi(SDespawnNpc despawnNpc, AbnormalityStorage abnormals)
+        private static void ToTeraDpsApi(EncounterBase teradpsData, SDespawnNpc despawnNpc)
         {
             if(!BasicTeraData.Instance.WindowData.Excel && 
                 (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) 
@@ -189,11 +198,7 @@ namespace DamageMeter
                 return;
             }
 
-            EncounterBase teradpsData = GenerateStats(despawnNpc, abnormals);
-            if(teradpsData == null)
-            {
-                return;
-            }
+          
             var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
 
             if (BasicTeraData.Instance.WindowData.Excel)

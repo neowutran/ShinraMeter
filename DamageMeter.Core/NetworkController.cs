@@ -312,8 +312,10 @@ namespace DamageMeter
                 {
                     AbnormalityTracker.StopAggro(despawnNpc);
                     AbnormalityTracker.DeleteAbnormality(despawnNpc);
-                    DataExporter.ToTeraDpsApi(despawnNpc, _abnormalityStorage);
-                    DataExporter.ToAnonymousStatistics(despawnNpc, _abnormalityStorage);
+
+                    DataExporter.Export(despawnNpc, _abnormalityStorage);
+           
+
                     continue;
                 }
 
