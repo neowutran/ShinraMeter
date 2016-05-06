@@ -161,8 +161,11 @@ namespace DamageMeter
             {
                 return;
             }
-            ToTeraDpsApi(stats, despawnNpc);
-            ToAnonymousStatistics(stats);
+            var sendThread = new Thread(() => {
+                ToTeraDpsApi(stats, despawnNpc);
+                ToAnonymousStatistics(stats);
+            });
+            sendThread.Start();
         }
 
         /**
@@ -203,13 +206,11 @@ namespace DamageMeter
 
             if (BasicTeraData.Instance.WindowData.Excel)
             {
-                var excelThread = new Thread(() => ExcelExport.ExcelSave(teradpsData));
-                excelThread.Start();
+                ExcelExport.ExcelSave(teradpsData);
             }
             if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) || !BasicTeraData.Instance.WindowData.SiteExport) return;
             string json = JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            var sendThread = new Thread(() => SendTeraDpsIo(entity, json, 3));
-            sendThread.Start();
+            SendTeraDpsIo(entity, json, 3);
         }
 
         private static void SendTeraDpsIo(Entity boss, string json, int numberTry)
