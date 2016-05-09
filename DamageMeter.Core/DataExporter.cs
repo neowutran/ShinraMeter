@@ -212,7 +212,7 @@ namespace DamageMeter
             if(numberTry == 0)
             {
                 Console.WriteLine("API ERROR");
-                NetworkController.Instance.BossLink.Add("!Api error or timeout." + " " + boss.Name +" "+ boss.Id + " " + DateTime.Now.Ticks, boss);
+                NetworkController.Instance.BossLink.Add("!Api error or timeout." + " " + boss.Name +" "+ boss.NpcE.Id + " " + DateTime.Now.Ticks, boss);
                 return;
             }
             try {
@@ -236,7 +236,7 @@ namespace DamageMeter
                         NetworkController.Instance.BossLink.Add((string)responseObject["id"], boss);
                     }
                     else {
-                        NetworkController.Instance.BossLink.Add("!" + (string)responseObject["message"] +" "+ boss.Name + " " + boss.Id + " "+DateTime.Now.Ticks, boss);
+                        NetworkController.Instance.BossLink.Add("!" + (string)responseObject["message"] +" "+ boss.Name + " " + boss.NpcE.Id + " "+DateTime.Now.Ticks, boss);
                    }
                 }
             }

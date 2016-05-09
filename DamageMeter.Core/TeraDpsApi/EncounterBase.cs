@@ -29,12 +29,10 @@ namespace DamageMeter.TeraDpsApi
             message += meterVersion + ";";
             message += partyDps + ";";
 
-            message += "[";
             foreach(var debuff in debuffUptime)
             {
                 message += debuff.Key + ":" + debuff.Value + ";";
             }
-            message += "]";
 
             foreach (var member in members)
             {
