@@ -24,5 +24,32 @@ namespace DamageMeter.TeraDpsApi
         public string playerAverageCritRate;
         public List<KeyValuePair<string, string>> buffUptime = new List<KeyValuePair<string, string>>();
         public List<SkillLog> skillLog = new List<SkillLog>();
+
+        public override string ToString()
+        {
+            string message = "";
+            message += playerServer + ";";
+            message += playerDeaths + ";";
+            message += playerDeathDuration + ";";
+            message += aggro + ";";
+            message += healCrit + ";";
+            message += playerDps + ";";
+            message += playerClass + ";";
+            message += playerTotalDamage + ";";
+            message += playerTotalDamagePercentage + ";";
+            message += playerAverageCritRate + ";";
+
+            foreach(var buff in buffUptime)
+            {
+                message += buff.Key + ":" + buff.Value + ";";
+            }
+
+            foreach(var skill in skillLog)
+            {
+                message += "[" + skill + "]";
+            }
+
+            return message;
+        }
     }
 }
