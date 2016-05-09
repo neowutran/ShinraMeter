@@ -36,7 +36,7 @@ namespace DamageMeter.TeraDpsApi
 
             foreach (var member in members)
             {
-                message += "["+members+"]";
+                message += "["+member+"]";
             }
             return message;
         }
