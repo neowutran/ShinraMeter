@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,7 +24,7 @@ namespace DamageMeter
 
         public delegate void UpdateUiHandler(
             long firsthit, long lastHit, long totaldamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, AbnormalityStorage abnormals, Dictionary<string ,Entity> bossHistory, List<ChatMessage> chatbox);
+            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, AbnormalityStorage abnormals, ConcurrentDictionary<string ,Entity> bossHistory, List<ChatMessage> chatbox);
 
         private static NetworkController _instance;
 
@@ -44,7 +45,7 @@ namespace DamageMeter
             packetAnalysis.Start();
         }
 
-        public Dictionary<string, Entity> BossLink = new Dictionary<string, Entity>();
+        public ConcurrentDictionary<string, Entity> BossLink = new ConcurrentDictionary<string, Entity>();
 
         public TeraData TeraData { get; private set; }
 
@@ -112,7 +113,7 @@ namespace DamageMeter
             var entities =
                 DamageTracker.Instance.GetEntityStats();
             var partyDps = DamageTracker.Instance.PartyDps(currentBossFight, timedEncounter);
-            var teradpsHistory = BossLink.ToDictionary(x=>x.Key, x=>x.Value);
+            var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = _abnormalityStorage.Clone(currentBossFight?.NpcE);
             handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight, timedEncounter, abnormals, teradpsHistory, chatbox);

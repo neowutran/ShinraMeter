@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -78,7 +79,7 @@ namespace DamageMeter.UI
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             _entityStats = new EntityStatsMain(this);
             _chatbox = new Chatbox(new List<ChatMessage>());
-            _windowHistory = new TeradpsHistory(new Dictionary<string, Entity>());
+            _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, Entity>());
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
         }
@@ -394,11 +395,11 @@ namespace DamageMeter.UI
         }
 
         public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
-            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Tera.Game.AbnormalityStorage nabnormals , Dictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)
+            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Tera.Game.AbnormalityStorage nabnormals , ConcurrentDictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)
         {
             NetworkController.UpdateUiHandler changeUi =
                 delegate(long firstHit, long lastHit, long totalDamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Tera.Game.AbnormalityStorage abnormals, Dictionary<string, Entity> bossHistory, List<ChatMessage> chatbox)
+                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Tera.Game.AbnormalityStorage abnormals, ConcurrentDictionary<string, Entity> bossHistory, List<ChatMessage> chatbox)
                 {
                     var entitiesStats = new LinkedList<KeyValuePair<Entity, EntityInfo>>(entities.ToList().OrderByDescending(e => e.Value.LastHit));
                     UpdateComboboxEncounter(entitiesStats, currentBoss);
