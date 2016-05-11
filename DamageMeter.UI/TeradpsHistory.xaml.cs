@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using System.Windows.Input;
 using System;
+using System.Collections.Concurrent;
 using Data;
 
 namespace DamageMeter.UI
@@ -13,7 +14,7 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class TeradpsHistory
     {
-        public TeradpsHistory(Dictionary<string, Entity> bossHistory)
+        public TeradpsHistory(ConcurrentDictionary<string, Entity> bossHistory)
         {
             InitializeComponent();
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
@@ -25,7 +26,7 @@ namespace DamageMeter.UI
             Close();
         }
 
-        public void Update(Dictionary<string, Entity> bossHistory)
+        public void Update(ConcurrentDictionary<string, Entity> bossHistory)
         {
             TeraDpsHistory.Items.Clear();
             foreach(var boss in bossHistory)
