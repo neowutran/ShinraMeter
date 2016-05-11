@@ -32,7 +32,13 @@ namespace DamageMeter.TeraDpsApi
             message += playerDeaths + ";";
             message += playerDeathDuration + ";";
             message += aggro + ";";
-            message += healCrit + ";";
+            if (healCrit == null)
+            {
+                message += "0;";
+            }
+            else {
+                message += healCrit + ";";
+            }
             message += playerDps + ";";
             message += playerClass + ";";
             message += playerTotalDamage + ";";

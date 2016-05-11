@@ -36,7 +36,7 @@ namespace DamageMeter.UI
 
         private void Copy_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Clipboard.SetText((string)Message.Content);
+            Clipboard.SetDataObject((string)Message.Content);
         }
 
         private void Sender_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
