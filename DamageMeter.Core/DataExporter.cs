@@ -176,7 +176,20 @@ namespace DamageMeter
         private static void ToAnonymousStatistics(EncounterBase teradpsData)
         {
             //Leveling area only, don't care about that
-            if(int.Parse(teradpsData.areaId) < 400)
+            var areaId = int.Parse(teradpsData.areaId);
+            if ( 
+                areaId != 459 &&
+                areaId != 759 &&
+                areaId != 511 &&
+                areaId != 611 &&
+                areaId != 711 &&
+                areaId != 886 &&
+                areaId != 460 &&
+                areaId != 467 && 
+                areaId != 767 &&
+                areaId != 768 &&
+                areaId != 468
+                )
             {
                 return;
             }   
