@@ -16,8 +16,6 @@ namespace DamageMeter
 {
     public class DataExporter
     {
-
-     
         private static void SendAnonymousStatistics(string json)
         {
             try
@@ -41,7 +39,7 @@ namespace DamageMeter
         }
 
 
-        private static EncounterBase GenerateStats(SDespawnNpc despawnNpc, AbnormalityStorage abnormals)
+        private static ExtendedStats GenerateStats(SDespawnNpc despawnNpc, AbnormalityStorage abnormals)
         {
             if (!despawnNpc.Dead) return null;
 
@@ -65,17 +63,24 @@ namespace DamageMeter
             {
                 return null;
             }
-            var stats = DamageTracker.Instance.GetPlayerStats();
             var totaldamage = DamageTracker.Instance.TotalDamage(entity, timedEncounter);
             var partyDps = TimeSpan.TicksPerSecond * totaldamage / interTick;
 
             var teradpsData = new EncounterBase();
+            var extendedStats = new ExtendedStats();
+            var stats = DamageTracker.Instance.GetPlayerStats();
+            var _abnormals = abnormals.Clone(entity.NpcE,firstTick,lastTick);
+            extendedStats.Entity = entity.NpcE;
+            extendedStats.BaseStats = teradpsData;
+            extendedStats.FirstTick = firstTick;
+            extendedStats.LastTick = lastTick;
             teradpsData.areaId = entity.NpcE.Info.HuntingZoneId + "";
             teradpsData.bossId = entity.NpcE.Info.TemplateId + "";
             teradpsData.fightDuration = interval + "";
             teradpsData.partyDps = partyDps + "";
+            extendedStats.Debuffs = _abnormals.Get(entity.NpcE);
 
-            foreach (var debuff in abnormals.Get(entity.NpcE))
+            foreach (var debuff in extendedStats.Debuffs)
             {
                 long percentage = (debuff.Value.Duration(firstTick, lastTick) * 100 / interTick);
                 if (percentage == 0)
@@ -98,7 +103,7 @@ namespace DamageMeter
                     continue;
                 }
 
-                var buffs = abnormals.Get(user.Player);
+                var buffs = _abnormals.Get(user.Player);
                 teradpsUser.playerClass = user.Class.ToString();
                 teradpsUser.playerName = user.Name;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
@@ -125,7 +130,10 @@ namespace DamageMeter
                         buff.Key.Id + "", percentage + ""
                     ));
                 }
-                var notimedskills = NoTimedSkills(timedEncounter ? user.Dealt.GetSkillsByTime(entity) : user.Dealt.GetSkills(entity));
+                var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
+                extendedStats.PlayerSkills.Add(serverPlayerName, timedEncounter ? user.Dealt.GetSkillsByTime(entity) : user.Dealt.GetSkills(entity));
+                extendedStats.PlayerBuffs.Add(serverPlayerName,buffs);
+                var notimedskills = NoTimedSkills(extendedStats.PlayerSkills[serverPlayerName]);
 
                 foreach (var skill in notimedskills)
                 {
@@ -150,7 +158,7 @@ namespace DamageMeter
                 }
                 teradpsData.members.Add(teradpsUser);
             }
-            return teradpsData;
+            return extendedStats;
 
         }
 
@@ -162,8 +170,9 @@ namespace DamageMeter
                 return;
             }
             var sendThread = new Thread(() => {
-                ToTeraDpsApi(stats, despawnNpc);
-                ToAnonymousStatistics(stats);
+                ToTeraDpsApi(stats.BaseStats, despawnNpc);
+                ExcelExport.ExcelSave(stats);
+                ToAnonymousStatistics(stats.BaseStats);
             });
             sendThread.Start();
         }
@@ -200,10 +209,9 @@ namespace DamageMeter
 
         private static void ToTeraDpsApi(EncounterBase teradpsData, SDespawnNpc despawnNpc)
         {
-            if(!BasicTeraData.Instance.WindowData.Excel && 
-                (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) 
+            if(string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) 
                     || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
-                    || !BasicTeraData.Instance.WindowData.SiteExport) )
+                    || !BasicTeraData.Instance.WindowData.SiteExport)
             {
                 return;
             }
@@ -211,10 +219,6 @@ namespace DamageMeter
           
             var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
 
-            if (BasicTeraData.Instance.WindowData.Excel)
-            {
-                ExcelExport.ExcelSave(teradpsData);
-            }
             if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) || !BasicTeraData.Instance.WindowData.SiteExport) return;
             string json = JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             SendTeraDpsIo(entity, json, 3);
