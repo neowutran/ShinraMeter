@@ -137,7 +137,7 @@ namespace DamageMeter
                 if (!BTD.WindowData.Excel) return;
                 var data = exdata.BaseStats;
                 NpcInfo Boss = exdata.Entity.Info;
-                var dir = Path.Combine(BTD.ResourceDirectory, $"logs/{Boss.Area.Replace(":", "-")}");
+                var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
                 Directory.CreateDirectory(dir);
                 var fname = Path.Combine(dir, $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)}.xlsx");
                 FileInfo file = new FileInfo(fname);
