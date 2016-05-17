@@ -137,7 +137,7 @@ namespace DamageMeter
                 if (!BTD.WindowData.Excel) return;
                 var data = exdata.BaseStats;
                 NpcInfo Boss = exdata.Entity.Info;
-                var dir = Path.Combine(BTD.ResourceDirectory, $"logs/{Boss.Area.Replace(":", "-")}");
+                var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
                 Directory.CreateDirectory(dir);
                 var fname = Path.Combine(dir, $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)}.xlsx");
                 FileInfo file = new FileInfo(fname);
@@ -286,7 +286,7 @@ namespace DamageMeter
             //dps.FixEppPlusBug();// needed only if adding users dmg to main boss chart
 
             var numInt = bossSheet ? exdata.Debuffs.Sum(x => x.Value.Count()) - 1 : exdata.PlayerBuffs[ws.Name].Times.Sum(x=>x.Value.Count());
-            var numBuff = bossSheet ? exdata.Debuffs.Count : exdata.PlayerBuffs[ws.Name].Times.Count;
+            var numBuff = bossSheet ? exdata.Debuffs.Count : exdata.PlayerBuffs[ws.Name].Times.Count(x=>x.Value.Count()>0);
             if (numInt >= 0)
             {
                 ExcelChart buff = ws.Drawings.AddChart(ws.Name+"Buff", eChartType.BarStacked);
