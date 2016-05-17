@@ -232,7 +232,7 @@ namespace DamageMeter.UI
         private void ForumOnClick(object sender, EventArgs eventArgs)
         {
             Process.Start("explorer.exe",
-                "http://forum.teratoday.com/topic/1316-shinrameter-open-source-tera-dps-meter/");
+                "https://discordapp.com/channels/169587841859452928");
         }
 
         private void IssuesOnClick(object sender, EventArgs eventArgs)
