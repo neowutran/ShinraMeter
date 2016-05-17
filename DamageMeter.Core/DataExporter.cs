@@ -199,11 +199,11 @@ namespace DamageMeter
                 areaId != 768 &&
                 areaId != 468
                 )
-            {
+            {   
                 return;
             }   
         
-            SendAnonymousStatistics(teradpsData.ToString());
+            SendAnonymousStatistics(JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
 
 

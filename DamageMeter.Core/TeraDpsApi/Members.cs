@@ -52,7 +52,7 @@ namespace DamageMeter.TeraDpsApi
 
             foreach(var skill in skillLog)
             {
-                message += "[" + skill + "]";
+                message += "|" + skill;
             }
 
             return message;
