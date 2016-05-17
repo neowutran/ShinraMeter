@@ -286,7 +286,7 @@ namespace DamageMeter
             //dps.FixEppPlusBug();// needed only if adding users dmg to main boss chart
 
             var numInt = bossSheet ? exdata.Debuffs.Sum(x => x.Value.Count()) - 1 : exdata.PlayerBuffs[ws.Name].Times.Sum(x=>x.Value.Count());
-            var numBuff = bossSheet ? exdata.Debuffs.Count : exdata.PlayerBuffs[ws.Name].Times.Count;
+            var numBuff = bossSheet ? exdata.Debuffs.Count : exdata.PlayerBuffs[ws.Name].Times.Count(x=>x.Value.Count()>0);
             if (numInt >= 0)
             {
                 ExcelChart buff = ws.Drawings.AddChart(ws.Name+"Buff", eChartType.BarStacked);
