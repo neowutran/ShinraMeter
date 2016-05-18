@@ -220,6 +220,32 @@ namespace DamageMeter
             var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
 
             if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) || !BasicTeraData.Instance.WindowData.SiteExport) return;
+
+            
+
+            /*
+              Validation, without that, the server cpu will be burning \o 
+            */
+            var areaId = int.Parse(teradpsData.areaId);
+            if (
+                areaId != 886 &&
+                areaId != 467 &&
+                areaId != 767 &&
+                areaId != 768 &&
+                areaId != 468
+                )
+            {
+                return;
+            }
+
+            if(int.Parse(teradpsData.partyDps) < 2000000)
+            {
+                return;
+            }
+
+
+
+
             string json = JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             SendTeraDpsIo(entity, json, 3);
         }
