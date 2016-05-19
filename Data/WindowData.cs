@@ -51,10 +51,14 @@ namespace Data
             ParseScale();
             ParsePartyOnly();
             ParseShowHealCrit();
+            ParseExcelSaveDirectory();
         }
 
 
         public Point Location { get; set; }
+
+        public string ExcelSaveDirectory { get; set; }
+
         public double Scale { get; set; }
         public bool PartyOnly { get; set; }
         public double MainWindowOpacity { get; private set; }
@@ -106,6 +110,17 @@ namespace Data
             PartyOnly = false;
             SiteExport = true;
             ShowHealCrit = true;
+            ExcelSaveDirectory = "";
+        }
+
+
+        public void ParseExcelSaveDirectory()
+        {
+            var root = _xml.Root;
+            var excelxml = root?.Element("excel_save_directory");
+            if (excelxml == null) return;
+            ExcelSaveDirectory = excelxml.Value;
+            
         }
 
         public void ParseShowHealCrit()
@@ -376,6 +391,7 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("export", SiteExport));
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
+            xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
             xml.Root.Add(new XElement("scale", Scale));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));

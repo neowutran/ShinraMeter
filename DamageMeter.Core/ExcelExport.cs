@@ -130,6 +130,8 @@ namespace DamageMeter
     {
         private static BasicTeraData BTD = BasicTeraData.Instance;
         private static object savelock = new object();
+
+      
         public static void ExcelSave(ExtendedStats exdata)
         {
             lock (savelock) //can't save 2 excel files at one time
@@ -137,8 +139,33 @@ namespace DamageMeter
                 if (!BTD.WindowData.Excel) return;
                 var data = exdata.BaseStats;
                 NpcInfo Boss = exdata.Entity.Info;
-                var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
-                Directory.CreateDirectory(dir);
+                
+                /*
+                Select save directory
+                */
+                string dir = "";
+                if (BTD.WindowData.ExcelSaveDirectory == "")
+                {
+                    dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
+                }
+                else
+                {
+                    dir = BTD.WindowData.ExcelSaveDirectory;
+                }
+
+                /*
+                Test if you have access to the user choice directory, if not, switch back to the default save directory
+                */
+                try
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                catch
+                {
+                    dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
+                    Directory.CreateDirectory(dir);
+                }
+
                 var fname = Path.Combine(dir, $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)}.xlsx");
                 FileInfo file = new FileInfo(fname);
                 if (file.Exists) return; //the only case this can happen is BAM mobtraining, that's not so interesting statistic to deal with more complex file names.
