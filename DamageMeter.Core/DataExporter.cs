@@ -16,12 +16,18 @@ namespace DamageMeter
 {
     public class DataExporter
     {
-        private static void SendAnonymousStatistics(string json)
+        private static void SendAnonymousStatistics(string json, int numberTry)
         {
+            if(numberTry == 0)
+            {
+                return;
+            }
+
             try
             {
                 using (var client = new HttpClient())
                 {
+                    client.Timeout = TimeSpan.FromSeconds(40);
                     var response = client.PostAsync("http://cloud.neowutran.ovh:8083/store.php", new StringContent(
                     json,
                     Encoding.UTF8,
@@ -35,6 +41,8 @@ namespace DamageMeter
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
+                Thread.Sleep(2000);
+                SendAnonymousStatistics(json, numberTry - 1);
             }
         }
 
@@ -203,7 +211,7 @@ namespace DamageMeter
                 return;
             }   
         
-            SendAnonymousStatistics(JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+            SendAnonymousStatistics(JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), 3);
         }
 
 
@@ -263,7 +271,7 @@ namespace DamageMeter
                 {
                     client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
                     client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
-
+                    client.Timeout = TimeSpan.FromSeconds(40);
 
                     var response = client.PostAsync("http://teradps.io/api/que", new StringContent(
                     json,
@@ -287,6 +295,7 @@ namespace DamageMeter
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
+                Thread.Sleep(2000);
                 SendTeraDpsIo(boss, json, numberTry - 1);
             }
         }
