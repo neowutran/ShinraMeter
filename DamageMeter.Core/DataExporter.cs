@@ -295,7 +295,7 @@ namespace DamageMeter
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
-                Thread.Sleep(2000);
+                Thread.Sleep(10000);
                 SendTeraDpsIo(boss, json, numberTry - 1);
             }
         }

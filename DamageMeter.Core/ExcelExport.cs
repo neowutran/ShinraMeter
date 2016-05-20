@@ -250,7 +250,13 @@ namespace DamageMeter
                     ws.Column(5).AutoFit();
                     ws.Column(6).AutoFit();
                     ws.Column(7).AutoFit();
-                    ws.Column(8).AutoFit();
+                    ws.Column(8).Width = 17;
+                    ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
+                    ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width);
+                    ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width);
+                    ws.Column(5).Width = GetTrueColumnWidth(ws.Column(5).Width);
+                    ws.Column(6).Width = GetTrueColumnWidth(ws.Column(6).Width);
+                    ws.Column(7).Width = GetTrueColumnWidth(ws.Column(7).Width);
                     ws.Cells[1, 1, j, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     ws.Cells[1, 1, j, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     ws.PrinterSettings.FitToPage = true;
@@ -329,6 +335,8 @@ namespace DamageMeter
                     details.Cells[3, offset, numInt + 3, offset]);
                 serieTime.Header = "Time";
                 typeBuff.YAxis.MajorUnit = (time >= 40) ? (double)(time / 18) / 86400F : 1F / 86400F;
+                typeBuff.YAxis.MinValue = 0F;
+                typeBuff.YAxis.MaxValue = (double)time / 86400F;
                 typeBuff.XAxis.Orientation = eAxisOrientation.MaxMin;
                 typeBuff.XAxis.MinorTickMark = eAxisTickMark.None;
                 typeBuff.YAxis.Crosses = eCrosses.Max;
@@ -463,6 +471,32 @@ namespace DamageMeter
             return details;
         }
 
+        private static double GetTrueColumnWidth(double width)
+        {
+            //DEDUCE WHAT THE COLUMN WIDTH WOULD REALLY GET SET TO
+            double z = 1d;
+            if (width >= (1 + 2F / 3))
+                z = Math.Round((Math.Round(7 * (width - 1F / 256), 0) - 5) / 7, 2);
+            else
+                z = Math.Round((Math.Round(12 * (width - 1F / 256), 0) - Math.Round(5 * width, 0)) / 12, 2);
+
+            //HOW FAR OFF? (WILL BE LESS THAN 1)
+            double errorAmt = width - z;
+
+            //CALCULATE WHAT AMOUNT TO TACK ONTO THE ORIGINAL AMOUNT TO RESULT IN THE CLOSEST POSSIBLE SETTING 
+            double adj = 0d;
+            if (width >= (1 + 2 / 3))
+                adj = (Math.Round(7 * errorAmt - 7F / 256, 0)) / 7;
+            else
+                adj = ((Math.Round(12 * errorAmt - 12F / 256, 0)) / 12) + (2F / 12);
+
+            //RETURN A SCALED-VALUE THAT SHOULD RESULT IN THE NEAREST POSSIBLE VALUE TO THE TRUE DESIRED SETTING
+            if (z > 0)
+                return width + adj;
+
+            return 0d;
+        }
+
         private static void AddImage(ExcelWorksheet ws, int rowIndex, int columnIndex, Bitmap image)
         {
             //How to Add a Image using EP Plus
@@ -566,6 +600,15 @@ namespace DamageMeter
             ws.Column(8).AutoFit();
             ws.Column(9).AutoFit();
             ws.Column(10).AutoFit();
+            ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
+            ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width);
+            ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width);
+            ws.Column(5).Width = GetTrueColumnWidth(ws.Column(5).Width);
+            ws.Column(6).Width = GetTrueColumnWidth(ws.Column(6).Width);
+            ws.Column(7).Width = GetTrueColumnWidth(ws.Column(7).Width);
+            ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width);
+            ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width);
+            ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width);
             ws.Cells[1, 1, j, 10].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             ws.Cells[1, 1, j, 10].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ws.PrinterSettings.FitToPage = true;
