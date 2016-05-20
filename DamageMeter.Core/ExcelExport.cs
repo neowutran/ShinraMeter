@@ -281,7 +281,7 @@ namespace DamageMeter
             dps.SetPosition(startrow + 1, 5, 0, 5);
             dps.SetSize(1200, 300);
             dps.Legend.Position = eLegendPosition.Top;
-            if (time > 40) dps.XAxis.MajorUnit = time/10;
+            if (time > 40) dps.XAxis.MajorUnit = time/20;
             ExcelChart typeDmg;
             ExcelChartSerie serieDmg;
             if (!bossSheet)
@@ -334,7 +334,7 @@ namespace DamageMeter
                 var serieTime = typeBuff.Series.Add(details.Cells[3, offset + 2, numInt + 3, offset + 2],
                     details.Cells[3, offset, numInt + 3, offset]);
                 serieTime.Header = "Time";
-                typeBuff.YAxis.MajorUnit = (time >= 40) ? (double)(time / 18) / 86400F : 1F / 86400F;
+                typeBuff.YAxis.MajorUnit = (time >= 40) ? (double)(time / 20) / 86400F : 1F / 86400F;
                 typeBuff.YAxis.MinValue = 0F;
                 typeBuff.YAxis.MaxValue = (double)time / 86400F;
                 typeBuff.XAxis.Orientation = eAxisOrientation.MaxMin;
