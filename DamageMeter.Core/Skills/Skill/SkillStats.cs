@@ -200,7 +200,7 @@ namespace DamageMeter.Skills.Skill
 
         public long LastHit
         {
-            get { return SkillDetails.Select(skill => skill.Value.LastHit).Max(); }
+            get { return SkillDetails.Max(skill => skill.Value.LastHit); }
         }
 
         public long Damage

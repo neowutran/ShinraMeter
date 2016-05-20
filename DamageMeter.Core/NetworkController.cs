@@ -162,6 +162,24 @@ namespace DamageMeter
             while (true)
             {
 
+                if (NeedToCopy != null)
+                {
+                    var stats = DamageTracker.Instance.GetPlayerStats();
+                    var currentBoss = Encounter;
+                    var timedEncounter = TimedEncounter;
+                    var totaldamage = DamageTracker.Instance.TotalDamage(currentBoss, timedEncounter);
+                    var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
+                    var lastHit = DamageTracker.Instance.LastHit(currentBoss);
+                    var info = currentBoss == null ? new EntityInfo { FirstHit = firstHit * TimeSpan.TicksPerSecond, LastHit = (lastHit + 1) * TimeSpan.TicksPerSecond - 1 } : DamageTracker.Instance.GetEntityStats()[currentBoss];
+                    var tmpcopy = NeedToCopy;
+                    var abnormals = _abnormalityStorage.Clone(currentBoss?.NpcE, info.FirstHit, info.LastHit);
+                    var pasteThread = new Thread(() => CopyThread(info, stats, abnormals, totaldamage, currentBoss, timedEncounter, tmpcopy));
+                    pasteThread.Priority = ThreadPriority.Highest;
+                    pasteThread.Start();
+
+                    NeedToCopy = null;
+                }
+
                 if (NeedToReset)
                 {
                     Reset();
@@ -172,24 +190,6 @@ namespace DamageMeter
                 {
                     ResetCurrent();
                     NeedToResetCurrent = false;
-                }
-
-                if(NeedToCopy != null)
-                {
-                    var stats = DamageTracker.Instance.GetPlayerStats();
-                    var currentBoss = Encounter;
-                    var timedEncounter = TimedEncounter;
-                    var totaldamage = DamageTracker.Instance.TotalDamage(currentBoss, timedEncounter);
-                    var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
-                    var lastHit = DamageTracker.Instance.LastHit(currentBoss);
-                    var info = currentBoss == null ? new EntityInfo { FirstHit = firstHit*TimeSpan.TicksPerSecond, LastHit = (lastHit+1) * TimeSpan.TicksPerSecond-1 } : DamageTracker.Instance.GetEntityStats()[currentBoss];
-                    var tmpcopy = NeedToCopy;
-                    var abnormals = _abnormalityStorage.Clone(currentBoss?.NpcE,info.FirstHit,info.LastHit);
-                    var pasteThread = new Thread(() => CopyThread(info, stats, abnormals, totaldamage, currentBoss , timedEncounter, tmpcopy));
-                    pasteThread.Priority = ThreadPriority.Highest;
-                    pasteThread.Start();
-
-                    NeedToCopy = null;
                 }
 
                 Encounter = NewEncounter;

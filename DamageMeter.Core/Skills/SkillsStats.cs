@@ -23,13 +23,14 @@ namespace DamageMeter.Skills
                 long firstHit = 0;
                 foreach (var skill in Skills)
                 {
+                    var curHit = skill.Value.FirstHit;
                     if (firstHit == 0)
                     {
-                        firstHit = skill.Value.FirstHit;
+                        firstHit = curHit;
                     }
-                    else if (skill.Value.FirstHit < firstHit && skill.Value.FirstHit != 0)
+                    else if (curHit < firstHit && curHit != 0)
                     {
-                        firstHit = skill.Value.FirstHit;
+                        firstHit = curHit;
                     }
                 }
                 return firstHit;
@@ -43,15 +44,16 @@ namespace DamageMeter.Skills
                 long lastHit = 0;
                 foreach (var skill in Skills)
                 {
+                    var curHit = skill.Value.LastHit;
                     if (lastHit == 0)
                     {
-                        lastHit = skill.Value.LastHit;
+                        lastHit = curHit;
                     }
                     else
                     {
-                        if (skill.Value.LastHit > lastHit)
+                        if ( curHit > lastHit)
                         {
-                            lastHit = skill.Value.LastHit;
+                            lastHit = curHit;
                         }
                     }
                 }
