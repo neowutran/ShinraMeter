@@ -318,8 +318,17 @@ namespace DamageMeter
             }
             //dps.FixEppPlusBug();// needed only if adding users dmg to main boss chart
 
-            var numInt = bossSheet ? exdata.Debuffs.Sum(x => x.Value.Count()) - 1 : exdata.PlayerBuffs[ws.Name].Times.Sum(x=>x.Value.Count())-1;
-            var numBuff = bossSheet ? exdata.Debuffs.Count : exdata.PlayerBuffs[ws.Name].Times.Count(x=>x.Value.Count()>0);
+            var numInt = bossSheet
+                ? exdata.Debuffs.Sum(x => x.Value.Count()) - 1
+                : exdata.PlayerBuffs[ws.Name].Times.Sum(x => x.Value.Count()) 
+                    + exdata.PlayerBuffs[ws.Name].Death.Count() 
+                    + exdata.PlayerBuffs[ws.Name].Aggro(exdata.Entity).Count() 
+                    - 1;
+            var numBuff = bossSheet
+                ? exdata.Debuffs.Count
+                : exdata.PlayerBuffs[ws.Name].Times.Count(x => x.Value.Count() > 0)
+                  + (exdata.PlayerBuffs[ws.Name].Death.Count() > 0 ? 1 : 0)
+                  + (exdata.PlayerBuffs[ws.Name].Aggro(exdata.Entity).Count() > 0 ? 1 : 0);
             if (numInt >= 0 && numBuff > 0)
             {
                 ExcelChart buff = ws.Drawings.AddChart(ws.Name+"Buff", eChartType.BarStacked);
@@ -441,6 +450,32 @@ namespace DamageMeter
                     details.Cells[2 + buffnum, i+3].Value = buffPair.Key.Name;
                     details.Cells[2 + buffnum, i+4].Value = 0;
                     foreach (var buff in buffPair.Value.AllDurations())
+                    {
+                        j++;
+                        details.Cells[2 + j, i].Value = buffnum;
+                        details.Cells[2 + j, i + 1].Value = (double)(buff.Begin - exdata.FirstTick) / TimeSpan.TicksPerDay;
+                        details.Cells[2 + j, i + 2].Value = (double)(buff.End - buff.Begin) / TimeSpan.TicksPerDay;
+                    }
+                }
+                if (user.Value.Death.Count() > 0)
+                {
+                    buffnum++;
+                    details.Cells[2 + buffnum, i + 3].Value = "Death";
+                    details.Cells[2 + buffnum, i + 4].Value = 0;
+                    foreach (var buff in user.Value.Death.AllDurations())
+                    {
+                        j++;
+                        details.Cells[2 + j, i].Value = buffnum;
+                        details.Cells[2 + j, i + 1].Value = (double)(buff.Begin - exdata.FirstTick) / TimeSpan.TicksPerDay;
+                        details.Cells[2 + j, i + 2].Value = (double)(buff.End - buff.Begin) / TimeSpan.TicksPerDay;
+                    }
+                }
+                if (user.Value.Aggro(exdata.Entity).Count() > 0)
+                {
+                    buffnum++;
+                    details.Cells[2 + buffnum, i + 3].Value = "Aggro";
+                    details.Cells[2 + buffnum, i + 4].Value = 0;
+                    foreach (var buff in user.Value.Aggro(exdata.Entity).AllDurations())
                     {
                         j++;
                         details.Cells[2 + j, i].Value = buffnum;
