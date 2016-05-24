@@ -260,6 +260,14 @@ namespace DamageMeter
                     ws.Cells[1, 1, j, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     ws.Cells[1, 1, j, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     ws.PrinterSettings.FitToPage = true;
+
+                    // I don't know why, but sometimes column height setting is lost.
+                    for (int x = 1; x < j; ++x)
+                    {
+                        ws.Row(x).CustomHeight = true;
+                        ws.Row(x).Height = 30;
+                    }
+
                     ws.View.TabSelected = true;
                     details.Hidden = eWorkSheetHidden.Hidden;
                     package.Workbook.Properties.Title = Boss.Name;
@@ -647,7 +655,16 @@ namespace DamageMeter
             ws.Cells[1, 1, j, 10].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             ws.Cells[1, 1, j, 10].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ws.PrinterSettings.FitToPage = true;
-            return new ExcelHyperLink($"{user.playerServer}_{user.playerName}!A1", $"{user.playerServer}: {user.playerName}");
+
+            // I don't know why, but sometimes column height setting is lost.
+            for (int x = 1; x<j; ++x)
+            {
+                ws.Row(x).CustomHeight = true;
+                ws.Row(x).Height = 30;
+            }
+
+            // If sheet name contains space character, name should be enclosed in single quotes.
+            return new ExcelHyperLink($"'{user.playerServer}_{user.playerName}'!A1", $"{user.playerServer}: {user.playerName}");
         }
 
     }
