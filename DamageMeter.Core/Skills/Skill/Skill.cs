@@ -8,14 +8,16 @@ namespace DamageMeter.Skills.Skill
     {
         public List<int> SkillId;
 
-        public Skill(string skill, List<int> skillId,string iconName, NpcInfo npcInfo)
+        public Skill(string skill, string shortName, List<int> skillId,string iconName, NpcInfo npcInfo)
         {
             SkillId = skillId;
             SkillName = skill;
             IconName = iconName;
             NpcInfo = npcInfo;
+            ShortName = shortName;
         }
 
+        public string ShortName { get; }
         public string SkillName { get; }
         public string IconName { get; }
         public NpcInfo NpcInfo { get; }
@@ -30,7 +32,7 @@ namespace DamageMeter.Skills.Skill
 
         public bool Equals(Skill other)
         {
-            return SkillName.Equals(other.SkillName);
+            return ShortName.Equals(other.ShortName);
         }
 
         public static bool operator ==(Skill a, Skill b)
@@ -56,7 +58,7 @@ namespace DamageMeter.Skills.Skill
 
         public override int GetHashCode()
         {
-            return SkillName.GetHashCode();
+            return ShortName.GetHashCode();
         }
     }
 }
