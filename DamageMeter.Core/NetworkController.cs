@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -401,12 +402,13 @@ namespace DamageMeter
 
                 EntityTracker.Update(message);
                 PlayerTracker.UpdateParty(message);
-                //var sSpawnUser = message as SpawnUserServerMessage;
-                //if (sSpawnUser != null)
-                //{
-                //    Console.WriteLine(sSpawnUser.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.Id.Id))+" : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.ServerId)) + " " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.PlayerId)));
-                //    continue;
-                //}
+                var sSpawnUser = message as SpawnUserServerMessage;
+                if (sSpawnUser != null)
+                {
+                    AbnormalityTracker.RegisterDead(sSpawnUser.Id, sSpawnUser.Time.Ticks, sSpawnUser.Dead);
+                    //Debug.WriteLine(sSpawnUser.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.Id.Id)) + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.ServerId)) + " " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.PlayerId)));
+                    continue;
+                }
 
                 var spawnMe = message as SpawnMeServerMessage;
                 if (spawnMe != null)
@@ -414,6 +416,7 @@ namespace DamageMeter
                     _abnormalityStorage.EndAll(message.Time.Ticks);
                     AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
                     CharmTracker = new CharmTracker(AbnormalityTracker);
+                    AbnormalityTracker.RegisterDead(spawnMe.Id, spawnMe.Time.Ticks, spawnMe.Dead);
                     continue;
                 }
                 var sLogin = message as LoginServerMessage;
@@ -423,7 +426,7 @@ namespace DamageMeter
                     AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
                     CharmTracker = new CharmTracker(AbnormalityTracker);
                     Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
-                    //Console.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
+                    //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;
                 }
             }
