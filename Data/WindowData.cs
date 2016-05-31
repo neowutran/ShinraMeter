@@ -18,6 +18,16 @@ namespace Data
             DefaultValue();
             // Load XML File
             _windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
+
+            try
+            {
+                FileAttributes attrs = File.GetAttributes(_windowFile);
+                File.SetAttributes(_windowFile, attrs & ~FileAttributes.ReadOnly);
+            }
+            catch {
+                //ignore
+            }
+
             try
             {
                 _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
@@ -369,7 +379,7 @@ namespace Data
             {
                 return;
             }
-            
+         
 
             var xml = new XDocument(new XElement("window"));
             xml.Root.Add(new XElement("location"));

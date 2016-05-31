@@ -16,7 +16,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "1.03";
+        public static readonly string Version = "1.05";
             
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -69,11 +69,10 @@ namespace DamageMeter.AutoUpdate
 
             var latestVersion = "ShinraMeterV" + LatestVersion().Result;
             Console.WriteLine("Downloading latest version");
-            SetCertificate();
             using (var client = new WebClient())
             {
                 client.DownloadFile(
-                    "https://cloud.neowutran.ovh/index.php/s/e7arRRxkHEIkzU1/download?path=%2F&files=" + latestVersion +
+                    " http://neowutran.ovh:8083/updates/" + latestVersion +
                     ".zip", ExecutableDirectory + @"\tmp\" + latestVersion + ".zip");
             }
             Console.WriteLine("Latest version downloaded");
@@ -144,7 +143,7 @@ namespace DamageMeter.AutoUpdate
         {
             var version =
                 await
-                    GetResponseText("https://cloud.neowutran.ovh/index.php/s/muOLoJjP8JJfqFR/download")
+                    GetResponseText(" http://neowutran.ovh:8083/updates/version.txt")
                         .ConfigureAwait(false);
             version = Regex.Replace(version, @"\r\n?|\n", "");
 
@@ -173,19 +172,6 @@ namespace DamageMeter.AutoUpdate
             return hashString == checksum;
         }
 
-        private static void SetCertificate()
-        {
-            var cloudCertificate =
-                new X509Certificate2(
-                    X509Certificate.CreateFromCertFile(ResourcesDirectory + @"ssl/cloud.neowutran.ovh.der"));
-            ServicePointManager.ServerCertificateValidationCallback =
-                (sender, certificate, chain, sslPolicyErrors) =>
-                    certificate.Equals(cloudCertificate);
-
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-        }
-
         private static async Task<string> GetResponseText(string address)
         {
             return await GetResponseText(address, 3);
@@ -193,7 +179,6 @@ namespace DamageMeter.AutoUpdate
 
         private static async Task<string> GetResponseText(string address, int numbertry)
         {
-            SetCertificate();
             try
             {
                 using (var client = new HttpClient())

@@ -34,6 +34,17 @@ namespace Data
             // Load XML File
             XDocument xml;
             _hotkeyFile = Path.Combine(basicData.ResourceDirectory, "config/hotkeys.xml");
+
+            try
+            {
+                FileAttributes attrs = File.GetAttributes(_hotkeyFile);
+                File.SetAttributes(_hotkeyFile, attrs & ~FileAttributes.ReadOnly);
+            }
+            catch
+            {
+                //ignore
+            }
+
             try
             {
                 _filestream = new FileStream(_hotkeyFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
