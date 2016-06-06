@@ -404,7 +404,7 @@ namespace Data
             xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
             xml.Root.Add(new XElement("scale", Scale));
-            xml.Root.Add(new XElement("partyonly", Scale));
+            xml.Root.Add(new XElement("partyonly", PartyOnly));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
 
             _filestream.SetLength(0);
