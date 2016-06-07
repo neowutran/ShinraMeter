@@ -1,37 +1,17 @@
-Shinra Meter
-==============
-ShinraMeter is a DPS Meter for TERA based off https://github.com/gothos-folly/TeraDamageMeter . 
-
-Wiki: https://github.com/neowutran/TeraDamageMeter/wiki
-
-Download: http://neowutran.ovh:8083/updates/
-
-TERADATA: https://github.com/neowutran/TeraDpsMeterData
-
-ShinraMeter is dev by Gl0 and Yukikoo/Neowutran
-
-Original Readme
-================
+WIP - Just a test
+=====
+- Datastorage refactoring
+- Switch to sqlite for datastorage instead of: storing everything in class & reimplementing custom select, delete, insert etc... 
+Sqlite database stored in memory, no percistent file
 
 
-TeraSniffer and Damage Meter by Gothos.
+With that I except
+======
+no more deep clone to send data to the UI. Instead use the "select" of sqlite. => decrease CPU usage?
+Less custom code => standard sql query, easier to understand
 
-* Packet encryption code and the list of server IPs are from
+TODO
+=====
+- Database schema
+- ...
 
-  https://github.com/GoneUp/Tera_PacketViewer
-
-  Thanks to GoneUp and whoever else worked on this.
-
-* Skillnames extracted from:
-
-  https://forum.ragezone.com/f797/release-tera-datacenter-unpacked-eur-1064404/
-
-  Thanks to mangojoe for the dumps
-
-  Used a modified version of DataTools to extract the list from this dump.
-
-* TeraEmulator was very helpful for understanding the packet structures.
-
-   https://github.com/r4ymonf/TeraEmulator
-
-OpCodes dumped by GoneUp, Gothos, dezmen
