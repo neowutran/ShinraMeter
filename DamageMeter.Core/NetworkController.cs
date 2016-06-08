@@ -228,6 +228,9 @@ namespace DamageMeter
                     DamageTracker.Instance.Update(skillResult);
                     continue;
                 }
+
+                EntityTracker.Update(message);
+
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
                 {
@@ -400,7 +403,6 @@ namespace DamageMeter
                     continue;
                 }
 
-                EntityTracker.Update(message);
                 PlayerTracker.UpdateParty(message);
                 var sSpawnUser = message as SpawnUserServerMessage;
                 if (sSpawnUser != null)
