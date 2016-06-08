@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DamageMeter.Skills.Skill;
 using Tera.Game;
-using Skill = DamageMeter.Skills.Skill.Skill;
 
 
 namespace DamageMeter.TeraDpsApi

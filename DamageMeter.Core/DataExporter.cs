@@ -8,7 +8,6 @@ using Data;
 using DamageMeter.TeraDpsApi;
 using Newtonsoft.Json;
 using Tera.Game;
-using DamageMeter.Skills.Skill;
 using System.Net.Http;
 
 

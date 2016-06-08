@@ -20,7 +20,7 @@ namespace DamageMeter
         }
 
 
-        public static string Copy(EntityInfo info, IEnumerable<PlayerInfo> playerInfos,AbnormalityStorage abnormals, long totalDamage, Entity currentBoss, bool timedEncounter, string header,
+        public static string Copy(EntityInfo info, IEnumerable<Player> playerInfos,AbnormalityStorage abnormals, long totalDamage, Entity currentBoss, bool timedEncounter, string header,
             string content, string footer,
             string orderby, string order)
         {

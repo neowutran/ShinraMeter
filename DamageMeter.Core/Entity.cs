@@ -14,18 +14,11 @@ namespace DamageMeter
             Id = (NpcE.Info.Boss) ? NpcE.Id : new EntityId(0);
         }
 
-        public Entity(NpcEntity npce, bool group)
-            : this(npce)
-        {
-            IsGroup = group;
-        }
 
         public Entity(string name)
         {
             Name = name;
         }
-
-        public bool IsGroup { get; }
 
         public string Name { get; private set; }
 
