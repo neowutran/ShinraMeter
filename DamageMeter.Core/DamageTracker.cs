@@ -217,6 +217,36 @@ namespace DamageMeter
 
             return true;
         }
+
+        private long GetOrInsertSqlEntityId(Entity entity)
+        {
+            string sql = "SELECT id FROM entity WHERE entity_id=? AND name=?";
+            SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
+            SQLiteParameter id = new SQLiteParameter();
+            SQLiteParameter name = new SQLiteParameter();
+            command.Parameters.Add(name);
+            command.Parameters.Add(id);
+            name.Value = entity.Name;
+            id.Value = entity.Id.Id;
+            var result = command.ExecuteScalar();
+
+            if(result == null)
+            {
+                sql = "INSERT INTO entity (name, entity_id) VALUES(?,?);";
+                command = new SQLiteCommand(sql, Database.Instance.Connexion);
+                id = new SQLiteParameter();
+                name = new SQLiteParameter();
+                command.Parameters.Add(name);
+                command.Parameters.Add(id);
+                name.Value = entity.Name;
+                id.Value = entity.Id.Id;
+                command.ExecuteNonQuery();
+                return Database.Instance.Connexion.LastInsertRowId;
+            }
+
+            return (long)result;
+
+        }
      
         private void InsertSkill(Entity entityTarget, Entity entitySource, SkillResult message, long time)
         {
@@ -232,30 +262,49 @@ namespace DamageMeter
                 _toDelete.Remove(entityTarget);
             }
 
-            Database.Type type = Database.Type.Mana;
+            Database.Type skill_type = Database.Type.Mana;
 
             if (message.IsHp)
             {
                 if (message.IsHeal)
                 {
-                    type = Database.Type.Heal;
+                    skill_type = Database.Type.Heal;
                 }
                 else
                 {
-                    type = Database.Type.Damage; 
+                    skill_type = Database.Type.Damage; 
                 }
 
             }
-           
+
+            var sourceId = GetOrInsertSqlEntityId(entitySource);
+            var targetId = GetOrInsertSqlEntityId(entityTarget);
 
             string sql = "INSERT INTO damage (amount, type, target, source, skill_id, critic, time) VALUES(?,?,?,?,?,?,?); ";
             SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
-            SQLiteParameter id = new SQLiteParameter();
-            SQLiteParameter name = new SQLiteParameter();
-            command.Parameters.Add(name);
-            command.Parameters.Add(id);
-            name.Value = entity.Name;
-            id.Value = entity.Id.Id;
+            SQLiteParameter amount = new SQLiteParameter();
+            SQLiteParameter type = new SQLiteParameter();
+            SQLiteParameter target = new SQLiteParameter();
+            SQLiteParameter source = new SQLiteParameter();
+            SQLiteParameter skill_id = new SQLiteParameter();
+            SQLiteParameter critic = new SQLiteParameter();
+            SQLiteParameter time_parameter = new SQLiteParameter();
+
+            command.Parameters.Add(amount);
+            command.Parameters.Add(type);
+            command.Parameters.Add(target);
+            command.Parameters.Add(source);
+            command.Parameters.Add(skill_id);
+            command.Parameters.Add(critic);
+            command.Parameters.Add(time_parameter);
+
+            amount.Value = message.Amount;
+            type.Value = skill_type;
+            target.Value = targetId;
+            source.Value = sourceId;
+            skill_id.Value = message.SkillId;
+            critic.Value = message.IsCritical?1:0;
+            time_parameter.Value = time;
             command.ExecuteNonQuery();
 
         }
