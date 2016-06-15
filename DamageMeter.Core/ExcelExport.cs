@@ -284,7 +284,7 @@ namespace DamageMeter
             int offset = exdata.PlayerBuffs.Keys.ToList().IndexOf(ws.Name) + 1;
             bool bossSheet = ws.Name == "Boss";
             if (!bossSheet && offset <= 0) return; //no buff data for user -> no graphs.
-            offset = bossSheet ? 3 : 3 + offset*7;
+            offset = bossSheet ? 3 : 4 + offset*7;
             ExcelChart dps = ws.Drawings.AddChart(ws.Name + "DPS", eChartType.Line);
             dps.SetPosition(startrow + 1, 5, 0, 5);
             dps.SetSize(1200, 300);
@@ -298,14 +298,21 @@ namespace DamageMeter
                 typeDmg.YAxis.Title.Text = "Damage";
                 typeDmg.YAxis.Title.Rotation = 90;
                 serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 5, time + 3, offset + 5], details.Cells[3, 2, time + 3, 2]);
-                serieDmg.Header = ws.Name+" Dmg";
+                serieDmg.Header = ws.Name + " Dmg";
             }
-            var typeDps = dps.PlotArea.ChartTypes.Add(eChartType.Line);
-            if (!bossSheet)
+            else
             {
-                typeDps.UseSecondaryAxis = true;
-                typeDps.YAxis.Title.Text = "Avg DPS";
+                typeDmg = dps.PlotArea.ChartTypes[0];
+                typeDmg.YAxis.Title.Text = "Boss HP";
+                typeDmg.YAxis.Title.Rotation = 90;
+                typeDmg.YAxis.MaxValue = 1;
+                serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 7, time + 3, offset + 7], details.Cells[3, 2, time + 3, 2]);
+                serieDmg.Header = "Boss HP %";
             }
+            typeDmg.YAxis.MinValue = 0;
+            var typeDps = dps.PlotArea.ChartTypes.Add(eChartType.Line);
+            typeDps.UseSecondaryAxis = true;
+            typeDps.YAxis.Title.Text = "Avg DPS";
             typeDps.YAxis.Title.Rotation = 90;
             typeDps.YAxis.SourceLinked = false;
             typeDps.YAxis.Format = @"#,#0\k\/\s";//not sure why, but it loss sourcelink itself if we show only dps.
@@ -313,7 +320,9 @@ namespace DamageMeter
             serieDps.Header = ws.Name+" Avg DPS";
             if (bossSheet)
             {
-                int col = 3;
+                typeDps.YAxis.MaxValue = details.Cells[3, offset + 6, time + 3, offset + 6].Max(x => (long)x.Value);
+                typeDps.YAxis.MinValue = 0;
+                int col = 4;
                 foreach (var user in exdata.PlayerBuffs)
                 {
                     col += 7;
@@ -391,7 +400,9 @@ namespace DamageMeter
             details.Column(8).Style.Numberformat.Format = @"#,#0\k";
             details.Cells[2, 9].Value = "AvgDPS";
             details.Column(9).Style.Numberformat.Format = @"#,#0\k\/\s";
-            details.Cells[1, 1, 1, 9].Merge = true;
+            details.Cells[2, 10].Value = "BossHP";
+            details.Column(10).Style.Numberformat.Format = "0%";
+            details.Cells[1, 1, 1, 10].Merge = true;
             for (int t = 0; t <= exdata.LastTick / TimeSpan.TicksPerSecond - exdata.FirstTick / TimeSpan.TicksPerSecond; t++)
             {
                 details.Cells[t + 3, 1].Value = t;
@@ -413,7 +424,11 @@ namespace DamageMeter
                     details.Cells[2 + j, 5].Value = (double)(buff.End - buff.Begin) / TimeSpan.TicksPerDay;
                 }
             }
-            long totalDamage = 0;
+            long dealtDamage = 0;
+            var totalDamage = exdata.PlayerSkills.Sum(
+                        x => x.Value.Where(time => time.Key>=exdata.FirstTick / TimeSpan.TicksPerSecond && time.Key<=exdata.LastTick / TimeSpan.TicksPerSecond)
+                             .Sum(skill => skill.Value.Sum(stat => stat.Value.Damage)));
+
             j = 0;
             long delta = exdata.FirstTick - (exdata.FirstTick / TimeSpan.TicksPerSecond) * TimeSpan.TicksPerSecond;
             for (long curTick = exdata.FirstTick/TimeSpan.TicksPerSecond;
@@ -425,14 +440,15 @@ namespace DamageMeter
                     exdata.PlayerSkills.Sum(
                         x => x.Value.Where(time => time.Key == curTick)
                              .Sum(skill => skill.Value.Sum(stat => stat.Value.Damage)));
-                totalDamage += damage;
+                dealtDamage += damage;
                 details.Cells[j+2, 8].Value = damage/1000;
                 if (curTick == exdata.LastTick / TimeSpan.TicksPerSecond)
-                    details.Cells[j + 2, 9].Value = totalDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick)/1000;
+                    details.Cells[j + 2, 9].Value = dealtDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick)/1000;
                 else if (j != 1)
-                    details.Cells[j + 2, 9].Value = totalDamage * TimeSpan.TicksPerSecond / ((j - 1) * TimeSpan.TicksPerSecond + delta)/1000;
+                    details.Cells[j + 2, 9].Value = dealtDamage * TimeSpan.TicksPerSecond / ((j - 1) * TimeSpan.TicksPerSecond + delta)/1000;
+                details.Cells[j + 2, 10].Value = totalDamage == 0 ? 0 : (double)(totalDamage - dealtDamage) / totalDamage;
             }
-            int i = 3;
+            int i = 4;
             foreach (var user in exdata.PlayerBuffs)
             {
                 i += 7;
@@ -491,7 +507,7 @@ namespace DamageMeter
                         details.Cells[2 + j, i + 2].Value = (double)(buff.End - buff.Begin) / TimeSpan.TicksPerDay;
                     }
                 }
-                totalDamage = 0;
+                dealtDamage = 0;
                 j = 0;
                 for (long curTick = exdata.FirstTick / TimeSpan.TicksPerSecond;
                           curTick <= exdata.LastTick / TimeSpan.TicksPerSecond;
@@ -502,12 +518,12 @@ namespace DamageMeter
                         exdata.PlayerSkills.Where(all => all.Key==user.Key).Sum(
                             x => x.Value.Where(time => time.Key == curTick)
                                  .Sum(skill => skill.Value.Sum(stat => stat.Value.Damage)));
-                    totalDamage += damage;
+                    dealtDamage += damage;
                     details.Cells[j + 2, i + 5].Value = damage/1000;
                     if (curTick == exdata.LastTick / TimeSpan.TicksPerSecond)
-                        details.Cells[j + 2, i + 6].Value = totalDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick)/1000;
+                        details.Cells[j + 2, i + 6].Value = dealtDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick)/1000;
                     else if (j != 1)
-                        details.Cells[j + 2, i + 6].Value = totalDamage * TimeSpan.TicksPerSecond / ((j - 1) * TimeSpan.TicksPerSecond + delta)/1000;
+                        details.Cells[j + 2, i + 6].Value = dealtDamage * TimeSpan.TicksPerSecond / ((j - 1) * TimeSpan.TicksPerSecond + delta)/1000;
                 }
             }
 
