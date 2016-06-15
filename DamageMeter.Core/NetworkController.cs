@@ -10,6 +10,11 @@ using Data;
 using Tera.Game;
 using Tera.Game.Messages;
 using Message = Tera.Message;
+using System.Data.SQLite.EF6;
+using System.Data.SQLite.Generic;
+using System.Data.SQLite.Linq;
+
+using System.Data.SQLite;
 
 namespace DamageMeter
 {
@@ -109,9 +114,11 @@ namespace DamageMeter
                 DamageTracker.Instance.GetPlayerStats()
                     .OrderByDescending(playerStats => playerStats.Dealt.Damage(currentBossFight, timedEncounter))
                     .ToList();
+
+     
             var firstHit = DamageTracker.Instance.FirstHit(currentBossFight);
             var lastHit = DamageTracker.Instance.LastHit(currentBossFight);
-            var entities =
+            var   =
                 DamageTracker.Instance.GetEntityStats();
             var partyDps = DamageTracker.Instance.PartyDps(currentBossFight, timedEncounter);
             var teradpsHistory = BossLink;
@@ -150,10 +157,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(EntityInfo info, List<PlayerInfo> stats, AbnormalityStorage abnormals, long total, Entity currentBoss, bool timedEncounter, CopyKey copy)
+        public static void CopyThread(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerInformation> playersInfos, AbnormalityStorage abnormals, Entity currentBoss, bool timedEncounter, CopyKey copy)
         {
 
-            var text = CopyPaste.Copy(info, stats, abnormals, total, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = CopyPaste.Copy(entityInfo, skills, playersInfos, abnormals, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
             
         }
@@ -165,16 +172,26 @@ namespace DamageMeter
 
                 if (NeedToCopy != null)
                 {
-                    var stats = DamageTracker.Instance.GetPlayerStats();
+               
                     var currentBoss = Encounter;
                     var timedEncounter = TimedEncounter;
-                    var totaldamage = DamageTracker.Instance.TotalDamage(currentBoss, timedEncounter);
-                    var firstHit = DamageTracker.Instance.FirstHit(currentBoss);
-                    var lastHit = DamageTracker.Instance.LastHit(currentBoss);
-                    var info = currentBoss == null ? new EntityInfo { FirstHit = firstHit * TimeSpan.TicksPerSecond, LastHit = (lastHit + 1) * TimeSpan.TicksPerSecond - 1 } : DamageTracker.Instance.GetEntityStats()[currentBoss];
+
+                    var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss.Id);
+                    var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
+
+                    List<Database.Data.PlayerInformation> playersInfo;
+                    if (timedEncounter)
+                    {
+                        playersInfo = Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime);
+                    }
+                    else
+                    {
+                        playersInfo = Database.Database.Instance.PlayerInformation(currentBoss.Id);
+                    }
+
                     var tmpcopy = NeedToCopy;
-                    var abnormals = _abnormalityStorage.Clone(currentBoss?.NpcE, info.FirstHit, info.LastHit);
-                    var pasteThread = new Thread(() => CopyThread(info, stats, abnormals, totaldamage, currentBoss, timedEncounter, tmpcopy));
+                    var abnormals = _abnormalityStorage.Clone(currentBoss?.NpcE, entityInfo.BeginTime, entityInfo.EndTime);
+                    var pasteThread = new Thread(() => CopyThread(entityInfo, skills, playersInfo, abnormals, currentBoss, timedEncounter, tmpcopy));
                     pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
 

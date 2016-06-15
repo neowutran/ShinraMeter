@@ -74,7 +74,10 @@
     <Compile Include="ChatMessage.cs" />
     <Compile Include="CopyPaste.cs" />
     <Compile Include="DamageTracker.cs" />
-    <Compile Include="Database.cs" />
+    <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\Data\EntityInformation.cs" />
+    <Compile Include="Database\Data\PlayerInformation.cs" />
+    <Compile Include="Database\Data\Skill.cs" />
     <Compile Include="DataExporter.cs" />
     <Compile Include="ExcelExport.cs" />
     <Compile Include="FormatHelpers.cs" />

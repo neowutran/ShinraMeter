@@ -43,39 +43,6 @@ namespace DamageMeter
             return damage / interval;
         }
 
-        public long FirstHit(Entity currentBoss)
-        {
-            string sql = "SELECT MIN(time) from damage join entity ON damage.target = entity.id WHERE entity.name=? AND entity.id=?";
-            SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
-            SQLiteParameter id = new SQLiteParameter();
-            SQLiteParameter name = new SQLiteParameter();
-            command.Parameters.Add(name);
-            command.Parameters.Add(id);
-            name.Value = currentBoss.Name;
-            id.Value = currentBoss.Id.Id;
-            long result = (long)command.ExecuteScalar();
-            return result;
-
-        }
-
-        public long Interval(Entity currentboss) {
-            return LastHit(currentboss) - FirstHit(currentboss);
-        }
-
-        public long LastHit(Entity currentBoss)
-        {
-            string sql = "SELECT MAX(time) from damage join entity ON damage.target = entity.id WHERE entity.name=? AND entity.id=?";
-            SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
-            SQLiteParameter id = new SQLiteParameter();
-            SQLiteParameter name = new SQLiteParameter();
-            command.Parameters.Add(name);
-            command.Parameters.Add(id);
-            name.Value = currentBoss.Name;
-            id.Value = currentBoss.Id.Id;
-            long result = (long)command.ExecuteScalar();
-            return result;            
-        }
-
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
 
         private List<Entity> _toDelete = new List<Entity>();
@@ -110,16 +77,9 @@ namespace DamageMeter
                 NetworkController.Instance.NewEncounter = null;
             }
 
-            string sql = "DELETE FROM entity WHERE entity.name=? AND entity.id=?";
-            SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
-            SQLiteParameter id = new SQLiteParameter();
-            SQLiteParameter name = new SQLiteParameter();
-            command.Parameters.Add(name);
-            command.Parameters.Add(id);
-            name.Value = entity.Name;
-            id.Value = entity.Id.Id;
-            command.ExecuteNonQuery();
-          
+            Database.Instance.DeleteEntity(entity);
+
+
         }
 
         public void UpdateCurrentBoss(Entity entity)
@@ -132,10 +92,7 @@ namespace DamageMeter
 
         public void Reset()
         {
-            string sql = "DELETE FROM entity";
-            SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
-            command.ExecuteNonQuery();
-
+            Database.Instance.DeleteAll();
             NetworkController.Instance.NewEncounter = null;
            
         }
@@ -218,36 +175,7 @@ namespace DamageMeter
             return true;
         }
 
-        private long GetOrInsertSqlEntityId(Entity entity)
-        {
-            string sql = "SELECT id FROM entity WHERE entity_id=? AND name=?";
-            SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
-            SQLiteParameter id = new SQLiteParameter();
-            SQLiteParameter name = new SQLiteParameter();
-            command.Parameters.Add(name);
-            command.Parameters.Add(id);
-            name.Value = entity.Name;
-            id.Value = entity.Id.Id;
-            var result = command.ExecuteScalar();
-
-            if(result == null)
-            {
-                sql = "INSERT INTO entity (name, entity_id) VALUES(?,?);";
-                command = new SQLiteCommand(sql, Database.Instance.Connexion);
-                id = new SQLiteParameter();
-                name = new SQLiteParameter();
-                command.Parameters.Add(name);
-                command.Parameters.Add(id);
-                name.Value = entity.Name;
-                id.Value = entity.Id.Id;
-                command.ExecuteNonQuery();
-                return Database.Instance.Connexion.LastInsertRowId;
-            }
-
-            return (long)result;
-
-        }
-     
+        
         private void InsertSkill(Entity entityTarget, Entity entitySource, SkillResult message, long time)
         {
           
@@ -277,36 +205,7 @@ namespace DamageMeter
 
             }
 
-            var sourceId = GetOrInsertSqlEntityId(entitySource);
-            var targetId = GetOrInsertSqlEntityId(entityTarget);
-
-            string sql = "INSERT INTO damage (amount, type, target, source, skill_id, critic, time) VALUES(?,?,?,?,?,?,?); ";
-            SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
-            SQLiteParameter amount = new SQLiteParameter();
-            SQLiteParameter type = new SQLiteParameter();
-            SQLiteParameter target = new SQLiteParameter();
-            SQLiteParameter source = new SQLiteParameter();
-            SQLiteParameter skill_id = new SQLiteParameter();
-            SQLiteParameter critic = new SQLiteParameter();
-            SQLiteParameter time_parameter = new SQLiteParameter();
-
-            command.Parameters.Add(amount);
-            command.Parameters.Add(type);
-            command.Parameters.Add(target);
-            command.Parameters.Add(source);
-            command.Parameters.Add(skill_id);
-            command.Parameters.Add(critic);
-            command.Parameters.Add(time_parameter);
-
-            amount.Value = message.Amount;
-            type.Value = skill_type;
-            target.Value = targetId;
-            source.Value = sourceId;
-            skill_id.Value = message.SkillId;
-            critic.Value = message.IsCritical?1:0;
-            time_parameter.Value = time;
-            command.ExecuteNonQuery();
-
+            Database.Instance.Insert(message.Amount, skill_type, entityTarget, entitySource, message.SkillId, message.IsCritical, time);
         }
     }
 }

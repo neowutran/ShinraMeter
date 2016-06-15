@@ -20,44 +20,43 @@ namespace DamageMeter
         }
 
 
-        public static string Copy(EntityInfo info, IEnumerable<Player> playerInfos,AbnormalityStorage abnormals, long totalDamage, Entity currentBoss, bool timedEncounter, string header,
+        public static string Copy(Database.Data.EntityInformation entityInfo, List<Database.Data.Skill> skills, List<Database.Data.PlayerInformation> playersInfos, AbnormalityStorage abnormals, Entity z     , bool timedEncounter, string header,
             string content, string footer,
             string orderby, string order)
         {
             //stop if nothing to paste
-            if (playerInfos == null) return "";
-            var firstTick = info.FirstHit;
-            var lastTick =  info.LastHit;
+            var firstTick = entityInfo.BeginTime;
+            var lastTick =  entityInfo.EndTime;
             var firstHit = firstTick / TimeSpan.TicksPerSecond;
             var lastHit = lastTick / TimeSpan.TicksPerSecond;
 
-            IEnumerable<PlayerInfo> playerInfosOrdered;
+            IEnumerable<Database.Data.PlayerInformation> playerInfosOrdered;
             if (order == "ascending")
             {
                 switch (orderby)
                 {
                     case "damage_received":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Received.Damage(currentBoss, firstHit, lastHit, timedEncounter));
+                        playerInfosOrdered = playersInfos.OrderBy(playerInfo => playerInfo.Received.Damage(currentBoss, firstHit, lastHit, timedEncounter));
                         break;
                     case "name":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Name);
+                        playerInfosOrdered = playersInfos.OrderBy(playerInfo => playerInfo.Name);
                         break;
                     case "damage_percentage":
                         playerInfosOrdered =
-                            playerInfos.OrderBy(playerInfo => playerInfo.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter));
+                            playersInfos.OrderBy(playerInfo => playerInfo.Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter));
                         break;
                     case "damage_dealt":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Damage(currentBoss, timedEncounter));
+                        playerInfosOrdered = playersInfos.OrderBy(playerInfo => playerInfo.Dealt.Damage(currentBoss, timedEncounter));
                         break;
                     case "dps":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.Dps(currentBoss, timedEncounter));
+                        playerInfosOrdered = playersInfos.OrderBy(playerInfo => playerInfo.Dealt.Dps(currentBoss, timedEncounter));
                         break;
                     case "crit_rate":
-                        playerInfosOrdered = playerInfos.OrderBy(playerInfo => playerInfo.Dealt.CritRate(currentBoss, timedEncounter));
+                        playerInfosOrdered = playersInfos.OrderBy(playerInfo => playerInfo.Dealt.CritRate(currentBoss, timedEncounter));
                         break;
                     case "hits_received":
                         playerInfosOrdered =
-                            playerInfos.OrderBy(playerInfo => playerInfo.Received.Hits(currentBoss, firstHit, lastHit, timedEncounter));
+                            playersInfos.OrderBy(playerInfo => playerInfo.Received.Hits(currentBoss, firstHit, lastHit, timedEncounter));
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");

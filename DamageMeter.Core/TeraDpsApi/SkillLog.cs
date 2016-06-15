@@ -17,21 +17,5 @@ namespace DamageMeter.TeraDpsApi
         public string skillLowestCrit;
         public string skillAverageCrit;
         public string skillAverageWhite;
-        public override string ToString()
-        {
-            string message = "";
-            message += skillId + ";";
-            message += skillHits + ";";
-            message += skillTotalDamage + ";";
-            message += skillCritRate + ";";
-            message += skillDamagePercent + ";";
-            message += skillHighestCrit + ";";
-            message += skillLowestCrit + ";";
-            message += skillAverageCrit + ";";
-            message += skillAverageWhite + ";";
-
-            return message;
-        }
-
     }
 }

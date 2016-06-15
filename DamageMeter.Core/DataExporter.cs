@@ -242,9 +242,6 @@ namespace DamageMeter
                 return;
             }
 
-
-
-
             string json = JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             SendTeraDpsIo(entity, json, 3);
         }
@@ -291,23 +288,5 @@ namespace DamageMeter
             }
         }
 
-        private static Dictionary<Skills.Skill.Skill, SkillStats> NoTimedSkills(
-          Dictionary<long, Dictionary<Skills.Skill.Skill, SkillStats>> dictionary)
-        {
-            var result = new Dictionary<Skills.Skill.Skill, SkillStats>();
-            foreach (var timedStats in dictionary)
-            {
-                foreach (var stats in timedStats.Value)
-                {
-                    if (result.ContainsKey(stats.Key))
-                    {
-                        result[stats.Key] += stats.Value;
-                        continue;
-                    }
-                    result.Add(stats.Key, stats.Value);
-                }
-            }
-            return result;
-        }
     }
 }

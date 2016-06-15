@@ -18,28 +18,5 @@ namespace DamageMeter.TeraDpsApi
         public string partyDps;
         public List<KeyValuePair<string, string>> debuffUptime = new List<KeyValuePair<string, string>>();
         public List<Members> members = new List<Members>();
-
-        public override string ToString()
-        {
-            string message = "";
-            message += areaId + ";";
-            message += bossId + ";";
-            message += fightDuration + ";";
-            message += meterName + ";";
-            message += meterVersion + ";";
-            message += partyDps + ";";
-
-            foreach(var debuff in debuffUptime)
-            {
-                message += debuff.Key + ":" + debuff.Value + ";";
-            }
-
-            foreach (var member in members)
-            {
-                message += "["+member+"]";
-            }
-            return message;
-        }
-
     }
 }
