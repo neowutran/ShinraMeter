@@ -8,8 +8,6 @@ namespace DamageMeter.TeraDpsApi
 {
     public class Members
     {
-
-
         public string playerServer;
         public string playerDeaths;
         public string playerDeathDuration;

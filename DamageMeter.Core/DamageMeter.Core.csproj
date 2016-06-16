@@ -76,8 +76,9 @@
     <Compile Include="DamageTracker.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\Data\EntityInformation.cs" />
-    <Compile Include="Database\Data\PlayerInformation.cs" />
+    <Compile Include="Database\Data\PlayerDealt.cs" />
     <Compile Include="Database\Data\Skill.cs" />
+    <Compile Include="Database\Data\Skills.cs" />
     <Compile Include="DataExporter.cs" />
     <Compile Include="ExcelExport.cs" />
     <Compile Include="FormatHelpers.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="NpcOccupierResult.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entity.cs" />
     <Compile Include="TeraDpsApi\EncounterBase.cs" />
     <Compile Include="TeraDpsApi\ExtendedStats.cs" />
     <Compile Include="TeraDpsApi\Members.cs" />

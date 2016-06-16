@@ -10,11 +10,6 @@ using Data;
 using Tera.Game;
 using Tera.Game.Messages;
 using Message = Tera.Message;
-using System.Data.SQLite.EF6;
-using System.Data.SQLite.Generic;
-using System.Data.SQLite.Linq;
-
-using System.Data.SQLite;
 
 namespace DamageMeter
 {
@@ -28,9 +23,8 @@ namespace DamageMeter
         public event UnsetClickThrouEvent UnsetClickThrouAction;
 
 
-        public delegate void UpdateUiHandler(
-            long firsthit, long lastHit, long totaldamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-            List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, AbnormalityStorage abnormals, ConcurrentDictionary<string ,Entity> bossHistory, List<ChatMessage> chatbox);
+        public delegate void UpdateUiHandler(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerDealt> playersInfos,
+            bool timedEncounter, AbnormalityStorage abnormals, ConcurrentDictionary<string ,NpcEntity> bossHistory, List<ChatMessage> chatbox);
 
         private static NetworkController _instance;
 
@@ -51,7 +45,7 @@ namespace DamageMeter
             packetAnalysis.Start();
         }
 
-        public ConcurrentDictionary<string, Entity> BossLink = new ConcurrentDictionary<string, Entity>();
+        public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
 
         public TeraData TeraData { get; private set; }
 
@@ -107,24 +101,19 @@ namespace DamageMeter
         {
             _lastTick = DateTime.UtcNow.Ticks;
             var handler = TickUpdated;
-            var currentBossFight = Encounter;
+            var currentBoss = Encounter;
             var timedEncounter = TimedEncounter;
-            var damage = DamageTracker.Instance.TotalDamage(currentBossFight, timedEncounter);
-            var stats =
-                DamageTracker.Instance.GetPlayerStats()
-                    .OrderByDescending(playerStats => playerStats.Dealt.Damage(currentBossFight, timedEncounter))
-                    .ToList();
 
-     
-            var firstHit = DamageTracker.Instance.FirstHit(currentBossFight);
-            var lastHit = DamageTracker.Instance.LastHit(currentBossFight);
-            var   =
-                DamageTracker.Instance.GetEntityStats();
-            var partyDps = DamageTracker.Instance.PartyDps(currentBossFight, timedEncounter);
+            var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss.Id);
+            var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
+            List<Database.Data.PlayerDealt> playersInfo;
+            playersInfo = timedEncounter ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime) :
+                Database.Database.Instance.PlayerInformation(currentBoss.Id);
+
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
-            var abnormals = _abnormalityStorage.Clone(currentBossFight?.NpcE, firstHit*TimeSpan.TicksPerSecond, (lastHit + 1)*TimeSpan.TicksPerSecond - 1);
-            handler?.Invoke(firstHit, lastHit, damage, partyDps, entities, stats, currentBossFight, timedEncounter, abnormals, teradpsHistory, chatbox);
+            var abnormals = _abnormalityStorage.Clone((NpcEntity)currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
+            handler?.Invoke(entityInfo, skills, playersInfo, timedEncounter, abnormals, teradpsHistory, chatbox);
         }
 
         private bool _clickThrou = false;
@@ -157,10 +146,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerInformation> playersInfos, AbnormalityStorage abnormals, Entity currentBoss, bool timedEncounter, CopyKey copy)
+        public static void CopyThread(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerDealt> playersInfos, AbnormalityStorage abnormals, bool timedEncounter, CopyKey copy)
         {
 
-            var text = CopyPaste.Copy(entityInfo, skills, playersInfos, abnormals, currentBoss, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = CopyPaste.Copy(entityInfo, skills, playersInfos, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
             
         }
@@ -178,20 +167,13 @@ namespace DamageMeter
 
                     var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss.Id);
                     var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
-
-                    List<Database.Data.PlayerInformation> playersInfo;
-                    if (timedEncounter)
-                    {
-                        playersInfo = Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime);
-                    }
-                    else
-                    {
-                        playersInfo = Database.Database.Instance.PlayerInformation(currentBoss.Id);
-                    }
+                    List<Database.Data.PlayerDealt> playersInfo;
+                    playersInfo = timedEncounter ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime) :
+                        Database.Database.Instance.PlayerInformation(currentBoss.Id);
 
                     var tmpcopy = NeedToCopy;
-                    var abnormals = _abnormalityStorage.Clone(currentBoss?.NpcE, entityInfo.BeginTime, entityInfo.EndTime);
-                    var pasteThread = new Thread(() => CopyThread(entityInfo, skills, playersInfo, abnormals, currentBoss, timedEncounter, tmpcopy));
+                    var abnormals = _abnormalityStorage.Clone((NpcEntity)currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
+                    var pasteThread = new Thread(() => CopyThread(entityInfo, skills, playersInfo, abnormals, timedEncounter, tmpcopy));
                     pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
 
@@ -334,10 +316,7 @@ namespace DamageMeter
                 {
                     AbnormalityTracker.StopAggro(despawnNpc);
                     AbnormalityTracker.DeleteAbnormality(despawnNpc);
-
                     DataExporter.Export(despawnNpc, _abnormalityStorage);
-           
-
                     continue;
                 }
 

@@ -93,9 +93,9 @@ namespace DamageMeter.Database
             command.Parameters.Add(skill_id);
             command.Parameters.Add(parameter_critic);
             command.Parameters.Add(parameter_time);
-
             parameter_amount.Value = amount;
             parameter_type.Value = skill_id;
+        
             parameter_target.Value = target.Id.Id;
             parameter_source.Value = source.Id.Id;
             skill_id.Value = skill_id;
@@ -123,7 +123,8 @@ namespace DamageMeter.Database
 
 
             var rdr = command.ExecuteReader();
-            return new Data.EntityInformation(rdr.GetInt64(0), rdr.GetInt64(1), rdr.GetInt64(2));
+        
+            return new Data.EntityInformation((NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(entity), rdr.GetInt64(0), rdr.GetInt64(1), rdr.GetInt64(2));
             
         }
 
@@ -181,19 +182,20 @@ namespace DamageMeter.Database
 
 
               }
-            
-            return new Data.Skills(sourceTargetSkills, targetSourceSkills);
+      
+            var skills = new Data.Skills(sourceTargetSkills, targetSourceSkills);
+
+            return skills;
 
         }
 
 
-        public List<Data.PlayerInformation> PlayerInformation(long beginTime, long endTime)
+        public List<Data.PlayerDealt> PlayerInformation(long beginTime, long endTime)
         {
             var sql = "SELECT SUM(amount) as total_damage, MIN(time) as debut, MAX(time) as fin, SUM(critic) as critic, COUNT(*) AS hit, source, target, type" +
                 "FROM damage " +
              "WHERE time BETWEEN ? AND ?" +
-             "GROUP BY source, type" +
-             "ORDER BY `total_damage`  DESC";
+             "GROUP BY source, type";
 
             SQLiteCommand command = new SQLiteCommand(sql, Connexion);
             SQLiteParameter parameter_beginTime = new SQLiteParameter();
@@ -208,26 +210,43 @@ namespace DamageMeter.Database
             return PlayerInformation(command);
         }
 
-        private List<Data.PlayerInformation> PlayerInformation(SQLiteCommand command)
+        private List<Data.PlayerDealt> PlayerInformation(SQLiteCommand command)
         {
             
-            var result = new List<Data.PlayerInformation>();
+            var result = new List<Data.PlayerDealt>();
 
             using (var rdr = command.ExecuteReader())
             {
                 while (rdr.Read())
                 {
+                    var source = new EntityId((ulong)rdr.GetInt64(5));
+                    var entity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(source);
+                    UserEntity user = null;
+                    if (entity is UserEntity)
+                    {
+                        user = (UserEntity)entity;
+                        Player player = NetworkController.Instance.PlayerTracker.GetOrNull(user.ServerId, user.PlayerId);
+                        if (player != null)
+                        {
 
-                    result.Add(new Data.PlayerInformation(
-                        rdr.GetInt64(0),
-                        rdr.GetInt64(1),
-                        rdr.GetInt64(2),
-                        rdr.GetInt32(3),
-                        rdr.GetInt32(4),
-                        new EntityId((ulong)rdr.GetInt64(5)),
-                        new EntityId((ulong)rdr.GetInt64(6)), 
-                        (Type) rdr.GetInt32(7)
-                    ));
+
+                            result.Add(new Data.PlayerDealt(
+                                                 rdr.GetInt64(0),
+                                                 rdr.GetInt64(1),
+                                                 rdr.GetInt64(2),
+                                                 rdr.GetInt32(3),
+                                                 rdr.GetInt32(4),
+                                                  player,
+                                                 new EntityId((ulong)rdr.GetInt64(6)),
+                                                 (Type)rdr.GetInt32(7)
+                                             ));
+
+
+
+                        }
+                    }
+
+                 
 
                 }
             }
@@ -235,7 +254,7 @@ namespace DamageMeter.Database
             return result;
         }
 
-        public List<Data.PlayerInformation> PlayerInformation(EntityId target)
+        public List<Data.PlayerDealt> PlayerInformation(EntityId target)
         {
 
             var sql = "SELECT SUM(amount) as total_damage, MIN(time) as debut, MAX(time) as fin, SUM(critic) as critic, COUNT(*) AS hit, source, target, type" +

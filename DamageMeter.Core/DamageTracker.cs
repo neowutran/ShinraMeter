@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Tera.Game;
 using Data;
-using System.Data.SQLite;
 
 namespace DamageMeter
 {
@@ -16,31 +14,6 @@ namespace DamageMeter
 
         private DamageTracker()
         {
-        }
-
-        public long TotalDamage(Entity entity, bool timedEncounter) 
-        {
-            string sql = "SELECT SUM(amount) from damage join entity ON damage.target = entity.id WHERE entity.name=? AND entity.id=?";
-            SQLiteCommand command = new SQLiteCommand(sql, Database.Instance.Connexion);
-            SQLiteParameter id = new SQLiteParameter();
-            SQLiteParameter name = new SQLiteParameter();
-            command.Parameters.Add(name);
-            command.Parameters.Add(id);
-            name.Value = entity.Name;
-            id.Value = entity.Id.Id;
-            long result = (long)command.ExecuteScalar();
-            return result;
-        }
-
-        public long PartyDps(Entity entity, bool timedEncounter)
-        {
-            var interval = Interval(entity);
-            var damage = TotalDamage(entity, timedEncounter);
-            if (interval == 0)
-            {
-                return damage;
-            }
-            return damage / interval;
         }
 
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
@@ -60,7 +33,7 @@ namespace DamageMeter
                 var npcEntity = entity as NpcEntity;
                 if (npcEntity.Info.Boss)
                 {
-                    _toDelete.Add(new Entity(npcEntity));
+                    _toDelete.Add(entity);
                 }
             }
         }
@@ -77,14 +50,14 @@ namespace DamageMeter
                 NetworkController.Instance.NewEncounter = null;
             }
 
-            Database.Instance.DeleteEntity(entity);
+            Database.Database.Instance.DeleteEntity(entity);
 
 
         }
 
-        public void UpdateCurrentBoss(Entity entity)
+        public void UpdateCurrentBoss(NpcEntity entity)
         {
-            if (entity.IsBoss)
+            if (entity.Info.Boss)
             {
                 NetworkController.Instance.NewEncounter = entity;
             }
@@ -92,7 +65,7 @@ namespace DamageMeter
 
         public void Reset()
         {
-            Database.Instance.DeleteAll();
+            Database.Database.Instance.DeleteAll();
             NetworkController.Instance.NewEncounter = null;
            
         }
@@ -100,17 +73,11 @@ namespace DamageMeter
         public Entity GetActorEntity(EntityId entityId)
         {
             var entity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(entityId);
-            if (entity is NpcEntity)
+            if (entity is NpcEntity || entity is UserEntity)
             {
-                var target = (NpcEntity) entity;
-                return new Entity(target);
+                return entity;
             }
-            if (entity is UserEntity)
-            {
-                var target = (UserEntity) entity;
-                return new Entity(target.Name);
-            }
-
+            
             return null;
         }
 
@@ -125,17 +92,10 @@ namespace DamageMeter
             if (entity is ProjectileEntity)
             {
                 var source = (ProjectileEntity) entity;
-                if (source.Owner is NpcEntity)
+                if (source.Owner is NpcEntity || source.Owner is UserEntity)
                 {
-                    var source2 = (NpcEntity) source.Owner;
-                    return new Entity(source2);
+                    return source.Owner;
                 }
-                if (source.Owner is UserEntity)
-                {
-                    var source2 = (UserEntity) source.Owner;
-                    return new Entity(source2.Name);
-                }
-                return null;
             }
             return null;
         }
@@ -190,22 +150,22 @@ namespace DamageMeter
                 _toDelete.Remove(entityTarget);
             }
 
-            Database.Type skill_type = Database.Type.Mana;
+            Database.Database.Type skill_type = Database.Database.Type.Mana;
 
             if (message.IsHp)
             {
                 if (message.IsHeal)
                 {
-                    skill_type = Database.Type.Heal;
+                    skill_type = Database.Database.Type.Heal;
                 }
                 else
                 {
-                    skill_type = Database.Type.Damage; 
+                    skill_type = Database.Database.Type.Damage; 
                 }
 
             }
 
-            Database.Instance.Insert(message.Amount, skill_type, entityTarget, entitySource, message.SkillId, message.IsCritical, time);
+            Database.Database.Instance.Insert(message.Amount, skill_type, entityTarget, entitySource, message.SkillId, message.IsCritical, time);
         }
     }
 }

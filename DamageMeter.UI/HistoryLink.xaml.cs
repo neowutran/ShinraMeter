@@ -1,19 +1,11 @@
 ﻿using Data;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Tera.Game;
 
 namespace DamageMeter.UI
 {
@@ -22,10 +14,10 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class HistoryLink : UserControl
     {
-        public HistoryLink(string link, Entity boss )
+        public HistoryLink(string link, NpcEntity boss )
         {
             InitializeComponent();
-            Boss.Content = boss.Name;
+            Boss.Content = boss.Info.Name;
             Boss.Tag = link;
             if (link.StartsWith("!"))
             {

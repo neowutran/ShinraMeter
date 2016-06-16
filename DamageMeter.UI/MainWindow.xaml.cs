@@ -25,6 +25,7 @@ using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 using System.Net.Http;
 using System.Text;
+using Tera.Game;
 
 namespace DamageMeter.UI
 {
@@ -232,7 +233,7 @@ namespace DamageMeter.UI
         private void ForumOnClick(object sender, EventArgs eventArgs)
         {
             Process.Start("explorer.exe",
-                "https://discordapp.com/channels/169587841859452928");
+                "https://discord.gg/0wjLnPs6HoNFxv6O");
         }
 
         private void IssuesOnClick(object sender, EventArgs eventArgs)
@@ -394,12 +395,12 @@ namespace DamageMeter.UI
             }
         }
 
-        public void Update(long nfirstHit, long nlastHit, long ntotalDamage, long npartyDps, Dictionary<Entity, EntityInfo> nentities,
-            List<PlayerInfo> nstats, Entity ncurrentBoss, bool ntimedEncounter, Tera.Game.AbnormalityStorage nabnormals , ConcurrentDictionary<string, Entity> nbossHistory, List<ChatMessage> nchatbox)
+        public void Update(Database.Data.EntityInformation nentityInfo, Database.Data.Skills nskills, List<Database.Data.PlayerDealt> nplayersInfos, 
+            bool ntimedEncounter, AbnormalityStorage nabnormals , ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox)
         {
             NetworkController.UpdateUiHandler changeUi =
-                delegate(long firstHit, long lastHit, long totalDamage, long partyDps, Dictionary<Entity, EntityInfo> entities,
-                    List<PlayerInfo> stats, Entity currentBoss, bool timedEncounter, Tera.Game.AbnormalityStorage abnormals, ConcurrentDictionary<string, Entity> bossHistory, List<ChatMessage> chatbox)
+                delegate(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerDealt> playersInfos, bool timedEncounter, 
+                AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox)
                 {
                     var entitiesStats = new LinkedList<KeyValuePair<Entity, EntityInfo>>(entities.ToList().OrderByDescending(e => e.Value.LastHit));
                     UpdateComboboxEncounter(entitiesStats, currentBoss);
@@ -473,7 +474,7 @@ namespace DamageMeter.UI
                         }
                     }
                 };
-            Dispatcher.Invoke(changeUi, nfirstHit, nlastHit, ntotalDamage, npartyDps, nentities, nstats, ncurrentBoss, ntimedEncounter, nabnormals, nbossHistory, nchatbox);
+            Dispatcher.Invoke(changeUi, nentityInfo, nskills, nplayersInfos, ntimedEncounter, nabnormals, nbossHistory, nchatbox);
         }
 
         private TeradpsHistory _windowHistory;

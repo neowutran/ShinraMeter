@@ -50,42 +50,50 @@ namespace DamageMeter
         {
             if (!despawnNpc.Dead) return null;
 
-            var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
-
-            if (!entity.IsBoss || !DamageTracker.Instance.EntitiesStats.ContainsKey(entity)) return null;
+            var entity = (NpcEntity)DamageTracker.Instance.GetEntity(despawnNpc.Npc);
+            if (!entity.Info.Boss) return null;
 
             bool timedEncounter = false;
 
-            //Nightmare desolarus
-            if (entity.NpcE.Info.HuntingZoneId == 759 && entity.NpcE.Info.TemplateId == 1003)
-            {
-                timedEncounter = true;
-            }
+            /*
+              modify timedEncounter depending on teradps.io need
 
-            var firstTick = DamageTracker.Instance.EntitiesStats[entity].FirstHit;
-            var lastTick = DamageTracker.Instance.EntitiesStats[entity].LastHit;
+            */
+            
+            var entityInfo = Database.Database.Instance.GlobalInformationEntity(entity.Id);
+            var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
+            List<Database.Data.PlayerDealt> playersInfo;
+            playersInfo = timedEncounter?Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime):
+                Database.Database.Instance.PlayerInformation(entity.Id);
+
+            var heals = playersInfo.Where(x => x.Type == Database.Database.Type.Heal).ToList();
+            playersInfo.RemoveAll(x => x.Type != Database.Database.Type.Damage);
+            playersInfo.RemoveAll(x => x.Amount == 0);
+
+
+            var firstTick = entityInfo.BeginTime;
+            var lastTick = entityInfo.EndTime;
             var interTick = lastTick - firstTick;
             var interval = interTick / TimeSpan.TicksPerSecond;
             if (interval == 0)
             {
                 return null;
             }
-            var totaldamage = DamageTracker.Instance.TotalDamage(entity, timedEncounter);
+            var totaldamage = entityInfo.TotalDamage;
             var partyDps = TimeSpan.TicksPerSecond * totaldamage / interTick;
 
             var teradpsData = new EncounterBase();
             var extendedStats = new ExtendedStats();
-            var stats = DamageTracker.Instance.GetPlayerStats();
-            var _abnormals = abnormals.Clone(entity.NpcE,firstTick,lastTick);
-            extendedStats.Entity = entity.NpcE;
+            var _abnormals = abnormals.Clone(entity,firstTick,lastTick);
+            extendedStats.Entity = entity;
             extendedStats.BaseStats = teradpsData;
             extendedStats.FirstTick = firstTick;
             extendedStats.LastTick = lastTick;
-            teradpsData.areaId = entity.NpcE.Info.HuntingZoneId + "";
-            teradpsData.bossId = entity.NpcE.Info.TemplateId + "";
+            teradpsData.areaId = entity.Info.HuntingZoneId + "";
+            teradpsData.bossId = entity.Info.TemplateId + "";
             teradpsData.fightDuration = interval + "";
             teradpsData.partyDps = partyDps + "";
-            extendedStats.Debuffs = _abnormals.Get(entity.NpcE);
+            extendedStats.Debuffs = _abnormals.Get(entity);
 
             foreach (var debuff in extendedStats.Debuffs)
             {
@@ -99,10 +107,10 @@ namespace DamageMeter
                     ));
             }
 
-            foreach (var user in stats)
+            foreach (var user in playersInfo)
             {
                 var teradpsUser = new Members();
-                var damage = user.Dealt.Damage(entity, timedEncounter);
+                var damage = user.Amount;
                 teradpsUser.playerTotalDamage = damage + "";
 
                 if (damage <= 0)
@@ -110,20 +118,20 @@ namespace DamageMeter
                     continue;
                 }
 
-                var buffs = _abnormals.Get(user.Player);
-                teradpsUser.playerClass = user.Class.ToString();
-                teradpsUser.playerName = user.Name;
-                teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Player.ServerId);
-                teradpsUser.playerAverageCritRate = user.Dealt.CritRate(entity, timedEncounter) + "";
-                teradpsUser.healCrit = user.IsHealer ? user.Dealt.CritRateHeal(entity, timedEncounter) + "" : null;
+                var buffs = _abnormals.Get(user.Source);
+                teradpsUser.playerClass = user.Source.Class.ToString();
+                teradpsUser.playerName = user.Source.Name;
+                teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Source.ServerId);
+                teradpsUser.playerAverageCritRate = user.CritRate + "";
+                teradpsUser.healCrit = user.Source.IsHealer ? heals.First(x => x.Source == user.Source).CritRate + "" : null;
                 teradpsUser.playerDps = TimeSpan.TicksPerSecond * damage / interTick + "";
-                teradpsUser.playerTotalDamagePercentage = user.Dealt.DamageFraction(entity, totaldamage, timedEncounter) + "";
+                teradpsUser.playerTotalDamagePercentage = user.Amount / entityInfo.TotalDamage + "";
 
                 var death = buffs.Death;
                 teradpsUser.playerDeaths = death.Count(firstTick, lastTick) + "";
                 teradpsUser.playerDeathDuration = death.Duration(firstTick, lastTick) / TimeSpan.TicksPerSecond + "";
 
-                var aggro = buffs.Aggro(entity.NpcE);
+                var aggro = buffs.Aggro(entity);
                 teradpsUser.aggro = 100 * aggro.Duration(firstTick, lastTick) / interTick + "";
 
                 foreach (var buff in buffs.Times)
@@ -140,7 +148,6 @@ namespace DamageMeter
                 var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
                 extendedStats.PlayerSkills.Add(serverPlayerName, timedEncounter ? user.Dealt.GetSkillsByTime(entity) : user.Dealt.GetSkills(entity));
                 extendedStats.PlayerBuffs.Add(serverPlayerName,buffs);
-                var notimedskills = NoTimedSkills(extendedStats.PlayerSkills[serverPlayerName]);
 
                 foreach (var skill in notimedskills)
                 {
@@ -219,9 +226,7 @@ namespace DamageMeter
           
             var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
 
-            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) || !BasicTeraData.Instance.WindowData.SiteExport) return;
-
-            
+            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) || !BasicTeraData.Instance.WindowData.SiteExport) return;         
 
             /*
               Validation, without that, the server cpu will be burning \o 
@@ -243,15 +248,15 @@ namespace DamageMeter
             }
 
             string json = JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            SendTeraDpsIo(entity, json, 3);
+            SendTeraDpsIo((NpcEntity)entity, json, 3);
         }
 
-        private static void SendTeraDpsIo(Entity boss, string json, int numberTry)
+        private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry)
         {
             if(numberTry == 0)
             {
                 Console.WriteLine("API ERROR");
-                NetworkController.Instance.BossLink.TryAdd("!Api error or timeout." + " " + boss.Name +" "+ boss.NpcE.Id + " " + DateTime.Now.Ticks, boss);
+                NetworkController.Instance.BossLink.TryAdd("!Api error or timeout." + " " + boss.Info.Name +" "+ boss.Id + " " + DateTime.Now.Ticks, boss);
                 return;
             }
             try {
@@ -275,7 +280,7 @@ namespace DamageMeter
                         NetworkController.Instance.BossLink.TryAdd((string)responseObject["id"], boss);
                     }
                     else {
-                        NetworkController.Instance.BossLink.TryAdd("!" + (string)responseObject["message"] +" "+ boss.Name + " " + boss.NpcE.Id + " "+DateTime.Now.Ticks, boss);
+                        NetworkController.Instance.BossLink.TryAdd("!" + (string)responseObject["message"] + " " + boss.Info.Name + " " + boss.Id + " "+DateTime.Now.Ticks, boss);
                    }
                 }
             }

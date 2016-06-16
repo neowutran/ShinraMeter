@@ -7,10 +7,10 @@ using Tera.Game;
 
 namespace DamageMeter.Database.Data
 {
-    public class PlayerInformation
+    public class PlayerDealt
     {
 
-        public PlayerInformation(long amount, long beginTime, long endTime, int critic, int hit, EntityId source, EntityId target, Database.Type type)
+        public PlayerDealt(long amount, long beginTime, long endTime, int critic, int hit, Player source, EntityId target, Database.Type type)
         {
             Amount = amount;
             BeginTime = beginTime;
@@ -19,7 +19,7 @@ namespace DamageMeter.Database.Data
             Hit = hit;
             Source = source;
             Target = target;
-            Type = type;
+            Type = type;    
         }
 
         public Database.Type Type { get; }
@@ -30,7 +30,7 @@ namespace DamageMeter.Database.Data
         public long EndTime { get; }
         public int Critic { get; }
         public int Hit { get; }
-        public EntityId Source { get; }
+        public Player Source { get; }
 
         public EntityId Target { get; }
 
