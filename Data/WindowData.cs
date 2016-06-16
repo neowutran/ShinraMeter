@@ -191,7 +191,7 @@ namespace Data
             var scalexml = root?.Element("scale");
             if (scalexml == null) return;
             double scale;
-            var parseSuccess = double.TryParse(scalexml.Value, out scale);
+            var parseSuccess = double.TryParse(scalexml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out scale);
             if (parseSuccess)
             {
                 Scale = scale;
