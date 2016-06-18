@@ -274,9 +274,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="shinra.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="shinra.ico" />
   </ItemGroup>
   <ItemGroup />
