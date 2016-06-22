@@ -198,6 +198,7 @@ namespace DamageMeter
                 areaId != 467 &&
                 areaId != 767 &&
                 areaId != 768 &&
+                areaId != 470 &&
                 areaId != 468
                 )
             {   
@@ -232,6 +233,7 @@ namespace DamageMeter
                 areaId != 467 &&
                 areaId != 767 &&
                 areaId != 768 &&
+                areaId != 470 &&
                 areaId != 468
                 )
             {
