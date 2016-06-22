@@ -431,6 +431,10 @@ namespace DamageMeter
                     //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
                     continue;
                 }
+                //var sGetLogo = message as S_GET_USER_GUILD_LOGO;
+                //if (sGetLogo != null)
+                //{
+                //}
             }
         }
 
