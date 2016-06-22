@@ -26,6 +26,7 @@ using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 using System.Net.Http;
 using System.Text;
 using Tera.Game;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI
 {
@@ -40,8 +41,7 @@ namespace DamageMeter.UI
         private NotifyIcon _trayIcon;
 
         public MainWindow()
-        {
-         
+        {     
                
             InitializeComponent();
             var currentDomain = default(AppDomain);
@@ -71,16 +71,16 @@ namespace DamageMeter.UI
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
-            this.Chatbox.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
+            Chatbox.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
-            UpdateComboboxEncounter(new LinkedList<KeyValuePair<Entity,EntityInfo>>(), null);
+            UpdateComboboxEncounter(new List<NpcEntity>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             Closing -= ClickThrouWindow_Closing;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             _entityStats = new EntityStatsMain(this);
             _chatbox = new Chatbox(new List<ChatMessage>());
-            _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, Entity>());
+            _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
         }
@@ -117,7 +117,7 @@ namespace DamageMeter.UI
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
 
-        public Dictionary<PlayerInfo, PlayerStats> Controls { get; set; } = new Dictionary<PlayerInfo, PlayerStats>();
+        public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
 
         private MenuItem _switchNoStatsVisibility;
         private void TrayConfiguration()
@@ -395,33 +395,35 @@ namespace DamageMeter.UI
             }
         }
 
-        public void Update(Database.Data.EntityInformation nentityInfo, Database.Data.Skills nskills, List<Database.Data.PlayerDealt> nplayersInfos, 
-            bool ntimedEncounter, AbnormalityStorage nabnormals , ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox)
+        public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities, bool ntimedEncounter, AbnormalityStorage nabnormals,
+            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox)
         {
             NetworkController.UpdateUiHandler changeUi =
-                delegate(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerDealt> playersInfos, bool timedEncounter, 
+                delegate(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities, bool timedEncounter, 
                 AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox)
                 {
-                    var entitiesStats = new LinkedList<KeyValuePair<Entity, EntityInfo>>(entities.ToList().OrderByDescending(e => e.Value.LastHit));
-                    UpdateComboboxEncounter(entitiesStats, currentBoss);
-                    _entityStats.Update(entities, abnormals, currentBoss);
+                    UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
+                    _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);
                     _chatbox.Update(chatbox);
-                    PartyDps.Content = FormatHelpers.Instance.FormatValue(partyDps) + "/s";
-                    var visiblePlayerStats = new HashSet<PlayerInfo>();
+
+                    PartyDps.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0 ? 0 : ((statsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond) / statsSummary.EntityInformation.Interval)) + "/s";
+                    var visiblePlayerStats = new HashSet<Player>();
+                    var statsDamage = statsSummary.PlayerDealt.Where(x => x.Type == Database.Database.Type.Damage);
+                    var statsHeal = statsSummary.PlayerDealt.Where(x => x.Type == Database.Database.Type.Heal);
                     var counter = 0;
-                    foreach (var playerStats in stats)
+                    foreach (var playerStats in statsDamage)
                     {
                         PlayerStats playerStatsControl;
-                        Controls.TryGetValue(playerStats, out playerStatsControl);
-                        if (playerStats.Dealt.Damage(currentBoss, timedEncounter) == 0 && playerStats.Received.Hits(currentBoss, firstHit, lastHit, timedEncounter) == 0)
+                        Controls.TryGetValue(playerStats.Source, out playerStatsControl);
+                        if (playerStats.Amount == 0)
                         {
                             continue;
                         }
-                        visiblePlayerStats.Add(playerStats);
+                        visiblePlayerStats.Add(playerStats.Source);
                         if (playerStatsControl != null) continue;
-                        playerStatsControl = new PlayerStats(playerStats, abnormals.Get(playerStats.Player));
-                        Controls.Add(playerStats, playerStatsControl);
+                        playerStatsControl = new PlayerStats(playerStats, statsHeal.Where(x => x.Source == playerStats.Source).First(), statsSummary.EntityInformation, skills ,abnormals.Get(playerStats.Source));
+                        Controls.Add(playerStats.Source, playerStatsControl);
 
                         if (counter == 9)
                         {
@@ -437,22 +439,16 @@ namespace DamageMeter.UI
                         Controls.Remove(invisibleControl.Key);
                     }
 
-                    TotalDamage.Content = FormatHelpers.Instance.FormatValue(totalDamage);
-                    var intervalvalue = lastHit - firstHit;
-                    var interval = TimeSpan.FromSeconds(intervalvalue);
+                    TotalDamage.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.TotalDamage);
+                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval  / TimeSpan.TicksPerSecond);
                     Timer.Content = interval.ToString(@"mm\:ss");
 
                     Players.Items.Clear();
-                    var sortedDict = from entry in Controls
-                        orderby
-                            stats[stats.IndexOf(entry.Value.PlayerInfo)].Dealt.DamageFraction(currentBoss, totalDamage, timedEncounter) descending
-                        select entry;
-                    foreach (var item in sortedDict)
+                
+                    foreach (var item in statsDamage)
                     {
-                        Players.Items.Add(item.Value);
-                        var data = stats.IndexOf(item.Value.PlayerInfo);
-                        
-                        item.Value.Repaint(stats[data],abnormals.Get(stats[data].Player), totalDamage, firstHit, lastHit, currentBoss, timedEncounter);
+                        Players.Items.Add(item.Source);                      
+                        Controls[item.Source].Repaint(item, statsHeal.Where(x => x.Source == item.Source).First(), statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
                     }
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
@@ -474,7 +470,7 @@ namespace DamageMeter.UI
                         }
                     }
                 };
-            Dispatcher.Invoke(changeUi, nentityInfo, nskills, nplayersInfos, ntimedEncounter, nabnormals, nbossHistory, nchatbox);
+            Dispatcher.Invoke(changeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox);
         }
 
         private TeradpsHistory _windowHistory;
@@ -508,16 +504,15 @@ namespace DamageMeter.UI
             
         }
 
-        private bool NeedUpdateEncounter(List<KeyValuePair<Entity, EntityInfo>> entities)
+        private bool NeedUpdateEncounter(List<NpcEntity> entities)
         {
-            var list = entities.Where(x => (x.Key.IsBoss && x.Value.FirstHit != 0)).ToList();
-            if (list.Count != ListEncounter.Items.Count-1)
+            if (entities.Count != ListEncounter.Items.Count-1)
             {
                 return true;
             }
             for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
             {
-                if (((Entity)((ComboBoxItem)ListEncounter.Items[i]).Content) != list[i - 1].Key)
+                if (((NpcEntity)((ComboBoxItem)ListEncounter.Items[i]).Content) != entities[i - 1])
                 {
                     return true;
                 }
@@ -531,17 +526,18 @@ namespace DamageMeter.UI
             {
                 return false;
             }
-            foreach (var item in ListEncounter.Items)
+
+            for(int i = 1; i < ListEncounter.Items.Count; i++)
             {
-                if (((Entity) ((ComboBoxItem) item).Content) != entity) continue;
-                ListEncounter.SelectedItem = item;
+                if (((Entity) ((ComboBoxItem)ListEncounter.Items[i]).Content) != entity) continue;
+                ListEncounter.SelectedItem = ListEncounter.Items[i];
                 return true;
             }
             return false;
         }
 
         
-        private void UpdateComboboxEncounter(LinkedList<KeyValuePair<Entity, EntityInfo>> entities, Entity currentBoss)
+        private void UpdateComboboxEncounter(List<NpcEntity> entities, NpcEntity currentBoss)
         {
 
             //http://stackoverflow.com/questions/12164488/system-reflection-targetinvocationexception-occurred-in-presentationframework
@@ -550,31 +546,26 @@ namespace DamageMeter.UI
                 return;
             }
 
-            var entityList = entities.ToList();
-            if (!NeedUpdateEncounter(entityList))
+            if (!NeedUpdateEncounter(entities))
             {
                 ChangeEncounterSelection(currentBoss);
                 return;
             }
 
             Entity selectedEntity = null;
-            if ((ComboBoxItem) ListEncounter.SelectedItem != null)
+            if ((ComboBoxItem) ListEncounter.SelectedItem != null && !(((ComboBoxItem)ListEncounter.SelectedItem).Content is string))
             {
                 selectedEntity = (Entity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
             }
 
             ListEncounter.Items.Clear();
-            ListEncounter.Items.Add(new ComboBoxItem {Content = new Entity("TOTAL")});
+            ListEncounter.Items.Add(new ComboBoxItem {Content = "TOTAL"});
             var selected = false;
-            foreach (var entity in entityList)
+            foreach (var entity in entities)
             {
-                var item = new ComboBoxItem {Content = entity.Key};
-                if (!entity.Key.IsBoss ||  entity.Value.FirstHit == 0)
-                {
-                    continue;
-                }
+                var item = new ComboBoxItem { Content = entity };
                 ListEncounter.Items.Add(item);
-                if (entity.Key != selectedEntity) continue;
+                if (entity != selectedEntity) continue;
                 ListEncounter.SelectedItem = ListEncounter.Items[ListEncounter.Items.Count - 1];
                 selected = true;
             }
@@ -603,14 +594,17 @@ namespace DamageMeter.UI
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count != 1) return;
-            var encounter = (Entity) ((ComboBoxItem) e.AddedItems[0]).Content;
-            if (encounter.Name.Equals("TOTAL"))
+
+            NpcEntity encounter = null;
+            if(((ComboBoxItem)e.AddedItems[0]).Content is NpcEntity)
             {
-                encounter = null;
+                encounter = (NpcEntity)((ComboBoxItem)e.AddedItems[0]).Content;
             }
+
             if (encounter != NetworkController.Instance.Encounter)
             {
                 NetworkController.Instance.NewEncounter = encounter;
+                Console.WriteLine("BIIIIITE");
             }
         }
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using DamageMeter.Skills.Skill.SkillDetail;
 using Data;
 using Tera.Game;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.SkillDetail
 {
@@ -12,17 +12,16 @@ namespace DamageMeter.UI.SkillDetail
     /// </summary>
     public partial class SkillDetailDps
     {
-        public SkillDetailDps(SkillDetailStats skill, Entity currentBoss, bool timedEncounter)
+        public SkillDetailDps(Tera.Game.Skill skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
         {
             InitializeComponent();
-            Update(skill, currentBoss, timedEncounter);
+            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
         }
 
-        public void Update(SkillDetailStats skill, Entity currentBoss, bool timedEncounter)
+        public void Update(Tera.Game.Skill skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
         {
-            var userskill = BasicTeraData.Instance.SkillDatabase.GetOrNull(skill.PlayerInfo.Player.User, skill.Id);
-            bool? chained = userskill?.IsChained;
-            string hit = userskill?.Detail;
+            bool? chained = skill?.IsChained;
+            string hit = skill?.Detail;
            
             if (hit == null)
             {
@@ -41,19 +40,19 @@ namespace DamageMeter.UI.SkillDetail
             }
 
             LabelName.ToolTip = skill.Id;
-            LabelCritRateDmg.Content = skill.CritRateDmg + "%";
+            LabelCritRateDmg.Content = skills.CritRate(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter) + "%";
 
-            LabelDamagePercentage.Content = skill.GetDamagePercentage(currentBoss, timedEncounter) + "%";
-            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skill.Damage);
+            LabelDamagePercentage.Content = skills.Amount(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter) / playerDealt.Amount + "%";
+            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skills.Amount(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter));
 
-            LabelNumberHitDmg.Content = skill.HitsDmg;
+            LabelNumberHitDmg.Content = skills.Hits(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter);
 
-            LabelNumberCritDmg.Content = skill.CritsDmg;
+            LabelNumberCritDmg.Content = skills.Crits(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter);
 
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageCrit);
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.DmgBiggestCrit);
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageHit);
-            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(skill.DmgAverageTotal);
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long)skills.AverageCrit(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter));
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue((long)skills.BiggestCrit(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter));
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skills.AverageWhite(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter));
+            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long)skills.Average(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter));
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

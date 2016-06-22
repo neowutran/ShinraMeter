@@ -4,9 +4,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using DamageMeter.Skills.Skill;
 using DamageMeter.UI.Skill;
 using DamageMeter.UI.SkillsHeaders;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI
 {
@@ -15,30 +15,26 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class SkillsDetail : UserControl
     {
-        public enum Type
-        {
-            Heal,
-            Dps,
-            Mana
-        }
-
         private Label _currentSortedLabel;
-        private IEnumerable<KeyValuePair<DamageMeter.Skills.Skill.Skill, SkillStats>> _skills;
-        private SortBy _sortBy = SortBy.Damage;
+        private Database.Structures.Skills _skills;
+        private SortBy _sortBy = SortBy.Amount;
         private SortOrder _sortOrder = SortOrder.Descending;
 
-        private Entity _currentBoss;
+        private EntityInformation _entityInformation;
+        private IEnumerable<SkillAggregate> _skillsId;
+        private PlayerDealt _playerDealt;
         private bool _timedEncounter;
 
-        public SkillsDetail(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, Type type, Entity currentBoss, bool timedEncounter)
+        public SkillsDetail(Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, Database.Database.Type type, bool timedEncounter)
         {
             InitializeComponent();
-            _currentBoss = currentBoss;
+            _entityInformation = entityInformation;
+            _playerDealt = playerDealt;
             _timedEncounter = timedEncounter;
             TypeSkill = type;
             switch (TypeSkill)
             {
-                case Type.Dps:
+                case Database.Database.Type.Damage:
                 {
                     var header = new SkillsHeaderDps();
                     ContentWidth = header.Width;
@@ -56,7 +52,7 @@ namespace DamageMeter.UI
                     SkillsList.Items.Add(header);
                 }
                     break;
-                case Type.Heal:
+                case Database.Database.Type.Heal:
                 {
                     var header = new SkillsHeaderHeal();
                     ContentWidth = header.Width;
@@ -76,7 +72,7 @@ namespace DamageMeter.UI
                 }
                     break;
                 default:
-                case Type.Mana:
+                case Database.Database.Type.Mana:
 
                 {
                     var header = new SkillsHeaderMana();
@@ -93,199 +89,198 @@ namespace DamageMeter.UI
 
 
             _skills = skills;
+            _skillsId = SkillsAggregate(skills.SkillsId(_playerDealt.Source.User, _entityInformation.Entity.Id, timedEncounter), _skills);
             Repaint();
         }
 
-        public Type TypeSkill { get; }
+        private IEnumerable<SkillAggregate> SkillsAggregate(IEnumerable<Tera.Game.Skill> skills, Database.Structures.Skills skillsData)
+        {
+            Dictionary<string, SkillAggregate> skillsAggregate = new Dictionary<string, SkillAggregate>();
+            foreach(Tera.Game.Skill skill  in skills)
+            {
+
+                if (_skills.Type(_playerDealt.Source.User.Id, _entityInformation.Entity.Id, skill.Id , _timedEncounter) != TypeSkill)
+                {
+                    continue;
+                }
+
+                if (!skillsAggregate.ContainsKey(skill.Name))
+                {
+                    skillsAggregate.Add(skill.Name, new SkillAggregate(skill, skillsData, _playerDealt, _entityInformation, _timedEncounter));
+                    continue;
+                }
+                skillsAggregate[skill.Name].Add(skill);
+                
+            }
+            return skillsAggregate.Values.ToList();
+        }
+
+        public Database.Database.Type TypeSkill { get; }
 
         public double ContentWidth { get; private set; }
 
         private void LabelBiggestHealHitOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.HBigHit, (Label) sender, SkillsHeaderHeal.BiggestHit);
+            ChangeSort(SortBy.BigHit, (Label) sender, SkillsHeaderHeal.BiggestHit);
         }
 
         private void LabelBiggestHealCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.HBigCrit, (Label) sender, SkillsHeaderHeal.BiggestCrit);
+            ChangeSort(SortBy.BigCrit, (Label) sender, SkillsHeaderHeal.BiggestCrit);
         }
 
         private void LabelAverageHealHitOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.HAvgHit, (Label) sender, SkillsHeaderHeal.AverageHit);
+            ChangeSort(SortBy.AvgHit, (Label) sender, SkillsHeaderHeal.AverageHit);
         }
 
         private void LabelAverageHealCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.HAvgCrit, (Label) sender, SkillsHeaderHeal.AverageCrit);
+            ChangeSort(SortBy.AvgCrit, (Label) sender, SkillsHeaderHeal.AverageCrit);
         }
 
         private void LabelAverageOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.HAvg, (Label) sender, SkillsHeaderHeal.AverageTotal);
+            ChangeSort(SortBy.Avg, (Label) sender, SkillsHeaderHeal.AverageTotal);
         }
 
         private void LabelAverageTotalOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.DAvg, (Label) sender, SkillsHeaderDps.AverageTotal);
+            ChangeSort(SortBy.Avg, (Label) sender, SkillsHeaderDps.AverageTotal);
         }
 
 
         private void LabelTotalHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Heal, (Label) sender, SkillsHeaderHeal.Heal);
+            ChangeSort(SortBy.Amount, (Label) sender, SkillsHeaderHeal.Heal);
         }
 
         private void LabelNumberCritHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.NumberCritsHeal, (Label) sender, SkillsHeaderHeal.CritsHeal);
+            ChangeSort(SortBy.NumberCrits, (Label) sender, SkillsHeaderHeal.CritsHeal);
         }
 
         private void LabelNumberCritDmgOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.NumberCritsDmg, (Label) sender, SkillsHeaderDps.CritsDmg);
+            ChangeSort(SortBy.NumberCrits, (Label) sender, SkillsHeaderDps.CritsDmg);
         }
 
         private void LabelNumberHitManaOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.NumberHitsMana, (Label) sender, SkillsHeaderMana.HitsMana);
+            ChangeSort(SortBy.NumberHits, (Label) sender, SkillsHeaderMana.HitsMana);
         }
 
         private void LabelNumberHitHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.NumberHitsHeal, (Label) sender, SkillsHeaderHeal.HitsHeal);
+            ChangeSort(SortBy.NumberHits, (Label) sender, SkillsHeaderHeal.HitsHeal);
         }
 
         private void LabelNumberHitDmgOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.NumberHitsDmg, (Label) sender, SkillsHeaderDps.HitsDmg);
+            ChangeSort(SortBy.NumberHits, (Label) sender, SkillsHeaderDps.HitsDmg);
         }
 
         private void LabelCritRateHealOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.CritRateHeal, (Label) sender, SkillsHeaderHeal.CritRateHeal);
+            ChangeSort(SortBy.CritRate, (Label) sender, SkillsHeaderHeal.CritRateHeal);
         }
 
         private void LabelCritRateDmgOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.CritRateDmg, (Label) sender, SkillsHeaderDps.CritRateDmg);
+            ChangeSort(SortBy.CritRate, (Label) sender, SkillsHeaderDps.CritRateDmg);
         }
 
         private void LabelTotalManaOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Mana, (Label) sender, SkillsHeaderMana.Mana);
+            ChangeSort(SortBy.Amount, (Label) sender, SkillsHeaderMana.Mana);
         }
 
 
-        private IEnumerable<KeyValuePair<DamageMeter.Skills.Skill.Skill, SkillStats>> Sort()
+        private void Sort()
         {
             switch (_sortOrder)
             {
+               
                 case SortOrder.Descending:
                     switch (_sortBy)
                     {
-                        case SortBy.Damage:
-                            return from entry in _skills orderby entry.Value.Damage descending select entry;
-                        case SortBy.DAvgCrit:
-                            return from entry in _skills orderby entry.Value.DmgAverageCrit descending select entry;
-                        case SortBy.DAvgHit:
-                            return from entry in _skills orderby entry.Value.DmgAverageHit descending select entry;
-                        case SortBy.DBigCrit:
-                            return from entry in _skills orderby entry.Value.DmgBiggestCrit descending select entry;
+                        case SortBy.Amount:
+                            _skillsId = from skill in _skillsId orderby skill.Amount() descending select skill;
+                            break;
+                        case SortBy.AvgCrit:
+                            _skillsId = from skill in _skillsId orderby skill.AvgCrit() descending select skill;
+                            break;
+                        case SortBy.AvgHit:
+                            _skillsId = from skill in _skillsId orderby skill.AvgHit() descending select skill;
+                            break;
+                        case SortBy.BigCrit:
+                            _skillsId = from skill in _skillsId orderby skill.BiggestCrit() descending select skill;
+                            break;
                         case SortBy.DamagePercent:
-                            return from entry in _skills orderby entry.Value.DamagePercentage(_currentBoss, _timedEncounter) descending select entry;
+                            _skillsId = from skill in _skillsId orderby skill.DamagePercent() descending select skill;
+                            break;
                         case SortBy.Name:
-                            return from entry in _skills orderby entry.Key.SkillName descending select entry;
-                        case SortBy.Mana:
-                            return from entry in _skills orderby entry.Value.Mana descending select entry;
-                        case SortBy.Heal:
-                            return from entry in _skills orderby entry.Value.Heal descending select entry;
-                        case SortBy.NumberHitsDmg:
-                            return from entry in _skills orderby entry.Value.HitsDmg descending select entry;
-                        case SortBy.NumberHitsHeal:
-                            return from entry in _skills orderby entry.Value.HitsHeal descending select entry;
-                        case SortBy.NumberHitsMana:
-                            return from entry in _skills orderby entry.Value.HitsMana descending select entry;
-                        case SortBy.NumberCritsDmg:
-                            return from entry in _skills orderby entry.Value.CritsDmg descending select entry;
-                        case SortBy.NumberCritsHeal:
-                            return from entry in _skills orderby entry.Value.CritsHeal descending select entry;
-                        case SortBy.CritRateDmg:
-                            return from entry in _skills orderby entry.Value.CritRateDmg descending select entry;
-                        case SortBy.CritRateHeal:
-                            return from entry in _skills orderby entry.Value.CritRateHeal descending select entry;
-                        case SortBy.DAvg:
-                            return from entry in _skills orderby entry.Value.DmgAverageTotal descending select entry;
-                        case SortBy.HAvg:
-                            return from entry in _skills orderby entry.Value.HealAverageTotal descending select entry;
-
-                        case SortBy.HAvgCrit:
-                            return from entry in _skills orderby entry.Value.HealAverageCrit descending select entry;
-
-                        case SortBy.HAvgHit:
-                            return from entry in _skills orderby entry.Value.HealAverageHit descending select entry;
-
-                        case SortBy.HBigCrit:
-                            return from entry in _skills orderby entry.Value.HealBiggestCrit descending select entry;
-
-                        case SortBy.HBigHit:
-                            return from entry in _skills orderby entry.Value.HealBiggestHit descending select entry;
-
+                            _skillsId = from entry in _skillsId orderby entry.Name descending select entry;
+                            return;
+                        case SortBy.NumberHits:
+                            _skillsId = from skill in _skillsId orderby skill.Hits() descending select skill;
+                            break;
+                        case SortBy.NumberCrits:
+                            _skillsId = from skill in _skillsId orderby skill.Crits() descending select skill;
+                            break;
+                        case SortBy.CritRate:
+                            _skillsId = from skill in _skillsId orderby skill.CritRate() descending select skill;
+                            break;
+                        case SortBy.Avg:
+                            _skillsId = from skill in _skillsId orderby skill.Avg() descending select skill;
+                            break;
+                        case SortBy.BigHit:
+                            _skillsId = from skill in _skillsId orderby skill.BiggestHit() descending select skill;
+                            break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+                    break;
                 case SortOrder.Ascending:
                     switch (_sortBy)
                     {
-                        case SortBy.Damage:
-                            return from entry in _skills orderby entry.Value.Damage ascending select entry;
-                        case SortBy.DAvgCrit:
-                            return from entry in _skills orderby entry.Value.DmgAverageCrit ascending select entry;
-                        case SortBy.DAvgHit:
-                            return from entry in _skills orderby entry.Value.DmgAverageHit ascending select entry;
-                        case SortBy.DBigCrit:
-                            return from entry in _skills orderby entry.Value.DmgBiggestCrit ascending select entry;
+                        case SortBy.Amount:
+                            _skillsId = from skill in _skillsId orderby skill.Amount() ascending select skill;
+                            break;
+                        case SortBy.AvgCrit:
+                            _skillsId = from skill in _skillsId orderby skill.AvgCrit() ascending select skill;
+                            break;
+                        case SortBy.AvgHit:
+                            _skillsId = from skill in _skillsId orderby skill.AvgHit() ascending select skill;
+                            break;
+                        case SortBy.BigCrit:
+                            _skillsId = from skill in _skillsId orderby skill.BiggestCrit() ascending select skill;
+                            break;
                         case SortBy.DamagePercent:
-                            return from entry in _skills orderby entry.Value.DamagePercentage(_currentBoss, _timedEncounter) ascending select entry;
+                            _skillsId = from skill in _skillsId orderby skill.DamagePercent() ascending select skill;
+                            break;
                         case SortBy.Name:
-                            return from entry in _skills orderby entry.Key.SkillName ascending select entry;
-                        case SortBy.Mana:
-                            return from entry in _skills orderby entry.Value.Mana ascending select entry;
-                        case SortBy.Heal:
-                            return from entry in _skills orderby entry.Value.Heal ascending select entry;
-                        case SortBy.NumberHitsDmg:
-                            return from entry in _skills orderby entry.Value.HitsDmg ascending select entry;
-                        case SortBy.NumberHitsHeal:
-                            return from entry in _skills orderby entry.Value.HitsHeal ascending select entry;
-                        case SortBy.NumberHitsMana:
-                            return from entry in _skills orderby entry.Value.HitsMana ascending select entry;
-                        case SortBy.NumberCritsDmg:
-                            return from entry in _skills orderby entry.Value.CritsDmg ascending select entry;
-                        case SortBy.NumberCritsHeal:
-                            return from entry in _skills orderby entry.Value.CritsHeal ascending select entry;
-                        case SortBy.CritRateDmg:
-                            return from entry in _skills orderby entry.Value.CritRateDmg ascending select entry;
-                        case SortBy.CritRateHeal:
-                            return from entry in _skills orderby entry.Value.CritRateHeal ascending select entry;
-                        case SortBy.DAvg:
-                            return from entry in _skills orderby entry.Value.DmgAverageTotal ascending select entry;
-                        case SortBy.HAvg:
-                            return from entry in _skills orderby entry.Value.HealAverageTotal ascending select entry;
-
-                        case SortBy.HAvgCrit:
-                            return from entry in _skills orderby entry.Value.HealAverageCrit ascending select entry;
-
-                        case SortBy.HAvgHit:
-                            return from entry in _skills orderby entry.Value.HealAverageHit ascending select entry;
-
-                        case SortBy.HBigCrit:
-                            return from entry in _skills orderby entry.Value.HealBiggestCrit ascending select entry;
-
-                        case SortBy.HBigHit:
-                            return from entry in _skills orderby entry.Value.HealBiggestHit ascending select entry;
+                            _skillsId = from entry in _skillsId orderby entry.Name ascending select entry;
+                            return;
+                        case SortBy.NumberHits:
+                            _skillsId = from skill in _skillsId orderby skill.Hits() ascending select skill;
+                            break;
+                        case SortBy.NumberCrits:
+                            _skillsId = from skill in _skillsId orderby skill.Crits() ascending select skill;
+                            break;
+                        case SortBy.CritRate:
+                            _skillsId = from skill in _skillsId orderby skill.CritRate() ascending select skill;
+                            break;
+                        case SortBy.Avg:
+                            _skillsId = from skill in _skillsId orderby skill.Avg() ascending select skill;
+                            break;
+                        case SortBy.BigHit:
+                            _skillsId = from skill in _skillsId orderby skill.BiggestHit() ascending select skill;
+                            break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -319,7 +314,7 @@ namespace DamageMeter.UI
 
         private void LabelTotalDamageOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.Damage, (Label) sender, SkillsHeaderDps.TotalDamage);
+            ChangeSort(SortBy.Amount, (Label) sender, SkillsHeaderDps.TotalDamage);
         }
 
         private void LabelDamagePercentageOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
@@ -329,17 +324,17 @@ namespace DamageMeter.UI
 
         private void LabelBiggestCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.DBigCrit, (Label) sender, SkillsHeaderDps.BiggestCrit);
+            ChangeSort(SortBy.BigCrit, (Label) sender, SkillsHeaderDps.BiggestCrit);
         }
 
         private void LabelAverageHitOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.DAvgHit, (Label) sender, SkillsHeaderDps.AverageHit);
+            ChangeSort(SortBy.AvgHit, (Label) sender, SkillsHeaderDps.AverageHit);
         }
 
         private void LabelAverageCritOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            ChangeSort(SortBy.DAvgCrit, (Label) sender, SkillsHeaderDps.AverageCrit);
+            ChangeSort(SortBy.AvgCrit, (Label) sender, SkillsHeaderDps.AverageCrit);
         }
 
         private void LabelNameOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
@@ -376,14 +371,13 @@ namespace DamageMeter.UI
         public void Repaint()
         {
             var oldSkills = Clear();
-            var sortedDict = Sort();
-            foreach (var skill in sortedDict)
+            foreach (var skill in _skillsId)
             {
                 var updated = -1;
                 for (var i = 0; i < oldSkills.Count; i++)
                 {
-                    if (!skill.Key.SkillName.Equals(oldSkills[i].SkillNameIdent())) continue;
-                    oldSkills[i].Update(skill.Key, skill.Value, _currentBoss, _timedEncounter);
+                    if (skill.Name != oldSkills[i].SkillNameIdent()) continue;
+                    oldSkills[i].Update(skill, _skills, _playerDealt, _entityInformation, _timedEncounter);
                     SkillsList.Items.Add(oldSkills[i]);
                     updated = i;
                     break;
@@ -396,55 +390,43 @@ namespace DamageMeter.UI
                 }
                 switch (TypeSkill)
                 {
-                    case Type.Dps:
-                        if (skill.Value.Damage == 0) continue;
-                        SkillsList.Items.Add(new SkillDps(skill.Key, skill.Value, _currentBoss, _timedEncounter));
+                    case Database.Database.Type.Damage:
+                        SkillsList.Items.Add(new SkillDps(skill, _skills, _playerDealt, _entityInformation, _timedEncounter));
                         break;
-                    case Type.Heal:
-                        if (skill.Value.Heal == 0) continue;
-                        SkillsList.Items.Add(new SkillHeal(skill.Key, skill.Value, _currentBoss, _timedEncounter));
+                    case Database.Database.Type.Heal:
+                        SkillsList.Items.Add(new SkillHeal(skill, _skills, _playerDealt, _entityInformation, _timedEncounter));
                         break;
-                    case Type.Mana:
+                    case Database.Database.Type.Mana:
                     default:
-                        if (skill.Value.Mana == 0) continue;
-                        SkillsList.Items.Add(new SkillMana(skill.Key, skill.Value, _currentBoss, _timedEncounter));
+                        SkillsList.Items.Add(new SkillMana(skill, _skills, _playerDealt, _entityInformation, _timedEncounter));
                         break;
                 }
             }
         }
 
 
-        public void Update(Dictionary<DamageMeter.Skills.Skill.Skill, SkillStats> skills, Entity currentBoss, bool timedEncounter)
+        public void Update(Database.Structures.Skills skills, EntityInformation entityInformation, PlayerDealt playerDealt, bool timedEncounter)
         {
             _skills = skills;
-            _currentBoss = currentBoss;
+            _entityInformation = entityInformation;
+            _playerDealt = playerDealt;
             _timedEncounter = timedEncounter;
             Repaint();
         }
 
         private enum SortBy
         {
-            Damage,
+            Amount,
             Name,
-            Heal,
-            Mana,
-            DAvgCrit,
-            DAvg,
-            DBigCrit,
-            HAvgCrit,
-            HAvg,
-            HBigCrit,
+            AvgCrit,
+            Avg,
+            BigCrit,
             DamagePercent,
-            NumberHitsDmg,
-            NumberHitsHeal,
-            NumberHitsMana,
-            NumberCritsDmg,
-            NumberCritsHeal,
-            DAvgHit,
-            HAvgHit,
-            HBigHit,
-            CritRateDmg,
-            CritRateHeal
+            NumberHits,
+            NumberCrits,
+            AvgHit,
+            BigHit,
+            CritRate
         }
 
         private enum SortOrder

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using DamageMeter.Skills.Skill;
-using DamageMeter.Skills.Skill.SkillDetail;
 using DamageMeter.UI.SkillDetail;
 using Data;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.Skill
 {
@@ -16,51 +13,50 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillHeal : ISkill
     {
-        public SkillHeal(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss, bool timedEncounter)
+        public SkillHeal(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
         {
             InitializeComponent();
+            LabelName.Content = skill.Name;
 
-            LabelName.Content = skill.SkillName;
-            SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skill.IconName);
-            Update(skill, stats, currentBoss, timedEncounter);
-        }
-
-        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss, bool timedEncounter)
-        {
-            var skillsId = "";
-            for (var i = 0; i < skill.SkillId.Count; i++)
+            foreach (var skillInfo in skill.Skills)
             {
-                skillsId += skill.SkillId[i];
-                if (i < skill.SkillId.Count - 1)
+                if (!string.IsNullOrEmpty(skillInfo.IconName))
                 {
-                    skillsId += ",";
+                    SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
+                    break;
                 }
             }
+            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
+        }
+
+        public void Update(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        {
+            var skillsId = skill.Id();
 
             LabelName.ToolTip = skillsId;
-            LabelCritRateHeal.Content = stats.CritRateHeal + "%";
+            LabelCritRateHeal.Content = skill.CritRate() + "%";
 
 
-            LabelNumberHitHeal.Content = stats.HitsHeal;
-            LabelNumberCritHeal.Content = stats.CritsHeal;
+            LabelNumberHitHeal.Content = skill.Hits();
+            LabelNumberCritHeal.Content = skill.Crits();
 
-            LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(stats.Heal);
-            LabelBiggestHit.Content = FormatHelpers.Instance.FormatValue(stats.HealBiggestHit);
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.HealBiggestCrit);
-
-
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(stats.HealAverageCrit);
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.HealAverageHit);
-            LabelAverage.Content = FormatHelpers.Instance.FormatValue(stats.HealAverageTotal);
+            LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(skill.Amount());
+            LabelBiggestHit.Content = FormatHelpers.Instance.FormatValue( (long)skill.BiggestHit());
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue( (long)skill.BiggestCrit());
 
 
-            IEnumerable<KeyValuePair<int, SkillDetailStats>> listStats = stats.SkillDetails.ToList();
-            listStats = listStats.OrderByDescending(stat => stat.Value.HealAverageTotal);
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgCrit());
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgHit());
+            LabelAverage.Content = FormatHelpers.Instance.FormatValue((long)skill.Avg());
+
+
             SkillsDetailList.Items.Clear();
-            foreach (var stat in listStats)
+
+            foreach (var skillInfo in skill.Skills)
             {
-                SkillsDetailList.Items.Add(new SkillDetailHeal(stat.Value));
+                SkillsDetailList.Items.Add(new SkillDetailHeal(skillInfo, skills, playerDealt, entityInformation, timedEncounter));
             }
+
         }
 
         public string SkillNameIdent()

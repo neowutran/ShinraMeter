@@ -12,7 +12,7 @@ namespace DamageMeter.TeraDpsApi
     {
         public Dictionary<HotDot,AbnormalityDuration> Debuffs = new Dictionary<HotDot, AbnormalityDuration>();
         public SortedDictionary<string, PlayerAbnormals> PlayerBuffs = new SortedDictionary<string, PlayerAbnormals>();
-        public SortedDictionary<string, Dictionary<long, Dictionary<Skill, SkillStats>>> PlayerSkills = new SortedDictionary<string, Dictionary<long, Dictionary<Skill, SkillStats>>>();
+        public SortedDictionary<string, List<Database.Structures.Skill>> PlayerSkills = new SortedDictionary<string, List<Database.Structures.Skill>>();
         public EncounterBase BaseStats { get; set; }
         public NpcEntity Entity { get; set; }
         public long FirstTick { get; set; }

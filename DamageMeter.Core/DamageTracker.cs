@@ -66,8 +66,7 @@ namespace DamageMeter
         public void Reset()
         {
             Database.Database.Instance.DeleteAll();
-            NetworkController.Instance.NewEncounter = null;
-           
+            NetworkController.Instance.NewEncounter = null;           
         }
 
         public Entity GetActorEntity(EntityId entityId)
@@ -102,8 +101,8 @@ namespace DamageMeter
 
         public void Update(SkillResult skillResult)
         {
-            var entitySource = GetActorEntity(skillResult.Source.Id);
-            var entityTarget = GetActorEntity(skillResult.Target.Id);
+            var entitySource = GetEntity(skillResult.Source.Id);
+            var entityTarget = GetEntity(skillResult.Target.Id);
 
             if (skillResult.SourcePlayer == null && skillResult.TargetPlayer == null) return;
             if (!BasicTeraData.Instance.WindowData.PartyOnly || (
@@ -166,6 +165,11 @@ namespace DamageMeter
             }
 
             Database.Database.Instance.Insert(message.Amount, skill_type, entityTarget, entitySource, message.SkillId, message.IsCritical, time);
+
+            if (entityTarget is NpcEntity) {
+                UpdateCurrentBoss((NpcEntity)entityTarget);
+                return;
+            }
         }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using DamageMeter.Skills.Skill;
-using DamageMeter.Skills.Skill.SkillDetail;
 using DamageMeter.UI.SkillDetail;
 using Data;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.Skill
 {
@@ -16,13 +13,20 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillMana : ISkill
     {
-        public SkillMana(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss, bool timedEncounter)
+        public SkillMana(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
         {
             InitializeComponent();
+            LabelName.Content = skill.Name;
 
-            LabelName.Content = skill.SkillName;
-            SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skill.IconName);
-            Update(skill, stats, currentBoss, timedEncounter);
+            foreach (var skillInfo in skill.Skills)
+            {
+                if (!string.IsNullOrEmpty(skillInfo.IconName))
+                {
+                    SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
+                    break;
+                }
+            }
+            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
         }
 
         public string SkillNameIdent()
@@ -30,29 +34,21 @@ namespace DamageMeter.UI.Skill
             return (string) LabelName.Content;
         }
 
-        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss, bool timedEncounter)
+        public void Update(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
         {
-            var skillsId = "";
-            for (var i = 0; i < skill.SkillId.Count; i++)
-            {
-                skillsId += skill.SkillId[i];
-                if (i < skill.SkillId.Count - 1)
-                {
-                    skillsId += ",";
-                }
-            }
+            var skillsId = skill.Id();
 
             LabelName.ToolTip = skillsId;
-            LabelNumberHitMana.Content = stats.HitsMana;
-            LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(stats.Mana);
+            LabelNumberHitMana.Content = skill.Hits();
+            LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skill.Amount());
 
-            IEnumerable<KeyValuePair<int, SkillDetailStats>> listStats = stats.SkillDetails.ToList();
-            listStats = listStats.OrderByDescending(stat => stat.Value.Mana);
             SkillsDetailList.Items.Clear();
-            foreach (var stat in listStats)
+
+            foreach (var skillInfo in skill.Skills)
             {
-                SkillsDetailList.Items.Add(new SkillDetailMana(stat.Value));
+                SkillsDetailList.Items.Add(new SkillDetailMana(skillInfo, skills, playerDealt, entityInformation, timedEncounter));
             }
+
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

@@ -60,15 +60,17 @@ namespace DamageMeter
 
             */
             
-            var entityInfo = Database.Database.Instance.GlobalInformationEntity(entity.Id);
+            var entityInfo = Database.Database.Instance.GlobalInformationEntity(entity, timedEncounter);
             var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
-            List<Database.Data.PlayerDealt> playersInfo;
+            List<Database.Structures.PlayerDealt> playersInfo;
             playersInfo = timedEncounter?Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime):
-                Database.Database.Instance.PlayerInformation(entity.Id);
+                Database.Database.Instance.PlayerInformation(entity);
 
             var heals = playersInfo.Where(x => x.Type == Database.Database.Type.Heal).ToList();
             playersInfo.RemoveAll(x => x.Type != Database.Database.Type.Damage);
             playersInfo.RemoveAll(x => x.Amount == 0);
+
+            
 
 
             var firstTick = entityInfo.BeginTime;
@@ -146,22 +148,26 @@ namespace DamageMeter
                     ));
                 }
                 var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
-                extendedStats.PlayerSkills.Add(serverPlayerName, timedEncounter ? user.Dealt.GetSkillsByTime(entity) : user.Dealt.GetSkills(entity));
+                extendedStats.PlayerSkills.Add(serverPlayerName, skills.GetSkills(user.Source.User.Id, entity.Id, timedEncounter, entityInfo.BeginTime, entityInfo.EndTime));
                 extendedStats.PlayerBuffs.Add(serverPlayerName,buffs);
 
-                foreach (var skill in notimedskills)
+                var skillsId = skills.SkillsId(user.Source.User, entity.Id, timedEncounter);
+
+
+
+                foreach (var skill in skillsId)
                 {
                     var skillLog = new SkillLog();
-                    var skilldamage = skill.Value.Damage;
+                    var skilldamage = skills.Amount(user.Source.User.Id, entity.Id, skill.Id, timedEncounter);
 
-                    skillLog.skillAverageCrit = skill.Value.DmgAverageCrit + "";
-                    skillLog.skillAverageWhite = skill.Value.DmgAverageHit + "";
-                    skillLog.skillCritRate = skill.Value.CritRateDmg + "";
-                    skillLog.skillDamagePercent = skill.Value.DamagePercentage(entity, timedEncounter) + "";
-                    skillLog.skillHighestCrit = skill.Value.DmgBiggestCrit + "";
-                    skillLog.skillHits = skill.Value.HitsDmg + "";
-                    skillLog.skillId = BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(skill.Key.NpcInfo?.Name, user.Player.RaceGenderClass)?.Id.ToString() ?? skill.Key.SkillId.ElementAt(0).ToString();
-                    skillLog.skillLowestCrit = skill.Value.DmgLowestCrit + "";
+                    skillLog.skillAverageCrit = skills.AverageCrit(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
+                    skillLog.skillAverageWhite = skills.AverageWhite(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
+                    skillLog.skillCritRate = skills.CritRate(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
+                    skillLog.skillDamagePercent = skills.Amount(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) / user.Amount + "";
+                    skillLog.skillHighestCrit = skills.BiggestCrit(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
+                    skillLog.skillHits = skills.Hits(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
+                    skillLog.skillId = BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(entity.Info?.Name, user.Source.RaceGenderClass)?.Id.ToString() ?? skill.ToString();
+                    skillLog.skillLowestCrit = skills.LowestCrit(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
                     skillLog.skillTotalDamage = skilldamage + "";
 
                     if (skilldamage == 0)

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using Data;
 using Tera.Game;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.EntityStats
 {
@@ -40,16 +41,14 @@ namespace DamageMeter.UI.EntityStats
             WindowsServices.SetWindowExVisible(hwnd);
         }
 
-        public void Update(Dictionary<Entity, EntityInfo> stats, AbnormalityStorage abnormals, Entity currentBoss)
+        public void Update(EntityInformation entityInformation, AbnormalityStorage abnormals)
         {
-            var entity = currentBoss;
             EnduranceAbnormality.Items.Clear();
-            if (entity == null)
+            if (entityInformation == null)
             {
                 return;
             }
-            var statsAbnormalities = stats[entity];
-            if (statsAbnormalities.Interval == 0 || entity.NpcE==null)
+            if (entityInformation.Interval == 0)
             {
                 return;
             }
@@ -57,7 +56,7 @@ namespace DamageMeter.UI.EntityStats
             EnduranceAbnormality.Items.Add(_header);
 
             var count = 0;
-            foreach (var abnormality in abnormals.Get(entity.NpcE))
+            foreach (var abnormality in abnormals.Get(entityInformation.Entity))
             {
                 EnduranceDebuff abnormalityUi;
                 if (_enduranceDebuffsList.Count > count)
@@ -71,8 +70,8 @@ namespace DamageMeter.UI.EntityStats
                 }
 
                 abnormalityUi.Update(abnormality.Key, abnormality.Value,
-                    statsAbnormalities.FirstHit,
-                    statsAbnormalities.LastHit);
+                    entityInformation.BeginTime,
+                    entityInformation.EndTime);
                 EnduranceAbnormality.Items.Add(abnormalityUi);
                 count++;
             }

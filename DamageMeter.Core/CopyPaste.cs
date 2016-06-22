@@ -5,6 +5,7 @@ using System.Threading;
 using Data;
 using Tera.Game;
 using System.Windows.Forms;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter
 {
@@ -20,10 +21,12 @@ namespace DamageMeter
         }
 
 
-        public static string Copy(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerDealt> playersInfos,
-            AbnormalityStorage abnormals, bool timedEncounter, string header, string content, string footer, string orderby, string order)
+        public static string Copy(StatsSummary statsSummary, Skills skills, AbnormalityStorage abnormals, bool timedEncounter, string header, string content,
+            string footer, string orderby, string order)
         {
             //stop if nothing to paste
+            var entityInfo = statsSummary.EntityInformation;
+            var playersInfos = statsSummary.PlayerDealt;
             var firstTick = entityInfo.BeginTime;
             var lastTick = entityInfo.EndTime;
             var firstHit = firstTick / TimeSpan.TicksPerSecond;
@@ -34,14 +37,13 @@ namespace DamageMeter
 
         
 
-        IEnumerable<Database.Data.PlayerDealt> playerInfosOrdered;
+        IEnumerable<PlayerDealt> playerInfosOrdered;
             if (order == "ascending")
             {
                 switch (orderby)
                 {
                     case "damage_received":
-                        playerInfosOrdered = timedEncounter? playersInfos.OrderBy(playerInfo => skills.DamageReceived(playerInfo.Source.User.Id)):
-                            playerInfosOrdered = playersInfos.OrderBy(playerInfo => skills.DamageReceived(playerInfo.Source.User.Id, entityInfo.Entity.Id));
+                        playerInfosOrdered = playersInfos.OrderBy(playerInfo => skills.DamageReceived(playerInfo.Source.User.Id, entityInfo.Entity.Id, timedEncounter));
                         break;
                     case "name":
                         playerInfosOrdered = playersInfos.OrderBy(playerInfo => playerInfo.Source.Name);
@@ -55,8 +57,7 @@ namespace DamageMeter
                         playerInfosOrdered = playersInfos.OrderBy(playerInfo => playerInfo.CritRate);
                         break;
                     case "hits_received":
-                        playerInfosOrdered = timedEncounter ? playersInfos.OrderBy(playerInfo => skills.HitsReceived(playerInfo.Source.User.Id)) :
-                            playersInfos.OrderBy(playerInfo => skills.HitsReceived(playerInfo.Source.User.Id, entityInfo.Entity.Id));
+                        playerInfosOrdered = playersInfos.OrderBy(playerInfo => skills.HitsReceived(playerInfo.Source.User.Id, entityInfo.Entity.Id, timedEncounter));
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -68,8 +69,7 @@ namespace DamageMeter
                 switch (orderby)
                 {
                     case "damage_received":
-                        playerInfosOrdered = timedEncounter ? playersInfos.OrderByDescending(playerInfo => skills.DamageReceived(playerInfo.Source.User.Id)) :
-                            playersInfos.OrderByDescending(playerInfo => skills.DamageReceived(playerInfo.Source.User.Id, entityInfo.Entity.Id));
+                        playerInfosOrdered = playersInfos.OrderByDescending(playerInfo => skills.DamageReceived(playerInfo.Source.User.Id, entityInfo.Entity.Id,timedEncounter));
                         break;
                     case "name":
                         playerInfosOrdered = playersInfos.OrderByDescending(playerInfo => playerInfo.Source.Name);
@@ -83,8 +83,7 @@ namespace DamageMeter
                         playerInfosOrdered = playersInfos.OrderByDescending(playerInfo => playerInfo.CritRate);
                         break;
                     case "hits_received":
-                        playerInfosOrdered = timedEncounter ? playersInfos.OrderByDescending(playerInfo => skills.HitsReceived(playerInfo.Source.User.Id)) :
-                            playersInfos.OrderByDescending(playerInfo => skills.HitsReceived(playerInfo.Source.User.Id, entityInfo.Entity.Id));
+                        playerInfosOrdered = playersInfos.OrderByDescending(playerInfo => skills.HitsReceived(playerInfo.Source.User.Id, entityInfo.Entity.Id,timedEncounter));
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -101,14 +100,11 @@ namespace DamageMeter
             abnormals.Get(entityInfo.Entity).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888888), out enrage);
             enrageperc = (lastTick - firstTick) == 0 ? 0 : (((double)(enrage?.Duration(firstTick, lastTick) ?? 0) / (lastTick - firstTick)));
             
-
             dpsString = dpsString.Replace("{encounter}", name);
             var interval = TimeSpan.FromSeconds(lastHit - firstHit);
             dpsString = dpsString.Replace("{timer}", interval.ToString(@"mm\:ss"));
             dpsString = dpsString.Replace("{partyDps}", FormatHelpers.Instance.FormatValue((lastHit - firstHit)>0? entityInfo.TotalDamage/ (lastHit - firstHit):0)+"/s");
             dpsString = dpsString.Replace("{enrage}", FormatHelpers.Instance.FormatPercent(enrageperc));
-
-           
 
             foreach (var playerStats in playerInfosOrdered)
             {
@@ -137,11 +133,11 @@ namespace DamageMeter
                     playerStats.Amount / entityInfo.TotalDamage + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.CritRate + "%");
                 currentContent = currentContent.Replace("{crit_rate_heal}", heals.First(x => x.Source == playerStats.Source).CritRate + "%");
-                currentContent = currentContent.Replace("{biggest_crit}", FormatHelpers.Instance.FormatValue(timedEncounter ? skills.BiggestCrit(playerStats.Source.User.Id): skills.BiggestCrit(playerStats.Source.User.Id, entityInfo.Entity.Id)));
+                currentContent = currentContent.Replace("{biggest_crit}", FormatHelpers.Instance.FormatValue(skills.BiggestCrit(playerStats.Source.User.Id, entityInfo.Entity.Id,timedEncounter)));
                 currentContent = currentContent.Replace("{damage_received}",
-                    FormatHelpers.Instance.FormatValue(timedEncounter?skills.DamageReceived(playerStats.Source.User.Id): skills.DamageReceived(playerStats.Source.User.Id, entityInfo.Entity.Id)));
+                    FormatHelpers.Instance.FormatValue(skills.DamageReceived(playerStats.Source.User.Id, entityInfo.Entity.Id,timedEncounter)));
                 currentContent = currentContent.Replace("{hits_received}",
-                    FormatHelpers.Instance.FormatValue( timedEncounter?skills.HitsReceived(playerStats.Source.User.Id): skills.HitsReceived(playerStats.Source.User.Id, entityInfo.Entity.Id)));
+                    FormatHelpers.Instance.FormatValue(skills.HitsReceived(playerStats.Source.User.Id, entityInfo.Entity.Id,timedEncounter)));
 
                 dpsString += currentContent;
             }

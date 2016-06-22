@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using DamageMeter.Skills.Skill.SkillDetail;
 using Data;
 using Tera.Game;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.SkillDetail
 {
@@ -12,18 +12,17 @@ namespace DamageMeter.UI.SkillDetail
     /// </summary>
     public partial class SkillDetailMana
     {
-        public SkillDetailMana(SkillDetailStats skill)
+        public SkillDetailMana(Tera.Game.Skill skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
         {
             InitializeComponent();
-            Update(skill);
+            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
         }
 
-        public void Update(SkillDetailStats skill)
+        public void Update(Tera.Game.Skill skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
         {
             //TODO Need to refactor this shitty copy paste shit
-            var userskill = BasicTeraData.Instance.SkillDatabase.GetOrNull(skill.PlayerInfo.Player.User, skill.Id);
-            bool? chained = userskill?.IsChained;
-            string hit = userskill?.Detail;
+            bool? chained = skill?.IsChained;
+            string hit = skill?.Detail;
 
             if (hit == null)
             {
@@ -42,8 +41,8 @@ namespace DamageMeter.UI.SkillDetail
             }
 
             LabelName.ToolTip = skill.Id;
-            LabelNumberHitMana.Content = skill.HitsMana;
-            LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skill.Mana);
+            LabelNumberHitMana.Content = skills.Hits(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter);
+            LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skills.Amount(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter));
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

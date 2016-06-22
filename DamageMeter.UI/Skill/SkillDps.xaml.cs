@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using DamageMeter.Skills.Skill;
-using DamageMeter.Skills.Skill.SkillDetail;
 using DamageMeter.UI.SkillDetail;
 using Data;
+using DamageMeter.Database.Structures;  
 
 namespace DamageMeter.UI.Skill
 {
@@ -16,48 +14,48 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillDps : ISkill
     {
-        public SkillDps(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss, bool timedEncounter)
+        public SkillDps(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
         {
             InitializeComponent();
+            LabelName.Content = skill.Name;
 
-            LabelName.Content = skill.SkillName;
-            SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skill.IconName);
-            Update(skill, stats, currentBoss, timedEncounter);
-        }
-
-        public void Update(DamageMeter.Skills.Skill.Skill skill, SkillStats stats, Entity currentBoss, bool timedEncounter)
-        {
-            var skillsId = "";
-            for (var i = 0; i < skill.SkillId.Count; i++)
+            foreach(var skillInfo in skill.Skills)
             {
-                skillsId += skill.SkillId[i];
-                if (i < skill.SkillId.Count - 1)
+                if (!string.IsNullOrEmpty(skillInfo.IconName))
                 {
-                    skillsId += ",";
+                    SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
+                    break;
                 }
             }
+            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
+        }
 
+        private List<int> _ids = new List<int>();
+
+        public void Update(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        {
+          
+            var skillsId = skill.Id();
+           
             LabelName.ToolTip = skillsId;
-            LabelCritRateDmg.Content = stats.CritRateDmg + "%";
+            LabelCritRateDmg.Content = skill.CritRate() + "%";
 
-            LabelDamagePercentage.Content = stats.DamagePercentage(currentBoss, timedEncounter) + "%";
-            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(stats.Damage);
+            LabelDamagePercentage.Content = skill.DamagePercent() + "%";
+            LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skill.Amount());
 
-            LabelNumberHitDmg.Content = stats.HitsDmg;
+            LabelNumberHitDmg.Content = skill.Hits();
 
-            LabelNumberCritDmg.Content = stats.CritsDmg;
+            LabelNumberCritDmg.Content = skill.Crits();
 
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue(stats.DmgAverageCrit);
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(stats.DmgBiggestCrit);
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue(stats.DmgAverageHit);
-            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue(stats.DmgAverageTotal);
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue( (long)skill.AvgCrit());
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue( (long)skill.BiggestCrit());
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgHit());
+            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long)skill.Avg());
 
-            IEnumerable<KeyValuePair<int, SkillDetailStats>> listStats = stats.SkillDetails.ToList();
-            listStats = listStats.OrderByDescending(stat => stat.Value.Damage);
             SkillsDetailList.Items.Clear();
-            foreach (var stat in listStats)
+            foreach (var skillInfo in skill.Skills)
             {
-                SkillsDetailList.Items.Add(new SkillDetailDps(stat.Value, currentBoss, timedEncounter));
+                SkillsDetailList.Items.Add(new SkillDetailDps( skillInfo , skills, playerDealt, entityInformation, timedEncounter));
             }
         }
 

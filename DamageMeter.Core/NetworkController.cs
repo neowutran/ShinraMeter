@@ -10,6 +10,7 @@ using Data;
 using Tera.Game;
 using Tera.Game.Messages;
 using Message = Tera.Message;
+using DamageMeter.Database.Structures;
 
 namespace DamageMeter
 {
@@ -23,8 +24,8 @@ namespace DamageMeter
         public event UnsetClickThrouEvent UnsetClickThrouAction;
 
 
-        public delegate void UpdateUiHandler(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerDealt> playersInfos,
-            bool timedEncounter, AbnormalityStorage abnormals, ConcurrentDictionary<string ,NpcEntity> bossHistory, List<ChatMessage> chatbox);
+        public delegate void UpdateUiHandler(StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
+            ConcurrentDictionary<string ,NpcEntity> bossHistory, List<ChatMessage> chatbox);
 
         private static NetworkController _instance;
 
@@ -49,8 +50,8 @@ namespace DamageMeter
 
         public TeraData TeraData { get; private set; }
 
-        public Entity Encounter { get; private set; }
-        public Entity NewEncounter { get; set; }
+        public NpcEntity Encounter { get; private set; }
+        public NpcEntity NewEncounter { get; set; }
 
         public bool TimedEncounter { get; set; }
 
@@ -103,17 +104,36 @@ namespace DamageMeter
             var handler = TickUpdated;
             var currentBoss = Encounter;
             var timedEncounter = TimedEncounter;
+            
 
-            var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss.Id);
+            var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
             var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
-            List<Database.Data.PlayerDealt> playersInfo;
+            List<PlayerDealt> playersInfo;
             playersInfo = timedEncounter ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime) :
-                Database.Database.Instance.PlayerInformation(currentBoss.Id);
+                Database.Database.Instance.PlayerInformation(currentBoss);
+            var entities = Database.Database.Instance.AllEntity();
+
+            List<NpcEntity> filteredEntities = new List<NpcEntity>();
+            foreach(var entityid in entities)
+            {
+                var entity = EntityTracker.GetOrNull(entityid);
+                if (!(entity is NpcEntity)) continue;
+                var npc = (NpcEntity)entity;
+                if (!npc.Info.Boss) continue;
+                Console.WriteLine("Add NPC:" + npc.Info.Name);
+                filteredEntities.Add(npc);
+
+            }
+
+            Console.WriteLine("current boss:"+currentBoss);
+            Console.WriteLine("skills:"+skills);
+
+            var statsSummary = new StatsSummary(playersInfo, entityInfo);
 
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
-            var abnormals = _abnormalityStorage.Clone((NpcEntity)currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-            handler?.Invoke(entityInfo, skills, playersInfo, timedEncounter, abnormals, teradpsHistory, chatbox);
+            var abnormals = _abnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
+            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox);
         }
 
         private bool _clickThrou = false;
@@ -146,10 +166,10 @@ namespace DamageMeter
         public bool NeedToResetCurrent = false;
         public CopyKey NeedToCopy = null;
 
-        public static void CopyThread(Database.Data.EntityInformation entityInfo, Database.Data.Skills skills, List<Database.Data.PlayerDealt> playersInfos, AbnormalityStorage abnormals, bool timedEncounter, CopyKey copy)
+        public static void CopyThread(StatsSummary stats, Skills skills, AbnormalityStorage abnormals, bool timedEncounter, CopyKey copy)
         {
 
-            var text = CopyPaste.Copy(entityInfo, skills, playersInfos, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
             
         }
@@ -165,15 +185,16 @@ namespace DamageMeter
                     var currentBoss = Encounter;
                     var timedEncounter = TimedEncounter;
 
-                    var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss.Id);
+                    var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
                     var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
-                    List<Database.Data.PlayerDealt> playersInfo;
+                    List<PlayerDealt> playersInfo;
                     playersInfo = timedEncounter ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime) :
-                        Database.Database.Instance.PlayerInformation(currentBoss.Id);
+                        Database.Database.Instance.PlayerInformation(currentBoss);
+                    var statsSummary = new StatsSummary(playersInfo, entityInfo);
 
                     var tmpcopy = NeedToCopy;
-                    var abnormals = _abnormalityStorage.Clone((NpcEntity)currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-                    var pasteThread = new Thread(() => CopyThread(entityInfo, skills, playersInfo, abnormals, timedEncounter, tmpcopy));
+                    var abnormals = _abnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
+                    var pasteThread = new Thread(() => CopyThread(statsSummary, skills, abnormals, timedEncounter, tmpcopy));
                     pasteThread.Priority = ThreadPriority.Highest;
                     pasteThread.Start();
 

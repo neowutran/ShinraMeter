@@ -423,8 +423,8 @@ namespace DamageMeter
                 j++;
                 var damage =
                     exdata.PlayerSkills.Sum(
-                        x => x.Value.Where(time => time.Key == curTick)
-                             .Sum(skill => skill.Value.Sum(stat => stat.Value.Damage)));
+                        x => x.Value.Where(time => time.Time == curTick)
+                             .Sum(skill => skill.Amount));
                 totalDamage += damage;
                 details.Cells[j+2, 8].Value = damage/1000;
                 if (curTick == exdata.LastTick / TimeSpan.TicksPerSecond)
@@ -500,8 +500,8 @@ namespace DamageMeter
                     j++;
                     var damage =
                         exdata.PlayerSkills.Where(all => all.Key==user.Key).Sum(
-                            x => x.Value.Where(time => time.Key == curTick)
-                                 .Sum(skill => skill.Value.Sum(stat => stat.Value.Damage)));
+                            x => x.Value.Where(time => time.Time == curTick)
+                                 .Sum(skill => skill.Amount));
                     totalDamage += damage;
                     details.Cells[j + 2, i + 5].Value = damage/1000;
                     if (curTick == exdata.LastTick / TimeSpan.TicksPerSecond)
