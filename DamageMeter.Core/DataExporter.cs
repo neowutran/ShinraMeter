@@ -240,7 +240,7 @@ namespace DamageMeter
                 return;
             }
 
-            if(int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468)
+            if(int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468 && areaId != 470)
             {
                 return;
             }
