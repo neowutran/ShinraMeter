@@ -38,11 +38,11 @@ namespace DamageMeter.UI
 
         public EntityInformation EntityInformation { get; set; }
 
-        public string Dps => FormatHelpers.Instance.FormatValue(PlayerDealt.Amount / PlayerDealt.Interval) + "/s";
+        public string Dps => FormatHelpers.Instance.FormatValue( PlayerDealt.Interval == 0 ? PlayerDealt.Amount : PlayerDealt.Amount / PlayerDealt.Interval) + "/s";
 
         public string Damage => FormatHelpers.Instance.FormatValue(PlayerDealt.Amount);
 
-        public string GlobalDps => FormatHelpers.Instance.FormatValue(PlayerDealt.Amount / EntityInformation.Interval) + "/s";
+        public string GlobalDps => FormatHelpers.Instance.FormatValue( EntityInformation.Interval == 0 ? PlayerDealt.Amount : PlayerDealt.Amount / EntityInformation.Interval) + "/s";
 
         public string CritRate => Math.Round(PlayerDealt.CritRate) + "%";
         public string CritRateHeal => Math.Round(PlayerDealtHeal.CritRate) + "%";
@@ -75,7 +75,7 @@ namespace DamageMeter.UI
             LabelDamagePart.ToolTip = "Damage done: " + Damage;
         
             _windowSkill?.Update(PlayerDealt, EntityInformation, Skills, _buffs, _timedEncounter);
-            DpsIndicator.Width = (265* PlayerDealt.Amount) / EntityInformation.TotalDamage;
+            DpsIndicator.Width = EntityInformation.TotalDamage == 0 ? 265 : (265* PlayerDealt.Amount) / EntityInformation.TotalDamage;
         }
 
         public void SetClickThrou()

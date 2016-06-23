@@ -133,7 +133,7 @@ namespace DamageMeter
                     playerStats.Amount / entityInfo.TotalDamage + "%");
                 currentContent = currentContent.Replace("{crit_rate}", playerStats.CritRate + "%");
                 currentContent = currentContent.Replace("{crit_rate_heal}", heals.First(x => x.Source == playerStats.Source).CritRate + "%");
-                currentContent = currentContent.Replace("{biggest_crit}", FormatHelpers.Instance.FormatValue(skills.BiggestCrit(playerStats.Source.User.Id, entityInfo.Entity.Id,timedEncounter)));
+                currentContent = currentContent.Replace("{biggest_crit}", FormatHelpers.Instance.FormatValue(skills.BiggestCrit(playerStats.Source.User.Id, entityInfo.Entity,timedEncounter)));
                 currentContent = currentContent.Replace("{damage_received}",
                     FormatHelpers.Instance.FormatValue(skills.DamageReceived(playerStats.Source.User.Id, entityInfo.Entity.Id,timedEncounter)));
                 currentContent = currentContent.Replace("{hits_received}",

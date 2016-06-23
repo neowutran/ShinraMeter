@@ -402,6 +402,9 @@ namespace DamageMeter.UI
                 delegate(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities, bool timedEncounter, 
                 AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox)
                 {
+
+                    Console.WriteLine("count=" + statsSummary.PlayerDealt.Count);
+
                     UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
                     _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);
@@ -422,7 +425,7 @@ namespace DamageMeter.UI
                         }
                         visiblePlayerStats.Add(playerStats.Source);
                         if (playerStatsControl != null) continue;
-                        playerStatsControl = new PlayerStats(playerStats, statsHeal.Where(x => x.Source == playerStats.Source).First(), statsSummary.EntityInformation, skills ,abnormals.Get(playerStats.Source));
+                        playerStatsControl = new PlayerStats(playerStats, statsHeal.Where(x => x.Source == playerStats.Source).FirstOrDefault(), statsSummary.EntityInformation, skills ,abnormals.Get(playerStats.Source));
                         Controls.Add(playerStats.Source, playerStatsControl);
 
                         if (counter == 9)
@@ -447,8 +450,8 @@ namespace DamageMeter.UI
                 
                     foreach (var item in statsDamage)
                     {
-                        Players.Items.Add(item.Source);                      
-                        Controls[item.Source].Repaint(item, statsHeal.Where(x => x.Source == item.Source).First(), statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
+                        Players.Items.Add(Controls[item.Source]);                      
+                        Controls[item.Source].Repaint(item, statsHeal.Where(x => x.Source == item.Source).FirstOrDefault(), statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
                     }
                        
                     if (BasicTeraData.Instance.WindowData.InvisibleUI)
@@ -520,7 +523,7 @@ namespace DamageMeter.UI
             return false;
         }
 
-        private bool ChangeEncounterSelection(Entity entity)
+        private bool ChangeEncounterSelection(NpcEntity entity)
         {
             if (entity == null)
             {
@@ -529,7 +532,7 @@ namespace DamageMeter.UI
 
             for(int i = 1; i < ListEncounter.Items.Count; i++)
             {
-                if (((Entity) ((ComboBoxItem)ListEncounter.Items[i]).Content) != entity) continue;
+                if (((NpcEntity) ((ComboBoxItem)ListEncounter.Items[i]).Content) != entity) continue;
                 ListEncounter.SelectedItem = ListEncounter.Items[i];
                 return true;
             }
@@ -552,10 +555,10 @@ namespace DamageMeter.UI
                 return;
             }
 
-            Entity selectedEntity = null;
+            NpcEntity selectedEntity = null;
             if ((ComboBoxItem) ListEncounter.SelectedItem != null && !(((ComboBoxItem)ListEncounter.SelectedItem).Content is string))
             {
-                selectedEntity = (Entity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
+                selectedEntity = (NpcEntity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
             }
 
             ListEncounter.Items.Clear();
@@ -566,7 +569,7 @@ namespace DamageMeter.UI
                 var item = new ComboBoxItem { Content = entity };
                 ListEncounter.Items.Add(item);
                 if (entity != selectedEntity) continue;
-                ListEncounter.SelectedItem = ListEncounter.Items[ListEncounter.Items.Count - 1];
+                ListEncounter.SelectedItem = item ;
                 selected = true;
             }
             if (ChangeEncounterSelection(currentBoss))
@@ -604,7 +607,6 @@ namespace DamageMeter.UI
             if (encounter != NetworkController.Instance.Encounter)
             {
                 NetworkController.Instance.NewEncounter = encounter;
-                Console.WriteLine("BIIIIITE");
             }
         }
 

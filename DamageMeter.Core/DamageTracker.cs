@@ -101,6 +101,9 @@ namespace DamageMeter
 
         public void Update(SkillResult skillResult)
         {
+
+            if (skillResult.Source == null || skillResult.Target == null) return;
+
             var entitySource = GetEntity(skillResult.Source.Id);
             var entityTarget = GetEntity(skillResult.Target.Id);
 
@@ -109,6 +112,7 @@ namespace DamageMeter
                 ((skillResult.SourcePlayer == null) ? false : NetworkController.Instance.PlayerTracker.MyParty(skillResult.SourcePlayer)) ||
                 ((skillResult.TargetPlayer == null) ? false : NetworkController.Instance.PlayerTracker.MyParty(skillResult.TargetPlayer))))
             {
+
                 if (entityTarget == null)
                 {
                     throw new Exception("Unknow target" + skillResult.Target.GetType());

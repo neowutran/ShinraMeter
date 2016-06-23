@@ -14,7 +14,7 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillDps : ISkill
     {
-        public SkillDps(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        public SkillDps(SkillAggregate skill)
         {
             InitializeComponent();
             LabelName.Content = skill.Name;
@@ -27,12 +27,12 @@ namespace DamageMeter.UI.Skill
                     break;
                 }
             }
-            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
+            Update(skill);
         }
 
         private List<int> _ids = new List<int>();
 
-        public void Update(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        public void Update(SkillAggregate skill)
         {
           
             var skillsId = skill.Id();
@@ -49,13 +49,13 @@ namespace DamageMeter.UI.Skill
 
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue( (long)skill.AvgCrit());
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue( (long)skill.BiggestCrit());
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgHit());
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.White());
             LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long)skill.Avg());
 
             SkillsDetailList.Items.Clear();
-            foreach (var skillInfo in skill.Skills)
+             foreach (var skillInfo in skill.Skills)
             {
-                SkillsDetailList.Items.Add(new SkillDetailDps( skillInfo , skills, playerDealt, entityInformation, timedEncounter));
+                SkillsDetailList.Items.Add(new SkillDetailDps( skillInfo , skill));
             }
         }
 

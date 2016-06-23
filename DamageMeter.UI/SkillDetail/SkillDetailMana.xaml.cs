@@ -12,13 +12,13 @@ namespace DamageMeter.UI.SkillDetail
     /// </summary>
     public partial class SkillDetailMana
     {
-        public SkillDetailMana(Tera.Game.Skill skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        public SkillDetailMana(Tera.Game.Skill skill, SkillAggregate skillAggregate)
         {
             InitializeComponent();
-            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
+            Update(skill, skillAggregate);
         }
 
-        public void Update(Tera.Game.Skill skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        public void Update(Tera.Game.Skill skill, SkillAggregate skillAggregate)
         {
             //TODO Need to refactor this shitty copy paste shit
             bool? chained = skill?.IsChained;
@@ -41,8 +41,8 @@ namespace DamageMeter.UI.SkillDetail
             }
 
             LabelName.ToolTip = skill.Id;
-            LabelNumberHitMana.Content = skills.Hits(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter);
-            LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skills.Amount(playerDealt.Source.User.Id, entityInformation.Entity.Id, skill.Id, timedEncounter));
+            LabelNumberHitMana.Content = skillAggregate.Hits(skill.Id);
+            LabelTotalMana.Content = FormatHelpers.Instance.FormatValue(skillAggregate.Amount(skill.Id));
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

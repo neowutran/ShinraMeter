@@ -16,23 +16,19 @@ namespace DamageMeter.UI
     public partial class SkillsDetail : UserControl
     {
         private Label _currentSortedLabel;
-        private Database.Structures.Skills _skills;
         private SortBy _sortBy = SortBy.Amount;
         private SortOrder _sortOrder = SortOrder.Descending;
 
-        private EntityInformation _entityInformation;
-        private IEnumerable<SkillAggregate> _skillsId;
-        private PlayerDealt _playerDealt;
-        private bool _timedEncounter;
+        private IEnumerable<SkillAggregate> _skills;
+        private Database.Database.Type _type;
 
-        public SkillsDetail(Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, Database.Database.Type type, bool timedEncounter)
+        public SkillsDetail(IEnumerable<SkillAggregate> skillAggregate, Database.Database.Type type)
         {
             InitializeComponent();
-            _entityInformation = entityInformation;
-            _playerDealt = playerDealt;
-            _timedEncounter = timedEncounter;
-            TypeSkill = type;
-            switch (TypeSkill)
+            _skills = skillAggregate;
+            _type = type;
+           
+            switch (_type)
             {
                 case Database.Database.Type.Damage:
                 {
@@ -87,35 +83,8 @@ namespace DamageMeter.UI
                     break;
             }
 
-
-            _skills = skills;
-            _skillsId = SkillsAggregate(skills.SkillsId(_playerDealt.Source.User, _entityInformation.Entity.Id, timedEncounter), _skills);
             Repaint();
         }
-
-        private IEnumerable<SkillAggregate> SkillsAggregate(IEnumerable<Tera.Game.Skill> skills, Database.Structures.Skills skillsData)
-        {
-            Dictionary<string, SkillAggregate> skillsAggregate = new Dictionary<string, SkillAggregate>();
-            foreach(Tera.Game.Skill skill  in skills)
-            {
-
-                if (_skills.Type(_playerDealt.Source.User.Id, _entityInformation.Entity.Id, skill.Id , _timedEncounter) != TypeSkill)
-                {
-                    continue;
-                }
-
-                if (!skillsAggregate.ContainsKey(skill.Name))
-                {
-                    skillsAggregate.Add(skill.Name, new SkillAggregate(skill, skillsData, _playerDealt, _entityInformation, _timedEncounter));
-                    continue;
-                }
-                skillsAggregate[skill.Name].Add(skill);
-                
-            }
-            return skillsAggregate.Values.ToList();
-        }
-
-        public Database.Database.Type TypeSkill { get; }
 
         public double ContentWidth { get; private set; }
 
@@ -205,37 +174,37 @@ namespace DamageMeter.UI
                     switch (_sortBy)
                     {
                         case SortBy.Amount:
-                            _skillsId = from skill in _skillsId orderby skill.Amount() descending select skill;
+                            _skills = from skill in _skills orderby skill.Amount() descending select skill;
                             break;
                         case SortBy.AvgCrit:
-                            _skillsId = from skill in _skillsId orderby skill.AvgCrit() descending select skill;
+                            _skills = from skill in _skills orderby skill.AvgCrit() descending select skill;
                             break;
                         case SortBy.AvgHit:
-                            _skillsId = from skill in _skillsId orderby skill.AvgHit() descending select skill;
+                            _skills = from skill in _skills orderby skill.AvgWhite() descending select skill;
                             break;
                         case SortBy.BigCrit:
-                            _skillsId = from skill in _skillsId orderby skill.BiggestCrit() descending select skill;
+                            _skills = from skill in _skills orderby skill.BiggestCrit() descending select skill;
                             break;
                         case SortBy.DamagePercent:
-                            _skillsId = from skill in _skillsId orderby skill.DamagePercent() descending select skill;
+                            _skills = from skill in _skills orderby skill.DamagePercent() descending select skill;
                             break;
                         case SortBy.Name:
-                            _skillsId = from entry in _skillsId orderby entry.Name descending select entry;
+                            _skills = from entry in _skills orderby entry.Name descending select entry;
                             return;
                         case SortBy.NumberHits:
-                            _skillsId = from skill in _skillsId orderby skill.Hits() descending select skill;
+                            _skills = from skill in _skills orderby skill.Hits() descending select skill;
                             break;
                         case SortBy.NumberCrits:
-                            _skillsId = from skill in _skillsId orderby skill.Crits() descending select skill;
+                            _skills = from skill in _skills orderby skill.Crits() descending select skill;
                             break;
                         case SortBy.CritRate:
-                            _skillsId = from skill in _skillsId orderby skill.CritRate() descending select skill;
+                            _skills = from skill in _skills orderby skill.CritRate() descending select skill;
                             break;
                         case SortBy.Avg:
-                            _skillsId = from skill in _skillsId orderby skill.Avg() descending select skill;
+                            _skills = from skill in _skills orderby skill.Avg() descending select skill;
                             break;
                         case SortBy.BigHit:
-                            _skillsId = from skill in _skillsId orderby skill.BiggestHit() descending select skill;
+                            _skills = from skill in _skills orderby skill.BiggestHit() descending select skill;
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -245,37 +214,37 @@ namespace DamageMeter.UI
                     switch (_sortBy)
                     {
                         case SortBy.Amount:
-                            _skillsId = from skill in _skillsId orderby skill.Amount() ascending select skill;
+                            _skills = from skill in _skills orderby skill.Amount() ascending select skill;
                             break;
                         case SortBy.AvgCrit:
-                            _skillsId = from skill in _skillsId orderby skill.AvgCrit() ascending select skill;
+                            _skills = from skill in _skills orderby skill.AvgCrit() ascending select skill;
                             break;
                         case SortBy.AvgHit:
-                            _skillsId = from skill in _skillsId orderby skill.AvgHit() ascending select skill;
+                            _skills = from skill in _skills orderby skill.AvgWhite() ascending select skill;
                             break;
                         case SortBy.BigCrit:
-                            _skillsId = from skill in _skillsId orderby skill.BiggestCrit() ascending select skill;
+                            _skills = from skill in _skills orderby skill.BiggestCrit() ascending select skill;
                             break;
                         case SortBy.DamagePercent:
-                            _skillsId = from skill in _skillsId orderby skill.DamagePercent() ascending select skill;
+                            _skills = from skill in _skills orderby skill.DamagePercent() ascending select skill;
                             break;
                         case SortBy.Name:
-                            _skillsId = from entry in _skillsId orderby entry.Name ascending select entry;
+                            _skills = from entry in _skills orderby entry.Name ascending select entry;
                             return;
                         case SortBy.NumberHits:
-                            _skillsId = from skill in _skillsId orderby skill.Hits() ascending select skill;
+                            _skills = from skill in _skills orderby skill.Hits() ascending select skill;
                             break;
                         case SortBy.NumberCrits:
-                            _skillsId = from skill in _skillsId orderby skill.Crits() ascending select skill;
+                            _skills = from skill in _skills orderby skill.Crits() ascending select skill;
                             break;
                         case SortBy.CritRate:
-                            _skillsId = from skill in _skillsId orderby skill.CritRate() ascending select skill;
+                            _skills = from skill in _skills orderby skill.CritRate() ascending select skill;
                             break;
                         case SortBy.Avg:
-                            _skillsId = from skill in _skillsId orderby skill.Avg() ascending select skill;
+                            _skills = from skill in _skills orderby skill.Avg() ascending select skill;
                             break;
                         case SortBy.BigHit:
-                            _skillsId = from skill in _skillsId orderby skill.BiggestHit() ascending select skill;
+                            _skills = from skill in _skills orderby skill.BiggestHit() ascending select skill;
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -371,13 +340,13 @@ namespace DamageMeter.UI
         public void Repaint()
         {
             var oldSkills = Clear();
-            foreach (var skill in _skillsId)
+            foreach (var skill in _skills)
             {
                 var updated = -1;
                 for (var i = 0; i < oldSkills.Count; i++)
                 {
                     if (skill.Name != oldSkills[i].SkillNameIdent()) continue;
-                    oldSkills[i].Update(skill, _skills, _playerDealt, _entityInformation, _timedEncounter);
+                    oldSkills[i].Update(skill);
                     SkillsList.Items.Add(oldSkills[i]);
                     updated = i;
                     break;
@@ -388,29 +357,26 @@ namespace DamageMeter.UI
                     oldSkills.RemoveAt(updated);
                     continue;
                 }
-                switch (TypeSkill)
+                switch (_type)
                 {
                     case Database.Database.Type.Damage:
-                        SkillsList.Items.Add(new SkillDps(skill, _skills, _playerDealt, _entityInformation, _timedEncounter));
+                        SkillsList.Items.Add(new SkillDps(skill));
                         break;
                     case Database.Database.Type.Heal:
-                        SkillsList.Items.Add(new SkillHeal(skill, _skills, _playerDealt, _entityInformation, _timedEncounter));
+                        SkillsList.Items.Add(new SkillHeal(skill));
                         break;
                     case Database.Database.Type.Mana:
                     default:
-                        SkillsList.Items.Add(new SkillMana(skill, _skills, _playerDealt, _entityInformation, _timedEncounter));
+                        SkillsList.Items.Add(new SkillMana(skill));
                         break;
                 }
             }
         }
 
 
-        public void Update(Database.Structures.Skills skills, EntityInformation entityInformation, PlayerDealt playerDealt, bool timedEncounter)
+        public void Update(IEnumerable<SkillAggregate> skills)
         {
             _skills = skills;
-            _entityInformation = entityInformation;
-            _playerDealt = playerDealt;
-            _timedEncounter = timedEncounter;
             Repaint();
         }
 

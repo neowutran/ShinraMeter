@@ -79,26 +79,48 @@ namespace DamageMeter.UI
                 var interval = TimeSpan.FromTicks(duration);
                 AggroDuration.Content = interval.ToString(@"mm\:ss");
             }
-
-
+        
             if (_skillDps == null)
             {
-                _skillDps = new SkillsDetail(skills, playerDealt, entityInformation, Database.Database.Type.Damage, timedEncounter);
-                _skillHeal = new SkillsDetail(skills, playerDealt, entityInformation, Database.Database.Type.Heal, timedEncounter);
-                _skillMana = new SkillsDetail(skills, playerDealt, entityInformation, Database.Database.Type.Mana, timedEncounter);
+                _skillDps = new SkillsDetail(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Damage), Database.Database.Type.Damage);
+                _skillHeal = new SkillsDetail(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Heal), Database.Database.Type.Heal);
+                _skillMana = new SkillsDetail(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Mana), Database.Database.Type.Mana);
                 _buff = new Buff(playerDealt, buffs, entityInformation);
 
             }
             else {
-                _skillDps.Update(skills, entityInformation, playerDealt, timedEncounter);
-                _skillHeal.Update(skills, entityInformation, playerDealt, timedEncounter);
-                _skillMana.Update(skills, entityInformation, playerDealt, timedEncounter);
+                _skillDps.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Damage));
+                _skillHeal.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Heal));
+                _skillMana.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Mana));
                 _buff.Update(playerDealt, buffs, entityInformation);
             }
             HealPanel.Content = _skillHeal;
             DpsPanel.Content = _skillDps;
             ManaPanel.Content = _skillMana;
             BuffPanel.Content = _buff;
+        }
+
+        private IEnumerable<SkillAggregate> SkillsAggregate(PlayerDealt playerDealt, EntityInformation entityInformation, Database.Structures.Skills skillsData, bool timedEncounter, Database.Database.Type type)
+        {
+            var skills = skillsData.SkillsId(playerDealt.Source.User, entityInformation.Entity, timedEncounter);
+            Dictionary<string, SkillAggregate> skillsAggregate = new Dictionary<string, SkillAggregate>();
+            foreach (Tera.Game.Skill skill in skills)
+            {
+
+                if (skillsData.Type(playerDealt.Source.User.Id, entityInformation.Entity, skill.Id, timedEncounter) != type)
+                {
+                    continue;
+                }
+
+                if (!skillsAggregate.ContainsKey(skill.Name))
+                {
+                    skillsAggregate.Add(skill.Name, new SkillAggregate(skill, skillsData, playerDealt, entityInformation, timedEncounter, type));
+                    continue;
+                }
+                skillsAggregate[skill.Name].Add(skill);
+
+            }
+            return skillsAggregate.Values;
         }
 
         private void Button_OnClick(object sender, RoutedEventArgs e)

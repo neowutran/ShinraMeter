@@ -13,7 +13,7 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillMana : ISkill
     {
-        public SkillMana(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        public SkillMana(SkillAggregate skill)
         {
             InitializeComponent();
             LabelName.Content = skill.Name;
@@ -26,7 +26,7 @@ namespace DamageMeter.UI.Skill
                     break;
                 }
             }
-            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
+            Update(skill);
         }
 
         public string SkillNameIdent()
@@ -34,7 +34,7 @@ namespace DamageMeter.UI.Skill
             return (string) LabelName.Content;
         }
 
-        public void Update(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        public void Update(SkillAggregate skill)
         {
             var skillsId = skill.Id();
 
@@ -46,7 +46,7 @@ namespace DamageMeter.UI.Skill
 
             foreach (var skillInfo in skill.Skills)
             {
-                SkillsDetailList.Items.Add(new SkillDetailMana(skillInfo, skills, playerDealt, entityInformation, timedEncounter));
+                SkillsDetailList.Items.Add(new SkillDetailMana(skillInfo, skill));
             }
 
         }

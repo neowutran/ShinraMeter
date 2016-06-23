@@ -13,7 +13,7 @@ namespace DamageMeter.UI.Skill
     /// </summary>
     public partial class SkillHeal : ISkill
     {
-        public SkillHeal(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        public SkillHeal(SkillAggregate skill)
         {
             InitializeComponent();
             LabelName.Content = skill.Name;
@@ -26,10 +26,10 @@ namespace DamageMeter.UI.Skill
                     break;
                 }
             }
-            Update(skill, skills, playerDealt, entityInformation, timedEncounter);
+            Update(skill);
         }
 
-        public void Update(SkillAggregate skill, Database.Structures.Skills skills, PlayerDealt playerDealt, EntityInformation entityInformation, bool timedEncounter)
+        public void Update(SkillAggregate skill)
         {
             var skillsId = skill.Id();
 
@@ -46,7 +46,7 @@ namespace DamageMeter.UI.Skill
 
 
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgCrit());
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgHit());
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgWhite());
             LabelAverage.Content = FormatHelpers.Instance.FormatValue((long)skill.Avg());
 
 
@@ -54,7 +54,7 @@ namespace DamageMeter.UI.Skill
 
             foreach (var skillInfo in skill.Skills)
             {
-                SkillsDetailList.Items.Add(new SkillDetailHeal(skillInfo, skills, playerDealt, entityInformation, timedEncounter));
+                SkillsDetailList.Items.Add(new SkillDetailHeal(skillInfo, skill));
             }
 
         }

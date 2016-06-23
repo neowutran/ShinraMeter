@@ -125,7 +125,7 @@ namespace DamageMeter
                 teradpsUser.playerName = user.Source.Name;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Source.ServerId);
                 teradpsUser.playerAverageCritRate = user.CritRate + "";
-                teradpsUser.healCrit = user.Source.IsHealer ? heals.First(x => x.Source == user.Source).CritRate + "" : null;
+                teradpsUser.healCrit = user.Source.IsHealer ? heals.FirstOrDefault(x => x.Source == user.Source)?.CritRate + "" : null;
                 teradpsUser.playerDps = TimeSpan.TicksPerSecond * damage / interTick + "";
                 teradpsUser.playerTotalDamagePercentage = user.Amount / entityInfo.TotalDamage + "";
 
@@ -148,26 +148,26 @@ namespace DamageMeter
                     ));
                 }
                 var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
-                extendedStats.PlayerSkills.Add(serverPlayerName, skills.GetSkills(user.Source.User.Id, entity.Id, timedEncounter, entityInfo.BeginTime, entityInfo.EndTime));
+                extendedStats.PlayerSkills.Add(serverPlayerName, skills.GetSkills(user.Source.User.Id, entity, timedEncounter, entityInfo.BeginTime, entityInfo.EndTime));
                 extendedStats.PlayerBuffs.Add(serverPlayerName,buffs);
 
-                var skillsId = skills.SkillsId(user.Source.User, entity.Id, timedEncounter);
+                var skillsId = skills.SkillsId(user.Source.User, entity, timedEncounter);
 
 
 
                 foreach (var skill in skillsId)
                 {
                     var skillLog = new SkillLog();
-                    var skilldamage = skills.Amount(user.Source.User.Id, entity.Id, skill.Id, timedEncounter);
+                    var skilldamage = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter);
 
-                    skillLog.skillAverageCrit = skills.AverageCrit(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
-                    skillLog.skillAverageWhite = skills.AverageWhite(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
-                    skillLog.skillCritRate = skills.CritRate(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
-                    skillLog.skillDamagePercent = skills.Amount(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) / user.Amount + "";
-                    skillLog.skillHighestCrit = skills.BiggestCrit(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
-                    skillLog.skillHits = skills.Hits(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
+                    skillLog.skillAverageCrit = skills.AverageCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.skillAverageWhite = skills.AverageWhite(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.skillCritRate = skills.CritRate(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.skillDamagePercent = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter) / user.Amount + "";
+                    skillLog.skillHighestCrit = skills.BiggestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.skillHits = skills.Hits(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
                     skillLog.skillId = BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(entity.Info?.Name, user.Source.RaceGenderClass)?.Id.ToString() ?? skill.ToString();
-                    skillLog.skillLowestCrit = skills.LowestCrit(user.Source.User.Id, entity.Id, skill.Id, timedEncounter) + "";
+                    skillLog.skillLowestCrit = skills.LowestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
                     skillLog.skillTotalDamage = skilldamage + "";
 
                     if (skilldamage == 0)
