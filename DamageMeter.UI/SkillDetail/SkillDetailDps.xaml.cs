@@ -20,16 +20,14 @@ namespace DamageMeter.UI.SkillDetail
 
         public void Update(Tera.Game.Skill skill, SkillAggregate skillAggregate)
         {
-            bool? chained = skill?.IsChained;
-            string hit = skill?.Detail;
-           
-            if (hit == null)
+            bool? chained = skill.IsChained;
+            string hit = skill.Detail;
+
+            if (skill.IsHotDot)
             {
-                if (BasicTeraData.Instance.HotDotDatabase.Get(skill.Id) != null)
-                {
-                    hit = "DOT";
-                }
+                hit = "DOT";
             }
+
             if (hit != null)
             {
                 LabelName.Content = hit;
@@ -40,9 +38,9 @@ namespace DamageMeter.UI.SkillDetail
             }
 
             LabelName.ToolTip = skill.Id;
-            LabelCritRateDmg.Content = skillAggregate.CritRate(skill.Id) + "%";
+            LabelCritRateDmg.Content = ( skillAggregate.CritRate(skill.Id) * 100) + "%";
 
-            LabelDamagePercentage.Content = skillAggregate.DamagePercent(skill.Id) + "%";
+            LabelDamagePercentage.Content = ( skillAggregate.DamagePercent(skill.Id) * 100) + "%";
             LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skillAggregate.Amount(skill.Id));
 
             LabelNumberHitDmg.Content = skillAggregate.Hits(skill.Id);

@@ -111,6 +111,8 @@ namespace DamageMeter
             List<PlayerDealt> playersInfo;
             playersInfo = timedEncounter ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime) :
                 Database.Database.Instance.PlayerInformation(currentBoss);
+
+
             var entities = Database.Database.Instance.AllEntity();
 
             List<NpcEntity> filteredEntities = new List<NpcEntity>();
@@ -337,7 +339,7 @@ namespace DamageMeter
                 {
                     AbnormalityTracker.StopAggro(despawnNpc);
                     AbnormalityTracker.DeleteAbnormality(despawnNpc);
-                    DataExporter.Export(despawnNpc, _abnormalityStorage);
+                    //DataExporter.Export(despawnNpc, _abnormalityStorage);
                     continue;
                 }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Tera.Game;
 using Data;
+using System.Windows;
 
 namespace DamageMeter
 {
@@ -48,6 +49,7 @@ namespace DamageMeter
             if (NetworkController.Instance.Encounter == entity)
             {
                 NetworkController.Instance.NewEncounter = null;
+                MessageBox.Show("3", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             }
 
             Database.Database.Instance.DeleteEntity(entity);
@@ -59,14 +61,21 @@ namespace DamageMeter
         {
             if (entity.Info.Boss)
             {
-                NetworkController.Instance.NewEncounter = entity;
+                if (NetworkController.Instance.Encounter != entity)
+                {
+                    MessageBox.Show("2", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    NetworkController.Instance.NewEncounter = entity;
+                }
+
             }
         }
 
         public void Reset()
         {
             Database.Database.Instance.DeleteAll();
-            NetworkController.Instance.NewEncounter = null;           
+            NetworkController.Instance.NewEncounter = null;
+            MessageBox.Show("1", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
         }
 
         public Entity GetActorEntity(EntityId entityId)
@@ -117,8 +126,8 @@ namespace DamageMeter
                 {
                     throw new Exception("Unknow target" + skillResult.Target.GetType());
                 }
-
-                InsertSkill(entityTarget, entitySource, skillResult, skillResult.Time.Ticks);
+                
+                InsertSkill(entityTarget, entitySource, skillResult);
             }
         }
 
@@ -139,7 +148,7 @@ namespace DamageMeter
         }
 
         
-        private void InsertSkill(Entity entityTarget, Entity entitySource, SkillResult message, long time)
+        private void InsertSkill(Entity entityTarget, Entity entitySource, SkillResult message)
         {
           
             if (!IsValidAttack(message))
@@ -168,7 +177,7 @@ namespace DamageMeter
 
             }
 
-            Database.Database.Instance.Insert(message.Amount, skill_type, entityTarget, entitySource, message.SkillId, message.IsCritical, time);
+            Database.Database.Instance.Insert(message.Amount, skill_type, entityTarget, entitySource, message.SkillId, message.Abnormality, message.IsCritical, message.Time.Ticks);
 
             if (entityTarget is NpcEntity) {
                 UpdateCurrentBoss((NpcEntity)entityTarget);

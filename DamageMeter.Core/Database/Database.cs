@@ -36,6 +36,7 @@ namespace DamageMeter.Database
                 "source INTEGER NOT NULL," +
                 "skill_id INTEGER NOT NULL," +
                 "critic INTEGER NOT NULL," +
+                "hotdot INTEGER NOT NULL,"+
                 "time INTEGER NOT NULL" +
                 "); ";
             var command = new SQLiteCommand(sql, Connexion);
@@ -66,9 +67,9 @@ namespace DamageMeter.Database
             command.ExecuteNonQuery();
         }
 
-        public void Insert(long amount, Type type, Entity target, Entity source, long skillId, bool critic, long time )
+        public void Insert(long amount, Type type, Entity target, Entity source, long skillId, bool hotdot, bool critic, long time )
         {
-            string sql = "INSERT INTO damage (amount, type, target, source, skill_id, critic, time) VALUES( $amount , $type , $target , $source , $skill_id , $critic , $time ) ;";
+            string sql = "INSERT INTO damage (amount, type, target, source, skill_id, hotdot, critic, time) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time ) ;";
             SQLiteCommand command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$amount", amount);
             command.Parameters.AddWithValue("$type", (int)type);
@@ -76,6 +77,7 @@ namespace DamageMeter.Database
             command.Parameters.AddWithValue("$source", source.Id.Id);
             command.Parameters.AddWithValue("$skill_id", skillId);
             command.Parameters.AddWithValue("$critic", critic ? 1 : 0);
+            command.Parameters.AddWithValue("$hotdot", hotdot ? 1 : 0);
             command.Parameters.AddWithValue("$time", time);
             command.ExecuteNonQuery();
         }
@@ -143,7 +145,7 @@ namespace DamageMeter.Database
         public Structures.Skills GetSkills(long beginTime, long endTime)
         {
         
-          var sql = "SELECT amount, type, target, source, skill_id, critic, time FROM damage WHERE time BETWEEN $begin AND $end ;";
+          var sql = "SELECT amount, type, target, source, skill_id, hotdot, critic, time FROM damage WHERE time BETWEEN $begin AND $end ;";
 
             SQLiteCommand command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
@@ -164,8 +166,9 @@ namespace DamageMeter.Database
                 var source = new EntityId((ulong)rdr.GetFieldValue<long>(rdr.GetOrdinal("source")));
                 var skillid = rdr.GetFieldValue<long>(rdr.GetOrdinal("skill_id"));
                 var critic = rdr.GetFieldValue<long>(rdr.GetOrdinal("critic")) == 1 ? true : false;
+                var hotdot = rdr.GetFieldValue<long>(rdr.GetOrdinal("hotdot")) == 1 ? true : false;
                 var time = rdr.GetFieldValue<long>(rdr.GetOrdinal("time"));
-                var skill = new Structures.Skill(amount,type,target,source, (int)skillid,critic,time);
+                var skill = new Structures.Skill(amount,type,target,source, (int)skillid, hotdot, critic,time);
 
                     if (!targetSourceSkills.ContainsKey(skill.Target))
                     {
@@ -256,6 +259,7 @@ namespace DamageMeter.Database
                             var entityId = rdr.GetFieldValue<long>(rdr.GetOrdinal("target"));
                             var type = rdr.GetFieldValue<long>(rdr.GetOrdinal("type"));
 
+                        Console.WriteLine("Crits:" + critic + ";Hits:" + hit);
                             result.Add(new Structures.PlayerDealt(
                                                  amount,
                                                  beginTime,

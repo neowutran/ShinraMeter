@@ -112,12 +112,12 @@ namespace DamageMeter.UI
                     continue;
                 }
 
-                if (!skillsAggregate.ContainsKey(skill.Name))
+                if (!skillsAggregate.ContainsKey(skill.ShortName))
                 {
-                    skillsAggregate.Add(skill.Name, new SkillAggregate(skill, skillsData, playerDealt, entityInformation, timedEncounter, type));
+                    skillsAggregate.Add(skill.ShortName, new SkillAggregate(skill, skillsData, playerDealt, entityInformation, timedEncounter, type));
                     continue;
                 }
-                skillsAggregate[skill.Name].Add(skill);
+                skillsAggregate[skill.ShortName].Add(skill);
 
             }
             return skillsAggregate.Values;

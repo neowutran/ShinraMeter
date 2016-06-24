@@ -26,19 +26,25 @@ namespace DamageMeter
             Type = type;
             _entityInformation = entityInformation;
             Skills = new List<Tera.Game.Skill>();
-            Name = skill.Name;
+            Name = skill.ShortName;
             _skillsData = skillsData;
             Skills.Add(skill);
         }
 
-        public Database.Database.Type Type {
-            get;
-        }
+        public Database.Database.Type Type { get; }
 
         public bool Add(Tera.Game.Skill skill)
         {
-            if (skill.Name == Name)
+            if (skill.ShortName == Name)
             {
+                foreach(var sk in Skills)
+                {
+                    if(skill.Id == sk.Id && skill.IsHotDot == sk.IsHotDot)
+                    {
+                        return false;
+                    }
+                }
+
                 Skills.Add(skill);
                 return true;
             }
@@ -61,6 +67,7 @@ namespace DamageMeter
         {
             var result = from skill in Skills
                          select _skillsData.BiggestCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+            if (result.Count() == 0) return 0;
             return result.Max();
         }
 
@@ -95,6 +102,7 @@ namespace DamageMeter
         {
             var result = from skill in Skills
                          select _skillsData.White(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+            if (result.Count() == 0) return 0;
             return result.Sum();
         }
 
@@ -107,6 +115,7 @@ namespace DamageMeter
         {
             var result = from skill in Skills
                          select _skillsData.Crits(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+            if (result.Count() == 0) return 0;
             return result.Sum();
         }
 
@@ -129,6 +138,7 @@ namespace DamageMeter
         {
             var result = from skill in Skills
                          select _skillsData.BiggestHit(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+            if (result.Count() == 0) return 0;
             return result.Max();
         }
 
@@ -151,6 +161,7 @@ namespace DamageMeter
         {
             var result = from skill in Skills
                          select _skillsData.AmountWhite(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+            if (result.Count() == 0) return 0;
             return result.Sum();
         }
 
@@ -163,6 +174,7 @@ namespace DamageMeter
         {
             var result = from skill in Skills
                          select _skillsData.AmountCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+            if (result.Count() == 0) return 0;
             return result.Sum();
         }
 
@@ -173,7 +185,9 @@ namespace DamageMeter
 
         public double AvgCrit()
         {
-            return AmountCrit() / Crits();
+            var crits = Crits();
+            if (crits == 0) return 0;
+            return AmountCrit() / crits;
         }
 
         public double AvgCrit(int skillId)
@@ -188,7 +202,9 @@ namespace DamageMeter
 
         public double AvgWhite()
         {
-            return AmountWhite() / White();
+            var white = White();
+            if (white == 0) return 0;
+            return AmountWhite() / white;
         }
         
 

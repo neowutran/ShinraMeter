@@ -84,6 +84,7 @@ namespace DamageMeter.UI
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
         }
+
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             Exit();
@@ -405,12 +406,18 @@ namespace DamageMeter.UI
 
                     Console.WriteLine("count=" + statsSummary.PlayerDealt.Count);
 
+                    foreach(var entity in entities)
+                    {
+                        Console.Write(entity.Info.Name + " ; ");
+
+                    }
+                    Console.WriteLine("");
                     UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
                     _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);
                     _chatbox.Update(chatbox);
 
-                    PartyDps.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0 ? 0 : ((statsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond) / statsSummary.EntityInformation.Interval)) + "/s";
+                    PartyDps.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0 ? statsSummary.EntityInformation.TotalDamage : ((statsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond) / statsSummary.EntityInformation.Interval)) + "/s";
                     var visiblePlayerStats = new HashSet<Player>();
                     var statsDamage = statsSummary.PlayerDealt.Where(x => x.Type == Database.Database.Type.Damage);
                     var statsHeal = statsSummary.PlayerDealt.Where(x => x.Type == Database.Database.Type.Heal);
@@ -511,12 +518,14 @@ namespace DamageMeter.UI
         {
             if (entities.Count != ListEncounter.Items.Count-1)
             {
+                Console.WriteLine("UPDATE NEEDED 1");
                 return true;
             }
             for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
             {
                 if (((NpcEntity)((ComboBoxItem)ListEncounter.Items[i]).Content) != entities[i - 1])
                 {
+                    Console.WriteLine("UPDATE NEEDED 2");
                     return true;
                 }
             }
@@ -607,6 +616,11 @@ namespace DamageMeter.UI
             if (encounter != NetworkController.Instance.Encounter)
             {
                 NetworkController.Instance.NewEncounter = encounter;
+
+
+                MessageBox.Show("4:" + e.OriginalSource.GetType(), "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+               
+
             }
         }
 

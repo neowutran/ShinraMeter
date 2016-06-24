@@ -40,7 +40,7 @@ namespace DamageMeter.UI.SkillDetail
             }
 
             LabelName.ToolTip = skill.Id;
-            LabelCritRateHeal.Content = skillAggregate.CritRate(skill.Id) + "%";
+            LabelCritRateHeal.Content =  ( skillAggregate.CritRate(skill.Id) * 100)  + "%";
             LabelNumberHitHeal.Content = skillAggregate.Hits(skill.Id);
             LabelNumberCritHeal.Content = skillAggregate.Crits(skill.Id);
             LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(skillAggregate.Amount(skill.Id));

@@ -166,7 +166,7 @@ namespace DamageMeter
                     skillLog.skillDamagePercent = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter) / user.Amount + "";
                     skillLog.skillHighestCrit = skills.BiggestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
                     skillLog.skillHits = skills.Hits(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.skillId = BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(entity.Info?.Name, user.Source.RaceGenderClass)?.Id.ToString() ?? skill.ToString();
+                    skillLog.skillId = SkillResult.GetSkill(user.Source.User.Id, skill.Id, skill.IsHotDot, NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase).Id+"";
                     skillLog.skillLowestCrit = skills.LowestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
                     skillLog.skillTotalDamage = skilldamage + "";
 

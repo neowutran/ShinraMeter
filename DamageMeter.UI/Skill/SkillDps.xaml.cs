@@ -38,9 +38,9 @@ namespace DamageMeter.UI.Skill
             var skillsId = skill.Id();
            
             LabelName.ToolTip = skillsId;
-            LabelCritRateDmg.Content = skill.CritRate() + "%";
+            LabelCritRateDmg.Content = (skill.CritRate() * 100) + "%";
 
-            LabelDamagePercentage.Content = skill.DamagePercent() + "%";
+            LabelDamagePercentage.Content = (skill.DamagePercent() * 100) + "%";
             LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skill.Amount());
 
             LabelNumberHitDmg.Content = skill.Hits();
@@ -49,7 +49,7 @@ namespace DamageMeter.UI.Skill
 
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue( (long)skill.AvgCrit());
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue( (long)skill.BiggestCrit());
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.White());
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgWhite());
             LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long)skill.Avg());
 
             SkillsDetailList.Items.Clear();
