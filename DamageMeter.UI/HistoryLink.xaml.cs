@@ -1,20 +1,19 @@
-﻿using Data;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Data;
 using Tera.Game;
 
 namespace DamageMeter.UI
 {
     /// <summary>
-    /// Logique d'interaction pour HistoryLink.xaml
+    ///     Logique d'interaction pour HistoryLink.xaml
     /// </summary>
-    public partial class HistoryLink : UserControl
+    public partial class HistoryLink
     {
-        public HistoryLink(string link, NpcEntity boss )
+        public HistoryLink(string link, NpcEntity boss)
         {
             InitializeComponent();
             Boss.Content = boss.Info.Name;
@@ -24,10 +23,8 @@ namespace DamageMeter.UI
                 Boss.Foreground = Brushes.Red;
                 Boss.ToolTip = link;
                 return;
-
             }
             Link.Source = BasicTeraData.Instance.ImageDatabase.Link.Source;
-
         }
 
         private void Click_Link(object sender, MouseButtonEventArgs e)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,8 +10,6 @@ using System.Windows;
 using DamageMeter.AutoUpdate;
 using Data;
 using log4net;
-using System.IO;
-using System.Reflection;
 
 namespace DamageMeter.UI
 {
@@ -33,7 +33,7 @@ namespace DamageMeter.UI
             var updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
 
-         
+
             if (aIsNewInstance)
             {
                 DeleteTmp();
@@ -50,7 +50,7 @@ namespace DamageMeter.UI
                 {
                     MessageBox.Show(
                         "Unable to contact update server, try again later, additional data available in error.log");
-                    var log = LogManager.GetLogger(typeof (Program)); //Log4NET
+                    var log = LogManager.GetLogger(typeof(Program)); //Log4NET
                     log.Error("##### UPDATE EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message +
                               "\r\n" +
                               ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" +
@@ -99,7 +99,6 @@ namespace DamageMeter.UI
             {
                 //Ignore
             }
-
         }
 
         private static void SetForeground()

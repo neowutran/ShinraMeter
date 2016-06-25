@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,14 +16,14 @@ namespace DamageMeter.AutoUpdate
     public class UpdateManager
     {
         public static readonly string Version = "1.05";
-            
+
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static string ResourcesDirectory
         {
             get
             {
-                var directory = Path.GetDirectoryName(typeof (UpdateManager).Assembly.Location);
+                var directory = Path.GetDirectoryName(typeof(UpdateManager).Assembly.Location);
                 while (directory != null)
                 {
                     var resourceDirectory = Path.Combine(directory, @"resources\");

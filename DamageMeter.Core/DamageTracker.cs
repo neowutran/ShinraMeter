@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Tera.Game;
 using Data;
-using System.Windows;
+using Tera.Game;
 
 namespace DamageMeter
 {
@@ -12,6 +11,8 @@ namespace DamageMeter
 
         private static DamageTracker _instance;
 
+        private readonly List<Entity> _toDelete = new List<Entity>();
+
 
         private DamageTracker()
         {
@@ -19,54 +20,43 @@ namespace DamageMeter
 
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
 
-        private List<Entity> _toDelete = new List<Entity>();
-
         public void UpdateEntities(NpcOccupierResult npcOccupierResult, long time)
         {
             if (!npcOccupierResult.HasReset)
             {
                 return;
             }
-      
+
             var entity = NetworkController.Instance.EntityTracker.GetOrNull(npcOccupierResult.Npc);
-            if(entity is NpcEntity)
+            if (!(entity is NpcEntity)) return;
+            var npcEntity = entity as NpcEntity;
+            if (npcEntity.Info.Boss)
             {
-                var npcEntity = entity as NpcEntity;
-                if (npcEntity.Info.Boss)
-                {
-                    _toDelete.Add(entity);
-                }
+                _toDelete.Add(entity);
             }
         }
 
 
         public void DeleteEntity(Entity entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 return;
             }
             if (NetworkController.Instance.Encounter == entity)
             {
                 NetworkController.Instance.NewEncounter = null;
-                MessageBox.Show("3", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             }
 
             Database.Database.Instance.DeleteEntity(entity);
-
-
         }
 
         public void UpdateCurrentBoss(NpcEntity entity)
         {
-            if (entity.Info.Boss)
+            if (!entity.Info.Boss) return;
+            if (NetworkController.Instance.Encounter != entity)
             {
-                if (NetworkController.Instance.Encounter != entity)
-                {
-                    MessageBox.Show("2", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    NetworkController.Instance.NewEncounter = entity;
-                }
-
+                NetworkController.Instance.NewEncounter = entity;
             }
         }
 
@@ -74,8 +64,6 @@ namespace DamageMeter
         {
             Database.Database.Instance.DeleteAll();
             NetworkController.Instance.NewEncounter = null;
-            MessageBox.Show("1", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
         }
 
         public Entity GetActorEntity(EntityId entityId)
@@ -85,7 +73,7 @@ namespace DamageMeter
             {
                 return entity;
             }
-            
+
             return null;
         }
 
@@ -97,43 +85,40 @@ namespace DamageMeter
             {
                 return entity2;
             }
-            if (entity is ProjectileEntity)
+            if (!(entity is ProjectileEntity)) return null;
+            var source = (ProjectileEntity) entity;
+            if (source.Owner is NpcEntity || source.Owner is UserEntity)
             {
-                var source = (ProjectileEntity) entity;
-                if (source.Owner is NpcEntity || source.Owner is UserEntity)
-                {
-                    return source.Owner;
-                }
+                return source.Owner;
             }
             return null;
         }
 
         public void Update(SkillResult skillResult)
         {
-
             if (skillResult.Source == null || skillResult.Target == null) return;
 
             var entitySource = GetEntity(skillResult.Source.Id);
             var entityTarget = GetEntity(skillResult.Target.Id);
 
             if (skillResult.SourcePlayer == null && skillResult.TargetPlayer == null) return;
-            if (!BasicTeraData.Instance.WindowData.PartyOnly || (
-                ((skillResult.SourcePlayer == null) ? false : NetworkController.Instance.PlayerTracker.MyParty(skillResult.SourcePlayer)) ||
-                ((skillResult.TargetPlayer == null) ? false : NetworkController.Instance.PlayerTracker.MyParty(skillResult.TargetPlayer))))
+            if (BasicTeraData.Instance.WindowData.PartyOnly &&
+                (skillResult.SourcePlayer == null ||
+                 !NetworkController.Instance.PlayerTracker.MyParty(skillResult.SourcePlayer)) &&
+                (skillResult.TargetPlayer == null ||
+                 !NetworkController.Instance.PlayerTracker.MyParty(skillResult.TargetPlayer))) return;
+            if (entityTarget == null)
             {
-
-                if (entityTarget == null)
-                {
-                    throw new Exception("Unknow target" + skillResult.Target.GetType());
-                }
-                
-                InsertSkill(entityTarget, entitySource, skillResult);
+                throw new Exception("Unknow target" + skillResult.Target.GetType());
             }
+
+            InsertSkill(entityTarget, entitySource, skillResult);
         }
 
         private static bool IsValidAttack(SkillResult message)
         {
-            if (message.Amount == 0) // to count buff skills/consumable usage - need additional hitstat for it (damage/heal/mana/uses)
+            if (message.Amount == 0)
+                // to count buff skills/consumable usage - need additional hitstat for it (damage/heal/mana/uses)
             {
                 return false;
             }
@@ -147,10 +132,9 @@ namespace DamageMeter
             return true;
         }
 
-        
+
         private void InsertSkill(Entity entityTarget, Entity entitySource, SkillResult message)
         {
-          
             if (!IsValidAttack(message))
             {
                 return;
@@ -162,26 +146,20 @@ namespace DamageMeter
                 _toDelete.Remove(entityTarget);
             }
 
-            Database.Database.Type skill_type = Database.Database.Type.Mana;
+            var skillType = Database.Database.Type.Mana;
 
             if (message.IsHp)
             {
-                if (message.IsHeal)
-                {
-                    skill_type = Database.Database.Type.Heal;
-                }
-                else
-                {
-                    skill_type = Database.Database.Type.Damage; 
-                }
-
+                skillType = message.IsHeal ? Database.Database.Type.Heal : Database.Database.Type.Damage;
             }
 
-            Database.Database.Instance.Insert(message.Amount, skill_type, entityTarget, entitySource, message.SkillId, message.Abnormality, message.IsCritical, message.Time.Ticks);
+            Database.Database.Instance.Insert(message.Amount, skillType, entityTarget, entitySource, message.SkillId,
+                message.Abnormality, message.IsCritical, message.Time.Ticks);
 
-            if (entityTarget is NpcEntity) {
-                UpdateCurrentBoss((NpcEntity)entityTarget);
-                return;
+            var entity = entityTarget as NpcEntity;
+            if (entity != null)
+            {
+                UpdateCurrentBoss(entity);
             }
         }
     }

@@ -16,7 +16,7 @@
                         <ColumnDefinition Width="65" />
                     </Grid.ColumnDefinitions>
                     <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
-                    Height="40" VerticalAlignment="Top" Width="40" />
+                           Height="40" VerticalAlignment="Top" Width="40" />
                     <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
                            HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
                            Foreground="Yellow"

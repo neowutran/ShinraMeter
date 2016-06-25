@@ -1,22 +1,11 @@
-﻿using Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Data;
 
 namespace DamageMeter.UI
 {
     /// <summary>
-    /// Logique d'interaction pour Chatbox.xaml
+    ///     Logique d'interaction pour Chatbox.xaml
     /// </summary>
     public partial class Chatbox
     {
@@ -39,21 +28,17 @@ namespace DamageMeter.UI
 
         public void Update(List<ChatMessage> chatbox)
         {
-            for(int i = 0; i < chatbox.Count; i++)
+            for (var i = 0; i < chatbox.Count; i++)
             {
-
-                if(ChatboxList.Items.Count > i)
+                if (ChatboxList.Items.Count > i)
                 {
-                    ((ChatMessageUI)ChatboxList.Items.GetItemAt(i)).Update(chatbox[i]);
+                    ((ChatMessageUi) ChatboxList.Items.GetItemAt(i)).Update(chatbox[i]);
                 }
                 else
                 {
-                    ChatboxList.Items.Add(new ChatMessageUI(chatbox[i]));
+                    ChatboxList.Items.Add(new ChatMessageUi(chatbox[i]));
                 }
-
             }
         }
-
-      
     }
 }

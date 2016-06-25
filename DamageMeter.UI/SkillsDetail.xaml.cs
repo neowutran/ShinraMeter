@@ -6,28 +6,27 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DamageMeter.UI.Skill;
 using DamageMeter.UI.SkillsHeaders;
-using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI
 {
     /// <summary>
     ///     Logique d'interaction pour SkillsDetail.xaml
     /// </summary>
-    public partial class SkillsDetail : UserControl
+    public partial class SkillsDetail
     {
+        private readonly Database.Database.Type _type;
         private Label _currentSortedLabel;
-        private SortBy _sortBy = SortBy.Amount;
-        private SortOrder _sortOrder = SortOrder.Descending;
 
         private IEnumerable<SkillAggregate> _skills;
-        private Database.Database.Type _type;
+        private SortBy _sortBy = SortBy.Amount;
+        private SortOrder _sortOrder = SortOrder.Descending;
 
         public SkillsDetail(IEnumerable<SkillAggregate> skillAggregate, Database.Database.Type type)
         {
             InitializeComponent();
             _skills = skillAggregate;
             _type = type;
-           
+
             switch (_type)
             {
                 case Database.Database.Type.Damage:
@@ -67,9 +66,7 @@ namespace DamageMeter.UI
                     SkillsList.Items.Add(header);
                 }
                     break;
-                default:
                 case Database.Database.Type.Mana:
-
                 {
                     var header = new SkillsHeaderMana();
                     ContentWidth = header.Width;
@@ -81,6 +78,8 @@ namespace DamageMeter.UI
                     SkillsList.Items.Add(header);
                 }
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             Repaint();
@@ -169,7 +168,6 @@ namespace DamageMeter.UI
         {
             switch (_sortOrder)
             {
-               
                 case SortOrder.Descending:
                     switch (_sortBy)
                     {
@@ -340,6 +338,7 @@ namespace DamageMeter.UI
         public void Repaint()
         {
             var oldSkills = Clear();
+            Sort();
             foreach (var skill in _skills)
             {
                 var updated = -1;
@@ -366,9 +365,10 @@ namespace DamageMeter.UI
                         SkillsList.Items.Add(new SkillHeal(skill));
                         break;
                     case Database.Database.Type.Mana:
-                    default:
                         SkillsList.Items.Add(new SkillMana(skill));
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
         }

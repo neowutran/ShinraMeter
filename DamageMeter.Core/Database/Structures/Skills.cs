@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Data;
 using Tera.Game;
 
 namespace DamageMeter.Database.Structures
 {
     public class Skills
     {
+        private readonly Dictionary<string, object> _caching = new Dictionary<string, object>();
 
-        public Skills(Dictionary<EntityId, Dictionary<EntityId, List<Skill>>> sourceTargetSkill, Dictionary<EntityId, Dictionary<EntityId, List<Skill>>> targetSourceSkill,
-            Dictionary<EntityId, Dictionary<EntityId, Dictionary<int, List<Skill>>>> sourceTargetIdSkill, Dictionary<EntityId, Dictionary<int, List<Skill>>> sourceIdSkill
+        public Skills(Dictionary<EntityId, Dictionary<EntityId, List<Skill>>> sourceTargetSkill,
+            Dictionary<EntityId, Dictionary<EntityId, List<Skill>>> targetSourceSkill,
+            Dictionary<EntityId, Dictionary<EntityId, Dictionary<int, List<Skill>>>> sourceTargetIdSkill,
+            Dictionary<EntityId, Dictionary<int, List<Skill>>> sourceIdSkill
             )
         {
             SourceTargetSkill = sourceTargetSkill;
@@ -26,374 +27,377 @@ namespace DamageMeter.Database.Structures
         private Dictionary<EntityId, Dictionary<int, List<Skill>>> SourceIdSkill { get; }
         private Dictionary<EntityId, Dictionary<EntityId, Dictionary<int, List<Skill>>>> SourceTargetIdSkill { get; }
 
-        private Dictionary<string, object> Caching = new Dictionary<string, object>();
-
-
 
         public long DamageReceived(EntityId target, EntityId source, bool timed)
         {
             var key = "damage_received/" + target + "/" + source + "/" + timed;
-            if (Caching.ContainsKey(key)) return (long)Caching[key];
+            if (_caching.ContainsKey(key)) return (long) _caching[key];
 
-            IEnumerable<long> result = null;
+            IEnumerable<long> result;
             if (!timed)
             {
                 result = from skills in TargetSourceSkill[target][source]
-                         where skills.Type == Database.Type.Damage
-                         select skills.Amount;
+                    where skills.Type == Database.Type.Damage
+                    select skills.Amount;
+            }
+            else
+            {
+                result = from skills in TargetSourceSkill[target].Values
+                    from skill in skills
+                    where skill.Type == Database.Type.Damage
+                    select skill.Amount;
             }
 
-            result = from skills in TargetSourceSkill[target].Values
-                     from skill in skills
-                     where skill.Type == Database.Type.Damage
-                     select skill.Amount;
-
             var sum = result.Sum();
-            Caching.Add(key,sum);
+            _caching.Add(key, sum);
             return sum;
         }
 
         public int HitsReceived(EntityId target, EntityId source, bool timed)
         {
             var key = "hits_received/" + target + "/" + source + "/" + timed;
-            if (Caching.ContainsKey(key)) return (int)Caching[key];
+            if (_caching.ContainsKey(key)) return (int) _caching[key];
 
-            IEnumerable<Skill> result = null;
+            IEnumerable<Skill> result;
 
             if (!timed)
             {
                 result = from skills in TargetSourceSkill[target][source]
-                         where skills.Type == Database.Type.Damage
-                         select skills;
+                    where skills.Type == Database.Type.Damage
+                    select skills;
                 return result.Count();
             }
             result = from skills in TargetSourceSkill[target].Values
-                     from skill in skills
-                     where skill.Type == Database.Type.Damage
-                     select skill;
+                from skill in skills
+                where skill.Type == Database.Type.Damage
+                select skill;
 
             var count = result.Count();
-            Caching.Add(key, count);
+            _caching.Add(key, count);
             return count;
-
         }
 
         public long BiggestCrit(EntityId source, Entity target, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_crit/" + source + "/" + targetString + "/" + timed;
-            if (Caching.ContainsKey(key)) return (long)Caching[key];
+            if (_caching.ContainsKey(key)) return (long) _caching[key];
 
-            IEnumerable<long> result = null;
+            IEnumerable<long> result;
 
             if (timed || target == null)
             {
                 result = from skills in SourceTargetSkill[source].Values
-                         from skill in skills
-                         where skill.Type == Database.Type.Damage
-                         where skill.Critic == true
-                         select skill.Amount;
+                    from skill in skills
+                    where skill.Type == Database.Type.Damage
+                    where skill.Critic
+                    select skill.Amount;
             }
             else
             {
                 result = from skills in SourceTargetSkill[source][target.Id]
-                         where skills.Type == Database.Type.Damage
-                         where skills.Critic == true
-                         select skills.Amount;
+                    where skills.Type == Database.Type.Damage
+                    where skills.Critic
+                    select skills.Amount;
             }
             var max = result.Count();
-            Caching.Add(key, max);
+            _caching.Add(key, max);
             return max;
-
-
         }
 
         public IEnumerable<Tera.Game.Skill> SkillsId(UserEntity source, Entity target, bool timed)
         {
+            IEnumerable<Tera.Game.Skill> result;
 
-            IEnumerable<Tera.Game.Skill> result = null;
-            
 
             if (timed || target == null)
             {
                 result = from skills in SourceTargetSkill[source.Id].Values
-                         from skill in skills
-                         select SkillResult.GetSkill(source.Id, skill.SkillId, skill.HotDot, NetworkController.Instance.EntityTracker,  Data.BasicTeraData.Instance.SkillDatabase, Data.BasicTeraData.Instance.HotDotDatabase, Data.BasicTeraData.Instance.PetSkillDatabase);
+                    from skill in skills
+                    select
+                        SkillResult.GetSkill(source.Id, skill.SkillId, skill.HotDot,
+                            NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
+                            BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
 
                 return result.Distinct();
             }
 
-           
-                result = from skills in SourceTargetSkill[source.Id][target.Id]
-                         select SkillResult.GetSkill(source.Id, skills.SkillId, skills.HotDot , NetworkController.Instance.EntityTracker, Data.BasicTeraData.Instance.SkillDatabase, Data.BasicTeraData.Instance.HotDotDatabase, Data.BasicTeraData.Instance.PetSkillDatabase);
-            return result.Distinct();
 
+            result = from skills in SourceTargetSkill[source.Id][target.Id]
+                select
+                    SkillResult.GetSkill(source.Id, skills.SkillId, skills.HotDot,
+                        NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
+                        BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
+            return result.Distinct();
         }
 
         public Database.Type Type(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
-            var key = "type/" + source + "/" + targetString + "/"+ skillid +"/" + timed;
-            if (Caching.ContainsKey(key)) return (Database.Type)Caching[key];
-            
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var targetString = target?.Id.ToString() ?? "";
+            var key = "type/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            if (_caching.ContainsKey(key)) return (Database.Type) _caching[key];
+
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         select skills.Type;
+                select skills.Type;
 
             var type = result.First();
-            Caching[key] = type;
+            _caching[key] = type;
             return type;
         }
 
 
         public long Amount(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "amount/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (long)Caching[key];
+            if (_caching.ContainsKey(key)) return (long) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         select skills.Amount;
+                select skills.Amount;
 
             var sum = result.Sum();
-            Caching[key] = sum;
+            _caching[key] = sum;
             return sum;
         }
 
-        private List<Skill> DataSource(EntityId source, Entity target, int skillid ,  bool timed)
+        private IEnumerable<Skill> DataSource(EntityId source, Entity target, int skillid, bool timed)
         {
-            return (timed || target == null) ? SourceIdSkill[source][skillid] : SourceTargetIdSkill[source][target.Id][skillid];
+            return timed || target == null
+                ? SourceIdSkill[source][skillid]
+                : SourceTargetIdSkill[source][target.Id][skillid];
         }
 
 
         public long AmountWhite(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "amount_white/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (long)Caching[key];
+            if (_caching.ContainsKey(key)) return (long) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == false
-                         select skills.Amount;
+                where skills.Critic == false
+                select skills.Amount;
 
             long sum = 0;
-            if (result.Count() != 0) sum = result.Sum();
-            Caching[key] = sum;
+            var enumerable = result as long[] ?? result.ToArray();
+            if (enumerable.Length != 0) sum = enumerable.Sum();
+            _caching[key] = sum;
             return sum;
         }
 
         public long AmountCrit(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "amount_crit/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (long)Caching[key];
+            if (_caching.ContainsKey(key)) return (long) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == true
-                         select skills.Amount;
+                where skills.Critic
+                select skills.Amount;
             long sum = 0;
-            if (result.Count() != 0) sum = result.Sum();
-            Caching[key] = sum;
+            var enumerable = result as long[] ?? result.ToArray();
+            if (enumerable.Length != 0) sum = enumerable.Sum();
+            _caching[key] = sum;
             return sum;
         }
 
         public double AverageCrit(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "average_crit/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (double)Caching[key];
+            if (_caching.ContainsKey(key)) return (double) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == true
-                         select skills.Amount;
+                where skills.Critic
+                select skills.Amount;
 
             double sum = 0;
-            if (result.Count() != 0) sum = result.Average();
-            Caching[key] = sum;
+            var enumerable = result as long[] ?? result.ToArray();
+            if (enumerable.Length != 0) sum = enumerable.Average();
+            _caching[key] = sum;
             return sum;
         }
 
         public double AverageWhite(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "average_white/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (double)Caching[key];
+            if (_caching.ContainsKey(key)) return (double) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == false
-                         select skills.Amount;
+                where skills.Critic == false
+                select skills.Amount;
             double sum = 0;
-            if (result.Count() != 0) sum = result.Average();
-            Caching[key] = sum;
+            var enumerable = result as long[] ?? result.ToArray();
+            if (enumerable.Length != 0) sum = enumerable.Average();
+            _caching[key] = sum;
             return sum;
         }
 
 
         public double Average(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "average/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (double)Caching[key];
+            if (_caching.ContainsKey(key)) return (double) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         select skills.Amount;
+                select skills.Amount;
 
             var average = result.Average();
-            Caching[key] = average;
+            _caching[key] = average;
             return average;
         }
 
         public int CritRate(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "critrate/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (int)Caching[key];
+            if (_caching.ContainsKey(key)) return (int) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         select skills.Critic;
+                select skills.Critic;
 
-            var crit = result.Count(x => x == true) / result.Count();
-            Caching[key] = crit;
+            var enumerable = result as bool[] ?? result.ToArray();
+            var crit = enumerable.Count(x => x)*100/enumerable.Length;
+            _caching[key] = crit;
             return crit;
         }
 
         public long BiggestCrit(EntityId source, Entity target, int skillid, bool timed)
         {
-
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_crit/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (long)Caching[key];
+            if (_caching.ContainsKey(key)) return (long) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == true
-                         select skills.Amount;
+                where skills.Critic
+                select skills.Amount;
 
             long max = 0;
-            if (result.Count() != 0) max = result.Max();
-            Caching[key] = max;
+            var enumerable = result as long[] ?? result.ToArray();
+            if (enumerable.Length != 0) max = enumerable.Max();
+            _caching[key] = max;
             return max;
         }
 
         public long BiggestWhite(EntityId source, Entity target, int skillid, bool timed)
         {
-
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_white/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (long)Caching[key];
+            if (_caching.ContainsKey(key)) return (long) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == false
-                         select skills.Amount;
+                where skills.Critic == false
+                select skills.Amount;
 
             long max = 0;
-            if (result.Count() != 0) max = result.Max();
-            Caching[key] = max;
+            var enumerable = result as long[] ?? result.ToArray();
+            if (enumerable.Length != 0) max = enumerable.Max();
+            _caching[key] = max;
             return max;
         }
 
         public long BiggestHit(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_hit/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (long)Caching[key];
+            if (_caching.ContainsKey(key)) return (long) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         select skills.Amount;
+                select skills.Amount;
 
             var max = result.Max();
-            Caching[key] = max;
+            _caching[key] = max;
             return max;
         }
 
 
         public int Crits(EntityId source, Entity target, int skillid, bool timed)
         {
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "crits/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (int)Caching[key];
+            if (_caching.ContainsKey(key)) return (int) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == true
-                         select skills.Critic;
+                where skills.Critic
+                select skills.Critic;
 
             var crit = result.Count();
-            Caching[key] = crit;
+            _caching[key] = crit;
             return crit;
         }
 
         public List<Skill> GetSkills(EntityId source, Entity target, bool timed, long beginTime, long endTime)
         {
-            IEnumerable<Skill> result = null;
+            IEnumerable<Skill> result;
 
-            if(timed || target == null)
+            if (timed || target == null)
             {
                 result = from skills in SourceTargetSkill[source].Values
-                         from skill in skills
-                         select skill;
+                    from skill in skills
+                    select skill;
                 return result.ToList();
             }
 
-                result = from skills in SourceTargetSkill[source][target.Id]
-                         select skills;
-                return result.ToList();
+            result = from skills in SourceTargetSkill[source][target.Id]
+                select skills;
+            return result.ToList();
         }
 
 
         public int White(EntityId source, Entity target, int skillid, bool timed)
         {
-
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "white/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (int)Caching[key];
+            if (_caching.ContainsKey(key)) return (int) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == false
-                         select skills.Critic;
+                where skills.Critic == false
+                select skills.Critic;
 
             var white = result.Count();
-            Caching[key] = white;
+            _caching[key] = white;
             return white;
         }
 
 
         public double LowestCrit(EntityId source, Entity target, int skillid, bool timed)
         {
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         where skills.Critic == true
-                         select skills.Amount;
-            if (result.Count() == 0) return 0;
-            return result.Min();
-
+                where skills.Critic
+                select skills.Amount;
+            var enumerable = result as long[] ?? result.ToArray();
+            return !enumerable.Any() ? 0 : enumerable.Min();
         }
 
         public int Hits(EntityId source, Entity target, int skillid, bool timed)
         {
-
-            var targetString = target == null ? "" : target.Id.ToString();
+            var targetString = target?.Id.ToString() ?? "";
             var key = "hits/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (Caching.ContainsKey(key)) return (int)Caching[key];
+            if (_caching.ContainsKey(key)) return (int) _caching[key];
 
-            List<Skill> dataSource = DataSource(source, target, skillid, timed);
+            var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                         select skills;
+                select skills;
 
             var hits = result.Count();
-            Caching[key] = hits;
+            _caching[key] = hits;
             return hits;
         }
-
     }
 }

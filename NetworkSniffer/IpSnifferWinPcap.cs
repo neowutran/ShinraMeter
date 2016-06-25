@@ -20,17 +20,18 @@ namespace NetworkSniffer
             (MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string _filter;
+        private readonly List<string> _servers;
         private WinPcapDeviceList _devices;
         private volatile uint _droppedPackets;
         private volatile uint _interfaceDroppedPackets;
-        private List<string> _servers;
 
         public IpSnifferWinPcap(string filter, List<string> servers)
         {
             _filter = filter;
             _servers = servers;
             BufferSize = 8192*1024;
-            _devices = WinPcapDeviceList.New();//check for winpcap installed if not - exception to fallback to rawsockets
+            _devices = WinPcapDeviceList.New();
+            //check for winpcap installed if not - exception to fallback to rawsockets
             _devices = null;
         }
 
@@ -63,8 +64,15 @@ namespace NetworkSniffer
             foreach (var device in interestingDevices)
             {
                 device.OnPacketArrival += device_OnPacketArrival;
-                try { device.Open(DeviceMode.Normal, 1000);}
-                catch (Exception e) { Logger.Warn($"Failed to open device {device.Name}. {e.Message}"); continue; }
+                try
+                {
+                    device.Open(DeviceMode.Normal, 1000);
+                }
+                catch (Exception e)
+                {
+                    Logger.Warn($"Failed to open device {device.Name}. {e.Message}");
+                    continue;
+                }
                 device.Filter = _filter;
                 if (BufferSize != null)
                 {
@@ -88,7 +96,16 @@ namespace NetworkSniffer
             Debug.Assert(_devices != null);
             foreach (var device in _devices.Where(device => device.Opened))
             {
-                try { device.StopCapture(); } catch { };//SharpPcap.PcapException: captureThread was aborted after 00:00:02 - it's normal when there is no traffic while stopping
+                try
+                {
+                    device.StopCapture();
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                //SharpPcap.PcapException: captureThread was aborted after 00:00:02 - it's normal when there is no traffic while stopping
                 device.Close();
             }
             _devices = null;

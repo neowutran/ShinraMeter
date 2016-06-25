@@ -3,30 +3,28 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Net.Http;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
+using DamageMeter.Database.Structures;
 using DamageMeter.Sniffing;
 using DamageMeter.UI.EntityStats;
 using Data;
 using log4net;
+using Tera.Game;
+using Tera.Game.Abnormality;
 using Application = System.Windows.Forms.Application;
 using ContextMenu = System.Windows.Forms.ContextMenu;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
-using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
-using System.Net.Http;
-using System.Text;
-using Tera.Game;
-using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI
 {
@@ -35,26 +33,36 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class MainWindow
     {
+        private readonly Chatbox _chatbox;
         private readonly EntityStatsMain _entityStats;
+
+        private readonly TeradpsHistory _windowHistory;
+        private MenuItem _alwaysOn;
+
+        private MenuItem _clickThrou;
+
+        private bool _forceWindowVisibilityHidden;
         private bool _keyboardInitialized;
+
+        private MenuItem _switchNoStatsVisibility;
+
+        private bool _topMost = true;
 
         private NotifyIcon _trayIcon;
 
         public MainWindow()
-        {     
-               
+        {
             InitializeComponent();
-            var currentDomain = default(AppDomain);
-            currentDomain = AppDomain.CurrentDomain;
+            var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
             currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
             // Handler for exceptions in threads behind forms.
             Application.ThreadException += GlobalThreadExceptionHandler;
-            if (BasicTeraData.Instance.WindowData.InvisibleUI)
+            if (BasicTeraData.Instance.WindowData.InvisibleUi)
             {
                 Visibility = Visibility.Hidden;
             }
-            App.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
+            System.Windows.Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
@@ -81,16 +89,17 @@ namespace DamageMeter.UI
             _entityStats = new EntityStatsMain(this);
             _chatbox = new Chatbox(new List<ChatMessage>());
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
-            Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
+            Console.WriteLine(
+                "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
         }
+
+        public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             Exit();
         }
-
-        private Chatbox _chatbox; 
 
         public void SetClickThrou()
         {
@@ -118,9 +127,6 @@ namespace DamageMeter.UI
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
 
-        public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
-
-        private MenuItem _switchNoStatsVisibility;
         private void TrayConfiguration()
         {
             _trayIcon = new NotifyIcon
@@ -144,24 +150,24 @@ namespace DamageMeter.UI
             issues.Click += IssuesOnClick;
             var forum = new MenuItem {Text = "Forum"};
             forum.Click += ForumOnClick;
-            var teradps = new MenuItem { Text = "TeraDps.io" };
+            var teradps = new MenuItem {Text = "TeraDps.io"};
             teradps.Click += TeraDpsOnClick;
-            var excel = new MenuItem { Text = "Excel export" };
+            var excel = new MenuItem {Text = "Excel export"};
             excel.Click += ExcelOnClick;
             excel.Checked = BasicTeraData.Instance.WindowData.Excel;
-            var siteExport = new MenuItem { Text = "Site export" };
+            var siteExport = new MenuItem {Text = "Site export"};
             siteExport.Click += SiteOnClick;
             siteExport.Checked = BasicTeraData.Instance.WindowData.SiteExport;
-            var party = new MenuItem { Text = "Count only party members" };
+            var party = new MenuItem {Text = "Count only party members"};
             party.Click += PartyOnClick;
             party.Checked = BasicTeraData.Instance.WindowData.PartyOnly;
 
             _clickThrou = new MenuItem {Text = "Activate click throu"};
             _clickThrou.Click += ClickThrouOnClick;
-            _switchNoStatsVisibility = new MenuItem { Text = "Invisible when no stats" };
+            _switchNoStatsVisibility = new MenuItem {Text = "Invisible when no stats"};
             _switchNoStatsVisibility.Click += SwitchNoStatsVisibility;
-            _switchNoStatsVisibility.Checked = BasicTeraData.Instance.WindowData.InvisibleUI;
-            _alwaysOn = new MenuItem { Text = "Show always" };
+            _switchNoStatsVisibility.Checked = BasicTeraData.Instance.WindowData.InvisibleUi;
+            _alwaysOn = new MenuItem {Text = "Show always"};
             _alwaysOn.Click += _trayIcon_DoubleClick;
             _alwaysOn.Checked = BasicTeraData.Instance.WindowData.AlwaysVisible;
 
@@ -181,20 +187,23 @@ namespace DamageMeter.UI
             context.MenuItems.Add(exit);
             _trayIcon.ContextMenu = context;
         }
+
         private void SiteOnClick(object sender, EventArgs eventArgs)
         {
             BasicTeraData.Instance.WindowData.SiteExport = !BasicTeraData.Instance.WindowData.SiteExport;
-            (sender as MenuItem).Checked = BasicTeraData.Instance.WindowData.SiteExport;
+            ((MenuItem) sender).Checked = BasicTeraData.Instance.WindowData.SiteExport;
         }
+
         private void PartyOnClick(object sender, EventArgs eventArgs)
         {
             BasicTeraData.Instance.WindowData.PartyOnly = !BasicTeraData.Instance.WindowData.PartyOnly;
-            (sender as MenuItem).Checked = BasicTeraData.Instance.WindowData.PartyOnly;
+            ((MenuItem) sender).Checked = BasicTeraData.Instance.WindowData.PartyOnly;
         }
+
         private void ExcelOnClick(object sender, EventArgs eventArgs)
         {
             BasicTeraData.Instance.WindowData.Excel = !BasicTeraData.Instance.WindowData.Excel;
-            (sender as MenuItem).Checked = BasicTeraData.Instance.WindowData.Excel;
+            ((MenuItem) sender).Checked = BasicTeraData.Instance.WindowData.Excel;
         }
 
         private void _trayIcon_DoubleClick(object sender, EventArgs e)
@@ -202,9 +211,6 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.AlwaysVisible = !BasicTeraData.Instance.WindowData.AlwaysVisible;
             _alwaysOn.Checked = BasicTeraData.Instance.WindowData.AlwaysVisible;
         }
-
-        private MenuItem _clickThrou;
-        private MenuItem _alwaysOn;
 
         private static void ClickThrouOnClick(object sender, EventArgs eventArgs)
         {
@@ -228,7 +234,7 @@ namespace DamageMeter.UI
 
         private void ResetOnClick(object sender, EventArgs eventArgs)
         {
-            NetworkController.Instance.NeedToReset=true;
+            NetworkController.Instance.NeedToReset = true;
         }
 
         private void ForumOnClick(object sender, EventArgs eventArgs)
@@ -249,10 +255,9 @@ namespace DamageMeter.UI
 
         private void SwitchNoStatsVisibility(object sender, EventArgs eventArgs)
         {
-           
-            var invisibleUi = BasicTeraData.Instance.WindowData.InvisibleUI;
-            BasicTeraData.Instance.WindowData.InvisibleUI = !invisibleUi;
-            (sender as MenuItem).Checked = BasicTeraData.Instance.WindowData.InvisibleUI;
+            var invisibleUi = BasicTeraData.Instance.WindowData.InvisibleUi;
+            BasicTeraData.Instance.WindowData.InvisibleUi = !invisibleUi;
+            ((MenuItem) sender).Checked = BasicTeraData.Instance.WindowData.InvisibleUi;
             if (_forceWindowVisibilityHidden) return;
 
             if (invisibleUi)
@@ -263,7 +268,6 @@ namespace DamageMeter.UI
             {
                 Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
             }
-
         }
 
         private void TrayIconOnClick(object sender, EventArgs eventArgs)
@@ -276,7 +280,6 @@ namespace DamageMeter.UI
             }
             */
             StayTopMost();
-
         }
 
         public void VerifyClose()
@@ -306,24 +309,20 @@ namespace DamageMeter.UI
 
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
-            var ex = default(Exception);
-            ex = (Exception) e.ExceptionObject;
+            var ex = (Exception) e.ExceptionObject;
             LogError("##### CRASH (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
-                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
-                      "\r\n" + ex.TargetSite);
+                     ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
+                     "\r\n" + ex.TargetSite);
             MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
-
         }
 
         private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
         {
-            var ex = default(Exception);
-            ex = e.Exception;
+            var ex = e.Exception;
             LogError("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
-                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
-                      "\r\n" + ex.TargetSite);
+                     ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
+                     "\r\n" + ex.TargetSite);
             MessageBox.Show("An fatal error has be found, please see the error.log file for more informations.");
-
         }
 
         private static void LogError(string error)
@@ -339,10 +338,9 @@ namespace DamageMeter.UI
 
                 using (var client = new HttpClient())
                 {
-                   
                     var formContent = new FormUrlEncodedContent(new[]
                     {
-                        new KeyValuePair<string, string>("error", error),
+                        new KeyValuePair<string, string>("error", error)
                     });
 
                     var response = client.PostAsync("http://diclah.com/~yukikoo/debug/debug.php", formContent);
@@ -350,13 +348,11 @@ namespace DamageMeter.UI
                     Console.WriteLine(responseString.Result);
                 }
             }
-            catch 
+            catch
             {
-             // Ignore
+                // Ignore
             }
         }
-
-        private bool _forceWindowVisibilityHidden = false;
 
         public void UpdateKeyboard(object o, EventArgs args)
         {
@@ -377,14 +373,15 @@ namespace DamageMeter.UI
 
             if (!BasicTeraData.Instance.WindowData.AlwaysVisible)
             {
-
                 if (!teraWindowActive && !meterWindowActive)
                 {
                     Visibility = Visibility.Hidden;
                     _forceWindowVisibilityHidden = true;
                 }
 
-                if ((meterWindowActive || teraWindowActive) && ((BasicTeraData.Instance.WindowData.InvisibleUI && Controls.Count > 0) || !BasicTeraData.Instance.WindowData.InvisibleUI))
+                if ((meterWindowActive || teraWindowActive) &&
+                    ((BasicTeraData.Instance.WindowData.InvisibleUi && Controls.Count > 0) ||
+                     !BasicTeraData.Instance.WindowData.InvisibleUi))
                 {
                     _forceWindowVisibilityHidden = false;
                     Visibility = Visibility.Visible;
@@ -396,20 +393,21 @@ namespace DamageMeter.UI
             }
         }
 
-        public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities, bool ntimedEncounter, AbnormalityStorage nabnormals,
+        public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities,
+            bool ntimedEncounter, AbnormalityStorage nabnormals,
             ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox)
         {
             NetworkController.UpdateUiHandler changeUi =
-                delegate(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities, bool timedEncounter, 
-                AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox)
+                delegate(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities,
+                    bool timedEncounter,
+                    AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory,
+                    List<ChatMessage> chatbox)
                 {
-
                     Console.WriteLine("count=" + statsSummary.PlayerDealt.Count);
 
-                    foreach(var entity in entities)
+                    foreach (var entity in entities)
                     {
                         Console.Write(entity.Info.Name + " ; ");
-
                     }
                     Console.WriteLine("");
                     UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
@@ -417,12 +415,18 @@ namespace DamageMeter.UI
                     _windowHistory.Update(bossHistory);
                     _chatbox.Update(chatbox);
 
-                    PartyDps.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0 ? statsSummary.EntityInformation.TotalDamage : ((statsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond) / statsSummary.EntityInformation.Interval)) + "/s";
+                    PartyDps.Content =
+                        FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
+                            ? statsSummary.EntityInformation.TotalDamage
+                            : statsSummary.EntityInformation.TotalDamage*TimeSpan.TicksPerSecond/
+                              statsSummary.EntityInformation.Interval) + "/s";
                     var visiblePlayerStats = new HashSet<Player>();
                     var statsDamage = statsSummary.PlayerDealt.Where(x => x.Type == Database.Database.Type.Damage);
                     var statsHeal = statsSummary.PlayerDealt.Where(x => x.Type == Database.Database.Type.Heal);
                     var counter = 0;
-                    foreach (var playerStats in statsDamage)
+                    var playerDealts = statsHeal as PlayerDealt[] ?? statsHeal.ToArray();
+                    var playerStatses = statsDamage as PlayerDealt[] ?? statsDamage.ToArray();
+                    foreach (var playerStats in playerStatses)
                     {
                         PlayerStats playerStatsControl;
                         Controls.TryGetValue(playerStats.Source, out playerStatsControl);
@@ -432,7 +436,9 @@ namespace DamageMeter.UI
                         }
                         visiblePlayerStats.Add(playerStats.Source);
                         if (playerStatsControl != null) continue;
-                        playerStatsControl = new PlayerStats(playerStats, statsHeal.Where(x => x.Source == playerStats.Source).FirstOrDefault(), statsSummary.EntityInformation, skills ,abnormals.Get(playerStats.Source));
+                        playerStatsControl = new PlayerStats(playerStats,
+                            playerDealts.FirstOrDefault(x => x.Source == playerStats.Source),
+                            statsSummary.EntityInformation, skills, abnormals.Get(playerStats.Source));
                         Controls.Add(playerStats.Source, playerStatsControl);
 
                         if (counter == 9)
@@ -450,24 +456,26 @@ namespace DamageMeter.UI
                     }
 
                     TotalDamage.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.TotalDamage);
-                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval  / TimeSpan.TicksPerSecond);
+                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval/TimeSpan.TicksPerSecond);
                     Timer.Content = interval.ToString(@"mm\:ss");
 
                     Players.Items.Clear();
-                
-                    foreach (var item in statsDamage)
+
+                    foreach (var item in playerStatses)
                     {
-                        Players.Items.Add(Controls[item.Source]);                      
-                        Controls[item.Source].Repaint(item, statsHeal.Where(x => x.Source == item.Source).FirstOrDefault(), statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
+                        Players.Items.Add(Controls[item.Source]);
+                        Controls[item.Source].Repaint(item,
+                            playerDealts.FirstOrDefault(x => x.Source == item.Source),
+                            statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
                     }
-                       
-                    if (BasicTeraData.Instance.WindowData.InvisibleUI)
+
+                    if (BasicTeraData.Instance.WindowData.InvisibleUi)
                     {
-                        if(Controls.Count > 0 && !_forceWindowVisibilityHidden)
+                        if (Controls.Count > 0 && !_forceWindowVisibilityHidden)
                         {
                             Visibility = Visibility.Visible;
                         }
-                        if(Controls.Count == 0)
+                        if (Controls.Count == 0)
                         {
                             Visibility = Visibility.Hidden;
                         }
@@ -480,16 +488,16 @@ namespace DamageMeter.UI
                         }
                     }
                 };
-            Dispatcher.Invoke(changeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox);
+            Dispatcher.Invoke(changeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory,
+                nchatbox);
         }
-
-        private TeradpsHistory _windowHistory;
 
         private void ShowHistory(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
             _windowHistory.Show();
         }
+
         private void ShowChat(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
@@ -511,21 +519,18 @@ namespace DamageMeter.UI
             if (!Topmost || !_topMost) return;
             Topmost = false;
             Topmost = true;
-            
         }
 
-        private bool NeedUpdateEncounter(List<NpcEntity> entities)
+        private bool NeedUpdateEncounter(IReadOnlyList<NpcEntity> entities)
         {
-            if (entities.Count != ListEncounter.Items.Count-1)
+            if (entities.Count != ListEncounter.Items.Count - 1)
             {
-                Console.WriteLine("UPDATE NEEDED 1");
                 return true;
             }
             for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
             {
-                if (((NpcEntity)((ComboBoxItem)ListEncounter.Items[i]).Content) != entities[i - 1])
+                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entities[i - 1])
                 {
-                    Console.WriteLine("UPDATE NEEDED 2");
                     return true;
                 }
             }
@@ -539,19 +544,18 @@ namespace DamageMeter.UI
                 return false;
             }
 
-            for(int i = 1; i < ListEncounter.Items.Count; i++)
+            for (var i = 1; i < ListEncounter.Items.Count; i++)
             {
-                if (((NpcEntity) ((ComboBoxItem)ListEncounter.Items[i]).Content) != entity) continue;
+                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entity) continue;
                 ListEncounter.SelectedItem = ListEncounter.Items[i];
                 return true;
             }
             return false;
         }
 
-        
+
         private void UpdateComboboxEncounter(List<NpcEntity> entities, NpcEntity currentBoss)
         {
-
             //http://stackoverflow.com/questions/12164488/system-reflection-targetinvocationexception-occurred-in-presentationframework
             if (ListEncounter == null || !ListEncounter.IsLoaded)
             {
@@ -565,7 +569,8 @@ namespace DamageMeter.UI
             }
 
             NpcEntity selectedEntity = null;
-            if ((ComboBoxItem) ListEncounter.SelectedItem != null && !(((ComboBoxItem)ListEncounter.SelectedItem).Content is string))
+            if ((ComboBoxItem) ListEncounter.SelectedItem != null &&
+                !(((ComboBoxItem) ListEncounter.SelectedItem).Content is string))
             {
                 selectedEntity = (NpcEntity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
             }
@@ -575,10 +580,10 @@ namespace DamageMeter.UI
             var selected = false;
             foreach (var entity in entities)
             {
-                var item = new ComboBoxItem { Content = entity };
+                var item = new ComboBoxItem {Content = entity};
                 ListEncounter.Items.Add(item);
                 if (entity != selectedEntity) continue;
-                ListEncounter.SelectedItem = item ;
+                ListEncounter.SelectedItem = item;
                 selected = true;
             }
             if (ChangeEncounterSelection(currentBoss))
@@ -588,7 +593,6 @@ namespace DamageMeter.UI
 
             if (selected) return;
             ListEncounter.SelectedItem = ListEncounter.Items[0];
-
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -608,19 +612,14 @@ namespace DamageMeter.UI
             if (e.AddedItems.Count != 1) return;
 
             NpcEntity encounter = null;
-            if(((ComboBoxItem)e.AddedItems[0]).Content is NpcEntity)
+            if (((ComboBoxItem) e.AddedItems[0]).Content is NpcEntity)
             {
-                encounter = (NpcEntity)((ComboBoxItem)e.AddedItems[0]).Content;
+                encounter = (NpcEntity) ((ComboBoxItem) e.AddedItems[0]).Content;
             }
 
             if (encounter != NetworkController.Instance.Encounter)
             {
                 NetworkController.Instance.NewEncounter = encounter;
-
-
-                MessageBox.Show("4:" + e.OriginalSource.GetType(), "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-               
-
             }
         }
 
@@ -629,9 +628,6 @@ namespace DamageMeter.UI
             _entityStats.Hide();
             _entityStats.Topmost = false;
         }
-
-    
-        private delegate void ChangeTitle(string servername);
 
         private void PinImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -667,8 +663,6 @@ namespace DamageMeter.UI
             }
         }
 
-        private bool _topMost = true;
-
         private void ListEncounter_OnDropDownOpened(object sender, EventArgs e)
         {
             _topMost = false;
@@ -679,7 +673,9 @@ namespace DamageMeter.UI
             //.NET 4.6 bug: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
             if (Environment.OSVersion.Version.Major >= 10)
             {
-                this.ListEncounter.GetType().GetField("_highlightedInfo", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).SetValue(this.ListEncounter, null);
+                ListEncounter.GetType()
+                    .GetField("_highlightedInfo", BindingFlags.NonPublic | BindingFlags.Instance)
+                    .SetValue(ListEncounter, null);
             }
             _topMost = true;
         }
@@ -691,9 +687,12 @@ namespace DamageMeter.UI
 
         private void Config_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Style style = this.FindResource("ShinraContext") as Style;
-            popupMenu.Style = style;
-            popupMenu.IsOpen = true;
+            var style = FindResource("ShinraContext") as Style;
+            PopupMenu.Style = style;
+            PopupMenu.IsOpen = true;
         }
+
+
+        private delegate void ChangeTitle(string servername);
     }
 }

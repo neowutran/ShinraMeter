@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using Data;
-using Tera.Game;
-using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.SkillDetail
 {
@@ -20,16 +17,12 @@ namespace DamageMeter.UI.SkillDetail
 
         public void Update(Tera.Game.Skill skill, SkillAggregate skillAggregate)
         {
-            //TODO Need to refactor this shitty copy paste shit
-            bool? chained = skill?.IsChained;
-            string hit = skill?.Detail;
+            var chained = skill.IsChained;
+            var hit = skill.Detail;
 
-            if (hit == null)
+            if (skill.IsHotDot)
             {
-                if (BasicTeraData.Instance.HotDotDatabase.Get(skill.Id) != null)
-                {
-                    hit = "MOT";
-                }
+                hit = "DOT";
             }
             if (hit != null)
             {

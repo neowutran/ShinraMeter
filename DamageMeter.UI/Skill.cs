@@ -1,5 +1,4 @@
-﻿
-namespace DamageMeter.UI
+﻿namespace DamageMeter.UI
 {
     internal interface ISkill
     {

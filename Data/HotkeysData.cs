@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
@@ -24,7 +23,6 @@ namespace Data
             None = 0
         }
 
-        private readonly string _hotkeyFile;
         private readonly FileStream _filestream;
 
         public HotkeysData(BasicTeraData basicData)
@@ -33,12 +31,12 @@ namespace Data
 
             // Load XML File
             XDocument xml;
-            _hotkeyFile = Path.Combine(basicData.ResourceDirectory, "config/hotkeys.xml");
+            var hotkeyFile = Path.Combine(basicData.ResourceDirectory, "config/hotkeys.xml");
 
             try
             {
-                FileAttributes attrs = File.GetAttributes(_hotkeyFile);
-                File.SetAttributes(_hotkeyFile, attrs & ~FileAttributes.ReadOnly);
+                var attrs = File.GetAttributes(hotkeyFile);
+                File.SetAttributes(hotkeyFile, attrs & ~FileAttributes.ReadOnly);
             }
             catch
             {
@@ -47,13 +45,13 @@ namespace Data
 
             try
             {
-                _filestream = new FileStream(_hotkeyFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _filestream = new FileStream(hotkeyFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 xml = XDocument.Load(_filestream);
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 Save();
-                _filestream = new FileStream(_hotkeyFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _filestream = new FileStream(hotkeyFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 return;
             }
             catch
@@ -64,16 +62,16 @@ namespace Data
             var root = xml.Root;
             if (root == null) return;
 
-            var pasteKey = ReadElement(root, "paste",false);
+            var pasteKey = ReadElement(root, "paste", false);
             if (pasteKey != null)
             {
-                Paste = (KeyValuePair<Keys, ModifierKeys>)pasteKey;
+                Paste = (KeyValuePair<Keys, ModifierKeys>) pasteKey;
             }
 
             var resetKey = ReadElement(root, "reset", true);
             if (resetKey != null)
             {
-                Reset = (KeyValuePair<Keys, ModifierKeys>)resetKey;
+                Reset = (KeyValuePair<Keys, ModifierKeys>) resetKey;
             }
 
             Copy = new List<CopyKey>();
@@ -81,13 +79,13 @@ namespace Data
             var activateKey = ReadElement(root, "click_throu", true);
             if (activateKey != null)
             {
-                ClickThrou = (KeyValuePair<Keys,ModifierKeys>)activateKey;
+                ClickThrou = (KeyValuePair<Keys, ModifierKeys>) activateKey;
             }
 
             var resetCurrentKey = ReadElement(root, "reset_current", true);
             if (resetCurrentKey != null)
             {
-                ResetCurrent = (KeyValuePair<Keys, ModifierKeys>)resetCurrentKey;
+                ResetCurrent = (KeyValuePair<Keys, ModifierKeys>) resetCurrentKey;
             }
 
 
@@ -100,8 +98,10 @@ namespace Data
 
         public KeyValuePair<Keys, ModifierKeys> ResetCurrent { get; private set; }
 
+        public KeyValuePair<Keys, ModifierKeys> ClickThrou { get; private set; }
 
-        private static KeyValuePair<Keys, ModifierKeys>? ReadElement(XContainer root,  string element, bool readAlt)
+
+        private static KeyValuePair<Keys, ModifierKeys>? ReadElement(XContainer root, string element, bool readAlt)
         {
             try
             {
@@ -133,18 +133,16 @@ namespace Data
                     var altQuery = from hotkeys in root.Descendants(element)
                         select hotkeys.Element("alt");
                     bool.TryParse(altQuery.First().Value, out alt);
-
                 }
 
                 var modifier = ConvertToModifierKey(ctrl, alt, shift, window);
                 return new KeyValuePair<Keys, ModifierKeys>(key, modifier);
-
             }
             catch
             {
                 return null;
             }
-        } 
+        }
 
         private void DefaultValue()
         {
@@ -173,10 +171,7 @@ namespace Data
                     )
             };
             ClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageUp, ModifierKeys.Control);
-
         }
-
-        public KeyValuePair<Keys, ModifierKeys> ClickThrou { get; private set; }
 
         private void CopyData(XDocument xml)
         {
@@ -289,7 +284,7 @@ namespace Data
             xml.Root.Element("click_throu").Add(new XElement("key", activateClickThrouKey.ToString()));
 
 
-           xml.Root.Add(new XElement("copys"));
+            xml.Root.Add(new XElement("copys"));
 
             foreach (var copy in Copy)
             {
@@ -317,7 +312,7 @@ namespace Data
             }
 
             _filestream.SetLength(0);
-            using (StreamWriter sr = new StreamWriter(_filestream))
+            using (var sr = new StreamWriter(_filestream))
             {
                 // File writing as usual
                 sr.Write(xml);

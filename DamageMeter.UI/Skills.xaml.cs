@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Interop;
-using Data;
-using Tera.Game;
 using DamageMeter.Database.Structures;
+using Data;
+using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI
 {
@@ -16,17 +14,18 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class Skills
     {
-        private Buff _buff;
         private readonly PlayerStats _parent;
+        private Buff _buff;
         private SkillsDetail _skillDps;
         private SkillsDetail _skillHeal;
         private SkillsDetail _skillMana;
 
 
-        public Skills(PlayerStats parent, PlayerDealt playerDealt, EntityInformation entityInformation, Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
+        public Skills(PlayerStats parent, PlayerDealt playerDealt, EntityInformation entityInformation,
+            Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
         {
             InitializeComponent();
-                 
+
             TabControl.SelectionChanged += TabControlOnSelectionChanged;
             _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
@@ -51,16 +50,17 @@ namespace DamageMeter.UI
             var tabitem = (TabItem) ((TabControl) selectionChangedEventArgs.Source).SelectedItem;
         }
 
-        public void Update(PlayerDealt playerDealt, EntityInformation entityInformation, Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
+        public void Update(PlayerDealt playerDealt, EntityInformation entityInformation,
+            Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
         {
-     
             var death = buffs.Death;
             if (death == null)
             {
                 DeathCounter.Content = 0;
                 DeathDuration.Content = "0s";
             }
-            else {
+            else
+            {
                 DeathCounter.Content = death.Count(entityInformation.BeginTime, entityInformation.EndTime);
                 var duration = death.Duration(entityInformation.BeginTime, entityInformation.EndTime);
                 var interval = TimeSpan.FromTicks(duration);
@@ -79,19 +79,31 @@ namespace DamageMeter.UI
                 var interval = TimeSpan.FromTicks(duration);
                 AggroDuration.Content = interval.ToString(@"mm\:ss");
             }
-        
+
             if (_skillDps == null)
             {
-                _skillDps = new SkillsDetail(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Damage), Database.Database.Type.Damage);
-                _skillHeal = new SkillsDetail(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Heal), Database.Database.Type.Heal);
-                _skillMana = new SkillsDetail(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Mana), Database.Database.Type.Mana);
+                _skillDps =
+                    new SkillsDetail(
+                        SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                            Database.Database.Type.Damage), Database.Database.Type.Damage);
+                _skillHeal =
+                    new SkillsDetail(
+                        SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                            Database.Database.Type.Heal), Database.Database.Type.Heal);
+                _skillMana =
+                    new SkillsDetail(
+                        SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                            Database.Database.Type.Mana), Database.Database.Type.Mana);
                 _buff = new Buff(playerDealt, buffs, entityInformation);
-
             }
-            else {
-                _skillDps.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Damage));
-                _skillHeal.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Heal));
-                _skillMana.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter, Database.Database.Type.Mana));
+            else
+            {
+                _skillDps.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                    Database.Database.Type.Damage));
+                _skillHeal.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                    Database.Database.Type.Heal));
+                _skillMana.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                    Database.Database.Type.Mana));
                 _buff.Update(playerDealt, buffs, entityInformation);
             }
             HealPanel.Content = _skillHeal;
@@ -100,25 +112,26 @@ namespace DamageMeter.UI
             BuffPanel.Content = _buff;
         }
 
-        private IEnumerable<SkillAggregate> SkillsAggregate(PlayerDealt playerDealt, EntityInformation entityInformation, Database.Structures.Skills skillsData, bool timedEncounter, Database.Database.Type type)
+        private IEnumerable<SkillAggregate> SkillsAggregate(PlayerDealt playerDealt, EntityInformation entityInformation,
+            Database.Structures.Skills skillsData, bool timedEncounter, Database.Database.Type type)
         {
             var skills = skillsData.SkillsId(playerDealt.Source.User, entityInformation.Entity, timedEncounter);
-            Dictionary<string, SkillAggregate> skillsAggregate = new Dictionary<string, SkillAggregate>();
-            foreach (Tera.Game.Skill skill in skills)
+            var skillsAggregate = new Dictionary<string, SkillAggregate>();
+            foreach (var skill in skills)
             {
-
-                if (skillsData.Type(playerDealt.Source.User.Id, entityInformation.Entity, skill.Id, timedEncounter) != type)
+                if (skillsData.Type(playerDealt.Source.User.Id, entityInformation.Entity, skill.Id, timedEncounter) !=
+                    type)
                 {
                     continue;
                 }
 
                 if (!skillsAggregate.ContainsKey(skill.ShortName))
                 {
-                    skillsAggregate.Add(skill.ShortName, new SkillAggregate(skill, skillsData, playerDealt, entityInformation, timedEncounter, type));
+                    skillsAggregate.Add(skill.ShortName,
+                        new SkillAggregate(skill, skillsData, playerDealt, entityInformation, timedEncounter, type));
                     continue;
                 }
                 skillsAggregate[skill.ShortName].Add(skill);
-
             }
             return skillsAggregate.Values;
         }
@@ -127,6 +140,5 @@ namespace DamageMeter.UI
         {
             _parent.CloseSkills();
         }
-
     }
 }

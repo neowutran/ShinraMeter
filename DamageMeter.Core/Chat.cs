@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Tera.Game.Messages;
 
 namespace DamageMeter
@@ -13,13 +10,15 @@ namespace DamageMeter
     {
         private static Chat _instance;
 
-    
+        private readonly LinkedList<ChatMessage> _chat = new LinkedList<ChatMessage>();
+        private readonly int _maxMessage = 100;
+
+
         private Chat()
         {
         }
 
-        private LinkedList<ChatMessage> _chat = new LinkedList<ChatMessage>();
-        private int _maxMessage = 100;
+        public static Chat Instance => _instance ?? (_instance = new Chat());
 
         public void Add(S_CHAT message)
         {
@@ -38,11 +37,11 @@ namespace DamageMeter
                 _chat.RemoveFirst();
             }
 
-            Regex rgx = new Regex("<[^>]+>");
+            var rgx = new Regex("<[^>]+>");
             message = rgx.Replace(message, "");
             message = WebUtility.HtmlDecode(message);
 
-            ChatMessage chatMessage = new ChatMessage(sender, message);
+            var chatMessage = new ChatMessage(sender, message);
             _chat.AddLast(chatMessage);
         }
 
@@ -50,8 +49,5 @@ namespace DamageMeter
         {
             return _chat.ToList();
         }
-  
-        public static Chat Instance => _instance ?? (_instance = new Chat());
-
     }
 }

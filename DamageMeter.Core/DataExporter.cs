@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
-using Tera.Game.Messages;
-using Data;
 using DamageMeter.TeraDpsApi;
+using Data;
 using Newtonsoft.Json;
 using Tera.Game;
-using System.Net.Http;
-
+using Tera.Game.Abnormality;
+using Tera.Game.Messages;
 
 namespace DamageMeter
 {
@@ -17,7 +17,7 @@ namespace DamageMeter
     {
         private static void SendAnonymousStatistics(string json, int numberTry)
         {
-            if(numberTry == 0)
+            if (numberTry == 0)
             {
                 return;
             }
@@ -28,10 +28,10 @@ namespace DamageMeter
                 {
                     client.Timeout = TimeSpan.FromSeconds(40);
                     var response = client.PostAsync("http://cloud.neowutran.ovh:8083/store.php", new StringContent(
-                    json,
-                    Encoding.UTF8,
-                    "application/json")
-                    );
+                        json,
+                        Encoding.UTF8,
+                        "application/json")
+                        );
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Console.WriteLine(responseString.Result);
                 }
@@ -50,61 +50,59 @@ namespace DamageMeter
         {
             if (!despawnNpc.Dead) return null;
 
-            var entity = (NpcEntity)DamageTracker.Instance.GetEntity(despawnNpc.Npc);
+            var entity = (NpcEntity) DamageTracker.Instance.GetEntity(despawnNpc.Npc);
             if (!entity.Info.Boss) return null;
 
-            bool timedEncounter = false;
+            var timedEncounter = false;
 
             /*
               modify timedEncounter depending on teradps.io need
 
             */
-            
+
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(entity, timedEncounter);
             var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
-            List<Database.Structures.PlayerDealt> playersInfo;
-            playersInfo = timedEncounter?Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime):
-                Database.Database.Instance.PlayerInformation(entity);
+            var playersInfo = timedEncounter
+                ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
+                : Database.Database.Instance.PlayerInformation(entity);
 
             var heals = playersInfo.Where(x => x.Type == Database.Database.Type.Heal).ToList();
             playersInfo.RemoveAll(x => x.Type != Database.Database.Type.Damage);
             playersInfo.RemoveAll(x => x.Amount == 0);
 
-            
-
 
             var firstTick = entityInfo.BeginTime;
             var lastTick = entityInfo.EndTime;
             var interTick = lastTick - firstTick;
-            var interval = interTick / TimeSpan.TicksPerSecond;
+            var interval = interTick/TimeSpan.TicksPerSecond;
             if (interval == 0)
             {
                 return null;
             }
             var totaldamage = entityInfo.TotalDamage;
-            var partyDps = TimeSpan.TicksPerSecond * totaldamage / interTick;
+            var partyDps = TimeSpan.TicksPerSecond*totaldamage/interTick;
 
             var teradpsData = new EncounterBase();
             var extendedStats = new ExtendedStats();
-            var _abnormals = abnormals.Clone(entity,firstTick,lastTick);
+            var _abnormals = abnormals.Clone(entity, firstTick, lastTick);
             extendedStats.Entity = entity;
             extendedStats.BaseStats = teradpsData;
             extendedStats.FirstTick = firstTick;
             extendedStats.LastTick = lastTick;
-            teradpsData.areaId = entity.Info.HuntingZoneId + "";
-            teradpsData.bossId = entity.Info.TemplateId + "";
-            teradpsData.fightDuration = interval + "";
-            teradpsData.partyDps = partyDps + "";
+            teradpsData.AreaId = entity.Info.HuntingZoneId + "";
+            teradpsData.BossId = entity.Info.TemplateId + "";
+            teradpsData.FightDuration = interval + "";
+            teradpsData.PartyDps = partyDps + "";
             extendedStats.Debuffs = _abnormals.Get(entity);
 
             foreach (var debuff in extendedStats.Debuffs)
             {
-                long percentage = (debuff.Value.Duration(firstTick, lastTick) * 100 / interTick);
+                var percentage = debuff.Value.Duration(firstTick, lastTick)*100/interTick;
                 if (percentage == 0)
                 {
                     continue;
                 }
-                teradpsData.debuffUptime.Add(new KeyValuePair<string, string>(
+                teradpsData.DebuffUptime.Add(new KeyValuePair<string, string>(
                     debuff.Key.Id + "", percentage + ""
                     ));
             }
@@ -113,7 +111,7 @@ namespace DamageMeter
             {
                 var teradpsUser = new Members();
                 var damage = user.Amount;
-                teradpsUser.playerTotalDamage = damage + "";
+                teradpsUser.PlayerTotalDamage = damage + "";
 
                 if (damage <= 0)
                 {
@@ -121,38 +119,41 @@ namespace DamageMeter
                 }
 
                 var buffs = _abnormals.Get(user.Source);
-                teradpsUser.playerClass = user.Source.Class.ToString();
-                teradpsUser.playerName = user.Source.Name;
-                teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Source.ServerId);
-                teradpsUser.playerAverageCritRate = user.CritRate + "";
-                teradpsUser.healCrit = user.Source.IsHealer ? heals.FirstOrDefault(x => x.Source == user.Source)?.CritRate + "" : null;
-                teradpsUser.playerDps = TimeSpan.TicksPerSecond * damage / interTick + "";
-                teradpsUser.playerTotalDamagePercentage = user.Amount / entityInfo.TotalDamage + "";
+                teradpsUser.PlayerClass = user.Source.Class.ToString();
+                teradpsUser.PlayerName = user.Source.Name;
+                teradpsUser.PlayerServer = BasicTeraData.Instance.Servers.GetServerName(user.Source.ServerId);
+                teradpsUser.PlayerAverageCritRate = user.CritRate + "";
+                teradpsUser.HealCrit = user.Source.IsHealer
+                    ? heals.FirstOrDefault(x => x.Source == user.Source)?.CritRate + ""
+                    : null;
+                teradpsUser.PlayerDps = TimeSpan.TicksPerSecond*damage/interTick + "";
+                teradpsUser.PlayerTotalDamagePercentage = user.Amount/entityInfo.TotalDamage + "";
 
                 var death = buffs.Death;
-                teradpsUser.playerDeaths = death.Count(firstTick, lastTick) + "";
-                teradpsUser.playerDeathDuration = death.Duration(firstTick, lastTick) / TimeSpan.TicksPerSecond + "";
+                teradpsUser.PlayerDeaths = death.Count(firstTick, lastTick) + "";
+                teradpsUser.PlayerDeathDuration = death.Duration(firstTick, lastTick)/TimeSpan.TicksPerSecond + "";
 
                 var aggro = buffs.Aggro(entity);
-                teradpsUser.aggro = 100 * aggro.Duration(firstTick, lastTick) / interTick + "";
+                teradpsUser.Aggro = 100*aggro.Duration(firstTick, lastTick)/interTick + "";
 
                 foreach (var buff in buffs.Times)
                 {
-                    long percentage = (buff.Value.Duration(firstTick, lastTick) * 100 / interTick);
+                    var percentage = buff.Value.Duration(firstTick, lastTick)*100/interTick;
                     if (percentage == 0)
                     {
                         continue;
                     }
-                    teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(
+                    teradpsUser.BuffUptime.Add(new KeyValuePair<string, string>(
                         buff.Key.Id + "", percentage + ""
-                    ));
+                        ));
                 }
-                var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
-                extendedStats.PlayerSkills.Add(serverPlayerName, skills.GetSkills(user.Source.User.Id, entity, timedEncounter, entityInfo.BeginTime, entityInfo.EndTime));
-                extendedStats.PlayerBuffs.Add(serverPlayerName,buffs);
+                var serverPlayerName = $"{teradpsUser.PlayerServer}_{teradpsUser.PlayerName}";
+                extendedStats.PlayerSkills.Add(serverPlayerName,
+                    skills.GetSkills(user.Source.User.Id, entity, timedEncounter, entityInfo.BeginTime,
+                        entityInfo.EndTime));
+                extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
                 var skillsId = skills.SkillsId(user.Source.User, entity, timedEncounter);
-
 
 
                 foreach (var skill in skillsId)
@@ -160,26 +161,33 @@ namespace DamageMeter
                     var skillLog = new SkillLog();
                     var skilldamage = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter);
 
-                    skillLog.skillAverageCrit = skills.AverageCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.skillAverageWhite = skills.AverageWhite(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.skillCritRate = skills.CritRate(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.skillDamagePercent = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter) / user.Amount + "";
-                    skillLog.skillHighestCrit = skills.BiggestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.skillHits = skills.Hits(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.skillId = SkillResult.GetSkill(user.Source.User.Id, skill.Id, skill.IsHotDot, NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase).Id+"";
-                    skillLog.skillLowestCrit = skills.LowestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.skillTotalDamage = skilldamage + "";
+                    skillLog.SkillAverageCrit =
+                        skills.AverageCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.SkillAverageWhite =
+                        skills.AverageWhite(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.SkillCritRate = skills.CritRate(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.SkillDamagePercent = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter)/
+                                                  user.Amount + "";
+                    skillLog.SkillHighestCrit =
+                        skills.BiggestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.SkillHits = skills.Hits(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.SkillId =
+                        SkillResult.GetSkill(user.Source.User.Id, skill.Id, skill.IsHotDot,
+                            NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
+                            BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase).Id + "";
+                    skillLog.SkillLowestCrit =
+                        skills.LowestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.SkillTotalDamage = skilldamage + "";
 
                     if (skilldamage == 0)
                     {
                         continue;
                     }
-                    teradpsUser.skillLog.Add(skillLog);
+                    teradpsUser.SkillLog.Add(skillLog);
                 }
-                teradpsData.members.Add(teradpsUser);
+                teradpsData.Members.Add(teradpsUser);
             }
             return extendedStats;
-
         }
 
         public static void Export(SDespawnNpc despawnNpc, AbnormalityStorage abnormality)
@@ -189,7 +197,8 @@ namespace DamageMeter
             {
                 return;
             }
-            var sendThread = new Thread(() => {
+            var sendThread = new Thread(() =>
+            {
                 ToTeraDpsApi(stats.BaseStats, despawnNpc);
                 ExcelExport.ExcelSave(stats);
                 ToAnonymousStatistics(stats.BaseStats);
@@ -202,42 +211,11 @@ namespace DamageMeter
             Mostly to expose overpowered class 
             Playername are wiped out client side & server side. No IP address are stored, so it s anonymous. 
         */
+
         private static void ToAnonymousStatistics(EncounterBase teradpsData)
         {
             //Leveling area only, don't care about that
-            var areaId = int.Parse(teradpsData.areaId);
-            if ( 
-                areaId != 467 &&
-                areaId != 767 &&
-                areaId != 768 &&
-                areaId != 468
-                )
-            {   
-                return;
-            }   
-        
-            SendAnonymousStatistics(JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), 3);
-        }
-
-
-        private static void ToTeraDpsApi(EncounterBase teradpsData, SDespawnNpc despawnNpc)
-        {
-            if(string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) 
-                    || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
-                    || !BasicTeraData.Instance.WindowData.SiteExport)
-            {
-                return;
-            }
-
-          
-            var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
-
-            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) || !BasicTeraData.Instance.WindowData.SiteExport) return;         
-
-            /*
-              Validation, without that, the server cpu will be burning \o 
-            */
-            var areaId = int.Parse(teradpsData.areaId);
+            var areaId = int.Parse(teradpsData.AreaId);
             if (
                 areaId != 467 &&
                 areaId != 767 &&
@@ -248,24 +226,63 @@ namespace DamageMeter
                 return;
             }
 
-            if(int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468)
+            SendAnonymousStatistics(
+                JsonConvert.SerializeObject(teradpsData,
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}), 3);
+        }
+
+
+        private static void ToTeraDpsApi(EncounterBase teradpsData, SDespawnNpc despawnNpc)
+        {
+            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken)
+                || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
+                || !BasicTeraData.Instance.WindowData.SiteExport)
             {
                 return;
             }
 
-            string json = JsonConvert.SerializeObject(teradpsData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            SendTeraDpsIo((NpcEntity)entity, json, 3);
+
+            var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
+
+            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) ||
+                string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) ||
+                !BasicTeraData.Instance.WindowData.SiteExport) return;
+
+            /*
+              Validation, without that, the server cpu will be burning \o 
+            */
+            var areaId = int.Parse(teradpsData.AreaId);
+            if (
+                areaId != 467 &&
+                areaId != 767 &&
+                areaId != 768 &&
+                areaId != 468
+                )
+            {
+                return;
+            }
+
+            if (int.Parse(teradpsData.PartyDps) < 2000000 && areaId != 468)
+            {
+                return;
+            }
+
+            var json = JsonConvert.SerializeObject(teradpsData,
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+            SendTeraDpsIo((NpcEntity) entity, json, 3);
         }
 
         private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry)
         {
-            if(numberTry == 0)
+            if (numberTry == 0)
             {
                 Console.WriteLine("API ERROR");
-                NetworkController.Instance.BossLink.TryAdd("!Api error or timeout." + " " + boss.Info.Name +" "+ boss.Id + " " + DateTime.Now.Ticks, boss);
+                NetworkController.Instance.BossLink.TryAdd(
+                    "!Api error or timeout." + " " + boss.Info.Name + " " + boss.Id + " " + DateTime.Now.Ticks, boss);
                 return;
             }
-            try {
+            try
+            {
                 using (var client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
@@ -273,24 +290,27 @@ namespace DamageMeter
                     client.Timeout = TimeSpan.FromSeconds(40);
 
                     var response = client.PostAsync("http://teradps.io/api/que", new StringContent(
-                    json,
-                    Encoding.UTF8,
-                    "application/json")
-                    );
+                        json,
+                        Encoding.UTF8,
+                        "application/json")
+                        );
 
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Console.WriteLine(responseString.Result);
-                    Dictionary<string, object> responseObject = JsonConvert.DeserializeObject<Dictionary<string,object>>(responseString.Result);
+                    var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseString.Result);
                     if (responseObject.ContainsKey("id"))
                     {
-                        NetworkController.Instance.BossLink.TryAdd((string)responseObject["id"], boss);
+                        NetworkController.Instance.BossLink.TryAdd((string) responseObject["id"], boss);
                     }
-                    else {
-                        NetworkController.Instance.BossLink.TryAdd("!" + (string)responseObject["message"] + " " + boss.Info.Name + " " + boss.Id + " "+DateTime.Now.Ticks, boss);
-                   }
+                    else
+                    {
+                        NetworkController.Instance.BossLink.TryAdd(
+                            "!" + (string) responseObject["message"] + " " + boss.Info.Name + " " + boss.Id + " " +
+                            DateTime.Now.Ticks, boss);
+                    }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
@@ -298,6 +318,5 @@ namespace DamageMeter
                 SendTeraDpsIo(boss, json, numberTry - 1);
             }
         }
-
     }
 }

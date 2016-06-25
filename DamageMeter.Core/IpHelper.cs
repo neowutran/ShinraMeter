@@ -61,16 +61,16 @@ namespace DamageMeter
                 }
                 // Get the rows count
                 var rowsCount = Marshal.ReadInt32(rawTable);
-                var currentBuffer = new IntPtr(rawTable.ToInt64() + Marshal.SizeOf(typeof (int)));
+                var currentBuffer = new IntPtr(rawTable.ToInt64() + Marshal.SizeOf(typeof(int)));
                 // Convert the raw table to individual entries
                 var rows = new MIB_IPNETROW[rowsCount];
                 for (var index = 0; index < rowsCount; index++)
                 {
                     rows[index] = (MIB_IPNETROW) Marshal.PtrToStructure(new IntPtr(currentBuffer.ToInt64() +
                                                                                    index*
-                                                                                   Marshal.SizeOf(typeof (MIB_IPNETROW))
+                                                                                   Marshal.SizeOf(typeof(MIB_IPNETROW))
                         ),
-                        typeof (MIB_IPNETROW));
+                        typeof(MIB_IPNETROW));
                 }
                 // Define the dummy entries list (we can discard these)
                 var virtualMac = new PhysicalAddress(new byte[] {0, 0, 0, 0, 0, 0});

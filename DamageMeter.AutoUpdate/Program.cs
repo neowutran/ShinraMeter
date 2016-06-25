@@ -10,10 +10,10 @@ namespace DamageMeter.AutoUpdate
     {
         private static void Main(string[] args)
         {
-
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
-                Console.WriteLine("The update system have been modified and is not compatible with your meter version. Download the new version directly from the website.");
+                Console.WriteLine(
+                    "The update system have been modified and is not compatible with your meter version. Download the new version directly from the website.");
                 Console.ReadLine();
                 return;
             }

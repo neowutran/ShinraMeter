@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="DamageMeter.UI.ChatMessageUI"
+﻿<UserControl x:Class="DamageMeter.UI.ChatMessageUi"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DamageMeter.UI"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              MouseLeftButtonDown="Sender_MouseLeftButtonDown">
     <Grid MouseLeftButtonDown="Sender_MouseLeftButtonDown">
@@ -12,13 +11,15 @@
             <ColumnDefinition Width="500" />
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
-        <Label Focusable="False" Grid.Column="0" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14" x:Name="Sender" HorizontalContentAlignment="Left"
-                   VerticalAlignment="Center" Foreground="White"
-                   MinHeight="29" />
-        <Label Focusable="False" Grid.Column="1" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14" x:Name="Message" HorizontalContentAlignment="Left"
-                   VerticalAlignment="Center" Foreground="White"
-                   MinHeight="29" />
-        <Image Grid.Column="2" MouseLeftButtonDown="Copy_MouseLeftButtonDown"  x:Name="Copy" Focusable="False"
+        <Label Focusable="False" Grid.Column="0" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
+               x:Name="Sender" HorizontalContentAlignment="Left"
+               VerticalAlignment="Center" Foreground="White"
+               MinHeight="29" />
+        <Label Focusable="False" Grid.Column="1" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
+               x:Name="Message" HorizontalContentAlignment="Left"
+               VerticalAlignment="Center" Foreground="White"
+               MinHeight="29" />
+        <Image Grid.Column="2" MouseLeftButtonDown="Copy_MouseLeftButtonDown" x:Name="Copy" Focusable="False"
                Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
                Height="25" VerticalAlignment="Top" Width="25" Margin="0,0,0,0" />
     </Grid>

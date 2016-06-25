@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DamageMeter
+﻿namespace DamageMeter
 {
     public class ChatMessage
     {
-
         public ChatMessage(string sender, string text)
         {
             Text = text;

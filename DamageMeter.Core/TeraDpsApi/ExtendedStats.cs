@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Tera.Game;
-
+using Tera.Game.Abnormality;
+using Skill = DamageMeter.Database.Structures.Skill;
 
 namespace DamageMeter.TeraDpsApi
 {
-    class ExtendedStats
+    internal class ExtendedStats
     {
-        public Dictionary<HotDot,AbnormalityDuration> Debuffs = new Dictionary<HotDot, AbnormalityDuration>();
+        public Dictionary<HotDot, AbnormalityDuration> Debuffs = new Dictionary<HotDot, AbnormalityDuration>();
         public SortedDictionary<string, PlayerAbnormals> PlayerBuffs = new SortedDictionary<string, PlayerAbnormals>();
-        public SortedDictionary<string, List<Database.Structures.Skill>> PlayerSkills = new SortedDictionary<string, List<Database.Structures.Skill>>();
+        public SortedDictionary<string, List<Skill>> PlayerSkills = new SortedDictionary<string, List<Skill>>();
         public EncounterBase BaseStats { get; set; }
         public NpcEntity Entity { get; set; }
         public long FirstTick { get; set; }

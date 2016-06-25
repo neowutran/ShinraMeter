@@ -35,7 +35,7 @@ namespace NetworkSniffer
             if (protocol != IpProtocol.Tcp)
                 return;
             var tcpPacket = new TcpPacket(ipPacket.Payload);
-            if (tcpPacket.Bad)return;
+            if (tcpPacket.Bad) return;
             var isFirstPacket = (tcpPacket.Flags & TcpFlags.Syn) != 0;
             var connectionId = new ConnectionId(ipPacket.SourceIp, tcpPacket.SourcePort, ipPacket.DestinationIp,
                 tcpPacket.DestinationPort);

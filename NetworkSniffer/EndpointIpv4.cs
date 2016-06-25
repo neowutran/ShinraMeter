@@ -63,7 +63,7 @@ namespace NetworkSniffer
 
         public override string ToString()
         {
-            return string.Format("{0}:{1}", ToIpAddress(_ip), _port);
+            return $"{ToIpAddress(_ip)}:{_port}";
         }
     }
 }

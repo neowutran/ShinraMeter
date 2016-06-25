@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using Data;
-using Tera.Game;
-using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.SkillDetail
 {
@@ -20,8 +17,8 @@ namespace DamageMeter.UI.SkillDetail
 
         public void Update(Tera.Game.Skill skill, SkillAggregate skillAggregate)
         {
-            bool? chained = skill.IsChained;
-            string hit = skill.Detail;
+            var chained = skill.IsChained;
+            var hit = skill.Detail;
 
             if (skill.IsHotDot)
             {
@@ -38,18 +35,18 @@ namespace DamageMeter.UI.SkillDetail
             }
 
             LabelName.ToolTip = skill.Id;
-            LabelCritRateDmg.Content = ( skillAggregate.CritRate(skill.Id) * 100) + "%";
+            LabelCritRateDmg.Content = skillAggregate.CritRate(skill.Id) + "%";
 
-            LabelDamagePercentage.Content = ( skillAggregate.DamagePercent(skill.Id) * 100) + "%";
+            LabelDamagePercentage.Content = skillAggregate.DamagePercent(skill.Id) + "%";
             LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skillAggregate.Amount(skill.Id));
 
             LabelNumberHitDmg.Content = skillAggregate.Hits(skill.Id);
             LabelNumberCritDmg.Content = skillAggregate.Crits(skill.Id);
 
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long)skillAggregate.AvgCrit(skill.Id));
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue((long)skillAggregate.BiggestCrit(skill.Id));
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skillAggregate.AvgWhite(skill.Id));
-            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long)skillAggregate.Avg(skill.Id));
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgCrit(skill.Id));
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skillAggregate.BiggestCrit(skill.Id));
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgWhite(skill.Id));
+            LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.Avg(skill.Id));
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

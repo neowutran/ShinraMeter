@@ -1,41 +1,52 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using DamageMeter.Database.Structures;
 using DamageMeter.Sniffing;
 using Data;
+using OfficeOpenXml.FormulaParsing.Utilities;
 using Tera.Game;
+using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
-using DamageMeter.Database.Structures;
 
 namespace DamageMeter
 {
     public class NetworkController
     {
         public delegate void ConnectedHandler(string serverName);
+
         public delegate void SetClickThrouEvent();
+
         public delegate void UnsetClickThrouEvent();
 
-        public event SetClickThrouEvent SetClickThrouAction;
-        public event UnsetClickThrouEvent UnsetClickThrouAction;
 
-
-        public delegate void UpdateUiHandler(StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
-            ConcurrentDictionary<string ,NpcEntity> bossHistory, List<ChatMessage> chatbox);
+        public delegate void UpdateUiHandler(
+            StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter,
+            AbnormalityStorage abnormals,
+            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox);
 
         private static NetworkController _instance;
+        private readonly AbnormalityStorage _abnormalityStorage;
+        private AbnormalityTracker _abnormalityTracker;
+        private CharmTracker _charmTracker;
+
+        private bool _clickThrou;
+
+        private bool _forceUiUpdate;
 
         private long _lastTick;
         private MessageFactory _messageFactory;
+
+        public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
+        public CopyKey NeedToCopy;
+
+        public bool NeedToReset;
+        public bool NeedToResetCurrent;
         public PlayerTracker PlayerTracker;
         public Server Server;
-        private CharmTracker CharmTracker;
-        private AbnormalityTracker AbnormalityTracker;
-        private AbnormalityStorage _abnormalityStorage;
 
         private NetworkController()
         {
@@ -45,8 +56,6 @@ namespace DamageMeter
 
             packetAnalysis.Start();
         }
-
-        public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
 
         public TeraData TeraData { get; private set; }
 
@@ -58,6 +67,9 @@ namespace DamageMeter
         public static NetworkController Instance => _instance ?? (_instance = new NetworkController());
 
         public EntityTracker EntityTracker { get; private set; }
+
+        public event SetClickThrouEvent SetClickThrouAction;
+        public event UnsetClickThrouEvent UnsetClickThrouAction;
 
         public void Exit()
         {
@@ -76,13 +88,11 @@ namespace DamageMeter
             Server = server;
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
-            PlayerTracker = new PlayerTracker(EntityTracker,BasicTeraData.Instance.Servers);
+            PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
             var handler = Connected;
             handler?.Invoke(server.Name);
         }
-
-        private bool _forceUiUpdate = false;
 
 
         public void Reset()
@@ -104,31 +114,31 @@ namespace DamageMeter
             var handler = TickUpdated;
             var currentBoss = Encounter;
             var timedEncounter = TimedEncounter;
-            
+
 
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
             var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
-            List<PlayerDealt> playersInfo;
-            playersInfo = timedEncounter ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime) :
-                Database.Database.Instance.PlayerInformation(currentBoss);
+            var playersInfo = timedEncounter
+                ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
+                : Database.Database.Instance.PlayerInformation(currentBoss);
 
 
             var entities = Database.Database.Instance.AllEntity();
 
-            List<NpcEntity> filteredEntities = new List<NpcEntity>();
-            foreach(var entityid in entities)
+            var filteredEntities = new List<NpcEntity>();
+            foreach (var entityid in entities)
             {
+                Console.WriteLine("==== "+entityid);
                 var entity = EntityTracker.GetOrNull(entityid);
                 if (!(entity is NpcEntity)) continue;
-                var npc = (NpcEntity)entity;
+                var npc = (NpcEntity) entity;
                 if (!npc.Info.Boss) continue;
                 Console.WriteLine("Add NPC:" + npc.Info.Name);
                 filteredEntities.Add(npc);
-
             }
 
-            Console.WriteLine("current boss:"+currentBoss);
-            Console.WriteLine("skills:"+skills);
+            Console.WriteLine("current boss:" + currentBoss);
+            Console.WriteLine("skills:" + skills);
 
             var statsSummary = new StatsSummary(playersInfo, entityInfo);
 
@@ -138,7 +148,6 @@ namespace DamageMeter
             handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox);
         }
 
-        private bool _clickThrou = false;
         public void SwitchClickThrou()
         {
             if (_clickThrou)
@@ -155,7 +164,6 @@ namespace DamageMeter
         {
             var handler = SetClickThrouAction;
             handler?.Invoke();
-
         }
 
         private void UnsetClickThrou()
@@ -164,40 +172,37 @@ namespace DamageMeter
             handler?.Invoke();
         }
 
-        public bool NeedToReset = false;
-        public bool NeedToResetCurrent = false;
-        public CopyKey NeedToCopy = null;
-
-        public static void CopyThread(StatsSummary stats, Skills skills, AbnormalityStorage abnormals, bool timedEncounter, CopyKey copy)
+        public static void CopyThread(StatsSummary stats, Skills skills, AbnormalityStorage abnormals,
+            bool timedEncounter, CopyKey copy)
         {
-
-            var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer, copy.OrderBy, copy.Order);
+            var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer,
+                copy.OrderBy, copy.Order);
             CopyPaste.Paste(text);
-            
         }
 
         private void PacketAnalysisLoop()
         {
             while (true)
             {
-
                 if (NeedToCopy != null)
                 {
-               
                     var currentBoss = Encounter;
                     var timedEncounter = TimedEncounter;
 
                     var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
                     var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
-                    List<PlayerDealt> playersInfo;
-                    playersInfo = timedEncounter ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime) :
-                        Database.Database.Instance.PlayerInformation(currentBoss);
+                    var playersInfo = timedEncounter
+                        ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
+                        : Database.Database.Instance.PlayerInformation(currentBoss);
                     var statsSummary = new StatsSummary(playersInfo, entityInfo);
 
                     var tmpcopy = NeedToCopy;
                     var abnormals = _abnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-                    var pasteThread = new Thread(() => CopyThread(statsSummary, skills, abnormals, timedEncounter, tmpcopy));
-                    pasteThread.Priority = ThreadPriority.Highest;
+                    var pasteThread =
+                        new Thread(() => CopyThread(statsSummary, skills, abnormals, timedEncounter, tmpcopy))
+                        {
+                            Priority = ThreadPriority.Highest
+                        };
                     pasteThread.Start();
 
                     NeedToCopy = null;
@@ -246,7 +251,8 @@ namespace DamageMeter
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
                 {
-                    var skillResult = new SkillResult(skillResultMessage, EntityTracker, PlayerTracker, BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.PetSkillDatabase);
+                    var skillResult = new SkillResult(skillResultMessage, EntityTracker, PlayerTracker,
+                        BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.PetSkillDatabase);
                     DamageTracker.Instance.Update(skillResult);
                     continue;
                 }
@@ -256,7 +262,7 @@ namespace DamageMeter
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
                 {
-                    AbnormalityTracker.Update(changeHp);
+                    _abnormalityTracker.Update(changeHp);
                     continue;
                 }
 
@@ -264,8 +270,8 @@ namespace DamageMeter
                 if (pchangeHp != null)
                 {
                     var user = PlayerTracker.GetOrNull(pchangeHp.ServerId, pchangeHp.PlayerId);
-                    if (user==null)continue;
-                    AbnormalityTracker.RegisterSlaying(user.User, pchangeHp.Slaying, pchangeHp.Time.Ticks);
+                    if (user == null) continue;
+                    _abnormalityTracker.RegisterSlaying(user.User, pchangeHp.Slaying, pchangeHp.Time.Ticks);
                     continue;
                 }
 
@@ -274,56 +280,56 @@ namespace DamageMeter
                 {
                     var user = PlayerTracker.GetOrNull(pmstatupd.ServerId, pmstatupd.PlayerId);
                     if (user == null) continue;
-                    AbnormalityTracker.RegisterSlaying(user.User, pmstatupd.Slaying, pmstatupd.Time.Ticks);
+                    _abnormalityTracker.RegisterSlaying(user.User, pmstatupd.Slaying, pmstatupd.Time.Ticks);
                     continue;
                 }
 
                 var pstatupd = message as S_PLAYER_STAT_UPDATE;
                 if (pstatupd != null)
                 {
-                    AbnormalityTracker.RegisterSlaying(EntityTracker.MeterUser, pstatupd.Slaying, pstatupd.Time.Ticks);
+                    _abnormalityTracker.RegisterSlaying(EntityTracker.MeterUser, pstatupd.Slaying, pstatupd.Time.Ticks);
                     continue;
                 }
 
                 var changeMp = message as SPlayerChangeMp;
                 if (changeMp != null)
                 {
-                    AbnormalityTracker.Update(changeMp);
+                    _abnormalityTracker.Update(changeMp);
                     continue;
                 }
 
                 var npcStatus = message as SNpcStatus;
                 if (npcStatus != null)
                 {
-                    AbnormalityTracker.RegisterNpcStatus(npcStatus);
+                    _abnormalityTracker.RegisterNpcStatus(npcStatus);
                     continue;
                 }
 
                 var dead = message as SCreatureLife;
                 if (dead != null)
                 {
-                    AbnormalityTracker.RegisterDead(dead);
+                    _abnormalityTracker.RegisterDead(dead);
                     continue;
                 }
 
                 var abnormalityBegin = message as SAbnormalityBegin;
                 if (abnormalityBegin != null)
                 {
-                    AbnormalityTracker.AddAbnormality(abnormalityBegin);
+                    _abnormalityTracker.AddAbnormality(abnormalityBegin);
                     continue;
                 }
 
                 var abnormalityEnd = message as SAbnormalityEnd;
                 if (abnormalityEnd != null)
                 {
-                    AbnormalityTracker.DeleteAbnormality(abnormalityEnd);
+                    _abnormalityTracker.DeleteAbnormality(abnormalityEnd);
                     continue;
                 }
 
                 var abnormalityRefresh = message as SAbnormalityRefresh;
                 if (abnormalityRefresh != null)
                 {
-                    AbnormalityTracker.RefreshAbnormality(abnormalityRefresh);
+                    _abnormalityTracker.RefreshAbnormality(abnormalityRefresh);
                     continue;
                 }
 
@@ -337,21 +343,21 @@ namespace DamageMeter
                 var despawnNpc = message as SDespawnNpc;
                 if (despawnNpc != null)
                 {
-                    AbnormalityTracker.StopAggro(despawnNpc);
-                    AbnormalityTracker.DeleteAbnormality(despawnNpc);
+                    _abnormalityTracker.StopAggro(despawnNpc);
+                    _abnormalityTracker.DeleteAbnormality(despawnNpc);
                     //DataExporter.Export(despawnNpc, _abnormalityStorage);
                     continue;
                 }
 
                 var chatMessage = message as S_CHAT;
-                if(chatMessage != null)
+                if (chatMessage != null)
                 {
                     Chat.Instance.Add(chatMessage);
                     continue;
                 }
 
                 var whisperMessage = message as S_WHISPER;
-                if(whisperMessage != null)
+                if (whisperMessage != null)
                 {
                     Chat.Instance.Add(whisperMessage);
                     continue;
@@ -360,15 +366,15 @@ namespace DamageMeter
                 var despawnUser = message as SDespawnUser;
                 if (despawnUser != null)
                 {
-                    CharmTracker.CharmReset(despawnUser.User, new List<CharmStatus>(), despawnUser.Time.Ticks);
-                    AbnormalityTracker.DeleteAbnormality(despawnUser);
+                    _charmTracker.CharmReset(despawnUser.User, new List<CharmStatus>(), despawnUser.Time.Ticks);
+                    _abnormalityTracker.DeleteAbnormality(despawnUser);
                     continue;
                 }
 
                 var charmEnable = message as SEnableCharmStatus;
                 if (charmEnable != null)
                 {
-                    CharmTracker.CharmEnable(EntityTracker.MeterUser.Id, charmEnable.CharmId,charmEnable.Time.Ticks);
+                    _charmTracker.CharmEnable(EntityTracker.MeterUser.Id, charmEnable.CharmId, charmEnable.Time.Ticks);
                     continue;
                 }
                 var pcharmEnable = message as SPartyMemberCharmEnable;
@@ -376,13 +382,13 @@ namespace DamageMeter
                 {
                     var player = PlayerTracker.GetOrNull(pcharmEnable.ServerId, pcharmEnable.PlayerId);
                     if (player == null) continue;
-                    CharmTracker.CharmEnable(player.User.Id, pcharmEnable.CharmId, pcharmEnable.Time.Ticks);
+                    _charmTracker.CharmEnable(player.User.Id, pcharmEnable.CharmId, pcharmEnable.Time.Ticks);
                     continue;
                 }
                 var charmReset = message as SResetCharmStatus;
                 if (charmReset != null)
                 {
-                    CharmTracker.CharmReset(charmReset.TargetId, charmReset.Charms, charmReset.Time.Ticks);
+                    _charmTracker.CharmReset(charmReset.TargetId, charmReset.Charms, charmReset.Time.Ticks);
                     continue;
                 }
                 var pcharmReset = message as SPartyMemberCharmReset;
@@ -390,13 +396,13 @@ namespace DamageMeter
                 {
                     var player = PlayerTracker.GetOrNull(pcharmReset.ServerId, pcharmReset.PlayerId);
                     if (player == null) continue;
-                    CharmTracker.CharmReset(player.User.Id, pcharmReset.Charms, pcharmReset.Time.Ticks);
+                    _charmTracker.CharmReset(player.User.Id, pcharmReset.Charms, pcharmReset.Time.Ticks);
                     continue;
                 }
                 var charmDel = message as SRemoveCharmStatus;
                 if (charmDel != null)
                 {
-                    CharmTracker.CharmDel(EntityTracker.MeterUser.Id, charmDel.CharmId, charmDel.Time.Ticks);
+                    _charmTracker.CharmDel(EntityTracker.MeterUser.Id, charmDel.CharmId, charmDel.Time.Ticks);
                     continue;
                 }
                 var pcharmDel = message as SPartyMemberCharmDel;
@@ -404,13 +410,13 @@ namespace DamageMeter
                 {
                     var player = PlayerTracker.GetOrNull(pcharmDel.ServerId, pcharmDel.PlayerId);
                     if (player == null) continue;
-                    CharmTracker.CharmDel(player.User.Id, pcharmDel.CharmId, pcharmDel.Time.Ticks);
+                    _charmTracker.CharmDel(player.User.Id, pcharmDel.CharmId, pcharmDel.Time.Ticks);
                     continue;
                 }
                 var charmAdd = message as SAddCharmStatus;
                 if (charmAdd != null)
                 {
-                    CharmTracker.CharmAdd(charmAdd.TargetId, charmAdd.CharmId, charmAdd.Status, charmAdd.Time.Ticks);
+                    _charmTracker.CharmAdd(charmAdd.TargetId, charmAdd.CharmId, charmAdd.Status, charmAdd.Time.Ticks);
                     continue;
                 }
                 var pcharmAdd = message as SPartyMemberCharmAdd;
@@ -418,7 +424,7 @@ namespace DamageMeter
                 {
                     var player = PlayerTracker.GetOrNull(pcharmAdd.ServerId, pcharmAdd.PlayerId);
                     if (player == null) continue;
-                    CharmTracker.CharmAdd(player.User.Id, pcharmAdd.CharmId, pcharmAdd.Status, pcharmAdd.Time.Ticks);
+                    _charmTracker.CharmAdd(player.User.Id, pcharmAdd.CharmId, pcharmAdd.Status, pcharmAdd.Time.Ticks);
                     continue;
                 }
 
@@ -426,7 +432,7 @@ namespace DamageMeter
                 var sSpawnUser = message as SpawnUserServerMessage;
                 if (sSpawnUser != null)
                 {
-                    AbnormalityTracker.RegisterDead(sSpawnUser.Id, sSpawnUser.Time.Ticks, sSpawnUser.Dead);
+                    _abnormalityTracker.RegisterDead(sSpawnUser.Id, sSpawnUser.Time.Ticks, sSpawnUser.Dead);
                     //Debug.WriteLine(sSpawnUser.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.Id.Id)) + " : " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.ServerId)) + " " + BitConverter.ToString(BitConverter.GetBytes(sSpawnUser.PlayerId)));
                     continue;
                 }
@@ -435,21 +441,20 @@ namespace DamageMeter
                 if (spawnMe != null)
                 {
                     _abnormalityStorage.EndAll(message.Time.Ticks);
-                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
-                    CharmTracker = new CharmTracker(AbnormalityTracker);
-                    AbnormalityTracker.RegisterDead(spawnMe.Id, spawnMe.Time.Ticks, spawnMe.Dead);
+                    _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
+                        BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
+                    _charmTracker = new CharmTracker(_abnormalityTracker);
+                    _abnormalityTracker.RegisterDead(spawnMe.Id, spawnMe.Time.Ticks, spawnMe.Dead);
                     continue;
                 }
                 var sLogin = message as LoginServerMessage;
-                if (sLogin != null)
-                {
-                    _abnormalityStorage.EndAll(message.Time.Ticks);
-                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
-                    CharmTracker = new CharmTracker(AbnormalityTracker);
-                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
-                    //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
-                    continue;
-                }
+                if (sLogin == null) continue;
+                _abnormalityStorage.EndAll(message.Time.Ticks);
+                _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
+                    BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
+                _charmTracker = new CharmTracker(_abnormalityTracker);
+                Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
+                //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
             }
         }
 

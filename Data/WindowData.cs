@@ -9,34 +9,34 @@ namespace Data
 {
     public class WindowData
     {
-        private readonly string _windowFile;
-        private readonly XDocument _xml;
         private readonly FileStream _filestream;
+        private readonly XDocument _xml;
 
         public WindowData(BasicTeraData basicData)
         {
             DefaultValue();
             // Load XML File
-            _windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
+            var windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
 
             try
             {
-                FileAttributes attrs = File.GetAttributes(_windowFile);
-                File.SetAttributes(_windowFile, attrs & ~FileAttributes.ReadOnly);
+                var attrs = File.GetAttributes(windowFile);
+                File.SetAttributes(windowFile, attrs & ~FileAttributes.ReadOnly);
             }
-            catch {
+            catch
+            {
                 //ignore
             }
 
             try
             {
-                _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _filestream = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 _xml = XDocument.Load(_filestream);
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 Save();
-                _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _filestream = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 return;
             }
             catch
@@ -81,14 +81,14 @@ namespace Data
 
         public bool Winpcap { get; private set; }
 
-        public bool InvisibleUI { get; set; }
+        public bool InvisibleUi { get; set; }
 
         public bool AllowTransparency { get; set; }
 
         public string TeraDpsUser { get; private set; }
         public string TeraDpsToken { get; private set; }
 
-        public bool AlwaysVisible { get;  set; }
+        public bool AlwaysVisible { get; set; }
 
         public bool Topmost { get; set; }
 
@@ -107,7 +107,7 @@ namespace Data
             SkillWindowOpacity = 0.7;
             AutoUpdate = true;
             RememberPosition = true;
-            InvisibleUI = false;
+            InvisibleUi = false;
             Winpcap = true;
             Topmost = true;
             AllowTransparency = true;
@@ -130,7 +130,6 @@ namespace Data
             var excelxml = root?.Element("excel_save_directory");
             if (excelxml == null) return;
             ExcelSaveDirectory = excelxml.Value;
-            
         }
 
         public void ParseShowHealCrit()
@@ -145,6 +144,7 @@ namespace Data
                 ShowHealCrit = val;
             }
         }
+
         public void ParsePartyOnly()
         {
             var root = _xml.Root;
@@ -170,6 +170,7 @@ namespace Data
                 Excel = excel;
             }
         }
+
         public void ParseScale()
         {
             var root = _xml.Root;
@@ -182,6 +183,7 @@ namespace Data
                 Scale = scale;
             }
         }
+
         public void ParseAlwaysVisible()
         {
             var root = _xml.Root;
@@ -201,19 +203,19 @@ namespace Data
             var teradps = root?.Element("teradps.io");
             var user = teradps?.Element("user");
             if (user == null) return;
-            var token = teradps?.Element("token");
+            var token = teradps.Element("token");
             if (token == null) return;
 
             TeraDpsToken = token.Value;
             TeraDpsUser = user.Value;
 
-            if(TeraDpsToken == null || TeraDpsUser == null)
+            if (TeraDpsToken == null || TeraDpsUser == null)
             {
                 TeraDpsToken = "";
                 TeraDpsUser = "";
             }
-            var exp = teradps?.Element("export");
-            if (exp==null)return;
+            var exp = teradps.Element("export");
+            if (exp == null) return;
             bool val;
             var parseSuccess = bool.TryParse(exp.Value, out val);
             if (parseSuccess)
@@ -272,7 +274,7 @@ namespace Data
             var parseSuccess = bool.TryParse(invisibleUI.Value, out invisibleUi);
             if (parseSuccess)
             {
-                InvisibleUI = invisibleUi;
+                InvisibleUi = invisibleUi;
             }
         }
 
@@ -341,7 +343,9 @@ namespace Data
             var languageElement = root?.Element("language");
             if (languageElement == null) return;
             Language = languageElement.Value;
-            if (!Array.Exists(new[] { "Auto", "EU-EN", "EU-FR", "EU-GER", "NA", "RU", "JP", "TW", "KR" }, s => s.Equals(Language))) Language = "Auto";
+            if (
+                !Array.Exists(new[] {"Auto", "EU-EN", "EU-FR", "EU-GER", "NA", "RU", "JP", "TW", "KR"},
+                    s => s.Equals(Language))) Language = "Auto";
         }
 
         private void ParseMainWindowOpacity()
@@ -374,12 +378,11 @@ namespace Data
 
         public void Save()
         {
-            
-            if(_filestream == null)
+            if (_filestream == null)
             {
                 return;
             }
-         
+
 
             var xml = new XDocument(new XElement("window"));
             xml.Root.Add(new XElement("location"));
@@ -392,7 +395,7 @@ namespace Data
             xml.Root.Add(new XElement("autoupdate", AutoUpdate));
             xml.Root.Add(new XElement("remember_position", RememberPosition));
             xml.Root.Add(new XElement("winpcap", Winpcap));
-            xml.Root.Add(new XElement("invisible_ui_when_no_stats", InvisibleUI));
+            xml.Root.Add(new XElement("invisible_ui_when_no_stats", InvisibleUi));
             xml.Root.Add(new XElement("allow_transparency", AllowTransparency));
             xml.Root.Add(new XElement("topmost", Topmost));
             xml.Root.Add(new XElement("teradps.io"));
@@ -408,9 +411,8 @@ namespace Data
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
 
             _filestream.SetLength(0);
-            using (StreamWriter sr = new StreamWriter(_filestream))
+            using (var sr = new StreamWriter(_filestream))
             {
-               
                 // File writing as usual
                 sr.Write(xml);
             }

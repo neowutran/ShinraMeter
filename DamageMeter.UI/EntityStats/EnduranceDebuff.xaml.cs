@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Data;
 using Tera.Game;
+using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI.EntityStats
 {
@@ -39,7 +40,7 @@ namespace DamageMeter.UI.EntityStats
             LabelInterval.Content = interval.ToString(@"mm\:ss");
 
             LabelName.Content = hotdot.Name;
-            LabelName.ToolTip = string.IsNullOrEmpty(hotdot.Tooltip)? null : hotdot.Tooltip;
+            LabelName.ToolTip = string.IsNullOrEmpty(hotdot.Tooltip) ? null : hotdot.Tooltip;
             LabelAbnormalityDurationPercentage.ToolTip = hotdot.Id;
         }
 

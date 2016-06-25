@@ -36,7 +36,6 @@ namespace DamageMeter
             if (!value && _isRegistered)
             {
                 ClearHotkeys();
-                
             }
             return false;
         }
@@ -61,7 +60,9 @@ namespace DamageMeter
             {
                 //Can't call directly NetworkController.Instance.ResetCurrent() => threading problem
                 NetworkController.Instance.NeedToResetCurrent = true;
-            }else if (e.Key == BasicTeraData.Instance.HotkeysData.ClickThrou.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ClickThrou.Value)
+            }
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.ClickThrou.Key &&
+                     e.Modifier == BasicTeraData.Instance.HotkeysData.ClickThrou.Value)
             {
                 NetworkController.Instance.SwitchClickThrou();
             }
@@ -72,7 +73,6 @@ namespace DamageMeter
             {
                 //Can't copy directly, => threading problem
                 NetworkController.Instance.NeedToCopy = copy;
-                
             }
         }
 
@@ -115,7 +115,7 @@ namespace DamageMeter
         /// <param name="key">The key itself that is associated with the hot key.</param>
         public void RegisterHotKey(HotkeysData.ModifierKeys modifier, Keys key)
         {
-            if (key == Keys.None) return;//allow disable hotkeys using "None" key
+            if (key == Keys.None) return; //allow disable hotkeys using "None" key
             // increment the counter.
             _currentId++;
 

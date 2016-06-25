@@ -1,12 +1,12 @@
-﻿using System.Windows;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
+using System.Windows;
 using Data;
 using Tera.Game;
 
 namespace DamageMeter.UI
 {
     /// <summary>
-    /// Logique d'interaction pour TeradpsHistory.xaml
+    ///     Logique d'interaction pour TeradpsHistory.xaml
     /// </summary>
     public partial class TeradpsHistory
     {
@@ -25,11 +25,10 @@ namespace DamageMeter.UI
         public void Update(ConcurrentDictionary<string, NpcEntity> bossHistory)
         {
             TeraDpsHistory.Items.Clear();
-            foreach(var boss in bossHistory)
+            foreach (var boss in bossHistory)
             {
                 TeraDpsHistory.Items.Add(new HistoryLink(boss.Key, boss.Value));
             }
         }
-    
     }
 }

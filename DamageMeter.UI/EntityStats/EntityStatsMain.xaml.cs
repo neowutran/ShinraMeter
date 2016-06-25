@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Interop;
-using Data;
-using Tera.Game;
 using DamageMeter.Database.Structures;
+using Data;
+using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI.EntityStats
 {
@@ -26,7 +23,6 @@ namespace DamageMeter.UI.EntityStats
             _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             _header = new EnduranceDebuffHeader();
-
         }
 
         public void SetClickThrou()
@@ -76,7 +72,7 @@ namespace DamageMeter.UI.EntityStats
                 count++;
             }
         }
-     
+
         private void CloseMeter_OnClick(object sender, RoutedEventArgs e)
         {
             _parent.CloseEntityStats();

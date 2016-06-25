@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <Grid>
-            <ItemsControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" MouseLeftButtonDown="Skills_OnMouseLeftButtonDown" x:Name="SkillsList"
-                          Background="Transparent" BorderThickness="0" Focusable="False"
-                          HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False" />
+        <ItemsControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      MouseLeftButtonDown="Skills_OnMouseLeftButtonDown" x:Name="SkillsList"
+                      Background="Transparent" BorderThickness="0" Focusable="False"
+                      HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False" />
     </Grid>
 </UserControl>

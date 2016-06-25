@@ -2,9 +2,9 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Data;
-using Tera.Game;
 using DamageMeter.Database.Structures;
+using Data;
+using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI
 {
@@ -13,10 +13,14 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class PlayerStats
     {
+        private PlayerAbnormals _buffs;
+
+        private bool _timedEncounter;
         private Skills _windowSkill;
         public ImageSource Image;
 
-        public PlayerStats(PlayerDealt playerDealt, PlayerDealt playerDealtHeal, EntityInformation entityInformation, Database.Structures.Skills skills, PlayerAbnormals buffs)
+        public PlayerStats(PlayerDealt playerDealt, PlayerDealt playerDealtHeal, EntityInformation entityInformation,
+            Database.Structures.Skills skills, PlayerAbnormals buffs)
         {
             InitializeComponent();
             PlayerDealt = playerDealt;
@@ -38,26 +42,31 @@ namespace DamageMeter.UI
 
         public EntityInformation EntityInformation { get; set; }
 
-        public string Dps => FormatHelpers.Instance.FormatValue( PlayerDealt.Interval == 0 ? PlayerDealt.Amount : (PlayerDealt.Amount * TimeSpan.TicksPerSecond) / PlayerDealt.Interval) + "/s";
+        public string Dps
+            =>
+                FormatHelpers.Instance.FormatValue(PlayerDealt.Interval == 0
+                    ? PlayerDealt.Amount
+                    : PlayerDealt.Amount*TimeSpan.TicksPerSecond/PlayerDealt.Interval) + "/s";
 
         public string Damage => FormatHelpers.Instance.FormatValue(PlayerDealt.Amount);
 
-        public string GlobalDps => FormatHelpers.Instance.FormatValue( EntityInformation.Interval == 0 ? PlayerDealt.Amount : (PlayerDealt.Amount * TimeSpan.TicksPerSecond) / EntityInformation.Interval) + "/s";
+        public string GlobalDps
+            =>
+                FormatHelpers.Instance.FormatValue(EntityInformation.Interval == 0
+                    ? PlayerDealt.Amount
+                    : PlayerDealt.Amount*TimeSpan.TicksPerSecond/EntityInformation.Interval) + "/s";
 
-        public string CritRate => Math.Round(PlayerDealt.CritRate * 100) + "%";
-        public string CritRateHeal => Math.Round(PlayerDealtHeal == null ? 0 : (PlayerDealtHeal.CritRate * 100)) + "%";
+        public string CritRate => Math.Round(PlayerDealt.CritRate) + "%";
+        public string CritRateHeal => Math.Round(PlayerDealtHeal?.CritRate ?? 0) + "%";
 
 
         public string PlayerName => PlayerDealt.Source.Name;
 
 
-        public string DamagePart => Math.Round((double)PlayerDealt.Amount / EntityInformation.TotalDamage) + "%";
-       
-        private PlayerAbnormals _buffs;
+        public string DamagePart => Math.Round((double) PlayerDealt.Amount*100/EntityInformation.TotalDamage) + "%";
 
-        private bool _timedEncounter;
-
-        public void Repaint(PlayerDealt playerDealt, PlayerDealt playerDealtHeal, EntityInformation entityInformation, Database.Structures.Skills skills,
+        public void Repaint(PlayerDealt playerDealt, PlayerDealt playerDealtHeal, EntityInformation entityInformation,
+            Database.Structures.Skills skills,
             PlayerAbnormals buffs, bool timedEncounter)
         {
             PlayerDealtHeal = playerDealtHeal;
@@ -66,16 +75,24 @@ namespace DamageMeter.UI
             _timedEncounter = timedEncounter;
             Skills = skills;
             LabelDps.Content = GlobalDps;
-            LabelDps.ToolTip = "Individual dps: " +Dps;
-            LabelCritRate.Content = PlayerDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit ? CritRateHeal : CritRate;
-            var intervalTimespan = TimeSpan.FromSeconds(PlayerDealt.Interval / TimeSpan.TicksPerSecond);
-            LabelCritRate.ToolTip = "Fight Duration: "+ intervalTimespan.ToString(@"mm\:ss");
-            LabelCritRate.Foreground = PlayerDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit ? Brushes.LawnGreen : Brushes.LightCoral;
+            LabelDps.ToolTip = "Individual dps: " + Dps;
+            LabelCritRate.Content = PlayerDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
+                ? CritRateHeal
+                : CritRate;
+            var intervalTimespan = TimeSpan.FromSeconds(PlayerDealt.Interval/TimeSpan.TicksPerSecond);
+            LabelCritRate.ToolTip = "Fight Duration: " + intervalTimespan.ToString(@"mm\:ss");
+            LabelCritRate.Foreground = PlayerDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
+                ? Brushes.LawnGreen
+                : Brushes.LightCoral;
             LabelDamagePart.Content = DamagePart;
             LabelDamagePart.ToolTip = "Damage done: " + Damage;
-        
+
+            Console.WriteLine(PlayerDealt.Amount+":"+ EntityInformation.TotalDamage);
+
             _windowSkill?.Update(PlayerDealt, EntityInformation, Skills, _buffs, _timedEncounter);
-            DpsIndicator.Width = EntityInformation.TotalDamage == 0 ? 265 : (265 * PlayerDealt.Amount) / EntityInformation.TotalDamage;
+            DpsIndicator.Width = EntityInformation.TotalDamage == 0
+                ? 265
+                : 265*PlayerDealt.Amount/EntityInformation.TotalDamage;
         }
 
         public void SetClickThrou()
@@ -92,7 +109,7 @@ namespace DamageMeter.UI
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-          
+
             if (_windowSkill == null)
             {
                 _windowSkill = new Skills(this, PlayerDealt, EntityInformation, Skills, _buffs, _timedEncounter)
@@ -104,14 +121,14 @@ namespace DamageMeter.UI
                 return;
             }
 
-            _windowSkill.Update(PlayerDealt, EntityInformation , Skills, _buffs, _timedEncounter);
+            _windowSkill.Update(PlayerDealt, EntityInformation, Skills, _buffs, _timedEncounter);
             _windowSkill.Show();
         }
 
         private void ChangeHeal(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount==2)
-            BasicTeraData.Instance.WindowData.ShowHealCrit = !BasicTeraData.Instance.WindowData.ShowHealCrit;
+            if (e.ClickCount == 2)
+                BasicTeraData.Instance.WindowData.ShowHealCrit = !BasicTeraData.Instance.WindowData.ShowHealCrit;
         }
 
         public void CloseSkills()
@@ -133,6 +150,5 @@ namespace DamageMeter.UI
                 Console.WriteLine(@"Exception move");
             }
         }
-
     }
 }

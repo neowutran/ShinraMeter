@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tera.Game;
+﻿using Tera.Game;
 
 namespace DamageMeter.Database.Structures
 {
     public class PlayerDealt
     {
-
-        public PlayerDealt(long amount, long beginTime, long endTime, long critic, long hit, Player source, EntityId target, Database.Type type)
+        public PlayerDealt(long amount, long beginTime, long endTime, long critic, long hit, Player source,
+            EntityId target, Database.Type type)
         {
             Amount = amount;
             BeginTime = beginTime;
@@ -19,7 +14,7 @@ namespace DamageMeter.Database.Structures
             Hit = hit;
             Source = source;
             Target = target;
-            Type = type;    
+            Type = type;
         }
 
         public Database.Type Type { get; }
@@ -34,8 +29,7 @@ namespace DamageMeter.Database.Structures
 
         public EntityId Target { get; }
 
-        public double CritRate => Critic / Hit;
+        public double CritRate => Critic*100/Hit;
         public long Interval => EndTime - BeginTime;
-
     }
 }

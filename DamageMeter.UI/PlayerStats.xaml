@@ -7,7 +7,7 @@
              d:DesignHeight="29"
              MinHeight="29"
              Focusable="False"
-           
+
              MaxHeight="29"
              Height="29">
     <Grid Focusable="False">
@@ -19,11 +19,13 @@
                    Stroke="Transparent" VerticalAlignment="Center"
                    Width="Auto" />
 
-        <Image PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class" Focusable="False"
+        <Image PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class"
+               Focusable="False"
                Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
                Height="25" VerticalAlignment="Top" Width="25" Margin="0,2,0,0" />
 
-        <Grid Focusable="False" PreviewMouseRightButtonDown="ShowSkills"  MouseLeftButtonDown="MoveWindow" x:Name="GridStats"
+        <Grid Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow"
+              x:Name="GridStats"
               Width="Auto"
               Margin="25,0,0,0" VerticalAlignment="Top" Height="29" MinHeight="29" MaxHeight="29">
             <Grid.ColumnDefinitions>
@@ -32,20 +34,23 @@
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="45" />
             </Grid.ColumnDefinitions>
-            <Label Focusable="False" Grid.Column="0" FontSize="14" VerticalAlignment="Center" HorizontalContentAlignment="Left"
+            <Label Focusable="False" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                   HorizontalContentAlignment="Left"
                    x:Name="LabelName" Foreground="GreenYellow"
                    MinHeight="29" />
-            <Label Focusable="False" Grid.Column="1" FontSize="14" x:Name="LabelDamagePart" HorizontalContentAlignment="Right"
+            <Label Focusable="False" Grid.Column="1" FontSize="14" x:Name="LabelDamagePart"
+                   HorizontalContentAlignment="Right"
                    VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
             <Label Focusable="False" Grid.Column="2" FontSize="14" x:Name="LabelDps" HorizontalContentAlignment="Right"
                    VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
-           
-            <Label Focusable="False" Grid.Column="4" FontSize="14" x:Name="LabelCritRate" HorizontalContentAlignment="Right"
+
+            <Label Focusable="False" Grid.Column="3" FontSize="14" x:Name="LabelCritRate"
+                   HorizontalContentAlignment="Right"
                    VerticalAlignment="Center" Foreground="LightCoral" PreviewMouseLeftButtonDown="ChangeHeal"
                    MinHeight="25" />
-          
+
         </Grid>
 
     </Grid>

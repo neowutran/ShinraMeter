@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace DamageMeter.UI.SkillsHeaders
@@ -8,7 +7,7 @@ namespace DamageMeter.UI.SkillsHeaders
     /// <summary>
     ///     Logique d'interaction pour SkillsHeaderDps.xaml
     /// </summary>
-    public partial class SkillsHeaderDps : UserControl
+    public partial class SkillsHeaderDps
     {
         public static readonly string SkillName = "Skill name";
         public static readonly string CritRateDmg = "% Crit";

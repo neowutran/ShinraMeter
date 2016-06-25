@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Interop;
 
 namespace DamageMeter.UI
 {
     public static class WindowsServices
     {
-        const int WS_EX_TRANSPARENT = 0x00000020;
-        const int GWL_EXSTYLE = (-20);
+        private const int WS_EX_TRANSPARENT = 0x00000020;
+        private const int GWL_EXSTYLE = -20;
 
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr hwnd, int index);
@@ -41,6 +35,5 @@ namespace DamageMeter.UI
             handled = true;
             return new IntPtr(MA_NOACTIVATE);
         }
-
     }
 }

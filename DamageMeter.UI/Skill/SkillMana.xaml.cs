@@ -4,7 +4,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DamageMeter.UI.SkillDetail;
 using Data;
-using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.Skill
 {
@@ -20,11 +19,9 @@ namespace DamageMeter.UI.Skill
 
             foreach (var skillInfo in skill.Skills)
             {
-                if (!string.IsNullOrEmpty(skillInfo.IconName))
-                {
-                    SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
-                    break;
-                }
+                if (string.IsNullOrEmpty(skillInfo.IconName)) continue;
+                SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
+                break;
             }
             Update(skill);
         }
@@ -48,7 +45,6 @@ namespace DamageMeter.UI.Skill
             {
                 SkillsDetailList.Items.Add(new SkillDetailMana(skillInfo, skill));
             }
-
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

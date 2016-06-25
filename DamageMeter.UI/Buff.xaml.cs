@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using DamageMeter.UI.EntityStats;
-using Tera.Game;
+﻿using System.Collections.Generic;
 using DamageMeter.Database.Structures;
+using DamageMeter.UI.EntityStats;
+using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI
 {
@@ -43,7 +42,7 @@ namespace DamageMeter.UI
                     abnormalityUi = new EnduranceDebuff();
                     _enduranceDebuffsList.Add(abnormalityUi);
                 }
-                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerDealt.BeginTime,playerDealt.EndTime);
+                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerDealt.BeginTime, playerDealt.EndTime);
                 EnduranceAbnormality.Items.Add(abnormalityUi);
 
                 counter++;

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using log4net.Config;
 using Tera.Game;
 
@@ -20,14 +17,14 @@ namespace Data
         private BasicTeraData(string resourceDirectory)
         {
             ResourceDirectory = resourceDirectory;
-            Directory.CreateDirectory(Path.Combine(resourceDirectory, "config"));//ensure config dir is created
+            Directory.CreateDirectory(Path.Combine(resourceDirectory, "config")); //ensure config dir is created
             XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
-            Servers = new ServerDatabase(Path.Combine(ResourceDirectory,"data"));
+            Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));
             ImageDatabase = new ImageDatabase(Path.Combine(ResourceDirectory, "img/"));
-            Icons=new IconsDatabase(Path.Combine(ResourceDirectory, "data/"));
+            Icons = new IconsDatabase(Path.Combine(ResourceDirectory, "data/"));
         }
 
         public HotDotDatabase HotDotDatabase { get; set; }
@@ -49,7 +46,7 @@ namespace Data
 
         private static string FindResourceDirectory()
         {
-            var directory = Path.GetDirectoryName(typeof (BasicTeraData).Assembly.Location);
+            var directory = Path.GetDirectoryName(typeof(BasicTeraData).Assembly.Location);
             while (directory != null)
             {
                 var resourceDirectory = Path.Combine(directory, @"resources\");

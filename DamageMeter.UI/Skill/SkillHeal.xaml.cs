@@ -4,7 +4,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DamageMeter.UI.SkillDetail;
 using Data;
-using DamageMeter.Database.Structures;
 
 namespace DamageMeter.UI.Skill
 {
@@ -20,11 +19,9 @@ namespace DamageMeter.UI.Skill
 
             foreach (var skillInfo in skill.Skills)
             {
-                if (!string.IsNullOrEmpty(skillInfo.IconName))
-                {
-                    SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
-                    break;
-                }
+                if (string.IsNullOrEmpty(skillInfo.IconName)) continue;
+                SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
+                break;
             }
             Update(skill);
         }
@@ -34,20 +31,20 @@ namespace DamageMeter.UI.Skill
             var skillsId = skill.Id();
 
             LabelName.ToolTip = skillsId;
-            LabelCritRateHeal.Content = ( skill.CritRate() * 100) + "%";
+            LabelCritRateHeal.Content = skill.CritRate() + "%";
 
 
             LabelNumberHitHeal.Content = skill.Hits();
             LabelNumberCritHeal.Content = skill.Crits();
 
             LabelTotalHeal.Content = FormatHelpers.Instance.FormatValue(skill.Amount());
-            LabelBiggestHit.Content = FormatHelpers.Instance.FormatValue( (long)skill.BiggestHit());
-            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue( (long)skill.BiggestCrit());
+            LabelBiggestHit.Content = FormatHelpers.Instance.FormatValue(skill.BiggestHit());
+            LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.BiggestCrit());
 
 
-            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgCrit());
-            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long)skill.AvgWhite());
-            LabelAverage.Content = FormatHelpers.Instance.FormatValue((long)skill.Avg());
+            LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long) skill.AvgCrit());
+            LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skill.AvgWhite());
+            LabelAverage.Content = FormatHelpers.Instance.FormatValue((long) skill.Avg());
 
 
             SkillsDetailList.Items.Clear();
@@ -56,7 +53,6 @@ namespace DamageMeter.UI.Skill
             {
                 SkillsDetailList.Items.Add(new SkillDetailHeal(skillInfo, skill));
             }
-
         }
 
         public string SkillNameIdent()
