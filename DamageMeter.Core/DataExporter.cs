@@ -122,7 +122,7 @@ namespace DamageMeter
                 teradpsUser.PlayerClass = user.Source.Class.ToString();
                 teradpsUser.PlayerName = user.Source.Name;
                 teradpsUser.PlayerServer = BasicTeraData.Instance.Servers.GetServerName(user.Source.ServerId);
-                teradpsUser.PlayerAverageCritRate = user.CritRate + "";
+                teradpsUser.PlayerAverageCritRate = Math.Round(user.CritRate, 1) + "";
                 teradpsUser.HealCrit = user.Source.IsHealer
                     ? heals.FirstOrDefault(x => x.Source == user.Source)?.CritRate + ""
                     : null;
@@ -162,19 +162,16 @@ namespace DamageMeter
                     var skilldamage = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter);
 
                     skillLog.SkillAverageCrit =
-                        skills.AverageCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                        Math.Round(skills.AverageCrit(user.Source.User.Id, entity, skill.Id, timedEncounter)) + "";
                     skillLog.SkillAverageWhite =
-                        skills.AverageWhite(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                       Math.Round(skills.AverageWhite(user.Source.User.Id, entity, skill.Id, timedEncounter)) + "";
                     skillLog.SkillCritRate = skills.CritRate(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.SkillDamagePercent = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter)/
+                    skillLog.SkillDamagePercent = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter)*100/
                                                   user.Amount + "";
                     skillLog.SkillHighestCrit =
                         skills.BiggestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
                     skillLog.SkillHits = skills.Hits(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.SkillId =
-                        SkillResult.GetSkill(user.Source.User.Id, skill.Id, skill.IsHotDot,
-                            NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
-                            BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase).Id + "";
+                    skillLog.SkillId= skill.Id + "";
                     skillLog.SkillLowestCrit =
                         skills.LowestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
                     skillLog.SkillTotalDamage = skilldamage + "";

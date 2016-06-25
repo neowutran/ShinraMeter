@@ -28,24 +28,32 @@ namespace DamageMeter.Database.Structures
         private Dictionary<EntityId, Dictionary<EntityId, Dictionary<int, List<Skill>>>> SourceTargetIdSkill { get; }
 
 
-        public long DamageReceived(EntityId target, EntityId source, bool timed)
+        public long DamageReceived(EntityId target, Entity source, bool timed)
         {
-            var key = "damage_received/" + target + "/" + source + "/" + timed;
+            var sourceString = source?.Id.ToString() ?? "";
+            var key = "damage_received/" + target + "/" + sourceString + "/" + timed;
             if (_caching.ContainsKey(key)) return (long) _caching[key];
+            IEnumerable<long> result = new List<long>();
 
-            IEnumerable<long> result;
-            if (!timed)
+            if (TargetSourceSkill.ContainsKey(target))
             {
-                result = from skills in TargetSourceSkill[target][source]
-                    where skills.Type == Database.Type.Damage
-                    select skills.Amount;
-            }
-            else
-            {
-                result = from skills in TargetSourceSkill[target].Values
-                    from skill in skills
-                    where skill.Type == Database.Type.Damage
-                    select skill.Amount;
+                if (!timed && source != null)
+                 {
+                    if (TargetSourceSkill[target].ContainsKey(source.Id))
+                    {
+                        result = from skills in TargetSourceSkill[target][source.Id]
+                            where skills.Type == Database.Type.Damage
+                            select skills.Amount;
+                    }
+                }
+                else
+                {
+                    result = from skills in TargetSourceSkill[target].Values
+                        from skill in skills
+                        where skill.Type == Database.Type.Damage
+                        select skill.Amount;
+                }
+
             }
 
             var sum = result.Sum();
@@ -53,24 +61,32 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        public int HitsReceived(EntityId target, EntityId source, bool timed)
+        public int HitsReceived(EntityId target, Entity source, bool timed)
         {
-            var key = "hits_received/" + target + "/" + source + "/" + timed;
+            var sourceString = source?.Id.ToString() ?? "";
+            var key = "hits_received/" + target + "/" + sourceString + "/" + timed;
             if (_caching.ContainsKey(key)) return (int) _caching[key];
 
-            IEnumerable<Skill> result;
-
-            if (!timed)
+            IEnumerable<Skill> result= new List<Skill>();
+            if (TargetSourceSkill.ContainsKey(target))
             {
-                result = from skills in TargetSourceSkill[target][source]
-                    where skills.Type == Database.Type.Damage
-                    select skills;
-                return result.Count();
+                if (!timed && source != null)
+                {
+                    if (TargetSourceSkill[target].ContainsKey(source.Id))
+                    {
+                        result = from skills in TargetSourceSkill[target][source.Id]
+                            where skills.Type == Database.Type.Damage
+                            select skills;
+                    }
+                }
+                else
+                {
+                    result = from skills in TargetSourceSkill[target].Values
+                        from skill in skills
+                        where skill.Type == Database.Type.Damage
+                        select skill;
+                }
             }
-            result = from skills in TargetSourceSkill[target].Values
-                from skill in skills
-                where skill.Type == Database.Type.Damage
-                select skill;
 
             var count = result.Count();
             _caching.Add(key, count);
@@ -115,7 +131,7 @@ namespace DamageMeter.Database.Structures
                 result = from skills in SourceTargetSkill[source.Id].Values
                     from skill in skills
                     select
-                        SkillResult.GetSkill(source.Id, skill.SkillId, skill.HotDot,
+                        SkillResult.GetSkill(source.Id, skill.PetSource, skill.SkillId, skill.HotDot,
                             NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                             BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
 
@@ -125,7 +141,7 @@ namespace DamageMeter.Database.Structures
 
             result = from skills in SourceTargetSkill[source.Id][target.Id]
                 select
-                    SkillResult.GetSkill(source.Id, skills.SkillId, skills.HotDot,
+                    SkillResult.GetSkill(source.Id, skills.PetSource, skills.SkillId, skills.HotDot,
                         NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                         BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
             return result.Distinct();

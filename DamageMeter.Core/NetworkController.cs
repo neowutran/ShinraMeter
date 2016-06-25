@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using DamageMeter.Database.Structures;
@@ -71,6 +72,7 @@ namespace DamageMeter
         public event SetClickThrouEvent SetClickThrouAction;
         public event UnsetClickThrouEvent UnsetClickThrouAction;
 
+        public int SendFullDetails { get; set; }
         public void Exit()
         {
             BasicTeraData.Instance.WindowData.Save();
@@ -117,31 +119,18 @@ namespace DamageMeter
 
 
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
-            var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
+            Skills skills = null; 
+            if (SendFullDetails != 0)
+            {
+                skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
+            }
             var playersInfo = timedEncounter
                 ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
                 : Database.Database.Instance.PlayerInformation(currentBoss);
 
-
             var entities = Database.Database.Instance.AllEntity();
-
-            var filteredEntities = new List<NpcEntity>();
-            foreach (var entityid in entities)
-            {
-                Console.WriteLine("==== "+entityid);
-                var entity = EntityTracker.GetOrNull(entityid);
-                if (!(entity is NpcEntity)) continue;
-                var npc = (NpcEntity) entity;
-                if (!npc.Info.Boss) continue;
-                Console.WriteLine("Add NPC:" + npc.Info.Name);
-                filteredEntities.Add(npc);
-            }
-
-            Console.WriteLine("current boss:" + currentBoss);
-            Console.WriteLine("skills:" + skills);
-
+            var filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
             var statsSummary = new StatsSummary(playersInfo, entityInfo);
-
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = _abnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
@@ -345,7 +334,7 @@ namespace DamageMeter
                 {
                     _abnormalityTracker.StopAggro(despawnNpc);
                     _abnormalityTracker.DeleteAbnormality(despawnNpc);
-                    //DataExporter.Export(despawnNpc, _abnormalityStorage);
+                    DataExporter.Export(despawnNpc, _abnormalityStorage);
                     continue;
                 }
 

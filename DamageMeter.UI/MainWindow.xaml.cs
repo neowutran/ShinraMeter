@@ -403,13 +403,6 @@ namespace DamageMeter.UI
                     AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory,
                     List<ChatMessage> chatbox)
                 {
-                    Console.WriteLine("count=" + statsSummary.PlayerDealt.Count);
-
-                    foreach (var entity in entities)
-                    {
-                        Console.Write(entity.Info.Name + " ; ");
-                    }
-                    Console.WriteLine("");
                     UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
                     _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);

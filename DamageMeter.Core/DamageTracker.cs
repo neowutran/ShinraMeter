@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using Data;
 using Tera.Game;
 
@@ -79,6 +80,7 @@ namespace DamageMeter
 
         public Entity GetEntity(EntityId entityId)
         {
+            
             var entity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(entityId);
             var entity2 = GetActorEntity(entityId);
             if (entity2 != null)
@@ -87,19 +89,16 @@ namespace DamageMeter
             }
             if (!(entity is ProjectileEntity)) return null;
             var source = (ProjectileEntity) entity;
-            if (source.Owner is NpcEntity || source.Owner is UserEntity)
-            {
-                return source.Owner;
-            }
-            return null;
+            if (!(source.Owner is NpcEntity) && !(source.Owner is UserEntity)) return null;
+            return source.Owner;
         }
 
         public void Update(SkillResult skillResult)
         {
             if (skillResult.Source == null || skillResult.Target == null) return;
 
-            var entitySource = GetEntity(skillResult.Source.Id);
-            var entityTarget = GetEntity(skillResult.Target.Id);
+            var entitySource = UserEntity.ForEntity(NetworkController.Instance.EntityTracker.GetOrPlaceholder(skillResult.Source.Id));
+            var entityTarget = GetActorEntity(skillResult.Target.Id);
 
             if (skillResult.SourcePlayer == null && skillResult.TargetPlayer == null) return;
             if (BasicTeraData.Instance.WindowData.PartyOnly &&
@@ -112,7 +111,7 @@ namespace DamageMeter
                 throw new Exception("Unknow target" + skillResult.Target.GetType());
             }
 
-            InsertSkill(entityTarget, entitySource, skillResult);
+            InsertSkill(entityTarget, entitySource["root_source"], entitySource["source"], skillResult);
         }
 
         private static bool IsValidAttack(SkillResult message)
@@ -123,17 +122,11 @@ namespace DamageMeter
                 return false;
             }
 
-            if ((UserEntity.ForEntity(message.Source)["user"] == UserEntity.ForEntity(message.Target)["user"]) &&
-                (message.Damage != 0))
-            {
-                return false;
-            }
-
-            return true;
+            return (UserEntity.ForEntity(message.Source)["root_source"] != UserEntity.ForEntity(message.Target)["root_source"]) || (message.Damage == 0);
         }
 
 
-        private void InsertSkill(Entity entityTarget, Entity entitySource, SkillResult message)
+        private void InsertSkill(Entity entityTarget, Entity entitySource, Entity petSource, SkillResult message)
         {
             if (!IsValidAttack(message))
             {
@@ -154,7 +147,7 @@ namespace DamageMeter
             }
 
             Database.Database.Instance.Insert(message.Amount, skillType, entityTarget, entitySource, message.SkillId,
-                message.Abnormality, message.IsCritical, message.Time.Ticks);
+                message.Abnormality, message.IsCritical, message.Time.Ticks, petSource);
 
             var entity = entityTarget as NpcEntity;
             if (entity != null)

@@ -37,6 +37,7 @@ namespace DamageMeter.Database
                       "type INTEGER NOT NULL," +
                       "target INTEGER NOT NULL," +
                       "source INTEGER NOT NULL," +
+                      "pet_source INTEGER DEFAULT NULL," +
                       "skill_id INTEGER NOT NULL," +
                       "critic INTEGER NOT NULL," +
                       "hotdot INTEGER NOT NULL," +
@@ -70,10 +71,10 @@ namespace DamageMeter.Database
         }
 
         public void Insert(long amount, Type type, Entity target, Entity source, long skillId, bool hotdot, bool critic,
-            long time)
+            long time, Entity petSource)
         {
             var sql =
-                "INSERT INTO damage (amount, type, target, source, skill_id, hotdot, critic, time) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time ) ;";
+                "INSERT INTO damage (amount, type, target, source, skill_id, hotdot, critic, time, pet_source) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time, $pet_source ) ;";
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$amount", amount);
             command.Parameters.AddWithValue("$type", (int) type);
@@ -83,6 +84,16 @@ namespace DamageMeter.Database
             command.Parameters.AddWithValue("$critic", critic ? 1 : 0);
             command.Parameters.AddWithValue("$hotdot", hotdot ? 1 : 0);
             command.Parameters.AddWithValue("$time", time);
+
+            if (petSource != null)
+            {
+                command.Parameters.AddWithValue("$pet_source", petSource.Id.Id);
+            }
+            else
+            {
+                command.Parameters.AddWithValue("$pet_source", "NULL");
+            }
+
             command.ExecuteNonQuery();
         }
 
@@ -106,9 +117,11 @@ namespace DamageMeter.Database
 
             if (entity == null)
             {
-                var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time " +
+                var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, target " +
                           "FROM damage " +
-                          "WHERE type = $type";
+                          "WHERE type = $type "+
+                          "GROUP BY target; ";
+
                 command = new SQLiteCommand(sql, Connexion);
                 command.Parameters.AddWithValue("$type", (int) Type.Damage);
             }
@@ -116,18 +129,21 @@ namespace DamageMeter.Database
             {
                 if (!timed)
                 {
-                    var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time " +
+                    var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, target " +
                               "FROM damage " +
-                              "WHERE target = $target AND type = $type";
+                              "WHERE target = $target AND type = $type " +
+                              "GROUP BY target; ";
+
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
                     command.Parameters.AddWithValue("$target", entity.Id.Id);
                 }
                 else
                 {
-                    var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time " +
-                              "FROM damage " +
-                              "WHERE time BETWEEN (SELECT MIN(time) FROM damage WHERE target = $target) AND (SELECT MAX(time) FROM damage WHERE target = $target) AND type = $type ";
+                    var sql =
+                        "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, target " +
+                        "FROM damage " +
+                        "WHERE time BETWEEN (SELECT MIN(time) FROM damage WHERE target = $target) AND (SELECT MAX(time) FROM damage WHERE target = $target) AND type = $type ";
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
                     command.Parameters.AddWithValue("$target", entity.Id.Id);
@@ -136,25 +152,42 @@ namespace DamageMeter.Database
 
 
             var rdr = command.ExecuteReader();
+            long sumTotalDamage = 0;
+            long minBeginTime = 0;
+            long maxEndTime = 0;
+            while (rdr.Read())
+            {          
+                var target = rdr.GetFieldValue<long>(rdr.GetOrdinal("target"));
+                var entityTarget = NetworkController.Instance.EntityTracker.GetOrNull(new EntityId((ulong)target));
+                if (!(entityTarget is NpcEntity)) continue;
+                var totalDamage = rdr.IsDBNull(rdr.GetOrdinal("total_amount"))
+                    ? 0
+                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
+                var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time"))
+                    ? 0
+                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));
+                var endTime = rdr.IsDBNull(rdr.GetOrdinal("end_time"))
+                    ? 0
+                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("end_time"));
 
-            rdr.Read();
-            var totalDamage = rdr.IsDBNull(rdr.GetOrdinal("total_amount"))
-                ? 0
-                : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
-            var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time"))
-                ? 0
-                : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));
-            var endTime = rdr.IsDBNull(rdr.GetOrdinal("end_time"))
-                ? 0
-                : rdr.GetFieldValue<long>(rdr.GetOrdinal("end_time"));
-            Console.WriteLine("total:" + totalDamage);
-            return new EntityInformation(entity, totalDamage, beginTime, endTime);
+                sumTotalDamage += totalDamage;
+
+                if (minBeginTime == 0 || beginTime < minBeginTime)
+                {
+                    minBeginTime = beginTime;
+                }
+                if (endTime > maxEndTime)
+                {
+                    maxEndTime = endTime;
+                }
+            }
+            return new EntityInformation(entity, sumTotalDamage, minBeginTime, maxEndTime);
         }
 
         public Skills GetSkills(long beginTime, long endTime)
         {
             var sql =
-                "SELECT amount, type, target, source, skill_id, hotdot, critic, time FROM damage WHERE time BETWEEN $begin AND $end ;";
+                "SELECT amount, type, target, source, pet_source, skill_id, hotdot, critic, time FROM damage WHERE time BETWEEN $begin AND $end ;";
 
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
@@ -176,7 +209,15 @@ namespace DamageMeter.Database
                 var critic = rdr.GetFieldValue<long>(rdr.GetOrdinal("critic")) == 1;
                 var hotdot = rdr.GetFieldValue<long>(rdr.GetOrdinal("hotdot")) == 1;
                 var time = rdr.GetFieldValue<long>(rdr.GetOrdinal("time"));
-                var skill = new Skill(amount, type, target, source, (int) skillid, hotdot, critic, time);
+                var petSource = rdr.IsDBNull(rdr.GetOrdinal("pet_source"))
+                    ? 0
+                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_source"));
+                EntityId? petSourceId = null;
+                if (petSource != 0)
+                {
+                    petSourceId = new EntityId((ulong)petSource);
+                }
+                var skill = new Skill(amount, type, target, source, (int) skillid, hotdot, critic, time, petSourceId);
 
                 if (!targetSourceSkills.ContainsKey(skill.Target))
                 {
@@ -224,13 +265,11 @@ namespace DamageMeter.Database
 
         public List<PlayerDealt> PlayerInformation(long beginTime, long endTime)
         {
-            Console.WriteLine("start:" + beginTime + ";" + endTime);
-
             var sql =
                 "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target, type " +
                 "FROM damage " +
                 "WHERE time BETWEEN $begin AND $end " +
-                "GROUP BY type " +
+                "GROUP BY type, source " +
                 "ORDER BY `total_amount` DESC;";
 
             var command = new SQLiteCommand(sql, Connexion);
@@ -271,7 +310,6 @@ namespace DamageMeter.Database
                 var entityId = rdr.GetFieldValue<long>(rdr.GetOrdinal("target"));
                 var type = rdr.GetFieldValue<long>(rdr.GetOrdinal("type"));
 
-                Console.WriteLine("Crits:" + critic + ";Hits:" + hit);
                 result.Add(new PlayerDealt(
                     amount,
                     beginTime,
@@ -294,7 +332,7 @@ namespace DamageMeter.Database
             {
                 sql =
                     "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target, type " +
-                    "FROM damage GROUP BY type ORDER BY `total_amount` DESC;";
+                    "FROM damage GROUP BY source, type ORDER BY `total_amount` DESC;";
                 command = new SQLiteCommand(sql, Connexion);
                 return PlayerInformation(command);
             }

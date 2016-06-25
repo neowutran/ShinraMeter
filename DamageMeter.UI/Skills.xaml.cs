@@ -25,8 +25,6 @@ namespace DamageMeter.UI
             Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
         {
             InitializeComponent();
-
-            TabControl.SelectionChanged += TabControlOnSelectionChanged;
             _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
@@ -43,11 +41,6 @@ namespace DamageMeter.UI
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExVisible(hwnd);
-        }
-
-        private void TabControlOnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
-        {
-            var tabitem = (TabItem) ((TabControl) selectionChangedEventArgs.Source).SelectedItem;
         }
 
         public void Update(PlayerDealt playerDealt, EntityInformation entityInformation,
@@ -78,6 +71,11 @@ namespace DamageMeter.UI
                 var duration = aggro.Duration(entityInformation.BeginTime, entityInformation.EndTime);
                 var interval = TimeSpan.FromTicks(duration);
                 AggroDuration.Content = interval.ToString(@"mm\:ss");
+            }
+
+            if (skills == null)
+            {
+                return;
             }
 
             if (_skillDps == null)

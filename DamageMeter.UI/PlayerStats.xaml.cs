@@ -70,6 +70,7 @@ namespace DamageMeter.UI
             PlayerAbnormals buffs, bool timedEncounter)
         {
             PlayerDealtHeal = playerDealtHeal;
+            EntityInformation = entityInformation;
             PlayerDealt = playerDealt;
             _buffs = buffs;
             _timedEncounter = timedEncounter;
@@ -86,8 +87,6 @@ namespace DamageMeter.UI
                 : Brushes.LightCoral;
             LabelDamagePart.Content = DamagePart;
             LabelDamagePart.ToolTip = "Damage done: " + Damage;
-
-            Console.WriteLine(PlayerDealt.Amount+":"+ EntityInformation.TotalDamage);
 
             _windowSkill?.Update(PlayerDealt, EntityInformation, Skills, _buffs, _timedEncounter);
             DpsIndicator.Width = EntityInformation.TotalDamage == 0
@@ -118,6 +117,7 @@ namespace DamageMeter.UI
                     CloseMeter = {Content = PlayerDealt.Source.Class + " " + PlayerName + ": CLOSE"}
                 };
                 _windowSkill.Show();
+                NetworkController.Instance.SendFullDetails++;
                 return;
             }
 
@@ -135,6 +135,7 @@ namespace DamageMeter.UI
         {
             _windowSkill?.Close();
             _windowSkill = null;
+            NetworkController.Instance.SendFullDetails--;
         }
 
 
