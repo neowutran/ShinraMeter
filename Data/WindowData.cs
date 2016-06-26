@@ -62,8 +62,10 @@ namespace Data
             ParsePartyOnly();
             ParseShowHealCrit();
             ParseExcelSaveDirectory();
+            ParseLFDelay();
         }
 
+        public int LFDelay { get; set; }
 
         public Point Location { get; set; }
 
@@ -121,10 +123,23 @@ namespace Data
             SiteExport = true;
             ShowHealCrit = true;
             ExcelSaveDirectory = "";
+            LFDelay = 150;
         }
 
+        private void ParseLFDelay()
+        {
+            var root = _xml.Root;
+            var xml = root?.Element("lf_delay");
+            if (xml == null) return;
+            int value;
+            var parseSuccess = int.TryParse(xml.Value, out value);
+            if (parseSuccess)
+            {
+                LFDelay = value;
+            }
+        } 
 
-        public void ParseExcelSaveDirectory()
+        private void ParseExcelSaveDirectory()
         {
             var root = _xml.Root;
             var excelxml = root?.Element("excel_save_directory");
@@ -132,7 +147,7 @@ namespace Data
             ExcelSaveDirectory = excelxml.Value;
         }
 
-        public void ParseShowHealCrit()
+        private void ParseShowHealCrit()
         {
             var root = _xml.Root;
             var xml = root?.Element("showhealcrit");
@@ -145,7 +160,7 @@ namespace Data
             }
         }
 
-        public void ParsePartyOnly()
+        private void ParsePartyOnly()
         {
             var root = _xml.Root;
             var xml = root?.Element("partyonly");
@@ -158,7 +173,7 @@ namespace Data
             }
         }
 
-        public void ParseExcel()
+        private void ParseExcel()
         {
             var root = _xml.Root;
             var excelxml = root?.Element("excel");
@@ -171,20 +186,20 @@ namespace Data
             }
         }
 
-        public void ParseScale()
+        private void ParseScale()
         {
             var root = _xml.Root;
             var scalexml = root?.Element("scale");
             if (scalexml == null) return;
             double scale;
-            var parseSuccess = double.TryParse(scalexml.Value, out scale);
+            var parseSuccess = double.TryParse(scalexml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out scale);
             if (parseSuccess)
             {
                 Scale = scale;
             }
         }
 
-        public void ParseAlwaysVisible()
+        private void ParseAlwaysVisible()
         {
             var root = _xml.Root;
             var alwaysvisible = root?.Element("always_visible");
@@ -223,9 +238,7 @@ namespace Data
                 SiteExport = val;
             }
         }
-
-
-        public void ParseRememberPosition()
+        private void ParseRememberPosition()
         {
             var root = _xml.Root;
             var rememberPosition = root?.Element("remember_position");
@@ -238,7 +251,7 @@ namespace Data
             }
         }
 
-        public void ParseDebug()
+        private void ParseDebug()
         {
             var root = _xml.Root;
             var debug = root?.Element("debug");
@@ -251,7 +264,7 @@ namespace Data
             }
         }
 
-        public void ParseTopmost()
+        private void ParseTopmost()
         {
             var root = _xml.Root;
             var topmost = root?.Element("topmost");
@@ -265,7 +278,7 @@ namespace Data
         }
 
 
-        public void ParseInvisibleUi()
+        private void ParseInvisibleUi()
         {
             var root = _xml.Root;
             var invisibleUI = root?.Element("invisible_ui_when_no_stats");
@@ -278,7 +291,7 @@ namespace Data
             }
         }
 
-        public void ParseAllowTrasparency()
+        private void ParseAllowTrasparency()
         {
             var root = _xml.Root;
             var allowTransparency = root?.Element("allow_transparency");
@@ -291,7 +304,7 @@ namespace Data
             }
         }
 
-        public void ParseWinpcap()
+        private void ParseWinpcap()
         {
             var root = _xml.Root;
             var winpcapElement = root?.Element("winpcap");
@@ -305,7 +318,7 @@ namespace Data
         }
 
 
-        public void ParseAutoUpdate()
+        private void ParseAutoUpdate()
         {
             var root = _xml.Root;
             var autoupdate = root?.Element("autoupdate");
@@ -407,6 +420,7 @@ namespace Data
             xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
             xml.Root.Add(new XElement("scale", Scale));
+            xml.Root.Add(new XElement("lf_delay", LFDelay));
             xml.Root.Add(new XElement("partyonly", PartyOnly));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
 

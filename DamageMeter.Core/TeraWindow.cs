@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
+using Data;
 
 namespace DamageMeter
 {
@@ -49,7 +50,8 @@ namespace DamageMeter
 
         private static void NewLine(IntPtr hWnd)
         {
-            Thread.Sleep(150);
+            var lfDelay = BasicTeraData.Instance.WindowData.LFDelay;
+            Thread.Sleep(lfDelay);
             if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
             {
                 throw new Win32Exception();
@@ -69,7 +71,7 @@ namespace DamageMeter
             {
                 throw new Win32Exception();
             }
-            Thread.Sleep(150);
+            Thread.Sleep(lfDelay);
         }
 
         private static void SendString(IntPtr hWnd, string s)

@@ -127,7 +127,7 @@ namespace DamageMeter
                     ? heals.FirstOrDefault(x => x.Source == user.Source)?.CritRate + ""
                     : null;
                 teradpsUser.PlayerDps = TimeSpan.TicksPerSecond*damage/interTick + "";
-                teradpsUser.PlayerTotalDamagePercentage = user.Amount/entityInfo.TotalDamage + "";
+                teradpsUser.PlayerTotalDamagePercentage = user.Amount*100/entityInfo.TotalDamage + "";
 
                 var death = buffs.Death;
                 teradpsUser.PlayerDeaths = death.Count(firstTick, lastTick) + "";
@@ -217,6 +217,7 @@ namespace DamageMeter
                 areaId != 467 &&
                 areaId != 767 &&
                 areaId != 768 &&
+                areaId != 470 &&
                 areaId != 468
                 )
             {
@@ -253,13 +254,14 @@ namespace DamageMeter
                 areaId != 467 &&
                 areaId != 767 &&
                 areaId != 768 &&
+                areaId != 470 &&
                 areaId != 468
                 )
             {
                 return;
             }
 
-            if (int.Parse(teradpsData.PartyDps) < 2000000 && areaId != 468)
+            if (int.Parse(teradpsData.PartyDps) < 2000000 && areaId != 468 && areaId != 470)
             {
                 return;
             }

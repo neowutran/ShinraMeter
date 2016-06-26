@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -25,6 +26,7 @@ using ContextMenu = System.Windows.Forms.ContextMenu;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
+using Point = System.Windows.Point;
 
 namespace DamageMeter.UI
 {
@@ -480,6 +482,7 @@ namespace DamageMeter.UI
                             Visibility = Visibility.Visible;
                         }
                     }
+                   
                 };
             Dispatcher.Invoke(changeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory,
                 nchatbox);

@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using DamageMeter.Database.Structures;
 using DamageMeter.Sniffing;
 using Data;
-using OfficeOpenXml.FormulaParsing.Utilities;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
@@ -429,6 +428,7 @@ namespace DamageMeter
                 var spawnMe = message as SpawnMeServerMessage;
                 if (spawnMe != null)
                 {
+                    Reset();
                     _abnormalityStorage.EndAll(message.Time.Ticks);
                     _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
                         BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
@@ -436,6 +436,8 @@ namespace DamageMeter
                     _abnormalityTracker.RegisterDead(spawnMe.Id, spawnMe.Time.Ticks, spawnMe.Dead);
                     continue;
                 }
+
+              
                 var sLogin = message as LoginServerMessage;
                 if (sLogin == null) continue;
                 _abnormalityStorage.EndAll(message.Time.Ticks);
@@ -446,7 +448,7 @@ namespace DamageMeter
                 //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
             }
         }
-
+     
         public void CheckUpdateUi()
         {
             var second = DateTime.UtcNow.Ticks;

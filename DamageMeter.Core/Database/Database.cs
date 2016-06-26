@@ -57,7 +57,7 @@ namespace DamageMeter.Database
 
         public void DeleteAll()
         {
-            var sql = "DELETE FROM damage";
+            var sql = "DELETE FROM damage;";
             var command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
         }

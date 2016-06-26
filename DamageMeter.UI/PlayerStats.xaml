@@ -12,6 +12,22 @@
              Height="29">
     <Grid Focusable="False">
 
+        <Grid.Resources>
+            <Style x:Key="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}" TargetType="Label">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Label">
+                            <Border>
+                                <ContentPresenter
+                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                  VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                  RecognizesAccessKey="False" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
         <Rectangle Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow"
                    x:Name="DpsIndicator"
                    Fill="DodgerBlue"
