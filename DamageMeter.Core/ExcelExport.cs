@@ -311,6 +311,7 @@ namespace DamageMeter
                 typeDmg = dps.PlotArea.ChartTypes[0];
                 typeDmg.YAxis.Title.Text = "Damage";
                 typeDmg.YAxis.Title.Rotation = 90;
+
                 serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 5, time + 3, offset + 5],
                     details.Cells[3, 2, time + 3, 2]);
                 serieDmg.Header = ws.Name + " Dmg";
@@ -420,9 +421,8 @@ namespace DamageMeter
             details.Cells[2, 10].Value = "BossHP";
             details.Column(10).Style.Numberformat.Format = "0%";
             details.Cells[1, 1, 1, 10].Merge = true;
-            for (var t = 0;
-                t <= exdata.LastTick/TimeSpan.TicksPerSecond - exdata.FirstTick/TimeSpan.TicksPerSecond;
-                t++)
+
+            for (int t = 0; t <= exdata.LastTick / TimeSpan.TicksPerSecond - exdata.FirstTick / TimeSpan.TicksPerSecond; t++)
             {
                 details.Cells[t + 3, 1].Value = t;
                 details.Cells[t + 3, 2].Value = (double) t/86400;

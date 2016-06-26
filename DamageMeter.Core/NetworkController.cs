@@ -440,6 +440,7 @@ namespace DamageMeter
               
                 var sLogin = message as LoginServerMessage;
                 if (sLogin == null) continue;
+                Reset();
                 _abnormalityStorage.EndAll(message.Time.Ticks);
                 _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
                     BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);

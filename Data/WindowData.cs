@@ -139,6 +139,7 @@ namespace Data
             }
         } 
 
+
         private void ParseExcelSaveDirectory()
         {
             var root = _xml.Root;
@@ -238,6 +239,7 @@ namespace Data
                 SiteExport = val;
             }
         }
+
         private void ParseRememberPosition()
         {
             var root = _xml.Root;
