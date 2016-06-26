@@ -107,6 +107,7 @@
     <Compile Include="HistoryLink.xaml.cs">
       <DependentUpon>HistoryLink.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IconUtils.cs" />
     <Compile Include="Skill.cs" />
     <Compile Include="SkillDetail\SkillDetailMana.xaml.cs">
       <DependentUpon>SkillDetailMana.xaml</DependentUpon>

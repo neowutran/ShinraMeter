@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -28,8 +27,6 @@ namespace DamageMeter
             StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter,
             AbnormalityStorage abnormals,
             ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox);
-
-        public delegate void GuildIconEvent(Bitmap icon);
 
         private static NetworkController _instance;
         private readonly AbnormalityStorage _abnormalityStorage;
@@ -72,7 +69,6 @@ namespace DamageMeter
         public EntityTracker EntityTracker { get; private set; }
 
         public event SetClickThrouEvent SetClickThrouAction;
-        public event GuildIconEvent GuildIconAction;
         public event UnsetClickThrouEvent UnsetClickThrouAction;
 
         public int SendFullDetails { get; set; }
@@ -88,14 +84,15 @@ namespace DamageMeter
         public event ConnectedHandler Connected;
         public event UpdateUiHandler TickUpdated;
 
-        protected virtual void HandleNewConnection(Server server)
+        private void HandleNewConnection(Server server)
         {
             Server = server;
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
             PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
-            Connected?.Invoke(server.Name);
+            var handler = Connected;
+            handler?.Invoke(server.Name);
         }
 
 
@@ -151,14 +148,16 @@ namespace DamageMeter
             _clickThrou = true;
         }
 
-        protected virtual void SetClickThrou()
+        private void SetClickThrou()
         {
-            SetClickThrouAction?.Invoke();
+            var handler = SetClickThrouAction;
+            handler?.Invoke();
         }
 
-        protected virtual void UnsetClickThrou()
+        private void UnsetClickThrou()
         {
-            UnsetClickThrouAction?.Invoke();
+            var handler = UnsetClickThrouAction;
+            handler?.Invoke();
         }
 
         public static void CopyThread(StatsSummary stats, Skills skills, AbnormalityStorage abnormals,
@@ -429,29 +428,19 @@ namespace DamageMeter
                 var spawnMe = message as SpawnMeServerMessage;
                 if (spawnMe != null)
                 {
-                    //_abnormalityStorage.EndAll(message.Time.Ticks);
-                    //_abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
-                    //    BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
-                    //_charmTracker = new CharmTracker(_abnormalityTracker);
+                    Reset();
+                    _abnormalityStorage.EndAll(message.Time.Ticks);
+                    _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
+                        BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
+                    _charmTracker = new CharmTracker(_abnormalityTracker);
                     _abnormalityTracker.RegisterDead(spawnMe.Id, spawnMe.Time.Ticks, spawnMe.Dead);
                     continue;
                 }
 
-                var guildIcon = message as S_GET_USER_GUILD_LOGO;
-                if (guildIcon != null)
-                {
-                    var me = PlayerTracker.Me();
-                    if (me?.PlayerId == guildIcon.PlayerId || me == null)
-                    {
-                        OnGuildIconAction(guildIcon.GuildLogo);
-                    }
-                    continue;
-                }
-
-
-
+              
                 var sLogin = message as LoginServerMessage;
                 if (sLogin == null) continue;
+                Reset();
                 _abnormalityStorage.EndAll(message.Time.Ticks);
                 _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
                     BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
@@ -466,11 +455,6 @@ namespace DamageMeter
             var second = DateTime.UtcNow.Ticks;
             if (second - _lastTick < TimeSpan.TicksPerSecond) return;
             UpdateUi();
-        }
-
-        protected virtual void OnGuildIconAction(Bitmap icon)
-        {
-            GuildIconAction?.Invoke(icon);
         }
     }
 }

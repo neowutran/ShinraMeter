@@ -3,6 +3,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -103,16 +104,9 @@ namespace DamageMeter
         public static bool IsMeterActive()
         {
             var activeWindow = GetForegroundWindow();
-            foreach (Window window in Application.Current.Windows)
-            {
-                var wih = new WindowInteropHelper(window);
-                var hWnd = wih.Handle;
-                if (hWnd == activeWindow)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return (from Window window in Application.Current.Windows
+                    select new WindowInteropHelper(window) 
+                    into wih select wih.Handle).Any(hWnd => hWnd == activeWindow);
         }
     }
 }

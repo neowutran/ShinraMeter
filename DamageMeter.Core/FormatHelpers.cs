@@ -31,10 +31,7 @@ namespace DamageMeter
 
         public string FormatTimeSpan(TimeSpan? timeSpan)
         {
-            if (timeSpan == null)
-                return null;
-
-            return FormatTimeSpan(timeSpan.Value);
+            return timeSpan == null ? null : FormatTimeSpan(timeSpan.Value);
         }
 
         public string FormatTimeSpan(TimeSpan timeSpan)
@@ -46,10 +43,7 @@ namespace DamageMeter
 
         public string FormatValue(long? value)
         {
-            if (value == null)
-                return null;
-
-            return FormatValue(value.Value);
+            return value == null ? null : FormatValue(value.Value);
         }
 
         public string FormatValue(long value)
@@ -92,10 +86,7 @@ namespace DamageMeter
 
         public string FormatPercent(double fraction)
         {
-            if (double.IsNaN(fraction))
-                return null;
-
-            return fraction.ToString("P1", CultureInfo);
+            return double.IsNaN(fraction) ? null : fraction.ToString("P1", CultureInfo);
         }
     }
 }

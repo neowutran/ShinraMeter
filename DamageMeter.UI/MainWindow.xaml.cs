@@ -71,6 +71,7 @@ namespace DamageMeter.UI
             NetworkController.Instance.TickUpdated += Update;
             NetworkController.Instance.SetClickThrouAction += SetClickThrou;
             NetworkController.Instance.UnsetClickThrouAction += UnsetClickThrou;
+           NetworkController.Instance.GuildIconAction += InstanceOnGuildIconAction;
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -94,6 +95,20 @@ namespace DamageMeter.UI
             Console.WriteLine(
                 "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             TrayConfiguration();
+        }
+
+        private void InstanceOnGuildIconAction(Bitmap icon)
+        {
+
+            NetworkController.GuildIconEvent changeUi =
+              delegate (Bitmap bitmap)
+              {
+                  Icon = bitmap.ToImageSource();
+                  _trayIcon.Icon = bitmap.GetIcon();
+
+              };
+            Dispatcher.Invoke(changeUi, icon);
+            
         }
 
         public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
