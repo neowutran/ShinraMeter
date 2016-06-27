@@ -263,6 +263,22 @@ namespace DamageMeter.Database
         }
 
 
+        public void UpdateEntityId(EntityId oldId, EntityId newId)
+        {
+            var sql = "UPDATE damage SET source = $newId WHERE source = $oldId; ";
+            var command = new SQLiteCommand(sql, Connexion);
+            command.Parameters.AddWithValue("$newId", newId.Id);
+            command.Parameters.AddWithValue("$oldId", oldId.Id);
+            command.ExecuteNonQuery();
+
+            sql = "UPDATE damage SET target = $newId WHERE target = $oldId; ";
+            command = new SQLiteCommand(sql, Connexion);
+            command.Parameters.AddWithValue("$newId", newId.Id);
+            command.Parameters.AddWithValue("$oldId", oldId.Id);
+            command.ExecuteNonQuery();
+        }
+
+
         public List<PlayerDealt> PlayerInformation(long beginTime, long endTime)
         {
             var sql =

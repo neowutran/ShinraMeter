@@ -94,8 +94,14 @@ namespace DamageMeter
             TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
             EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
             PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
+            PlayerTracker.PlayerIdChangedAction += PlayerTrackerOnPlayerIdChangedAction;
             _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
             Connected?.Invoke(server.Name);
+        }
+
+        private void PlayerTrackerOnPlayerIdChangedAction(EntityId oldId, EntityId newId)
+        {
+            Database.Database.Instance.UpdateEntityId(oldId, newId);
         }
 
 
@@ -447,8 +453,6 @@ namespace DamageMeter
                     }
                     continue;
                 }
-
-
 
                 var sLogin = message as LoginServerMessage;
                 if (sLogin == null) continue;
