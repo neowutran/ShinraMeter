@@ -188,11 +188,11 @@ namespace DamageMeter
                     ws.Cells.Style.Font.Size = 14;
                     ws.Cells.Style.Font.Name = "Arial";
                     ws.Cells[1, 1].Value =
-                        $"{Boss.Area}: {Boss.Name} {TimeSpan.FromSeconds(double.Parse(data.FightDuration)).ToString(@"mm\:ss")}";
-                    ws.Cells[1, 1, 1, 6].Merge = true;
-                    ws.Cells[1, 1, 1, 8].Style.Font.Bold = true;
-                    ws.Cells[1, 7].Value = long.Parse(data.PartyDps);
-                    ws.Cells[1, 7].Style.Numberformat.Format = @"#,#00,\k\/\s";
+                        $"{Boss.Area}: {Boss.Name} {TimeSpan.FromSeconds(double.Parse(data.fightDuration)).ToString(@"mm\:ss")}";
+                    ws.Cells[1, 1, 1, 7].Merge = true;
+                    ws.Cells[1, 1, 1, 9].Style.Font.Bold = true;
+                    ws.Cells[1, 8].Value = long.Parse(data.partyDps);
+                    ws.Cells[1, 8].Style.Numberformat.Format = @"#,#00,\k\/\s";
                     ws.Cells[2, 1].Value = "Ic";
                     ws.Cells[2, 1].Style.Font.Color.SetColor(Color.Transparent);
                     ws.Cells[2, 2].Value = "Name";
@@ -200,45 +200,48 @@ namespace DamageMeter
                     ws.Cells[2, 4].Value = "Death time";
                     ws.Cells[2, 5].Value = "Damage %";
                     ws.Cells[2, 6].Value = "Crit %";
-                    ws.Cells[2, 7].Value = "DPS";
-                    ws.Cells[2, 8].Value = "Damage";
+                    ws.Cells[2, 7].Value = "Heal Crit %";
+                    ws.Cells[2, 8].Value = "DPS";
+                    ws.Cells[2, 9].Value = "Damage";
                     var i = 2;
-                    foreach (var user in data.Members.OrderByDescending(x => long.Parse(x.PlayerTotalDamage)))
+                    foreach (var user in data.members.OrderByDescending(x => long.Parse(x.playerTotalDamage)))
                     {
                         i++;
                         ws.Cells[i, 1].Value = i - 2;
                         AddImage(ws, i, 1,
                             ClassIcons.Instance.GetBitmap(
-                                (PlayerClass) Enum.Parse(typeof(PlayerClass), user.PlayerClass)));
-                        ws.Cells[i, 2].Value = $"{user.PlayerServer}: {user.PlayerName}";
+                                (PlayerClass) Enum.Parse(typeof(PlayerClass), user.playerClass)));
+                        ws.Cells[i, 2].Value = $"{user.playerServer}: {user.playerName}";
                         ws.Cells[i, 2].Hyperlink = CreateUserSheet(package.Workbook, user, exdata, details);
-                        ws.Cells[i, 3].Value = long.Parse(user.PlayerDeaths);
-                        ws.Cells[i, 4].Value = long.Parse(user.PlayerDeathDuration);
+                        ws.Cells[i, 3].Value = long.Parse(user.playerDeaths);
+                        ws.Cells[i, 4].Value = long.Parse(user.playerDeathDuration);
                         ws.Cells[i, 4].Style.Numberformat.Format = @"0\s";
-                        ws.Cells[i, 5].Value = double.Parse(user.PlayerTotalDamagePercentage)/100;
+                        ws.Cells[i, 5].Value = double.Parse(user.playerTotalDamagePercentage)/100;
                         ws.Cells[i, 5].Style.Numberformat.Format = "0.0%";
-                        ws.Cells[i, 6].Value = double.Parse(user.PlayerAverageCritRate)/100;
+                        ws.Cells[i, 6].Value = double.Parse(user.playerAverageCritRate)/100;
                         ws.Cells[i, 6].Style.Numberformat.Format = "0.0%";
-                        ws.Cells[i, 7].Value = long.Parse(user.PlayerDps);
-                        ws.Cells[i, 7].Style.Numberformat.Format = @"#,#0,\k\/\s";
-                        ws.Cells[i, 8].Value = long.Parse(user.PlayerTotalDamage);
-                        ws.Cells[i, 8].Style.Numberformat.Format = @"#,#0,\k";
+                        ws.Cells[i, 7].Value = string.IsNullOrEmpty(user.healCrit) ? 0 : double.Parse(user.healCrit) / 100;
+                        ws.Cells[i, 7].Style.Numberformat.Format = "0.0%";
+                        ws.Cells[i, 8].Value = long.Parse(user.playerDps);
+                        ws.Cells[i, 8].Style.Numberformat.Format = @"#,#0,\k\/\s";
+                        ws.Cells[i, 9].Value = long.Parse(user.playerTotalDamage);
+                        ws.Cells[i, 9].Style.Numberformat.Format = @"#,#0,\k";
                     }
-                    ws.Cells[1, 8].Formula = $"SUM(H3:H{i})";
-                    ws.Cells[1, 8].Style.Numberformat.Format = @"#,#0,\k";
-                    var border = ws.Cells[1, 1, i, 8].Style.Border;
+                    ws.Cells[1, 9].Formula = $"SUM(I3:I{i})";
+                    ws.Cells[1, 9].Style.Numberformat.Format = @"#,#0,\k";
+                    var border = ws.Cells[1, 1, i, 9].Style.Border;
                     border.Bottom.Style =
                         border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thick;
-                    ws.Cells[2, 1, i, 8].AutoFilter = true;
+                    ws.Cells[2, 1, i, 9].AutoFilter = true;
 
                     var j = i + 3;
                     ws.Cells[j, 1].Value = "Ic";
                     ws.Cells[j, 1].Style.Font.Color.SetColor(Color.Transparent);
                     ws.Cells[j, 2].Value = "Debuff name";
-                    ws.Cells[j, 2, j, 7].Merge = true;
-                    ws.Cells[j, 8].Value = "%";
-                    ws.Cells[j, 2, j, 8].Style.Font.Bold = true;
-                    foreach (var buf in data.DebuffUptime)
+                    ws.Cells[j, 2, j, 8].Merge = true;
+                    ws.Cells[j, 9].Value = "%";
+                    ws.Cells[j, 2, j, 9].Style.Font.Bold = true;
+                    foreach (var buf in data.debuffUptime)
                     {
                         j++;
                         var hotdot = BTD.HotDotDatabase.Get(int.Parse(buf.Key));
@@ -247,11 +250,11 @@ namespace DamageMeter
                         ws.Cells[j, 2].Value = hotdot.Name;
                         if (!string.IsNullOrEmpty(hotdot.Tooltip))
                             ws.Cells[j, 2].AddComment("" + hotdot.Tooltip, "info");
-                        ws.Cells[j, 2, j, 7].Merge = true;
-                        ws.Cells[j, 8].Value = double.Parse(buf.Value)/100;
-                        ws.Cells[j, 8].Style.Numberformat.Format = "0%";
+                        ws.Cells[j, 2, j, 8].Merge = true;
+                        ws.Cells[j, 9].Value = double.Parse(buf.Value)/100;
+                        ws.Cells[j, 9].Style.Numberformat.Format = "0%";
                     }
-                    border = ws.Cells[i + 3, 1, j, 8].Style.Border;
+                    border = ws.Cells[i + 3, 1, j, 9].Style.Border;
                     border.Bottom.Style =
                         border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thick;
 
@@ -264,15 +267,17 @@ namespace DamageMeter
                     ws.Column(5).AutoFit();
                     ws.Column(6).AutoFit();
                     ws.Column(7).AutoFit();
-                    ws.Column(8).Width = 17;
+                    ws.Column(8).AutoFit();
+                    ws.Column(9).Width = 17;
                     ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
                     ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width);
                     ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width);
                     ws.Column(5).Width = GetTrueColumnWidth(ws.Column(5).Width);
                     ws.Column(6).Width = GetTrueColumnWidth(ws.Column(6).Width);
                     ws.Column(7).Width = GetTrueColumnWidth(ws.Column(7).Width);
-                    ws.Cells[1, 1, j, 8].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    ws.Cells[1, 1, j, 8].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width);
+                    ws.Cells[1, 1, j, 9].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[1, 1, j, 9].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     ws.PrinterSettings.FitToPage = true;
 
                     // I don't know why, but sometimes column height setting is lost.
@@ -445,27 +450,25 @@ namespace DamageMeter
             }
             long dealtDamage = 0;
             var totalDamage = exdata.PlayerSkills.Sum(
-            x => x.Value.Where(time => time.Time >= exdata.FirstTick / TimeSpan.TicksPerSecond && time.Time <= exdata.LastTick / TimeSpan.TicksPerSecond)
+            x => x.Value.Where(time => time.Time >= exdata.FirstTick && time.Time <= exdata.LastTick)
              .Sum(y => y.Amount));
             j = 0;
-            var delta = exdata.FirstTick - exdata.FirstTick/TimeSpan.TicksPerSecond*TimeSpan.TicksPerSecond;
-            for (var curTick = exdata.FirstTick/TimeSpan.TicksPerSecond;
-                curTick <= exdata.LastTick/TimeSpan.TicksPerSecond;
-                curTick++)
+            for (var curTick = exdata.FirstTick;
+                curTick <= exdata.LastTick;
+                curTick += TimeSpan.TicksPerSecond)
             {
                 j++;
                 var damage =
                     exdata.PlayerSkills.Sum(
-                        x => x.Value.Where(time => time.Time == curTick)
+                        x => x.Value.Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond)
                             .Sum(skill => skill.Amount));
                 dealtDamage += damage;
                 details.Cells[j + 2, 8].Value = damage/1000;
-                if (curTick == exdata.LastTick/TimeSpan.TicksPerSecond)
+                if (curTick >= exdata.LastTick+TimeSpan.TicksPerSecond)
                     details.Cells[j + 2, 9].Value = dealtDamage*TimeSpan.TicksPerSecond/
                                                     (exdata.LastTick - exdata.FirstTick)/1000;
                 else if (j != 1)
-                    details.Cells[j + 2, 9].Value = dealtDamage * TimeSpan.TicksPerSecond/
-                                                    ((j - 1)*TimeSpan.TicksPerSecond + delta)/1000;
+                    details.Cells[j + 2, 9].Value = dealtDamage/(j - 1)/1000;
                 details.Cells[j + 2, 10].Value = totalDamage == 0 ? 0 : (double)(totalDamage - dealtDamage) / totalDamage;
             }
             var i = 4;
@@ -532,23 +535,22 @@ namespace DamageMeter
                 }
                 dealtDamage = 0;
                 j = 0;
-                for (var curTick = exdata.FirstTick/TimeSpan.TicksPerSecond;
-                    curTick <= exdata.LastTick/TimeSpan.TicksPerSecond;
-                    curTick++)
+                for (var curTick = exdata.FirstTick;
+                   curTick <= exdata.LastTick;
+                   curTick += TimeSpan.TicksPerSecond)
                 {
                     j++;
                     var damage =
                         exdata.PlayerSkills.Where(all => all.Key == user.Key).Sum(
-                            x => x.Value.Where(time => time.Time == curTick)
+                            x => x.Value.Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond)
                                 .Sum(skill => skill.Amount));
                     dealtDamage += damage;
                     details.Cells[j + 2, i + 5].Value = damage/1000;
-                    if (curTick == exdata.LastTick/TimeSpan.TicksPerSecond)
+                    if (curTick >= exdata.LastTick + TimeSpan.TicksPerSecond)
                         details.Cells[j + 2, i + 6].Value = dealtDamage*TimeSpan.TicksPerSecond/
                                                             (exdata.LastTick - exdata.FirstTick)/1000;
                     else if (j != 1)
-                        details.Cells[j + 2, i + 6].Value = dealtDamage*TimeSpan.TicksPerSecond/
-                                                            ((j - 1)*TimeSpan.TicksPerSecond + delta)/1000;
+                        details.Cells[j + 2, i + 6].Value = dealtDamage/(j - 1)/1000;
                 }
             }
 
@@ -596,14 +598,14 @@ namespace DamageMeter
         private static ExcelHyperLink CreateUserSheet(ExcelWorkbook wb, Members user, ExtendedStats exdata,
             ExcelWorksheet details)
         {
-            var ws = wb.Worksheets.Add($"{user.PlayerServer}_{user.PlayerName}");
-            var rgc = new RaceGenderClass("Common", "Common", user.PlayerClass);
+            var ws = wb.Worksheets.Add($"{user.playerServer}_{user.playerName}");
+            var rgc = new RaceGenderClass("Common", "Common", user.playerClass);
             ws.DefaultRowHeight = 30;
             ws.Cells.Style.Font.Size = 14;
             ws.Cells.Style.Font.Name = "Arial";
             AddImage(ws, 1, 1,
-                ClassIcons.Instance.GetBitmap((PlayerClass) Enum.Parse(typeof(PlayerClass), user.PlayerClass)));
-            ws.Cells[1, 2].Value = $"{user.PlayerServer}: {user.PlayerName}";
+                ClassIcons.Instance.GetBitmap((PlayerClass) Enum.Parse(typeof(PlayerClass), user.playerClass)));
+            ws.Cells[1, 2].Value = $"{user.playerServer}: {user.playerName}";
             ws.Cells[1, 2, 1, 10].Merge = true;
             ws.Cells[1, 2, 1, 10].Style.Font.Bold = true;
             ws.Cells[2, 2].Value = "Skill";
@@ -617,7 +619,7 @@ namespace DamageMeter
             ws.Cells[2, 10].Value = "Avg White";
             var i = 2;
            
-            foreach (var stat in exdata.PlayerSkillsAggregated[user.PlayerServer+"/"+user.PlayerName].OrderByDescending(x => x.Amount()))
+            foreach (var stat in exdata.PlayerSkillsAggregated[user.playerServer+"/"+user.playerName].OrderByDescending(x => x.Amount()))
             {
                 i++;
                 ws.Cells[i, 1].Value = i - 2;
@@ -654,7 +656,7 @@ namespace DamageMeter
             ws.Cells[j, 2, j, 9].Merge = true;
             ws.Cells[j, 10].Value = "%";
             ws.Cells[j, 2, j, 10].Style.Font.Bold = true;
-            foreach (var buf in user.BuffUptime)
+            foreach (var buf in user.buffUptime)
             {
                 j++;
                 var hotdot = BTD.HotDotDatabase.Get(int.Parse(buf.Key));
@@ -703,8 +705,8 @@ namespace DamageMeter
             }
 
             // If sheet name contains space character, name should be enclosed in single quotes.
-            return new ExcelHyperLink($"'{user.PlayerServer}_{user.PlayerName}'!A1",
-                $"{user.PlayerServer}: {user.PlayerName}");
+            return new ExcelHyperLink($"'{user.playerServer}_{user.playerName}'!A1",
+                $"{user.playerServer}: {user.playerName}");
         }
     }
 }
