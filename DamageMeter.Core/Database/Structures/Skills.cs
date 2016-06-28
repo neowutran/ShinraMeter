@@ -391,7 +391,7 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public double LowestCrit(EntityId source, Entity target, int skillid, bool timed)
+        public long LowestCrit(EntityId source, Entity target, int skillid, bool timed)
         {
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource

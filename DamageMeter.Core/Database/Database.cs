@@ -263,7 +263,7 @@ namespace DamageMeter.Database
         }
 
 
-        public void UpdateEntityId(EntityId oldId, EntityId newId)
+        public void PlayerEntityIdChange(EntityId oldId, EntityId newId)
         {
             var sql = "UPDATE damage SET source = $newId WHERE source = $oldId; ";
             var command = new SQLiteCommand(sql, Connexion);

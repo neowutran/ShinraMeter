@@ -153,27 +153,22 @@ namespace DamageMeter
                         entityInfo.EndTime));
                 extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
-                var skillsId = skills.SkillsId(user.Source.User, entity, timedEncounter);
-
+                var skillsId = SkillAggregate.GetAggregate(user, entityInfo, skills, timedEncounter, Database.Database.Type.Damage);
+                extendedStats.PlayerSkillsAggregated[teradpsUser.PlayerServer + "/" + teradpsUser.PlayerName] = skillsId;
 
                 foreach (var skill in skillsId)
                 {
                     var skillLog = new SkillLog();
-                    var skilldamage = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter);
+                    var skilldamage = skill.Amount();
 
-                    skillLog.SkillAverageCrit =
-                        Math.Round(skills.AverageCrit(user.Source.User.Id, entity, skill.Id, timedEncounter)) + "";
-                    skillLog.SkillAverageWhite =
-                       Math.Round(skills.AverageWhite(user.Source.User.Id, entity, skill.Id, timedEncounter)) + "";
-                    skillLog.SkillCritRate = skills.CritRate(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.SkillDamagePercent = skills.Amount(user.Source.User.Id, entity, skill.Id, timedEncounter)*100/
-                                                  user.Amount + "";
-                    skillLog.SkillHighestCrit =
-                        skills.BiggestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.SkillHits = skills.Hits(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
-                    skillLog.SkillId= skill.Id + "";
-                    skillLog.SkillLowestCrit =
-                        skills.LowestCrit(user.Source.User.Id, entity, skill.Id, timedEncounter) + "";
+                    skillLog.SkillAverageCrit = Math.Round(skill.AvgCrit()) + "";
+                    skillLog.SkillAverageWhite = Math.Round(skill.AvgWhite()) + "";
+                    skillLog.SkillCritRate = skill.CritRate() + "";
+                    skillLog.SkillDamagePercent = skill.DamagePercent() + "";
+                    skillLog.SkillHighestCrit = skill.BiggestCrit() + "";
+                    skillLog.SkillHits = skill.Hits() + "";
+                    skillLog.SkillId= skill.Id() + "";
+                    skillLog.SkillLowestCrit = skill.LowestCrit() + "";
                     skillLog.SkillTotalDamage = skilldamage + "";
 
                     if (skilldamage == 0)

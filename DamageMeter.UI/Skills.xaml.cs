@@ -82,25 +82,25 @@ namespace DamageMeter.UI
             {
                 _skillDps =
                     new SkillsDetail(
-                        SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                        SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
                             Database.Database.Type.Damage), Database.Database.Type.Damage);
                 _skillHeal =
                     new SkillsDetail(
-                        SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                        SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
                             Database.Database.Type.Heal), Database.Database.Type.Heal);
                 _skillMana =
                     new SkillsDetail(
-                        SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                        SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
                             Database.Database.Type.Mana), Database.Database.Type.Mana);
                 _buff = new Buff(playerDealt, buffs, entityInformation);
             }
             else
             {
-                _skillDps.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                _skillDps.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
                     Database.Database.Type.Damage));
-                _skillHeal.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                _skillHeal.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
                     Database.Database.Type.Heal));
-                _skillMana.Update(SkillsAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                _skillMana.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
                     Database.Database.Type.Mana));
                 _buff.Update(playerDealt, buffs, entityInformation);
             }
@@ -110,30 +110,7 @@ namespace DamageMeter.UI
             BuffPanel.Content = _buff;
         }
 
-        private IEnumerable<SkillAggregate> SkillsAggregate(PlayerDealt playerDealt, EntityInformation entityInformation,
-            Database.Structures.Skills skillsData, bool timedEncounter, Database.Database.Type type)
-        {
-            var skills = skillsData.SkillsId(playerDealt.Source.User, entityInformation.Entity, timedEncounter);
-            var skillsAggregate = new Dictionary<string, SkillAggregate>();
-            foreach (var skill in skills)
-            {
-                if (skillsData.Type(playerDealt.Source.User.Id, entityInformation.Entity, skill.Id, timedEncounter) !=
-                    type)
-                {
-                    continue;
-                }
-
-                if (!skillsAggregate.ContainsKey(skill.ShortName))
-                {
-                    skillsAggregate.Add(skill.ShortName,
-                        new SkillAggregate(skill, skillsData, playerDealt, entityInformation, timedEncounter, type));
-                    continue;
-                }
-                skillsAggregate[skill.ShortName].Add(skill);
-            }
-            return skillsAggregate.Values;
-        }
-
+     
         private void Button_OnClick(object sender, RoutedEventArgs e)
         {
             _parent.CloseSkills();

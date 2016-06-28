@@ -101,7 +101,7 @@ namespace DamageMeter
 
         private void PlayerTrackerOnPlayerIdChangedAction(EntityId oldId, EntityId newId)
         {
-            Database.Database.Instance.UpdateEntityId(oldId, newId);
+            Database.Database.Instance.PlayerEntityIdChange(oldId, newId);
         }
 
 
@@ -435,10 +435,10 @@ namespace DamageMeter
                 var spawnMe = message as SpawnMeServerMessage;
                 if (spawnMe != null)
                 {
-                    //_abnormalityStorage.EndAll(message.Time.Ticks);
-                    //_abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
-                    //    BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
-                    //_charmTracker = new CharmTracker(_abnormalityTracker);
+                    _abnormalityStorage.EndAll(message.Time.Ticks);
+                    _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
+                        BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
+                    _charmTracker = new CharmTracker(_abnormalityTracker);
                     _abnormalityTracker.RegisterDead(spawnMe.Id, spawnMe.Time.Ticks, spawnMe.Dead);
                     continue;
                 }
@@ -446,11 +446,7 @@ namespace DamageMeter
                 var guildIcon = message as S_GET_USER_GUILD_LOGO;
                 if (guildIcon != null)
                 {
-                    var me = PlayerTracker.Me();
-                    if (me?.PlayerId == guildIcon.PlayerId || me == null)
-                    {
-                        OnGuildIconAction(guildIcon.GuildLogo);
-                    }
+                    OnGuildIconAction(guildIcon.GuildLogo);        
                     continue;
                 }
 

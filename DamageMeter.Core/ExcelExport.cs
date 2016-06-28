@@ -616,35 +616,33 @@ namespace DamageMeter
             ws.Cells[2, 9].Value = "Avg Crit";
             ws.Cells[2, 10].Value = "Avg White";
             var i = 2;
-            foreach (var stat in user.SkillLog.OrderByDescending(x => long.Parse(x.SkillTotalDamage)))
+           
+            foreach (var stat in exdata.PlayerSkillsAggregated[user.PlayerServer+"/"+user.PlayerName].OrderByDescending(x => x.Amount()))
             {
                 i++;
-                var skill = BTD.SkillDatabase.GetOrNull(rgc, int.Parse(stat.SkillId));
-                if (skill == null)
+                ws.Cells[i, 1].Value = i - 2;
+                foreach (var skillInfo in stat.Skills)
                 {
-                    ws.Cells[i, 1].Value = i - 2;
-                    ws.Cells[i, 2].Value = "Some pet skill";
+                    if (string.IsNullOrEmpty(skillInfo.IconName)) continue;
+                    AddImage(ws, i, 1, BTD.Icons.GetBitmap(skillInfo.IconName));
+                    break;
                 }
-                else
-                {
-                    ws.Cells[i, 1].Value = i - 2;
-                    AddImage(ws, i, 1, BTD.Icons.GetBitmap(skill.IconName));
-                    ws.Cells[i, 2].Value = skill.Name;
-                }
-                ws.Cells[i, 3].Value = double.Parse(stat.SkillDamagePercent)/100;
+
+                ws.Cells[i, 2].Value = stat.Name;
+                ws.Cells[i, 3].Value = stat.DamagePercent()/100;
                 ws.Cells[i, 3].Style.Numberformat.Format = "0.0%";
-                ws.Cells[i, 4].Value = long.Parse(stat.SkillTotalDamage);
+                ws.Cells[i, 4].Value = stat.Amount();
                 ws.Cells[i, 4].Style.Numberformat.Format = @"#,#0,\k";
-                ws.Cells[i, 5].Value = double.Parse(stat.SkillCritRate)/100;
+                ws.Cells[i, 5].Value = stat.CritRate()/100;
                 ws.Cells[i, 5].Style.Numberformat.Format = "0.0%";
-                ws.Cells[i, 6].Value = long.Parse(stat.SkillHits);
-                ws.Cells[i, 7].Value = long.Parse(stat.SkillHighestCrit);
+                ws.Cells[i, 6].Value = stat.Hits();
+                ws.Cells[i, 7].Value = stat.BiggestCrit();
                 ws.Cells[i, 7].Style.Numberformat.Format = @"#,#0,\k";
-                ws.Cells[i, 8].Value = long.Parse(stat.SkillLowestCrit);
+                ws.Cells[i, 8].Value = stat.LowestCrit();
                 ws.Cells[i, 8].Style.Numberformat.Format = @"#,#0,\k";
-                ws.Cells[i, 9].Value = long.Parse(stat.SkillAverageCrit);
+                ws.Cells[i, 9].Value = stat.AvgCrit();
                 ws.Cells[i, 9].Style.Numberformat.Format = @"#,#0,\k";
-                ws.Cells[i, 10].Value = long.Parse(stat.SkillAverageWhite);
+                ws.Cells[i, 10].Value = stat.AvgWhite();
                 ws.Cells[i, 10].Style.Numberformat.Format = @"#,#0,\k";
             }
             var border = ws.Cells[1, 1, i, 10].Style.Border;

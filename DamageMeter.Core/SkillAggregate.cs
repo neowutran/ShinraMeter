@@ -70,6 +70,14 @@ namespace DamageMeter
             return !enumerable.Any() ? 0 : enumerable.Max();
         }
 
+        public long LowestCrit()
+        {
+            var result = from skill in Skills
+                         select SkillsData.LowestCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+            var enumerable = result as long[] ?? result.ToArray();
+            return !enumerable.Any() ? 0 : enumerable.Max();
+        }
+
         public long BiggestCrit(int skillId)
         {
             return SkillsData.BiggestCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
@@ -220,5 +228,31 @@ namespace DamageMeter
             }
             return result;
         }
+
+
+        public static IEnumerable<SkillAggregate> GetAggregate(PlayerDealt playerDealt, EntityInformation entityInformation,
+         Skills skillsData, bool timedEncounter, Database.Database.Type type)
+        {
+            var skills = skillsData.SkillsId(playerDealt.Source.User, entityInformation.Entity, timedEncounter);
+            var skillsAggregate = new Dictionary<string, SkillAggregate>();
+            foreach (var skill in skills)
+            {
+                if (skillsData.Type(playerDealt.Source.User.Id, entityInformation.Entity, skill.Id, timedEncounter) !=
+                    type)
+                {
+                    continue;
+                }
+
+                if (!skillsAggregate.ContainsKey(skill.ShortName))
+                {
+                    skillsAggregate.Add(skill.ShortName,
+                        new SkillAggregate(skill, skillsData, playerDealt, entityInformation, timedEncounter, type));
+                    continue;
+                }
+                skillsAggregate[skill.ShortName].Add(skill);
+            }
+            return skillsAggregate.Values;
+        }
+
     }
 }
