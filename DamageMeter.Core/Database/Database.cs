@@ -364,10 +364,5 @@ namespace DamageMeter.Database
             return PlayerInformation(command);
         }
 
-
-        ~Database() // destructor
-        {
-            Connexion.Close();
-        }
     }
 }
