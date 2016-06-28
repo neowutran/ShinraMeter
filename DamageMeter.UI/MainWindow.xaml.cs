@@ -103,8 +103,8 @@ namespace DamageMeter.UI
             NetworkController.GuildIconEvent changeUi =
               delegate (Bitmap bitmap)
               {
-                  Icon = bitmap.ToImageSource();
-                  _trayIcon.Icon = bitmap.GetIcon();
+                  Icon = bitmap?.ToImageSource() ?? BasicTeraData.Instance.ImageDatabase.Icon;
+                  _trayIcon.Icon = bitmap?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
 
               };
             Dispatcher.Invoke(changeUi, icon);

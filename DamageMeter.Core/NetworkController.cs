@@ -11,6 +11,7 @@ using Data;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
+using Tera.Game.Services;
 using Message = Tera.Message;
 
 namespace DamageMeter
@@ -42,6 +43,7 @@ namespace DamageMeter
 
         private long _lastTick;
         private MessageFactory _messageFactory;
+        private UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
         public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
         public CopyKey NeedToCopy;
@@ -61,7 +63,6 @@ namespace DamageMeter
         }
 
         public TeraData TeraData { get; private set; }
-
         public NpcEntity Encounter { get; private set; }
         public NpcEntity NewEncounter { get; set; }
 
@@ -446,7 +447,14 @@ namespace DamageMeter
                 var guildIcon = message as S_GET_USER_GUILD_LOGO;
                 if (guildIcon != null)
                 {
-                    OnGuildIconAction(guildIcon.GuildLogo);        
+                    UserLogoTracker.AddLogo(guildIcon);
+                    continue;
+                }
+
+                var user_list = message as S_GET_USER_LIST;
+                if (user_list != null)
+                {
+                    UserLogoTracker.SetUserList(user_list);
                     continue;
                 }
 
@@ -456,6 +464,7 @@ namespace DamageMeter
                 _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
                     BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
                 _charmTracker = new CharmTracker(_abnormalityTracker);
+                OnGuildIconAction(UserLogoTracker.GetLogo(sLogin.PlayerId));
                 Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
                 //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
             }
