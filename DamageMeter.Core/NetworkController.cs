@@ -11,7 +11,6 @@ using Data;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
-using Tera.Game.Services;
 using Message = Tera.Message;
 
 namespace DamageMeter
