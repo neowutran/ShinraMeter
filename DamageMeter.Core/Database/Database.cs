@@ -111,6 +111,21 @@ namespace DamageMeter.Database
             return entities;
         }
 
+        public void DeleteAllWhenTimeBelow(NpcEntity entity)
+        {
+            if (entity == null)
+            {
+                DeleteAll();
+                return;
+            }
+
+            var entityInfo = GlobalInformationEntity(entity, false);
+            const string sql = "DELETE FROM damage WHERE time < $time";
+            var command = new SQLiteCommand(sql, Connexion);
+            command.Parameters.AddWithValue("$time", entityInfo.BeginTime);
+            command.ExecuteNonQuery();
+        }
+
         public EntityInformation GlobalInformationEntity(NpcEntity entity, bool timed)
         {
             SQLiteCommand command;

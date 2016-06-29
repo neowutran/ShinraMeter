@@ -234,7 +234,15 @@ namespace DamageMeter
                     continue;
                 }
 
-                if (TeraSniffer.Instance.Packets.Count > 3000)
+                var packetsWaiting = TeraSniffer.Instance.Packets.Count;
+
+
+                if (packetsWaiting > 1500)
+                {
+                    Database.Database.Instance.DeleteAllWhenTimeBelow(Encounter);
+                }
+
+                if (packetsWaiting > 3000)
                 {
                     MessageBox.Show(
                         "Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Shutting down now.");

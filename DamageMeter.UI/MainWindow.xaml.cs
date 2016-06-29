@@ -473,10 +473,11 @@ namespace DamageMeter.UI
 
                     foreach (var item in playerStatses)
                     {
+                        if (!Controls.ContainsKey(item.Source)) continue;
                         Players.Items.Add(Controls[item.Source]);
                         Controls[item.Source].Repaint(item,
                             playerDealts.FirstOrDefault(x => x.Source == item.Source),
-                            statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
+                        statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
                     }
 
                     if (BasicTeraData.Instance.WindowData.InvisibleUi)

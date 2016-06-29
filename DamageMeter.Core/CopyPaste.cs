@@ -140,10 +140,10 @@ namespace DamageMeter
                     : (double) (slaying?.Duration(firstTick, lastTick) ?? 0)/(lastTick - firstTick);
                 currentContent = currentContent.Replace("{slaying}", FormatHelpers.Instance.FormatPercent(slayingperc));
                 currentContent = currentContent.Replace("{dps}",
-                    FormatHelpers.Instance.FormatValue(playerStats.Amount*TimeSpan.TicksPerSecond/playerStats.Interval) +
+                    FormatHelpers.Instance.FormatValue( playerStats.Interval == 0 ? playerStats.Amount : playerStats.Amount*TimeSpan.TicksPerSecond/playerStats.Interval) +
                     "/s");
                 currentContent = currentContent.Replace("{global_dps}",
-                    FormatHelpers.Instance.FormatValue(playerStats.Amount*TimeSpan.TicksPerSecond/entityInfo.Interval) +
+                    FormatHelpers.Instance.FormatValue(entityInfo.Interval == 0 ? playerStats.Amount : playerStats.Amount*TimeSpan.TicksPerSecond/entityInfo.Interval) +
                     "/s");
                 currentContent = currentContent.Replace("{interval}", playerStats.Interval + "s");
                 currentContent = currentContent.Replace("{damage_dealt}",

@@ -33,21 +33,14 @@ namespace DamageMeter
 
         public bool Add(Skill skill)
         {
-            if (skill.ShortName == Name)
+            if (skill.ShortName != Name) return false;
+            if (Skills.Any(sk => skill.Id == sk.Id && skill.IsHotDot == sk.IsHotDot))
             {
-                foreach (var sk in Skills)
-                {
-                    if (skill.Id == sk.Id && skill.IsHotDot == sk.IsHotDot)
-                    {
-                        return false;
-                    }
-                }
-
-                Skills.Add(skill);
-                return true;
+                return false;
             }
 
-            return false;
+            Skills.Add(skill);
+            return true;
         }
 
         public long Amount()

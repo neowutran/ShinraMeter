@@ -167,7 +167,7 @@ namespace DamageMeter
                     skillLog.skillDamagePercent = skill.DamagePercent() + "";
                     skillLog.skillHighestCrit = skill.BiggestCrit() + "";
                     skillLog.skillHits = skill.Hits() + "";
-                    skillLog.skillId= skill.Id() + "";
+                    skillLog.skillId= skill.Skills.First().Id + "";
                     skillLog.skillLowestCrit = skill.LowestCrit() + "";
                     skillLog.skillTotalDamage = skilldamage + "";
 
@@ -269,6 +269,9 @@ namespace DamageMeter
 
         private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry)
         {
+
+            Console.WriteLine(json);
+
             if (numberTry == 0)
             {
                 Console.WriteLine("API ERROR");
