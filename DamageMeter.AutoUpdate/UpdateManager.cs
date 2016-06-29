@@ -117,6 +117,16 @@ namespace DamageMeter.AutoUpdate
         {
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\"), File.Delete);
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\resources\"), File.Delete);
+            var x64 = ExecutableDirectory + @"\..\..\x64\";
+            if (Directory.Exists(x64))
+            {
+                Directory.Delete(x64, true);
+            }
+            var x86 = ExecutableDirectory + @"\..\..\x86\";
+            if (Directory.Exists(x86))
+            {
+                Directory.Delete(x86, true);
+            }
             if (!Directory.Exists(ExecutableDirectory + @"\..\..\resources\")) return;
             var data = ExecutableDirectory + @"\..\..\resources\data\";
             var img = ExecutableDirectory + @"\..\..\resources\img\";
