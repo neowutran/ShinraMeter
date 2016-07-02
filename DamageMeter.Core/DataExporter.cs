@@ -129,6 +129,9 @@ namespace DamageMeter
                 teradpsUser.playerDps = TimeSpan.TicksPerSecond*damage/interTick + "";
                 teradpsUser.playerTotalDamagePercentage = user.Amount*100/entityInfo.TotalDamage + "";
 
+                teradpsUser.playerTotalHitsReceived = skills.HitsReceived(user.Source.User.Id, entity, timedEncounter) + "";
+                teradpsUser.playerTotalDamageReceived = skills.DamageReceived(user.Source.User.Id, entity, timedEncounter) + "";
+
                 var death = buffs.Death;
                 teradpsUser.playerDeaths = death.Count(firstTick, lastTick) + "";
                 teradpsUser.playerDeathDuration = death.Duration(firstTick, lastTick)/TimeSpan.TicksPerSecond + "";
@@ -170,6 +173,7 @@ namespace DamageMeter
                     skillLog.skillId= skill.Skills.First().Id + "";
                     skillLog.skillLowestCrit = skill.LowestCrit() + "";
                     skillLog.skillTotalDamage = skilldamage + "";
+                    skillLog.skillTotalCritHits = skill.Crits() + "";
 
 
                     if (skilldamage == 0)
