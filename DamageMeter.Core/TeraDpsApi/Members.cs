@@ -15,8 +15,6 @@ namespace DamageMeter.TeraDpsApi
         public string playerServer;
         public string playerTotalDamage;
         public string playerTotalDamagePercentage;
-        public string playerTotalHitsReceived;
-        public string playerTotalDamageReceived;
         public List<KeyValuePair<string, string>> buffUptime = new List<KeyValuePair<string, string>>();
         public List<SkillLog> skillLog = new List<SkillLog>();
     }

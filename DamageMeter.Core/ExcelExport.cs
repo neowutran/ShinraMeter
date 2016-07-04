@@ -228,8 +228,8 @@ namespace DamageMeter
                         ws.Cells[i, 8].Style.Numberformat.Format = @"#,#0,\k\/\s";
                         ws.Cells[i, 9].Value = long.Parse(user.playerTotalDamage);
                         ws.Cells[i, 9].Style.Numberformat.Format = @"#,#0,\k";
-                        ws.Cells[i, 10].Value = long.Parse(user.playerTotalHitsReceived);
-                        ws.Cells[i, 11].Value = long.Parse(user.playerTotalDamageReceived);
+                        ws.Cells[i, 10].Value = exdata.PlayerReceived[user.playerName].Item1;
+                        ws.Cells[i, 11].Value = exdata.PlayerReceived[user.playerName].Item2;
                         ws.Cells[i, 11].Style.Numberformat.Format = @"#,#0,\k";
                     }
                     ws.Cells[1, 11].Formula = $"SUM(I3:I{i})";
@@ -693,6 +693,7 @@ namespace DamageMeter
             ws.Column(8).AutoFit();
             ws.Column(9).AutoFit();
             ws.Column(10).AutoFit();
+            ws.Column(11).AutoFit();
             ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
             ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width);
             ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width);
@@ -702,8 +703,8 @@ namespace DamageMeter
             ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width);
             ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width);
             ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width);
-            ws.Cells[1, 1, j, 10].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-            ws.Cells[1, 1, j, 10].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            ws.Cells[1, 1, j, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+            ws.Cells[1, 1, j, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ws.PrinterSettings.FitToPage = true;
 
             // I don't know why, but sometimes column height setting is lost.
