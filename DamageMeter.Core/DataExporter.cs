@@ -129,6 +129,8 @@ namespace DamageMeter
                 teradpsUser.playerDps = TimeSpan.TicksPerSecond*damage/interTick + "";
                 teradpsUser.playerTotalDamagePercentage = user.Amount*100/entityInfo.TotalDamage + "";
 
+                extendedStats.PlayerReceived.Add(user.Source.Name, Tuple.Create(skills.HitsReceived(user.Source.User.Id, entity, timedEncounter), skills.DamageReceived(user.Source.User.Id, entity, timedEncounter)));
+
                 var death = buffs.Death;
                 teradpsUser.playerDeaths = death.Count(firstTick, lastTick) + "";
                 teradpsUser.playerDeathDuration = death.Duration(firstTick, lastTick)/TimeSpan.TicksPerSecond + "";
@@ -210,6 +212,7 @@ namespace DamageMeter
             //Leveling area only, don't care about that
             var areaId = int.Parse(teradpsData.areaId);
             if (
+                areaId != 886 &&
                 areaId != 467 &&
                 areaId != 767 &&
                 areaId != 768 &&
@@ -247,6 +250,7 @@ namespace DamageMeter
             */
             var areaId = int.Parse(teradpsData.areaId);
             if (
+                areaId != 886 &&
                 areaId != 467 &&
                 areaId != 767 &&
                 areaId != 768 &&
