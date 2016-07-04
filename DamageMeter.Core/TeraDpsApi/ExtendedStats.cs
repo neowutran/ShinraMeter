@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Skill = DamageMeter.Database.Structures.Skill;
@@ -11,6 +12,8 @@ namespace DamageMeter.TeraDpsApi
         public SortedDictionary<string, PlayerAbnormals> PlayerBuffs = new SortedDictionary<string, PlayerAbnormals>();
         public SortedDictionary<string, List<Skill>> PlayerSkills = new SortedDictionary<string, List<Skill>>();
         public Dictionary<string, IEnumerable<SkillAggregate>> PlayerSkillsAggregated = new Dictionary<string, IEnumerable<SkillAggregate>>();
+
+        public Dictionary<string, Tuple<int, long>> PlayerReceived = new Dictionary<string, Tuple<int, long>>();
 
         public EncounterBase BaseStats { get; set; }
         public NpcEntity Entity { get; set; }

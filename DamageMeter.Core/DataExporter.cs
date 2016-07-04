@@ -129,6 +129,8 @@ namespace DamageMeter
                 teradpsUser.playerDps = TimeSpan.TicksPerSecond*damage/interTick + "";
                 teradpsUser.playerTotalDamagePercentage = user.Amount*100/entityInfo.TotalDamage + "";
 
+                extendedStats.PlayerReceived.Add(user.Source.Name, Tuple.Create(skills.HitsReceived(user.Source.User.Id, entity, timedEncounter), skills.DamageReceived(user.Source.User.Id, entity, timedEncounter)));
+
                 var death = buffs.Death;
                 teradpsUser.playerDeaths = death.Count(firstTick, lastTick) + "";
                 teradpsUser.playerDeathDuration = death.Duration(firstTick, lastTick)/TimeSpan.TicksPerSecond + "";
