@@ -78,36 +78,67 @@ namespace DamageMeter.UI
                 return;
             }
 
-            if (_skillDps == null)
+            var tabItem = (TabItem) TabControl.SelectedItem;
+            switch (tabItem.Name)
             {
-                _skillDps =
-                    new SkillsDetail(
-                        SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
-                            Database.Database.Type.Damage), Database.Database.Type.Damage);
-                _skillHeal =
-                    new SkillsDetail(
-                        SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
-                            Database.Database.Type.Heal), Database.Database.Type.Heal);
-                _skillMana =
-                    new SkillsDetail(
-                        SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
-                            Database.Database.Type.Mana), Database.Database.Type.Mana);
-                _buff = new Buff(playerDealt, buffs, entityInformation);
+                case "DpsPanel":
+                    if (_skillDps == null)
+                    {
+                        _skillDps =
+                            new SkillsDetail(
+                                SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
+                                    Database.Database.Type.Damage), Database.Database.Type.Damage);
+                    }
+                    else
+                    {
+                        _skillDps.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
+                            Database.Database.Type.Damage));
+                    }
+
+                    DpsPanel.Content = _skillDps;
+                    return;
+                case "HealPanel":
+                    if (_skillHeal == null)
+                    {
+                        _skillHeal =
+                            new SkillsDetail(
+                                SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
+                                    Database.Database.Type.Heal), Database.Database.Type.Heal);
+                    }
+                    else
+                    {
+                        _skillHeal.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
+                            Database.Database.Type.Heal));
+                    }
+                    HealPanel.Content = _skillHeal;
+                    return;
+                case "ManaPanel":
+                    if (_skillMana == null)
+                    {
+                        _skillMana =
+                            new SkillsDetail(
+                                SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
+                                    Database.Database.Type.Mana), Database.Database.Type.Mana);
+                    }
+                    else
+                    {
+                        _skillMana.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
+                            Database.Database.Type.Mana));
+                    }
+                    ManaPanel.Content = _skillMana;
+                    return;
+                case "BuffPanel":
+                    if (_buff == null)
+                    {
+                        _buff = new Buff(playerDealt, buffs, entityInformation);
+                    }
+                    else
+                    {
+                        _buff.Update(playerDealt, buffs, entityInformation);
+                    }
+                    BuffPanel.Content = _buff;
+                    return;
             }
-            else
-            {
-                _skillDps.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
-                    Database.Database.Type.Damage));
-                _skillHeal.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
-                    Database.Database.Type.Heal));
-                _skillMana.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
-                    Database.Database.Type.Mana));
-                _buff.Update(playerDealt, buffs, entityInformation);
-            }
-            HealPanel.Content = _skillHeal;
-            DpsPanel.Content = _skillDps;
-            ManaPanel.Content = _skillMana;
-            BuffPanel.Content = _buff;
         }
 
      

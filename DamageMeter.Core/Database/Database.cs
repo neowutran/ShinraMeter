@@ -299,7 +299,7 @@ namespace DamageMeter.Database
             var sql =
                 "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target, type " +
                 "FROM damage " +
-                "WHERE time BETWEEN $begin AND $end" +
+                "WHERE time BETWEEN $begin AND $end " +
                 "GROUP BY type, source " +
                 "ORDER BY `total_amount` DESC;";
 
