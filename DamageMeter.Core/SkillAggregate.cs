@@ -1,64 +1,83 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using DamageMeter.Database.Structures;
+using Tera.Game;
 using Skill = Tera.Game.Skill;
 
 namespace DamageMeter
 {
     public class SkillAggregate
     {
-        private readonly EntityInformation _entityInformation;
         private readonly PlayerDealt _playerDealt;
+        private readonly Entity _target;
         private readonly bool _timed;
 
-        public SkillAggregate(Skill skill, Skills skillsData, PlayerDealt playerDealt,
-            EntityInformation entityInformation, bool timed, Database.Database.Type type)
+        public SkillAggregate(Skill skill, Skills skillsData, EntityId source, Entity target, PlayerDealt playerDealt,
+            bool timed, Database.Database.Type type)
         {
             _playerDealt = playerDealt;
             _timed = timed;
+            _target = target;
             Type = type;
-            _entityInformation = entityInformation;
-            Skills = new List<Skill>();
+            Skills = new Dictionary<Skill, List<EntityId>>();
             Name = skill.ShortName;
             SkillsData = skillsData;
-            Skills.Add(skill);
+            Skills.Add(skill, new List<EntityId>{ source });
         }
 
-        public List<Skill> Skills { get; }
+        public Dictionary<Skill, List<EntityId>> Skills { get; }
         public string Name { get; }
 
         private Skills SkillsData { get; }
 
+        private bool _playerDealtUnrelieable;
+
         public Database.Database.Type Type { get; }
 
-        public bool Add(Skill skill)
+        public bool Add(Skill skill, EntityId source)
         {
             if (skill.ShortName != Name) return false;
-            if (Skills.Any(sk => skill.Id == sk.Id && skill.IsHotDot == sk.IsHotDot))
+            if (Skills.Any(sk => skill.Id == sk.Key.Id && skill.IsHotDot == sk.Key.IsHotDot && sk.Value.Contains(source)))
             {
                 return false;
             }
 
-            Skills.Add(skill);
+            if (Skills.ContainsKey(skill))
+            {
+                Skills[skill].Add(source);
+                _playerDealtUnrelieable = true;
+            }
+            else
+            {
+                Skills.Add(skill, new List<EntityId> {source});
+            }
             return true;
         }
 
         public long Amount()
         {
             var result = from skill in Skills
-                select SkillsData.Amount(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                            select SkillsData.Amount(source, _target, skill.Key.Id, _timed);
             return result.Sum();
         }
 
         public long Amount(int skillId)
         {
-            return SkillsData.Amount(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var result = from skill in Skills
+                         where skill.Key.Id == skillId
+                         from source in skill.Value
+                         select SkillsData.Amount(source, _target, skillId, _timed);
+            return result.Sum();
         }
 
         public long BiggestCrit()
         {
             var result = from skill in Skills
-                select SkillsData.BiggestCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                         select SkillsData.BiggestCrit(source, _target, skill.Key.Id, _timed);
             var enumerable = result as long[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Max();
         }
@@ -66,62 +85,93 @@ namespace DamageMeter
         public long LowestCrit()
         {
             var result = from skill in Skills
-                         select SkillsData.LowestCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                         select SkillsData.LowestCrit(source, _target, skill.Key.Id, _timed);
             var enumerable = result as long[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Max();
         }
 
         public long BiggestCrit(int skillId)
         {
-            return SkillsData.BiggestCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var result = from skill in Skills
+                         where skill.Key.Id == skillId
+                         from source in skill.Value
+                         select SkillsData.BiggestCrit(source, _target, skillId, _timed);
+            var enumerable = result as long[] ?? result.ToArray();
+            return !enumerable.Any() ? 0 : enumerable.Max();
         }
 
         public double DamagePercent()
         {
+            if (_playerDealtUnrelieable)
+            {
+                throw  new Exception("Player Dealt unrelieable");
+            }
             return Amount()*100/_playerDealt.Amount;
         }
 
         public long DamagePercent(int skillId)
         {
-            return SkillsData.Amount(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed)*100/Amount();
+            if (_playerDealtUnrelieable)
+            {
+                throw new Exception("Player Dealt unrelieable");
+            }
+            return SkillsData.Amount(_playerDealt.Source.User.Id, _target, skillId, _timed)*100/Amount();
         }
 
         public long Hits()
         {
             var result = from skill in Skills
-                select SkillsData.Hits(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                         select SkillsData.Hits(source, _target, skill.Key.Id, _timed);
             return result.Sum();
         }
 
         public long Hits(int skillId)
         {
-            return SkillsData.Hits(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var result = from skill in Skills
+                         where skill.Key.Id == skillId
+                         from source in skill.Value
+                         select SkillsData.Hits(source, _target, skillId, _timed);
+            return result.Sum();
         }
 
         public long White()
         {
             var result = from skill in Skills
-                select SkillsData.White(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                         select SkillsData.White(source, _target, skill.Key.Id, _timed);
             var enumerable = result as int[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
         public long White(int skillId)
         {
-            return SkillsData.White(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var result = from skill in Skills
+                         where skill.Key.Id == skillId
+                         from source in skill.Value
+                         select SkillsData.White(source, _target, skill.Key.Id, _timed);
+            var enumerable = result as int[] ?? result.ToArray();
+            return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
         public long Crits()
         {
             var result = from skill in Skills
-                select SkillsData.Crits(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                         select SkillsData.Crits(source, _target, skill.Key.Id, _timed);
             var enumerable = result as int[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
         public long Crits(int skillId)
         {
-            return SkillsData.Crits(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var result = from skill in Skills
+                         where skill.Key.Id == skillId
+                         from source in skill.Value
+                         select SkillsData.Crits(source, _target, skill.Key.Id, _timed);
+            var enumerable = result as int[] ?? result.ToArray();
+            return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
         public double CritRate()
@@ -131,20 +181,26 @@ namespace DamageMeter
 
         public double CritRate(int skillId)
         {
-            return SkillsData.CritRate(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            return Crits(skillId)*100/Hits(skillId);
         }
 
         public long BiggestHit()
         {
             var result = from skill in Skills
-                select SkillsData.BiggestHit(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                         select SkillsData.BiggestHit(source, _target, skill.Key.Id, _timed);
             var enumerable = result as long[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Max();
         }
 
         public long BiggestHit(int skillId)
         {
-            return SkillsData.BiggestHit(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var result = from skill in Skills
+                         where skill.Key.Id == skillId
+                         from source in skill.Value
+                         select SkillsData.BiggestHit(source, _target, skill.Key.Id, _timed);
+            var enumerable = result as long[] ?? result.ToArray();
+            return !enumerable.Any() ? 0 : enumerable.Max();
         }
 
         public double Avg()
@@ -154,33 +210,45 @@ namespace DamageMeter
 
         public double Avg(int skillId)
         {
-            return SkillsData.Average(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            return Amount(skillId)/Hits(skillId);
         }
 
         public long AmountWhite()
         {
             var result = from skill in Skills
-                select SkillsData.AmountWhite(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                         select SkillsData.AmountWhite(source, _target, skill.Key.Id, _timed);
             var enumerable = result as long[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
         public long AmountWhite(int skillId)
         {
-            return SkillsData.AmountWhite(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var result = from skill in Skills
+                         where skill.Key.Id == skillId
+                         from source in skill.Value
+                         select SkillsData.AmountWhite(source, _target, skill.Key.Id, _timed);
+            var enumerable = result as long[] ?? result.ToArray();
+            return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
         public long AmountCrit()
         {
             var result = from skill in Skills
-                select SkillsData.AmountCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skill.Id, _timed);
+                         from source in skill.Value
+                         select SkillsData.AmountCrit(source, _target, skill.Key.Id, _timed);
             var enumerable = result as long[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
         public long AmountCrit(int skillId)
         {
-            return SkillsData.AmountCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var result = from skill in Skills
+                         where skill.Key.Id == skillId
+                         from source in skill.Value
+                         select SkillsData.AmountCrit(source, _target, skill.Key.Id, _timed);
+            var enumerable = result as long[] ?? result.ToArray();
+            return !enumerable.Any() ? 0 : enumerable.Sum();
         }
 
         public double AvgCrit()
@@ -192,12 +260,16 @@ namespace DamageMeter
 
         public double AvgCrit(int skillId)
         {
-            return SkillsData.AverageCrit(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var crits = Crits(skillId);
+            if (crits == 0) return 0;
+            return AmountCrit(skillId) / crits;
         }
 
         public double AvgWhite(int skillId)
         {
-            return SkillsData.AverageWhite(_playerDealt.Source.User.Id, _entityInformation.Entity, skillId, _timed);
+            var white = White(skillId);
+            if (white == 0) return 0;
+            return AmountWhite(skillId) / white;
         }
 
         public double AvgWhite()
@@ -213,7 +285,7 @@ namespace DamageMeter
             var result = "";
             for (var i = 0; i < Skills.Count; i++)
             {
-                result += Skills.ElementAt(i);
+                result += Skills.ElementAt(i).Key.Id;
                 if (i < Skills.Count - 1)
                 {
                     result += ",";
@@ -223,28 +295,90 @@ namespace DamageMeter
         }
 
 
-        public static IEnumerable<SkillAggregate> GetAggregate(PlayerDealt playerDealt, EntityInformation entityInformation,
+        public static IEnumerable<SkillAggregate> GetAggregate(PlayerDealt playerDealt, Entity entity,
          Skills skillsData, bool timedEncounter, Database.Database.Type type)
         {
-            var skills = skillsData.SkillsId(playerDealt.Source.User, entityInformation.Entity, timedEncounter);
-            var skillsAggregate = new Dictionary<string, SkillAggregate>();
-            foreach (var skill in skills)
-            {
-                if (skillsData.Type(playerDealt.Source.User.Id, entityInformation.Entity, skill.Id, timedEncounter) !=
-                    type)
-                {
-                    continue;
-                }
 
-                if (!skillsAggregate.ContainsKey(skill.ShortName))
-                {
-                    skillsAggregate.Add(skill.ShortName,
-                        new SkillAggregate(skill, skillsData, playerDealt, entityInformation, timedEncounter, type));
-                    continue;
-                }
-                skillsAggregate[skill.ShortName].Add(skill);
+            if (type != Database.Database.Type.Damage)
+            {
+                timedEncounter = false;
             }
-            return skillsAggregate.Values;
+
+            if (!playerDealt.Source.IsHealer && type != Database.Database.Type.Damage)
+            {
+                var skills = skillsData.SkillsIdByTarget(playerDealt.Source.User);
+                var skillsAggregate = new Dictionary<string, SkillAggregate>();
+                foreach (var skill in skills)
+                {
+                    if (skill.Value == null) continue;
+                    if (
+                        skillsData.Type(skill.Key, playerDealt.Source.User, skill.Value.Id, false) !=
+                        type)
+                    {
+                        continue;
+                    }
+
+                    if (!skillsAggregate.ContainsKey(skill.Value.ShortName))
+                    {
+                        skillsAggregate.Add(skill.Value.ShortName,
+                            new SkillAggregate(skill.Value, skillsData, skill.Key, playerDealt.Source.User, playerDealt, false, type));
+                        continue;
+                    }
+                    skillsAggregate[skill.Value.ShortName].Add(skill.Value, skill.Key);
+                }
+                return skillsAggregate.Values;
+            }
+            if (playerDealt.Source.IsHealer && type != Database.Database.Type.Damage)
+            {
+                var skills = skillsData.SkillsIdBySource(playerDealt.Source.User, null, true);
+                var skillsAggregate = new Dictionary<string, SkillAggregate>();
+                foreach (var skill in skills)
+                {
+                    if (skill == null) continue;
+                    if (
+                        skillsData.Type(playerDealt.Source.User.Id, null, skill.Id, true) !=
+                        type)
+                    {
+                        continue;
+                    }
+
+                    if (!skillsAggregate.ContainsKey(skill.ShortName))
+                    {
+                        skillsAggregate.Add(skill.ShortName,
+                            new SkillAggregate(skill, skillsData, playerDealt.Source.User.Id, null, playerDealt,
+                                true, type));
+                        continue;
+                    }
+                    skillsAggregate[skill.ShortName].Add(skill, playerDealt.Source.User.Id);
+                }
+                return skillsAggregate.Values;
+            }
+            else
+            {
+
+                var skills = skillsData.SkillsIdBySource(playerDealt.Source.User, entity, timedEncounter);
+                var skillsAggregate = new Dictionary<string, SkillAggregate>();
+                foreach (var skill in skills)
+                {
+                    if (skill == null) continue;
+                    if (
+                        skillsData.Type(playerDealt.Source.User.Id, entity, skill.Id, timedEncounter) !=
+                        type)
+                    {
+                        continue;
+                    }
+
+                    if (!skillsAggregate.ContainsKey(skill.ShortName))
+                    {
+                        skillsAggregate.Add(skill.ShortName,
+                            new SkillAggregate(skill, skillsData, playerDealt.Source.User.Id, entity, playerDealt,
+                                timedEncounter, type));
+                        continue;
+                    }
+                    skillsAggregate[skill.ShortName].Add(skill, playerDealt.Source.User.Id);
+                }
+                return skillsAggregate.Values;
+            }
         }
 
     }

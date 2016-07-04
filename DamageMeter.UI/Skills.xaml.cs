@@ -82,25 +82,25 @@ namespace DamageMeter.UI
             {
                 _skillDps =
                     new SkillsDetail(
-                        SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                        SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
                             Database.Database.Type.Damage), Database.Database.Type.Damage);
                 _skillHeal =
                     new SkillsDetail(
-                        SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                        SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
                             Database.Database.Type.Heal), Database.Database.Type.Heal);
                 _skillMana =
                     new SkillsDetail(
-                        SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                        SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
                             Database.Database.Type.Mana), Database.Database.Type.Mana);
                 _buff = new Buff(playerDealt, buffs, entityInformation);
             }
             else
             {
-                _skillDps.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                _skillDps.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
                     Database.Database.Type.Damage));
-                _skillHeal.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                _skillHeal.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
                     Database.Database.Type.Heal));
-                _skillMana.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation, skills, timedEncounter,
+                _skillMana.Update(SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, skills, timedEncounter,
                     Database.Database.Type.Mana));
                 _buff.Update(playerDealt, buffs, entityInformation);
             }

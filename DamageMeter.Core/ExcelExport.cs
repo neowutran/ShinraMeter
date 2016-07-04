@@ -625,8 +625,8 @@ namespace DamageMeter
                 ws.Cells[i, 1].Value = i - 2;
                 foreach (var skillInfo in stat.Skills)
                 {
-                    if (string.IsNullOrEmpty(skillInfo.IconName)) continue;
-                    AddImage(ws, i, 1, BTD.Icons.GetBitmap(skillInfo.IconName));
+                    if (string.IsNullOrEmpty(skillInfo.Key.IconName)) continue;
+                    AddImage(ws, i, 1, BTD.Icons.GetBitmap(skillInfo.Key.IconName));
                     break;
                 }
 
