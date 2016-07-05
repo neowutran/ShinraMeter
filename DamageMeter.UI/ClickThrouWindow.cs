@@ -26,6 +26,7 @@ namespace DamageMeter.UI
             SizeToContent = SizeToContent.WidthAndHeight;
             MouseLeftButtonDown += Move;
             ShowActivated = false;
+            WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
         }
 

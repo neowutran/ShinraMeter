@@ -155,7 +155,7 @@ namespace DamageMeter
                         entityInfo.EndTime));
                 extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
-                var skillsId = SkillAggregate.GetAggregate(user, entityInfo, skills, timedEncounter, Database.Database.Type.Damage);
+                var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
                 extendedStats.PlayerSkillsAggregated[teradpsUser.playerServer + "/" + teradpsUser.playerName] = skillsId;
 
                 foreach (var skill in skillsId)
@@ -169,7 +169,7 @@ namespace DamageMeter
                     skillLog.skillDamagePercent = skill.DamagePercent() + "";
                     skillLog.skillHighestCrit = skill.BiggestCrit() + "";
                     skillLog.skillHits = skill.Hits() + "";
-                    skillLog.skillId= skill.Skills.First().Id + "";
+                    skillLog.skillId= skill.Skills.First().Key.Id + "";
                     skillLog.skillLowestCrit = skill.LowestCrit() + "";
                     skillLog.skillTotalDamage = skilldamage + "";
 
