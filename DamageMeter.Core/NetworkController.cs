@@ -118,13 +118,21 @@ namespace DamageMeter
             _forceUiUpdate = true;
         }
 
-        private void UpdateUi()
+        private void UpdateUi(int packetsWaiting = 0)
         {
             _lastTick = DateTime.UtcNow.Ticks;
             var handler = TickUpdated;
             var currentBoss = Encounter;
             var timedEncounter = TimedEncounter;
 
+            var entities = Database.Database.Instance.AllEntity();
+            var filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
+            if (packetsWaiting > 1500 && filteredEntities.Count > 1)
+            {
+                Database.Database.Instance.DeleteAllWhenTimeBelow(Encounter);
+                entities = Database.Database.Instance.AllEntity();
+                filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
+            }
 
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
             Skills skills = null; 
@@ -136,8 +144,6 @@ namespace DamageMeter
                 ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
                 : Database.Database.Instance.PlayerInformation(currentBoss);
 
-            var entities = Database.Database.Instance.AllEntity();
-            var filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
             var statsSummary = new StatsSummary(playersInfo, entityInfo);
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
@@ -217,14 +223,14 @@ namespace DamageMeter
 
                 Encounter = NewEncounter;
 
+                var packetsWaiting = TeraSniffer.Instance.Packets.Count;
                 if (_forceUiUpdate)
                 {
-                    UpdateUi();
+                    UpdateUi(packetsWaiting);
                     _forceUiUpdate = false;
                 }
 
-                CheckUpdateUi();
-
+                CheckUpdateUi(packetsWaiting);
 
                 Message obj;
                 var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out obj);
@@ -232,14 +238,6 @@ namespace DamageMeter
                 {
                     Thread.Sleep(1);
                     continue;
-                }
-
-                var packetsWaiting = TeraSniffer.Instance.Packets.Count;
-
-
-                if (packetsWaiting > 1500)
-                {
-                    Database.Database.Instance.DeleteAllWhenTimeBelow(Encounter);
                 }
 
                 if (packetsWaiting > 3000)
@@ -477,11 +475,11 @@ namespace DamageMeter
             }
         }
      
-        public void CheckUpdateUi()
+        public void CheckUpdateUi(int packetsWaiting)
         {
             var second = DateTime.UtcNow.Ticks;
             if (second - _lastTick < TimeSpan.TicksPerSecond) return;
-            UpdateUi();
+            UpdateUi(packetsWaiting);
         }
 
         protected virtual void OnGuildIconAction(Bitmap icon)

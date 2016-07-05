@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Tera.Game;
@@ -121,7 +122,7 @@ namespace DamageMeter.Database.Structures
             return max;
         }
 
-        public IEnumerable<Tera.Game.Skill> SkillsId(UserEntity source, Entity target, bool timed)
+        public IEnumerable<Tera.Game.Skill> SkillsIdBySource(UserEntity source, Entity target, bool timed)
         {
             IEnumerable<Tera.Game.Skill> result;
 
@@ -145,6 +146,23 @@ namespace DamageMeter.Database.Structures
                         NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                         BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
             return result.Distinct();
+        }
+
+
+        public IEnumerable<KeyValuePair<EntityId, Tera.Game.Skill>> SkillsIdByTarget(Entity target)
+        {
+            if (!TargetSourceSkill.ContainsKey(target.Id))
+            {
+                return new List<KeyValuePair<EntityId, Tera.Game.Skill>>();
+            }
+
+            var result = from skills in TargetSourceSkill[target.Id].Values
+                from skill in skills
+                select
+                    new KeyValuePair<EntityId, Tera.Game.Skill>( skill.Source, SkillResult.GetSkill(skill.Source, skill.PetSource, skill.SkillId, skill.HotDot,
+                        NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
+                        BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase));
+            return result.Where(x => x.Value != null).Distinct();
         }
 
         public Database.Type Type(EntityId source, Entity target, int skillid, bool timed)
@@ -180,6 +198,7 @@ namespace DamageMeter.Database.Structures
 
         private IEnumerable<Skill> DataSource(EntityId source, Entity target, int skillid, bool timed)
         {
+
             return timed || target == null
                 ? SourceIdSkill[source][skillid]
                 : SourceTargetIdSkill[source][target.Id][skillid];

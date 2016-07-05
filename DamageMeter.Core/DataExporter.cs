@@ -155,7 +155,7 @@ namespace DamageMeter
                         entityInfo.EndTime));
                 extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
-                var skillsId = SkillAggregate.GetAggregate(user, entityInfo, skills, timedEncounter, Database.Database.Type.Damage);
+                var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
                 extendedStats.PlayerSkillsAggregated[teradpsUser.playerServer + "/" + teradpsUser.playerName] = skillsId;
 
                 foreach (var skill in skillsId)
@@ -169,7 +169,7 @@ namespace DamageMeter
                     skillLog.skillDamagePercent = skill.DamagePercent() + "";
                     skillLog.skillHighestCrit = skill.BiggestCrit() + "";
                     skillLog.skillHits = skill.Hits() + "";
-                    skillLog.skillId= skill.Skills.First().Id + "";
+                    skillLog.skillId= skill.Skills.First().Key.Id + "";
                     skillLog.skillLowestCrit = skill.LowestCrit() + "";
                     skillLog.skillTotalDamage = skilldamage + "";
 
@@ -212,6 +212,7 @@ namespace DamageMeter
             //Leveling area only, don't care about that
             var areaId = int.Parse(teradpsData.areaId);
             if (
+                areaId != 886 &&
                 areaId != 467 &&
                 areaId != 767 &&
                 areaId != 768 &&
@@ -249,6 +250,7 @@ namespace DamageMeter
             */
             var areaId = int.Parse(teradpsData.areaId);
             if (
+                areaId != 886 &&
                 areaId != 467 &&
                 areaId != 767 &&
                 areaId != 768 &&
