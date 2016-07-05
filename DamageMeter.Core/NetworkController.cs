@@ -47,6 +47,7 @@ namespace DamageMeter
         public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
         public CopyKey NeedToCopy;
 
+        public bool NeedToExport;
         public bool NeedToReset;
         public bool NeedToResetCurrent;
         public PlayerTracker PlayerTracker;
@@ -219,6 +220,12 @@ namespace DamageMeter
                 {
                     ResetCurrent();
                     NeedToResetCurrent = false;
+                }
+
+                if (NeedToExport)
+                {
+                    DataExporter.Export(Encounter, _abnormalityStorage);
+                    NeedToExport = false;
                 }
 
                 Encounter = NewEncounter;

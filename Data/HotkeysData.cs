@@ -88,6 +88,11 @@ namespace Data
                 ResetCurrent = (KeyValuePair<Keys, ModifierKeys>) resetCurrentKey;
             }
 
+            var excelSaveKey = ReadElement(root, "excel_save", true);
+            if (excelSaveKey != null)
+            {
+                ExcelSave = (KeyValuePair<Keys, ModifierKeys>) excelSaveKey;
+            }
 
             CopyData(xml);
         }
@@ -99,6 +104,8 @@ namespace Data
         public KeyValuePair<Keys, ModifierKeys> ResetCurrent { get; private set; }
 
         public KeyValuePair<Keys, ModifierKeys> ClickThrou { get; private set; }
+
+        public KeyValuePair<Keys, ModifierKeys> ExcelSave { get; private set; }
 
 
         private static KeyValuePair<Keys, ModifierKeys>? ReadElement(XContainer root, string element, bool readAlt)
@@ -170,6 +177,7 @@ namespace Data
                     "descending"
                     )
             };
+            ExcelSave = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
             ClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageUp, ModifierKeys.Control);
         }
 
@@ -224,65 +232,30 @@ namespace Data
             return modifier;
         }
 
+        public void SaveKey(XDocument xml, string keyName, KeyValuePair<Keys, ModifierKeys> keyValue, bool saveAlt = true)
+        {
+            xml.Root.Add(new XElement(keyName));
+
+            var xmlCtrl = (keyValue.Value & ModifierKeys.Control) != ModifierKeys.None;
+            var xmlShift = (keyValue.Value & ModifierKeys.Shift) != ModifierKeys.None;
+            var xmlWindow = (keyValue.Value & ModifierKeys.Win) != ModifierKeys.None;
+            var xmlAlt = (keyValue.Value & ModifierKeys.Alt) != ModifierKeys.None;
+            var xmlKey = keyValue.Key;
+            xml.Root.Element(keyName).Add(new XElement("ctrl", xmlCtrl.ToString()));
+            xml.Root.Element(keyName).Add(new XElement("shift", xmlShift.ToString()));
+            xml.Root.Element(keyName).Add(new XElement("window", xmlWindow.ToString()));
+            if (saveAlt) xml.Root.Element(keyName).Add(new XElement("alt", xmlAlt.ToString()));
+            xml.Root.Element(keyName).Add(new XElement("key", xmlKey.ToString()));
+        }
 
         public void Save()
         {
             var xml = new XDocument(new XElement("hotkeys"));
-            xml.Root.Add(new XElement("paste"));
-
-            var pasteCtrl = (Paste.Value & ModifierKeys.Control) != ModifierKeys.None;
-            var pasteShift = (Paste.Value & ModifierKeys.Shift) != ModifierKeys.None;
-            var pasteWindow = (Paste.Value & ModifierKeys.Win) != ModifierKeys.None;
-            var pasteKey = Paste.Key;
-            xml.Root.Element("paste").Add(new XElement("ctrl", pasteCtrl.ToString()));
-            xml.Root.Element("paste").Add(new XElement("shift", pasteShift.ToString()));
-            xml.Root.Element("paste").Add(new XElement("window", pasteWindow.ToString()));
-            xml.Root.Element("paste").Add(new XElement("key", pasteKey.ToString()));
-
-            var resetCtrl = (Reset.Value & ModifierKeys.Control) != ModifierKeys.None;
-            var resetShift = (Reset.Value & ModifierKeys.Shift) != ModifierKeys.None;
-            var resetWindow = (Reset.Value & ModifierKeys.Win) != ModifierKeys.None;
-            var resetAlt = (Reset.Value & ModifierKeys.Alt) != ModifierKeys.None;
-            var resetKey = Reset.Key;
-
-            xml.Root.Add(new XElement("reset"));
-
-            xml.Root.Element("reset").Add(new XElement("ctrl", resetCtrl.ToString()));
-            xml.Root.Element("reset").Add(new XElement("shift", resetShift.ToString()));
-            xml.Root.Element("reset").Add(new XElement("window", resetWindow.ToString()));
-            xml.Root.Element("reset").Add(new XElement("alt", resetAlt.ToString()));
-            xml.Root.Element("reset").Add(new XElement("key", resetKey.ToString()));
-
-
-            var resetCurrentCtrl = (ResetCurrent.Value & ModifierKeys.Control) != ModifierKeys.None;
-            var resetCurrentShift = (ResetCurrent.Value & ModifierKeys.Shift) != ModifierKeys.None;
-            var resetCurrentWindow = (ResetCurrent.Value & ModifierKeys.Win) != ModifierKeys.None;
-            var resetCurrentAlt = (ResetCurrent.Value & ModifierKeys.Alt) != ModifierKeys.None;
-            var resetCurrentKey = ResetCurrent.Key;
-
-            xml.Root.Add(new XElement("reset_current"));
-
-            xml.Root.Element("reset_current").Add(new XElement("ctrl", resetCurrentCtrl.ToString()));
-            xml.Root.Element("reset_current").Add(new XElement("shift", resetCurrentShift.ToString()));
-            xml.Root.Element("reset_current").Add(new XElement("window", resetCurrentWindow.ToString()));
-            xml.Root.Element("reset_current").Add(new XElement("alt", resetCurrentAlt.ToString()));
-            xml.Root.Element("reset_current").Add(new XElement("key", resetCurrentKey.ToString()));
-
-
-            var activateClickThrouCtrl = (ClickThrou.Value & ModifierKeys.Control) != ModifierKeys.None;
-            var activateClickThrouShift = (ClickThrou.Value & ModifierKeys.Shift) != ModifierKeys.None;
-            var activateClickThrouWindow = (ClickThrou.Value & ModifierKeys.Win) != ModifierKeys.None;
-            var activateClickThrouAlt = (ClickThrou.Value & ModifierKeys.Alt) != ModifierKeys.None;
-            var activateClickThrouKey = ClickThrou.Key;
-
-            xml.Root.Add(new XElement("click_throu"));
-
-            xml.Root.Element("click_throu").Add(new XElement("ctrl", activateClickThrouCtrl.ToString()));
-            xml.Root.Element("click_throu").Add(new XElement("shift", activateClickThrouShift.ToString()));
-            xml.Root.Element("click_throu").Add(new XElement("window", activateClickThrouWindow.ToString()));
-            xml.Root.Element("click_throu").Add(new XElement("alt", activateClickThrouAlt.ToString()));
-            xml.Root.Element("click_throu").Add(new XElement("key", activateClickThrouKey.ToString()));
-
+            SaveKey(xml, "paste",Paste,false);
+            SaveKey(xml, "reset", Reset);
+            SaveKey(xml, "reset_current", ResetCurrent);
+            SaveKey(xml, "excel_save", ExcelSave);
+            SaveKey(xml, "click_throu", ClickThrou);
 
             xml.Root.Add(new XElement("copys"));
 

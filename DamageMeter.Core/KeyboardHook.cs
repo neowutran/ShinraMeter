@@ -61,6 +61,12 @@ namespace DamageMeter
                 //Can't call directly NetworkController.Instance.ResetCurrent() => threading problem
                 NetworkController.Instance.NeedToResetCurrent = true;
             }
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.ExcelSave.Key &&
+                     e.Modifier == BasicTeraData.Instance.HotkeysData.ExcelSave.Value)
+            {
+                //Can't call directly Export => threading problem
+                NetworkController.Instance.NeedToExport = true;
+            }
             else if (e.Key == BasicTeraData.Instance.HotkeysData.ClickThrou.Key &&
                      e.Modifier == BasicTeraData.Instance.HotkeysData.ClickThrou.Value)
             {
@@ -85,17 +91,19 @@ namespace DamageMeter
 
         private void Register()
         {
-            Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value,
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value,
                 BasicTeraData.Instance.HotkeysData.Paste.Key);
-            Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value,
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value,
                 BasicTeraData.Instance.HotkeysData.Reset.Key);
-            Instance.RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Value,
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Value,
                 BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ExcelSave.Value,
+                BasicTeraData.Instance.HotkeysData.ExcelSave.Key);
             RegisterHotKey(BasicTeraData.Instance.HotkeysData.ClickThrou.Value,
                 BasicTeraData.Instance.HotkeysData.ClickThrou.Key);
             foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy)
             {
-                Instance.RegisterHotKey(copy.Modifier, copy.Key);
+                RegisterHotKey(copy.Modifier, copy.Key);
             }
             _isRegistered = true;
         }
