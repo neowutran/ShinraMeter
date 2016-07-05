@@ -46,11 +46,8 @@ namespace DamageMeter
         }
 
 
-        private static ExtendedStats GenerateStats(SDespawnNpc despawnNpc, AbnormalityStorage abnormals)
+        private static ExtendedStats GenerateStats(NpcEntity entity, AbnormalityStorage abnormals)
         {
-            if (!despawnNpc.Dead) return null;
-
-            var entity = (NpcEntity) DamageTracker.Instance.GetEntity(despawnNpc.Npc);
             if (!entity.Info.Boss) return null;
 
             var timedEncounter = false;
@@ -187,7 +184,11 @@ namespace DamageMeter
 
         public static void Export(SDespawnNpc despawnNpc, AbnormalityStorage abnormality)
         {
-            var stats = GenerateStats(despawnNpc, abnormality);
+            if (!despawnNpc.Dead) return;
+
+            var entity = (NpcEntity)DamageTracker.Instance.GetEntity(despawnNpc.Npc);
+
+            var stats = GenerateStats(entity, abnormality);
             if (stats == null)
             {
                 return;
@@ -195,8 +196,23 @@ namespace DamageMeter
             var sendThread = new Thread(() =>
             {
                 ToTeraDpsApi(stats.BaseStats, despawnNpc);
-                ExcelExport.ExcelSave(stats);
+                ExcelExport.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
                 ToAnonymousStatistics(stats.BaseStats);
+            });
+            sendThread.Start();
+        }
+
+        public static void Export(NpcEntity entity, AbnormalityStorage abnormality)
+        {
+            if (entity==null) return;
+            var stats = GenerateStats(entity, abnormality);
+            if (stats == null)
+            {
+                return;
+            }
+            var sendThread = new Thread(() =>
+            {
+                ExcelExport.ExcelSave(stats);
             });
             sendThread.Start();
         }

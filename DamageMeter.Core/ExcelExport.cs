@@ -134,7 +134,7 @@ namespace DamageMeter
         private static readonly object savelock = new object();
 
 
-        public static void ExcelSave(ExtendedStats exdata)
+        public static void ExcelSave(ExtendedStats exdata, string userName="")
         {
             lock (savelock) //can't save 2 excel files at one time
             {
@@ -171,7 +171,7 @@ namespace DamageMeter
                 }
 
                 var fname = Path.Combine(dir,
-                    $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)}.xlsx");
+                    $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)} {userName}.xlsx");
                 var file = new FileInfo(fname);
                 if (file.Exists)
                     return;

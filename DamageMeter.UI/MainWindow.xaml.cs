@@ -155,6 +155,8 @@ namespace DamageMeter.UI
             _trayIcon.Click += TrayIconOnClick;
             _trayIcon.DoubleClick += _trayIcon_DoubleClick;
 
+            var excel_current = new MenuItem { Text = "Export current to Excel" };
+            excel_current.Click += ExcelExportOnClick;
             var reset = new MenuItem {Text = "Reset"};
             reset.Click += ResetOnClick;
             var exit = new MenuItem {Text = "Close"};
@@ -169,7 +171,7 @@ namespace DamageMeter.UI
             forum.Click += ForumOnClick;
             var teradps = new MenuItem {Text = "TeraDps.io"};
             teradps.Click += TeraDpsOnClick;
-            var excel = new MenuItem {Text = "Excel export"};
+            var excel = new MenuItem {Text = "Autoexport to Excel"};
             excel.Click += ExcelOnClick;
             excel.Checked = BasicTeraData.Instance.WindowData.Excel;
             var siteExport = new MenuItem {Text = "Site export"};
@@ -193,6 +195,7 @@ namespace DamageMeter.UI
             context.MenuItems.Add(_switchNoStatsVisibility);
             context.MenuItems.Add(_alwaysOn);
             context.MenuItems.Add(reset);
+            context.MenuItems.Add(excel_current);
             context.MenuItems.Add(wiki);
             context.MenuItems.Add(patch);
             context.MenuItems.Add(issues);
@@ -252,6 +255,11 @@ namespace DamageMeter.UI
         private void ResetOnClick(object sender, EventArgs eventArgs)
         {
             NetworkController.Instance.NeedToReset = true;
+        }
+
+        private void ExcelExportOnClick(object sender, EventArgs eventArgs)
+        {
+            NetworkController.Instance.NeedToExport = true;
         }
 
         private void ForumOnClick(object sender, EventArgs eventArgs)
