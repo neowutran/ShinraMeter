@@ -272,8 +272,8 @@ namespace DamageMeter
                     ws.Column(5).AutoFit();
                     ws.Column(6).AutoFit();
                     ws.Column(7).AutoFit();
-                    ws.Column(10).AutoFit();
-                    ws.Column(11).AutoFit();
+                    ws.Column(8).AutoFit();
+                    ws.Column(9).AutoFit();
                     ws.Column(10).AutoFit();
                     ws.Column(11).Width = 17;
                     ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
