@@ -201,10 +201,10 @@ namespace DamageMeter
                     ws.Cells[2, 5].Value = "Damage %";
                     ws.Cells[2, 6].Value = "Crit %";
                     ws.Cells[2, 7].Value = "Heal Crit %";
-                    ws.Cells[2, 8].Value = "DPS";
-                    ws.Cells[2, 9].Value = "Damage";
-                    ws.Cells[2, 10].Value = "Hits received";
-                    ws.Cells[2, 11].Value = "Damage received";
+                    ws.Cells[2, 8].Value = "Hits taken";
+                    ws.Cells[2, 9].Value = "Dmg taken";
+                    ws.Cells[2, 10].Value = "DPS";
+                    ws.Cells[2, 11].Value = "Damage";
                     var i = 2;
                     foreach (var user in data.members.OrderByDescending(x => long.Parse(x.playerTotalDamage)))
                     {
@@ -224,15 +224,15 @@ namespace DamageMeter
                         ws.Cells[i, 6].Style.Numberformat.Format = "0.0%";
                         ws.Cells[i, 7].Value = string.IsNullOrEmpty(user.healCrit) ? 0 : double.Parse(user.healCrit) / 100;
                         ws.Cells[i, 7].Style.Numberformat.Format = "0.0%";
-                        ws.Cells[i, 8].Value = long.Parse(user.playerDps);
-                        ws.Cells[i, 8].Style.Numberformat.Format = @"#,#0,\k\/\s";
-                        ws.Cells[i, 9].Value = long.Parse(user.playerTotalDamage);
+                        ws.Cells[i, 8].Value = exdata.PlayerReceived[user.playerName].Item1;
+                        ws.Cells[i, 9].Value = exdata.PlayerReceived[user.playerName].Item2;
                         ws.Cells[i, 9].Style.Numberformat.Format = @"#,#0,\k";
-                        ws.Cells[i, 10].Value = exdata.PlayerReceived[user.playerName].Item1;
-                        ws.Cells[i, 11].Value = exdata.PlayerReceived[user.playerName].Item2;
+                        ws.Cells[i, 10].Value = long.Parse(user.playerDps);
+                        ws.Cells[i, 10].Style.Numberformat.Format = @"#,#0,\k\/\s";
+                        ws.Cells[i, 11].Value = long.Parse(user.playerTotalDamage);
                         ws.Cells[i, 11].Style.Numberformat.Format = @"#,#0,\k";
                     }
-                    ws.Cells[1, 11].Formula = $"SUM(I3:I{i})";
+                    ws.Cells[1, 11].Formula = $"SUM(K3:K{i})";
                     ws.Cells[1, 11].Style.Numberformat.Format = @"#,#0,\k";
                     var border = ws.Cells[1, 1, i, 11].Style.Border;
                     border.Bottom.Style =
@@ -272,10 +272,10 @@ namespace DamageMeter
                     ws.Column(5).AutoFit();
                     ws.Column(6).AutoFit();
                     ws.Column(7).AutoFit();
-                    ws.Column(8).AutoFit();
-                    ws.Column(9).Width = 17;
-                    ws.Column(10).Width = 25;
-                    ws.Column(11).Width = 25;
+                    ws.Column(10).AutoFit();
+                    ws.Column(11).AutoFit();
+                    ws.Column(10).AutoFit();
+                    ws.Column(11).Width = 17;
                     ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
                     ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width);
                     ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width);
