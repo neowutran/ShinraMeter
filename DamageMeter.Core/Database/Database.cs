@@ -132,10 +132,10 @@ namespace DamageMeter.Database
 
             if (entity == null)
             {
-                var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, target " +
+                var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
                           "FROM damage " +
                           "WHERE type = $type "+
-                          "GROUP BY target; ";
+                          "GROUP BY source; ";
 
                 command = new SQLiteCommand(sql, Connexion);
                 command.Parameters.AddWithValue("$type", (int) Type.Damage);
@@ -144,10 +144,10 @@ namespace DamageMeter.Database
             {
                 if (!timed)
                 {
-                    var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, target " +
+                    var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
                               "FROM damage " +
                               "WHERE target = $target AND type = $type " +
-                              "GROUP BY target; ";
+                              "GROUP BY source; ";
 
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
@@ -156,9 +156,10 @@ namespace DamageMeter.Database
                 else
                 {
                     var sql =
-                        "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, target " +
+                        "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
                         "FROM damage " +
-                        "WHERE time BETWEEN (SELECT MIN(time) FROM damage WHERE target = $target) AND (SELECT MAX(time) FROM damage WHERE target = $target) AND type = $type ";
+                        "WHERE time BETWEEN (SELECT MIN(time) FROM damage WHERE target = $target) AND (SELECT MAX(time) FROM damage WHERE target = $target) AND type = $type " +
+                        "GROUP BY source; ";
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
                     command.Parameters.AddWithValue("$target", entity.Id.Id);
@@ -172,9 +173,9 @@ namespace DamageMeter.Database
             long maxEndTime = 0;
             while (rdr.Read())
             {          
-                var target = rdr.GetFieldValue<long>(rdr.GetOrdinal("target"));
-                var entityTarget = NetworkController.Instance.EntityTracker.GetOrNull(new EntityId((ulong)target));
-                if (!(entityTarget is NpcEntity)) continue;
+               var source = rdr.GetFieldValue<long>(rdr.GetOrdinal("source"));
+               var entitySource = NetworkController.Instance.EntityTracker.GetOrNull(new EntityId((ulong)source));
+               if (!(entitySource is UserEntity)) continue;
                 var totalDamage = rdr.IsDBNull(rdr.GetOrdinal("total_amount"))
                     ? 0
                     : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));

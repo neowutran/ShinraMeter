@@ -11,7 +11,7 @@ namespace DamageMeter
 
         private static DamageTracker _instance;
 
-        private readonly List<Entity> _toDelete = new List<Entity>();
+        private List<Entity> _toDelete = new List<Entity>();
 
 
         private DamageTracker()
@@ -34,6 +34,7 @@ namespace DamageMeter
             {
                 _toDelete.Add(entity);
             }
+
         }
 
 
@@ -113,7 +114,7 @@ namespace DamageMeter
             InsertSkill(entityTarget, entitySource["root_source"], entitySource["source"], skillResult);
         }
 
-        private static bool IsValidAttack(SkillResult message)
+        private static bool IsValidSkill(SkillResult message)
         {
             if (message.Amount == 0)
                 // to count buff skills/consumable usage - need additional hitstat for it (damage/heal/mana/uses)
@@ -127,32 +128,41 @@ namespace DamageMeter
 
         private void InsertSkill(Entity entityTarget, Entity entitySource, Entity petSource, SkillResult message)
         {
-            if (!IsValidAttack(message))
+            if (!IsValidSkill(message))
             {
                 return;
             }
 
-            if (_toDelete.Contains(entityTarget))
-            {
-                DeleteEntity(entityTarget);
-                _toDelete.Remove(entityTarget);
-            }
-
             var skillType = Database.Database.Type.Mana;
-
             if (message.IsHp)
             {
                 skillType = message.IsHeal ? Database.Database.Type.Heal : Database.Database.Type.Damage;
             }
-
-            Database.Database.Instance.Insert(message.Amount, skillType, entityTarget, entitySource, message.SkillId,
-                message.Abnormality, message.IsCritical, message.Time.Ticks, petSource);
-
+   
             var entity = entityTarget as NpcEntity;
             if (entity != null)
             {
+
+                /*
+                 * Remove data from resetted boss when hitting a new boss
+                 * (we don't remove the data directly when the boss reset, to let the time for a review of the encounter.)
+                 */
+                if (skillType == Database.Database.Type.Damage && entity.Info.Boss)
+                {
+                    foreach (var delete in _toDelete)
+                    {
+                        DeleteEntity(delete);
+                    }
+                    _toDelete = new List<Entity>();
+                }
+
                 UpdateCurrentBoss(entity);
+
             }
+
+            Database.Database.Instance.Insert(message.Amount, skillType, entityTarget, entitySource, message.SkillId,
+               message.Abnormality, message.IsCritical, message.Time.Ticks, petSource);
+
         }
     }
 }

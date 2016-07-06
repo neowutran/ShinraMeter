@@ -452,6 +452,13 @@ namespace DamageMeter.UI
                         {
                             continue;
                         }
+
+                        if (counter == 9)
+                        {
+                            break;
+                        }
+                        counter++;
+
                         visiblePlayerStats.Add(playerStats.Source);
                         if (playerStatsControl != null) continue;
                         playerStatsControl = new PlayerStats(playerStats,
@@ -459,11 +466,7 @@ namespace DamageMeter.UI
                             statsSummary.EntityInformation, skills, abnormals.Get(playerStats.Source));
                         Controls.Add(playerStats.Source, playerStatsControl);
 
-                        if (counter == 9)
-                        {
-                            break;
-                        }
-                        counter++;
+                     
                     }
 
                     var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -574,7 +577,7 @@ namespace DamageMeter.UI
         }
 
 
-        private void UpdateComboboxEncounter(List<NpcEntity> entities, NpcEntity currentBoss)
+        private void UpdateComboboxEncounter(IReadOnlyList<NpcEntity> entities, NpcEntity currentBoss)
         {
             //http://stackoverflow.com/questions/12164488/system-reflection-targetinvocationexception-occurred-in-presentationframework
             if (ListEncounter == null || !ListEncounter.IsLoaded)

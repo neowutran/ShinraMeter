@@ -131,7 +131,6 @@ namespace DamageMeter
             if (packetsWaiting > 1500 && filteredEntities.Count > 1)
             {
                 Database.Database.Instance.DeleteAllWhenTimeBelow(Encounter);
-                entities = Database.Database.Instance.AllEntity();
                 filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
             }
 
