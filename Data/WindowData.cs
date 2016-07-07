@@ -261,7 +261,7 @@ namespace Data
             if (setting.PropertyType == typeof(double))
             {
                 double value;
-                var parseSuccess = double.TryParse(xml.Value, out value);
+                var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
                 if (parseSuccess)
                 {
                     setting.SetValue(this, value, null);
