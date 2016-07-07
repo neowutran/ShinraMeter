@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -196,7 +197,7 @@ namespace Data
                 var content = copy.Element("string").Element("content").Value;
                 Keys key;
                 var keyValue = copy.Element("key").Value;
-                keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
+                keyValue = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(keyValue.ToLowerInvariant());
                 if (!Enum.TryParse(keyValue, out key))
                 {
                     var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
