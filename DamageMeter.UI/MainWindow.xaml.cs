@@ -174,6 +174,12 @@ namespace DamageMeter.UI
             var excel = new MenuItem {Text = "Autoexport to Excel"};
             excel.Click += ExcelOnClick;
             excel.Checked = BasicTeraData.Instance.WindowData.Excel;
+            var onlyBoss = new MenuItem { Text = "Count only bosses" };
+            onlyBoss.Click += onlyBossOnClick;
+            onlyBoss.Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
+            var detectBosses = new MenuItem { Text = "Detect bosses by HP bar (ignore db)" };
+            detectBosses.Click += detectBossesOnClick;
+            detectBosses.Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
             var siteExport = new MenuItem {Text = "Site export"};
             siteExport.Click += SiteOnClick;
             siteExport.Checked = BasicTeraData.Instance.WindowData.SiteExport;
@@ -203,9 +209,23 @@ namespace DamageMeter.UI
             context.MenuItems.Add(teradps);
             context.MenuItems.Add(excel);
             context.MenuItems.Add(siteExport);
+            context.MenuItems.Add(detectBosses);
+            context.MenuItems.Add(onlyBoss);
             context.MenuItems.Add(party);
             context.MenuItems.Add(exit);
             _trayIcon.ContextMenu = context;
+        }
+
+        private void detectBossesOnClick(object sender, EventArgs eventArgs)
+        {
+            BasicTeraData.Instance.WindowData.DetectBosses = !BasicTeraData.Instance.WindowData.DetectBosses;
+            ((MenuItem)sender).Checked = BasicTeraData.Instance.WindowData.DetectBosses;
+            if (BasicTeraData.Instance.MonsterDatabase!= null) BasicTeraData.Instance.MonsterDatabase.DetectBosses = BasicTeraData.Instance.WindowData.DetectBosses;
+        }
+        private void onlyBossOnClick(object sender, EventArgs eventArgs)
+        {
+            BasicTeraData.Instance.WindowData.OnlyBoss = !BasicTeraData.Instance.WindowData.OnlyBoss;
+            ((MenuItem)sender).Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
         }
 
         private void SiteOnClick(object sender, EventArgs eventArgs)
