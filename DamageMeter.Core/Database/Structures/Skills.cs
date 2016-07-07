@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Data;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using Tera.Game;
 
 namespace DamageMeter.Database.Structures
