@@ -11,6 +11,57 @@ namespace Data
     {
         private readonly FileStream _filestream;
         private readonly XDocument _xml;
+        public int LFDelay { get; set; }
+        public Point Location { get; set; }
+        public string ExcelSaveDirectory { get; set; }
+        public double Scale { get; set; }
+        public bool PartyOnly { get; set; }
+        public double MainWindowOpacity { get; private set; }
+        public double SkillWindowOpacity { get; private set; }
+        public bool RememberPosition { get; private set; }
+        public string Language { get; private set; }
+        public bool AutoUpdate { get; private set; }
+        public bool Winpcap { get; private set; }
+        public bool InvisibleUi { get; set; }
+        public bool AllowTransparency { get; set; }
+        public string TeraDpsUser { get; private set; }
+        public string TeraDpsToken { get; private set; }
+        public bool AlwaysVisible { get; set; }
+        public bool Topmost { get; set; }
+        public bool Debug { get; set; }
+        public bool Excel { get; set; }
+        public bool SiteExport { get; set; }
+        public bool ShowHealCrit { get; set; }
+        public bool OnlyBoss { get; set; }
+        public bool DetectBosses { get; set; }
+
+        private void DefaultValue()
+        {
+            Location = new Point(0, 0);
+            Language = "Auto";
+            MainWindowOpacity = 0.5;
+            SkillWindowOpacity = 0.7;
+            AutoUpdate = true;
+            RememberPosition = true;
+            InvisibleUi = false;
+            Winpcap = true;
+            Topmost = true;
+            AllowTransparency = true;
+            Debug = true;
+            TeraDpsToken = "";
+            TeraDpsUser = "";
+            Excel = false;
+            AlwaysVisible = false;
+            Scale = 1;
+            PartyOnly = false;
+            SiteExport = true;
+            ShowHealCrit = true;
+            ExcelSaveDirectory = "";
+            LFDelay = 150;
+            OnlyBoss = false;
+            DetectBosses = false;
+        }
+
 
         public WindowData(BasicTeraData basicData)
         {
@@ -44,173 +95,26 @@ namespace Data
                 return;
             }
 
+            Parse("lf_delay", "LFDelay");
+            Parse("excel_save_directory", "ExcelSaveDirectory");
+            Parse("showhealcrit", "ShowHealCrit");
+            Parse("partyonly", "PartyOnly");
+            Parse("excel", "Excel");
+            Parse("scale", "Scale");
+            Parse("always_visible", "AlwaysVisible");
+            Parse("remember_position", "RememberPosition");
+            Parse("debug", "Debug");
+            Parse("topmost", "Topmost");
+            Parse("invisible_ui_when_no_stats", "InvisibleUi");
+            Parse("allow_transparency", "AllowTransparency");
+            Parse("winpcap", "Winpcap");
+            Parse("autoupdate", "AutoUpdate");
+            Parse("only_bosses", "OnlyBoss");
+            Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
             ParseLocation();
-            ParseLanguage();
-            ParseMainWindowOpacity();
-            ParseSkillWindowOpacity();
-            ParseAutoUpdate();
-            ParseRememberPosition();
-            ParseWinpcap();
-            ParseInvisibleUi();
-            ParseAllowTrasparency();
-            ParseTopmost();
+            ParseOpacity();
             ParseTeraDps();
-            ParseDebug();
-            ParseExcel();
-            ParseAlwaysVisible();
-            ParseScale();
-            ParsePartyOnly();
-            ParseShowHealCrit();
-            ParseExcelSaveDirectory();
-            ParseLFDelay();
-        }
-
-        public int LFDelay { get; set; }
-
-        public Point Location { get; set; }
-
-        public string ExcelSaveDirectory { get; set; }
-
-        public double Scale { get; set; }
-        public bool PartyOnly { get; set; }
-        public double MainWindowOpacity { get; private set; }
-        public double SkillWindowOpacity { get; private set; }
-
-        public bool RememberPosition { get; private set; }
-        public string Language { get; private set; }
-
-        public bool AutoUpdate { get; private set; }
-
-        public bool Winpcap { get; private set; }
-
-        public bool InvisibleUi { get; set; }
-
-        public bool AllowTransparency { get; set; }
-
-        public string TeraDpsUser { get; private set; }
-        public string TeraDpsToken { get; private set; }
-
-        public bool AlwaysVisible { get; set; }
-
-        public bool Topmost { get; set; }
-
-        public bool Debug { get; set; }
-
-        public bool Excel { get; set; }
-
-        public bool SiteExport { get; set; }
-        public bool ShowHealCrit { get; set; }
-
-        private void DefaultValue()
-        {
-            Location = new Point(0, 0);
-            Language = "Auto";
-            MainWindowOpacity = 0.5;
-            SkillWindowOpacity = 0.7;
-            AutoUpdate = true;
-            RememberPosition = true;
-            InvisibleUi = false;
-            Winpcap = true;
-            Topmost = true;
-            AllowTransparency = true;
-            Debug = true;
-            TeraDpsToken = "";
-            TeraDpsUser = "";
-            Excel = false;
-            AlwaysVisible = false;
-            Scale = 1;
-            PartyOnly = false;
-            SiteExport = true;
-            ShowHealCrit = true;
-            ExcelSaveDirectory = "";
-            LFDelay = 150;
-        }
-
-        private void ParseLFDelay()
-        {
-            var root = _xml.Root;
-            var xml = root?.Element("lf_delay");
-            if (xml == null) return;
-            int value;
-            var parseSuccess = int.TryParse(xml.Value, out value);
-            if (parseSuccess)
-            {
-                LFDelay = value;
-            }
-        } 
-
-
-        private void ParseExcelSaveDirectory()
-        {
-            var root = _xml.Root;
-            var excelxml = root?.Element("excel_save_directory");
-            if (excelxml == null) return;
-            ExcelSaveDirectory = excelxml.Value;
-        }
-
-        private void ParseShowHealCrit()
-        {
-            var root = _xml.Root;
-            var xml = root?.Element("showhealcrit");
-            if (xml == null) return;
-            bool val;
-            var parseSuccess = bool.TryParse(xml.Value, out val);
-            if (parseSuccess)
-            {
-                ShowHealCrit = val;
-            }
-        }
-
-        private void ParsePartyOnly()
-        {
-            var root = _xml.Root;
-            var xml = root?.Element("partyonly");
-            if (xml == null) return;
-            bool party;
-            var parseSuccess = bool.TryParse(xml.Value, out party);
-            if (parseSuccess)
-            {
-                PartyOnly = party;
-            }
-        }
-
-        private void ParseExcel()
-        {
-            var root = _xml.Root;
-            var excelxml = root?.Element("excel");
-            if (excelxml == null) return;
-            bool excel;
-            var parseSuccess = bool.TryParse(excelxml.Value, out excel);
-            if (parseSuccess)
-            {
-                Excel = excel;
-            }
-        }
-
-        private void ParseScale()
-        {
-            var root = _xml.Root;
-            var scalexml = root?.Element("scale");
-            if (scalexml == null) return;
-            double scale;
-            var parseSuccess = double.TryParse(scalexml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out scale);
-            if (parseSuccess)
-            {
-                Scale = scale;
-            }
-        }
-
-        private void ParseAlwaysVisible()
-        {
-            var root = _xml.Root;
-            var alwaysvisible = root?.Element("always_visible");
-            if (alwaysvisible == null) return;
-            bool visible;
-            var parseSuccess = bool.TryParse(alwaysvisible.Value, out visible);
-            if (parseSuccess)
-            {
-                AlwaysVisible = visible;
-            }
+            ParseLanguage();
         }
 
         private void ParseTeraDps()
@@ -240,99 +144,7 @@ namespace Data
             }
         }
 
-        private void ParseRememberPosition()
-        {
-            var root = _xml.Root;
-            var rememberPosition = root?.Element("remember_position");
-            if (rememberPosition == null) return;
-            bool remember;
-            var parseSuccess = bool.TryParse(rememberPosition.Value, out remember);
-            if (parseSuccess)
-            {
-                RememberPosition = remember;
-            }
-        }
-
-        private void ParseDebug()
-        {
-            var root = _xml.Root;
-            var debug = root?.Element("debug");
-            if (debug == null) return;
-            bool remember;
-            var parseSuccess = bool.TryParse(debug.Value, out remember);
-            if (parseSuccess)
-            {
-                Debug = remember;
-            }
-        }
-
-        private void ParseTopmost()
-        {
-            var root = _xml.Root;
-            var topmost = root?.Element("topmost");
-            if (topmost == null) return;
-            bool remember;
-            var parseSuccess = bool.TryParse(topmost.Value, out remember);
-            if (parseSuccess)
-            {
-                Topmost = remember;
-            }
-        }
-
-
-        private void ParseInvisibleUi()
-        {
-            var root = _xml.Root;
-            var invisibleUI = root?.Element("invisible_ui_when_no_stats");
-            if (invisibleUI == null) return;
-            bool invisibleUi;
-            var parseSuccess = bool.TryParse(invisibleUI.Value, out invisibleUi);
-            if (parseSuccess)
-            {
-                InvisibleUi = invisibleUi;
-            }
-        }
-
-        private void ParseAllowTrasparency()
-        {
-            var root = _xml.Root;
-            var allowTransparency = root?.Element("allow_transparency");
-            if (allowTransparency == null) return;
-            bool transparency;
-            var parseSuccess = bool.TryParse(allowTransparency.Value, out transparency);
-            if (parseSuccess)
-            {
-                AllowTransparency = transparency;
-            }
-        }
-
-        private void ParseWinpcap()
-        {
-            var root = _xml.Root;
-            var winpcapElement = root?.Element("winpcap");
-            if (winpcapElement == null) return;
-            bool winpcap;
-            var parseSuccess = bool.TryParse(winpcapElement.Value, out winpcap);
-            if (parseSuccess)
-            {
-                Winpcap = winpcap;
-            }
-        }
-
-
-        private void ParseAutoUpdate()
-        {
-            var root = _xml.Root;
-            var autoupdate = root?.Element("autoupdate");
-            if (autoupdate == null) return;
-            bool auto;
-            var parseSuccess = bool.TryParse(autoupdate.Value, out auto);
-            if (parseSuccess)
-            {
-                AutoUpdate = auto;
-            }
-        }
-
+ 
         private void ParseLocation()
         {
             int x, y;
@@ -363,31 +175,25 @@ namespace Data
                     s => s.Equals(Language))) Language = "Auto";
         }
 
-        private void ParseMainWindowOpacity()
+        private void ParseOpacity()
         {
-            int mainWindowOpacity;
             var root = _xml.Root;
             var opacity = root?.Element("opacity");
             var mainWindowElement = opacity?.Element("mainWindow");
-            if (mainWindowElement == null) return;
-
-            if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity))
+            if (mainWindowElement != null)
             {
-                MainWindowOpacity = (double) mainWindowOpacity/100;
+                int mainWindowOpacity;
+                if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity))
+                {
+                    MainWindowOpacity = (double) mainWindowOpacity/100;
+                }
             }
-        }
-
-        private void ParseSkillWindowOpacity()
-        {
+            var skillWindowElement = opacity?.Element("skillWindow");
+            if (skillWindowElement == null) return;
             int skillWindowOpacity;
-            var root = _xml.Root;
-            var opacity = root?.Element("opacity");
-            var mainWindowElement = opacity?.Element("skillWindow");
-            if (mainWindowElement == null) return;
-
-            if (int.TryParse(mainWindowElement.Value, out skillWindowOpacity))
+            if (int.TryParse(skillWindowElement.Value, out skillWindowOpacity))
             {
-                SkillWindowOpacity = (double) skillWindowOpacity/100;
+                SkillWindowOpacity = (double)skillWindowOpacity / 100;
             }
         }
 
@@ -425,6 +231,8 @@ namespace Data
             xml.Root.Add(new XElement("lf_delay", LFDelay));
             xml.Root.Add(new XElement("partyonly", PartyOnly));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
+            xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", DetectBosses));
+            xml.Root.Add(new XElement("only_bosses", OnlyBoss));
 
             _filestream.SetLength(0);
             using (var sr = new StreamWriter(_filestream))
@@ -433,6 +241,45 @@ namespace Data
                 sr.Write(xml);
             }
             _filestream.Close();
+        }
+
+        private void Parse(string xmlName, string settingName)
+        {
+            var root = _xml.Root;
+            var xml = root?.Element(xmlName);
+            if (xml == null) return;
+            var setting = this.GetType().GetProperty(settingName);
+            if (setting.PropertyType == typeof(int))
+            {
+                int value;
+                var parseSuccess = int.TryParse(xml.Value, out value);
+                if (parseSuccess)
+                {
+                    setting.SetValue(this, value, null);
+                }
+            }
+            if (setting.PropertyType == typeof(double))
+            {
+                double value;
+                var parseSuccess = double.TryParse(xml.Value, out value);
+                if (parseSuccess)
+                {
+                    setting.SetValue(this, value, null);
+                }
+            }
+            if (setting.PropertyType == typeof(bool))
+            {
+                bool value;
+                var parseSuccess = bool.TryParse(xml.Value, out value);
+                if (parseSuccess)
+                {
+                    setting.SetValue(this, value, null);
+                }
+            }
+            if (setting.PropertyType == typeof(string))
+            {
+                setting.SetValue(this, xml.Value, null);
+            }
         }
     }
 }
