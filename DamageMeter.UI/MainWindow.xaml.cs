@@ -174,6 +174,12 @@ namespace DamageMeter.UI
             var excel = new MenuItem {Text = "Autoexport to Excel"};
             excel.Click += ExcelOnClick;
             excel.Checked = BasicTeraData.Instance.WindowData.Excel;
+            var onlyBoss = new MenuItem { Text = "Count only bosses" };
+            onlyBoss.Click += onlyBossOnClick;
+            onlyBoss.Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
+            var detectBosses = new MenuItem { Text = "Detect bosses by HP bar (ignore db)" };
+            detectBosses.Click += detectBossesOnClick;
+            detectBosses.Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
             var siteExport = new MenuItem {Text = "Site export"};
             siteExport.Click += SiteOnClick;
             siteExport.Checked = BasicTeraData.Instance.WindowData.SiteExport;
@@ -203,9 +209,23 @@ namespace DamageMeter.UI
             context.MenuItems.Add(teradps);
             context.MenuItems.Add(excel);
             context.MenuItems.Add(siteExport);
+            context.MenuItems.Add(detectBosses);
+            context.MenuItems.Add(onlyBoss);
             context.MenuItems.Add(party);
             context.MenuItems.Add(exit);
             _trayIcon.ContextMenu = context;
+        }
+
+        private void detectBossesOnClick(object sender, EventArgs eventArgs)
+        {
+            BasicTeraData.Instance.WindowData.DetectBosses = !BasicTeraData.Instance.WindowData.DetectBosses;
+            ((MenuItem)sender).Checked = BasicTeraData.Instance.WindowData.DetectBosses;
+            if (BasicTeraData.Instance.MonsterDatabase!= null) BasicTeraData.Instance.MonsterDatabase.DetectBosses = BasicTeraData.Instance.WindowData.DetectBosses;
+        }
+        private void onlyBossOnClick(object sender, EventArgs eventArgs)
+        {
+            BasicTeraData.Instance.WindowData.OnlyBoss = !BasicTeraData.Instance.WindowData.OnlyBoss;
+            ((MenuItem)sender).Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
         }
 
         private void SiteOnClick(object sender, EventArgs eventArgs)
@@ -452,6 +472,13 @@ namespace DamageMeter.UI
                         {
                             continue;
                         }
+
+                        if (counter == 9)
+                        {
+                            break;
+                        }
+                        counter++;
+
                         visiblePlayerStats.Add(playerStats.Source);
                         if (playerStatsControl != null) continue;
                         playerStatsControl = new PlayerStats(playerStats,
@@ -459,11 +486,7 @@ namespace DamageMeter.UI
                             statsSummary.EntityInformation, skills, abnormals.Get(playerStats.Source));
                         Controls.Add(playerStats.Source, playerStatsControl);
 
-                        if (counter == 9)
-                        {
-                            break;
-                        }
-                        counter++;
+                     
                     }
 
                     var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -574,7 +597,7 @@ namespace DamageMeter.UI
         }
 
 
-        private void UpdateComboboxEncounter(List<NpcEntity> entities, NpcEntity currentBoss)
+        private void UpdateComboboxEncounter(IReadOnlyList<NpcEntity> entities, NpcEntity currentBoss)
         {
             //http://stackoverflow.com/questions/12164488/system-reflection-targetinvocationexception-occurred-in-presentationframework
             if (ListEncounter == null || !ListEncounter.IsLoaded)

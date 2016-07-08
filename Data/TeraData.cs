@@ -13,7 +13,7 @@ namespace Data
             var language = GetLanguage(region);
 
             BasicTeraData.Instance.MonsterDatabase =
-                new NpcDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
+                new NpcDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language, BasicTeraData.Instance.WindowData.DetectBosses);
             BasicTeraData.Instance.PetSkillDatabase =
                 new PetSkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
             BasicTeraData.Instance.SkillDatabase =

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Tera.Game;
@@ -165,30 +164,47 @@ namespace DamageMeter.Database.Structures
             return result.Where(x => x.Value != null).Distinct();
         }
 
-        public Database.Type Type(EntityId source, Entity target, int skillid, bool timed)
+        public bool Type(EntityId source, Entity target, int skillid, NpcInfo pet, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "type/" + source + "/" + targetString + "/" + skillid + "/" + timed;
-            if (_caching.ContainsKey(key)) return (Database.Type) _caching[key];
+            var key = "type/" + source + "/" + targetString + "/" + pet + "/" + skillid + "/" + type + "/" + timed;
+            if (_caching.ContainsKey(key)) return (bool) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
-            var result = from skills in dataSource
-                select skills.Type;
+            IEnumerable<Database.Type> result;
+            if (pet == null)
+            {
+                result = from skills in dataSource
+                         where
+                             skills.PetSource == null && skills.Type == type
+                         select skills.Type;
+            }
+            else
+            {
+                result = from skills in dataSource
+                    where
+                        skills.PetSource != null &&
+                        ((NpcEntity) NetworkController.Instance.EntityTracker.GetOrNull(skills.PetSource.Value)).Info
+                            .Name == pet.Name && skills.Type == type
+                    select skills.Type;
+            }
 
-            var type = result.First();
-            _caching[key] = type;
-            return type;
+            var typeExist = result.Count();
+
+            _caching[key] = typeExist != 0;
+            return typeExist != 0;
         }
 
 
-        public long Amount(EntityId source, Entity target, int skillid, bool timed)
+        public long Amount(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "amount/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "amount/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (long) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
+                       where skills.Type == type
                 select skills.Amount;
 
             var sum = result.Sum();
@@ -205,15 +221,15 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public long AmountWhite(EntityId source, Entity target, int skillid, bool timed)
+        public long AmountWhite(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "amount_white/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "amount_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (long) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic == false
+                where skills.Critic == false && skills.Type == type
                 select skills.Amount;
 
             long sum = 0;
@@ -223,15 +239,15 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        public long AmountCrit(EntityId source, Entity target, int skillid, bool timed)
+        public long AmountCrit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "amount_crit/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "amount_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (long) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic
+                where skills.Critic && skills.Type == type
                 select skills.Amount;
             long sum = 0;
             var enumerable = result as long[] ?? result.ToArray();
@@ -240,15 +256,15 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        public double AverageCrit(EntityId source, Entity target, int skillid, bool timed)
+        public double AverageCrit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "average_crit/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "average_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (double) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic
+                where skills.Critic && skills.Type == type
                 select skills.Amount;
 
             double sum = 0;
@@ -258,15 +274,15 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        public double AverageWhite(EntityId source, Entity target, int skillid, bool timed)
+        public double AverageWhite(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "average_white/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "average_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (double) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic == false
+                where skills.Critic == false && skills.Type == type
                 select skills.Amount;
             double sum = 0;
             var enumerable = result as long[] ?? result.ToArray();
@@ -276,14 +292,15 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public double Average(EntityId source, Entity target, int skillid, bool timed)
+        public double Average(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "average/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "average/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (double) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
+                where skills.Type == type
                 select skills.Amount;
 
             var average = result.Average();
@@ -291,14 +308,15 @@ namespace DamageMeter.Database.Structures
             return average;
         }
 
-        public int CritRate(EntityId source, Entity target, int skillid, bool timed)
+        public int CritRate(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "critrate/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "critrate/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (int) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
+                         where skills.Type == type
                 select skills.Critic;
 
             var enumerable = result as bool[] ?? result.ToArray();
@@ -307,15 +325,15 @@ namespace DamageMeter.Database.Structures
             return crit;
         }
 
-        public long BiggestCrit(EntityId source, Entity target, int skillid, bool timed)
+        public long BiggestCrit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "biggest_crit/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "biggest_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (long) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic
+                where skills.Critic && skills.Type == type
                 select skills.Amount;
 
             long max = 0;
@@ -325,15 +343,15 @@ namespace DamageMeter.Database.Structures
             return max;
         }
 
-        public long BiggestWhite(EntityId source, Entity target, int skillid, bool timed)
+        public long BiggestWhite(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "biggest_white/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "biggest_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (long) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic == false
+                where skills.Critic == false && skills.Type == type
                 select skills.Amount;
 
             long max = 0;
@@ -343,14 +361,15 @@ namespace DamageMeter.Database.Structures
             return max;
         }
 
-        public long BiggestHit(EntityId source, Entity target, int skillid, bool timed)
+        public long BiggestHit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "biggest_hit/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "biggest_hit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (long) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
+                         where skills.Type == type
                 select skills.Amount;
 
             var max = result.Max();
@@ -359,15 +378,15 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public int Crits(EntityId source, Entity target, int skillid, bool timed)
+        public int Crits(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "crits/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "crits/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (int) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic
+                where skills.Critic && skills.Type == type
                 select skills.Critic;
 
             var crit = result.Count();
@@ -393,15 +412,15 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public int White(EntityId source, Entity target, int skillid, bool timed)
+        public int White(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "white/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (int) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic == false
+                where skills.Critic == false && skills.Type == type
                 select skills.Critic;
 
             var white = result.Count();
@@ -410,24 +429,25 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public long LowestCrit(EntityId source, Entity target, int skillid, bool timed)
+        public long LowestCrit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
-                where skills.Critic
+                where skills.Critic && skills.Type == type
                 select skills.Amount;
             var enumerable = result as long[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Min();
         }
 
-        public int Hits(EntityId source, Entity target, int skillid, bool timed)
+        public int Hits(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "hits/" + source + "/" + targetString + "/" + skillid + "/" + timed;
+            var key = "hits/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (int) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
+                         where skills.Type == type
                 select skills;
 
             var hits = result.Count();

@@ -79,6 +79,7 @@ namespace DamageMeter.UI
             }
 
             var tabItem = (TabItem) TabControl.SelectedItem;
+            if (tabItem == null) return;
             switch (tabItem.Name)
             {
                 case "DpsPanel":

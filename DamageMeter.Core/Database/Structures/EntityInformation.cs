@@ -4,10 +4,10 @@ namespace DamageMeter.Database.Structures
 {
     public class EntityInformation
     {
-        public EntityInformation(NpcEntity entity, long total_damage, long beginTime, long endTime)
+        public EntityInformation(NpcEntity entity, long totalDamage, long beginTime, long endTime)
         {
             Entity = entity;
-            TotalDamage = total_damage;
+            TotalDamage = totalDamage;
             BeginTime = beginTime;
             EndTime = endTime;
         }
