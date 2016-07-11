@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using DamageMeter.Database.Structures;
+using Data;
 using Tera.Game;
 using Skill = DamageMeter.Database.Structures.Skill;
 
@@ -37,7 +38,8 @@ namespace DamageMeter.Database
                       "type INTEGER NOT NULL," +
                       "target INTEGER NOT NULL," +
                       "source INTEGER NOT NULL," +
-                      "pet_source INTEGER DEFAULT NULL," +
+                      "pet_zone INTEGER DEFAULT NULL," +
+                      "pet_id INTEGER DEFAULT NULL," +
                       "skill_id INTEGER NOT NULL," +
                       "critic INTEGER NOT NULL," +
                       "hotdot INTEGER NOT NULL," +
@@ -74,7 +76,7 @@ namespace DamageMeter.Database
             long time, Entity petSource)
         {
             var sql =
-                "INSERT INTO damage (amount, type, target, source, skill_id, hotdot, critic, time, pet_source) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time, $pet_source ) ;";
+                "INSERT INTO damage (amount, type, target, source, skill_id, hotdot, critic, time, pet_zone, pet_id) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time, $pet_zone, $pet_id ) ;";
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$amount", amount);
             command.Parameters.AddWithValue("$type", (int) type);
@@ -87,11 +89,15 @@ namespace DamageMeter.Database
 
             if (petSource != null)
             {
-                command.Parameters.AddWithValue("$pet_source", petSource.Id.Id);
+                var pet = (NpcEntity)petSource;
+                command.Parameters.AddWithValue("$pet_zone", pet.Info.HuntingZoneId);
+                command.Parameters.AddWithValue("$pet_id", pet.Info.TemplateId);
+
             }
             else
             {
-                command.Parameters.AddWithValue("$pet_source", "NULL");
+                command.Parameters.AddWithValue("$pet_id", DBNull.Value);
+                command.Parameters.AddWithValue("$pet_zone", DBNull.Value);
             }
 
             command.ExecuteNonQuery();
@@ -203,7 +209,7 @@ namespace DamageMeter.Database
         public Skills GetSkills(long beginTime, long endTime)
         {
             var sql =
-                "SELECT amount, type, target, source, pet_source, skill_id, hotdot, critic, time FROM damage WHERE time BETWEEN $begin AND $end ;";
+                "SELECT amount, type, target, source, pet_zone, pet_id, skill_id, hotdot, critic, time FROM damage WHERE time BETWEEN $begin AND $end ;";
 
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
@@ -225,15 +231,14 @@ namespace DamageMeter.Database
                 var critic = rdr.GetFieldValue<long>(rdr.GetOrdinal("critic")) == 1;
                 var hotdot = rdr.GetFieldValue<long>(rdr.GetOrdinal("hotdot")) == 1;
                 var time = rdr.GetFieldValue<long>(rdr.GetOrdinal("time"));
-                var petSource = rdr.IsDBNull(rdr.GetOrdinal("pet_source"))
+                var petZone = rdr.IsDBNull(rdr.GetOrdinal("pet_zone"))
                     ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_source"));
-                EntityId? petSourceId = null;
-                if (petSource != 0)
-                {
-                    petSourceId = new EntityId((ulong)petSource);
-                }
-                var skill = new Skill(amount, type, target, source, (int) skillid, hotdot, critic, time, petSourceId);
+                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_zone"));
+                var petId = rdr.IsDBNull(rdr.GetOrdinal("pet_id"))
+                ? 0
+                : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_id"));
+                var pet = BasicTeraData.Instance.MonsterDatabase.GetOrNull((ushort)petZone, (uint)petId);
+                var skill = new Skill(amount, type, target, source, (int) skillid, hotdot, critic, time, pet);
 
                 if (!targetSourceSkills.ContainsKey(skill.Target))
                 {

@@ -131,7 +131,7 @@ namespace DamageMeter.Database.Structures
                 result = from skills in SourceTargetSkill[source.Id].Values
                     from skill in skills
                     select
-                        SkillResult.GetSkill(source.Id, skill.PetSource, skill.SkillId, skill.HotDot,
+                        SkillResult.GetSkill(source.Id, skill.Pet, skill.SkillId, skill.HotDot,
                             NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                             BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
 
@@ -141,7 +141,7 @@ namespace DamageMeter.Database.Structures
 
             result = from skills in SourceTargetSkill[source.Id][target.Id]
                 select
-                    SkillResult.GetSkill(source.Id, skills.PetSource, skills.SkillId, skills.HotDot,
+                    SkillResult.GetSkill(source.Id, skills.Pet, skills.SkillId, skills.HotDot,
                         NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                         BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
             return result.Distinct();
@@ -158,7 +158,7 @@ namespace DamageMeter.Database.Structures
             var result = from skills in TargetSourceSkill[target.Id].Values
                 from skill in skills
                 select
-                    new KeyValuePair<EntityId, Tera.Game.Skill>( skill.Source, SkillResult.GetSkill(skill.Source, skill.PetSource, skill.SkillId, skill.HotDot,
+                    new KeyValuePair<EntityId, Tera.Game.Skill>( skill.Source, SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot,
                         NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                         BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase));
             return result.Where(x => x.Value != null).Distinct();
@@ -176,16 +176,15 @@ namespace DamageMeter.Database.Structures
             {
                 result = from skills in dataSource
                          where
-                             skills.PetSource == null && skills.Type == type
+                             skills.Pet == null && skills.Type == type
                          select skills.Type;
             }
             else
             {
                 result = from skills in dataSource
                     where
-                        skills.PetSource != null &&
-                        ((NpcEntity) NetworkController.Instance.EntityTracker.GetOrNull(skills.PetSource.Value)).Info
-                            .Name == pet.Name && skills.Type == type
+                        skills.Pet != null &&
+                        skills.Pet.Name == pet.Name && skills.Type == type
                     select skills.Type;
             }
 
