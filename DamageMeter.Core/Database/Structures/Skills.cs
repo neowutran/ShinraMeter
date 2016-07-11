@@ -393,7 +393,7 @@ namespace DamageMeter.Database.Structures
             return crit;
         }
 
-        public List<Skill> GetSkills(EntityId source, Entity target, bool timed, long beginTime, long endTime)
+        public List<Skill> GetSkillsDealt(EntityId source, Entity target, bool timed)
         {
             IEnumerable<Skill> result;
 
@@ -410,6 +410,18 @@ namespace DamageMeter.Database.Structures
             return result.ToList();
         }
 
+        public List<Skill> GetSkillsReceived(EntityId target, bool timed)
+        {
+            if (!TargetSourceSkill.ContainsKey(target))
+            {
+                return new List<Skill>();
+            }
+
+            var result = from skills in TargetSourceSkill[target].Values
+                from skill in skills
+                select skill;
+            return result.ToList();
+        }
 
         public int White(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
         {

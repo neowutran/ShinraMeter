@@ -161,9 +161,9 @@ namespace DamageMeter
                 UpdateCurrentBoss(entity);
 
             }
-
+            
             Database.Database.Instance.Insert(message.Amount, skillType, entityTarget, entitySource, message.SkillId,
-               message.Abnormality, message.IsCritical, message.Time.Ticks, petSource);
+               message.Abnormality, message.IsCritical, message.Time.Ticks, petSource, message.HitDirection);
 
         }
     }

@@ -42,6 +42,7 @@ namespace DamageMeter.Database
                       "pet_id INTEGER DEFAULT NULL," +
                       "skill_id INTEGER NOT NULL," +
                       "critic INTEGER NOT NULL," +
+                      "direction INTEGER NOT NULL," +
                       "hotdot INTEGER NOT NULL," +
                       "time INTEGER NOT NULL" +
                       "); ";
@@ -73,10 +74,10 @@ namespace DamageMeter.Database
         }
 
         public void Insert(long amount, Type type, Entity target, Entity source, long skillId, bool hotdot, bool critic,
-            long time, Entity petSource)
+            long time, Entity petSource, HitDirection direction)
         {
             var sql =
-                "INSERT INTO damage (amount, type, target, source, skill_id, hotdot, critic, time, pet_zone, pet_id) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time, $pet_zone, $pet_id ) ;";
+                "INSERT INTO damage (amount, type, target, source, skill_id, hotdot, critic, time, pet_zone, pet_id, direction) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time, $pet_zone, $pet_id, $direction ) ;";
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$amount", amount);
             command.Parameters.AddWithValue("$type", (int) type);
@@ -86,6 +87,7 @@ namespace DamageMeter.Database
             command.Parameters.AddWithValue("$critic", critic ? 1 : 0);
             command.Parameters.AddWithValue("$hotdot", hotdot ? 1 : 0);
             command.Parameters.AddWithValue("$time", time);
+            command.Parameters.AddWithValue("$direction", direction);
 
             if (petSource != null)
             {
@@ -209,7 +211,7 @@ namespace DamageMeter.Database
         public Skills GetSkills(long beginTime, long endTime)
         {
             var sql =
-                "SELECT amount, type, target, source, pet_zone, pet_id, skill_id, hotdot, critic, time FROM damage WHERE time BETWEEN $begin AND $end ;";
+                "SELECT amount, type, target, source, pet_zone, pet_id, skill_id, hotdot, critic, time, direction FROM damage WHERE time BETWEEN $begin AND $end ;";
 
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
@@ -228,6 +230,7 @@ namespace DamageMeter.Database
                 var target = new EntityId((ulong) rdr.GetFieldValue<long>(rdr.GetOrdinal("target")));
                 var source = new EntityId((ulong) rdr.GetFieldValue<long>(rdr.GetOrdinal("source")));
                 var skillid = rdr.GetFieldValue<long>(rdr.GetOrdinal("skill_id"));
+                var direction =  (HitDirection)rdr.GetFieldValue<long>(rdr.GetOrdinal("direction"));
                 var critic = rdr.GetFieldValue<long>(rdr.GetOrdinal("critic")) == 1;
                 var hotdot = rdr.GetFieldValue<long>(rdr.GetOrdinal("hotdot")) == 1;
                 var time = rdr.GetFieldValue<long>(rdr.GetOrdinal("time"));
@@ -238,7 +241,7 @@ namespace DamageMeter.Database
                 ? 0
                 : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_id"));
                 var pet = BasicTeraData.Instance.MonsterDatabase.GetOrNull((ushort)petZone, (uint)petId);
-                var skill = new Skill(amount, type, target, source, (int) skillid, hotdot, critic, time, pet);
+                var skill = new Skill(amount, type, target, source, (int) skillid, hotdot, critic, time, pet, direction);
 
                 if (!targetSourceSkills.ContainsKey(skill.Target))
                 {
@@ -312,6 +315,7 @@ namespace DamageMeter.Database
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
             command.Parameters.AddWithValue("$end", endTime);
+
             return PlayerInformation(command);
         }
 

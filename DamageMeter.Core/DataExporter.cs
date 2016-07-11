@@ -148,8 +148,7 @@ namespace DamageMeter
                 }
                 var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
                 extendedStats.PlayerSkills.Add(serverPlayerName,
-                    skills.GetSkills(user.Source.User.Id, entity, timedEncounter, entityInfo.BeginTime,
-                        entityInfo.EndTime));
+                    skills.GetSkillsDealt(user.Source.User.Id, entity, timedEncounter));
                 extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
                 var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);

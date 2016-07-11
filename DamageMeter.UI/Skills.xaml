@@ -141,8 +141,13 @@
                     <TabItem FontSize="14" Header="Heal" x:Name="HealPanel" Background="Transparent" Foreground="White" />
                     <TabItem FontSize="14" Header="Mana" x:Name="ManaPanel" Background="Transparent" Foreground="White" />
                     <TabItem FontSize="14" Header="Buff" x:Name="BuffPanel" Background="Transparent" Foreground="White" />
+                    <TabItem FontSize="14" Header="SkillDealt" x:Name="SkillsDealtPanel" Background="Transparent" Foreground="White" />
+                    <TabItem FontSize="14" Header="SkillReceived" x:Name="SkillsReceivedPanel" Background="Transparent" Foreground="White" />
+
                 </TabControl>
-            </Grid>
+
+       </Grid>
         </ScrollViewer>
+
     </Grid>
 </ui:ClickThrouWindow>
