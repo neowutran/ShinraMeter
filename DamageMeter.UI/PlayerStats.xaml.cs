@@ -117,7 +117,7 @@ namespace DamageMeter.UI
                     CloseMeter = {Content = PlayerDealt.Source.Class + " " + PlayerName + ": CLOSE"}
                 };
                 _windowSkill.Show();
-                NetworkController.Instance.SendFullDetails++;
+                NetworkController.Instance.SendFullDetails = true;
                 return;
             }
 
@@ -135,7 +135,6 @@ namespace DamageMeter.UI
         {
             _windowSkill?.Close();
             _windowSkill = null;
-            NetworkController.Instance.SendFullDetails--;
         }
 
 

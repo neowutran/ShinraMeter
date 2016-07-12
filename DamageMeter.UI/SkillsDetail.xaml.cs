@@ -374,12 +374,6 @@ namespace DamageMeter.UI
         }
 
 
-        public void Update(IEnumerable<SkillAggregate> skills)
-        {
-            _skills = skills;
-            Repaint();
-        }
-
         private enum SortBy
         {
             Amount,

@@ -24,21 +24,14 @@ namespace DamageMeter.UI
         private readonly List<SkillLog> _skillList = new List<SkillLog>();
 
 
-        public SkillsLog(List<Database.Structures.Skill> skills, bool received)
+        public SkillsLog(IEnumerable<Database.Structures.Skill> skills, bool received)
         {
             InitializeComponent();
             ContentWidth = 1500;
-            Update(skills, received);
-        }
-
-        public double ContentWidth { get; private set; }
-
-        public void Update(List<Database.Structures.Skill> skills, bool received)
-        {
             Skills.Items.Clear();
 
             var counter = 0;
-            foreach (var skill in skills )
+            foreach (var skill in skills)
             {
                 SkillLog log;
                 if (_skillList.Count > counter)
@@ -51,9 +44,11 @@ namespace DamageMeter.UI
                     _skillList.Add(log);
                 }
                 log.Update(skill, received);
-                Skills.Items.Add(log);  
+                Skills.Items.Add(log);
                 counter++;
             }
         }
+
+        public double ContentWidth { get; private set; }
     }
 }
