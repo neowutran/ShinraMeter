@@ -19,6 +19,8 @@ namespace DamageMeter.UI
         private SkillsDetail _skillDps;
         private SkillsDetail _skillHeal;
         private SkillsDetail _skillMana;
+        private SkillsLog _skillDealtLog;
+        private SkillsLog _skillReceivedLog;
 
 
         public Skills(PlayerStats parent, PlayerDealt playerDealt, EntityInformation entityInformation,
@@ -138,6 +140,32 @@ namespace DamageMeter.UI
                         _buff.Update(playerDealt, buffs, entityInformation);
                     }
                     BuffPanel.Content = _buff;
+                    return;
+                case "SkillsDealtPanel":
+                    if (_skillDealtLog == null)
+                    {
+                        _skillDealtLog =
+                            new SkillsLog(skills.GetSkillsDealt(playerDealt.Source.User.Id, entityInformation.Entity,
+                                timedEncounter), false);
+                    }
+                    else
+                    {
+                        _skillDealtLog.Update(skills.GetSkillsDealt(playerDealt.Source.User.Id, entityInformation.Entity,
+                                timedEncounter), false);
+                    }
+                    SkillsDealtPanel.Content = _skillDealtLog;
+                    return;
+                case "SkillsReceivedPanel":
+                    if (_skillReceivedLog == null)
+                    {
+                        _skillReceivedLog =
+                            new SkillsLog(skills.GetSkillsReceived(playerDealt.Source.User.Id, timedEncounter), true);
+                    }
+                    else
+                    {
+                        _skillReceivedLog.Update(skills.GetSkillsReceived(playerDealt.Source.User.Id, timedEncounter), true);
+                    }
+                    SkillsReceivedPanel.Content = _skillReceivedLog;
                     return;
             }
         }

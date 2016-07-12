@@ -5,7 +5,7 @@ namespace DamageMeter.Database.Structures
     public class Skill
     {
         public Skill(long amount, Database.Type type, EntityId target, EntityId source, int skillId, bool hotdot,
-            bool critic, long time, EntityId? petSource)
+            bool critic, long time, NpcInfo pet, HitDirection direction)
         {
             Amount = amount;
             Type = type;
@@ -15,10 +15,13 @@ namespace DamageMeter.Database.Structures
             Critic = critic;
             HotDot = hotdot;
             Time = time;
-            PetSource = petSource;
+            Pet = pet;
+            Direction = direction;
         }
 
-        public EntityId? PetSource { get; }
+        public HitDirection Direction { get; }
+
+        public NpcInfo Pet { get; }
 
         public bool HotDot { get; }
         public long Amount { get; }

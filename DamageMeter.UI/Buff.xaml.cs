@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DamageMeter.Database.Structures;
 using DamageMeter.UI.EntityStats;
 using Tera.Game.Abnormality;
@@ -30,7 +31,7 @@ namespace DamageMeter.UI
 
             EnduranceAbnormality.Items.Add(_header);
             var counter = 0;
-            foreach (var abnormality in buffs.Times)
+            foreach (var abnormality in buffs.Times.Where(x=>x.Value.Duration(playerDealt.BeginTime,playerDealt.EndTime)>0))
             {
                 EnduranceDebuff abnormalityUi;
                 if (_enduranceDebuffsList.Count > counter)

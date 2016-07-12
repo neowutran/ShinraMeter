@@ -118,6 +118,12 @@
     <Compile Include="Buff.xaml.cs">
       <DependentUpon>Buff.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SkillLog.xaml.cs">
+      <DependentUpon>SkillLog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SkillsLog.xaml.cs">
+      <DependentUpon>SkillsLog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Skill\SkillMana.xaml.cs">
       <DependentUpon>SkillMana.xaml</DependentUpon>
     </Compile>
@@ -198,6 +204,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Buff.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SkillLog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SkillsLog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
