@@ -205,7 +205,9 @@ namespace DamageMeter
                         new Thread(() => CopyThread(statsSummary, skills, abnormals, timedEncounter, tmpcopy))
                         {
                             Priority = ThreadPriority.Highest
+                            
                         };
+                    pasteThread.SetApartmentState(ApartmentState.STA);
                     pasteThread.Start();
 
                     NeedToCopy = null;

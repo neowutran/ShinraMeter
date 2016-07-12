@@ -21,31 +21,16 @@ namespace DamageMeter.UI
     public partial class SkillsLog
     {
     
-        private readonly List<SkillLog> _skillList = new List<SkillLog>();
-
 
         public SkillsLog(IEnumerable<Database.Structures.Skill> skills, bool received)
         {
             InitializeComponent();
-            ContentWidth = 1500;
-            Skills.Items.Clear();
-
-            var counter = 0;
-            foreach (var skill in skills)
-            {
-                SkillLog log;
-                if (_skillList.Count > counter)
-                {
-                    log = _skillList[counter];
-                }
-                else
-                {
-                    log = new SkillLog();
-                    _skillList.Add(log);
-                }
+            ContentWidth = 900;
+            foreach (var skill in skills.OrderByDescending(x => x.Time))
+            {   
+                var log = new SkillLog();                
                 log.Update(skill, received);
                 Skills.Items.Add(log);
-                counter++;
             }
         }
 
