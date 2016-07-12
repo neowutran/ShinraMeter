@@ -76,7 +76,7 @@ namespace DamageMeter
         public event GuildIconEvent GuildIconAction;
         public event UnsetClickThrouEvent UnsetClickThrouAction;
 
-        public int SendFullDetails { get; set; }
+        public bool SendFullDetails { get; set; }
         public void Exit()
         {
             BasicTeraData.Instance.WindowData.Save();
@@ -137,9 +137,10 @@ namespace DamageMeter
 
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
             Skills skills = null; 
-            if (SendFullDetails != 0)
+            if (SendFullDetails)
             {
                 skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
+                SendFullDetails = false;
             }
             var playersInfo = timedEncounter
                 ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
