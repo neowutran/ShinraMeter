@@ -167,7 +167,12 @@ namespace DamageMeter.Database.Structures
         public bool Type(EntityId source, Entity target, int skillid, NpcInfo pet, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
-            var key = "type/" + source + "/" + targetString + "/" + pet + "/" + skillid + "/" + type + "/" + timed;
+            var name = "";
+            if (pet != null)
+            {
+                name = pet.Name;
+            }
+            var key = "type/" + source + "/" + targetString + "/" + name + "/" + skillid + "/" + type + "/" + timed;
             if (_caching.ContainsKey(key)) return (bool) _caching[key];
 
             var dataSource = DataSource(source, target, skillid, timed);
