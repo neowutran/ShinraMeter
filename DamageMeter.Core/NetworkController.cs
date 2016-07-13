@@ -180,6 +180,19 @@ namespace DamageMeter
         {
             var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer,
                 copy.OrderBy, copy.Order);
+            for (var i = 0; i < 3; i++)
+            {
+                try
+                {
+                    Clipboard.SetText(text);
+                    break;
+                }
+                catch
+                {
+                    Thread.Sleep(100);
+                    //Ignore
+                }
+            }
             CopyPaste.Paste(text);
         }
 
