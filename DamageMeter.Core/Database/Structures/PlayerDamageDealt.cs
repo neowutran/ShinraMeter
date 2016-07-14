@@ -2,10 +2,10 @@
 
 namespace DamageMeter.Database.Structures
 {
-    public class PlayerDealt
+    public class PlayerDamageDealt
     {
-        public PlayerDealt(long amount, long beginTime, long endTime, long critic, long hit, Player source,
-            EntityId target, Database.Type type)
+        public PlayerDamageDealt(long amount, long beginTime, long endTime, long critic, long hit, Player source,
+            EntityId target)
         {
             Amount = amount;
             BeginTime = beginTime;
@@ -14,10 +14,7 @@ namespace DamageMeter.Database.Structures
             Hit = hit;
             Source = source;
             Target = target;
-            Type = type;
         }
-
-        public Database.Type Type { get; }
 
         public long Amount { get; }
         public long BeginTime { get; }

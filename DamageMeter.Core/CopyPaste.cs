@@ -26,17 +26,15 @@ namespace DamageMeter
         {
             //stop if nothing to paste
             var entityInfo = statsSummary.EntityInformation;
-            var playersInfos = statsSummary.PlayerDealt;
+            var playersInfos = statsSummary.PlayerDamageDealt;
             var firstTick = entityInfo.BeginTime;
             var lastTick = entityInfo.EndTime;
             var firstHit = firstTick/TimeSpan.TicksPerSecond;
             var lastHit = lastTick/TimeSpan.TicksPerSecond;
-            var heals = playersInfos.Where(x => x.Type == Database.Database.Type.Heal).ToList();
-            playersInfos.RemoveAll(x => x.Type != Database.Database.Type.Damage);
+            var heals = statsSummary.PlayerHealDealt;
             playersInfos.RemoveAll(x => x.Amount == 0);
-
-
-            IEnumerable<PlayerDealt> playerInfosOrdered;
+            
+            IEnumerable<PlayerDamageDealt> playerInfosOrdered;
             if (order == "ascending")
             {
                 switch (orderby)

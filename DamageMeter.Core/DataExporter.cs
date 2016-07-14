@@ -60,14 +60,11 @@ namespace DamageMeter
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(entity, timedEncounter);
             var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
             var playersInfo = timedEncounter
-                ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
-                : Database.Database.Instance.PlayerInformation(entity);
-
-            var heals = playersInfo.Where(x => x.Type == Database.Database.Type.Heal).ToList();
-            playersInfo.RemoveAll(x => x.Type != Database.Database.Type.Damage);
+                ? Database.Database.Instance.PlayerDamageInformation(entityInfo.BeginTime, entityInfo.EndTime)
+                : Database.Database.Instance.PlayerDamageInformation(entity);
+            var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
             playersInfo.RemoveAll(x => x.Amount == 0);
-
-
+            
             var firstTick = entityInfo.BeginTime;
             var lastTick = entityInfo.EndTime;
             var interTick = lastTick - firstTick;

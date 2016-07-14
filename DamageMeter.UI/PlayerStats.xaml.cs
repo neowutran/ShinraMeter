@@ -19,24 +19,24 @@ namespace DamageMeter.UI
         private Skills _windowSkill;
         public ImageSource Image;
 
-        public PlayerStats(PlayerDealt playerDealt, PlayerDealt playerDealtHeal, EntityInformation entityInformation,
+        public PlayerStats(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playeHealDealt, EntityInformation entityInformation,
             Database.Structures.Skills skills, PlayerAbnormals buffs)
         {
             InitializeComponent();
-            PlayerDealt = playerDealt;
-            PlayerDealtHeal = playerDealtHeal;
+            PlayerDamageDealt = playerDamageDealt;
+            PlayerHealDealt = playeHealDealt;
             EntityInformation = entityInformation;
             Skills = skills;
             _buffs = buffs;
-            Image = ClassIcons.Instance.GetImage(PlayerDealt.Source.Class).Source;
+            Image = ClassIcons.Instance.GetImage(PlayerDamageDealt.Source.Class).Source;
             Class.Source = Image;
             LabelName.Content = PlayerName;
-            LabelName.ToolTip = PlayerDealt.Source.FullName;
+            LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
         }
 
-        public PlayerDealt PlayerDealt { get; set; }
+        public PlayerDamageDealt PlayerDamageDealt { get; set; }
 
-        public PlayerDealt PlayerDealtHeal { get; set; }
+        public PlayerHealDealt PlayerHealDealt { get; set; }
 
         public Database.Structures.Skills Skills { get; set; }
 
@@ -44,54 +44,54 @@ namespace DamageMeter.UI
 
         public string Dps
             =>
-                FormatHelpers.Instance.FormatValue(PlayerDealt.Interval == 0
-                    ? PlayerDealt.Amount
-                    : PlayerDealt.Amount*TimeSpan.TicksPerSecond/PlayerDealt.Interval) + "/s";
+                FormatHelpers.Instance.FormatValue(PlayerDamageDealt.Interval == 0
+                    ? PlayerDamageDealt.Amount
+                    : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/PlayerDamageDealt.Interval) + "/s";
 
-        public string Damage => FormatHelpers.Instance.FormatValue(PlayerDealt.Amount);
+        public string Damage => FormatHelpers.Instance.FormatValue(PlayerDamageDealt.Amount);
 
         public string GlobalDps
             =>
                 FormatHelpers.Instance.FormatValue(EntityInformation.Interval == 0
-                    ? PlayerDealt.Amount
-                    : PlayerDealt.Amount*TimeSpan.TicksPerSecond/EntityInformation.Interval) + "/s";
+                    ? PlayerDamageDealt.Amount
+                    : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/EntityInformation.Interval) + "/s";
 
-        public string CritRate => Math.Round(PlayerDealt.CritRate) + "%";
-        public string CritRateHeal => Math.Round(PlayerDealtHeal?.CritRate ?? 0) + "%";
-
-
-        public string PlayerName => PlayerDealt.Source.Name;
+        public string CritRate => Math.Round(PlayerDamageDealt.CritRate) + "%";
+        public string CritRateHeal => Math.Round(PlayerHealDealt?.CritRate ?? 0) + "%";
 
 
-        public string DamagePart => Math.Round((double) PlayerDealt.Amount*100/EntityInformation.TotalDamage) + "%";
+        public string PlayerName => PlayerDamageDealt.Source.Name;
 
-        public void Repaint(PlayerDealt playerDealt, PlayerDealt playerDealtHeal, EntityInformation entityInformation,
+
+        public string DamagePart => Math.Round((double) PlayerDamageDealt.Amount*100/EntityInformation.TotalDamage) + "%";
+
+        public void Repaint(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playerHealDealt, EntityInformation entityInformation,
             Database.Structures.Skills skills,
             PlayerAbnormals buffs, bool timedEncounter)
         {
-            PlayerDealtHeal = playerDealtHeal;
+            PlayerHealDealt = playerHealDealt;
             EntityInformation = entityInformation;
-            PlayerDealt = playerDealt;
+            PlayerDamageDealt = playerDamageDealt;
             _buffs = buffs;
             _timedEncounter = timedEncounter;
             Skills = skills;
             LabelDps.Content = GlobalDps;
             LabelDps.ToolTip = "Individual dps: " + Dps;
-            LabelCritRate.Content = PlayerDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
+            LabelCritRate.Content = PlayerDamageDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
                 ? CritRateHeal
                 : CritRate;
-            var intervalTimespan = TimeSpan.FromSeconds(PlayerDealt.Interval/TimeSpan.TicksPerSecond);
+            var intervalTimespan = TimeSpan.FromSeconds(PlayerDamageDealt.Interval/TimeSpan.TicksPerSecond);
             LabelCritRate.ToolTip = "Fight Duration: " + intervalTimespan.ToString(@"mm\:ss");
-            LabelCritRate.Foreground = PlayerDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
+            LabelCritRate.Foreground = PlayerDamageDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
                 ? Brushes.LawnGreen
                 : Brushes.LightCoral;
             LabelDamagePart.Content = DamagePart;
             LabelDamagePart.ToolTip = "Damage done: " + Damage;
 
-            _windowSkill?.Update(PlayerDealt, EntityInformation, Skills, _buffs, _timedEncounter);
+            _windowSkill?.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter);
             DpsIndicator.Width = EntityInformation.TotalDamage == 0
                 ? 265
-                : 265*PlayerDealt.Amount/EntityInformation.TotalDamage;
+                : 265*PlayerDamageDealt.Amount/EntityInformation.TotalDamage;
         }
 
         public void SetClickThrou()
@@ -111,17 +111,17 @@ namespace DamageMeter.UI
 
             if (_windowSkill == null)
             {
-                _windowSkill = new Skills(this, PlayerDealt, EntityInformation, Skills, _buffs, _timedEncounter)
+                _windowSkill = new Skills(this, PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter)
                 {
                     Title = PlayerName,
-                    CloseMeter = {Content = PlayerDealt.Source.Class + " " + PlayerName + ": CLOSE"}
+                    CloseMeter = {Content = PlayerDamageDealt.Source.Class + " " + PlayerName + ": CLOSE"}
                 };
                 _windowSkill.Show();
                 NetworkController.Instance.SendFullDetails = true;
                 return;
             }
 
-            _windowSkill.Update(PlayerDealt, EntityInformation, Skills, _buffs, _timedEncounter);
+            _windowSkill.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter);
             _windowSkill.Show();
         }
 
