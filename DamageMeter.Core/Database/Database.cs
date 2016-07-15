@@ -32,7 +32,7 @@ namespace DamageMeter.Database
 
         private void Init()
         {
-            var sql = "create table damage (" +
+            var sql = "create table skills (" +
                       "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                       "amount INTEGER NOT NULL," +
                       "type INTEGER NOT NULL," +
@@ -49,25 +49,25 @@ namespace DamageMeter.Database
             var command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
 
-            sql = "CREATE INDEX `index_target` ON `damage` (`target` ASC);";
+            sql = "CREATE INDEX `index_target` ON `skills` (`target` ASC);";
             command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
 
-            sql = "CREATE INDEX `index_time` ON `damage` (`time` ASC);";
+            sql = "CREATE INDEX `index_time` ON `skills` (`time` ASC);";
             command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
         }
 
         public void DeleteAll()
         {
-            var sql = "DELETE FROM damage;";
+            var sql = "DELETE FROM skills;";
             var command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
         }
 
         public void DeleteEntity(Entity entity)
         {
-            var sql = "DELETE FROM damage WHERE source = $entity OR target = $entity";
+            var sql = "DELETE FROM skills WHERE source = $entity OR target = $entity";
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$entity", entity.Id.Id);
             command.ExecuteNonQuery();
@@ -77,7 +77,7 @@ namespace DamageMeter.Database
             long time, Entity petSource, HitDirection direction)
         {
             var sql =
-                "INSERT INTO damage (amount, type, target, source, skill_id, hotdot, critic, time, pet_zone, pet_id, direction) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time, $pet_zone, $pet_id, $direction ) ;";
+                "INSERT INTO skills (amount, type, target, source, skill_id, hotdot, critic, time, pet_zone, pet_id, direction) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time, $pet_zone, $pet_id, $direction ) ;";
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$amount", amount);
             command.Parameters.AddWithValue("$type", (int) type);
@@ -108,7 +108,7 @@ namespace DamageMeter.Database
         public List<EntityId> AllEntity()
         {
             var entities = new List<EntityId>();
-            var sql = "SELECT target, MAX(time) as max_time FROM damage GROUP BY target ORDER BY `max_time` DESC;";
+            var sql = "SELECT target, MAX(time) as max_time FROM skills GROUP BY target ORDER BY `max_time` DESC;";
             var command = new SQLiteCommand(sql, Connexion);
             var rdr = command.ExecuteReader();
             while (rdr.Read())
@@ -128,7 +128,7 @@ namespace DamageMeter.Database
             }
 
             var entityInfo = GlobalInformationEntity(entity, false);
-            const string sql = "DELETE FROM damage WHERE time < $time";
+            const string sql = "DELETE FROM skills WHERE time < $time";
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$time", entityInfo.BeginTime);
             command.ExecuteNonQuery();
@@ -141,7 +141,7 @@ namespace DamageMeter.Database
             if (entity == null)
             {
                 var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
-                          "FROM damage " +
+                          "FROM skills " +
                           "WHERE type = $type "+
                           "GROUP BY source; ";
 
@@ -153,7 +153,7 @@ namespace DamageMeter.Database
                 if (!timed)
                 {
                     var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
-                              "FROM damage " +
+                              "FROM skills " +
                               "WHERE target = $target AND type = $type " +
                               "GROUP BY source; ";
 
@@ -165,8 +165,8 @@ namespace DamageMeter.Database
                 {
                     var sql =
                         "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
-                        "FROM damage " +
-                        "WHERE time BETWEEN (SELECT MIN(time) FROM damage WHERE target = $target) AND (SELECT MAX(time) FROM damage WHERE target = $target) AND type = $type " +
+                        "FROM skills " +
+                        "WHERE time BETWEEN (SELECT MIN(time) FROM skills WHERE target = $target) AND (SELECT MAX(time) FROM skills WHERE target = $target) AND type = $type " +
                         "GROUP BY source; ";
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
@@ -211,7 +211,7 @@ namespace DamageMeter.Database
         public Skills GetSkills(long beginTime, long endTime)
         {
             var sql =
-                "SELECT amount, type, target, source, pet_zone, pet_id, skill_id, hotdot, critic, time, direction FROM damage WHERE time BETWEEN $begin AND $end ;";
+                "SELECT amount, type, target, source, pet_zone, pet_id, skill_id, hotdot, critic, time, direction FROM skills WHERE time BETWEEN $begin AND $end ;";
 
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
@@ -289,39 +289,81 @@ namespace DamageMeter.Database
 
         public void PlayerEntityIdChange(EntityId oldId, EntityId newId)
         {
-            var sql = "UPDATE damage SET source = $newId WHERE source = $oldId; ";
+            var sql = "UPDATE skills SET source = $newId WHERE source = $oldId; ";
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$newId", newId.Id);
             command.Parameters.AddWithValue("$oldId", oldId.Id);
             command.ExecuteNonQuery();
 
-            sql = "UPDATE damage SET target = $newId WHERE target = $oldId; ";
+            sql = "UPDATE skills SET target = $newId WHERE target = $oldId; ";
             command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$newId", newId.Id);
             command.Parameters.AddWithValue("$oldId", oldId.Id);
             command.ExecuteNonQuery();
         }
 
-
-        public List<PlayerDealt> PlayerInformation(long beginTime, long endTime)
+        public List<PlayerHealDealt> PlayerHealInformation(long beginTime, long endTime)
         {
             var sql =
-                "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target, type " +
-                "FROM damage " +
-                "WHERE time BETWEEN $begin AND $end " +
+                "SELECT SUM(critic) as number_critics, COUNT(*) AS number_hits, source " +
+                "FROM skills " +
+                "WHERE time BETWEEN $begin AND $end AND type = $type " +
+                "GROUP BY source ";
+
+            var command = new SQLiteCommand(sql, Connexion);
+            command.Parameters.AddWithValue("$begin", beginTime);
+            command.Parameters.AddWithValue("$end", endTime);
+            command.Parameters.AddWithValue("$type", Type.Heal);
+            var result = new List<PlayerHealDealt>();
+
+            var rdr = command.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                var source = new EntityId((ulong)rdr.GetInt64(rdr.GetOrdinal("source")));
+                var entity = NetworkController.Instance.EntityTracker.GetOrPlaceholder(source);
+                if (!(entity is UserEntity)) continue;
+                var user = (UserEntity)entity;
+                var player = NetworkController.Instance.PlayerTracker.GetOrNull(user.ServerId, user.PlayerId);
+                if (player == null) continue;
+                var critic = rdr.IsDBNull(rdr.GetOrdinal("number_critics"))
+                    ? 0
+                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_critics"));
+                var hit = rdr.IsDBNull(rdr.GetOrdinal("number_hits"))
+                    ? 0
+                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_hits"));
+
+                result.Add(new PlayerHealDealt(
+                    critic,
+                    hit,
+                    player
+                    ));
+            }
+            return result;
+
+        }
+
+
+        public List<PlayerDamageDealt> PlayerDamageInformation(long beginTime, long endTime)
+        {
+            var sql =
+                "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target " +
+                "FROM skills " +
+                "WHERE time BETWEEN $begin AND $end AND type = $type " +
                 "GROUP BY type, source " +
                 "ORDER BY `total_amount` DESC;";
 
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
+            command.Parameters.AddWithValue("$type", Type.Damage);
             command.Parameters.AddWithValue("$end", endTime);
 
-            return PlayerInformation(command);
+            return PlayerDamageInformation(command);
         }
 
-        private List<PlayerDealt> PlayerInformation(SQLiteCommand command)
+        private static List<PlayerDamageDealt> PlayerDamageInformation(SQLiteCommand command)
         {
-            var result = new List<PlayerDealt>();
+            var result = new List<PlayerDamageDealt>();
 
             var rdr = command.ExecuteReader();
 
@@ -349,44 +391,45 @@ namespace DamageMeter.Database
                     ? 0
                     : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_hits"));
                 var entityId = rdr.GetFieldValue<long>(rdr.GetOrdinal("target"));
-                var type = rdr.GetFieldValue<long>(rdr.GetOrdinal("type"));
 
-                result.Add(new PlayerDealt(
+                result.Add(new PlayerDamageDealt(
                     amount,
                     beginTime,
                     endTime,
                     critic,
                     hit,
                     player,
-                    new EntityId((ulong) entityId),
-                    (Type) type
+                    new EntityId((ulong) entityId)
                     ));
             }
             return result;
         }
 
-        public List<PlayerDealt> PlayerInformation(NpcEntity target)
+        public List<PlayerDamageDealt> PlayerDamageInformation(NpcEntity target)
         {
             SQLiteCommand command;
             string sql;
             if (target == null)
             {
                 sql =
-                    "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target, type " +
-                    "FROM damage GROUP BY source, type ORDER BY `total_amount` DESC;";
+                    "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target " +
+                    "FROM skills WHERE type = $type GROUP BY source ORDER BY `total_amount` DESC;";
                 command = new SQLiteCommand(sql, Connexion);
-                return PlayerInformation(command);
+                command.Parameters.AddWithValue("$type", Type.Damage);
+                return PlayerDamageInformation(command);
             }
 
             sql =
-                "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target, type " +
-                "FROM damage " +
-                "WHERE target = $target " +
-                "GROUP BY source, type " +
+                "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, source, target " +
+                "FROM skills " +
+                "WHERE target = $target AND type = $type " +
+                "GROUP BY source " +
                 "ORDER BY `total_amount`  DESC;";
             command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$target", target.Id.Id);
-            return PlayerInformation(command);
+            command.Parameters.AddWithValue("$type", Type.Damage);
+
+            return PlayerDamageInformation(command);
         }
 
     }

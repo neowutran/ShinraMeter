@@ -23,14 +23,14 @@ namespace DamageMeter.UI
         private SkillsLog _skillReceivedLog;
 
 
-        public Skills(PlayerStats parent, PlayerDealt playerDealt, EntityInformation entityInformation,
+        public Skills(PlayerStats parent, PlayerDamageDealt playerDamageDealt, EntityInformation entityInformation,
             Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
         {
             InitializeComponent();
             _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
-            Update(playerDealt, entityInformation, skills, buffs, timedEncounter);
+            Update(playerDamageDealt, entityInformation, skills, buffs, timedEncounter);
         }
 
         public void SetClickThrou()
@@ -47,7 +47,7 @@ namespace DamageMeter.UI
 
         private Database.Structures.Skills _skills;
 
-        public void Update(PlayerDealt playerDealt, EntityInformation entityInformation,
+        public void Update(PlayerDamageDealt playerDamageDealt, EntityInformation entityInformation,
             Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
         {
             var death = buffs.Death;
@@ -95,7 +95,7 @@ namespace DamageMeter.UI
                     {
                         _skillDps =
                             new SkillsDetail(
-                                SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, _skills, timedEncounter,
+                                SkillAggregate.GetAggregate(playerDamageDealt, entityInformation.Entity, _skills, timedEncounter,
                                     Database.Database.Type.Damage), Database.Database.Type.Damage);
                     }
                     DpsPanel.Content = _skillDps;
@@ -105,7 +105,7 @@ namespace DamageMeter.UI
                     {
                         _skillHeal =
                             new SkillsDetail(
-                                SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, _skills, timedEncounter,
+                                SkillAggregate.GetAggregate(playerDamageDealt, entityInformation.Entity, _skills, timedEncounter,
                                     Database.Database.Type.Heal), Database.Database.Type.Heal);
                     }
                     HealPanel.Content = _skillHeal;
@@ -115,7 +115,7 @@ namespace DamageMeter.UI
                     {
                         _skillMana =
                             new SkillsDetail(
-                                SkillAggregate.GetAggregate(playerDealt, entityInformation.Entity, _skills, timedEncounter,
+                                SkillAggregate.GetAggregate(playerDamageDealt, entityInformation.Entity, _skills, timedEncounter,
                                     Database.Database.Type.Mana), Database.Database.Type.Mana);
                     }
                     ManaPanel.Content = _skillMana;
@@ -123,7 +123,7 @@ namespace DamageMeter.UI
                 case "BuffPanel":
                     if (_buff == null)
                     {
-                        _buff = new Buff(playerDealt, buffs, entityInformation);
+                        _buff = new Buff(playerDamageDealt, buffs, entityInformation);
                     }
                     BuffPanel.Content = _buff;
                     return;
@@ -131,7 +131,7 @@ namespace DamageMeter.UI
                     if (_skillDealtLog == null)
                     {
                         _skillDealtLog =
-                            new SkillsLog(_skills.GetSkillsDealt(playerDealt.Source.User.Id, entityInformation.Entity,
+                            new SkillsLog(_skills.GetSkillsDealt(playerDamageDealt.Source.User.Id, entityInformation.Entity,
                                 timedEncounter), false);
                     }
                     SkillsDealtPanel.Content = _skillDealtLog;
@@ -140,7 +140,7 @@ namespace DamageMeter.UI
                     if (_skillReceivedLog == null)
                     {
                         _skillReceivedLog =
-                            new SkillsLog(_skills.GetSkillsReceived(playerDealt.Source.User.Id, timedEncounter), true);
+                            new SkillsLog(_skills.GetSkillsReceived(playerDamageDealt.Source.User.Id, timedEncounter), true);
                     }
                     SkillsReceivedPanel.Content = _skillReceivedLog;
                     return;

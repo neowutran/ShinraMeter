@@ -143,10 +143,12 @@ namespace DamageMeter
                 SendFullDetails = false;
             }
             var playersInfo = timedEncounter
-                ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
-                : Database.Database.Instance.PlayerInformation(currentBoss);
+                ? Database.Database.Instance.PlayerDamageInformation(entityInfo.BeginTime, entityInfo.EndTime)
+                : Database.Database.Instance.PlayerDamageInformation(currentBoss);
 
-            var statsSummary = new StatsSummary(playersInfo, entityInfo);
+            var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
+
+            var statsSummary = new StatsSummary(playersInfo, heals, entityInfo);
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = _abnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
@@ -180,6 +182,19 @@ namespace DamageMeter
         {
             var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer,
                 copy.OrderBy, copy.Order);
+            for (var i = 0; i < 3; i++)
+            {
+                try
+                {
+                    Clipboard.SetText(text);
+                    break;
+                }
+                catch
+                {
+                    Thread.Sleep(100);
+                    //Ignore
+                }
+            }
             CopyPaste.Paste(text);
         }
 
@@ -195,9 +210,11 @@ namespace DamageMeter
                     var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
                     var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
                     var playersInfo = timedEncounter
-                        ? Database.Database.Instance.PlayerInformation(entityInfo.BeginTime, entityInfo.EndTime)
-                        : Database.Database.Instance.PlayerInformation(currentBoss);
-                    var statsSummary = new StatsSummary(playersInfo, entityInfo);
+                        ? Database.Database.Instance.PlayerDamageInformation(entityInfo.BeginTime, entityInfo.EndTime)
+                        : Database.Database.Instance.PlayerDamageInformation(currentBoss);
+                    var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime,
+                        entityInfo.EndTime);
+                    var statsSummary = new StatsSummary(playersInfo, heals, entityInfo);
 
                     var tmpcopy = NeedToCopy;
                     var abnormals = _abnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);

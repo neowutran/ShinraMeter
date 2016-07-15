@@ -82,7 +82,8 @@
     <Compile Include="DamageTracker.cs" />
     <Compile Include="Database\Database.cs" />
     <Compile Include="Database\Structures\EntityInformation.cs" />
-    <Compile Include="Database\Structures\PlayerDealt.cs" />
+    <Compile Include="Database\Structures\PlayerHealDealt.cs" />
+    <Compile Include="Database\Structures\PlayerDamageDealt.cs" />
     <Compile Include="Database\Structures\Skill.cs" />
     <Compile Include="Database\Structures\Skills.cs" />
     <Compile Include="Database\Structures\StatsSummary.cs" />

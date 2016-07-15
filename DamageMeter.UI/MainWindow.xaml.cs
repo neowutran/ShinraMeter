@@ -459,12 +459,10 @@ namespace DamageMeter.UI
                             : statsSummary.EntityInformation.TotalDamage*TimeSpan.TicksPerSecond/
                               statsSummary.EntityInformation.Interval) + "/s";
                     var visiblePlayerStats = new HashSet<Player>();
-                    var statsDamage = statsSummary.PlayerDealt.Where(x => x.Type == Database.Database.Type.Damage);
-                    var statsHeal = statsSummary.PlayerDealt.Where(x => x.Type == Database.Database.Type.Heal);
+                    var statsDamage = statsSummary.PlayerDamageDealt;
+                    var statsHeal = statsSummary.PlayerHealDealt;
                     var counter = 0;
-                    var playerDealts = statsHeal as PlayerDealt[] ?? statsHeal.ToArray();
-                    var playerStatses = statsDamage as PlayerDealt[] ?? statsDamage.ToArray();
-                    foreach (var playerStats in playerStatses)
+                    foreach (var playerStats in statsDamage)
                     {
                         PlayerStats playerStatsControl;
                         Controls.TryGetValue(playerStats.Source, out playerStatsControl);
@@ -482,7 +480,7 @@ namespace DamageMeter.UI
                         visiblePlayerStats.Add(playerStats.Source);
                         if (playerStatsControl != null) continue;
                         playerStatsControl = new PlayerStats(playerStats,
-                            playerDealts.FirstOrDefault(x => x.Source == playerStats.Source),
+                            statsHeal.FirstOrDefault(x => x.Source == playerStats.Source),
                             statsSummary.EntityInformation, skills, abnormals.Get(playerStats.Source));
                         Controls.Add(playerStats.Source, playerStatsControl);
 
@@ -502,12 +500,12 @@ namespace DamageMeter.UI
 
                     Players.Items.Clear();
 
-                    foreach (var item in playerStatses)
+                    foreach (var item in statsDamage)
                     {
                         if (!Controls.ContainsKey(item.Source)) continue;
                         Players.Items.Add(Controls[item.Source]);
                         Controls[item.Source].Repaint(item,
-                            playerDealts.FirstOrDefault(x => x.Source == item.Source),
+                            statsHeal.FirstOrDefault(x => x.Source == item.Source),
                         statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
                     }
 

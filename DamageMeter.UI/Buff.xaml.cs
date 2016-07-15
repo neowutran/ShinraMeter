@@ -15,7 +15,7 @@ namespace DamageMeter.UI
 
         private readonly EnduranceDebuffHeader _header;
 
-        public Buff(PlayerDealt playerDealt, PlayerAbnormals buffs, EntityInformation entityInformation)
+        public Buff(PlayerDamageDealt playerDamageDealt, PlayerAbnormals buffs, EntityInformation entityInformation)
         {
             InitializeComponent();
             _header = new EnduranceDebuffHeader();
@@ -24,7 +24,7 @@ namespace DamageMeter.UI
             EnduranceAbnormality.Items.Clear();
             EnduranceAbnormality.Items.Add(_header);
             var counter = 0;
-            foreach (var abnormality in buffs.Times.Where(x => x.Value.Duration(playerDealt.BeginTime, playerDealt.EndTime) > 0))
+            foreach (var abnormality in buffs.Times.Where(x => x.Value.Duration(playerDamageDealt.BeginTime, playerDamageDealt.EndTime) > 0))
             {
                 EnduranceDebuff abnormalityUi;
                 if (_enduranceDebuffsList.Count > counter)
@@ -36,7 +36,7 @@ namespace DamageMeter.UI
                     abnormalityUi = new EnduranceDebuff();
                     _enduranceDebuffsList.Add(abnormalityUi);
                 }
-                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerDealt.BeginTime, playerDealt.EndTime);
+                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerDamageDealt.BeginTime, playerDamageDealt.EndTime);
                 EnduranceAbnormality.Items.Add(abnormalityUi);
 
                 counter++;
