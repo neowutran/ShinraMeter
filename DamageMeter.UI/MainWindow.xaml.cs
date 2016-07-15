@@ -71,7 +71,7 @@ namespace DamageMeter.UI
             NetworkController.Instance.TickUpdated += Update;
             NetworkController.Instance.SetClickThrouAction += SetClickThrou;
             NetworkController.Instance.UnsetClickThrouAction += UnsetClickThrou;
-           NetworkController.Instance.GuildIconAction += InstanceOnGuildIconAction;
+            NetworkController.Instance.GuildIconAction += InstanceOnGuildIconAction;
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
