@@ -148,11 +148,27 @@ namespace DamageMeter
                 string dir;
                 if (BTD.WindowData.ExcelSaveDirectory == "")
                 {
-                    dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    if (BTD.WindowData.SaveMode.Equals("Date"))
+                    {
+                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        $"ShinraMeter/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}");
+                    } 
+                    else
+                    {
+                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
+                    }
                 }
                 else
                 {
+                    if (BTD.WindowData.SaveMode.Equals("Date"))
+                    {
+                        dir = BTD.WindowData.ExcelSaveDirectory + $"/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}";
+                    }
+                    else
+                    {
+                        dir = BTD.WindowData.ExcelSaveDirectory + $"/{Boss.Area.Replace(":", "-")}";
+                    }
                     dir = BTD.WindowData.ExcelSaveDirectory;
                 }
 
@@ -165,13 +181,29 @@ namespace DamageMeter
                 }
                 catch
                 {
-                    dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    if (BTD.WindowData.SaveMode.Equals("Date"))
+                    {
+                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        $"ShinraMeter/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}");
+                    }
+                    else
+                    {
+                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
+                    }
                     Directory.CreateDirectory(dir);
                 }
-
-                var fname = Path.Combine(dir,
+                var fname = "";
+                if (BTD.WindowData.SaveMode.Equals("Date"))
+                {
+                    fname = Path.Combine(dir,
+                    $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("HH-mm-ss", CultureInfo.InvariantCulture)} {userName}.xlsx");
+                }
+                else
+                {
+                    fname = Path.Combine(dir,
                     $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)} {userName}.xlsx");
+                }
                 var file = new FileInfo(fname);
                 if (file.Exists)
                     return;
