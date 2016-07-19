@@ -34,7 +34,7 @@ namespace Data
         public bool ShowHealCrit { get; set; }
         public bool OnlyBoss { get; set; }
         public bool DetectBosses { get; set; }
-        public string SaveMode { get; set; }
+        public bool DateInExcelPath { get; set; }
 
         private void DefaultValue()
         {
@@ -61,7 +61,7 @@ namespace Data
             LFDelay = 150;
             OnlyBoss = false;
             DetectBosses = false;
-            SaveMode = "Standard";
+            DateInExcelPath = false;
         }
 
 
@@ -113,7 +113,7 @@ namespace Data
             Parse("autoupdate", "AutoUpdate");
             Parse("only_bosses", "OnlyBoss");
             Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
-            Parse("excel_save_mode", "SaveMode");
+            Parse("date_in_excel_path", "DateInExcelPath");
             ParseLocation();
             ParseOpacity();
             ParseTeraDps();
@@ -228,7 +228,7 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("export", SiteExport));
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
-            xml.Root.Add(new XElement("excel_save_mode", SaveMode));
+            xml.Root.Add(new XElement("date_in_excel_path", DateInExcelPath));
             xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
             xml.Root.Add(new XElement("scale", Scale));

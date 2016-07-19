@@ -148,7 +148,7 @@ namespace DamageMeter
                 string dir;
                 if (BTD.WindowData.ExcelSaveDirectory == "")
                 {
-                    if (BTD.WindowData.SaveMode.Equals("Date"))
+                    if (BTD.WindowData.DateInExcelPath)
                     {
                         dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         $"ShinraMeter/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}");
@@ -161,13 +161,13 @@ namespace DamageMeter
                 }
                 else
                 {
-                    if (BTD.WindowData.SaveMode.Equals("Date"))
+                    if (BTD.WindowData.DateInExcelPath)
                     {
-                        dir = BTD.WindowData.ExcelSaveDirectory + $"/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}";
+                        dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}";
                     }
                     else
                     {
-                        dir = BTD.WindowData.ExcelSaveDirectory + $"/{Boss.Area.Replace(":", "-")}";
+                        dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}";
                     }
                     dir = BTD.WindowData.ExcelSaveDirectory;
                 }
@@ -181,7 +181,7 @@ namespace DamageMeter
                 }
                 catch
                 {
-                    if (BTD.WindowData.SaveMode.Equals("Date"))
+                    if (BTD.WindowData.DateInExcelPath)
                     {
                         dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         $"ShinraMeter/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}");
@@ -194,7 +194,7 @@ namespace DamageMeter
                     Directory.CreateDirectory(dir);
                 }
                 var fname = "";
-                if (BTD.WindowData.SaveMode.Equals("Date"))
+                if (BTD.WindowData.DateInExcelPath)
                 {
                     fname = Path.Combine(dir,
                     $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("HH-mm-ss", CultureInfo.InvariantCulture)} {userName}.xlsx");
