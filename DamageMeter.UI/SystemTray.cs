@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using DamageMeter.AutoUpdate;
@@ -16,6 +12,16 @@ namespace DamageMeter.UI
 
         private readonly MainWindow _mainWindow;
 
+        public void UpdatePacketWaiting(int packetWaiting)
+        {
+            _packetWaitingLabel.Text = packetWaiting + "/3000 before crash";
+            _packetWaitingProgressBar.Value = packetWaiting;
+            _packetWaitingProgressBar.Text = "Packet waiting to be processed: " + packetWaiting;
+        }
+
+        private readonly ToolStripProgressBar _packetWaitingProgressBar;
+        private readonly ToolStripLabel _packetWaitingLabel;
+
         public SystemTray(MainWindow windows)
         {
             _mainWindow = windows;
@@ -27,7 +33,15 @@ namespace DamageMeter.UI
             };
             TrayIcon.Click += TrayIconOnClick;
             TrayIcon.DoubleClick += _trayIcon_DoubleClick;
-
+            _packetWaitingProgressBar = new ToolStripProgressBar
+            {
+                Minimum = 0,
+                Maximum = 3000,
+                Value = 0,
+                Style = ProgressBarStyle.Continuous
+            };
+            _packetWaitingLabel = new ToolStripLabel();
+           
             var excel_current = new ToolStripMenuItem { Text = "Export current to Excel" };
             excel_current.Click += ExcelExportOnClick;
             var reset = new ToolStripMenuItem { Text = "Reset" };
@@ -107,11 +121,18 @@ namespace DamageMeter.UI
                 excel_current
             }));
 
+            var perf = new ToolStripMenuItem { Text = "Performance information" };
+            perf.DropDownItems.AddRange(new ToolStripItemCollection(new ToolStrip(), new ToolStripItem[]
+            {
+                _packetWaitingLabel,
+                _packetWaitingProgressBar
+            }));
+
             var context = new ContextMenuStrip();
+            context.Items.Add(perf);
             context.Items.Add(action);
             context.Items.Add(config);
             context.Items.Add(link);
-            context.Items.Add(new ToolStripProgressBar());
             context.Items.Add(new ToolStripSeparator());
             context.Items.Add(exit);
             TrayIcon.ContextMenuStrip = context;

@@ -248,18 +248,19 @@ namespace DamageMeter.UI
 
         public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities,
             bool ntimedEncounter, AbnormalityStorage nabnormals,
-            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox)
+            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting)
         {
             NetworkController.UpdateUiHandler changeUi =
                 delegate(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities,
                     bool timedEncounter,
                     AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory,
-                    List<ChatMessage> chatbox)
+                    List<ChatMessage> chatbox, int packetWaiting)
                 {
                     UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
                     _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);
                     _chatbox.Update(chatbox);
+                    _systemTray.UpdatePacketWaiting(packetWaiting);
 
                     PartyDps.Content =
                         FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
@@ -290,9 +291,7 @@ namespace DamageMeter.UI
                         playerStatsControl = new PlayerStats(playerStats,
                             statsHeal.FirstOrDefault(x => x.Source == playerStats.Source),
                             statsSummary.EntityInformation, skills, abnormals.Get(playerStats.Source));
-                        Controls.Add(playerStats.Source, playerStatsControl);
-
-                     
+                        Controls.Add(playerStats.Source, playerStatsControl);                     
                     }
 
                     var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -338,7 +337,7 @@ namespace DamageMeter.UI
                    
                 };
             Dispatcher.Invoke(changeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory,
-                nchatbox);
+                nchatbox, npacketWaiting);
         }
 
         private void ShowHistory(object sender, MouseButtonEventArgs e)
@@ -497,7 +496,7 @@ namespace DamageMeter.UI
             {
                 NetworkController.Instance.TimedEncounter = true;
                 Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
-                Chrono.ToolTip = "Boss + Add";
+                Chrono.ToolTip = "Boss + Adds";
             }
         }
 
