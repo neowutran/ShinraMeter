@@ -238,13 +238,10 @@
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
 
-        <Image x:Name="PinImage" PreviewMouseLeftButtonDown="PinImage_OnPreviewMouseLeftButtonDown" Stretch="Fill"
-               HorizontalAlignment="Left"
-               Height="29" VerticalAlignment="Top" Width="29" />
         <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
                   SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="30,0,0,0" VerticalAlignment="Top" Width="205" HorizontalContentAlignment="Stretch"
+                  Margin="0,0,0,0" VerticalAlignment="Top" Width="235" HorizontalContentAlignment="Stretch"
                   MinHeight="29" Height="5" />
 
         <Image x:Name="CloseWindow" PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown"

@@ -22,9 +22,7 @@ using log4net;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Application = System.Windows.Forms.Application;
-using ContextMenu = System.Windows.Forms.ContextMenu;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 
@@ -39,18 +37,10 @@ namespace DamageMeter.UI
         private readonly EntityStatsMain _entityStats;
 
         private readonly TeradpsHistory _windowHistory;
-        private MenuItem _alwaysOn;
-
-        private MenuItem _clickThrou;
-
-        private bool _forceWindowVisibilityHidden;
+        internal bool ForceWindowVisibilityHidden;
         private bool _keyboardInitialized;
-
-        private MenuItem _switchNoStatsVisibility;
-
         private bool _topMost = true;
-
-        private NotifyIcon _trayIcon;
+        private readonly SystemTray _systemTray;
 
         public MainWindow()
         {
@@ -76,9 +66,9 @@ namespace DamageMeter.UI
             dispatcherTimer.Tick += UpdateKeyboard;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-            PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
-            Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
+            Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
+            Chrono.ToolTip = "Only boss";
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
@@ -94,7 +84,7 @@ namespace DamageMeter.UI
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
             Console.WriteLine(
                 "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
-            TrayConfiguration();
+            _systemTray = new SystemTray(this);
         }
 
         private void InstanceOnGuildIconAction(Bitmap icon)
@@ -104,7 +94,7 @@ namespace DamageMeter.UI
               delegate (Bitmap bitmap)
               {
                   Icon = bitmap?.ToImageSource() ?? BasicTeraData.Instance.ImageDatabase.Icon;
-                  _trayIcon.Icon = bitmap?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
+                  _systemTray.TrayIcon.Icon = bitmap?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
 
               };
             Dispatcher.Invoke(changeUi, icon);
@@ -127,7 +117,7 @@ namespace DamageMeter.UI
                 players.Value.SetClickThrou();
             }
             _entityStats.SetClickThrou();
-            _clickThrou.Text = "Desactivate click throu";
+            _systemTray.ClickThrou.Checked = true;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStatsClickThrou.Source;
         }
 
@@ -140,192 +130,10 @@ namespace DamageMeter.UI
                 players.Value.UnsetClickThrou();
             }
             _entityStats.UnsetClickThrou();
-            _clickThrou.Text = "Activate click throu";
+            _systemTray.ClickThrou.Checked = false;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
 
-        private void TrayConfiguration()
-        {
-            _trayIcon = new NotifyIcon
-            {
-                Icon = BasicTeraData.Instance.ImageDatabase.Tray,
-                Visible = true,
-                Text = "Shinra Meter V" + UpdateManager.Version + ": No server"
-            };
-            _trayIcon.Click += TrayIconOnClick;
-            _trayIcon.DoubleClick += _trayIcon_DoubleClick;
-
-            var excel_current = new MenuItem { Text = "Export current to Excel" };
-            excel_current.Click += ExcelExportOnClick;
-            var reset = new MenuItem {Text = "Reset"};
-            reset.Click += ResetOnClick;
-            var exit = new MenuItem {Text = "Close"};
-            exit.Click += ExitOnClick;
-            var wiki = new MenuItem {Text = "Wiki"};
-            wiki.Click += WikiOnClick;
-            var patch = new MenuItem {Text = "Patch note"};
-            patch.Click += PatchOnClick;
-            var issues = new MenuItem {Text = "Report issue"};
-            issues.Click += IssuesOnClick;
-            var forum = new MenuItem {Text = "Forum"};
-            forum.Click += ForumOnClick;
-            var teradps = new MenuItem {Text = "TeraDps.io"};
-            teradps.Click += TeraDpsOnClick;
-            var excel = new MenuItem {Text = "Autoexport to Excel"};
-            excel.Click += ExcelOnClick;
-            excel.Checked = BasicTeraData.Instance.WindowData.Excel;
-            var onlyBoss = new MenuItem { Text = "Count only bosses" };
-            onlyBoss.Click += onlyBossOnClick;
-            onlyBoss.Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
-            var detectBosses = new MenuItem { Text = "Detect bosses by HP bar (ignore db)" };
-            detectBosses.Click += detectBossesOnClick;
-            detectBosses.Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
-            var siteExport = new MenuItem {Text = "Site export"};
-            siteExport.Click += SiteOnClick;
-            siteExport.Checked = BasicTeraData.Instance.WindowData.SiteExport;
-            var party = new MenuItem {Text = "Count only party members"};
-            party.Click += PartyOnClick;
-            party.Checked = BasicTeraData.Instance.WindowData.PartyOnly;
-
-            _clickThrou = new MenuItem {Text = "Activate click throu"};
-            _clickThrou.Click += ClickThrouOnClick;
-            _switchNoStatsVisibility = new MenuItem {Text = "Invisible when no stats"};
-            _switchNoStatsVisibility.Click += SwitchNoStatsVisibility;
-            _switchNoStatsVisibility.Checked = BasicTeraData.Instance.WindowData.InvisibleUi;
-            _alwaysOn = new MenuItem {Text = "Show always"};
-            _alwaysOn.Click += _trayIcon_DoubleClick;
-            _alwaysOn.Checked = BasicTeraData.Instance.WindowData.AlwaysVisible;
-
-            var context = new ContextMenu();
-            context.MenuItems.Add(_clickThrou);
-            context.MenuItems.Add(_switchNoStatsVisibility);
-            context.MenuItems.Add(_alwaysOn);
-            context.MenuItems.Add(reset);
-            context.MenuItems.Add(excel_current);
-            context.MenuItems.Add(wiki);
-            context.MenuItems.Add(patch);
-            context.MenuItems.Add(issues);
-            context.MenuItems.Add(forum);
-            context.MenuItems.Add(teradps);
-            context.MenuItems.Add(excel);
-            context.MenuItems.Add(siteExport);
-            context.MenuItems.Add(detectBosses);
-            context.MenuItems.Add(onlyBoss);
-            context.MenuItems.Add(party);
-            context.MenuItems.Add(exit);
-            _trayIcon.ContextMenu = context;
-        }
-
-        private void detectBossesOnClick(object sender, EventArgs eventArgs)
-        {
-            BasicTeraData.Instance.WindowData.DetectBosses = !BasicTeraData.Instance.WindowData.DetectBosses;
-            ((MenuItem)sender).Checked = BasicTeraData.Instance.WindowData.DetectBosses;
-            if (BasicTeraData.Instance.MonsterDatabase!= null) BasicTeraData.Instance.MonsterDatabase.DetectBosses = BasicTeraData.Instance.WindowData.DetectBosses;
-        }
-        private void onlyBossOnClick(object sender, EventArgs eventArgs)
-        {
-            BasicTeraData.Instance.WindowData.OnlyBoss = !BasicTeraData.Instance.WindowData.OnlyBoss;
-            ((MenuItem)sender).Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
-        }
-
-        private void SiteOnClick(object sender, EventArgs eventArgs)
-        {
-            BasicTeraData.Instance.WindowData.SiteExport = !BasicTeraData.Instance.WindowData.SiteExport;
-            ((MenuItem) sender).Checked = BasicTeraData.Instance.WindowData.SiteExport;
-        }
-
-        private void PartyOnClick(object sender, EventArgs eventArgs)
-        {
-            BasicTeraData.Instance.WindowData.PartyOnly = !BasicTeraData.Instance.WindowData.PartyOnly;
-            ((MenuItem) sender).Checked = BasicTeraData.Instance.WindowData.PartyOnly;
-        }
-
-        private void ExcelOnClick(object sender, EventArgs eventArgs)
-        {
-            BasicTeraData.Instance.WindowData.Excel = !BasicTeraData.Instance.WindowData.Excel;
-            ((MenuItem) sender).Checked = BasicTeraData.Instance.WindowData.Excel;
-        }
-
-        private void _trayIcon_DoubleClick(object sender, EventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.AlwaysVisible = !BasicTeraData.Instance.WindowData.AlwaysVisible;
-            _alwaysOn.Checked = BasicTeraData.Instance.WindowData.AlwaysVisible;
-        }
-
-        private static void ClickThrouOnClick(object sender, EventArgs eventArgs)
-        {
-            NetworkController.Instance.SwitchClickThrou();
-        }
-
-        private void PatchOnClick(object sender, EventArgs eventArgs)
-        {
-            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
-        }
-
-        private void TeraDpsOnClick(object sender, EventArgs eventArgs)
-        {
-            Process.Start("explorer.exe", "http://teradps.io");
-        }
-
-        private void ExitOnClick(object sender, EventArgs eventArgs)
-        {
-            VerifyClose();
-        }
-
-        private void ResetOnClick(object sender, EventArgs eventArgs)
-        {
-            NetworkController.Instance.NeedToReset = true;
-        }
-
-        private void ExcelExportOnClick(object sender, EventArgs eventArgs)
-        {
-            NetworkController.Instance.NeedToExport = true;
-        }
-
-        private void ForumOnClick(object sender, EventArgs eventArgs)
-        {
-            Process.Start("explorer.exe",
-                "https://discord.gg/0wjLnPs6HoNFxv6O");
-        }
-
-        private void IssuesOnClick(object sender, EventArgs eventArgs)
-        {
-            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/issues");
-        }
-
-        private void WikiOnClick(object sender, EventArgs eventArgs)
-        {
-            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki");
-        }
-
-        private void SwitchNoStatsVisibility(object sender, EventArgs eventArgs)
-        {
-            var invisibleUi = BasicTeraData.Instance.WindowData.InvisibleUi;
-            BasicTeraData.Instance.WindowData.InvisibleUi = !invisibleUi;
-            ((MenuItem) sender).Checked = BasicTeraData.Instance.WindowData.InvisibleUi;
-            if (_forceWindowVisibilityHidden) return;
-
-            if (invisibleUi)
-            {
-                Visibility = Visibility.Visible;
-            }
-            else
-            {
-                Visibility = Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
-            }
-        }
-
-        private void TrayIconOnClick(object sender, EventArgs eventArgs)
-        {
-            /* //no need
-            var e = (MouseEventArgs)eventArgs;
-            if (e.Button.ToString() == "Right")
-            {
-                return;
-            }
-            */
-            StayTopMost();
-        }
 
         public void VerifyClose()
         {
@@ -340,9 +148,9 @@ namespace DamageMeter.UI
 
         public void Exit()
         {
-            _trayIcon.Visible = false;
-            _trayIcon.Icon = null;
-            _trayIcon.Dispose();
+            _systemTray.TrayIcon.Visible = false;
+            _systemTray.TrayIcon.Icon = null;
+            _systemTray.TrayIcon.Dispose();
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
             NetworkController.Instance.Exit();
         }
@@ -421,20 +229,20 @@ namespace DamageMeter.UI
                 if (!teraWindowActive && !meterWindowActive)
                 {
                     Visibility = Visibility.Hidden;
-                    _forceWindowVisibilityHidden = true;
+                    ForceWindowVisibilityHidden = true;
                 }
 
                 if ((meterWindowActive || teraWindowActive) &&
                     ((BasicTeraData.Instance.WindowData.InvisibleUi && Controls.Count > 0) ||
                      !BasicTeraData.Instance.WindowData.InvisibleUi))
                 {
-                    _forceWindowVisibilityHidden = false;
+                    ForceWindowVisibilityHidden = false;
                     Visibility = Visibility.Visible;
                 }
             }
             else
             {
-                _forceWindowVisibilityHidden = false;
+                ForceWindowVisibilityHidden = false;
             }
         }
 
@@ -511,7 +319,7 @@ namespace DamageMeter.UI
 
                     if (BasicTeraData.Instance.WindowData.InvisibleUi)
                     {
-                        if (Controls.Count > 0 && !_forceWindowVisibilityHidden)
+                        if (Controls.Count > 0 && !ForceWindowVisibilityHidden)
                         {
                             Visibility = Visibility.Visible;
                         }
@@ -522,7 +330,7 @@ namespace DamageMeter.UI
                     }
                     else
                     {
-                        if (!_forceWindowVisibilityHidden)
+                        if (!ForceWindowVisibilityHidden)
                         {
                             Visibility = Visibility.Visible;
                         }
@@ -550,12 +358,12 @@ namespace DamageMeter.UI
             ChangeTitle changeTitle = delegate(string newServerName)
             {
                 Title = newServerName;
-                _trayIcon.Text = "Shinra Meter V" + UpdateManager.Version + ": " + newServerName;
+                _systemTray.TrayIcon.Text = "Shinra Meter V" + UpdateManager.Version + ": " + newServerName;
             };
             Dispatcher.Invoke(changeTitle, serverName);
         }
 
-        private void StayTopMost()
+        internal void StayTopMost()
         {
             if (!Topmost || !_topMost) return;
             Topmost = false;
@@ -670,19 +478,6 @@ namespace DamageMeter.UI
             _entityStats.Topmost = false;
         }
 
-        private void PinImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-            if (Topmost)
-            {
-                Topmost = false;
-                PinImage.Source = BasicTeraData.Instance.ImageDatabase.Pin.Source;
-                return;
-            }
-            Topmost = true;
-            PinImage.Source = BasicTeraData.Instance.ImageDatabase.UnPin.Source;
-        }
-
         private void EntityStatsImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _entityStats.Show();
@@ -695,12 +490,14 @@ namespace DamageMeter.UI
             if (NetworkController.Instance.TimedEncounter)
             {
                 NetworkController.Instance.TimedEncounter = false;
-                Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
+                Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
+                Chrono.ToolTip = "Only boss";
             }
             else
             {
                 NetworkController.Instance.TimedEncounter = true;
-                Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
+                Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
+                Chrono.ToolTip = "Boss + Add";
             }
         }
 
