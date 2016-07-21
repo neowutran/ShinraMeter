@@ -151,6 +151,7 @@
     <Compile Include="SkillsHeaders\SkillsHeaderDps.xaml.cs">
       <DependentUpon>SkillsHeaderDps.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SystemTray.cs" />
     <Compile Include="TeradpsHistory.xaml.cs">
       <DependentUpon>TeradpsHistory.xaml</DependentUpon>
     </Compile>

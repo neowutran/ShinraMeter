@@ -9,8 +9,6 @@ namespace Data
     {
         public ImageDatabase(string folder)
         {
-            Pin = new Image {Source = new BitmapImage(new Uri(folder + "pin.png"))};
-            UnPin = new Image {Source = new BitmapImage(new Uri(folder + "unpin.png"))};
             EntityStats = new Image {Source = new BitmapImage(new Uri(folder + "stats.png"))};
             EntityStatsClickThrou = new Image {Source = new BitmapImage(new Uri(folder + "stats_click_throu.png"))};
             Chrono = new Image {Source = new BitmapImage(new Uri(folder + "chrono.png"))};
@@ -39,8 +37,6 @@ namespace Data
 
         public Image Chronobar { get; private set; }
 
-        public Image Pin { get; private set; }
-        public Image UnPin { get; private set; }
         public Image EntityStats { get; private set; }
 
         public Image EntityStatsClickThrou { get; private set; }

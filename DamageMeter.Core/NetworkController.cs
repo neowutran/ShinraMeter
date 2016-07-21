@@ -27,7 +27,7 @@ namespace DamageMeter
         public delegate void UpdateUiHandler(
             StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter,
             AbnormalityStorage abnormals,
-            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox);
+            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting);
 
         public delegate void GuildIconEvent(Bitmap icon);
 
@@ -152,7 +152,7 @@ namespace DamageMeter
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = _abnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox);
+            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, packetsWaiting);
         }
 
         public void SwitchClickThrou()
