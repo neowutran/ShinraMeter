@@ -180,6 +180,7 @@ namespace DamageMeter
         public static void CopyThread(StatsSummary stats, Skills skills, AbnormalityStorage abnormals,
             bool timedEncounter, CopyKey copy)
         {
+            if (BasicTeraData.Instance.HotDotDatabase == null) return;//no database loaded yet => no need to do anything
             var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer,
                 copy.OrderBy, copy.Order);
             for (var i = 0; i < 3; i++)
