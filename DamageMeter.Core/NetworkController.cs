@@ -252,6 +252,13 @@ namespace DamageMeter
                 Encounter = NewEncounter;
 
                 var packetsWaiting = TeraSniffer.Instance.Packets.Count;
+                if (packetsWaiting > 3000)
+                {
+                    MessageBox.Show(
+                        "Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Shutting down now.");
+                    Exit();
+                }
+
                 if (_forceUiUpdate)
                 {
                     UpdateUi(packetsWaiting);
@@ -266,13 +273,6 @@ namespace DamageMeter
                 {
                     Thread.Sleep(1);
                     continue;
-                }
-
-                if (packetsWaiting > 3000)
-                {
-                    MessageBox.Show(
-                        "Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Shutting down now.");
-                    Exit();
                 }
 
                 var message = _messageFactory.Create(obj);
