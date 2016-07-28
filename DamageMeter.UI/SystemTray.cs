@@ -260,13 +260,9 @@ namespace DamageMeter.UI
 
         private void SwitchStayTop(object sender, EventArgs e)
         {
-            ((ToolStripMenuItem)sender).Checked = !_mainWindow.Topmost;
-            if (_mainWindow.Topmost)
-            {
-                _mainWindow.Topmost = false;
-                return;
-            }
-            _mainWindow.Topmost = true;
+            BasicTeraData.Instance.WindowData.Topmost = !BasicTeraData.Instance.WindowData.Topmost;
+            ((ToolStripMenuItem)sender).Checked = BasicTeraData.Instance.WindowData.Topmost;
+            _mainWindow.Topmost = BasicTeraData.Instance.WindowData.Topmost;
         }
     }
 }
