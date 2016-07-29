@@ -85,6 +85,7 @@ namespace DamageMeter.UI
             Console.WriteLine(
                 "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             _systemTray = new SystemTray(this);
+            KeyboardHook.Instance.SwitchTopMost += delegate { _systemTray.SwitchStayTop(); };
         }
 
         private void InstanceOnGuildIconAction(Bitmap icon)

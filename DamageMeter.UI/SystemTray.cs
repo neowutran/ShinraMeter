@@ -73,13 +73,13 @@ namespace DamageMeter.UI
             var party = new ToolStripMenuItem { Text = "Count only party members" };
             party.Click += PartyOnClick;
             party.Checked = BasicTeraData.Instance.WindowData.PartyOnly;
-            var stayTop = new ToolStripMenuItem
+            _stayTop = new ToolStripMenuItem
             {
                 Text = "Stay topmost",
                 Checked = BasicTeraData.Instance.WindowData.Topmost
             };
 
-            stayTop.Click += SwitchStayTop;
+            _stayTop.Click += SwitchStayTop;
 
             ClickThrou = new ToolStripMenuItem { Text = "Click throu" };
             ClickThrou.Click += ClickThrouOnClick;
@@ -108,7 +108,7 @@ namespace DamageMeter.UI
                 detectBosses,
                 onlyBoss,
                 party,
-                stayTop,
+                _stayTop,
                 ClickThrou,
                 _switchNoStatsVisibility,
                 _alwaysOn
@@ -143,6 +143,7 @@ namespace DamageMeter.UI
 
         private ToolStripMenuItem _switchNoStatsVisibility;
         private readonly ToolStripMenuItem _alwaysOn;
+        private readonly ToolStripMenuItem _stayTop;
 
         internal ToolStripMenuItem ClickThrou { get; }
 
@@ -258,10 +259,10 @@ namespace DamageMeter.UI
             _alwaysOn.Checked = BasicTeraData.Instance.WindowData.AlwaysVisible;
         }
 
-        private void SwitchStayTop(object sender, EventArgs e)
+        public void SwitchStayTop(object sender=null, EventArgs e=null)
         {
             BasicTeraData.Instance.WindowData.Topmost = !BasicTeraData.Instance.WindowData.Topmost;
-            ((ToolStripMenuItem)sender).Checked = BasicTeraData.Instance.WindowData.Topmost;
+            _stayTop.Checked = BasicTeraData.Instance.WindowData.Topmost;
             _mainWindow.Topmost = BasicTeraData.Instance.WindowData.Topmost;
         }
     }
