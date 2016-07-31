@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -39,7 +40,7 @@ namespace DamageMeter
         private bool _clickThrou;
 
         private bool _forceUiUpdate;
-
+        private bool _needInit;
         private long _lastTick;
         private MessageFactory _messageFactory;
         private UserLogoTracker UserLogoTracker = new UserLogoTracker();
@@ -92,11 +93,8 @@ namespace DamageMeter
         protected virtual void HandleNewConnection(Server server)
         {
             Server = server;
-            TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
-            EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
-            PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
-            PlayerTracker.PlayerIdChangedAction += PlayerTrackerOnPlayerIdChangedAction;
-            _messageFactory = new MessageFactory(TeraData.OpCodeNamer, Server.Region);
+            _messageFactory = new MessageFactory();
+            _needInit = true;
             Connected?.Invoke(server.Name);
         }
 
@@ -276,7 +274,6 @@ namespace DamageMeter
                 }
 
                 var message = _messageFactory.Create(obj);
-
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
                 {
@@ -286,7 +283,7 @@ namespace DamageMeter
                     continue;
                 }
 
-                EntityTracker.Update(message);
+                EntityTracker?.Update(message);
 
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
@@ -457,7 +454,7 @@ namespace DamageMeter
                     continue;
                 }
 
-                PlayerTracker.UpdateParty(message);
+                PlayerTracker?.UpdateParty(message);
                 var sSpawnUser = message as SpawnUserServerMessage;
                 if (sSpawnUser != null)
                 {
@@ -491,14 +488,35 @@ namespace DamageMeter
                     continue;
                 }
 
+                var cVersion = message as C_CHECK_VERSION;
+                if (cVersion != null)
+                {
+                    var opCodeNamer =
+                        new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
+                            $"data/opcodes/{cVersion.Versions[0]}.txt"));
+                    _messageFactory = new MessageFactory(opCodeNamer, cVersion.Versions[0]);
+                    continue;
+                }
+
                 var sLogin = message as LoginServerMessage;
                 if (sLogin == null) continue;
+                if (_needInit)
+                {
+                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
+                    Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
+                    TeraData = BasicTeraData.Instance.DataForRegion(Server.Region);
+                    EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
+                    PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
+                    PlayerTracker.PlayerIdChangedAction += PlayerTrackerOnPlayerIdChangedAction;
+                    EntityTracker.Update(message);
+                    PlayerTracker.UpdateParty(message);
+                    _needInit = false;
+                }
                 _abnormalityStorage.EndAll(message.Time.Ticks);
                 _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
                     BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
                 _charmTracker = new CharmTracker(_abnormalityTracker);
                 OnGuildIconAction(UserLogoTracker.GetLogo(sLogin.PlayerId));
-                Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
                 //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
             }
         }
