@@ -34,7 +34,7 @@ namespace Data
         public bool ShowHealCrit { get; set; }
         public bool OnlyBoss { get; set; }
         public bool DetectBosses { get; set; }
-        public string SaveMode { get; set; }
+        public bool DateInExcelPath { get; set; }
 
         private void DefaultValue()
         {
@@ -61,7 +61,7 @@ namespace Data
             LFDelay = 150;
             OnlyBoss = false;
             DetectBosses = false;
-            SaveMode = "Standard";
+            DateInExcelPath = false;
         }
 
 
@@ -113,7 +113,7 @@ namespace Data
             Parse("autoupdate", "AutoUpdate");
             Parse("only_bosses", "OnlyBoss");
             Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
-            Parse("excel_save_mode", "SaveMode");
+            Parse("date_in_excel_path", "DateInExcelPath");
             ParseLocation();
             ParseOpacity();
             ParseTeraDps();
@@ -150,7 +150,7 @@ namespace Data
  
         private void ParseLocation()
         {
-            int x, y;
+            double x, y;
             var root = _xml.Root;
 
             var location = root?.Element("location");
@@ -159,8 +159,8 @@ namespace Data
             var yElement = location.Element("y");
             if (xElement == null || yElement == null) return;
 
-            var xParsed = int.TryParse(xElement.Value, out x);
-            var yParsed = int.TryParse(yElement.Value, out y);
+            var xParsed = double.TryParse(xElement.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out x);
+            var yParsed = double.TryParse(yElement.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out y);
             if (xParsed && yParsed)
             {
                 Location = new Point(x, y);
@@ -228,10 +228,10 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("export", SiteExport));
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
-            xml.Root.Add(new XElement("excel_save_mode", SaveMode));
+            xml.Root.Add(new XElement("date_in_excel_path", DateInExcelPath));
             xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
-            xml.Root.Add(new XElement("scale", Scale));
+            xml.Root.Add(new XElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("lf_delay", LFDelay));
             xml.Root.Add(new XElement("partyonly", PartyOnly));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));

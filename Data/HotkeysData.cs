@@ -63,6 +63,12 @@ namespace Data
             var root = xml.Root;
             if (root == null) return;
 
+            var topmostKey = ReadElement(root, "topmost", false);
+            if (topmostKey != null)
+            {
+                Topmost = (KeyValuePair<Keys, ModifierKeys>)topmostKey;
+            }
+
             var pasteKey = ReadElement(root, "paste", false);
             if (pasteKey != null)
             {
@@ -99,6 +105,7 @@ namespace Data
         }
 
         public List<CopyKey> Copy { get; private set; }
+        public KeyValuePair<Keys, ModifierKeys> Topmost { get; private set; }
         public KeyValuePair<Keys, ModifierKeys> Reset { get; private set; }
         public KeyValuePair<Keys, ModifierKeys> Paste { get; private set; }
 
@@ -154,6 +161,7 @@ namespace Data
 
         private void DefaultValue()
         {
+            Topmost = new KeyValuePair<Keys, ModifierKeys>(Keys.None, ModifierKeys.None);
             Paste = new KeyValuePair<Keys, ModifierKeys>(Keys.Home, ModifierKeys.None);
             Reset = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.None);
             ResetCurrent = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.Control);
@@ -252,6 +260,7 @@ namespace Data
         public void Save()
         {
             var xml = new XDocument(new XElement("hotkeys"));
+            SaveKey(xml, "topmost", Topmost);
             SaveKey(xml, "paste",Paste,false);
             SaveKey(xml, "reset", Reset);
             SaveKey(xml, "reset_current", ResetCurrent);

@@ -229,7 +229,11 @@ namespace DamageMeter
                 areaId != 767 &&
                 areaId != 768 &&
                 areaId != 470 &&
-                areaId != 468
+                areaId != 468 && 
+                areaId != 770 && 
+                areaId != 769 &&
+                areaId != 969 && 
+                areaId != 970
                 )
             {
                 return;
@@ -267,13 +271,17 @@ namespace DamageMeter
                 areaId != 767 &&
                 areaId != 768 &&
                 areaId != 470 &&
-                areaId != 468
+                areaId != 468 &&
+                areaId != 770 &&
+                areaId != 769 &&
+                areaId != 969 &&
+                areaId != 970
                 )
             {
                 return;
             }
 
-            if (int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468 && areaId != 470)
+            if (int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468)
             {
                 return;
             }

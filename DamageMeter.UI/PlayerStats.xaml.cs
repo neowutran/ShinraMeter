@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using DamageMeter.Database.Structures;
 using Data;
@@ -116,6 +118,41 @@ namespace DamageMeter.UI
                     Title = PlayerName,
                     CloseMeter = {Content = PlayerDamageDealt.Source.Class + " " + PlayerName + ": CLOSE"}
                 };
+                Screen screen = Screen.FromHandle(new WindowInteropHelper(Window.GetWindow(this)).Handle);
+                Window main = Window.GetWindow(this);
+                // Transform screen point to WPF device independent point
+                PresentationSource source = PresentationSource.FromVisual(this);
+
+                if (source?.CompositionTarget == null)
+                {   //if this can't be determined, just use the center screen logic
+                    _windowSkill.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                }
+                else
+                {
+                    // WindowStartupLocation.CenterScreen sometimes put window out of screen in multi monitor environment
+                    _windowSkill.WindowStartupLocation = WindowStartupLocation.Manual;
+                    Matrix m = source.CompositionTarget.TransformToDevice;
+                    double dx = m.M11;
+                    double dy = m.M22;
+                    var maxWidth = 856 * BasicTeraData.Instance.WindowData.Scale;
+                    Point locationFromScreen;
+                    if (screen.WorkingArea.X+screen.WorkingArea.Width > (main.Left + main.Width + maxWidth) * dx)
+                        locationFromScreen = new Point(
+                            (main.Left + main.Width) * dx,
+                            main.Top * dy);
+                    else if (screen.WorkingArea.X + maxWidth * dx < main.Left * dx)
+                        locationFromScreen = new Point(
+                            (main.Left - maxWidth) * dx,
+                            main.Top * dy);
+                    else
+                        locationFromScreen = new Point(
+                            screen.WorkingArea.X + (screen.WorkingArea.Width - maxWidth * dx) / 2,
+                            screen.WorkingArea.Y + (screen.WorkingArea.Height - 600 * dy) / 2);
+                    Point targetPoints = source.CompositionTarget.TransformFromDevice.Transform(locationFromScreen);
+                    _windowSkill.Left = targetPoints.X;
+                    _windowSkill.Top = targetPoints.Y;
+                }
+
                 _windowSkill.Show();
                 NetworkController.Instance.SendFullDetails = true;
                 return;

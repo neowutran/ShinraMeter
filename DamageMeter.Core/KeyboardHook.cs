@@ -11,7 +11,8 @@ namespace DamageMeter
     {
         private static KeyboardHook _instance;
 
-
+        public delegate void TopmostSwitch();
+        public event TopmostSwitch SwitchTopMost;
         private readonly Window _window = new Window();
         private int _currentId;
 
@@ -42,8 +43,13 @@ namespace DamageMeter
 
         private static void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-            if (e.Key == BasicTeraData.Instance.HotkeysData.Paste.Key &&
-                e.Modifier == BasicTeraData.Instance.HotkeysData.Paste.Value)
+            if (e.Key == BasicTeraData.Instance.HotkeysData.Topmost.Key &&
+                e.Modifier == BasicTeraData.Instance.HotkeysData.Topmost.Value)
+            {
+                Instance.SwitchTopMost?.Invoke();
+            }
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.Paste.Key &&
+                     e.Modifier == BasicTeraData.Instance.HotkeysData.Paste.Value)
             {
                 var text = Clipboard.GetText();
                 var pasteThread = new Thread(() => CopyPaste.Paste(text));
@@ -91,6 +97,8 @@ namespace DamageMeter
 
         private void Register()
         {
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Topmost.Value,
+                BasicTeraData.Instance.HotkeysData.Topmost.Key);
             RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value,
                 BasicTeraData.Instance.HotkeysData.Paste.Key);
             RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value,

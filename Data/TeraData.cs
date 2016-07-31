@@ -7,9 +7,9 @@ namespace Data
     {
         internal TeraData(string region)
         {
-            OpCodeNamer =
-                new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
-                    $"data/opcodes/opcodes-{region}.txt"));
+            //OpCodeNamer =
+            //    new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
+            //        $"data/opcodes/opcodes-{region}.txt"));
             var language = GetLanguage(region);
 
             BasicTeraData.Instance.MonsterDatabase =
@@ -22,7 +22,7 @@ namespace Data
                 new HotDotDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
         }
 
-        public OpCodeNamer OpCodeNamer { get; private set; }
+        //public OpCodeNamer OpCodeNamer { get; private set; }
 
         public string GetLanguage(string region)
         {
