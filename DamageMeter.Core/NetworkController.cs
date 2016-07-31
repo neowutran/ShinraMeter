@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -39,7 +40,7 @@ namespace DamageMeter
         private bool _clickThrou;
 
         private bool _forceUiUpdate;
-
+        private bool _needInit;
         private long _lastTick;
         private MessageFactory _messageFactory;
         private UserLogoTracker UserLogoTracker = new UserLogoTracker();
@@ -92,11 +93,8 @@ namespace DamageMeter
         protected virtual void HandleNewConnection(Server server)
         {
             Server = server;
-            TeraData = BasicTeraData.Instance.DataForRegion(server.Region);
-            EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
-            PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
-            PlayerTracker.PlayerIdChangedAction += PlayerTrackerOnPlayerIdChangedAction;
-            _messageFactory = new MessageFactory(TeraData.OpCodeNamer);
+            _messageFactory = new MessageFactory();
+            _needInit = true;
             Connected?.Invoke(server.Name);
         }
 
@@ -180,6 +178,7 @@ namespace DamageMeter
         public static void CopyThread(StatsSummary stats, Skills skills, AbnormalityStorage abnormals,
             bool timedEncounter, CopyKey copy)
         {
+            if (BasicTeraData.Instance.HotDotDatabase == null) return;//no database loaded yet => no need to do anything
             var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer,
                 copy.OrderBy, copy.Order);
             for (var i = 0; i < 3; i++)
@@ -251,6 +250,13 @@ namespace DamageMeter
                 Encounter = NewEncounter;
 
                 var packetsWaiting = TeraSniffer.Instance.Packets.Count;
+                if (packetsWaiting > 3000)
+                {
+                    MessageBox.Show(
+                        "Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Shutting down now.");
+                    Exit();
+                }
+
                 if (_forceUiUpdate)
                 {
                     UpdateUi(packetsWaiting);
@@ -267,15 +273,7 @@ namespace DamageMeter
                     continue;
                 }
 
-                if (packetsWaiting > 3000)
-                {
-                    MessageBox.Show(
-                        "Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Shutting down now.");
-                    Exit();
-                }
-
                 var message = _messageFactory.Create(obj);
-
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
                 {
@@ -285,7 +283,7 @@ namespace DamageMeter
                     continue;
                 }
 
-                EntityTracker.Update(message);
+                EntityTracker?.Update(message);
 
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
@@ -456,7 +454,7 @@ namespace DamageMeter
                     continue;
                 }
 
-                PlayerTracker.UpdateParty(message);
+                PlayerTracker?.UpdateParty(message);
                 var sSpawnUser = message as SpawnUserServerMessage;
                 if (sSpawnUser != null)
                 {
@@ -490,14 +488,35 @@ namespace DamageMeter
                     continue;
                 }
 
+                var cVersion = message as C_CHECK_VERSION;
+                if (cVersion != null)
+                {
+                    var opCodeNamer =
+                        new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
+                            $"data/opcodes/{cVersion.Versions[0]}.txt"));
+                    _messageFactory = new MessageFactory(opCodeNamer, cVersion.Versions[0]);
+                    continue;
+                }
+
                 var sLogin = message as LoginServerMessage;
                 if (sLogin == null) continue;
+                if (_needInit)
+                {
+                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
+                    Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
+                    TeraData = BasicTeraData.Instance.DataForRegion(Server.Region);
+                    EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
+                    PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
+                    PlayerTracker.PlayerIdChangedAction += PlayerTrackerOnPlayerIdChangedAction;
+                    EntityTracker.Update(message);
+                    PlayerTracker.UpdateParty(message);
+                    _needInit = false;
+                }
                 _abnormalityStorage.EndAll(message.Time.Ticks);
                 _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
                     BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
                 _charmTracker = new CharmTracker(_abnormalityTracker);
                 OnGuildIconAction(UserLogoTracker.GetLogo(sLogin.PlayerId));
-                Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
                 //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
             }
         }

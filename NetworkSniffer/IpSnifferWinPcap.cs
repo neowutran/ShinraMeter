@@ -121,20 +121,29 @@ namespace NetworkSniffer
 
         private void device_OnPacketArrival(object sender, CaptureEventArgs e)
         {
-            var linkPacket = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
-
-            var ipPacket = linkPacket.PayloadPacket as IPv4Packet;
-            if (ipPacket == null)
-                return;
-
-            if (_servers.IndexOf(ipPacket.SourceAddress.ToString()) != -1)
+            IPv4Packet ipPacket;
+            try
             {
-                if (!ipPacket.ValidChecksum)
-                {
+                var linkPacket = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
+
+                ipPacket = linkPacket.PayloadPacket as IPv4Packet;
+                if (ipPacket == null)
                     return;
+
+                if (_servers.IndexOf(ipPacket.SourceAddress.ToString()) != -1)
+                {
+                    if (!ipPacket.ValidChecksum)
+                    {
+                        return;
+                    }
                 }
             }
-
+            catch
+            {
+                return;
+                // ignored bad packet
+            }
+            ;
             var ipData = ipPacket.BytesHighPerformance;
             var ipData2 = new ArraySegment<byte>(ipData.ActualBytes());
 

@@ -25,7 +25,8 @@ namespace NetworkSniffer.Packets
             {
                 var lengthInWords = OffsetAndFlags >> 4;
                 if (lengthInWords < 5)
-                    throw new FormatException("Incorrect TcpHeader length");
+                    return int.MaxValue; // do not throw exception, but return something bigger than any packet to set Bad=true
+                    //throw new FormatException("Incorrect TcpHeader length");
                 return lengthInWords*4;
             }
         }
