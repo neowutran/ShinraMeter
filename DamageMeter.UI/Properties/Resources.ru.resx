@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,7 +60,6 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -69,10 +68,9 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -87,10 +85,9 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -112,132 +109,132 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_Do_you_want_to_close_the_application" xml:space="preserve">
-    <value>Do you want to close the application?</value>
+    <value>Вы хотите закрыть приложение?</value>
   </data>
   <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
-    <value>Close Shinra Meter V</value>
+    <value>Закрыть Shinra Meter V</value>
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
-    <value>Only boss</value>
+    <value>Только босс</value>
   </data>
   <data name="MainWindow_Fatal_error" xml:space="preserve">
-    <value>An fatal error has be found, please see the error.log file for more information.</value>
+    <value>Фатальная ошибка, подробности в файле error.log.</value>
   </data>
   <data name="MainWindow_Boss_Adds" xml:space="preserve">
-    <value>Boss + Adds</value>
+    <value>Босс + мобы</value>
   </data>
   <data name="SystemTray_before_crash" xml:space="preserve">
-    <value>before crash</value>
+    <value>до вылета</value>
   </data>
   <data name="SystemTray_Packet_waiting" xml:space="preserve">
-    <value>Packets waiting to be processed</value>
+    <value>Пакеты, ожидающие обработки</value>
   </data>
   <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
-    <value>Export current to Excel</value>
+    <value>Сохранить текущий бой в Excel</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>Сброс</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Закрыть</value>
   </data>
   <data name="SystemTray_Wiki" xml:space="preserve">
     <value>Wiki</value>
   </data>
   <data name="SystemTray_Patch_note" xml:space="preserve">
-    <value>Patch note</value>
+    <value>История изменений</value>
   </data>
   <data name="SystemTray_Report_issue" xml:space="preserve">
-    <value>Report issue</value>
+    <value>Сообщить об ошибке</value>
   </data>
   <data name="SystemTray_Discord" xml:space="preserve">
-    <value>Discord</value>
+    <value>Конференция в Discord</value>
   </data>
   <data name="SystemTray_TeraDps_io" xml:space="preserve">
     <value>TeraDps.io</value>
   </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
-    <value>Autoexport to Excel</value>
+    <value>Автоэкспорт в Excel</value>
   </data>
   <data name="SystemTray_Count_only_bosses" xml:space="preserve">
-    <value>Count only bosses</value>
+    <value>Считать только боссов</value>
   </data>
   <data name="SystemTray_Detect_bosses_by_HP_bar" xml:space="preserve">
-    <value>Detect bosses by HP bar (ignore db)</value>
+    <value>Определять боссов по полоске здоровья (игнорировать базу)</value>
   </data>
   <data name="SystemTray_Site_export" xml:space="preserve">
-    <value>Site export</value>
+    <value>Выгружать на сайт</value>
   </data>
   <data name="SystemTray_Count_only_party_members" xml:space="preserve">
-    <value>Count only party members</value>
+    <value>Считать только членов пати</value>
   </data>
   <data name="SystemTray_Stay_topmost" xml:space="preserve">
-    <value>Stay topmost</value>
+    <value>Поверх всех окон</value>
   </data>
   <data name="SystemTray_Click_throu" xml:space="preserve">
-    <value>Click throu</value>
+    <value>Пропускать клик мышки сквозь окна</value>
   </data>
   <data name="SystemTray_Invisible_when_no_stats" xml:space="preserve">
-    <value>Invisible when no stats</value>
+    <value>Прятать окно когда нет статистики</value>
   </data>
   <data name="SystemTray_Show_always" xml:space="preserve">
-    <value>Show always</value>
+    <value>Показывать при неактивной тере</value>
   </data>
   <data name="SystemTray_Links" xml:space="preserve">
-    <value>Links</value>
+    <value>Ссылки</value>
   </data>
   <data name="SystemTray_Config" xml:space="preserve">
-    <value>Config</value>
+    <value>Настройки</value>
   </data>
   <data name="SystemTray_Action" xml:space="preserve">
-    <value>Action</value>
+    <value>Действия</value>
   </data>
   <data name="SystemTray_Performance_information" xml:space="preserve">
-    <value>Performance information</value>
+    <value>Информация о производительности</value>
   </data>
   <data name="App_Unable_to_contact_update_server" xml:space="preserve">
-    <value>Unable to contact update server, try again later, additional data available in error.log</value>
+    <value>Ощибка доступа к серверу обновлений, попробуйте позже, подробная информация в error.log</value>
   </data>
   <data name="App_Update_Available" xml:space="preserve">
-    <value>Update Available</value>
+    <value>Доступно обновление</value>
   </data>
   <data name="App_Do_you_want_to_update" xml:space="preserve">
-    <value>Do you want to update the application?</value>
+    <value>Обновить приложение?</value>
   </data>
   <data name="PerSecond" xml:space="preserve">
-    <value>/s</value>
+    <value>/с</value>
   </data>
   <data name="Individual_dps" xml:space="preserve">
-    <value>Individual dps</value>
+    <value>Персональный dps</value>
   </data>
   <data name="Fight_Duration" xml:space="preserve">
-    <value>Fight Duration</value>
+    <value>Время боя</value>
   </data>
   <data name="Damage_done" xml:space="preserve">
-    <value>Damage done</value>
+    <value>Нанесено урона</value>
   </data>
   <data name="Seconds" xml:space="preserve">
-    <value>s</value>
+    <value>с</value>
   </data>
   <data name="DOT" xml:space="preserve">
-    <value>DOT</value>
+    <value>Дот</value>
   </data>
   <data name="Chained" xml:space="preserve">
-    <value>Chained</value>
+    <value>в цепочке</value>
   </data>
   <data name="Critical" xml:space="preserve">
-    <value>Critical</value>
+    <value>Крит</value>
   </data>
   <data name="White" xml:space="preserve">
-    <value>White</value>
+    <value>Некрит</value>
   </data>
   <data name="Unknown_Skill" xml:space="preserve">
-    <value>Unknown Skill</value>
+    <value>Неизвестный скилл</value>
   </data>
 </root>

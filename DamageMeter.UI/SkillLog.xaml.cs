@@ -55,8 +55,8 @@ namespace DamageMeter.UI
 
             SkillAmount.Foreground = color;
             SkillAmount.FontWeight = fontWeight;
-            SkillAmount.ToolTip = skill.Critic ? "Critic" :  "White";
-            SkillName.Content = "Unknow Skill";
+            SkillAmount.ToolTip = skill.Critic ? Properties.Resources.Critical :  Properties.Resources.White;
+            SkillName.Content = Properties.Resources.Unknown_Skill;
             if (skillInfo != null)
             {
                 SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);

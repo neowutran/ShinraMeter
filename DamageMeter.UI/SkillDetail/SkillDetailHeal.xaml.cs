@@ -22,7 +22,7 @@ namespace DamageMeter.UI.SkillDetail
 
             if (skill.IsHotDot)
             {
-                hit = "DOT";
+                hit = Properties.Resources.DOT;
             }
             if (hit != null)
             {
@@ -30,7 +30,7 @@ namespace DamageMeter.UI.SkillDetail
             }
             if (chained == true)
             {
-                LabelName.Content += " Chained";
+                LabelName.Content += " " + Properties.Resources.Chained;
             }
 
             LabelName.ToolTip = skill.Id;

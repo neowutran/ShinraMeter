@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using DamageMeter.AutoUpdate;
+using DamageMeter.UI.Properties;
 using Data;
 
 namespace DamageMeter.UI
@@ -14,9 +15,9 @@ namespace DamageMeter.UI
 
         public void UpdatePacketWaiting(int packetWaiting)
         {
-            _packetWaitingLabel.Text = packetWaiting + "/3000 before crash";
+            _packetWaitingLabel.Text = $"{packetWaiting} /3000 {Resources.SystemTray_before_crash}";
             _packetWaitingProgressBar.Value = packetWaiting;
-            _packetWaitingProgressBar.Text = "Packet waiting to be processed: " + packetWaiting;
+            _packetWaitingProgressBar.Text = $"{Resources.SystemTray_Packet_waiting}: {packetWaiting}";
         }
 
         private readonly ToolStripProgressBar _packetWaitingProgressBar;
@@ -42,55 +43,55 @@ namespace DamageMeter.UI
             };
             _packetWaitingLabel = new ToolStripLabel();
            
-            var excel_current = new ToolStripMenuItem { Text = "Export current to Excel" };
+            var excel_current = new ToolStripMenuItem { Text = Resources.SystemTray_Export_current_to_Excel };
             excel_current.Click += ExcelExportOnClick;
-            var reset = new ToolStripMenuItem { Text = "Reset" };
+            var reset = new ToolStripMenuItem { Text = Resources.Reset };
             reset.Click += ResetOnClick;
-            var exit = new ToolStripMenuItem { Text = "Close" };
+            var exit = new ToolStripMenuItem { Text = Resources.Close };
             exit.Click += ExitOnClick;
-            var wiki = new ToolStripMenuItem { Text = "Wiki" };
+            var wiki = new ToolStripMenuItem { Text = Resources.SystemTray_Wiki };
             wiki.Click += WikiOnClick;
-            var patch = new ToolStripMenuItem { Text = "Patch note" };
+            var patch = new ToolStripMenuItem { Text = Resources.SystemTray_Patch_note };
             patch.Click += PatchOnClick;
-            var issues = new ToolStripMenuItem { Text = "Report issue" };
+            var issues = new ToolStripMenuItem { Text = Resources.SystemTray_Report_issue };
             issues.Click += IssuesOnClick;
-            var forum = new ToolStripMenuItem { Text = "Forum" };
+            var forum = new ToolStripMenuItem { Text = Resources.SystemTray_Discord };
             forum.Click += ForumOnClick;
-            var teradps = new ToolStripMenuItem { Text = "TeraDps.io" };
+            var teradps = new ToolStripMenuItem { Text = Resources.SystemTray_TeraDps_io };
             teradps.Click += TeraDpsOnClick;
-            var excel = new ToolStripMenuItem { Text = "Autoexport to Excel" };
+            var excel = new ToolStripMenuItem { Text = Resources.SystemTray_Autoexport_to_Excel };
             excel.Click += ExcelOnClick;
             excel.Checked = BasicTeraData.Instance.WindowData.Excel;
-            var onlyBoss = new ToolStripMenuItem { Text = "Count only bosses" };
+            var onlyBoss = new ToolStripMenuItem { Text = Resources.SystemTray_Count_only_bosses };
             onlyBoss.Click += onlyBossOnClick;
             onlyBoss.Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
-            var detectBosses = new ToolStripMenuItem { Text = "Detect bosses by HP bar (ignore db)" };
+            var detectBosses = new ToolStripMenuItem { Text = Resources.SystemTray_Detect_bosses_by_HP_bar };
             detectBosses.Click += detectBossesOnClick;
             detectBosses.Checked = BasicTeraData.Instance.WindowData.OnlyBoss;
-            var siteExport = new ToolStripMenuItem { Text = "Site export" };
+            var siteExport = new ToolStripMenuItem { Text = Resources.SystemTray_Site_export };
             siteExport.Click += SiteOnClick;
             siteExport.Checked = BasicTeraData.Instance.WindowData.SiteExport;
-            var party = new ToolStripMenuItem { Text = "Count only party members" };
+            var party = new ToolStripMenuItem { Text = Resources.SystemTray_Count_only_party_members };
             party.Click += PartyOnClick;
             party.Checked = BasicTeraData.Instance.WindowData.PartyOnly;
             _stayTop = new ToolStripMenuItem
             {
-                Text = "Stay topmost",
+                Text = Resources.SystemTray_Stay_topmost,
                 Checked = BasicTeraData.Instance.WindowData.Topmost
             };
 
             _stayTop.Click += SwitchStayTop;
 
-            ClickThrou = new ToolStripMenuItem { Text = "Click throu" };
+            ClickThrou = new ToolStripMenuItem { Text = Resources.SystemTray_Click_throu };
             ClickThrou.Click += ClickThrouOnClick;
-            _switchNoStatsVisibility = new ToolStripMenuItem { Text = "Invisible when no stats" };
+            _switchNoStatsVisibility = new ToolStripMenuItem { Text = Resources.SystemTray_Invisible_when_no_stats };
             _switchNoStatsVisibility.Click += SwitchNoStatsVisibility;
             _switchNoStatsVisibility.Checked = BasicTeraData.Instance.WindowData.InvisibleUi;
-            _alwaysOn = new ToolStripMenuItem { Text = "Show always" };
+            _alwaysOn = new ToolStripMenuItem { Text = Resources.SystemTray_Show_always };
             _alwaysOn.Click += _trayIcon_DoubleClick;
             _alwaysOn.Checked = BasicTeraData.Instance.WindowData.AlwaysVisible;
 
-            var link = new ToolStripMenuItem { Text = "Links" };
+            var link = new ToolStripMenuItem { Text = Resources.SystemTray_Links };
             link.DropDownItems.AddRange(new ToolStripItemCollection(new ToolStrip(), new ToolStripItem[]
             {
                 wiki,
@@ -100,7 +101,7 @@ namespace DamageMeter.UI
                 teradps
             } ));
 
-            var config = new ToolStripMenuItem { Text = "Config" };
+            var config = new ToolStripMenuItem { Text = Resources.SystemTray_Config };
             config.DropDownItems.AddRange(new ToolStripItemCollection(new ToolStrip(), new ToolStripItem[]
             {
                 excel,
@@ -114,14 +115,14 @@ namespace DamageMeter.UI
                 _alwaysOn
             }));
 
-            var action = new ToolStripMenuItem { Text = "Action" };
+            var action = new ToolStripMenuItem { Text = Resources.SystemTray_Action };
             action.DropDownItems.AddRange(new ToolStripItemCollection(new ToolStrip(), new ToolStripItem[]
             {
                 reset,
                 excel_current
             }));
 
-            var perf = new ToolStripMenuItem { Text = "Performance information" };
+            var perf = new ToolStripMenuItem { Text = Resources.SystemTray_Performance_information };
             perf.DropDownItems.AddRange(new ToolStripItemCollection(new ToolStrip(), new ToolStripItem[]
             {
                 _packetWaitingLabel,
