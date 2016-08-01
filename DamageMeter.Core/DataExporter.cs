@@ -232,6 +232,7 @@ namespace DamageMeter
                 areaId != 468 && 
                 areaId != 770 && 
                 areaId != 769 &&
+                areaId != 916 &&
                 areaId != 969 && 
                 areaId != 970
                 )
