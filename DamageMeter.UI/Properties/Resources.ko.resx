@@ -210,7 +210,7 @@
    <value>프로그램을 업데이트하시겠습니까?</value>
   </data>
   <data name="PerSecond" xml:space="preserve">
-   <value>초당</value>
+   <value>/s</value>
   </data>
   <data name="Individual_dps" xml:space="preserve">
    <value>초당 딜량(개인)</value>
