@@ -120,7 +120,7 @@
    <value>프로그램을 닫으시겠습니까?</value>
   </data>
   <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
-   <value>신라미터기 V 닫기</value>
+   <value>신라미터기 V</value>
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
    <value>중형몹만 표시</value>
@@ -138,7 +138,7 @@
    <value>패킷 작성 대기중</value>
   </data>
   <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
-   <value>엑셀로 수출</value>
+   <value>엑셀로 내보내기</value>
   </data>
   <data name="Reset" xml:space="preserve">
    <value>초기화</value>
@@ -162,7 +162,7 @@
    <value>TeraDps.io</value>
   </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
-   <value>엑셀로 자동수출</value>
+   <value>엑셀로 내보내기(자동)</value>
   </data>
   <data name="SystemTray_Count_only_bosses" xml:space="preserve">
    <value>중형몹만 포함</value>
@@ -171,7 +171,7 @@
    <value>체력수치로 중형몹 감지 (데이터베이스 무시)</value>
   </data>
   <data name="SystemTray_Site_export" xml:space="preserve">
-   <value>사이트 수출</value>
+   <value>사이트로 내보내기</value>
   </data>
   <data name="SystemTray_Count_only_party_members" xml:space="preserve">
    <value>파티원만 포함</value>
@@ -201,7 +201,7 @@
    <value>성능 정보</value>
   </data>
   <data name="App_Unable_to_contact_update_server" xml:space="preserve">
-   <value>업데이트 서버와 접촉에 시패하였습니다. 나중에 다시 시도하여주십시오. 더 자세한 설명은 error.log를 참조하여주십시오.</value>
+   <value>업데이트 서버 연결에 실패하였습니다. 나중에 다시 시도하여주십시오. 자세한 설명은 error.log를 참조하여주십시오.</value>
   </data>
   <data name="App_Update_Available" xml:space="preserve">
    <value>업데이트 가능</value>
@@ -213,7 +213,7 @@
    <value>초당</value>
   </data>
   <data name="Individual_dps" xml:space="preserve">
-   <value>각각의 초당 딜량</value>
+   <value>초당 딜량(개인)</value>
   </data>
   <data name="Fight_Duration" xml:space="preserve">
    <value>전투 시간</value>
@@ -231,12 +231,12 @@
    <value>연계</value>
   </data>
   <data name="Critical" xml:space="preserve">
-   <value>치명</value>
+   <value>치명타</value>
   </data>
   <data name="White" xml:space="preserve">
    <value>일반</value>
   </data>
   <data name="Unknown_Skill" xml:space="preserve">
-   <value>무명 스킬</value>
+   <value>미확인 스킬</value>
   </data>
 </root>
