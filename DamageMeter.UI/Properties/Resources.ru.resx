@@ -237,4 +237,43 @@
   <data name="Unknown_Skill" xml:space="preserve">
     <value>Неизвестный скилл</value>
   </data>
+  <data name="Archer" xml:space="preserve">
+    <value>Лучник</value>
+  </data>
+  <data name="Berserker" xml:space="preserve">
+    <value>Берсерк</value>
+  </data>
+  <data name="Brawler" xml:space="preserve">
+    <value>Крушитель</value>
+  </data>
+  <data name="Gunner" xml:space="preserve">
+    <value>Инженер</value>
+  </data>
+  <data name="Lancer" xml:space="preserve">
+    <value>Рыцарь</value>
+  </data>
+  <data name="Mystic" xml:space="preserve">
+    <value>Мистик</value>
+  </data>
+  <data name="Ninja" xml:space="preserve">
+    <value>Шиноби</value>
+  </data>
+  <data name="Priest" xml:space="preserve">
+    <value>Жрец</value>
+  </data>
+  <data name="Reaper" xml:space="preserve">
+    <value>Жнец</value>
+  </data>
+  <data name="Slayer" xml:space="preserve">
+    <value>Убийца</value>
+  </data>
+  <data name="Sorcerer" xml:space="preserve">
+    <value>Маг</value>
+  </data>
+  <data name="Warrior" xml:space="preserve">
+    <value>Воин</value>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>Общее</value>
+  </data>
 </root>

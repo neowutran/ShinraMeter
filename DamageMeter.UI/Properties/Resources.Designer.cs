@@ -88,6 +88,33 @@ namespace DamageMeter.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Archer.
+        /// </summary>
+        public static string Archer {
+            get {
+                return ResourceManager.GetString("Archer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Berserker.
+        /// </summary>
+        public static string Berserker {
+            get {
+                return ResourceManager.GetString("Berserker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Brawler.
+        /// </summary>
+        public static string Brawler {
+            get {
+                return ResourceManager.GetString("Brawler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chained.
         /// </summary>
         public static string Chained {
@@ -102,6 +129,15 @@ namespace DamageMeter.UI.Properties {
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common.
+        /// </summary>
+        public static string Common {
+            get {
+                return ResourceManager.GetString("Common", resourceCulture);
             }
         }
         
@@ -142,11 +178,29 @@ namespace DamageMeter.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gunner.
+        /// </summary>
+        public static string Gunner {
+            get {
+                return ResourceManager.GetString("Gunner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Individual dps.
         /// </summary>
         public static string Individual_dps {
             get {
                 return ResourceManager.GetString("Individual_dps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lancer.
+        /// </summary>
+        public static string Lancer {
+            get {
+                return ResourceManager.GetString("Lancer", resourceCulture);
             }
         }
         
@@ -196,11 +250,47 @@ namespace DamageMeter.UI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mystic.
+        /// </summary>
+        public static string Mystic {
+            get {
+                return ResourceManager.GetString("Mystic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ninja.
+        /// </summary>
+        public static string Ninja {
+            get {
+                return ResourceManager.GetString("Ninja", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /s.
         /// </summary>
         public static string PerSecond {
             get {
                 return ResourceManager.GetString("PerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priest.
+        /// </summary>
+        public static string Priest {
+            get {
+                return ResourceManager.GetString("Priest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reaper.
+        /// </summary>
+        public static string Reaper {
+            get {
+                return ResourceManager.GetString("Reaper", resourceCulture);
             }
         }
         
@@ -219,6 +309,24 @@ namespace DamageMeter.UI.Properties {
         public static string Seconds {
             get {
                 return ResourceManager.GetString("Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slayer.
+        /// </summary>
+        public static string Slayer {
+            get {
+                return ResourceManager.GetString("Slayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorcerer.
+        /// </summary>
+        public static string Sorcerer {
+            get {
+                return ResourceManager.GetString("Sorcerer", resourceCulture);
             }
         }
         
@@ -417,6 +525,15 @@ namespace DamageMeter.UI.Properties {
         public static string Unknown_Skill {
             get {
                 return ResourceManager.GetString("Unknown_Skill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warrior.
+        /// </summary>
+        public static string Warrior {
+            get {
+                return ResourceManager.GetString("Warrior", resourceCulture);
             }
         }
         

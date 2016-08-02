@@ -21,7 +21,7 @@ namespace DamageMeter.UI.EntityStats
         {
             SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(hotdot.IconName);
             SkillIcon.ToolTip = string.IsNullOrEmpty(hotdot.ItemName) ? null : hotdot.ItemName;
-            LabelClass.Content = abnormalityDuration.InitialPlayerClass;
+            LabelClass.Content = Properties.Resources.ResourceManager.GetString(abnormalityDuration.InitialPlayerClass.ToString(),Properties.Resources.Culture);
             var intervalEntity = lastHit - firstHit;
             var ticks = abnormalityDuration.Duration(firstHit, lastHit);
             var interval = TimeSpan.FromTicks(ticks);

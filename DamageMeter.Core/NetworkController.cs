@@ -274,6 +274,9 @@ namespace DamageMeter
                 }
 
                 var message = _messageFactory.Create(obj);
+
+                EntityTracker?.Update(message);
+
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
                 {
@@ -282,8 +285,6 @@ namespace DamageMeter
                     DamageTracker.Instance.Update(skillResult);
                     continue;
                 }
-
-                EntityTracker?.Update(message);
 
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)

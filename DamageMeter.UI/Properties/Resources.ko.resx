@@ -239,4 +239,43 @@
   <data name="Unknown_Skill" xml:space="preserve">
    <value>미확인 스킬</value>
   </data>
+  <data name="Archer" xml:space="preserve">
+    <value>궁수</value>
+  </data>
+  <data name="Berserker" xml:space="preserve">
+    <value>광전사</value>
+  </data>
+  <data name="Brawler" xml:space="preserve">
+    <value>권술사</value>
+  </data>
+  <data name="Gunner" xml:space="preserve">
+    <value>마공사</value>
+  </data>
+  <data name="Lancer" xml:space="preserve">
+    <value>창기사</value>
+  </data>
+  <data name="Mystic" xml:space="preserve">
+    <value>정령사</value>
+  </data>
+  <data name="Ninja" xml:space="preserve">
+    <value>인술사</value>
+  </data>
+  <data name="Priest" xml:space="preserve">
+    <value>사제</value>
+  </data>
+  <data name="Reaper" xml:space="preserve">
+    <value>비검사</value>
+  </data>
+  <data name="Slayer" xml:space="preserve">
+    <value>무사</value>
+  </data>
+  <data name="Sorcerer" xml:space="preserve">
+    <value>마법사</value>
+  </data>
+  <data name="Warrior" xml:space="preserve">
+    <value>검투사</value>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>공통</value>
+  </data>
 </root>
