@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -55,8 +56,7 @@ namespace DamageMeter.AutoUpdate
         {
             // Get the stream of the source file.
             ZipFile.ExtractToDirectory(ExecutableDirectory + @"\tmp\" + latestVersion, ExecutableDirectory + @"\tmp\");
-            ZipFile.ExtractToDirectory(ExecutableDirectory + @"\tmp\" + latestVersion,
-                ExecutableDirectory + @"\tmp\release\");
+            ZipFile.ExtractToDirectory(ExecutableDirectory + @"\tmp\" + latestVersion, ExecutableDirectory + @"\tmp\release\");
         }
 
 
@@ -117,33 +117,21 @@ namespace DamageMeter.AutoUpdate
         {
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\"), File.Delete);
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\resources\"), File.Delete);
-            var x64 = ExecutableDirectory + @"\..\..\x64\";
-            if (Directory.Exists(x64))
+            foreach (var s in Directory.GetDirectories(ExecutableDirectory + @"\..\..\").Where(t=> !(t.EndsWith("resources")||t.EndsWith("tmp"))))
             {
-                Directory.Delete(x64, true);
-            }
-            var x86 = ExecutableDirectory + @"\..\..\x86\";
-            if (Directory.Exists(x86))
-            {
-                Directory.Delete(x86, true);
+                if (Directory.Exists(s))
+                {
+                    Directory.Delete(s, true);
+                }
             }
             if (!Directory.Exists(ExecutableDirectory + @"\..\..\resources\")) return;
-            var data = ExecutableDirectory + @"\..\..\resources\data\";
-            var img = ExecutableDirectory + @"\..\..\resources\img\";
-            var ssl = ExecutableDirectory + @"\..\..\resources\ssl\";
-            if (Directory.Exists(data))
+            foreach (var s in Directory.GetDirectories(ExecutableDirectory + @"\..\..\resources\").Where(t => !t.EndsWith("config")))
             {
-                Directory.Delete(data, true);
+                if (Directory.Exists(s))
+                {
+                    Directory.Delete(s, true);
+                }
             }
-            if (Directory.Exists(img))
-            {
-                Directory.Delete(img, true);
-            }
-            if (Directory.Exists(ssl))
-            {
-                Directory.Delete(ssl, true);
-            }
-
             Console.WriteLine("Resources directory destroyed");
         }
 
