@@ -81,8 +81,6 @@ namespace Data
                 Reset = (KeyValuePair<Keys, ModifierKeys>) resetKey;
             }
 
-            Copy = new List<CopyKey>();
-
             var activateKey = ReadElement(root, "click_throu", true);
             if (activateKey != null)
             {
@@ -101,6 +99,7 @@ namespace Data
                 ExcelSave = (KeyValuePair<Keys, ModifierKeys>) excelSaveKey;
             }
 
+            Copy = new List<CopyKey>();
             CopyData(xml);
         }
 
@@ -128,7 +127,7 @@ namespace Data
                 keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
                 if (!Enum.TryParse(keyValue, out key))
                 {
-                    var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
+                    var message = "Unable to get key from string " + keyValue + ". Your hotkeys.xml file is invalid.";
                     MessageBox.Show(message);
                     return null;
                 }
@@ -192,30 +191,40 @@ namespace Data
 
         private void CopyData(XDocument xml)
         {
-            foreach (var copy in xml.Root.Elements("copys").Elements("copy"))
+            try
             {
-                bool ctrl, shift, window;
+                foreach (
 
-                bool.TryParse(copy.Element("shift").Value, out shift);
-                bool.TryParse(copy.Element("window").Value, out window);
-                bool.TryParse(copy.Element("ctrl").Value, out ctrl);
-
-                var header = copy.Element("string").Element("header").Value;
-                var footer = copy.Element("string").Element("footer").Value;
-                var content = copy.Element("string").Element("content").Value;
-                Keys key;
-                var keyValue = copy.Element("key").Value;
-                keyValue = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(keyValue.ToLowerInvariant());
-                if (!Enum.TryParse(keyValue, out key))
+                    var copy in xml.Root.Elements("copys").Elements("copy"))
                 {
-                    var message = "Unable to convert string " + keyValue + " to key. Your hotkeys.xml file is invalid.";
-                    MessageBox.Show(message);
-                    throw new InvalidConfigFileException(message);
+                    bool ctrl, shift, window;
+
+                    bool.TryParse(copy.Element("shift").Value, out shift);
+                    bool.TryParse(copy.Element("window").Value, out window);
+                    bool.TryParse(copy.Element("ctrl").Value, out ctrl);
+
+                    var header = copy.Element("string").Element("header").Value;
+                    var footer = copy.Element("string").Element("footer").Value;
+                    var content = copy.Element("string").Element("content").Value;
+                    Keys key;
+                    var keyValue = copy.Element("key").Value;
+                    keyValue = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(keyValue.ToLowerInvariant());
+                    if (!Enum.TryParse(keyValue, out key))
+                    {
+                        var message = "Unable to get key from string " + keyValue + ". Your hotkeys.xml file is invalid.";
+                        MessageBox.Show(message);
+                        continue;
+                    }
+                    var order = copy.Element("string").Element("order").Value;
+                    var orderBy = copy.Element("string").Element("order_by").Value;
+                    var modifier = ConvertToModifierKey(ctrl, false, shift, window);
+                    Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order));
                 }
-                var order = copy.Element("string").Element("order").Value;
-                var orderBy = copy.Element("string").Element("order_by").Value;
-                var modifier = ConvertToModifierKey(ctrl, false, shift, window);
-                Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order));
+            }
+            catch
+            {
+                var message = "Your hotkeys.xml file is invalid.";
+                MessageBox.Show(message);
             }
         }
 
