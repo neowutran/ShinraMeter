@@ -6,9 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
 using DamageMeter.Sniffing;
 using Data;
+using log4net;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
@@ -56,6 +58,14 @@ namespace DamageMeter
 
         private NetworkController()
         {
+            try { Database.Database.Instance.DeleteAll(); }
+            catch (Exception ex)
+            {
+                var log = LogManager.GetLogger(typeof(Program));
+                log.Error(ex.Message + "\r\n" +ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
+                MessageBox.Show(LangPack.MainWindow_Fatal_error);
+                Exit();
+            }
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
             _abnormalityStorage = new AbnormalityStorage();
             var packetAnalysis = new Thread(PacketAnalysisLoop);
@@ -253,7 +263,7 @@ namespace DamageMeter
                 if (packetsWaiting > 3000)
                 {
                     MessageBox.Show(
-                        "Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Shutting down now.");
+                        LangPack.Your_computer_is_too_slow);
                     Exit();
                 }
 

@@ -49,7 +49,7 @@ namespace DamageMeter.UI
                 catch (Exception ex)
                 {
                     MessageBox.Show(
-                        UI.Properties.Resources.App_Unable_to_contact_update_server);
+                        LangPack.App_Unable_to_contact_update_server);
                     var log = LogManager.GetLogger(typeof(Program)); //Log4NET
                     log.Error("##### UPDATE EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message +
                               "\r\n" +
@@ -124,7 +124,7 @@ namespace DamageMeter.UI
                 return false;
             }
 
-            if (MessageBox.Show(UI.Properties.Resources.App_Do_you_want_to_update, UI.Properties.Resources.App_Update_Available, MessageBoxButton.YesNo,
+            if (MessageBox.Show(LangPack.App_Do_you_want_to_update, LangPack.App_Update_Available, MessageBoxButton.YesNo,
                 MessageBoxImage.Question) != MessageBoxResult.Yes) return false;
             return await UpdateManager.Update();
         }

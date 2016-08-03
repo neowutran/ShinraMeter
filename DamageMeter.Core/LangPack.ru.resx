@@ -276,4 +276,8 @@
   <data name="Common" xml:space="preserve">
     <value>Общее</value>
   </data>
+  <data name="Your_computer_is_too_slow" xml:space="preserve">
+    <value>Ваш компьютер слишком медленный для этого дпсметра, не успеваю анализировать пакеты с достаточной скоростью.</value>
+  </data>
+
 </root>

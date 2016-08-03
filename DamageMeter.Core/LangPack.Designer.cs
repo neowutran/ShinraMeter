@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DamageMeter.UI.Properties {
+namespace DamageMeter {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace DamageMeter.UI.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    public class LangPack {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal LangPack() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace DamageMeter.UI.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DamageMeter.UI.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DamageMeter.LangPack", typeof(LangPack).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -543,6 +543,15 @@ namespace DamageMeter.UI.Properties {
         public static string White {
             get {
                 return ResourceManager.GetString("White", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your computer is too slow to use this DPS meter. Can&apos;t analyse all those packet in decent amount of time. Shutting down now..
+        /// </summary>
+        public static string Your_computer_is_too_slow {
+            get {
+                return ResourceManager.GetString("Your_computer_is_too_slow", resourceCulture);
             }
         }
     }

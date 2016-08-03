@@ -69,7 +69,7 @@ namespace DamageMeter.UI
             dispatcherTimer.Start();
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
-            Chrono.ToolTip = Properties.Resources.MainWindow_Only_boss;
+            Chrono.ToolTip = LangPack.MainWindow_Only_boss;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
@@ -140,7 +140,7 @@ namespace DamageMeter.UI
         public void VerifyClose()
         {
             SetForegroundWindow(new WindowInteropHelper(this).Handle);
-            if (MessageBox.Show(Properties.Resources.MainWindow_Do_you_want_to_close_the_application, Properties.Resources.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
+            if (MessageBox.Show(LangPack.MainWindow_Do_you_want_to_close_the_application, LangPack.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -168,7 +168,7 @@ namespace DamageMeter.UI
             LogError("##### CRASH (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                      "\r\n" + ex.TargetSite);
-            MessageBox.Show(Properties.Resources.MainWindow_Fatal_error);
+            MessageBox.Show(LangPack.MainWindow_Fatal_error);
         }
 
         private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
@@ -177,7 +177,7 @@ namespace DamageMeter.UI
             LogError("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                      "\r\n" + ex.TargetSite);
-            MessageBox.Show(Properties.Resources.MainWindow_Fatal_error);
+            MessageBox.Show(LangPack.MainWindow_Fatal_error);
         }
 
         private static void LogError(string error)
@@ -268,7 +268,7 @@ namespace DamageMeter.UI
                         FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
                             ? statsSummary.EntityInformation.TotalDamage
                             : statsSummary.EntityInformation.TotalDamage*TimeSpan.TicksPerSecond/
-                              statsSummary.EntityInformation.Interval) + Properties.Resources.PerSecond;
+                              statsSummary.EntityInformation.Interval) + LangPack.PerSecond;
                     var visiblePlayerStats = new HashSet<Player>();
                     var statsDamage = statsSummary.PlayerDamageDealt;
                     var statsHeal = statsSummary.PlayerHealDealt;
@@ -492,13 +492,13 @@ namespace DamageMeter.UI
             {
                 NetworkController.Instance.TimedEncounter = false;
                 Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
-                Chrono.ToolTip = Properties.Resources.MainWindow_Only_boss;
+                Chrono.ToolTip = LangPack.MainWindow_Only_boss;
             }
             else
             {
                 NetworkController.Instance.TimedEncounter = true;
                 Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
-                Chrono.ToolTip = Properties.Resources.MainWindow_Boss_Adds;
+                Chrono.ToolTip = LangPack.MainWindow_Boss_Adds;
             }
         }
 

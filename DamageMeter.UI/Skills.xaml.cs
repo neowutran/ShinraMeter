@@ -54,7 +54,7 @@ namespace DamageMeter.UI
             if (death == null)
             {
                 DeathCounter.Content = 0;
-                DeathDuration.Content = "0" + Properties.Resources.Seconds;
+                DeathDuration.Content = "0" + LangPack.Seconds;
             }
             else
             {
@@ -67,7 +67,7 @@ namespace DamageMeter.UI
             if (aggro == null)
             {
                 AggroCounter.Content = 0;
-                AggroDuration.Content = "0" + Properties.Resources.Seconds;
+                AggroDuration.Content = "0" + LangPack.Seconds;
             }
             else
             {
