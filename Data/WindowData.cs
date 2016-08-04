@@ -20,6 +20,7 @@ namespace Data
         public double SkillWindowOpacity { get; private set; }
         public bool RememberPosition { get; private set; }
         public string Language { get; private set; }
+        public string UILanguage { get; private set; }
         public bool AutoUpdate { get; private set; }
         public bool Winpcap { get; private set; }
         public bool InvisibleUi { get; set; }
@@ -40,6 +41,7 @@ namespace Data
         {
             Location = new Point(0, 0);
             Language = "Auto";
+            UILanguage = "Auto";
             MainWindowOpacity = 0.5;
             SkillWindowOpacity = 0.7;
             AutoUpdate = true;
@@ -118,6 +120,7 @@ namespace Data
             ParseOpacity();
             ParseTeraDps();
             ParseLanguage();
+            ParseUILanguage();
         }
 
         private void ParseTeraDps()
@@ -178,6 +181,22 @@ namespace Data
                     s => s.Equals(Language))) Language = "Auto";
         }
 
+        private void ParseUILanguage()
+        {
+            var root = _xml.Root;
+            var languageElement = root?.Element("ui_language");
+            if (languageElement == null) return;
+            UILanguage = languageElement.Value;
+            try
+            {
+                CultureInfo.GetCultureInfo(UILanguage);
+            }
+            catch
+            {
+                UILanguage = "Auto";
+            }
+        }
+
         private void ParseOpacity()
         {
             var root = _xml.Root;
@@ -213,6 +232,7 @@ namespace Data
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("language", Language));
+            xml.Root.Add(new XElement("ui_language", UILanguage));
             xml.Root.Add(new XElement("opacity"));
             xml.Root.Element("opacity").Add(new XElement("mainWindow", MainWindowOpacity*100));
             xml.Root.Element("opacity").Add(new XElement("skillWindow", SkillWindowOpacity*100));

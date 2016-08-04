@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -25,7 +26,6 @@ namespace DamageMeter.UI
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
             bool aIsNewInstance;
@@ -37,6 +37,10 @@ namespace DamageMeter.UI
             if (aIsNewInstance)
             {
                 DeleteTmp();
+                if (BasicTeraData.Instance.WindowData.UILanguage != "Auto")
+                {
+                    LangPack.Culture = CultureInfo.GetCultureInfo(BasicTeraData.Instance.WindowData.UILanguage);
+                }
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
                 {
                     return;
