@@ -298,7 +298,7 @@ namespace DamageMeter
         public static IEnumerable<SkillAggregate> GetAggregate(PlayerDamageDealt playerDamageDealt, Entity entity,
          Skills skillsData, bool timedEncounter, Database.Database.Type type)
         {
-
+            if(skillsData==null)return new List<SkillAggregate>();
             if (type != Database.Database.Type.Damage)
             {
                 timedEncounter = false;

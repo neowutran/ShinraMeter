@@ -8,6 +8,7 @@
         <ItemsControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
                       MouseLeftButtonDown="Skills_OnMouseLeftButtonDown" x:Name="SkillsList"
                       Background="Transparent" BorderThickness="0" Focusable="False"
-                      HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False" />
+                      HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False" 
+                      Grid.IsSharedSizeScope="True"/>
     </Grid>
 </UserControl>

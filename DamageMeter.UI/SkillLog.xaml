@@ -6,12 +6,12 @@
              mc:Ignorable="d">
     <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Margin="0,0,0,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="40" />
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="70" />
-            <ColumnDefinition Width="70" />
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition SharedSizeGroup="s1" MinWidth="200" Width="Auto"/>
+            <ColumnDefinition SharedSizeGroup="s2" MinWidth="70" Width="Auto"/>
+            <ColumnDefinition SharedSizeGroup="s3" MinWidth="70" Width="Auto"/>
+            <ColumnDefinition SharedSizeGroup="s4" MinWidth="200" Width="Auto"/>
+            <ColumnDefinition SharedSizeGroup="s5" MinWidth="200" Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
                Height="40" VerticalAlignment="Top" Width="40" />

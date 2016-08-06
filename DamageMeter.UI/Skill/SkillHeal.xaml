@@ -10,18 +10,17 @@
                 <Grid MouseLeave="UIElement_OnMouseLeave" MouseEnter="UIElement_OnMouseEnter"
                       MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
-
-                        <ColumnDefinition Width="65" />
+                        <ColumnDefinition SharedSizeGroup="h1" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h2" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h3" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h4" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h5" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h6" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h7" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h8" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h9" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h10" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="h11" Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
                            Height="40" VerticalAlignment="Top" Width="40" />

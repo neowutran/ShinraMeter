@@ -92,8 +92,9 @@ namespace DamageMeter.UI
 
             _windowSkill?.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter);
             DpsIndicator.Width = EntityInformation.TotalDamage == 0
-                ? 265
-                : 265*PlayerDamageDealt.Amount/EntityInformation.TotalDamage;
+                ? ((FrameworkElement)Parent).ActualWidth
+                : ((FrameworkElement)Parent).ActualWidth * PlayerDamageDealt.Amount/EntityInformation.TotalDamage;
+
         }
 
         public void SetClickThrou()
@@ -134,7 +135,8 @@ namespace DamageMeter.UI
                     Matrix m = source.CompositionTarget.TransformToDevice;
                     double dx = m.M11;
                     double dy = m.M22;
-                    var maxWidth = 856 * BasicTeraData.Instance.WindowData.Scale;
+                    ((System.Windows.UIElement)_windowSkill.DpsPanel.Content).Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    var maxWidth = (((System.Windows.UIElement)_windowSkill.DpsPanel.Content).DesiredSize.Width + 6) * BasicTeraData.Instance.WindowData.Scale;
                     Point locationFromScreen;
                     if (screen.WorkingArea.X+screen.WorkingArea.Width > (main.Left + main.Width + maxWidth) * dx)
                         locationFromScreen = new Point(
@@ -158,7 +160,7 @@ namespace DamageMeter.UI
                 return;
             }
 
-            _windowSkill.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter);
+            _windowSkill.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter, true);
             _windowSkill.Show();
         }
 

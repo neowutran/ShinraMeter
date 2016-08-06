@@ -10,7 +10,7 @@ namespace DamageMeter
     {
         public const string Thinspace = "\u2009";
 
-        public static readonly FormatHelpers Pretty = new FormatHelpers {UnitSeparator = Thinspace};
+        public static readonly FormatHelpers Pretty = new FormatHelpers { UnitSeparator = Thinspace };
 
         public static readonly FormatHelpers Invariant = new FormatHelpers
         {
@@ -22,6 +22,7 @@ namespace DamageMeter
 
         private FormatHelpers()
         {
+            CultureInfo = CultureInfo.CurrentUICulture;
         }
 
         public CultureInfo CultureInfo { get; set; }
@@ -51,35 +52,67 @@ namespace DamageMeter
             var exponent = 0;
             decimal decimalValue = value;
             decimal rounded;
-            while (Math.Abs(rounded = (long) decimal.Round(decimalValue)) >= 1000)
-            {
-                decimalValue /= 10;
-                exponent++;
-            }
-            while (exponent%3 != 0)
-            {
-                rounded *= 0.1m;
-                exponent++;
-            }
             string suffix;
-
-            switch (exponent)
+            if (CultureInfo.Name.StartsWith("ko"))
             {
-                case 0:
-                    suffix = "";
-                    break;
-                case 3:
-                    suffix = UnitSeparator + "k";
-                    break;
-                case 6:
-                    suffix = UnitSeparator + "M";
-                    break;
-                case 9:
-                    suffix = UnitSeparator + "B";
-                    break;
-                default:
-                    suffix = UnitSeparator + "E" + UnitSeparator + exponent;
-                    break;
+                while (Math.Abs(rounded = (long)decimal.Round(decimalValue)) >= 10000)
+                {
+                    decimalValue /= 10;
+                    exponent++;
+                }
+                while (exponent % 4 != 0)
+                {
+                    rounded *= 0.1m;
+                    exponent++;
+                }
+
+                switch (exponent)
+                {
+                    case 0:
+                        suffix = "";
+                        break;
+                    case 4:
+                        suffix = UnitSeparator + "만";
+                        break;
+                    case 8:
+                        suffix = UnitSeparator + "억";
+                        break;
+                    default:
+                        suffix = UnitSeparator + "E" + UnitSeparator + exponent;
+                        break;
+                }
+            }
+            else
+            {
+                while (Math.Abs(rounded = (long)decimal.Round(decimalValue)) >= 1000)
+                {
+                    decimalValue /= 10;
+                    exponent++;
+                }
+                while (exponent % 3 != 0)
+                {
+                    rounded *= 0.1m;
+                    exponent++;
+                }
+
+                switch (exponent)
+                {
+                    case 0:
+                        suffix = "";
+                        break;
+                    case 3:
+                        suffix = UnitSeparator + "k";
+                        break;
+                    case 6:
+                        suffix = UnitSeparator + "M";
+                        break;
+                    case 9:
+                        suffix = UnitSeparator + "B";
+                        break;
+                    default:
+                        suffix = UnitSeparator + "E" + UnitSeparator + exponent;
+                        break;
+                }
             }
             return string.Format(CultureInfo, "{0}{1}", rounded, suffix);
         }

@@ -8,18 +8,18 @@
 
         <Grid MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25" />
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
+                <ColumnDefinition SharedSizeGroup="h0" Width="25" />
+                <ColumnDefinition SharedSizeGroup="h1" Width="40" />
+                <ColumnDefinition SharedSizeGroup="h2" Width="200" MaxWidth="200"/>
+                <ColumnDefinition SharedSizeGroup="h3" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="h4" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="h5" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="h6" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="h7" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="h8" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="h9" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="h10" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="h11" MinWidth="65" Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
                    BorderThickness="1" BorderBrush="Gray" FontSize="14" VerticalAlignment="Center"

@@ -231,70 +231,87 @@
     <Window.Background>
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.5" />
     </Window.Background>
-    <Grid HorizontalAlignment="Left" Width="265">
+    <Grid HorizontalAlignment="Left" MinWidth="265">
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
                             ScaleX="{DynamicResource Scale}"
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
 
-        <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="29" />
+            </Grid.ColumnDefinitions>
+
+            <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
                   SelectionChanged="ListEncounter_OnSelectionChanged"
-                  x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="0,0,0,0" VerticalAlignment="Top" Width="235" HorizontalContentAlignment="Stretch"
-                  MinHeight="29" Height="5" />
+                  x:Name="ListEncounter" HorizontalAlignment="Stretch"
+                  Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="235" HorizontalContentAlignment="Stretch"
+                  MinHeight="29" Height="5" Grid.Column="0"/>
 
-        <Image x:Name="CloseWindow" PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown"
+            <Image x:Name="CloseWindow" PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown"
+               Stretch="Fill" Grid.Column="1"
+               HorizontalAlignment="Left"
+               Height="29" VerticalAlignment="Top" Width="29" />
+        </Grid>
+        <Grid HorizontalAlignment="Stretch" Margin="0,30,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="31" />
+                <ColumnDefinition MinWidth="52" Width="Auto"/>
+                <ColumnDefinition MinWidth="68" Width="Auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="31" />
+                <ColumnDefinition MinWidth="52" Width="Auto"/>
+                <ColumnDefinition Width="31" />
+            </Grid.ColumnDefinitions>
+            <Image x:Name="Chrono" PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown"
                Stretch="Fill"
                HorizontalAlignment="Left"
-               Height="29" VerticalAlignment="Top" Width="29" Margin="236,0,0,0" />
+               Height="29" VerticalAlignment="Top" Width="29" Grid.Column="6" />
 
-        <Image x:Name="Chrono" PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown"
-               Stretch="Fill"
-               HorizontalAlignment="Left"
-               Height="29" VerticalAlignment="Top" Width="29" Margin="236,30,0,0" />
-
-        <Image x:Name="Config"
+            <Image x:Name="Config"
                Stretch="Fill"
 
                HorizontalAlignment="Left"
                PreviewMouseLeftButtonDown="Config_MouseLeftButtonDown"
-               Height="29" VerticalAlignment="Top" Width="29" Margin="151,31,0,0">
-            <Image.ContextMenu>
+               Height="29" VerticalAlignment="Top" Width="29" Grid.Column="4">
+                <Image.ContextMenu>
 
-                <ContextMenu Style="{DynamicResource ShinraContext}" x:Name="PopupMenu">
-                    <Image x:Name="History" PreviewMouseLeftButtonDown="ShowHistory"
+                    <ContextMenu Style="{DynamicResource ShinraContext}" x:Name="PopupMenu">
+                        <Image x:Name="History" PreviewMouseLeftButtonDown="ShowHistory"
                            Stretch="Fill"
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
-                    <Image x:Name="Chatbox" PreviewMouseLeftButtonDown="ShowChat"
+                        <Image x:Name="Chatbox" PreviewMouseLeftButtonDown="ShowChat"
                            Stretch="Fill"
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
-                </ContextMenu>
-            </Image.ContextMenu>
+                    </ContextMenu>
+                </Image.ContextMenu>
 
-        </Image>
+            </Image>
 
-        <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown"
+            <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown"
                Stretch="Fill"
                HorizontalAlignment="Left"
-               Height="29" VerticalAlignment="Top" Width="29" Margin="1,30,0,0" />
+               Height="29" VerticalAlignment="Top" Width="29" Grid.Column="0" />
 
-        <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Margin="31,30,0,0" FontSize="14"
+            <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
                Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-        <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Margin="185,30,0,0" FontSize="14"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
+            <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Grid.Column="5" FontSize="14"
                Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="50" HorizontalContentAlignment="Center" />
-        <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Margin="82,30,0,0" FontSize="14"
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
+            <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Grid.Column="2" FontSize="14"
                Foreground="White"
-               VerticalAlignment="Top" MinHeight="29" Height="29" Width="65" HorizontalContentAlignment="Center" />
+               VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
+        </Grid>
         <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" Margin="0,60,0,0"
-                      HorizontalAlignment="Left" />
+                      IsTextSearchEnabled="False" Margin="0,60,0,0"
+                      HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True"/>
 
     </Grid>
 </ui:ClickThrouWindow>

@@ -69,7 +69,7 @@
                               Focusable="False"
                               ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                               HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False"
-                              HorizontalAlignment="Left" />
+                              HorizontalAlignment="Left" Grid.IsSharedSizeScope="True"/>
             </Grid>
         </ScrollViewer>
     </Grid>

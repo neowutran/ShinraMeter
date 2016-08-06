@@ -7,18 +7,18 @@
     <Grid>
         <Grid MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="25" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
+                <ColumnDefinition SharedSizeGroup="h0" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h1" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h2" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h3" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h4" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h5" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h6" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h7" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h8" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h9" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h10" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="h11" Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"

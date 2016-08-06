@@ -25,7 +25,8 @@ namespace DamageMeter.UI
         public SkillsLog(IEnumerable<Database.Structures.Skill> skills, bool received)
         {
             InitializeComponent();
-            ContentWidth = 900;
+            //ContentWidth = 900;
+            if (skills==null)return;
             foreach (var skill in skills.OrderByDescending(x => x.Time))
             {   
                 var log = new SkillLog();                
