@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -121,7 +121,7 @@
     <value>アプリケーションを終了しますか？</value>
   </data>
   <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
-    <value>終了神羅メーターV</value>
+    <value>神羅メーターを終了</value>
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
     <value>ボスのみ</value>
@@ -163,7 +163,7 @@
     <value>TeraDps.io</value>
   </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
-    <value>Excelへ出力(自動)</value>
+    <value>自動でExcel出力</value>
   </data>
   <data name="SystemTray_Count_only_bosses" xml:space="preserve">
     <value>ボスのみ計測</value>
@@ -221,7 +221,7 @@
     <value>戦闘時間</value>
   </data>
   <data name="Damage_done" xml:space="preserve">
-    <value>被ダメージ</value>
+    <value>与ダメージ</value>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>s</value>
@@ -236,7 +236,7 @@
     <value>クリティカル</value>
   </data>
   <data name="White" xml:space="preserve">
-    <value>白</value>
+    <value>白ダメ</value>
   </data>
   <data name="Unknown_Skill" xml:space="preserve">
     <value>不明なスキル</value>
@@ -283,5 +283,152 @@
   <data name="Your_computer_is_too_slow" xml:space="preserve">
     <value>お使いのコンピュータは、DPSメーターを使用するには動作が遅すぎるため終了します。
 十分な速度でパケットを分析することはできませんでした。</value>
+  </data>
+  <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
+    <value>hotkeys.xml が不正です。</value>
+  </data>
+  <data name="Unable_to_get_key_from_string" xml:space="preserve">
+    <value>次の文字はhotkeyに使用出来ません。</value>
+  </data>
+  <data name="RegisterHotKeyError" xml:space="preserve">
+    <value>ショートカットキーの登録に失敗しました。</value>
+  </data>
+  <data name="AlreadyInUse" xml:space="preserve">
+    <value>既に使用されています。</value>
+  </data>
+  <data name="TeraDpsIoApiError" xml:space="preserve">
+    <value>APIエラーもしくはタイムアウトが発生しました。</value>
+  </data>
+  <data name="TotalEncounter" xml:space="preserve">
+    <value>総計</value>
+  </data>
+  <data name="SystemTray_No_server" xml:space="preserve">
+    <value>サーバーが見つかりません。</value>
+  </data>
+  <data name="Deaths" xml:space="preserve">
+    <value>死亡</value>
+  </data>
+  <data name="Deaths_Tooltip" xml:space="preserve">
+    <value>死亡回数</value>
+  </data>
+  <data name="Death_Time" xml:space="preserve">
+    <value>死亡時間</value>
+  </data>
+  <data name="Death_Time_Tooltip" xml:space="preserve">
+    <value>死亡していた時間</value>
+  </data>
+  <data name="Aggro" xml:space="preserve">
+    <value>戦闘時間</value>
+  </data>
+  <data name="Aggro_Tooltip" xml:space="preserve">
+    <value>戦闘回数</value>
+  </data>
+  <data name="Aggro_Time" xml:space="preserve">
+    <value>戦闘時間</value>
+  </data>
+  <data name="Aggro_Time_Tooltip" xml:space="preserve">
+    <value>"戦闘時間"</value>
+  </data>
+  <data name="Dps" xml:space="preserve">
+    <value>DPS</value>
+  </data>
+  <data name="Heal" xml:space="preserve">
+    <value>ヒール</value>
+  </data>
+  <data name="Mana" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="Buff" xml:space="preserve">
+    <value>バフ</value>
+  </data>
+  <data name="SkillDealt" xml:space="preserve">
+    <value>与スキル</value>
+  </data>
+  <data name="SkillReceived" xml:space="preserve">
+    <value>被スキル</value>
+  </data>
+  <data name="SkillName" xml:space="preserve">
+    <value>スキル名</value>
+  </data>
+  <data name="CritPercent" xml:space="preserve">
+    <value>クリ率</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>ダメージ</value>
+  </data>
+  <data name="DamagePercent" xml:space="preserve">
+    <value>ダメージ(%)</value>
+  </data>
+  <data name="AverageCrit" xml:space="preserve">
+    <value>平均クリダメ</value>
+  </data>
+  <data name="MaxCrit" xml:space="preserve">
+    <value>最大ダメ</value>
+  </data>
+  <data name="AvgWhite" xml:space="preserve">
+    <value>平均白ダメ</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>平均</value>
+  </data>
+  <data name="Hits" xml:space="preserve">
+    <value>ヒット数</value>
+  </data>
+  <data name="Crits" xml:space="preserve">
+    <value>クリ回数</value>
+  </data>
+  <data name="MaxWhite" xml:space="preserve">
+    <value>最大白ダメ</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>職業</value>
+  </data>
+  <data name="EffectTime" xml:space="preserve">
+    <value>持続時間</value>
+  </data>
+  <data name="Fight" xml:space="preserve">
+    <value>戦闘時間</value>
+  </data>
+  <data name="FightPercent" xml:space="preserve">
+    <value>持続時間(%)</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="Boss" xml:space="preserve">
+    <value>ボス</value>
+  </data>
+  <data name="HealCritPercent" xml:space="preserve">
+    <value>クリ率(回復)</value>
+  </data>
+  <data name="HitsTaken" xml:space="preserve">
+    <value>被弾回数</value>
+  </data>
+  <data name="DamgeTaken" xml:space="preserve">
+    <value>被ダメ</value>
+  </data>
+  <data name="BossHP" xml:space="preserve">
+    <value>ボスHP</value>
+  </data>
+  <data name="AvgDPS" xml:space="preserve">
+    <value>平均DPS</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>開始</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>時間</value>
+  </data>
+  <data name="MinCrit" xml:space="preserve">
+    <value>最小クリダメ</value>
+  </data>
+  <data name="Enrage" xml:space="preserve">
+    <value>憤怒</value>
+  </data>
+  <data name="Slaying" xml:space="preserve">
+    <value>必死</value>
+  </data>
+  <data name="SlayingTooltip" xml:space="preserve">
+    <value>必死の一撃が装着されてる場合このバフが表示されます。</value>
   </data>
 </root>

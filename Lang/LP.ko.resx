@@ -1,63 +1,64 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-   Microsoft ResX Schema 
-   
-   Version 2.0
-   
-   The primary goals of this format is to allow a simple XML format 
-   that is mostly human readable. The generation and parsing of the 
-   various data types are done through the TypeConverter classes 
-   associated with the data types.
-   
-   Example:
-   
-   ... ado.net/XML headers & schema ...
-   <resheader name="resmimetype">text/microsoft-resx</resheader>
-   <resheader name="version">2.0</resheader>
-   <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-   <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-   <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-   <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-   <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-       <value>[base64 mime encoded serialized .NET Framework object]</value>
-   </data>
-   <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-       <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-       <comment>This is a comment</comment>
-   </data>
-               
-   There are any number of "resheader" rows that contain simple 
-   name/value pairs.
-   
-   Each data row contains a name, and value. The row also contains a 
-   type or mimetype. Type corresponds to a .NET class that support 
-   text/value conversion through the TypeConverter architecture. 
-   Classes that don't support this are serialized and stored with the 
-   mimetype set.
-   
-   The mimetype is used for serialized objects, and tells the 
-   ResXResourceReader how to depersist the object. This is currently not 
-   extensible. For a given mimetype the value must be set accordingly:
-   
-   Note - application/x-microsoft.net.object.binary.base64 is the format 
-   that the ResXResourceWriter will generate, however the reader can 
-   read any of the formats listed below.
-   
-   mimetype: application/x-microsoft.net.object.binary.base64
-   value   : The object must be serialized with 
-           : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-           : and then encoded with base64 encoding.
-   
-   mimetype: application/x-microsoft.net.object.soap.base64
-   value   : The object must be serialized with 
-           : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-           : and then encoded with base64 encoding.
-   mimetype: application/x-microsoft.net.object.bytearray.base64
-   value   : The object must be serialized into a byte array 
-           : using a System.ComponentModel.TypeConverter
-           : and then encoded with base64 encoding.
-   -->
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -117,127 +118,127 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_Do_you_want_to_close_the_application" xml:space="preserve">
-   <value>프로그램을 닫으시겠습니까?</value>
+    <value>종료 하시겠습니까?</value>
   </data>
   <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
-   <value>신라미터기 V</value>
+    <value>신라 미터를 종료</value>
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
-   <value>중형몹만 표시</value>
+    <value>중형만 표시</value>
   </data>
   <data name="MainWindow_Fatal_error" xml:space="preserve">
-   <value> 치명적인 오류가 발생하였습니다. 더 자세한 정보는 error.log 파일을 참조해주십시오. </value>
+    <value>치명적인 에러가 발생했습니다. 자세한 사항은 error.log를 확인해주세요.</value>
   </data>
   <data name="MainWindow_Boss_Adds" xml:space="preserve">
-   <value>중형몹 + 소형몹</value>
+    <value>중형+일반</value>
   </data>
   <data name="SystemTray_before_crash" xml:space="preserve">
-   <value>충돌 전</value>
+    <value>충돌 전</value>
   </data>
   <data name="SystemTray_Packet_waiting" xml:space="preserve">
-   <value>패킷 작성 대기중</value>
+    <value>패킷 처리 대기중</value>
   </data>
   <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
-   <value>엑셀로 내보내기</value>
+    <value>현재 정보 엑셀로 내보내기</value>
   </data>
   <data name="Reset" xml:space="preserve">
-   <value>초기화</value>
+    <value>초기화</value>
   </data>
   <data name="Close" xml:space="preserve">
-   <value>닫기</value>
+    <value>닫기</value>
   </data>
   <data name="SystemTray_Wiki" xml:space="preserve">
-   <value>위키</value>
+    <value>위키연결</value>
   </data>
   <data name="SystemTray_Patch_note" xml:space="preserve">
-   <value>패치 내역</value>
+    <value>패치노트</value>
   </data>
   <data name="SystemTray_Report_issue" xml:space="preserve">
-   <value>오류 제보</value>
+    <value>버그제보</value>
   </data>
   <data name="SystemTray_Discord" xml:space="preserve">
-   <value>디스코드</value>
+    <value>디스코드 연결</value>
   </data>
   <data name="SystemTray_TeraDps_io" xml:space="preserve">
-   <value>TeraDps.io</value>
+    <value>TeraDps.io</value>
   </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
-   <value>엑셀로 내보내기(자동)</value>
+    <value>자동으로 내보내기(엑셀)</value>
   </data>
   <data name="SystemTray_Count_only_bosses" xml:space="preserve">
-   <value>중형몹만 포함</value>
+    <value>중형 몬스터만 표시</value>
   </data>
   <data name="SystemTray_Detect_bosses_by_HP_bar" xml:space="preserve">
-   <value>체력수치로 중형몹 감지 (데이터베이스 무시)</value>
+    <value>체력을 이용해 중형 탐색(DB무시)</value>
   </data>
   <data name="SystemTray_Site_export" xml:space="preserve">
-   <value>사이트로 내보내기</value>
+    <value>사이트에 내보내기</value>
   </data>
   <data name="SystemTray_Count_only_party_members" xml:space="preserve">
-   <value>파티원만 포함</value>
+    <value>파티원만 표시</value>
   </data>
   <data name="SystemTray_Stay_topmost" xml:space="preserve">
-   <value>최우선 순위 고정</value>
+    <value>맨 앞에 표시</value>
   </data>
   <data name="SystemTray_Click_throu" xml:space="preserve">
-   <value>클릭 무시</value>
+    <value>클릭 허용</value>
   </data>
   <data name="SystemTray_Invisible_when_no_stats" xml:space="preserve">
-   <value>데이터 없을시 투명화</value>
+    <value>정보가 없을시 숨기기</value>
   </data>
   <data name="SystemTray_Show_always" xml:space="preserve">
-   <value>항상 표시</value>
+    <value>항상 보이기</value>
   </data>
   <data name="SystemTray_Links" xml:space="preserve">
-   <value>링크</value>
+    <value>링크</value>
   </data>
   <data name="SystemTray_Config" xml:space="preserve">
-   <value>설정</value>
+    <value>설정</value>
   </data>
   <data name="SystemTray_Action" xml:space="preserve">
-   <value>액션</value>
+    <value>동작</value>
   </data>
   <data name="SystemTray_Performance_information" xml:space="preserve">
-   <value>성능 정보</value>
+    <value>성능 정보</value>
   </data>
   <data name="App_Unable_to_contact_update_server" xml:space="preserve">
-   <value>업데이트 서버 연결에 실패하였습니다. 나중에 다시 시도하여주십시오. 자세한 설명은 error.log를 참조하여주십시오.</value>
+    <value>업데이트 서버 연결에 실패하였습니다. 나중에 다시 시도해주세요. 자세한 사항은 error.log를 확인</value>
   </data>
   <data name="App_Update_Available" xml:space="preserve">
-   <value>업데이트 가능</value>
+    <value>업데이트 사용가능</value>
   </data>
   <data name="App_Do_you_want_to_update" xml:space="preserve">
-   <value>프로그램을 업데이트하시겠습니까?</value>
+    <value>업데이트를 하시겠습니까?</value>
   </data>
   <data name="PerSecond" xml:space="preserve">
-   <value>/초</value>
+    <value>/초</value>
   </data>
   <data name="Individual_dps" xml:space="preserve">
-   <value>개인 딜량</value>
+    <value>개인 딜량</value>
   </data>
   <data name="Fight_Duration" xml:space="preserve">
-   <value>전투 시간</value>
+    <value>전투시간</value>
   </data>
   <data name="Damage_done" xml:space="preserve">
-   <value>누적딜</value>
+    <value>딜량정보</value>
   </data>
   <data name="Seconds" xml:space="preserve">
-   <value>초</value>
+    <value>초</value>
   </data>
   <data name="DOT" xml:space="preserve">
-   <value>도트</value>
+    <value>도트</value>
   </data>
   <data name="Chained" xml:space="preserve">
-   <value>연계</value>
+    <value>연계</value>
   </data>
   <data name="Critical" xml:space="preserve">
-   <value>치명타</value>
+    <value>크리티컬</value>
   </data>
   <data name="White" xml:space="preserve">
-   <value>일반</value>
+    <value>일반</value>
   </data>
   <data name="Unknown_Skill" xml:space="preserve">
-   <value>미확인 스킬</value>
+    <value>미확인 스킬</value>
   </data>
   <data name="Archer" xml:space="preserve">
     <value>궁수</value>
@@ -277,5 +278,155 @@
   </data>
   <data name="Common" xml:space="preserve">
     <value>공통</value>
+  </data>
+  <data name="Your_computer_is_too_slow" xml:space="preserve">
+    <value>미터기를 사용하기엔 당신의 컴퓨터가 너무 느립니다. 모든 패킷을 분석하는데 상당한 시간이 필요하여 강제 종료합니다.</value>
+  </data>
+  <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
+    <value>hotkeys.xml 파일이 잘못 되었습니다.</value>
+  </data>
+  <data name="Unable_to_get_key_from_string" xml:space="preserve">
+    <value>문자열에서 키를 가져올수 없습니다.</value>
+  </data>
+  <data name="RegisterHotKeyError" xml:space="preserve">
+    <value>단축키 등록에 실패하였습니다.</value>
+  </data>
+  <data name="AlreadyInUse" xml:space="preserve">
+    <value> 이미 사용 중 입니다.</value>
+  </data>
+  <data name="TeraDpsIoApiError" xml:space="preserve">
+    <value>API오류 또는 시간초과가 발생하였습니다.</value>
+  </data>
+  <data name="TotalEncounter" xml:space="preserve">
+    <value>전체</value>
+  </data>
+  <data name="SystemTray_No_server" xml:space="preserve">
+    <value>서버를 찾을 수 없습니다.</value>
+  </data>
+  <data name="Deaths" xml:space="preserve">
+    <value>사망</value>
+  </data>
+  <data name="Deaths_Tooltip" xml:space="preserve">
+    <value>사망 횟수</value>
+  </data>
+  <data name="Death_Time" xml:space="preserve">
+    <value>사망시간</value>
+  </data>
+  <data name="Death_Time_Tooltip" xml:space="preserve">
+    <value>"바닥에 누워있던 시간"</value>
+  </data>
+  <data name="Aggro" xml:space="preserve">
+    <value>어그로</value>
+  </data>
+  <data name="Aggro_Tooltip" xml:space="preserve">
+    <value>어그로 회수 횟수</value>
+  </data>
+  <data name="Aggro_Time" xml:space="preserve">
+    <value>어그로 시간</value>
+  </data>
+  <data name="Aggro_Time_Tooltip" xml:space="preserve">
+    <value>"보스 어그로 유지 시간"</value>
+  </data>
+  <data name="Dps" xml:space="preserve">
+    <value>초당딜량</value>
+  </data>
+  <data name="Heal" xml:space="preserve">
+    <value>힐</value>
+  </data>
+  <data name="Mana" xml:space="preserve">
+    <value>마나</value>
+  </data>
+  <data name="Buff" xml:space="preserve">
+    <value>버프</value>
+  </data>
+  <data name="SkillDealt" xml:space="preserve">
+    <value>스킬딜량</value>
+  </data>
+  <data name="SkillReceived" xml:space="preserve">
+    <value>피격</value>
+  </data>
+  <data name="SkillName" xml:space="preserve">
+    <value>스킬명</value>
+  </data>
+  <data name="CritPercent" xml:space="preserve">
+    <value>크리율</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>딜량</value>
+  </data>
+  <data name="DamagePercent" xml:space="preserve">
+    <value>딜지분</value>
+  </data>
+  <data name="AverageCrit" xml:space="preserve">
+    <value>평균 크리</value>
+  </data>
+  <data name="MaxCrit" xml:space="preserve">
+    <value>최대 크리</value>
+  </data>
+  <data name="AvgWhite" xml:space="preserve">
+    <value>평균 일반</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>평균</value>
+  </data>
+  <data name="Hits" xml:space="preserve">
+    <value>사용 횟수</value>
+  </data>
+  <data name="Crits" xml:space="preserve">
+    <value>크리</value>
+  </data>
+  <data name="MaxWhite" xml:space="preserve">
+    <value>최대 일반</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>직업</value>
+  </data>
+  <data name="EffectTime" xml:space="preserve">
+    <value>효과 시간</value>
+  </data>
+  <data name="Fight" xml:space="preserve">
+    <value>전투</value>
+  </data>
+  <data name="FightPercent" xml:space="preserve">
+    <value>전투시간(%)</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="Boss" xml:space="preserve">
+    <value>보스</value>
+  </data>
+  <data name="HealCritPercent" xml:space="preserve">
+    <value>힐크리율</value>
+  </data>
+  <data name="HitsTaken" xml:space="preserve">
+    <value>맞은 횟수</value>
+  </data>
+  <data name="DamgeTaken" xml:space="preserve">
+    <value>피격</value>
+  </data>
+  <data name="BossHP" xml:space="preserve">
+    <value>보스체력</value>
+  </data>
+  <data name="AvgDPS" xml:space="preserve">
+    <value>평균 DPS</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>시간</value>
+  </data>
+  <data name="MinCrit" xml:space="preserve">
+    <value>최소 크리</value>
+  </data>
+  <data name="Enrage" xml:space="preserve">
+    <value>분노</value>
+  </data>
+  <data name="Slaying" xml:space="preserve">
+    <value>필사</value>
+  </data>
+  <data name="SlayingTooltip" xml:space="preserve">
+    <value>'필사의 일격' 크리스탈을 장착시 발동합니다.</value>
   </data>
 </root>

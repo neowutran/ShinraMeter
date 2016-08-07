@@ -209,7 +209,6 @@ namespace Data
                     var content = copy.Element("string").Element("content").Value;
                     Keys key;
                     var keyValue = copy.Element("key").Value;
-                    keyValue = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(keyValue.ToLowerInvariant());
                     if (!Enum.TryParse(keyValue, out key))
                     {
                         var message = LP.Unable_to_get_key_from_string+ " " + keyValue + ". "+LP.Your_hotkeys_xml_file_is_invalid;
