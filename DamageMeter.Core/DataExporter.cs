@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using DamageMeter.TeraDpsApi;
 using Data;
+using Lang;
 using Newtonsoft.Json;
 using Tera.Game;
 using Tera.Game.Abnormality;
@@ -302,7 +303,7 @@ namespace DamageMeter
             {
                 Console.WriteLine("API ERROR");
                 NetworkController.Instance.BossLink.TryAdd(
-                    "!Api error or timeout." + " " + boss.Info.Name + " " + boss.Id + " " + DateTime.Now.Ticks, boss);
+                    "!"+LP.TeraDpsIoApiError + " " + boss.Info.Name + " " + boss.Id + " " + DateTime.Now.Ticks, boss);
                 return;
             }
             try

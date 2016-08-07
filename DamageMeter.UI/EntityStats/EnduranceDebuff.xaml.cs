@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using Data;
+using Lang;
 using Tera.Game;
 using Tera.Game.Abnormality;
 
@@ -21,7 +22,7 @@ namespace DamageMeter.UI.EntityStats
         {
             SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(hotdot.IconName);
             SkillIcon.ToolTip = string.IsNullOrEmpty(hotdot.ItemName) ? null : hotdot.ItemName;
-            LabelClass.Content = LangPack.ResourceManager.GetString(abnormalityDuration.InitialPlayerClass.ToString(),LangPack.Culture);
+            LabelClass.Content = LP.ResourceManager.GetString(abnormalityDuration.InitialPlayerClass.ToString(),LP.Culture);
             var intervalEntity = lastHit - firstHit;
             var ticks = abnormalityDuration.Duration(firstHit, lastHit);
             var interval = TimeSpan.FromTicks(ticks);

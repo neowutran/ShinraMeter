@@ -60,6 +60,10 @@
     <Compile Include="TeraSniffer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lang\Lang.csproj">
+      <Project>{220fef0f-4a83-4ab8-9435-f9bc09b9039f}</Project>
+      <Name>Lang</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetworkSniffer\NetworkSniffer.csproj">
       <Project>{5b431143-1a77-44ff-8bc3-926fec8ad97c}</Project>
       <Name>NetworkSniffer</Name>

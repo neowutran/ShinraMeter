@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,175 +112,176 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_Do_you_want_to_close_the_application" xml:space="preserve">
-    <value>Вы хотите закрыть приложение?</value>
+    <value>アプリケーションを終了しますか？</value>
   </data>
   <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
-    <value>Закрыть Shinra Meter V</value>
+    <value>終了神羅メーターV</value>
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
-    <value>Только босс</value>
+    <value>ボスのみ</value>
   </data>
   <data name="MainWindow_Fatal_error" xml:space="preserve">
-    <value>Фатальная ошибка, подробности в файле error.log.</value>
+    <value>致命的なエラーが発生しました。詳細についてはerror.logを参照してください。</value>
   </data>
   <data name="MainWindow_Boss_Adds" xml:space="preserve">
-    <value>Босс + мобы</value>
+    <value>ボス + 一般モンスター</value>
   </data>
   <data name="SystemTray_before_crash" xml:space="preserve">
-    <value>до вылета</value>
+    <value>before crash</value>
   </data>
   <data name="SystemTray_Packet_waiting" xml:space="preserve">
-    <value>Пакеты, ожидающие обработки</value>
+    <value>パケット保留中</value>
   </data>
   <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
-    <value>Сохранить текущий бой в Excel</value>
+    <value>Excelへ出力</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Сброс</value>
+    <value>リセット</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Закрыть</value>
+    <value>閉じる</value>
   </data>
   <data name="SystemTray_Wiki" xml:space="preserve">
     <value>Wiki</value>
   </data>
   <data name="SystemTray_Patch_note" xml:space="preserve">
-    <value>История изменений</value>
+    <value>更新履歴</value>
   </data>
   <data name="SystemTray_Report_issue" xml:space="preserve">
-    <value>Сообщить об ошибке</value>
+    <value>エラー報告</value>
   </data>
   <data name="SystemTray_Discord" xml:space="preserve">
-    <value>Конференция в Discord</value>
+    <value>フォーラム(Discord)</value>
   </data>
   <data name="SystemTray_TeraDps_io" xml:space="preserve">
     <value>TeraDps.io</value>
   </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
-    <value>Автоэкспорт в Excel</value>
+    <value>Excelへ出力(自動)</value>
   </data>
   <data name="SystemTray_Count_only_bosses" xml:space="preserve">
-    <value>Считать только боссов</value>
+    <value>ボスのみ計測</value>
   </data>
   <data name="SystemTray_Detect_bosses_by_HP_bar" xml:space="preserve">
-    <value>Определять боссов по полоске здоровья (игнорировать базу)</value>
+    <value>HPバーによってボスを検出(データベース無視)</value>
   </data>
   <data name="SystemTray_Site_export" xml:space="preserve">
-    <value>Выгружать на сайт</value>
+    <value>サイトへ出力</value>
   </data>
   <data name="SystemTray_Count_only_party_members" xml:space="preserve">
-    <value>Считать только членов пати</value>
+    <value>パーティーメンバーのみ計測</value>
   </data>
   <data name="SystemTray_Stay_topmost" xml:space="preserve">
-    <value>Поверх всех окон</value>
+    <value>最前面に表示</value>
   </data>
   <data name="SystemTray_Click_throu" xml:space="preserve">
-    <value>Пропускать клик мышки сквозь окна</value>
+    <value>クリック無効</value>
   </data>
   <data name="SystemTray_Invisible_when_no_stats" xml:space="preserve">
-    <value>Прятать окно когда нет статистики</value>
+    <value>計測結果がない場合非表示</value>
   </data>
   <data name="SystemTray_Show_always" xml:space="preserve">
-    <value>Показывать при неактивной тере</value>
+    <value>常に表示</value>
   </data>
   <data name="SystemTray_Links" xml:space="preserve">
-    <value>Ссылки</value>
+    <value>リンク</value>
   </data>
   <data name="SystemTray_Config" xml:space="preserve">
-    <value>Настройки</value>
+    <value>設定</value>
   </data>
   <data name="SystemTray_Action" xml:space="preserve">
-    <value>Действия</value>
+    <value>動作</value>
   </data>
   <data name="SystemTray_Performance_information" xml:space="preserve">
-    <value>Информация о производительности</value>
+    <value>パフォーマンス情報</value>
   </data>
   <data name="App_Unable_to_contact_update_server" xml:space="preserve">
-    <value>Ощибка доступа к серверу обновлений, попробуйте позже, подробная информация в error.log</value>
+    <value>アップデートサーバーへの接続に失敗しました。後で再試行してください。
+詳細については、error.logを参照してください。</value>
   </data>
   <data name="App_Update_Available" xml:space="preserve">
-    <value>Доступно обновление</value>
+    <value>利用可能な更新</value>
   </data>
   <data name="App_Do_you_want_to_update" xml:space="preserve">
-    <value>Обновить приложение?</value>
+    <value>アプリケーションを更新しますか？</value>
   </data>
   <data name="PerSecond" xml:space="preserve">
-    <value>/с</value>
+    <value>/s</value>
   </data>
   <data name="Individual_dps" xml:space="preserve">
-    <value>Персональный dps</value>
+    <value>個人DPS</value>
   </data>
   <data name="Fight_Duration" xml:space="preserve">
-    <value>Время боя</value>
+    <value>戦闘時間</value>
   </data>
   <data name="Damage_done" xml:space="preserve">
-    <value>Нанесено урона</value>
+    <value>被ダメージ</value>
   </data>
   <data name="Seconds" xml:space="preserve">
-    <value>с</value>
+    <value>s</value>
   </data>
   <data name="DOT" xml:space="preserve">
-    <value>Дот</value>
+    <value>DOT</value>
   </data>
   <data name="Chained" xml:space="preserve">
-    <value>в цепочке</value>
+    <value>連携</value>
   </data>
   <data name="Critical" xml:space="preserve">
-    <value>Крит</value>
+    <value>クリティカル</value>
   </data>
   <data name="White" xml:space="preserve">
-    <value>Некрит</value>
+    <value>白</value>
   </data>
   <data name="Unknown_Skill" xml:space="preserve">
-    <value>Неизвестный скилл</value>
+    <value>不明なスキル</value>
   </data>
   <data name="Archer" xml:space="preserve">
-    <value>Лучник</value>
+    <value>アーチャー</value>
   </data>
   <data name="Berserker" xml:space="preserve">
-    <value>Берсерк</value>
+    <value>バーサーカー</value>
   </data>
   <data name="Brawler" xml:space="preserve">
-    <value>Крушитель</value>
+    <value>ファイター</value>
   </data>
   <data name="Gunner" xml:space="preserve">
-    <value>Инженер</value>
+    <value>ガンナー</value>
   </data>
   <data name="Lancer" xml:space="preserve">
-    <value>Рыцарь</value>
+    <value>ランサー</value>
   </data>
   <data name="Mystic" xml:space="preserve">
-    <value>Мистик</value>
+    <value>エレメンタリスト</value>
   </data>
   <data name="Ninja" xml:space="preserve">
-    <value>Шиноби</value>
+    <value>くノ一</value>
   </data>
   <data name="Priest" xml:space="preserve">
-    <value>Жрец</value>
+    <value>プリースト</value>
   </data>
   <data name="Reaper" xml:space="preserve">
-    <value>Жнец</value>
+    <value>ソウルリーパー</value>
   </data>
   <data name="Slayer" xml:space="preserve">
-    <value>Убийца</value>
+    <value>スレイヤー</value>
   </data>
   <data name="Sorcerer" xml:space="preserve">
-    <value>Маг</value>
+    <value>ソーサラー</value>
   </data>
   <data name="Warrior" xml:space="preserve">
-    <value>Воин</value>
+    <value>ウォーリアー</value>
   </data>
   <data name="Common" xml:space="preserve">
-    <value>Общее</value>
+    <value>一般</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>Ваш компьютер слишком медленный для этого дпсметра, не успеваю анализировать пакеты с достаточной скоростью.</value>
+    <value>お使いのコンピュータは、DPSメーターを使用するには動作が遅すぎるため終了します。
+十分な速度でパケットを分析することはできませんでした。</value>
   </data>
-
 </root>

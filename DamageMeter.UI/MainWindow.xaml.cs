@@ -3,14 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -20,6 +18,7 @@ using DamageMeter.Sniffing;
 using DamageMeter.UI.EntityStats;
 using Data;
 using log4net;
+using Lang;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Application = System.Windows.Forms.Application;
@@ -69,7 +68,7 @@ namespace DamageMeter.UI
             dispatcherTimer.Start();
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
-            Chrono.ToolTip = LangPack.MainWindow_Only_boss;
+            Chrono.ToolTip = LP.MainWindow_Only_boss;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
@@ -140,7 +139,7 @@ namespace DamageMeter.UI
         public void VerifyClose()
         {
             SetForegroundWindow(new WindowInteropHelper(this).Handle);
-            if (MessageBox.Show(LangPack.MainWindow_Do_you_want_to_close_the_application, LangPack.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
+            if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application, LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -168,7 +167,7 @@ namespace DamageMeter.UI
             LogError("##### CRASH (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                      "\r\n" + ex.TargetSite);
-            MessageBox.Show(LangPack.MainWindow_Fatal_error);
+            MessageBox.Show(LP.MainWindow_Fatal_error);
         }
 
         private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
@@ -177,7 +176,7 @@ namespace DamageMeter.UI
             LogError("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                      "\r\n" + ex.TargetSite);
-            MessageBox.Show(LangPack.MainWindow_Fatal_error);
+            MessageBox.Show(LP.MainWindow_Fatal_error);
         }
 
         private static void LogError(string error)
@@ -268,7 +267,7 @@ namespace DamageMeter.UI
                         FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
                             ? statsSummary.EntityInformation.TotalDamage
                             : statsSummary.EntityInformation.TotalDamage*TimeSpan.TicksPerSecond/
-                              statsSummary.EntityInformation.Interval) + LangPack.PerSecond;
+                              statsSummary.EntityInformation.Interval) + LP.PerSecond;
                     var visiblePlayerStats = new HashSet<Player>();
                     var statsDamage = statsSummary.PlayerDamageDealt;
                     var statsHeal = statsSummary.PlayerHealDealt;
@@ -426,7 +425,7 @@ namespace DamageMeter.UI
             }
 
             ListEncounter.Items.Clear();
-            ListEncounter.Items.Add(new ComboBoxItem {Content = "TOTAL"});
+            ListEncounter.Items.Add(new ComboBoxItem {Content = LP.TotalEncounter});
             var selected = false;
             foreach (var entity in entities)
             {
@@ -492,13 +491,13 @@ namespace DamageMeter.UI
             {
                 NetworkController.Instance.TimedEncounter = false;
                 Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
-                Chrono.ToolTip = LangPack.MainWindow_Only_boss;
+                Chrono.ToolTip = LP.MainWindow_Only_boss;
             }
             else
             {
                 NetworkController.Instance.TimedEncounter = true;
                 Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
-                Chrono.ToolTip = LangPack.MainWindow_Boss_Adds;
+                Chrono.ToolTip = LP.MainWindow_Boss_Adds;
             }
         }
 

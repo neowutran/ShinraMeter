@@ -11,6 +11,7 @@ using System.Windows;
 using DamageMeter.AutoUpdate;
 using Data;
 using log4net;
+using Lang;
 
 namespace DamageMeter.UI
 {
@@ -39,7 +40,7 @@ namespace DamageMeter.UI
                 DeleteTmp();
                 if (BasicTeraData.Instance.WindowData.UILanguage != "Auto")
                 {
-                    LangPack.Culture = CultureInfo.GetCultureInfo(BasicTeraData.Instance.WindowData.UILanguage);
+                    LP.Culture = CultureInfo.GetCultureInfo(BasicTeraData.Instance.WindowData.UILanguage);
                 }
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
                 {
@@ -53,7 +54,7 @@ namespace DamageMeter.UI
                 catch (Exception ex)
                 {
                     MessageBox.Show(
-                        LangPack.App_Unable_to_contact_update_server);
+                        LP.App_Unable_to_contact_update_server);
                     var log = LogManager.GetLogger(typeof(Program)); //Log4NET
                     log.Error("##### UPDATE EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message +
                               "\r\n" +
@@ -128,7 +129,7 @@ namespace DamageMeter.UI
                 return false;
             }
 
-            if (MessageBox.Show(LangPack.App_Do_you_want_to_update, LangPack.App_Update_Available, MessageBoxButton.YesNo,
+            if (MessageBox.Show(LP.App_Do_you_want_to_update, LP.App_Update_Available, MessageBoxButton.YesNo,
                 MessageBoxImage.Question) != MessageBoxResult.Yes) return false;
             return await UpdateManager.Update();
         }

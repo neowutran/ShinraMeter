@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Lang;
 
 namespace DamageMeter.UI.SkillsHeaders
 {
@@ -9,16 +10,16 @@ namespace DamageMeter.UI.SkillsHeaders
     /// </summary>
     public partial class SkillsHeaderDps
     {
-        public static readonly string SkillName = "Skill name";
-        public static readonly string CritRateDmg = "% Crit";
-        public static readonly string TotalDamage = "Dmg";
-        public static readonly string DamagePercentage = "% Dmg";
-        public static readonly string AverageCrit = "Avg crit";
-        public static readonly string BiggestCrit = "Max crit";
-        public static readonly string AverageHit = "Avg white";
-        public static readonly string AverageTotal = "Avg";
-        public static readonly string HitsDmg = "Hits";
-        public static readonly string CritsDmg = "Crits";
+        public static readonly string SkillName = LP.SkillName;
+        public static readonly string CritRateDmg = LP.CritPercent;
+        public static readonly string TotalDamage = LP.Damage;
+        public static readonly string DamagePercentage = LP.DamagePercent;
+        public static readonly string AverageCrit = LP.AverageCrit;
+        public static readonly string BiggestCrit = LP.MaxCrit;
+        public static readonly string AverageHit = LP.AvgWhite;
+        public static readonly string AverageTotal = LP.Average;
+        public static readonly string HitsDmg = LP.Hits;
+        public static readonly string CritsDmg = LP.Crits;
 
         public SkillsHeaderDps()
         {

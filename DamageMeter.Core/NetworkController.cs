@@ -11,6 +11,7 @@ using DamageMeter.Database.Structures;
 using DamageMeter.Sniffing;
 using Data;
 using log4net;
+using Lang;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
@@ -63,7 +64,7 @@ namespace DamageMeter
             {
                 var log = LogManager.GetLogger(typeof(Program));
                 log.Error(ex.Message + "\r\n" +ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
-                MessageBox.Show(LangPack.MainWindow_Fatal_error);
+                MessageBox.Show(LP.MainWindow_Fatal_error);
                 Exit();
             }
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
@@ -263,7 +264,7 @@ namespace DamageMeter
                 if (packetsWaiting > 3000)
                 {
                     MessageBox.Show(
-                        LangPack.Your_computer_is_too_slow);
+                        LP.Your_computer_is_too_slow);
                     Exit();
                 }
 
@@ -516,6 +517,9 @@ namespace DamageMeter
                     Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
                     Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
                     TeraData = BasicTeraData.Instance.DataForRegion(Server.Region);
+                    BasicTeraData.Instance.HotDotDatabase.Get(8888888).Name = LP.Enrage;
+                    BasicTeraData.Instance.HotDotDatabase.Get(8888889).Name = LP.Slaying;
+                    BasicTeraData.Instance.HotDotDatabase.Get(8888889).Tooltip= LP.SlayingTooltip;
                     EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
                     PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
                     PlayerTracker.PlayerIdChangedAction += PlayerTrackerOnPlayerIdChangedAction;

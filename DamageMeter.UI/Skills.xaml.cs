@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
 using DamageMeter.Database.Structures;
 using Data;
+using Lang;
 using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI
@@ -57,7 +56,7 @@ namespace DamageMeter.UI
                 if (death == null)
                 {
                     DeathCounter.Content = 0;
-                    DeathDuration.Content = "0" + LangPack.Seconds;
+                    DeathDuration.Content = "0" + LP.Seconds;
                 }
                 else
                 {
@@ -70,7 +69,7 @@ namespace DamageMeter.UI
                 if (aggro == null)
                 {
                     AggroCounter.Content = 0;
-                    AggroDuration.Content = "0" + LangPack.Seconds;
+                    AggroDuration.Content = "0" + LP.Seconds;
                 }
                 else
                 {

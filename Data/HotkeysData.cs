@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using Lang;
 
 namespace Data
 {
@@ -127,7 +128,7 @@ namespace Data
                 keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
                 if (!Enum.TryParse(keyValue, out key))
                 {
-                    var message = "Unable to get key from string " + keyValue + ". Your hotkeys.xml file is invalid.";
+                    var message = LP.Unable_to_get_key_from_string + " " + keyValue + ". "+LP.Your_hotkeys_xml_file_is_invalid;
                     MessageBox.Show(message);
                     return null;
                 }
@@ -211,7 +212,7 @@ namespace Data
                     keyValue = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(keyValue.ToLowerInvariant());
                     if (!Enum.TryParse(keyValue, out key))
                     {
-                        var message = "Unable to get key from string " + keyValue + ". Your hotkeys.xml file is invalid.";
+                        var message = LP.Unable_to_get_key_from_string+ " " + keyValue + ". "+LP.Your_hotkeys_xml_file_is_invalid;
                         MessageBox.Show(message);
                         continue;
                     }
@@ -223,8 +224,7 @@ namespace Data
             }
             catch
             {
-                var message = "Your hotkeys.xml file is invalid.";
-                MessageBox.Show(message);
+                MessageBox.Show(LP.Your_hotkeys_xml_file_is_invalid);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Lang;
 
 namespace DamageMeter.UI.SkillDetail
 {
@@ -22,7 +23,7 @@ namespace DamageMeter.UI.SkillDetail
 
             if (skill.IsHotDot)
             {
-                hit = LangPack.DOT;
+                hit = LP.DOT;
             }
             if (hit != null)
             {
@@ -30,7 +31,7 @@ namespace DamageMeter.UI.SkillDetail
             }
             if (chained == true)
             {
-                LabelName.Content += " " + LangPack.Chained;
+                LabelName.Content += " " + LP.Chained;
             }
 
             LabelName.ToolTip = skill.Id;

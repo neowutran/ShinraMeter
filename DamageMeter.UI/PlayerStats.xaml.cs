@@ -6,6 +6,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using DamageMeter.Database.Structures;
 using Data;
+using Lang;
 using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI
@@ -48,7 +49,7 @@ namespace DamageMeter.UI
             =>
                 FormatHelpers.Instance.FormatValue(PlayerDamageDealt.Interval == 0
                     ? PlayerDamageDealt.Amount
-                    : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/PlayerDamageDealt.Interval) + LangPack.PerSecond;
+                    : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/PlayerDamageDealt.Interval) + LP.PerSecond;
 
         public string Damage => FormatHelpers.Instance.FormatValue(PlayerDamageDealt.Amount);
 
@@ -56,7 +57,7 @@ namespace DamageMeter.UI
             =>
                 FormatHelpers.Instance.FormatValue(EntityInformation.Interval == 0
                     ? PlayerDamageDealt.Amount
-                    : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/EntityInformation.Interval) + LangPack.PerSecond;
+                    : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/EntityInformation.Interval) + LP.PerSecond;
 
         public string CritRate => Math.Round(PlayerDamageDealt.CritRate) + "%";
         public string CritRateHeal => Math.Round(PlayerHealDealt?.CritRate ?? 0) + "%";
@@ -78,17 +79,17 @@ namespace DamageMeter.UI
             _timedEncounter = timedEncounter;
             Skills = skills;
             LabelDps.Content = GlobalDps;
-            LabelDps.ToolTip = $"{LangPack.Individual_dps}: {Dps}";
+            LabelDps.ToolTip = $"{LP.Individual_dps}: {Dps}";
             LabelCritRate.Content = PlayerDamageDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
                 ? CritRateHeal
                 : CritRate;
             var intervalTimespan = TimeSpan.FromSeconds(PlayerDamageDealt.Interval/TimeSpan.TicksPerSecond);
-            LabelCritRate.ToolTip = $"{LangPack.Fight_Duration}: {intervalTimespan.ToString(@"mm\:ss")}";
+            LabelCritRate.ToolTip = $"{LP.Fight_Duration}: {intervalTimespan.ToString(@"mm\:ss")}";
             LabelCritRate.Foreground = PlayerDamageDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
                 ? Brushes.LawnGreen
                 : Brushes.LightCoral;
             LabelDamagePart.Content = DamagePart;
-            LabelDamagePart.ToolTip = $"{LangPack.Damage_done}: {Damage}";
+            LabelDamagePart.ToolTip = $"{LP.Damage_done}: {Damage}";
 
             _windowSkill?.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter);
             DpsIndicator.Width = EntityInformation.TotalDamage == 0
@@ -117,7 +118,7 @@ namespace DamageMeter.UI
                 _windowSkill = new Skills(this, PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter)
                 {
                     Title = PlayerName,
-                    CloseMeter = {Content = PlayerDamageDealt.Source.Class + " " + PlayerName + ": "+LangPack.Close}
+                    CloseMeter = {Content = PlayerDamageDealt.Source.Class + " " + PlayerName + ": "+LP.Close}
                 };
                 Screen screen = Screen.FromHandle(new WindowInteropHelper(Window.GetWindow(this)).Handle);
                 Window main = Window.GetWindow(this);

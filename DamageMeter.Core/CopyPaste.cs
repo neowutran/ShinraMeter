@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using DamageMeter.Database.Structures;
 using Data;
+using Lang;
 using Tera.Game.Abnormality;
 
 namespace DamageMeter
@@ -117,7 +118,7 @@ namespace DamageMeter
             dpsString = dpsString.Replace("{partyDps}",
                 FormatHelpers.Instance.FormatValue(lastHit - firstHit > 0
                     ? entityInfo.TotalDamage/(lastHit - firstHit)
-                    : 0) + "/s");
+                    : 0) + LP.PerSecond);
             dpsString = dpsString.Replace("{enrage}", FormatHelpers.Instance.FormatPercent(enrageperc));
 
             foreach (var playerStats in playerInfosOrdered)
@@ -143,7 +144,7 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{global_dps}",
                     FormatHelpers.Instance.FormatValue(entityInfo.Interval == 0 ? playerStats.Amount : playerStats.Amount*TimeSpan.TicksPerSecond/entityInfo.Interval) +
                     "/s");
-                currentContent = currentContent.Replace("{interval}", playerStats.Interval + "s");
+                currentContent = currentContent.Replace("{interval}", playerStats.Interval + LP.Seconds);
                 currentContent = currentContent.Replace("{damage_dealt}",
                     FormatHelpers.Instance.FormatValue(playerStats.Amount));
                 currentContent = currentContent.Replace("{class}", playerStats.Source.Class + "");

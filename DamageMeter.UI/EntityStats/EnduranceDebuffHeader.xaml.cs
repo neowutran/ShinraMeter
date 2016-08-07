@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Lang;
 
 namespace DamageMeter.UI.EntityStats
 {
@@ -13,11 +14,11 @@ namespace DamageMeter.UI.EntityStats
         {
             InitializeComponent();
 
-            LabelClass.Content = "Class";
-            LabelAbnormalityDuration.Content = "Eff Time";
-            LabelInterval.Content = "Fight";
-            LabelAbnormalityDurationPercentage.Content = "% Fight";
-            LabelName.Content = "Name";
+            LabelClass.Content = LP.Class;
+            LabelAbnormalityDuration.Content = LP.EffectTime;
+            LabelInterval.Content = LP.Fight;
+            LabelAbnormalityDurationPercentage.Content = LP.FightPercent;
+            LabelName.Content = LP.Name;
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Data;
+using Lang;
 using Tera.Game;
 
 namespace DamageMeter.UI
@@ -55,8 +46,8 @@ namespace DamageMeter.UI
 
             SkillAmount.Foreground = color;
             SkillAmount.FontWeight = fontWeight;
-            SkillAmount.ToolTip = skill.Critic ? LangPack.Critical :  LangPack.White;
-            SkillName.Content = LangPack.Unknown_Skill;
+            SkillAmount.ToolTip = skill.Critic ? LP.Critical :  LP.White;
+            SkillName.Content = LP.Unknown_Skill;
             if (skillInfo != null)
             {
                 SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);

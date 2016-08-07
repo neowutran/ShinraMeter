@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Data;
+using Lang;
 
 namespace DamageMeter
 {
@@ -137,7 +138,7 @@ namespace DamageMeter
 
             // register the hot key.
             if (!RegisterHotKey(_window.Handle, _currentId, (uint) modifier, (uint) key))
-                throw new InvalidOperationException("Couldn’t register the hot key.");
+                MessageBox.Show(LP.RegisterHotKeyError + " " + key + LP.AlreadyInUse);
         }
 
         /// <summary>

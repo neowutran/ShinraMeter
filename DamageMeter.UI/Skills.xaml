@@ -4,6 +4,7 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:ui="clr-namespace:DamageMeter.UI"
+                     xmlns:l="clr-namespace:Lang;assembly=Lang"
                      mc:Ignorable="d"
                      Title="Skills">
     <Window.Background>
@@ -95,58 +96,68 @@
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
                 </Button>
-                <Label Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="0,30,0,0"
-                       FontSize="14" Foreground="White"
-                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="60"
-                       HorizontalContentAlignment="Center" ToolTip="Death count">
-                    Deaths:
-                </Label>
-                <Label x:Name="DeathCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left"
-                       Margin="60,30,0,0" FontSize="14" Foreground="White"
-                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="40"
+                <Grid Margin="0,30,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="60" Width="Auto"/>
+                        <ColumnDefinition MinWidth="40" Width="Auto"/>
+                        <ColumnDefinition MinWidth="80" Width="Auto"/>
+                        <ColumnDefinition MinWidth="80" Width="Auto"/>
+                        <ColumnDefinition MinWidth="55" Width="Auto"/>
+                        <ColumnDefinition MinWidth="40" Width="Auto"/>
+                        <ColumnDefinition MinWidth="80" Width="Auto"/>
+                        <ColumnDefinition MinWidth="80" Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Background="Transparent" Focusable="False" HorizontalAlignment="Left"
+                       FontSize="14" Foreground="White" Grid.Column="0"
+                       VerticalAlignment="Top" MinHeight="29" Height="29"
+                       HorizontalContentAlignment="Center" ToolTip="{x:Static l:LP.Deaths_Tooltip}">
+                        <TextBlock Text="{Binding Source={x:Static l:LP.Deaths}, StringFormat= '\{0\}:'}"/>
+                    </Label>
+                    <Label x:Name="DeathCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left"
+                       FontSize="14" Foreground="White" Grid.Column="1"
+                       VerticalAlignment="Top" MinHeight="29" Height="29"
                        HorizontalContentAlignment="Center" />
-                <Label Focusable="False" HorizontalAlignment="Left" Margin="100,30,0,0" FontSize="14"
-                       Foreground="White"
-                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="80"
-                       HorizontalContentAlignment="Center" Background="Transparent" ToolTip="Time spent on the floor">
-                    Death time:
-                </Label>
-                <Label x:Name="DeathDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left"
-                       Margin="180,30,0,0" FontSize="14" Foreground="White"
-                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="80"
+                    <Label Focusable="False" HorizontalAlignment="Left" FontSize="14"
+                       Foreground="White" Grid.Column="2"
+                       VerticalAlignment="Top" MinHeight="29" Height="29"
+                       HorizontalContentAlignment="Center" Background="Transparent" ToolTip="{x:Static l:LP.Death_Time_Tooltip}">
+                        <TextBlock Text="{Binding Source={x:Static l:LP.Death_Time}, StringFormat= '\{0\}:'}"/>
+                    </Label>
+                    <Label x:Name="DeathDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left"
+                       FontSize="14" Foreground="White" Grid.Column="3"
+                       VerticalAlignment="Top" MinHeight="29" Height="29"
                        HorizontalContentAlignment="Center" />
-                <Label Background="Transparent" Focusable="False" HorizontalAlignment="Left" Margin="260,30,0,0"
-                       FontSize="14" Foreground="White"
-                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="55"
-                       HorizontalContentAlignment="Center" ToolTip="Aggro take count">
-                    Aggro:
-                </Label>
-                <Label x:Name="AggroCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left"
-                       Margin="315,30,0,0" FontSize="14" Foreground="White"
-                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="40"
+                    <Label Background="Transparent" Focusable="False" HorizontalAlignment="Left"
+                       FontSize="14" Foreground="White" Grid.Column="4"
+                       VerticalAlignment="Top" MinHeight="29" Height="29"
+                       HorizontalContentAlignment="Center" ToolTip="{x:Static l:LP.Aggro_Tooltip}">
+                        <TextBlock Text="{Binding Source={x:Static l:LP.Aggro}, StringFormat= '\{0\}:'}"/>
+                    </Label>
+                    <Label x:Name="AggroCounter" Background="Transparent" Focusable="False" HorizontalAlignment="Left"
+                       FontSize="14" Foreground="White" Grid.Column="5"
+                       VerticalAlignment="Top" MinHeight="29" Height="29"
                        HorizontalContentAlignment="Center" />
-                <Label Focusable="False" HorizontalAlignment="Left" Margin="355,30,0,0" FontSize="14"
-                       Foreground="White"
-                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="85"
-                       HorizontalContentAlignment="Center" Background="Transparent" ToolTip="Time holding boss aggro">
-                    Aggro time:
-                </Label>
-                <Label x:Name="AggroDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left"
-                       Margin="440,30,0,0" FontSize="14" Foreground="White"
-                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="80"
+                    <Label Focusable="False" HorizontalAlignment="Left" FontSize="14"
+                       Foreground="White" Grid.Column="6"
+                       VerticalAlignment="Top" MinHeight="29" Height="29"
+                       HorizontalContentAlignment="Center" Background="Transparent" ToolTip="{x:Static l:LP.Aggro_Time_Tooltip}">
+                        <TextBlock Text="{Binding Source={x:Static l:LP.Aggro_Time}, StringFormat= '\{0\}:'}"/>
+                    </Label>
+                    <Label x:Name="AggroDuration" Background="Transparent" Focusable="False" HorizontalAlignment="Left"
+                       FontSize="14" Foreground="White" Grid.Column="7"
+                       VerticalAlignment="Top" MinHeight="29" Height="29" 
                        HorizontalContentAlignment="Center" />
-
+                </Grid>
                 <TabControl Background="Transparent" BorderThickness="0" x:Name="TabControl" Margin="0,60,0,0">
-                    <TabItem FontSize="14" Header="Dps" x:Name="DpsPanel" Background="Transparent" Foreground="White" />
-                    <TabItem FontSize="14" Header="Heal" x:Name="HealPanel" Background="Transparent" Foreground="White" />
-                    <TabItem FontSize="14" Header="Mana" x:Name="ManaPanel" Background="Transparent" Foreground="White" />
-                    <TabItem FontSize="14" Header="Buff" x:Name="BuffPanel" Background="Transparent" Foreground="White" />
-                    <TabItem FontSize="14" Header="SkillDealt" x:Name="SkillsDealtPanel" Background="Transparent" Foreground="White" />
-                    <TabItem FontSize="14" Header="SkillReceived" x:Name="SkillsReceivedPanel" Background="Transparent" Foreground="White" />
-
+                    <TabItem FontSize="14" Header="{x:Static l:LP.Dps}" x:Name="DpsPanel" Background="Transparent" Foreground="White" />
+                    <TabItem FontSize="14" Header="{x:Static l:LP.Heal}" x:Name="HealPanel" Background="Transparent" Foreground="White" />
+                    <TabItem FontSize="14" Header="{x:Static l:LP.Mana}" x:Name="ManaPanel" Background="Transparent" Foreground="White" />
+                    <TabItem FontSize="14" Header="{x:Static l:LP.Buff}" x:Name="BuffPanel" Background="Transparent" Foreground="White" />
+                    <TabItem FontSize="14" Header="{x:Static l:LP.SkillDealt}" x:Name="SkillsDealtPanel" Background="Transparent" Foreground="White" />
+                    <TabItem FontSize="14" Header="{x:Static l:LP.SkillReceived}" x:Name="SkillsReceivedPanel" Background="Transparent" Foreground="White" />
                 </TabControl>
 
-       </Grid>
+            </Grid>
         </ScrollViewer>
 
     </Grid>

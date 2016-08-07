@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DamageMeter {
+namespace Lang {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace DamageMeter {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class LangPack {
+    public class LP {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal LangPack() {
+        internal LP() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace DamageMeter {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DamageMeter.LangPack", typeof(LangPack).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Lang.LP", typeof(LP).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,51 @@ namespace DamageMeter {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aggro.
+        /// </summary>
+        public static string Aggro {
+            get {
+                return ResourceManager.GetString("Aggro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aggro time.
+        /// </summary>
+        public static string Aggro_Time {
+            get {
+                return ResourceManager.GetString("Aggro_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Time holding boss aggro&quot;.
+        /// </summary>
+        public static string Aggro_Time_Tooltip {
+            get {
+                return ResourceManager.GetString("Aggro_Time_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aggro take count.
+        /// </summary>
+        public static string Aggro_Tooltip {
+            get {
+                return ResourceManager.GetString("Aggro_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  probably is already in use..
+        /// </summary>
+        public static string AlreadyInUse {
+            get {
+                return ResourceManager.GetString("AlreadyInUse", resourceCulture);
             }
         }
         
@@ -97,11 +142,65 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Avg.
+        /// </summary>
+        public static string Average {
+            get {
+                return ResourceManager.GetString("Average", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg crit.
+        /// </summary>
+        public static string AverageCrit {
+            get {
+                return ResourceManager.GetString("AverageCrit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg DPS.
+        /// </summary>
+        public static string AvgDPS {
+            get {
+                return ResourceManager.GetString("AvgDPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Avg white.
+        /// </summary>
+        public static string AvgWhite {
+            get {
+                return ResourceManager.GetString("AvgWhite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Berserker.
         /// </summary>
         public static string Berserker {
             get {
                 return ResourceManager.GetString("Berserker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boss.
+        /// </summary>
+        public static string Boss {
+            get {
+                return ResourceManager.GetString("Boss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boss HP.
+        /// </summary>
+        public static string BossHP {
+            get {
+                return ResourceManager.GetString("BossHP", resourceCulture);
             }
         }
         
@@ -115,11 +214,29 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buff.
+        /// </summary>
+        public static string Buff {
+            get {
+                return ResourceManager.GetString("Buff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chained.
         /// </summary>
         public static string Chained {
             get {
                 return ResourceManager.GetString("Chained", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string Class {
+            get {
+                return ResourceManager.GetString("Class", resourceCulture);
             }
         }
         
@@ -151,11 +268,92 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to % Crit.
+        /// </summary>
+        public static string CritPercent {
+            get {
+                return ResourceManager.GetString("CritPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crits.
+        /// </summary>
+        public static string Crits {
+            get {
+                return ResourceManager.GetString("Crits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Damage.
+        /// </summary>
+        public static string Damage {
+            get {
+                return ResourceManager.GetString("Damage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Damage done.
         /// </summary>
         public static string Damage_done {
             get {
                 return ResourceManager.GetString("Damage_done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to % Dmg.
+        /// </summary>
+        public static string DamagePercent {
+            get {
+                return ResourceManager.GetString("DamagePercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dmg taken.
+        /// </summary>
+        public static string DamgeTaken {
+            get {
+                return ResourceManager.GetString("DamgeTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Death time.
+        /// </summary>
+        public static string Death_Time {
+            get {
+                return ResourceManager.GetString("Death_Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &quot;Time spent on the floor&quot;.
+        /// </summary>
+        public static string Death_Time_Tooltip {
+            get {
+                return ResourceManager.GetString("Death_Time_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deaths.
+        /// </summary>
+        public static string Deaths {
+            get {
+                return ResourceManager.GetString("Deaths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deaths count.
+        /// </summary>
+        public static string Deaths_Tooltip {
+            get {
+                return ResourceManager.GetString("Deaths_Tooltip", resourceCulture);
             }
         }
         
@@ -169,6 +367,42 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dps.
+        /// </summary>
+        public static string Dps {
+            get {
+                return ResourceManager.GetString("Dps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eff Time.
+        /// </summary>
+        public static string EffectTime {
+            get {
+                return ResourceManager.GetString("EffectTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enrage.
+        /// </summary>
+        public static string Enrage {
+            get {
+                return ResourceManager.GetString("Enrage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fight.
+        /// </summary>
+        public static string Fight {
+            get {
+                return ResourceManager.GetString("Fight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fight Duration.
         /// </summary>
         public static string Fight_Duration {
@@ -178,11 +412,56 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to % Fight.
+        /// </summary>
+        public static string FightPercent {
+            get {
+                return ResourceManager.GetString("FightPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gunner.
         /// </summary>
         public static string Gunner {
             get {
                 return ResourceManager.GetString("Gunner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heal.
+        /// </summary>
+        public static string Heal {
+            get {
+                return ResourceManager.GetString("Heal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heal Crit %.
+        /// </summary>
+        public static string HealCritPercent {
+            get {
+                return ResourceManager.GetString("HealCritPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hits.
+        /// </summary>
+        public static string Hits {
+            get {
+                return ResourceManager.GetString("Hits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hits taken.
+        /// </summary>
+        public static string HitsTaken {
+            get {
+                return ResourceManager.GetString("HitsTaken", resourceCulture);
             }
         }
         
@@ -250,11 +529,56 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mana.
+        /// </summary>
+        public static string Mana {
+            get {
+                return ResourceManager.GetString("Mana", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max crit.
+        /// </summary>
+        public static string MaxCrit {
+            get {
+                return ResourceManager.GetString("MaxCrit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max white.
+        /// </summary>
+        public static string MaxWhite {
+            get {
+                return ResourceManager.GetString("MaxWhite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min Crit.
+        /// </summary>
+        public static string MinCrit {
+            get {
+                return ResourceManager.GetString("MinCrit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mystic.
         /// </summary>
         public static string Mystic {
             get {
                 return ResourceManager.GetString("Mystic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         
@@ -295,6 +619,15 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn’t register the hot key..
+        /// </summary>
+        public static string RegisterHotKeyError {
+            get {
+                return ResourceManager.GetString("RegisterHotKeyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
         public static string Reset {
@@ -313,6 +646,33 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SkillDealt.
+        /// </summary>
+        public static string SkillDealt {
+            get {
+                return ResourceManager.GetString("SkillDealt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skill name.
+        /// </summary>
+        public static string SkillName {
+            get {
+                return ResourceManager.GetString("SkillName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SkillReceived.
+        /// </summary>
+        public static string SkillReceived {
+            get {
+                return ResourceManager.GetString("SkillReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slayer.
         /// </summary>
         public static string Slayer {
@@ -322,11 +682,38 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Slaying.
+        /// </summary>
+        public static string Slaying {
+            get {
+                return ResourceManager.GetString("Slaying", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;Slaying&apos; crystal is working (if equipped) when player in this state..
+        /// </summary>
+        public static string SlayingTooltip {
+            get {
+                return ResourceManager.GetString("SlayingTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorcerer.
         /// </summary>
         public static string Sorcerer {
             get {
                 return ResourceManager.GetString("Sorcerer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
             }
         }
         
@@ -439,6 +826,15 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No server.
+        /// </summary>
+        public static string SystemTray_No_server {
+            get {
+                return ResourceManager.GetString("SystemTray_No_server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Packets waiting to be processed.
         /// </summary>
         public static string SystemTray_Packet_waiting {
@@ -520,6 +916,42 @@ namespace DamageMeter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Api error or timeout..
+        /// </summary>
+        public static string TeraDpsIoApiError {
+            get {
+                return ResourceManager.GetString("TeraDpsIoApiError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time.
+        /// </summary>
+        public static string Time {
+            get {
+                return ResourceManager.GetString("Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TOTAL.
+        /// </summary>
+        public static string TotalEncounter {
+            get {
+                return ResourceManager.GetString("TotalEncounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to get key from string.
+        /// </summary>
+        public static string Unable_to_get_key_from_string {
+            get {
+                return ResourceManager.GetString("Unable_to_get_key_from_string", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown Skill.
         /// </summary>
         public static string Unknown_Skill {
@@ -552,6 +984,15 @@ namespace DamageMeter {
         public static string Your_computer_is_too_slow {
             get {
                 return ResourceManager.GetString("Your_computer_is_too_slow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your hotkeys.xml file is invalid..
+        /// </summary>
+        public static string Your_hotkeys_xml_file_is_invalid {
+            get {
+                return ResourceManager.GetString("Your_hotkeys_xml_file_is_invalid", resourceCulture);
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Xml;
 using DamageMeter.AutoUpdate;
 using DamageMeter.TeraDpsApi;
 using Data;
+using Lang;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Style;
@@ -211,7 +212,7 @@ namespace DamageMeter
                 using (var package = new ExcelPackage(file))
                 {
                     var details = CreateDetailsSheet(package, exdata);
-                    var ws = package.Workbook.Worksheets.Add("Boss");
+                    var ws = package.Workbook.Worksheets.Add(LP.Boss);
                     var linkStyle = package.Workbook.Styles.CreateNamedStyle("HyperLink");
                     //This one is language dependent
                     linkStyle.Style.Font.UnderLine = true;
@@ -227,16 +228,16 @@ namespace DamageMeter
                     ws.Cells[1, 10].Style.Numberformat.Format = @"#,#00,\k\/\s";
                     ws.Cells[2, 1].Value = "Ic";
                     ws.Cells[2, 1].Style.Font.Color.SetColor(Color.Transparent);
-                    ws.Cells[2, 2].Value = "Name";
-                    ws.Cells[2, 3].Value = "Deaths";
-                    ws.Cells[2, 4].Value = "Death time";
-                    ws.Cells[2, 5].Value = "Damage %";
-                    ws.Cells[2, 6].Value = "Crit %";
-                    ws.Cells[2, 7].Value = "Heal Crit %";
-                    ws.Cells[2, 8].Value = "Hits taken";
-                    ws.Cells[2, 9].Value = "Dmg taken";
-                    ws.Cells[2, 10].Value = "DPS";
-                    ws.Cells[2, 11].Value = "Damage";
+                    ws.Cells[2, 2].Value = LP.Name;
+                    ws.Cells[2, 3].Value = LP.Deaths;
+                    ws.Cells[2, 4].Value = LP.Death_Time;
+                    ws.Cells[2, 5].Value = LP.DamagePercent;
+                    ws.Cells[2, 6].Value = LP.CritPercent;
+                    ws.Cells[2, 7].Value = LP.HealCritPercent;
+                    ws.Cells[2, 8].Value = LP.HitsTaken;
+                    ws.Cells[2, 9].Value = LP.DamgeTaken;
+                    ws.Cells[2, 10].Value = LP.Dps;
+                    ws.Cells[2, 11].Value = LP.Damage;
                     var i = 2;
                     foreach (var user in data.members.OrderByDescending(x => long.Parse(x.playerTotalDamage)))
                     {
@@ -274,7 +275,7 @@ namespace DamageMeter
                     var j = i + 3;
                     ws.Cells[j, 1].Value = "Ic";
                     ws.Cells[j, 1].Style.Font.Color.SetColor(Color.Transparent);
-                    ws.Cells[j, 2].Value = "Debuff name";
+                    ws.Cells[j, 2].Value = LP.Name;
                     ws.Cells[j, 2, j, 10].Merge = true;
                     ws.Cells[j, 11].Value = "%";
                     ws.Cells[j, 2, j, 11].Style.Font.Bold = true;
@@ -307,7 +308,7 @@ namespace DamageMeter
                     ws.Column(8).AutoFit();
                     ws.Column(9).AutoFit();
                     ws.Column(10).AutoFit();
-                    ws.Column(11).Width = 17;
+                    ws.Column(11).Width = 20;
                     ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
                     ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width);
                     ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width);
@@ -315,6 +316,8 @@ namespace DamageMeter
                     ws.Column(6).Width = GetTrueColumnWidth(ws.Column(6).Width);
                     ws.Column(7).Width = GetTrueColumnWidth(ws.Column(7).Width);
                     ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width);
+                    ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width);
+                    ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width);
                     ws.Cells[1, 1, j, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     ws.Cells[1, 1, j, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     ws.PrinterSettings.FitToPage = true;
@@ -340,10 +343,10 @@ namespace DamageMeter
         {
             var time = (int) (exdata.LastTick/TimeSpan.TicksPerSecond - exdata.FirstTick/TimeSpan.TicksPerSecond);
             var offset = exdata.PlayerBuffs.Keys.ToList().IndexOf(ws.Name) + 1;
-            var bossSheet = ws.Name == "Boss";
+            var bossSheet = ws.Name == LP.Boss;
             if (!bossSheet && offset <= 0) return; //no buff data for user -> no graphs.
             offset = bossSheet ? 3 : 4 + offset*7;
-            var dps = ws.Drawings.AddChart(ws.Name + "DPS", eChartType.Line);
+            var dps = ws.Drawings.AddChart(ws.Name + LP.Dps, eChartType.Line);
             dps.SetPosition(startrow + 1, 5, 0, 5);
             dps.SetSize(1200, 300);
             dps.Legend.Position = eLegendPosition.Top;
@@ -353,33 +356,33 @@ namespace DamageMeter
             if (!bossSheet)
             {
                 typeDmg = dps.PlotArea.ChartTypes[0];
-                typeDmg.YAxis.Title.Text = "Damage";
+                typeDmg.YAxis.Title.Text = LP.Damage;
                 typeDmg.YAxis.Title.Rotation = 90;
 
                 serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 5, time + 3, offset + 5],
                     details.Cells[3, 2, time + 3, 2]);
-                serieDmg.Header = ws.Name + " Dmg";
+                serieDmg.Header = ws.Name + " "+LP.Damage;
             }
             else 
             {
                
                 typeDmg = dps.PlotArea.ChartTypes[0];
-                typeDmg.YAxis.Title.Text = "Boss HP";
+                typeDmg.YAxis.Title.Text = LP.BossHP;
                 typeDmg.YAxis.Title.Rotation = 90;
                 typeDmg.YAxis.MaxValue = 1;
                 serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 7, time + 3, offset + 7], details.Cells[3, 2, time + 3, 2]);
-                serieDmg.Header = "Boss HP %";
+                serieDmg.Header = LP.BossHP+" %";
             }
             typeDmg.YAxis.MinValue = 0;
             var typeDps = dps.PlotArea.ChartTypes.Add(eChartType.Line);
             typeDps.UseSecondaryAxis = true;
-            typeDps.YAxis.Title.Text = "Avg DPS";
+            typeDps.YAxis.Title.Text = LP.AvgDPS;
             typeDps.YAxis.Title.Rotation = 90;
             typeDps.YAxis.SourceLinked = false;
             typeDps.YAxis.Format = @"#,#0\k\/\s"; //not sure why, but it loss sourcelink itself if we show only dps.
             var serieDps = typeDps.Series.Add(details.Cells[3, offset + 6, time + 3, offset + 6],
                 details.Cells[3, 2, time + 3, 2]);
-            serieDps.Header = ws.Name + " Avg DPS";
+            serieDps.Header = ws.Name + " "+LP.AvgDPS;
             if (bossSheet)
             {
                 typeDps.YAxis.MaxValue = details.Cells[3, offset + 6, time + 3, offset + 6].Max(x => (long)x.Value);
@@ -392,7 +395,7 @@ namespace DamageMeter
                     //userDmg.Header = user.Key + " Dmg";
                     var userDps = typeDps.Series.Add(details.Cells[3, col + 6, time + 3, col + 6],
                         details.Cells[3, 2, time + 3, 2]);
-                    userDps.Header = user.Key + " Avg DPS";
+                    userDps.Header = user.Key + " "+LP.AvgDPS;
                 }
             }
             //dps.FixEppPlusBug();// needed only if adding users dmg to main boss chart
@@ -410,18 +413,18 @@ namespace DamageMeter
                   + (exdata.PlayerBuffs[ws.Name].Aggro(exdata.Entity).Count() > 0 ? 1 : 0);
             if (numInt >= 0 && numBuff > 0)
             {
-                var buff = ws.Drawings.AddChart(ws.Name + "Buff", eChartType.BarStacked);
+                var buff = ws.Drawings.AddChart(ws.Name + LP.Buff, eChartType.BarStacked);
                 var typeBuff = buff.PlotArea.ChartTypes[0];
                 buff.SetPosition(startrow + 9, 5, 0, 5);
                 buff.SetSize(1200, numBuff*25 + 38);
                 buff.Legend.Remove();
                 var serieStart = typeBuff.Series.Add(details.Cells[3, offset + 1, numInt + 3, offset + 1],
                     details.Cells[3, offset, numInt + 3, offset]);
-                serieStart.Header = "Start";
+                serieStart.Header = LP.Start;
                 (buff as ExcelBarChart).InvisibleSerie(serieStart);
                 var serieTime = typeBuff.Series.Add(details.Cells[3, offset + 2, numInt + 3, offset + 2],
                     details.Cells[3, offset, numInt + 3, offset]);
-                serieTime.Header = "Time";
+                serieTime.Header = LP.Time;
                 typeBuff.YAxis.MajorUnit = time >= 40 ? (double) (time/20)/86400F : 1F/86400F;
                 typeBuff.YAxis.MinValue = 0F;
                 typeBuff.YAxis.MaxValue = (double) time/86400F;
@@ -432,7 +435,7 @@ namespace DamageMeter
                 typeAxis.UseSecondaryAxis = true;
                 var serieAxis = typeAxis.Series.Add(details.Cells[3, offset + 4, numBuff - 1 + 3, offset + 4],
                     details.Cells[3, offset + 3, numBuff - 1 + 3, offset + 3]);
-                serieAxis.Header = "Names";
+                serieAxis.Header = LP.Name;
                 typeAxis.XAxis.Orientation = eAxisOrientation.MaxMin;
                 typeAxis.XAxis.TickLabelPosition = eTickLabelPosition.NextTo;
                 typeAxis.XAxis.MinorTickMark = eAxisTickMark.None;
@@ -547,7 +550,7 @@ namespace DamageMeter
                 if (user.Value.Death.Count() > 0)
                 {
                     buffnum++;
-                    details.Cells[2 + buffnum, i + 3].Value = "Death";
+                    details.Cells[2 + buffnum, i + 3].Value = LP.Deaths;
                     details.Cells[2 + buffnum, i + 4].Value = 0;
                     foreach (var buff in user.Value.Death.AllDurations())
                     {
@@ -561,7 +564,7 @@ namespace DamageMeter
                 if (user.Value.Aggro(exdata.Entity).Count() > 0)
                 {
                     buffnum++;
-                    details.Cells[2 + buffnum, i + 3].Value = "Aggro";
+                    details.Cells[2 + buffnum, i + 3].Value = LP.Aggro;
                     details.Cells[2 + buffnum, i + 4].Value = 0;
                     foreach (var buff in user.Value.Aggro(exdata.Entity).AllDurations())
                     {
@@ -647,16 +650,16 @@ namespace DamageMeter
             ws.Cells[1, 2].Value = $"{user.playerServer}: {user.playerName}";
             ws.Cells[1, 2, 1, 11].Merge = true;
             ws.Cells[1, 2, 1, 11].Style.Font.Bold = true;
-            ws.Cells[2, 2].Value = "Skill";
-            ws.Cells[2, 3].Value = "Damage %";
-            ws.Cells[2, 4].Value = "Damage";
-            ws.Cells[2, 5].Value = "Crit %";
-            ws.Cells[2, 6].Value = "Hits";
-            ws.Cells[2, 7].Value = "Crits";
-            ws.Cells[2, 8].Value = "Max Crit";
-            ws.Cells[2, 9].Value = "Min Crit";
-            ws.Cells[2, 10].Value = "Avg Crit";
-            ws.Cells[2, 11].Value = "Avg White";
+            ws.Cells[2, 2].Value = LP.SkillName;
+            ws.Cells[2, 3].Value = LP.DamagePercent;
+            ws.Cells[2, 4].Value = LP.Damage;
+            ws.Cells[2, 5].Value = LP.CritPercent;
+            ws.Cells[2, 6].Value = LP.Hits;
+            ws.Cells[2, 7].Value = LP.Crits;
+            ws.Cells[2, 8].Value = LP.MaxCrit;
+            ws.Cells[2, 9].Value = LP.MinCrit;
+            ws.Cells[2, 10].Value = LP.AverageCrit;
+            ws.Cells[2, 11].Value = LP.AvgWhite;
             var i = 2;
            
             foreach (var stat in exdata.PlayerSkillsAggregated[user.playerServer+"/"+user.playerName].OrderByDescending(x => x.Amount()))
@@ -693,7 +696,7 @@ namespace DamageMeter
             ws.Cells[2, 1, i, 11].AutoFilter = true;
 
             var j = i + 3;
-            ws.Cells[j, 2].Value = "Buff name";
+            ws.Cells[j, 2].Value = LP.Name;
             ws.Cells[j, 2, j, 10].Merge = true;
             ws.Cells[j, 11].Value = "%";
             ws.Cells[j, 2, j, 11].Style.Font.Bold = true;
@@ -735,6 +738,7 @@ namespace DamageMeter
             ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width);
             ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width);
             ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width);
+            ws.Column(11).Width = GetTrueColumnWidth(ws.Column(11).Width);
             ws.Cells[1, 1, j, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             ws.Cells[1, 1, j, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ws.PrinterSettings.FitToPage = true;

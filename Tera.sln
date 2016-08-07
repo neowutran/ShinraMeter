@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Core", "TeraCommon\Ter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Randomizer", "Randomizer\Randomizer.csproj", "{F359D35B-4647-40B9-B730-1CDDD83B6CB4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang", "Lang\Lang.csproj", "{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,18 @@ Global
 		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|x64.Build.0 = Release|Any CPU
 		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|x86.ActiveCfg = Release|Any CPU
 		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|x86.Build.0 = Release|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|x64.Build.0 = Debug|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|x86.Build.0 = Debug|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Release|x64.ActiveCfg = Release|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Release|x64.Build.0 = Release|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Release|x86.ActiveCfg = Release|Any CPU
+		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

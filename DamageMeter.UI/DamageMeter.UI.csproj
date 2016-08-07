@@ -297,6 +297,10 @@
       <Project>{66bb1685-8ff5-4431-b77f-7f80c92a5da4}</Project>
       <Name>DamageMeter.Sniffing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Lang\Lang.csproj">
+      <Project>{220fef0f-4a83-4ab8-9435-f9bc09b9039f}</Project>
+      <Name>Lang</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
       <Name>Tera</Name>
