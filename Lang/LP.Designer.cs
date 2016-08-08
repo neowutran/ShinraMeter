@@ -178,6 +178,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Berserker.
         /// </summary>
         public static string Berserker {
@@ -360,9 +369,9 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to DOT.
         /// </summary>
-        public static string DOT {
+        public static string Dot {
             get {
-                return ResourceManager.GetString("DOT", resourceCulture);
+                return ResourceManager.GetString("Dot", resourceCulture);
             }
         }
         
@@ -421,6 +430,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Front.
+        /// </summary>
+        public static string Front {
+            get {
+                return ResourceManager.GetString("Front", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gunner.
         /// </summary>
         public static string Gunner {
@@ -462,6 +480,15 @@ namespace Lang {
         public static string HitsTaken {
             get {
                 return ResourceManager.GetString("HitsTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HOT.
+        /// </summary>
+        public static string Hot {
+            get {
+                return ResourceManager.GetString("Hot", resourceCulture);
             }
         }
         
@@ -565,6 +592,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MOT.
+        /// </summary>
+        public static string Mot {
+            get {
+                return ResourceManager.GetString("Mot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mystic.
         /// </summary>
         public static string Mystic {
@@ -597,6 +633,15 @@ namespace Lang {
         public static string PerSecond {
             get {
                 return ResourceManager.GetString("PerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet.
+        /// </summary>
+        public static string Pet {
+            get {
+                return ResourceManager.GetString("Pet", resourceCulture);
             }
         }
         
@@ -642,6 +687,15 @@ namespace Lang {
         public static string Seconds {
             get {
                 return ResourceManager.GetString("Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Side.
+        /// </summary>
+        public static string Side {
+            get {
+                return ResourceManager.GetString("Side", resourceCulture);
             }
         }
         

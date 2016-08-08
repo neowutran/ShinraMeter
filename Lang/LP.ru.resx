@@ -222,8 +222,8 @@
   <data name="Seconds" xml:space="preserve">
     <value>с</value>
   </data>
-  <data name="DOT" xml:space="preserve">
-    <value>Дот</value>
+  <data name="Dot" xml:space="preserve">
+    <value>ДОТ</value>
   </data>
   <data name="Chained" xml:space="preserve">
     <value>в цепочке</value>
@@ -428,5 +428,21 @@
   </data>
   <data name="SlayingTooltip" xml:space="preserve">
     <value>Если одет кристалл 'истребления' - он работает пока активен этот статус.</value>
+  </data>
+  <!-- HitDirection overrides -->
+  <data name="Back" xml:space="preserve">
+    <value>Сзади</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Сбоку</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Спереди</value>
+  </data>
+  <data name="Pet" xml:space="preserve">
+    <value>Помошник</value>
+  </data>
+  <data name="Hot" xml:space="preserve">
+    <value>ХОТ</value>
   </data>
 </root>

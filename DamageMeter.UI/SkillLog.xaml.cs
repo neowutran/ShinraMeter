@@ -55,13 +55,15 @@ namespace DamageMeter.UI
             }
             SkillAmount.Content = skill.Amount;
             SkillIcon.ToolTip = skill.SkillId;
-            SkillDirection.Content = skill.Direction.ToString();
+            SkillDirection.Content = LP.ResourceManager.GetString(skill.Direction.ToString());
             switch (skill.Direction)
             {
                     case HitDirection.Back:
                         SkillDirection.Foreground = Brushes.Red;
                     break;
                     case HitDirection.Dot:
+                        if (skill.Type == Database.Database.Type.Heal) SkillDirection.Content = LP.Hot;
+                        if (skill.Type == Database.Database.Type.Mana) SkillDirection.Content = LP.Mot;
                     break;
                     case HitDirection.Front:
                     SkillDirection.Foreground = Brushes.BlueViolet;

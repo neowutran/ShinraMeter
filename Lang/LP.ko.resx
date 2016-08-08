@@ -225,7 +225,7 @@
   <data name="Seconds" xml:space="preserve">
     <value>초</value>
   </data>
-  <data name="DOT" xml:space="preserve">
+  <data name="Dot" xml:space="preserve">
     <value>도트</value>
   </data>
   <data name="Chained" xml:space="preserve">
@@ -428,5 +428,15 @@
   </data>
   <data name="SlayingTooltip" xml:space="preserve">
     <value>'필사의 일격' 크리스탈을 장착시 발동합니다.</value>
+  </data>
+  <!-- HitDirection overrides -->
+  <data name="Back" xml:space="preserve">
+    <value>후</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>측</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>전</value>
   </data>
 </root>

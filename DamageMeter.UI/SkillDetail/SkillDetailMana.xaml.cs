@@ -23,7 +23,7 @@ namespace DamageMeter.UI.SkillDetail
 
             if (skill.IsHotDot)
             {
-                hit = LP.DOT;
+                hit = LP.Mot;
             }
             if (hit != null)
             {

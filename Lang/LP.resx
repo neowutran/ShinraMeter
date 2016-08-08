@@ -225,7 +225,7 @@
   <data name="Seconds" xml:space="preserve">
     <value>s</value>
   </data>
-  <data name="DOT" xml:space="preserve">
+  <data name="Dot" xml:space="preserve">
     <value>DOT</value>
   </data>
   <data name="Chained" xml:space="preserve">
@@ -431,5 +431,24 @@
   </data>
   <data name="SlayingTooltip" xml:space="preserve">
     <value>'Slaying' crystal is working (if equipped) when player in this state.</value>
+  </data>
+  <!-- HitDirection overrides -->
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Side</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Front</value>
+  </data>
+  <data name="Pet" xml:space="preserve">
+    <value>Pet</value>
+  </data>
+  <data name="Hot" xml:space="preserve">
+    <value>HOT</value>
+  </data>
+  <data name="Mot" xml:space="preserve">
+    <value>MOT</value>
   </data>
 </root>
