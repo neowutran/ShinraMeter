@@ -121,7 +121,7 @@
     <value>アプリケーションを終了しますか？</value>
   </data>
   <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
-    <value>神羅メーターを終了</value>
+    <value>神羅メーターVを終了</value>
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
     <value>ボスのみ</value>
@@ -133,7 +133,7 @@
     <value>ボス + 一般モンスター</value>
   </data>
   <data name="SystemTray_before_crash" xml:space="preserve">
-    <value>before crash</value>
+    <value>クラッシュまで</value>
   </data>
   <data name="SystemTray_Packet_waiting" xml:space="preserve">
     <value>パケット保留中</value>
@@ -318,7 +318,7 @@
     <value>死亡していた時間</value>
   </data>
   <data name="Aggro" xml:space="preserve">
-    <value>戦闘時間</value>
+    <value>戦闘</value>
   </data>
   <data name="Aggro_Tooltip" xml:space="preserve">
     <value>戦闘回数</value>
@@ -363,7 +363,7 @@
     <value>平均クリダメ</value>
   </data>
   <data name="MaxCrit" xml:space="preserve">
-    <value>最大ダメ</value>
+    <value>最大クリダメ</value>
   </data>
   <data name="AvgWhite" xml:space="preserve">
     <value>平均白ダメ</value>
@@ -381,16 +381,16 @@
     <value>最大白ダメ</value>
   </data>
   <data name="Class" xml:space="preserve">
-    <value>職業</value>
+    <value>クラス</value>
   </data>
   <data name="EffectTime" xml:space="preserve">
-    <value>持続時間</value>
+    <value>効果時間</value>
   </data>
   <data name="Fight" xml:space="preserve">
     <value>戦闘時間</value>
   </data>
   <data name="FightPercent" xml:space="preserve">
-    <value>持続時間(%)</value>
+    <value>効果時間(%)</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>名前</value>
@@ -405,7 +405,7 @@
     <value>被弾回数</value>
   </data>
   <data name="DamgeTaken" xml:space="preserve">
-    <value>被ダメ</value>
+    <value>被ダメージ</value>
   </data>
   <data name="BossHP" xml:space="preserve">
     <value>ボスHP</value>
@@ -429,6 +429,24 @@
     <value>必死</value>
   </data>
   <data name="SlayingTooltip" xml:space="preserve">
-    <value>必死の一撃が装着されてる場合このバフが表示されます。</value>
+    <value>必死の一撃が装着されてる場合表示されます。</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>後方</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>側面</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>前方</value>
+  </data>
+  <data name="Pet" xml:space="preserve">
+    <value>ペット</value>
+  </data>
+  <data name="Hot" xml:space="preserve">
+    <value>HOT</value>
+  </data>
+  <data name="Mot" xml:space="preserve">
+    <value>MOT</value>
   </data>
 </root>
