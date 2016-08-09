@@ -121,7 +121,7 @@
     <value>要關閉應用程序嗎？</value>
   </data>
   <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
-    <value>結束神羅V</value>　
+    <value>結束神羅V</value>
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
     <value>只計算BOSS</value>
@@ -142,7 +142,7 @@
     <value>將目前資料輸出至EXCEL</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>重置</value>　
+    <value>重置</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>關閉</value>
@@ -163,7 +163,7 @@
     <value>TeraDps.io</value>
   </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
-    <value>輸出至EXCEL(自動)</value>　
+    <value>輸出至EXCEL(自動)</value>
   </data>
   <data name="SystemTray_Count_only_bosses" xml:space="preserve">
     <value>只計算BOSS</value>
