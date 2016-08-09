@@ -118,79 +118,79 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow_Do_you_want_to_close_the_application" xml:space="preserve">
-    <value>アプリケーションを終了しますか？</value>
+    <value>要關閉應用程序嗎？</value>
   </data>
   <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
-    <value>神羅メーターVを終了</value>
+    <value>結束神羅V</value>　
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
-    <value>ボスのみ</value>
+    <value>只計算BOSS</value>
   </data>
   <data name="MainWindow_Fatal_error" xml:space="preserve">
-    <value>致命的なエラーが発生しました。詳細についてはerror.logを参照してください。</value>
+    <value>發現一個嚴重的錯誤，請參閱error.log文件以獲取更多信息。</value>
   </data>
   <data name="MainWindow_Boss_Adds" xml:space="preserve">
-    <value>ボス + 一般モンスター</value>
+    <value>BOSS + 一般怪物</value>
   </data>
   <data name="SystemTray_before_crash" xml:space="preserve">
-    <value>クラッシュまで</value>
+    <value>before crash</value>
   </data>
   <data name="SystemTray_Packet_waiting" xml:space="preserve">
-    <value>パケット保留中</value>
+    <value>封包等待處理中</value>
   </data>
   <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
-    <value>Excelへ出力</value>
+    <value>將目前資料輸出至EXCEL</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>リセット</value>
+    <value>重置</value>　
   </data>
   <data name="Close" xml:space="preserve">
-    <value>閉じる</value>
+    <value>關閉</value>
   </data>
   <data name="SystemTray_Wiki" xml:space="preserve">
     <value>Wiki</value>
   </data>
   <data name="SystemTray_Patch_note" xml:space="preserve">
-    <value>更新履歴</value>
+    <value>更新記錄</value>
   </data>
   <data name="SystemTray_Report_issue" xml:space="preserve">
-    <value>エラー報告</value>
+    <value>回報問題</value>
   </data>
   <data name="SystemTray_Discord" xml:space="preserve">
-    <value>フォーラム(Discord)</value>
+    <value>Discord</value>
   </data>
   <data name="SystemTray_TeraDps_io" xml:space="preserve">
     <value>TeraDps.io</value>
   </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
-    <value>自動でExcel出力</value>
+    <value>輸出至EXCEL(自動)</value>　
   </data>
   <data name="SystemTray_Count_only_bosses" xml:space="preserve">
-    <value>ボスのみ計測</value>
+    <value>只計算BOSS</value>
   </data>
   <data name="SystemTray_Detect_bosses_by_HP_bar" xml:space="preserve">
-    <value>HPバーによってボスを検出(データベース無視)</value>
+    <value>由HP條檢測BOSS(忽略資料庫)</value>
   </data>
   <data name="SystemTray_Site_export" xml:space="preserve">
-    <value>サイトへ出力</value>
+    <value>輸出至網站</value>
   </data>
   <data name="SystemTray_Count_only_party_members" xml:space="preserve">
-    <value>パーティーメンバーのみ計測</value>
+    <value>只計算隊伍</value>
   </data>
   <data name="SystemTray_Stay_topmost" xml:space="preserve">
-    <value>最前面に表示</value>
+    <value>顯示在最上層</value>
   </data>
   <data name="SystemTray_Click_throu" xml:space="preserve">
-    <value>クリック無効</value>
+    <value>禁用點擊</value>
   </data>
   <data name="SystemTray_Invisible_when_no_stats" xml:space="preserve">
-    <value>計測結果がない場合非表示</value>
+    <value>自動隱藏(無計算時)</value>
   </data>
   <data name="SystemTray_Show_always" xml:space="preserve">
-    <value>常に表示</value>
+    <value>保持顯示</value>
   </data>
   <data name="SystemTray_Links" xml:space="preserve">
-    <value>リンク</value>
+    <value>連結</value>
   </data>
   <data name="SystemTray_Config" xml:space="preserve">
     <value>設定</value>
@@ -199,216 +199,216 @@
     <value>動作</value>
   </data>
   <data name="SystemTray_Performance_information" xml:space="preserve">
-    <value>パフォーマンス情報</value>
+    <value>性能資訊</value>
   </data>
   <data name="App_Unable_to_contact_update_server" xml:space="preserve">
-    <value>アップデートサーバーへの接続に失敗しました。後で再試行してください。
-詳細については、error.logを参照してください。</value>
+    <value>無法聯繫更新服務器，請稍後再試．在error.log中提供額外的資訊。</value>
   </data>
   <data name="App_Update_Available" xml:space="preserve">
-    <value>利用可能な更新</value>
+    <value>開啟自動更新</value>
   </data>
   <data name="App_Do_you_want_to_update" xml:space="preserve">
-    <value>アプリケーションを更新しますか？</value>
+    <value>是否更新應用程式？</value>
   </data>
   <data name="PerSecond" xml:space="preserve">
-    <value>/s</value>
+    <value>/秒</value>
   </data>
   <data name="Individual_dps" xml:space="preserve">
     <value>個人DPS</value>
   </data>
   <data name="Fight_Duration" xml:space="preserve">
-    <value>戦闘時間</value>
+    <value>戰鬥時間</value>
   </data>
   <data name="Damage_done" xml:space="preserve">
-    <value>与ダメージ</value>
+    <value>造成傷害</value>
   </data>
   <data name="Seconds" xml:space="preserve">
-    <value>s</value>
+    <value>秒</value>
   </data>
-  <data name="Dot" xml:space="preserve">
+  <data name="DOT" xml:space="preserve">
     <value>DOT</value>
   </data>
   <data name="Chained" xml:space="preserve">
-    <value>連携</value>
+    <value>連鎖</value>
   </data>
   <data name="Critical" xml:space="preserve">
-    <value>クリティカル</value>
+    <value>暴擊</value>
   </data>
   <data name="White" xml:space="preserve">
-    <value>白ダメージ</value>
+    <value>白字</value>
   </data>
   <data name="Unknown_Skill" xml:space="preserve">
-    <value>不明なスキル</value>
+    <value>不明技能</value>
   </data>
   <data name="Archer" xml:space="preserve">
-    <value>アーチャー</value>
+    <value>弓箭手</value>
   </data>
   <data name="Berserker" xml:space="preserve">
-    <value>バーサーカー</value>
+    <value>狂戰士</value>
   </data>
   <data name="Brawler" xml:space="preserve">
-    <value>ファイター</value>
+    <value>魔拳師</value>
   </data>
   <data name="Gunner" xml:space="preserve">
-    <value>ガンナー</value>
+    <value>魔工師</value>
   </data>
   <data name="Lancer" xml:space="preserve">
-    <value>ランサー</value>
+    <value>槍騎士</value>
   </data>
   <data name="Mystic" xml:space="preserve">
-    <value>エレメンタリスト</value>
+    <value>元素使</value>
   </data>
   <data name="Ninja" xml:space="preserve">
-    <value>くノ一</value>
+    <value>忍術士</value>
   </data>
   <data name="Priest" xml:space="preserve">
-    <value>プリースト</value>
+    <value>祭司</value>
   </data>
   <data name="Reaper" xml:space="preserve">
-    <value>ソウルリーパー</value>
+    <value>飛劍士</value>
   </data>
   <data name="Slayer" xml:space="preserve">
-    <value>スレイヤー</value>
+    <value>屠殺者</value>
   </data>
   <data name="Sorcerer" xml:space="preserve">
-    <value>ソーサラー</value>
+    <value>魔導士</value>
   </data>
   <data name="Warrior" xml:space="preserve">
-    <value>ウォーリアー</value>
+    <value>劍鬥士</value>
   </data>
   <data name="Common" xml:space="preserve">
-    <value>一般</value>
+    <value>通用</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>お使いのコンピュータは、DPSメーターを使用するには動作が遅すぎるため終了します。
-十分な速度でパケットを分析することはできませんでした。</value>
+    <value>由於您的電腦運算太慢，不能在時間內分析完數據，現在即將關閉。</value>
   </data>
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
-    <value>hotkeys.xml が不正です。</value>
+    <value>你的hotkeys.xml文件無效</value>
   </data>
   <data name="Unable_to_get_key_from_string" xml:space="preserve">
-    <value>次の文字はhotkeyに使用出来ません。</value>
+    <value>無法從字符串獲得鑰匙</value>
   </data>
   <data name="RegisterHotKeyError" xml:space="preserve">
-    <value>ショートカットキーの登録に失敗しました。</value>
+    <value>無法登記熱鍵</value>
   </data>
   <data name="AlreadyInUse" xml:space="preserve">
-    <value>既に使用されています。</value>
+    <value>己經在使用</value>
   </data>
   <data name="TeraDpsIoApiError" xml:space="preserve">
-    <value>APIエラーもしくはタイムアウトが発生しました。</value>
+    <value>API錯誤或暫停</value>
   </data>
   <data name="TotalEncounter" xml:space="preserve">
-    <value>総計</value>
+    <value>總計</value>
   </data>
   <data name="SystemTray_No_server" xml:space="preserve">
-    <value>サーバーが見つかりません。</value>
+    <value>無法連接伺服器。</value>
   </data>
+  <!-- Detailed skill window -->
   <data name="Deaths" xml:space="preserve">
     <value>死亡</value>
   </data>
   <data name="Deaths_Tooltip" xml:space="preserve">
-    <value>死亡回数</value>
+    <value>死亡次數</value>
   </data>
   <data name="Death_Time" xml:space="preserve">
     <value>死亡時間</value>
   </data>
   <data name="Death_Time_Tooltip" xml:space="preserve">
-    <value>死亡していた時間</value>
+    <value>"倒地時間"</value>
   </data>
   <data name="Aggro" xml:space="preserve">
-    <value>戦闘</value>
+    <value>仇恨</value>
   </data>
   <data name="Aggro_Tooltip" xml:space="preserve">
-    <value>戦闘回数</value>
+    <value>獲得仇恨次數</value>
   </data>
   <data name="Aggro_Time" xml:space="preserve">
-    <value>戦闘時間</value>
+    <value>仇恨時間</value>
   </data>
   <data name="Aggro_Time_Tooltip" xml:space="preserve">
-    <value>"戦闘時間"</value>
+    <value>"保持BOSS仇恨時間"</value>
   </data>
   <data name="Dps" xml:space="preserve">
     <value>DPS</value>
   </data>
   <data name="Heal" xml:space="preserve">
-    <value>ヒール</value>
+    <value>治癒</value>
   </data>
   <data name="Mana" xml:space="preserve">
     <value>MP</value>
   </data>
   <data name="Buff" xml:space="preserve">
-    <value>バフ</value>
+    <value>BUFF</value>
   </data>
   <data name="SkillDealt" xml:space="preserve">
-    <value>与スキル</value>
+    <value>技能判定</value>
   </data>
   <data name="SkillReceived" xml:space="preserve">
-    <value>被スキル</value>
+    <value>技能接收</value>
   </data>
   <data name="SkillName" xml:space="preserve">
-    <value>スキル名</value>
+    <value>技能名稱</value>
   </data>
   <data name="CritPercent" xml:space="preserve">
-    <value>クリティカル率</value>
+    <value>暴擊率</value>
   </data>
   <data name="Damage" xml:space="preserve">
-    <value>ダメージ</value>
+    <value>傷害</value>
   </data>
   <data name="DamagePercent" xml:space="preserve">
-    <value>ダメージ(%)</value>
+    <value>傷害%</value>
   </data>
   <data name="AverageCrit" xml:space="preserve">
-    <value>平均クリティカル</value>
+    <value>平均暴擊</value>
   </data>
   <data name="MaxCrit" xml:space="preserve">
-    <value>最大クリティカル</value>
+    <value>最大暴擊</value>
   </data>
   <data name="AvgWhite" xml:space="preserve">
-    <value>平均白</value>
+    <value>平均白字</value>
   </data>
   <data name="Average" xml:space="preserve">
     <value>平均</value>
   </data>
   <data name="Hits" xml:space="preserve">
-    <value>ヒット数</value>
+    <value>攻擊數</value>
   </data>
   <data name="Crits" xml:space="preserve">
-    <value>クリティカル回数</value>
+    <value>暴擊數</value>
   </data>
   <data name="MaxWhite" xml:space="preserve">
-    <value>最大白</value>
+    <value>最大白字</value>
   </data>
   <data name="Class" xml:space="preserve">
-    <value>クラス</value>
+    <value>職業</value>
   </data>
   <data name="EffectTime" xml:space="preserve">
-    <value>効果時間</value>
+    <value>效果時間</value>
   </data>
   <data name="Fight" xml:space="preserve">
-    <value>戦闘時間</value>
+    <value>戰鬥時間</value>
   </data>
   <data name="FightPercent" xml:space="preserve">
-    <value>効果時間(%)</value>
+    <value>維持率</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>名前</value>
+    <value>名稱</value>
   </data>
+  <!--Excel Export-->
   <data name="Boss" xml:space="preserve">
-    <value>ボス</value>
+    <value>Boss</value>
   </data>
   <data name="HealCritPercent" xml:space="preserve">
-    <value>ヒールクリティカル率</value>
+    <value>治癒暴擊率</value>
   </data>
   <data name="HitsTaken" xml:space="preserve">
-    <value>被弾回数</value>
+    <value>被攻擊數</value>
   </data>
   <data name="DamgeTaken" xml:space="preserve">
-    <value>被ダメージ</value>
+    <value>承受傷害</value>
   </data>
   <data name="BossHP" xml:space="preserve">
-    <value>ボスHP</value>
+    <value>BossHP</value>
   </data>
   <data name="AvgDPS" xml:space="preserve">
     <value>平均DPS</value>
@@ -420,16 +420,16 @@
     <value>時間</value>
   </data>
   <data name="MinCrit" xml:space="preserve">
-    <value>最小クリティカル</value>
+    <value>最小暴擊</value>
   </data>
   <data name="Enrage" xml:space="preserve">
     <value>憤怒</value>
   </data>
   <data name="Slaying" xml:space="preserve">
-    <value>必死</value>
+    <value>必殺一擊</value>
   </data>
   <data name="SlayingTooltip" xml:space="preserve">
-    <value>必死の一撃が装着されてる場合表示されます。</value>
+    <value>當Hp低於50%，必殺一擊水晶將會發動。</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>後方</value>
@@ -441,7 +441,7 @@
     <value>前方</value>
   </data>
   <data name="Pet" xml:space="preserve">
-    <value>ペット</value>
+    <value>寵物</value>
   </data>
   <data name="Hot" xml:space="preserve">
     <value>HOT</value>

@@ -49,18 +49,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="LP.ja.resx">
+    <EmbeddedResource Include="LP.??.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LP.ko.resx">
+    <EmbeddedResource Include="LP.??-??.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LP.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LP.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LP.ru.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
