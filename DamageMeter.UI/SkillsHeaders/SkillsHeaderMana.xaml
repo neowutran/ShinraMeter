@@ -8,11 +8,11 @@
 
         <Grid MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25" />
-                <ColumnDefinition Width="40" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="65" />
-                <ColumnDefinition Width="65" />
+                <ColumnDefinition SharedSizeGroup="m0" Width="25" />
+                <ColumnDefinition SharedSizeGroup="m1" Width="40" />
+                <ColumnDefinition SharedSizeGroup="m2" MinWidth="200" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="m3" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="m4" MinWidth="65" Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
                    BorderThickness="1" BorderBrush="Gray" FontSize="14" VerticalAlignment="Center"

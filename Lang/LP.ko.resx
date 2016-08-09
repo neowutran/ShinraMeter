@@ -340,7 +340,7 @@
     <value>버프</value>
   </data>
   <data name="SkillDealt" xml:space="preserve">
-    <value>스킬딜량</value>
+    <value>스킬정보(데미지,방향)</value>
   </data>
   <data name="SkillReceived" xml:space="preserve">
     <value>피격</value>
@@ -373,7 +373,7 @@
     <value>사용 횟수</value>
   </data>
   <data name="Crits" xml:space="preserve">
-    <value>크리</value>
+    <value>크리횟수</value>
   </data>
   <data name="MaxWhite" xml:space="preserve">
     <value>최대 일반</value>
@@ -431,12 +431,12 @@
   </data>
   <!-- HitDirection overrides -->
   <data name="Back" xml:space="preserve">
-    <value>후</value>
+    <value>후방</value>
   </data>
   <data name="Side" xml:space="preserve">
-    <value>측</value>
+    <value>측방</value>
   </data>
   <data name="Front" xml:space="preserve">
-    <value>전</value>
+    <value>전방</value>
   </data>
 </root>

@@ -10,10 +10,10 @@
                 <Grid MouseLeave="UIElement_OnMouseLeave" MouseEnter="UIElement_OnMouseEnter"
                       MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="65" />
-                        <ColumnDefinition Width="65" />
+                        <ColumnDefinition SharedSizeGroup="m1" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="m2" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="m3" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="m4" Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
                            Height="40" VerticalAlignment="Top" Width="40" />
@@ -21,8 +21,6 @@
                            HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
                            Foreground="Yellow"
                            MinHeight="40" />
-
-
                     <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
                            HorizontalAlignment="Stretch" x:Name="LabelTotalMana" VerticalAlignment="Center"
                            MinHeight="40"
