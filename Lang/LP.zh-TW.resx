@@ -229,7 +229,7 @@
     <value>DOT</value>
   </data>
   <data name="Chained" xml:space="preserve">
-    <value>連鎖</value>
+    <value>連攜</value>
   </data>
   <data name="Critical" xml:space="preserve">
     <value>暴擊</value>
@@ -341,10 +341,10 @@
     <value>BUFF</value>
   </data>
   <data name="SkillDealt" xml:space="preserve">
-    <value>技能判定</value>
+    <value>輸出判定</value>
   </data>
   <data name="SkillReceived" xml:space="preserve">
-    <value>技能接收</value>
+    <value>損益判定</value>
   </data>
   <data name="SkillName" xml:space="preserve">
     <value>技能名稱</value>
