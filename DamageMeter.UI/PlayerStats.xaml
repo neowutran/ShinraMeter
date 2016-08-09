@@ -53,6 +53,10 @@
                    HorizontalContentAlignment="Left"
                    x:Name="LabelName" Foreground="GreenYellow"
                    MinHeight="29" />
+            <Label Focusable="False" Grid.Column="2" FontSize="14" VerticalAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   x:Name="Spacer" Foreground="GreenYellow"
+                   MinHeight="29" />
             <Label Focusable="False" Grid.Column="3" FontSize="14" x:Name="LabelDamagePart"
                    HorizontalContentAlignment="Center"
                    VerticalAlignment="Center" Foreground="White"

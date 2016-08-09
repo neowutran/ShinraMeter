@@ -92,10 +92,23 @@ namespace DamageMeter.UI
             LabelDamagePart.ToolTip = $"{LP.Damage_done}: {Damage}";
 
             _windowSkill?.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter);
+            Spacer.Width = 0;
+            GridStats.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var SGrid =
+                ((DamageMeter.UI.MainWindow)
+                    ((System.Windows.FrameworkElement) ((System.Windows.FrameworkElement) this.Parent).Parent).Parent)
+                    .SGrid;
+            var EGrid =
+                ((DamageMeter.UI.MainWindow)
+                    ((System.Windows.FrameworkElement)((System.Windows.FrameworkElement)this.Parent).Parent).Parent)
+                    .EGrid;
+            SGrid.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var mainWidth = SGrid.DesiredSize.Width;
+            Spacer.Width = mainWidth > GridStats.DesiredSize.Width ? mainWidth - GridStats.DesiredSize.Width : 0;
             DpsIndicator.Width = EntityInformation.TotalDamage == 0
-                ? ((FrameworkElement)Parent).ActualWidth
-                : ((FrameworkElement)Parent).ActualWidth * PlayerDamageDealt.Amount/EntityInformation.TotalDamage;
-
+                ? mainWidth
+                : mainWidth * PlayerDamageDealt.Amount/EntityInformation.TotalDamage;
+            EGrid.MaxWidth = Math.Max(mainWidth, GridStats.DesiredSize.Width);
         }
 
         public void SetClickThrou()
