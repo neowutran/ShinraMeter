@@ -248,13 +248,13 @@ namespace DamageMeter
 
 
         private static void ToTeraDpsApi(EncounterBase teradpsData, SDespawnNpc despawnNpc)
-        {
-            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken)
-                || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
-                || !BasicTeraData.Instance.WindowData.SiteExport)
-            {
+        { 
+            //if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken)
+            //    || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
+            //    || !BasicTeraData.Instance.WindowData.SiteExport)
+            //{
                 return;
-            }
+            //} //temporary disabled 
 
 
             var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);

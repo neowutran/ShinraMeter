@@ -506,7 +506,7 @@ namespace DamageMeter
                     var opCodeNamer =
                         new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
                             $"data/opcodes/{cVersion.Versions[0]}.txt"));
-                    _messageFactory = new MessageFactory(opCodeNamer, cVersion.Versions[0]);
+                    _messageFactory = new MessageFactory(opCodeNamer, cVersion.Versions[1]);
                     continue;
                 }
 

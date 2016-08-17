@@ -98,14 +98,14 @@ namespace DamageMeter.UI
                 patch,
                 issues,
                 forum,
-                teradps
+//                teradps
             } ));
 
             var config = new ToolStripMenuItem { Text = LP.SystemTray_Config };
             config.DropDownItems.AddRange(new ToolStripItemCollection(new ToolStrip(), new ToolStripItem[]
             {
                 excel,
-                siteExport,
+//                siteExport,
                 detectBosses,
                 onlyBoss,
                 party,
@@ -181,7 +181,7 @@ namespace DamageMeter.UI
         private void ForumOnClick(object sender, EventArgs eventArgs)
         {
             Process.Start("explorer.exe",
-                "https://discord.gg/0wjLnPs6HoNFxv6O");
+                "https://discord.gg/anUXQTp");
         }
 
         private void IssuesOnClick(object sender, EventArgs eventArgs)
