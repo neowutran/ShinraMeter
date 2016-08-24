@@ -314,7 +314,7 @@ namespace DamageMeter
                     client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
                     client.Timeout = TimeSpan.FromSeconds(40);
 
-                    var response = client.PostAsync("http://teradps.io/api/que", new StringContent(
+                    var response = client.PostAsync("http://45.55.254.87/api/que", new StringContent(
                         json,
                         Encoding.UTF8,
                         "application/json")
