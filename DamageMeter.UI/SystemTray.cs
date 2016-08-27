@@ -105,7 +105,7 @@ namespace DamageMeter.UI
             config.DropDownItems.AddRange(new ToolStripItemCollection(new ToolStrip(), new ToolStripItem[]
             {
                 excel,
-//                siteExport,
+                siteExport,
                 detectBosses,
                 onlyBoss,
                 party,

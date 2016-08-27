@@ -235,7 +235,8 @@ namespace DamageMeter
                 areaId != 769 &&
                 areaId != 916 &&
                 areaId != 969 && 
-                areaId != 970
+                areaId != 970 &&
+                areaId != 950 
                 )
             {
                 return;
@@ -248,37 +249,22 @@ namespace DamageMeter
 
 
         private static void ToTeraDpsApi(EncounterBase teradpsData, SDespawnNpc despawnNpc)
-        { 
-            //if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken)
-            //    || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
-            //    || !BasicTeraData.Instance.WindowData.SiteExport)
-            //{
+        {
+            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken)
+                || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
+                || !BasicTeraData.Instance.WindowData.SiteExport)
+            {
                 return;
-            //} //temporary disabled 
-
+            }
 
             var entity = DamageTracker.Instance.GetEntity(despawnNpc.Npc);
-
-            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken) ||
-                string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser) ||
-                !BasicTeraData.Instance.WindowData.SiteExport) return;
 
             /*
               Validation, without that, the server cpu will be burning \o 
             */
             var areaId = int.Parse(teradpsData.areaId);
             if (
-                areaId != 886 &&
-                areaId != 467 &&
-                areaId != 767 &&
-                areaId != 768 &&
-                areaId != 470 &&
-                areaId != 468 &&
-                areaId != 770 &&
-                areaId != 769 &&
-                areaId != 916 &&
-                areaId != 969 &&
-                areaId != 970
+                areaId != 886
                 )
             {
                 return;
@@ -314,7 +300,7 @@ namespace DamageMeter
                     client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
                     client.Timeout = TimeSpan.FromSeconds(40);
 
-                    var response = client.PostAsync("http://teradps.io/api/que", new StringContent(
+                    var response = client.PostAsync("http://45.55.254.87/api/que", new StringContent(
                         json,
                         Encoding.UTF8,
                         "application/json")
