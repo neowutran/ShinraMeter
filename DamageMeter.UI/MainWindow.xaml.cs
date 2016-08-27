@@ -271,7 +271,6 @@ namespace DamageMeter.UI
                     var visiblePlayerStats = new HashSet<Player>();
                     var statsDamage = statsSummary.PlayerDamageDealt;
                     var statsHeal = statsSummary.PlayerHealDealt;
-                    var counter = 0;
                     foreach (var playerStats in statsDamage)
                     {
                         PlayerStats playerStatsControl;
@@ -280,12 +279,6 @@ namespace DamageMeter.UI
                         {
                             continue;
                         }
-
-                        if (counter == 9)
-                        {
-                            break;
-                        }
-                        counter++;
 
                         visiblePlayerStats.Add(playerStats.Source);
                         if (playerStatsControl != null) continue;

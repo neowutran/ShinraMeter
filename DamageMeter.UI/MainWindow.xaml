@@ -307,11 +307,14 @@
                Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
         </Grid>
-        <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                        
                       IsTextSearchEnabled="False" Margin="0,60,0,0"
                       HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True"/>
+        </ScrollViewer>
 
     </Grid>
 </ui:ClickThrouWindow>

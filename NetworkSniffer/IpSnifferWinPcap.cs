@@ -64,6 +64,7 @@ namespace NetworkSniffer
             foreach (var device in interestingDevices)
             {
                 device.OnPacketArrival += device_OnPacketArrival;
+               
                 try
                 {
                     device.Open(DeviceMode.Normal, 1000);
