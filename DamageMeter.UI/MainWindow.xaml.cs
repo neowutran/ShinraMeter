@@ -79,6 +79,7 @@ namespace DamageMeter.UI
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
             Closing -= ClickThrouWindow_Closing;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
+            Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
             _entityStats = new EntityStatsMain(this);
             _chatbox = new Chatbox(new List<ChatMessage>());
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());

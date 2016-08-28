@@ -95,12 +95,12 @@ namespace DamageMeter.UI
             Spacer.Width = 0;
             GridStats.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var SGrid =
-                ((DamageMeter.UI.MainWindow)
-                    ((System.Windows.FrameworkElement) ((System.Windows.FrameworkElement) this.Parent).Parent).Parent)
+                ((DamageMeter.UI.MainWindow)((System.Windows.FrameworkElement)
+                    ((System.Windows.FrameworkElement) ((System.Windows.FrameworkElement) this.Parent).Parent).Parent).Parent)
                     .SGrid;
             var EGrid =
-                ((DamageMeter.UI.MainWindow)
-                    ((System.Windows.FrameworkElement)((System.Windows.FrameworkElement)this.Parent).Parent).Parent)
+                ((DamageMeter.UI.MainWindow)((System.Windows.FrameworkElement)
+                    ((System.Windows.FrameworkElement)((System.Windows.FrameworkElement)this.Parent).Parent).Parent).Parent)
                     .EGrid;
             SGrid.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var mainWidth = SGrid.DesiredSize.Width;

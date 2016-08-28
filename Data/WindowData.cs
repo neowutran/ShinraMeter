@@ -37,6 +37,8 @@ namespace Data
         public bool DetectBosses { get; set; }
         public bool DateInExcelPath { get; set; }
 
+        public int NumberOfPlayersDisplayed { get; set; }
+
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -64,6 +66,7 @@ namespace Data
             OnlyBoss = false;
             DetectBosses = false;
             DateInExcelPath = false;
+            NumberOfPlayersDisplayed = 5;
         }
 
 
@@ -100,6 +103,7 @@ namespace Data
             }
 
             Parse("lf_delay", "LFDelay");
+            Parse("number_of_players_displayed", "NumberOfPlayersDisplayed");
             Parse("excel_save_directory", "ExcelSaveDirectory");
             Parse("showhealcrit", "ShowHealCrit");
             Parse("partyonly", "PartyOnly");
@@ -257,6 +261,7 @@ namespace Data
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
             xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", DetectBosses));
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));
+            xml.Root.Add(new XElement("number_of_players_displayed", NumberOfPlayersDisplayed));
             
 
             _filestream.SetLength(0);

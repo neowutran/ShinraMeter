@@ -47,14 +47,16 @@
         </Style>
     </Window.Resources>
     <Grid MouseLeftButtonDown="Move">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
                             ScaleX="{DynamicResource Scale}"
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <Grid>
-                <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
+                <Button Grid.Row="0" x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
                         Foreground="White" Click="CloseMeter_OnClick" HorizontalContentAlignment="Stretch"
                         VerticalAlignment="Top" Margin="0">
                     <Image x:Name="CloseWindow"
@@ -63,14 +65,16 @@
                            Height="29" VerticalAlignment="Top" Width="29" />
                 </Button>
 
-                <ItemsControl ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              Margin="0,30,0,0" Name="EnduranceAbnormality" Background="Transparent"
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500" >
+
+                <ItemsControl ScrollViewer.CanContentScroll="True"  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              Name="EnduranceAbnormality" Background="Transparent"
                               BorderThickness="0"
                               Focusable="False"
                               ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                               HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False"
                               HorizontalAlignment="Left" Grid.IsSharedSizeScope="True"/>
-            </Grid>
-        </ScrollViewer>
+            </ScrollViewer>
+
     </Grid>
 </ui:ClickThrouWindow>

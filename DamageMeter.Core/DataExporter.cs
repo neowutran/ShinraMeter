@@ -34,6 +34,8 @@ namespace DamageMeter
                         "application/json")
                         );
                     var responseString = response.Result.Content.ReadAsStringAsync();
+
+                  
                     Console.WriteLine(responseString.Result);
                 }
             }
@@ -250,9 +252,11 @@ namespace DamageMeter
 
         private static void ToTeraDpsApi(EncounterBase teradpsData, SDespawnNpc despawnNpc)
         {
-            if (string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken)
-                || string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
-                || !BasicTeraData.Instance.WindowData.SiteExport)
+            if (
+                //string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken)
+                //|| string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
+                //|| 
+                !BasicTeraData.Instance.WindowData.SiteExport)
             {
                 return;
             }
@@ -264,7 +268,18 @@ namespace DamageMeter
             */
             var areaId = int.Parse(teradpsData.areaId);
             if (
-                areaId != 886
+                 areaId != 886 &&
+                areaId != 467 &&
+                areaId != 767 &&
+                areaId != 768 &&
+                areaId != 470 &&
+                areaId != 468 &&
+                areaId != 770 &&
+                areaId != 769 &&
+                areaId != 916 &&
+                areaId != 969 &&
+                areaId != 970 &&
+                areaId != 950
                 )
             {
                 return;
@@ -296,15 +311,15 @@ namespace DamageMeter
             {
                 using (var client = new HttpClient())
                 {
-                    client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
-                    client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
-                    client.Timeout = TimeSpan.FromSeconds(40);
+                    //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
+                    //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
 
-                    var response = client.PostAsync("http://45.55.254.87/api/que", new StringContent(
-                        json,
-                        Encoding.UTF8,
-                        "application/json")
-                        );
+                    client.Timeout = TimeSpan.FromSeconds(40);
+                    var response = client.PostAsync("http://moongourd.net/dpsmeter_data.php", new StringContent(
+                                          json,
+                                          Encoding.UTF8,
+                                          "application/json")
+                                          );
 
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Console.WriteLine(responseString.Result);

@@ -79,15 +79,22 @@
 
     </Window.Resources>
     <Grid MouseLeftButtonDown="Move">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
                             ScaleX="{DynamicResource Scale}"
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-            <Grid>
-                <Button x:Name="CloseMeter" Style="{StaticResource ShinraButtonStyle}" Background="Transparent"
+            <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" x:Name="CloseMeter" Style="{StaticResource ShinraButtonStyle}" Background="Transparent"
                         Opacity="0.5"
                         Foreground="White" Click="Button_OnClick" HorizontalContentAlignment="Stretch"
                         VerticalAlignment="Top" Margin="0">
@@ -96,7 +103,7 @@
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
                 </Button>
-                <Grid Margin="0,30,0,0">
+                <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MinWidth="60" Width="Auto"/>
                         <ColumnDefinition MinWidth="40" Width="Auto"/>
@@ -148,7 +155,9 @@
                        VerticalAlignment="Top" MinHeight="29" Height="29" 
                        HorizontalContentAlignment="Center" />
                 </Grid>
-                <TabControl Background="Transparent" BorderThickness="0" x:Name="TabControl" Margin="0,60,0,0">
+        </Grid>
+ 
+                <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0" x:Name="TabControl">
                     <TabItem FontSize="14" Header="{x:Static l:LP.Dps}" x:Name="DpsPanel" Background="Transparent" Foreground="White" />
                     <TabItem FontSize="14" Header="{x:Static l:LP.Heal}" x:Name="HealPanel" Background="Transparent" Foreground="White" />
                     <TabItem FontSize="14" Header="{x:Static l:LP.Mana}" x:Name="ManaPanel" Background="Transparent" Foreground="White" />
@@ -156,9 +165,5 @@
                     <TabItem FontSize="14" Header="{x:Static l:LP.SkillDealt}" x:Name="SkillsDealtPanel" Background="Transparent" Foreground="White" />
                     <TabItem FontSize="14" Header="{x:Static l:LP.SkillReceived}" x:Name="SkillsReceivedPanel" Background="Transparent" Foreground="White" />
                 </TabControl>
-
-            </Grid>
-        </ScrollViewer>
-
     </Grid>
 </ui:ClickThrouWindow>

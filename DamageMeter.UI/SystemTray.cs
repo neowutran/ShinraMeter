@@ -127,7 +127,7 @@ namespace DamageMeter.UI
             {
                 _packetWaitingLabel,
                 _packetWaitingProgressBar
-            }));
+            }));      
 
             var context = new ContextMenuStrip();
             context.Items.Add(perf);
@@ -138,6 +138,11 @@ namespace DamageMeter.UI
             context.Items.Add(exit);
             TrayIcon.ContextMenuStrip = context;
             
+        }
+
+        private void Spinner_ValueChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         internal NotifyIcon TrayIcon { get; }

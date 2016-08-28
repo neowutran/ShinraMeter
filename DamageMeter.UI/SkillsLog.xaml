@@ -5,11 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <Grid>
-        <ItemsControl Margin="0,25,0,0" Name="Skills" Background="Transparent" BorderThickness="0"
+        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+
+            <ItemsControl Name="Skills" Background="Transparent" BorderThickness="0"
                       Focusable="False" Grid.IsSharedSizeScope="True"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"
                       HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left" />
+        </ScrollViewer>
 
     </Grid>
 </UserControl>

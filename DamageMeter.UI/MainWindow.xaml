@@ -232,13 +232,18 @@
         <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.5" />
     </Window.Background>
     <Grid HorizontalAlignment="Left" MinWidth="265">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
                             ScaleX="{DynamicResource Scale}"
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
 
-        <Grid Name="EGrid" HorizontalAlignment="Stretch">
+        <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="29" />
@@ -255,7 +260,7 @@
                HorizontalAlignment="Left"
                Height="29" VerticalAlignment="Top" Width="29" />
         </Grid>
-        <Grid Name="SGrid" HorizontalAlignment="Stretch" Margin="0,30,0,0">
+        <Grid Grid.Row="1" Name="SGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="31" />
                 <ColumnDefinition MinWidth="52" Width="Auto"/>
@@ -307,12 +312,9 @@
                Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
         </Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer x:Name="Scroller" Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
-                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                        
-                      IsTextSearchEnabled="False" Margin="0,60,0,0"
+                      IsTextSearchEnabled="False"
                       HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True"/>
         </ScrollViewer>
 
