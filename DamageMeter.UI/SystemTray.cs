@@ -140,11 +140,6 @@ namespace DamageMeter.UI
             
         }
 
-        private void Spinner_ValueChanged(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         internal NotifyIcon TrayIcon { get; }
 
         private ToolStripMenuItem _switchNoStatsVisibility;

@@ -59,14 +59,7 @@ namespace DamageMeter
 
         private NetworkController()
         {
-            try { Database.Database.Instance.DeleteAll(); }
-            catch (Exception ex)
-            {
-                var log = LogManager.GetLogger(typeof(Program));
-                log.Error(ex.Message + "\r\n" +ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
-                MessageBox.Show(LP.MainWindow_Fatal_error);
-                Exit();
-            }
+         
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
             _abnormalityStorage = new AbnormalityStorage();
             var packetAnalysis = new Thread(PacketAnalysisLoop);
@@ -210,6 +203,15 @@ namespace DamageMeter
 
         private void PacketAnalysisLoop()
         {
+            try { Database.Database.Instance.DeleteAll(); }
+            catch (Exception ex)
+            {
+                var log = LogManager.GetLogger(typeof(Program));
+                log.Error(ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
+                MessageBox.Show(LP.MainWindow_Fatal_error);
+                Exit();
+            }
+
             while (true)
             {
                 if (NeedToCopy != null)
