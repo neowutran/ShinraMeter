@@ -10,12 +10,17 @@ namespace DamageMeter.Database
 {
     public class Database
     {
-        [Flags]
+
+        /*
+         *  The enum value NEED to be set manually
+         *  without that, converting the enum to int will cause massive weird bug, like:
+         *  https://github.com/neowutran/ShinraMeter/issues/184
+         * */
         public enum Type
         {
             Damage = 1,
             Heal = 2,
-            Mana = 4
+            Mana = 3
         }
 
         private static Database _instance;

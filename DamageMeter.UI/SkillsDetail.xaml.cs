@@ -376,23 +376,23 @@ namespace DamageMeter.UI
 
         private enum SortBy
         {
-            Amount,
-            Name,
-            AvgCrit,
-            Avg,
-            BigCrit,
-            DamagePercent,
-            NumberHits,
-            NumberCrits,
-            AvgHit,
-            BigHit,
-            CritRate
+            Amount = 1,
+            Name = 2,
+            AvgCrit = 3,
+            Avg = 4,
+            BigCrit = 5,
+            DamagePercent = 6,
+            NumberHits = 7,
+            NumberCrits = 8,
+            AvgHit = 9,
+            BigHit = 10,
+            CritRate = 11
         }
 
         private enum SortOrder
         {
-            Ascending,
-            Descending
+            Ascending = 1,
+            Descending = 2
         }
     }
 }
