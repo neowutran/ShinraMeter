@@ -47,9 +47,9 @@ namespace DamageMeter.UI
         private Database.Structures.Skills _skills;
 
         public void Update(PlayerDamageDealt playerDamageDealt, EntityInformation entityInformation,
-            Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter, bool forced = false)
+            Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
         {
-            if (_skills == null || forced)
+            if (_skills == null || skills != null)
             {
                 _skills = skills;
                 var death = buffs.Death;
