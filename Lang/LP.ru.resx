@@ -445,4 +445,7 @@
   <data name="Hot" xml:space="preserve">
     <value>ХОТ</value>
   </data>
+  <data name="NumberPlayersDisplayed" xml:space="preserve">
+    <value>Количество отображаемых игроков</value>
+  </data>
 </root>

@@ -168,13 +168,8 @@ namespace DamageMeter.UI
                     _windowSkill.Left = targetPoints.X;
                     _windowSkill.Top = targetPoints.Y;
                 }
-
-                _windowSkill.Show();
-                NetworkController.Instance.SendFullDetails = true;
-                return;
             }
-
-            _windowSkill.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter, true);
+            NetworkController.Instance.SendFullDetails = true;
             _windowSkill.Show();
         }
 
