@@ -10,11 +10,12 @@ namespace DamageMeter.Database
 {
     public class Database
     {
+        [Flags]
         public enum Type
         {
-            Damage,
-            Heal,
-            Mana
+            Damage = 1,
+            Heal = 2,
+            Mana = 3
         }
 
         private static Database _instance;
