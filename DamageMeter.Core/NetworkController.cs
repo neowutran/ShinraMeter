@@ -505,6 +505,8 @@ namespace DamageMeter
                 var cVersion = message as C_CHECK_VERSION;
                 if (cVersion != null)
                 {
+                    Console.WriteLine("VERSION0 =  "+cVersion.Versions[0]);
+                    Console.WriteLine("VERSION1 = "+cVersion.Versions[1]);
                     var opCodeNamer =
                         new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
                             $"data/opcodes/{cVersion.Versions[0]}.txt"));
