@@ -15,7 +15,7 @@ namespace DamageMeter.Database
         {
             Damage = 1,
             Heal = 2,
-            Mana = 3
+            Mana = 4
         }
 
         private static Database _instance;
