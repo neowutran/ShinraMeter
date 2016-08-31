@@ -107,7 +107,8 @@ namespace DamageMeter
                 (skillResult.TargetPlayer == null ||
                  !NetworkController.Instance.PlayerTracker.MyParty(skillResult.TargetPlayer))) return;
             if (BasicTeraData.Instance.WindowData.OnlyBoss && !(((entityTarget as NpcEntity)?.Info.Boss ?? false) ||
-                                                             ((entitySource["root_source"] as NpcEntity)?.Info.Boss ?? false))) return;
+                                                                (skillResult.SourcePlayer != null && skillResult.TargetPlayer != null) ||
+                                                                ((entitySource["root_source"] as NpcEntity)?.Info.Boss ?? false))) return;
             if (entityTarget == null)
             {
                 throw new Exception("Unknow target" + skillResult.Target.GetType());
