@@ -165,7 +165,7 @@ namespace DamageMeter.UI
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception) e.ExceptionObject;
-            LogError("##### CRASH (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
+            BasicTeraData.LogError("##### CRASH #####\r\n" + ex.Message + "\r\n" +
                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                      "\r\n" + ex.TargetSite);
             MessageBox.Show(LP.MainWindow_Fatal_error);
@@ -174,39 +174,10 @@ namespace DamageMeter.UI
         private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
         {
             var ex = e.Exception;
-            LogError("##### FORM EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message + "\r\n" +
+            BasicTeraData.LogError("##### FORM EXCEPTION #####\r\n" + ex.Message + "\r\n" +
                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                      "\r\n" + ex.TargetSite);
             MessageBox.Show(LP.MainWindow_Fatal_error);
-        }
-
-        private static void LogError(string error)
-        {
-            try
-            {
-                var log = LogManager.GetLogger(typeof(Program));
-                log.Error(error);
-                if (!BasicTeraData.Instance.WindowData.Debug)
-                {
-                    return;
-                }
-
-                using (var client = new HttpClient())
-                {
-                    var formContent = new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string, string>("error", error)
-                    });
-
-                    var response = client.PostAsync("http://diclah.com/~yukikoo/debug/debug.php", formContent);
-                    var responseString = response.Result.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseString.Result);
-                }
-            }
-            catch
-            {
-                // Ignore
-            }
         }
 
         public void UpdateKeyboard(object o, EventArgs args)

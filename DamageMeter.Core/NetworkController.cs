@@ -206,8 +206,7 @@ namespace DamageMeter
             try { Database.Database.Instance.DeleteAll(); }
             catch (Exception ex)
             {
-                var log = LogManager.GetLogger(typeof(Program));
-                log.Error(ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
+                BasicTeraData.LogError(ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite, true);
                 MessageBox.Show(LP.MainWindow_Fatal_error);
                 Exit();
             }
@@ -302,6 +301,7 @@ namespace DamageMeter
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
                 {
+                    if (changeHp.SourceId != EntityTracker.MeterUser.Id && changeHp.TargetId != EntityTracker.MeterUser.Id) BasicTeraData.LogError("SCreatureChangeHP need rootowner",false,true);
                     _abnormalityTracker.Update(changeHp);
                     continue;
                 }
@@ -334,6 +334,7 @@ namespace DamageMeter
                 var changeMp = message as SPlayerChangeMp;
                 if (changeMp != null)
                 {
+                    if (changeMp.SourceId != EntityTracker.MeterUser.Id && changeMp.TargetId != EntityTracker.MeterUser.Id) BasicTeraData.LogError("SPlayerChangeMp need rootowner", false, true);
                     _abnormalityTracker.Update(changeMp);
                     continue;
                 }
@@ -505,7 +506,7 @@ namespace DamageMeter
                 var cVersion = message as C_CHECK_VERSION;
                 if (cVersion != null)
                 {
-                    Console.WriteLine("VERSION0 =  "+cVersion.Versions[0]);
+                    Console.WriteLine("VERSION0 = "+cVersion.Versions[0]);
                     Console.WriteLine("VERSION1 = "+cVersion.Versions[1]);
                     var opCodeNamer =
                         new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,

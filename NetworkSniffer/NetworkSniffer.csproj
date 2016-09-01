@@ -62,9 +62,6 @@
     <Compile Include="TcpSniffer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Lang\Lang.csproj">
       <Project>{220fef0f-4a83-4ab8-9435-f9bc09b9039f}</Project>
       <Name>Lang</Name>

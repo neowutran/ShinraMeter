@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+using log4net;
 using log4net.Config;
 using Tera.Game;
+using DamageMeter.AutoUpdate;
 
 namespace Data
 {
@@ -9,6 +14,8 @@ namespace Data
     {
         private static BasicTeraData _instance;
         private readonly Func<string, TeraData> _dataForRegion;
+        private static readonly ILog _log = LogManager.GetLogger("ShinraMeter");
+        private static int _errorCount = 5; //limit number of debug messages in one session
 
         private BasicTeraData() : this(FindResourceDirectory())
         {
@@ -55,6 +62,39 @@ namespace Data
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the resource directory");
+        }
+
+        public static void LogError(string error, bool local = false, bool debug = false)
+        {
+            if (debug && _errorCount-- <= 0) return;
+            Task.Run(() =>
+            {
+                try
+                {
+                    error = $"##### (version={UpdateManager.Version}):\r\n" + (debug?"##### Debug: ":"") + error;
+                    _log.Error(error);
+                    if (!Instance.WindowData.Debug || local)
+                    {
+                        return;
+                    }
+
+                    using (var client = new HttpClient())
+                    {
+                        var formContent = new FormUrlEncodedContent(new[]
+                        {
+                            new KeyValuePair<string, string>("error", error)
+                        });
+
+                        var response = client.PostAsync("http://diclah.com/~yukikoo/debug/debug.php", formContent);
+                        var responseString = response.Result.Content.ReadAsStringAsync();
+                        Console.WriteLine(responseString.Result);
+                    }
+                }
+                catch
+                {
+                    // Ignore
+                }
+            });
         }
     }
 }
