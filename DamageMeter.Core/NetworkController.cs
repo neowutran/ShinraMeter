@@ -301,7 +301,10 @@ namespace DamageMeter
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
                 {
-                    if (changeHp.SourceId != EntityTracker.MeterUser.Id && changeHp.TargetId != EntityTracker.MeterUser.Id) BasicTeraData.LogError("SCreatureChangeHP need rootowner",false,true);
+                    if (changeHp.SourceId != EntityTracker.MeterUser.Id && 
+                        changeHp.TargetId != EntityTracker.MeterUser.Id &&
+                        EntityTracker.GetOrPlaceholder(changeHp.TargetId).RootOwner == EntityTracker.MeterUser // don't care about damage received by our pets
+                        ) BasicTeraData.LogError("SCreatureChangeHP need rootowner update1",false,true);
                     _abnormalityTracker.Update(changeHp);
                     continue;
                 }
