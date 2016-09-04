@@ -116,7 +116,7 @@ namespace DamageMeter.Database.Structures
                     where skills.Critic
                     select skills.Amount;
             }
-            var max = result.Sum();
+            var max = result.Max();
             _caching.Add(key, max);
             return max;
         }
