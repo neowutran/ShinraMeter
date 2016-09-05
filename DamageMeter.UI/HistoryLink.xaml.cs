@@ -29,8 +29,8 @@ namespace DamageMeter.UI
 
         private void Click_Link(object sender, MouseButtonEventArgs e)
         {
-            if (!Boss.Tag.ToString().StartsWith("!"))
-                Process.Start("explorer.exe", "http://teradps.io/party/rank/" + Boss.Tag);
+            if (Boss.Tag.ToString().StartsWith("http://"))
+                Process.Start("explorer.exe", Boss.Tag.ToString());
         }
 
         private void Sender_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -276,6 +276,11 @@ namespace DamageMeter.UI
                     foreach (var item in statsDamage)
                     {
                         if (!Controls.ContainsKey(item.Source)) continue;
+                        if (Players.Items.Contains(Controls[item.Source]))
+                        {
+                            BasicTeraData.LogError("duplicate playerinfo: \r\n"+String.Join("\r\n ",statsDamage.Select(x=>x.Source.ToString()+" -> "+x.Target+": "+x.Amount)),false,true);
+                            continue;
+                        }
                         Players.Items.Add(Controls[item.Source]);
                         Controls[item.Source].Repaint(item,
                             statsHeal.FirstOrDefault(x => x.Source == item.Source),

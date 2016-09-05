@@ -159,9 +159,6 @@
   <data name="SystemTray_Discord" xml:space="preserve">
     <value>Discordar</value>
   </data>
-  <data name="SystemTray_TeraDps_io" xml:space="preserve">
-    <value>TeraDps.io</value>
-  </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
     <value>Auto exportar para Excel</value>
   </data>

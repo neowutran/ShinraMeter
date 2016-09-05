@@ -98,7 +98,7 @@ namespace DamageMeter.UI
                 patch,
                 issues,
                 forum,
-//                teradps
+                teradps
             } ));
 
             var config = new ToolStripMenuItem { Text = LP.SystemTray_Config };
@@ -160,7 +160,7 @@ namespace DamageMeter.UI
 
         private void TeraDpsOnClick(object sender, EventArgs eventArgs)
         {
-            Process.Start("explorer.exe", "http://teradps.io");
+            Process.Start("explorer.exe", "http://moongourd.net");
         }
 
         private void ExitOnClick(object sender, EventArgs eventArgs)

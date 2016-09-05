@@ -271,26 +271,26 @@ namespace DamageMeter
             var areaId = int.Parse(teradpsData.areaId);
             if (
                  areaId != 886 &&
-                areaId != 467 &&
-                areaId != 767 &&
-                areaId != 768 &&
-                areaId != 470 &&
-                areaId != 468 &&
-                areaId != 770 &&
-                areaId != 769 &&
-                areaId != 916 &&
-                areaId != 969 &&
-                areaId != 970 &&
-                areaId != 950
+                //areaId != 467 &&
+                //areaId != 767 &&
+                //areaId != 768 &&
+                //areaId != 470 &&
+                areaId != 468
+                //areaId != 770 &&
+                //areaId != 769 &&
+                //areaId != 916 &&
+                //areaId != 969 &&
+                //areaId != 970 &&
+                //areaId != 950
                 )
             {
                 return;
             }
 
-            if (int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468)
-            {
-                return;
-            }
+            //if (int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468)
+            //{
+            //    return;
+            //}
 
             var json = JsonConvert.SerializeObject(teradpsData,
                 new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
@@ -343,6 +343,7 @@ namespace DamageMeter
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
                 Thread.Sleep(10000);
+                BasicTeraData.LogError(e.Message+"\r\n"+e.StackTrace,false,true);//check dupes
                 SendTeraDpsIo(boss, json, numberTry - 1);
             }
         }
