@@ -41,6 +41,7 @@ namespace DamageMeter.UI
                 if (BasicTeraData.Instance.WindowData.UILanguage != "Auto")
                 {
                     LP.Culture = CultureInfo.GetCultureInfo(BasicTeraData.Instance.WindowData.UILanguage);
+                    FormatHelpers.Instance.CultureInfo = LP.Culture;
                 }
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
                 {
