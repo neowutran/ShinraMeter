@@ -244,6 +244,8 @@ namespace DamageMeter
                 return;
             }
 
+            foreach( var members in teradpsData.members){members.playerName = "Anonymous";}
+
             SendAnonymousStatistics(
                 JsonConvert.SerializeObject(teradpsData,
                     new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}), 3);
