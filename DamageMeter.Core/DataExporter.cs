@@ -341,6 +341,7 @@ namespace DamageMeter
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
                 Thread.Sleep(10000);
+                BasicTeraData.LogError(e.Message+"\r\n"+e.StackTrace,false,true);//check dupes
                 SendTeraDpsIo(boss, json, numberTry - 1);
             }
         }
