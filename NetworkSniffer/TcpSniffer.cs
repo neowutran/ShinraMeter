@@ -62,7 +62,7 @@ namespace NetworkSniffer
                     if (!isInterestingConnection)
                         return;
 
-                    if ((ipPacket.Flags & 4) == 4)
+                    if ((ipPacket.Flags & 1) == 1)
                     {
                         BasicTeraData.LogError("Fragmented packet");
                     }
