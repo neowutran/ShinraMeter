@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Data;
 using NetworkSniffer.Packets;
 
 namespace NetworkSniffer
@@ -60,6 +61,11 @@ namespace NetworkSniffer
                     isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
                     if (!isInterestingConnection)
                         return;
+
+                    if ((ipPacket.Flags & 4) == 4)
+                    {
+                        BasicTeraData.LogError("Fragmented packet");
+                    }
 
                     if (!string.IsNullOrEmpty(TcpLogFile))
                         File.AppendAllText(TcpLogFile,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using Data;
 
 namespace NetworkSniffer
 {
@@ -70,6 +71,11 @@ namespace NetworkSniffer
                 }
             }
 
+            if (_bufferedPackets.Count > 300)
+            {
+                BasicTeraData.LogError("Received: "+BytesReceived+"\r\n"+String.Join("\r\n",_bufferedPackets.Take(10).Select(x=>""+x.Key+": "+x.Value.Length)),false,true);
+                BytesReceived = _bufferedPackets.Keys.First();
+            }
             long firstBufferedPosition;
             while (_bufferedPackets.Any() && ((firstBufferedPosition = _bufferedPackets.Keys.First()) <= BytesReceived))
             {

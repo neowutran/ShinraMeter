@@ -3,6 +3,8 @@
 
 using System;
 using System.Globalization;
+using Data;
+using Lang;
 
 namespace DamageMeter
 {
@@ -22,7 +24,7 @@ namespace DamageMeter
 
         private FormatHelpers()
         {
-            CultureInfo = CultureInfo.CurrentUICulture;
+            CultureInfo = LP.Culture;
         }
 
         public CultureInfo CultureInfo { get; set; }
