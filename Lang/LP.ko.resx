@@ -159,9 +159,6 @@
   <data name="SystemTray_Discord" xml:space="preserve">
     <value>디스코드 연결</value>
   </data>
-  <data name="SystemTray_TeraDps_io" xml:space="preserve">
-    <value>TeraDps.io</value>
-  </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
     <value>자동으로 내보내기(엑셀)</value>
   </data>

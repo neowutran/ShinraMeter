@@ -961,7 +961,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TeraDps.io.
+        ///   Looks up a localized string similar to moongourd.net.
         /// </summary>
         public static string SystemTray_TeraDps_io {
             get {
