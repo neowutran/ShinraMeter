@@ -326,7 +326,7 @@ namespace DamageMeter
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Console.WriteLine(responseString.Result);
                     var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseString.Result);
-                    if (responseObject.ContainsKey("id"))
+                    if (responseObject.ContainsKey("id") && ((string) responseObject["id"]).StartsWith("http://"))
                     {
                         NetworkController.Instance.BossLink.TryAdd((string) responseObject["id"], boss);
                     }
