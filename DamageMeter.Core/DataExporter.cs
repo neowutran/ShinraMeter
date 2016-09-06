@@ -294,7 +294,7 @@ namespace DamageMeter
 
             var json = JsonConvert.SerializeObject(teradpsData,
                 new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
-            SendTeraDpsIo((NpcEntity) entity, json, 3);
+            SendTeraDpsIo((NpcEntity) entity, json, 1);
         }
 
         private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry)
