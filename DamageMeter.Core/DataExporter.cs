@@ -294,7 +294,7 @@ namespace DamageMeter
 
             var json = JsonConvert.SerializeObject(teradpsData,
                 new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
-            SendTeraDpsIo((NpcEntity) entity, json, 1);
+            SendTeraDpsIo((NpcEntity) entity, json, 3);
         }
 
         private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry)
@@ -343,7 +343,6 @@ namespace DamageMeter
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
                 Thread.Sleep(10000);
-                BasicTeraData.LogError(e.Message+"\r\n"+e.StackTrace,false,true);//check dupes
                 SendTeraDpsIo(boss, json, numberTry - 1);
             }
         }
