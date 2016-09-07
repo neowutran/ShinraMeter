@@ -514,7 +514,7 @@ namespace DamageMeter
                     var opCodeNamer =
                         new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
                             $"data/opcodes/{cVersion.Versions[0]}.txt"));
-                    _messageFactory = new MessageFactory(opCodeNamer, cVersion.Versions[1]);
+                    _messageFactory = new MessageFactory(opCodeNamer, Server.Region);
                     continue;
                 }
 
@@ -524,6 +524,7 @@ namespace DamageMeter
                 {
                     Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
                     Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
+                    _messageFactory.Version = Server.Region;
                     TeraData = BasicTeraData.Instance.DataForRegion(Server.Region);
                     BasicTeraData.Instance.HotDotDatabase.Get(8888888).Name = LP.Enrage;
                     BasicTeraData.Instance.HotDotDatabase.Get(8888889).Name = LP.Slaying;
