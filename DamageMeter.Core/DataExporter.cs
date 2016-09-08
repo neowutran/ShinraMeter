@@ -28,7 +28,7 @@ namespace DamageMeter
                 using (var client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(40);
-                    var response = client.PostAsync("http://cloud.neowutran.ovh:8083/store.php", new StringContent(
+                    var response = client.PostAsync("https://neowutran.ovh/storage/store.php", new StringContent(
                         json,
                         Encoding.UTF8,
                         "application/json")

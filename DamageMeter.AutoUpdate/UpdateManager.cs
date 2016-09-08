@@ -16,7 +16,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "1.28";
+        public static readonly string Version = "1.29";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -71,7 +71,7 @@ namespace DamageMeter.AutoUpdate
             using (var client = new WebClient())
             {
                 client.DownloadFile(
-                    " http://neowutran.ovh:8083/updates/" + latestVersion +
+                    " https://neowutran.ovh/updates/" + latestVersion +
                     ".zip", ExecutableDirectory + @"\tmp\" + latestVersion + ".zip");
             }
             Console.WriteLine("Latest version downloaded");
@@ -140,7 +140,7 @@ namespace DamageMeter.AutoUpdate
         {
             var version =
                 await
-                    GetResponseText(" http://neowutran.ovh:8083/updates/version.txt")
+                    GetResponseText("https://neowutran.ovh/updates/version.txt")
                         .ConfigureAwait(false);
             version = Regex.Replace(version, @"\r\n?|\n", "");
 
