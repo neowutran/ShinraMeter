@@ -224,7 +224,6 @@ namespace DamageMeter
 
         private static void ToAnonymousStatistics(EncounterBase teradpsData)
         {
-            //Leveling area only, don't care about that
             var areaId = int.Parse(teradpsData.areaId);
             if (
                 areaId != 886 &&
