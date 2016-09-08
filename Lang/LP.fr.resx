@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MainWindow_Do_you_want_to_close_the_application" xml:space="preserve">
+    <value>Voulez-vous fermer l'application</value>
+  </data>
+  <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
+    <value>Fermer Shinra Meter V</value>
+  </data>
+  <data name="MainWindow_Only_boss" xml:space="preserve">
+    <value>Juste le boss</value>
+  </data>
+  <data name="MainWindow_Fatal_error" xml:space="preserve">
+    <value>Une erreur fatale à être trouvé, voir le fichier error.log pour plus d’informations.</value>
+  </data>
+  <data name="MainWindow_Boss_Adds" xml:space="preserve">
+    <value>Boss + Mobs</value>
+  </data>
+  <data name="SystemTray_before_crash" xml:space="preserve">
+    <value>avant le crash</value>
+  </data>
+  <data name="SystemTray_Packet_waiting" xml:space="preserve">
+    <value>Packets en attente de traitement</value>
+  </data>
+  <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
+    <value>Exporter le combat vers Excel</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Quitter</value>
+  </data>
+  <data name="SystemTray_Wiki" xml:space="preserve">
+    <value>Wiki</value>
+  </data>
+  <data name="SystemTray_Patch_note" xml:space="preserve">
+    <value>Patch note</value>
+  </data>
+  <data name="SystemTray_Report_issue" xml:space="preserve">
+    <value>Signaler un problème</value>
+  </data>
+  <data name="SystemTray_Discord" xml:space="preserve">
+    <value>Discord</value>
+  </data>
+  <data name="SystemTray_TeraDps_io" xml:space="preserve">
+    <value>TeraDps.io</value>
+  </data>
+  <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
+    <value>Export automatique vers Excel</value>
+  </data>
+  <data name="SystemTray_Count_only_bosses" xml:space="preserve">
+    <value>Compter uniquement les boss</value>
+  </data>
+  <data name="SystemTray_Detect_bosses_by_HP_bar" xml:space="preserve">
+    <value>Détecter la barre d'HP des boss (ignorer la BDD)</value>
+  </data>
+  <data name="SystemTray_Site_export" xml:space="preserve">
+    <value>Exporter vers le site</value>
+  </data>
+  <data name="SystemTray_Count_only_party_members" xml:space="preserve">
+    <value>Compter uniquement les membre de la partie</value>
+  </data>
+  <data name="SystemTray_Stay_topmost" xml:space="preserve">
+    <value>Garder au premier plan</value>
+  </data>
+  <data name="SystemTray_Click_throu" xml:space="preserve">
+    <value>Click par transparence</value>
+  </data>
+  <data name="SystemTray_Invisible_when_no_stats" xml:space="preserve">
+    <value>Invisible quand aucune donnée</value>
+  </data>
+  <data name="SystemTray_Show_always" xml:space="preserve">
+    <value>Toujours afficher</value>
+  </data>
+  <data name="SystemTray_Links" xml:space="preserve">
+    <value>Liens</value>
+  </data>
+  <data name="SystemTray_Config" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="SystemTray_Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="SystemTray_Performance_information" xml:space="preserve">
+    <value>Information de Performance</value>
+  </data>
+  <data name="App_Unable_to_contact_update_server" xml:space="preserve">
+    <value>Impossible de contacter le serveur de mise à jour, réessayer plus tard. Plus d'informations disponibles dans le fichier error.log</value>
+  </data>
+  <data name="App_Update_Available" xml:space="preserve">
+    <value>Mise à jour disponible</value>
+  </data>
+  <data name="App_Do_you_want_to_update" xml:space="preserve">
+    <value>Voulez-vous mettre à jour l'application?</value>
+  </data>
+  <data name="PerSecond" xml:space="preserve">
+    <value>/s</value>
+  </data>
+  <data name="Individual_dps" xml:space="preserve">
+    <value>DPS Individuel</value>
+  </data>
+  <data name="Fight_Duration" xml:space="preserve">
+    <value>Temps de combat</value>
+  </data>
+  <data name="Damage_done" xml:space="preserve">
+    <value>Dommages causés</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="Dot" xml:space="preserve">
+    <value>DOT</value>
+  </data>
+  <data name="Chained" xml:space="preserve">
+    <value>Enchainement</value>
+  </data>
+  <data name="Critical" xml:space="preserve">
+    <value>Critique</value>
+  </data>
+  <data name="White" xml:space="preserve">
+    <value>Blanc</value>
+  </data>
+  <data name="Unknown_Skill" xml:space="preserve">
+    <value>Attaque inconnue</value>
+  </data>
+  <data name="Archer" xml:space="preserve">
+    <value>Archer</value>
+  </data>
+  <data name="Berserker" xml:space="preserve">
+    <value>Berserker</value>
+  </data>
+  <data name="Brawler" xml:space="preserve">
+    <value>Tempétueuse</value>
+  </data>
+  <data name="Gunner" xml:space="preserve">
+    <value>Artilleuse</value>
+  </data>
+  <data name="Lancer" xml:space="preserve">
+    <value>Lancier</value>
+  </data>
+  <data name="Mystic" xml:space="preserve">
+    <value>Mystique</value>
+  </data>
+  <data name="Ninja" xml:space="preserve">
+    <value>Ninja</value>
+  </data>
+  <data name="Priest" xml:space="preserve">
+    <value>Prêtre</value>
+  </data>
+  <data name="Reaper" xml:space="preserve">
+    <value>Mortiféra</value>
+  </data>
+  <data name="Slayer" xml:space="preserve">
+    <value>Pourfendeur</value>
+  </data>
+  <data name="Sorcerer" xml:space="preserve">
+    <value>Sorcier</value>
+  </data>
+  <data name="Warrior" xml:space="preserve">
+    <value>Guerrier</value>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>Commun</value>
+  </data>
+  <data name="Your_computer_is_too_slow" xml:space="preserve">
+    <value>Votre ordinateur est trop lent pour utiliser ce DPS Meter. Vous ne pouvez pas analyser tous les paquets assez rapidement. Arrêt immédiat de l'application.</value>
+  </data>
+  <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
+    <value>Votre fichier hotkeys.xml est invalide.</value>
+  </data>
+  <data name="Unable_to_get_key_from_string" xml:space="preserve">
+    <value>Unable to get key from string</value>
+  </data>
+  <data name="RegisterHotKeyError" xml:space="preserve">
+    <value>Impossible d'enregistrer la touche de raccourci.</value>
+  </data>
+  <data name="AlreadyInUse" xml:space="preserve">
+    <value> il est probablement en cours d'execution.</value>
+  </data>
+  <data name="TeraDpsIoApiError" xml:space="preserve">
+    <value>Erreur Api ou timeout.</value>
+  </data>
+  <data name="TotalEncounter" xml:space="preserve">
+    <value>TOTAL</value>
+  </data>
+  <data name="SystemTray_No_server" xml:space="preserve">
+    <value>Aucun serveur</value>
+  </data>
+  <!-- Detailed skill window -->
+  <data name="Deaths" xml:space="preserve">
+    <value>Morts</value>
+  </data>
+  <data name="Deaths_Tooltip" xml:space="preserve">
+    <value>Nombre de morts</value>
+  </data>
+  <data name="Death_Time" xml:space="preserve">
+    <value>Temps mort</value>
+  </data>
+  <data name="Death_Time_Tooltip" xml:space="preserve">
+    <value>"Le temps passé à terre"</value>
+  </data>
+  <data name="Aggro" xml:space="preserve">
+    <value>Aggro</value>
+  </data>
+  <data name="Aggro_Tooltip" xml:space="preserve">
+    <value>Nombre de fois avec l'aggro</value>
+  </data>
+  <data name="Aggro_Time" xml:space="preserve">
+    <value>Temps d'aggro</value>
+  </data>
+  <data name="Aggro_Time_Tooltip" xml:space="preserve">
+    <value>"Le temps que vous avez tenu l'aggro du boss"</value>
+  </data>
+  <data name="Dps" xml:space="preserve">
+    <value>Dps</value>
+  </data>
+  <data name="Heal" xml:space="preserve">
+    <value>Heal</value>
+  </data>
+  <data name="Mana" xml:space="preserve">
+    <value>Mana</value>
+  </data>
+  <data name="Buff" xml:space="preserve">
+    <value>Buff</value>
+  </data>
+  <data name="SkillDealt" xml:space="preserve">
+    <value>Skill envoyé</value>
+  </data>
+  <data name="SkillReceived" xml:space="preserve">
+    <value>Skill reçu</value>
+  </data>
+  <data name="SkillName" xml:space="preserve">
+    <value>Nom du skill</value>
+  </data>
+  <data name="CritPercent" xml:space="preserve">
+    <value>% Crit</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>Domage</value>
+  </data>
+  <data name="DamagePercent" xml:space="preserve">
+    <value>% Dmg</value>
+  </data>
+  <data name="AverageCrit" xml:space="preserve">
+    <value>Avg crit</value>
+  </data>
+  <data name="MaxCrit" xml:space="preserve">
+    <value>Max crit</value>
+  </data>
+  <data name="AvgWhite" xml:space="preserve">
+    <value>Avg white</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>Avg</value>
+  </data>
+  <data name="Hits" xml:space="preserve">
+    <value>Hits</value>
+  </data>
+  <data name="Crits" xml:space="preserve">
+    <value>Crits</value>
+  </data>
+  <data name="MaxWhite" xml:space="preserve">
+    <value>Max white</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>Classe</value>
+  </data>
+  <data name="EffectTime" xml:space="preserve">
+    <value>Temps d'effet</value>
+  </data>
+  <data name="Fight" xml:space="preserve">
+    <value>Combat</value>
+  </data>
+  <data name="FightPercent" xml:space="preserve">
+    <value>% Combat</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <!--Excel Export-->
+  <data name="Boss" xml:space="preserve">
+    <value>Boss</value>
+  </data>
+  <data name="HealCritPercent" xml:space="preserve">
+    <value>Heal Crit %</value>
+  </data>
+  <data name="HitsTaken" xml:space="preserve">
+    <value>Hits pris</value>
+  </data>
+  <data name="DamgeTaken" xml:space="preserve">
+    <value>Dmg pris</value>
+  </data>
+  <data name="BossHP" xml:space="preserve">
+    <value>Boss HP</value>
+  </data>
+  <data name="AvgDPS" xml:space="preserve">
+    <value>Avg DPS</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Départ</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Temps</value>
+  </data>
+  <data name="MinCrit" xml:space="preserve">
+    <value>Min Crit</value>
+  </data>
+  <!-- Hotdot overrides -->
+  <data name="Enrage" xml:space="preserve">
+    <value>Enrage</value>
+  </data>
+  <data name="Slaying" xml:space="preserve">
+    <value>Tueur</value>
+  </data>
+  <data name="SlayingTooltip" xml:space="preserve">
+    <value>Le cristal 'Tueur' fonctionne (si equipé) quand le joueur est affiché ici.</value>
+  </data>
+  <!-- HitDirection overrides -->
+  <data name="Back" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Côté</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Devant</value>
+  </data>
+  <data name="Pet" xml:space="preserve">
+    <value>Pet</value>
+  </data>
+  <data name="Hot" xml:space="preserve">
+    <value>HOT</value>
+  </data>
+  <data name="Mot" xml:space="preserve">
+    <value>MOT</value>
+  </data>
+  <data name="NumberPlayersDisplayed" xml:space="preserve">
+    <value>Nombre de joueurs affiché</value>
+  </data>
+</root>
