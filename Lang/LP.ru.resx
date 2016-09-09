@@ -156,9 +156,6 @@
   <data name="SystemTray_Discord" xml:space="preserve">
     <value>Конференция в Discord</value>
   </data>
-  <data name="SystemTray_TeraDps_io" xml:space="preserve">
-    <value>TeraDps.io</value>
-  </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
     <value>Автоэкспорт в Excel</value>
   </data>
@@ -233,9 +230,6 @@
   </data>
   <data name="White" xml:space="preserve">
     <value>Некрит</value>
-  </data>
-  <data name="Unknown_Skill" xml:space="preserve">
-    <value>Неизвестный скилл</value>
   </data>
   <data name="Archer" xml:space="preserve">
     <value>Лучник</value>

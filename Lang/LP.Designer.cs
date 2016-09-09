@@ -959,15 +959,7 @@ namespace Lang {
                 return ResourceManager.GetString("SystemTray_Stay_topmost", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to moongourd.net.
-        /// </summary>
-        public static string SystemTray_TeraDps_io {
-            get {
-                return ResourceManager.GetString("SystemTray_TeraDps_io", resourceCulture);
-            }
-        }
+       
         
         /// <summary>
         ///   Looks up a localized string similar to Wiki.
@@ -1011,15 +1003,6 @@ namespace Lang {
         public static string Unable_to_get_key_from_string {
             get {
                 return ResourceManager.GetString("Unable_to_get_key_from_string", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown Skill.
-        /// </summary>
-        public static string Unknown_Skill {
-            get {
-                return ResourceManager.GetString("Unknown_Skill", resourceCulture);
             }
         }
         

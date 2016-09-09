@@ -20,21 +20,82 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class SkillsLog
     {
-    
 
+        private IEnumerable<Database.Structures.Skill> _skills;
+        private bool _received;
+        private bool _initialized;
         public SkillsLog(IEnumerable<Database.Structures.Skill> skills, bool received)
         {
             InitializeComponent();
             //ContentWidth = 900;
             if (skills==null)return;
-            foreach (var skill in skills.OrderByDescending(x => x.Time))
-            {   
-                var log = new SkillLog();                
-                log.Update(skill, received);
+            _received = received;
+            _skills = skills;
+            _initialized = true;
+            Display();
+        }
+
+        private void Display()
+        {
+            Database.Database.Type? typeDamage = null;
+            Database.Database.Type? typeHeal = null;
+            Database.Database.Type? typeMana = null;
+            Database.Database.Type? lastType = null;
+
+            if ((bool)Damage.IsChecked)
+            {
+                typeDamage = Database.Database.Type.Damage;
+                lastType = typeDamage;
+            }
+            if ((bool)Heal.IsChecked)
+            {
+                typeHeal = Database.Database.Type.Heal;
+                lastType = typeHeal;
+            }
+            if ((bool)Mana.IsChecked)
+            {
+                typeMana = Database.Database.Type.Mana;
+                lastType = typeMana;
+            }
+
+            if (lastType == null)
+            {
+                typeMana = Database.Database.Type.Mana;
+                typeHeal = Database.Database.Type.Heal;
+                typeDamage = Database.Database.Type.Damage;
+            }
+            else
+            {
+
+                if (typeDamage == null)
+                {
+                    typeDamage = lastType;
+                }
+                if (typeHeal == null)
+                {
+                    typeHeal = lastType;
+                }
+                if (typeMana == null)
+                {
+                    typeMana = lastType;
+                }
+            }
+
+            Skills.Items.Clear();
+            foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana ).OrderByDescending(x => x.Time))
+            {
+                var log = new SkillLog();
+                log.Update(skill, _received);
                 Skills.Items.Add(log);
             }
         }
 
         public double ContentWidth { get; private set; }
+
+        private void ValueChanged(object sender, RoutedEventArgs e)
+        {
+            if (!_initialized) return;
+            Display();
+        }
     }
 }

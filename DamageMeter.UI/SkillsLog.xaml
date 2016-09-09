@@ -5,7 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Height="30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0" IsChecked="True" Foreground="Red" Content="Damage" Height="30" Name="Damage" Checked="ValueChanged" Unchecked="ValueChanged" />
+            <CheckBox Grid.Column="1" IsChecked="True" Foreground="LightGreen" Content="Heal" Height="30" Name="Heal"  Checked="ValueChanged"  Unchecked="ValueChanged" />
+            <CheckBox Grid.Column="2" IsChecked="True" Foreground="LightBlue"  Content="Mana" Height="30" Name="Mana" Checked="ValueChanged"  Unchecked="ValueChanged" />
+        </Grid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500">
 
             <ItemsControl Name="Skills" Background="Transparent" BorderThickness="0"
                       Focusable="False" Grid.IsSharedSizeScope="True"

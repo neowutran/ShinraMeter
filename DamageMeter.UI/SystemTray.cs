@@ -57,7 +57,7 @@ namespace DamageMeter.UI
             issues.Click += IssuesOnClick;
             var forum = new ToolStripMenuItem { Text = LP.SystemTray_Discord };
             forum.Click += ForumOnClick;
-            var teradps = new ToolStripMenuItem { Text = LP.SystemTray_TeraDps_io };
+            var teradps = new ToolStripMenuItem { Text = "moongourd.net" };
             teradps.Click += TeraDpsOnClick;
             var excel = new ToolStripMenuItem { Text = LP.SystemTray_Autoexport_to_Excel };
             excel.Click += ExcelOnClick;

@@ -234,9 +234,6 @@
   <data name="White" xml:space="preserve">
     <value>일반</value>
   </data>
-  <data name="Unknown_Skill" xml:space="preserve">
-    <value>미확인 스킬</value>
-  </data>
   <data name="Archer" xml:space="preserve">
     <value>궁수</value>
   </data>
