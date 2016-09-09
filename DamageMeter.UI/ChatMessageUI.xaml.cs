@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using Data;
+using System.Windows.Media;
 
 namespace DamageMeter.UI
 {
@@ -20,12 +21,28 @@ namespace DamageMeter.UI
         public void Update(ChatMessage message)
         {
             Sender.Content = message.Sender;
-            Message.Content = message.Text;
+            Message.Text = message.Text;
+
+            Brush foreground = null;
+            switch (message.ChatType)
+            {
+                case Chat.ChatType.Whisper:
+                    foreground = new SolidColorBrush(Color.FromArgb(255, 230, 113, 184));
+                    break;
+                case Chat.ChatType.Normal:
+                    foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    break;
+
+            }
+
+            Sender.Foreground = foreground;
+            Message.Foreground = foreground;
+
         }
 
         private void Copy_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Clipboard.SetDataObject((string) Message.Content);
+            Clipboard.SetDataObject(Message.Text);
         }
 
         private void Sender_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

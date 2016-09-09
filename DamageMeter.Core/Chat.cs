@@ -13,6 +13,12 @@ namespace DamageMeter
         private readonly LinkedList<ChatMessage> _chat = new LinkedList<ChatMessage>();
         private readonly int _maxMessage = 100;
 
+        public enum ChatType
+        {
+            Whisper = 0,
+            Normal = 1
+        }
+
 
         private Chat()
         {
@@ -22,15 +28,15 @@ namespace DamageMeter
 
         public void Add(S_CHAT message)
         {
-            Add(message.Username, message.Text);
+            Add(message.Username, message.Text, ChatType.Normal);
         }
 
         public void Add(S_WHISPER message)
         {
-            Add(message.Sender, message.Text);
+            Add(message.Sender, message.Text, ChatType.Whisper);
         }
 
-        private void Add(string sender, string message)
+        private void Add(string sender, string message, ChatType chatType)
         {
             if (_chat.Count == _maxMessage)
             {
@@ -41,7 +47,7 @@ namespace DamageMeter
             message = rgx.Replace(message, "");
             message = WebUtility.HtmlDecode(message);
 
-            var chatMessage = new ChatMessage(sender, message);
+            var chatMessage = new ChatMessage(sender, message, chatType);
             _chat.AddLast(chatMessage);
         }
 

@@ -33,7 +33,7 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class MainWindow
     {
-        private readonly Chatbox _chatbox;
+        private Chatbox _chatbox;
         private readonly EntityStatsMain _entityStats;
 
         private readonly TeradpsHistory _windowHistory;
@@ -81,7 +81,6 @@ namespace DamageMeter.UI
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
             _entityStats = new EntityStatsMain(this);
-            _chatbox = new Chatbox(new List<ChatMessage>());
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
             Console.WriteLine(
                 "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
@@ -232,7 +231,7 @@ namespace DamageMeter.UI
                     UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
                     _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);
-                    _chatbox.Update(chatbox);
+                    _chatbox?.Update(chatbox);
                     _systemTray.UpdatePacketWaiting(packetWaiting);
 
                     PartyDps.Content =
@@ -320,6 +319,7 @@ namespace DamageMeter.UI
         private void ShowChat(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
+            _chatbox = new Chatbox();
             _chatbox.Show();
         }
 

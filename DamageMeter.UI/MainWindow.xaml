@@ -286,7 +286,7 @@
                            Stretch="Fill"
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
-                            <Label Grid.Column="1" Content="{Binding Source={x:Static l:LP.DpsWebsiteHistory}}" Foreground="White" FontSize="14" />
+                            <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowHistory" Content="{Binding Source={x:Static l:LP.DpsWebsiteHistory}}" Foreground="White" FontSize="14" />
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -297,7 +297,7 @@
                            Stretch="Fill"
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
-                            <Label Grid.Column="1" Content="{Binding Source={x:Static l:LP.Chat}}" Foreground="White" FontSize="14" />
+                            <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowChat" Content="{Binding Source={x:Static l:LP.Chat}}" Foreground="White" FontSize="14" />
                         </Grid>
                     </ContextMenu>
                 </Image.ContextMenu>

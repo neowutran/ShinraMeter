@@ -9,16 +9,12 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class Chatbox
     {
+        private bool _updated = false;
+     
         public Chatbox()
         {
             InitializeComponent();
-        }
-
-        public Chatbox(List<ChatMessage> chatbox)
-        {
-            InitializeComponent();
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
-            Update(chatbox);
         }
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
@@ -28,6 +24,8 @@ namespace DamageMeter.UI
 
         public void Update(List<ChatMessage> chatbox)
         {
+            if (_updated) return;
+            _updated = true;
             for (var i = 0; i < chatbox.Count; i++)
             {
                 if (ChatboxList.Items.Count > i)
