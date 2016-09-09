@@ -82,10 +82,11 @@ namespace DamageMeter.UI
             }
 
             Skills.Items.Clear();
+            var beginTime = _skills.Min(x => x.Time);
             foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana ).OrderByDescending(x => x.Time))
             {
                 var log = new SkillLog();
-                log.Update(skill, _received);
+                log.Update(skill, _received, beginTime);
                 Skills.Items.Add(log);
             }
         }

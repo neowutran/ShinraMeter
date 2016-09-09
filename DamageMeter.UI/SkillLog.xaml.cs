@@ -19,7 +19,7 @@ namespace DamageMeter.UI
         }
 
 
-        public void Update(Database.Structures.Skill skill, bool received)
+        public void Update(Database.Structures.Skill skill, bool received, long beginTime)
         {
             var skillInfo = SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot,
                            NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
@@ -48,6 +48,7 @@ namespace DamageMeter.UI
             SkillAmount.FontWeight = fontWeight;
             SkillAmount.ToolTip = skill.Critic ? LP.Critical :  LP.White;
             SkillName.Content = skill.SkillId;
+            Time.Content = (skill.Time - beginTime)/TimeSpan.TicksPerSecond + LP.Seconds;
             if (skillInfo != null)
             {
                 SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);

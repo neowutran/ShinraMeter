@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
-    <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Margin="0,0,0,0">
+    <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
             <ColumnDefinition SharedSizeGroup="s1" MinWidth="200" Width="Auto"/>
@@ -12,6 +12,7 @@
             <ColumnDefinition SharedSizeGroup="s3" MinWidth="70" Width="Auto"/>
             <ColumnDefinition SharedSizeGroup="s4" MinWidth="200" Width="Auto"/>
             <ColumnDefinition SharedSizeGroup="s5" MinWidth="200" Width="Auto"/>
+            <ColumnDefinition SharedSizeGroup="s6" MinWidth="200" Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
                Height="40" VerticalAlignment="Top" Width="40" />
@@ -37,6 +38,10 @@
                Foreground="White" />
         <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
                HorizontalAlignment="Stretch" x:Name="SkillPet" VerticalAlignment="Center"
+               MinHeight="29"
+               Foreground="White" />
+        <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
+               HorizontalAlignment="Stretch" x:Name="Time" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="White" />
        

@@ -4,6 +4,7 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:ui="clr-namespace:DamageMeter.UI"
+                     xmlns:l="clr-namespace:Lang;assembly=Lang"
                      mc:Ignorable="d"
                      Title="Shinra Meter"
                      Loaded="MainWindow_OnLoaded"
@@ -85,29 +86,21 @@
 
 
         <Style x:Key="ShinraContext" TargetType="{x:Type ContextMenu}">
-            <Setter Property="SnapsToDevicePixels"
-                    Value="True" />
-            <Setter Property="OverridesDefaultStyle"
-                    Value="True" />
-            <Setter Property="Grid.IsSharedSizeScope"
-                    Value="true" />
-            <Setter Property="Background" Value="Black" />
-            <Setter Property="HasDropShadow"
-                    Value="False" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ContextMenu}">
-                        <Border x:Name="Border"
-                                BorderThickness="0">
+                        <Border Background="Black" x:Name="Border"
+                                BorderThickness="0.5">
                             <Border.BorderBrush>
-                                <SolidColorBrush Color="Transparent" />
+                                <SolidColorBrush Color="DarkGray" />
                             </Border.BorderBrush>
                             <StackPanel IsItemsHost="True"
                                         KeyboardNavigation.DirectionalNavigation="Cycle" />
                         </Border>
+                        
                         <ControlTemplate.Triggers>
                             <Trigger Property="HasDropShadow"
-                                     Value="false" />
+                                     Value="true" />
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -284,14 +277,28 @@
                 <Image.ContextMenu>
 
                     <ContextMenu Style="{DynamicResource ShinraContext}" x:Name="PopupMenu">
-                        <Image x:Name="History" PreviewMouseLeftButtonDown="ShowHistory"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" x:Name="History" PreviewMouseLeftButtonDown="ShowHistory"
                            Stretch="Fill"
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
-                        <Image x:Name="Chatbox" PreviewMouseLeftButtonDown="ShowChat"
+                            <Label Grid.Column="1" Content="{Binding Source={x:Static l:LP.DpsWebsiteHistory}}" Foreground="White" FontSize="14" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" x:Name="Chatbox" PreviewMouseLeftButtonDown="ShowChat"
                            Stretch="Fill"
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
+                            <Label Grid.Column="1" Content="{Binding Source={x:Static l:LP.Chat}}" Foreground="White" FontSize="14" />
+                        </Grid>
                     </ContextMenu>
                 </Image.ContextMenu>
 
