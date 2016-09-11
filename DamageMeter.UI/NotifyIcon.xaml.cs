@@ -40,6 +40,7 @@ namespace DamageMeter.UI
             InvisibleWhenNoStats.IsChecked = BasicTeraData.Instance.WindowData.InvisibleUi;
             ShowAlways.IsChecked = BasicTeraData.Instance.WindowData.AlwaysVisible;
             StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
+            NumberPlayersSpinner.Value = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed;
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -191,6 +192,11 @@ namespace DamageMeter.UI
         private void DisableCountOnlyBoss(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.OnlyBoss = false;
+        }
+
+        private void NumberPlayersChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed = (int)NumberPlayersSpinner.Value;
         }
     }
 }

@@ -226,6 +226,7 @@ namespace DamageMeter.UI
                     AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory,
                     List<ChatMessage> chatbox, int packetWaiting)
                 {
+                    Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
                     UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
                     _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);
