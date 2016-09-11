@@ -1,0 +1,176 @@
+﻿<UserControl  x:Class="DamageMeter.UI.NotifyIcon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DamageMeter.UI"
+             mc:Ignorable="d" 
+             xmlns:tb="http://www.hardcodet.net/taskbar"
+            xmlns:l="clr-namespace:Lang;assembly=Lang"
+             >
+    <tb:TaskbarIcon Name="Tray"  IconSource="shinra.ico"   PopupActivation="All"  >
+      
+            <!--
+    We can use arbitrary UI elements as Popups.
+    Popups stay open if the user moves away from the tray area
+  -->
+              <tb:TaskbarIcon.TrayPopup>
+                <Border
+      Background="Black"
+      BorderBrush="DarkGray"
+      BorderThickness="0"
+      CornerRadius="0"
+      Opacity="0.8">
+
+                <TabControl TabStripPlacement="Bottom" Background="Transparent" BorderThickness="0" x:Name="TabControl">
+                    <TabControl.Resources>
+                        <Style TargetType="{x:Type ToolTip}">
+                            <Setter Property="Background" Value="#8F000000" />
+                            <Setter Property="FontSize" Value="14" />
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock TextWrapping="Wrap" Text="{Binding}" MaxWidth="600" />
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type TabItem}">
+                                        <Grid>
+                                            <Border
+                                Name="Border"
+                                Background="Transparent"
+                                BorderThickness="1"
+                                BorderBrush="Transparent"
+                                >
+                                                <ContentPresenter x:Name="ContentSite"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  ContentSource="Header"
+                                                  Margin="12,2,12,2"
+                                                  RecognizesAccessKey="True" />
+                                            </Border>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Panel.ZIndex" Value="100" />
+                                                <Setter TargetName="Border" Property="BorderBrush" Value="White" />
+
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False" />
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="OverridesDefaultStyle" Value="True" />
+                            <Setter Property="Margin" Value="5" />
+                            <Setter Property="Foreground" Value="White" />
+
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Name="border"
+                                BorderThickness="1"
+                                Padding="4,2"
+                                BorderBrush="Transparent"
+                                CornerRadius="0"
+                                Background="Black">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="BorderBrush" Value="White" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.Resources>
+                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Links}" x:Name="Links" Background="Transparent" Foreground="White">
+                        <TabItem.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Content="{Binding Source={x:Static l:LP.SystemTray_Wiki}}" Name="Wiki"  Click="WikiAction" />
+                                <Button Grid.Row="1" Content="{Binding Source={x:Static l:LP.SystemTray_Patch_note}}" Name="Patch"  Click="PatchAction" />
+                                <Button Grid.Row="2" Content="{Binding Source={x:Static l:LP.SystemTray_Report_issue}}" Name="Issues"  Click="IssueAction" />
+                                <Button Grid.Row="3" Content="{Binding Source={x:Static l:LP.SystemTray_Discord}}" Name="Discord"  Click="DiscordAction"  />
+                                <Button Grid.Row="4" Content="moongourd.net" Name="DpsWebsite"  Click="DpsWebsiteAction" />
+                            </Grid>
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Config}" x:Name="Configs" Background="Transparent" Foreground="White">
+                        <TabItem.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.DpsWebsiteHistory}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
+                                <CheckBox Grid.Row="1" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Autoexport_to_Excel}}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
+                                <CheckBox Grid.Row="2" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Count_only_bosses}}" Name="CountOnlyBoss"  Checked="EnableCountOnlyBoss"  Unchecked="DisableCountOnlyBoss" />
+                                <CheckBox Grid.Row="3" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Detect_bosses_by_HP_bar}}" Name="BossByHpBar"  Checked="EnableBossByHpBar"  Unchecked="DisableBossByHpBar" />
+                                <CheckBox Grid.Row="4" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Count_only_party_members}}" Name="PartyOnly"  Checked="EnablePartyOnly"  Unchecked="DisablePartyOnly" />
+                                <CheckBox Grid.Row="5" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Click_throu}}" Name="ClickThrou"  Checked="EnableClickThrou"  Unchecked="DisableClickThrou" />
+                                <CheckBox Grid.Row="6" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Invisible_when_no_stats}}" Name="InvisibleWhenNoStats"  Checked="EnableInvisibleWhenNoStats"  Unchecked="DisableInvisibleWhenNoStats" />
+                                <CheckBox Grid.Row="7" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Show_always}}" Name="ShowAlways"  Checked="EnableShowAlways"  Unchecked="DisableShowAlways" />
+                                <CheckBox Grid.Row="8" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Stay_topmost}}" Name="StayTopMost"  Checked="EnableStayTopMost"  Unchecked="DisableStayTopMost" />
+                            </Grid>
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Action}" x:Name="Actions" Background="Transparent" Foreground="White">
+                        <TabItem.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Content="{Binding Source={x:Static l:LP.Reset}}" Name="Reset"  Click="ResetAction" />
+                                <Button Grid.Row="1" Content="{Binding Source={x:Static l:LP.Close}}" Name="Close"  Click="CloseAction" />
+                                <Button Grid.Row="2" Content="{Binding Source={x:Static l:LP.SystemTray_Export_current_to_Excel}}" Name="ExcelExport"  Click="ExcelExportAction"  />
+                                <Button Grid.Row="3" Content="{Binding Source={x:Static l:LP.SystemTray_Stay_topmost}}" Name="StayTopMostAction"  Click="ClickStayTopMostAction"  />
+                                
+                            </Grid>
+                        </TabItem.Content>
+                    </TabItem>
+                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Performance_information}" x:Name="Performance" Background="Transparent" Foreground="White">
+                        <TabItem.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+                                <Label Foreground="White" Grid.Row="0" Name="PacketWaitingLabel" />
+                                <ProgressBar Grid.Row="1" Name="PacketWaitingProgressBar" Minimum="0" Maximum="3000" Value="0"/>
+                            </Grid>
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
+
+
+                </Border>
+            </tb:TaskbarIcon.TrayPopup>
+
+        </tb:TaskbarIcon>
+</UserControl>

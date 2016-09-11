@@ -40,7 +40,7 @@ namespace DamageMeter.UI
         internal bool ForceWindowVisibilityHidden;
         private bool _keyboardInitialized;
         private bool _topMost = true;
-        private readonly SystemTray _systemTray;
+        //private readonly SystemTray _systemTray;
 
         public MainWindow()
         {
@@ -82,10 +82,11 @@ namespace DamageMeter.UI
             Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
             _entityStats = new EntityStatsMain(this);
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
+           
             Console.WriteLine(
                 "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
-            _systemTray = new SystemTray(this);
-            KeyboardHook.Instance.SwitchTopMost += delegate { _systemTray.SwitchStayTop(); };
+            NotifyIcon.Initialize(this);
+            KeyboardHook.Instance.SwitchTopMost += delegate { NotifyIcon.SwitchStayTop(); };
         }
 
         private void InstanceOnGuildIconAction(Bitmap icon)
@@ -95,7 +96,7 @@ namespace DamageMeter.UI
               delegate (Bitmap bitmap)
               {
                   Icon = bitmap?.ToImageSource() ?? BasicTeraData.Instance.ImageDatabase.Icon;
-                  _systemTray.TrayIcon.Icon = bitmap?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
+                  NotifyIcon.Tray.Icon = bitmap?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
 
               };
             Dispatcher.Invoke(changeUi, icon);
@@ -118,7 +119,7 @@ namespace DamageMeter.UI
                 players.Value.SetClickThrou();
             }
             _entityStats.SetClickThrou();
-            _systemTray.ClickThrou.Checked = true;
+            NotifyIcon.ClickThrou.IsChecked = true;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStatsClickThrou.Source;
         }
 
@@ -131,7 +132,7 @@ namespace DamageMeter.UI
                 players.Value.UnsetClickThrou();
             }
             _entityStats.UnsetClickThrou();
-            _systemTray.ClickThrou.Checked = false;
+            NotifyIcon.ClickThrou.IsChecked = false;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
 
@@ -149,9 +150,6 @@ namespace DamageMeter.UI
 
         public void Exit()
         {
-            _systemTray.TrayIcon.Visible = false;
-            _systemTray.TrayIcon.Icon = null;
-            _systemTray.TrayIcon.Dispose();
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
             NetworkController.Instance.Exit();
         }
@@ -232,7 +230,7 @@ namespace DamageMeter.UI
                     _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);
                     _chatbox?.Update(chatbox);
-                    _systemTray.UpdatePacketWaiting(packetWaiting);
+                    NotifyIcon.UpdatePacketWaiting(packetWaiting);
 
                     PartyDps.Content =
                         FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
@@ -328,7 +326,7 @@ namespace DamageMeter.UI
             ChangeTitle changeTitle = delegate(string newServerName)
             {
                 Title = newServerName;
-                _systemTray.TrayIcon.Text = "Shinra Meter V" + UpdateManager.Version + ": " + newServerName;
+                NotifyIcon.Tray.ToolTipText = "Shinra Meter V" + UpdateManager.Version + ": " + newServerName;
             };
             Dispatcher.Invoke(changeTitle, serverName);
         }

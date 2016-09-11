@@ -169,6 +169,19 @@ namespace DamageMeter
             _clickThrou = true;
         }
 
+        public void SwitchClickThrou(bool value)
+        {
+            if (value)
+            {
+                SetClickThrou();
+                _clickThrou = true;
+                return;
+            }
+            UnsetClickThrou();
+            _clickThrou = false;
+            
+        }
+
         protected virtual void SetClickThrou()
         {
             SetClickThrouAction?.Invoke();
