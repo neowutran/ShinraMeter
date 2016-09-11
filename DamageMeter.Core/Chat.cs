@@ -47,6 +47,11 @@ namespace DamageMeter
             message = rgx.Replace(message, "");
             message = WebUtility.HtmlDecode(message);
 
+            if(chatType == ChatType.Whisper)
+            {
+                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Whisper: "+sender, message);
+            }
+
             var chatMessage = new ChatMessage(sender, message, chatType);
             _chat.AddLast(chatMessage);
         }

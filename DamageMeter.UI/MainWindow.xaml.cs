@@ -218,19 +218,22 @@ namespace DamageMeter.UI
 
         public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities,
             bool ntimedEncounter, AbnormalityStorage nabnormals,
-            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting)
+            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting, Tuple<string,string> nflash)
         {
             NetworkController.UpdateUiHandler changeUi =
                 delegate(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities,
                     bool timedEncounter,
                     AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory,
-                    List<ChatMessage> chatbox, int packetWaiting)
+                    List<ChatMessage> chatbox, int packetWaiting, Tuple<string,string> flash)
                 {
+
                     Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
                     UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
                     _entityStats.Update(statsSummary.EntityInformation, abnormals);
                     _windowHistory.Update(bossHistory);
                     _chatbox?.Update(chatbox);
+
+                    NotifyIcon.ShowBallon(flash);
                     NotifyIcon.UpdatePacketWaiting(packetWaiting);
 
                     PartyDps.Content =
@@ -306,7 +309,7 @@ namespace DamageMeter.UI
                    
                 };
             Dispatcher.Invoke(changeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory,
-                nchatbox, npacketWaiting);
+                nchatbox, npacketWaiting, nflash);
         }
 
         private void ShowHistory(object sender, MouseButtonEventArgs e)

@@ -31,7 +31,7 @@ namespace DamageMeter
         public delegate void UpdateUiHandler(
             StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter,
             AbnormalityStorage abnormals,
-            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting);
+            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, Tuple<string, string> flash);
 
         public delegate void GuildIconEvent(Bitmap icon);
 
@@ -39,6 +39,7 @@ namespace DamageMeter
         private readonly AbnormalityStorage _abnormalityStorage;
         private AbnormalityTracker _abnormalityTracker;
         private CharmTracker _charmTracker;
+        public Tuple<string, string> FlashMessage { get; set; }
 
         private bool _clickThrou;
 
@@ -150,11 +151,14 @@ namespace DamageMeter
 
             var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
 
+            var flash = FlashMessage;
+            FlashMessage = null;
+       
             var statsSummary = new StatsSummary(playersInfo, heals, entityInfo);
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = _abnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, packetsWaiting);
+            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, packetsWaiting, flash);
         }
 
         public void SwitchClickThrou()

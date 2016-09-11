@@ -6,6 +6,8 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using NAudio;
+using NAudio.Wave;
 
 namespace DamageMeter.UI
 {
@@ -41,6 +43,30 @@ namespace DamageMeter.UI
             ShowAlways.IsChecked = BasicTeraData.Instance.WindowData.AlwaysVisible;
             StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
             NumberPlayersSpinner.Value = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed;
+        }
+
+        private IWavePlayer _waveOutDevice = null;
+        private AudioFileReader _audioFileReader = null;
+
+        public void ShowBallon(Tuple<string, string> flash)
+        {
+            if (flash == null) return;
+            Tray.HideBalloonTip();
+            Tray.ShowBalloonTip(flash.Item1, flash.Item2, BalloonIcon.Info);
+
+            if(_waveOutDevice != null)
+            {
+                _waveOutDevice.Stop();
+                _audioFileReader.Dispose();
+                _waveOutDevice.Dispose();
+            }
+            _waveOutDevice = new WaveOut();
+            _audioFileReader = new AudioFileReader(BasicTeraData.Instance.ResourceDirectory + "sound/whisper.mp3");
+            _waveOutDevice.Init(_audioFileReader);
+            _waveOutDevice.Play();
+
+            //hide balloon
+            //MyNotifyIcon.HideBalloonTip();
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)

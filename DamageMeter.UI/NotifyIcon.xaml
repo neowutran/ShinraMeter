@@ -144,6 +144,7 @@
                                     <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="Numbers players displayed: " />
                                     <xctk:IntegerUpDown Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" Value="5" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
                                 </Grid>
+                                
                             </Grid>
                         </TabItem.Content>
                     </TabItem>
