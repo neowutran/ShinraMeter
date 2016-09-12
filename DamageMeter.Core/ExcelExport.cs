@@ -177,6 +177,7 @@ namespace DamageMeter
                         dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
                     }
+                    Directory.CreateDirectory(dir);
                 }
 
                 var fname = "";
