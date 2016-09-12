@@ -49,6 +49,8 @@ namespace DamageMeter.UI
 
         private IWavePlayer _waveOutDevice = null;
         private AudioFileReader _audioFileReader = null;
+        private Object _lock = new Object();
+        private bool _needToStop = false;
 
         public void ShowBallon(Tuple<string, string> flash)
         {
@@ -60,19 +62,33 @@ namespace DamageMeter.UI
 
             if(_waveOutDevice != null)
             {
-                _waveOutDevice.Stop();
-                _audioFileReader.Dispose();
-                _waveOutDevice.Dispose();
+                lock (_lock)
+                {
+                    if (_needToStop)
+                    {
+                        _waveOutDevice.Stop();
+                        _audioFileReader.Dispose();
+                        _waveOutDevice.Dispose();
+                        _needToStop = false;
+                    }else
+                    {
+                        return;
+                    }
+                }
             }
             _waveOutDevice = new WaveOut();
             _audioFileReader = new AudioFileReader(BasicTeraData.Instance.ResourceDirectory + "sound/"+ "TERA Soundtrack - Popolin Nightfall.mp3");
             _waveOutDevice.Init(_audioFileReader);
             _waveOutDevice.Play();
 
-
             var timer = new System.Threading.Timer((obj) =>
             {
-                _waveOutDevice.Stop();
+                lock (_lock)
+                {
+                    _waveOutDevice.Stop();
+                    _needToStop = true;
+                    
+                }
              }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
             //hide balloon
             //MyNotifyIcon.HideBalloonTip();
