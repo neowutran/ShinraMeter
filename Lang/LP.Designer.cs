@@ -392,15 +392,7 @@ namespace Lang {
                 return ResourceManager.GetString("Dps", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Moogourd History.
-        /// </summary>
-        public static string DpsWebsiteHistory {
-            get {
-                return ResourceManager.GetString("DpsWebsiteHistory", resourceCulture);
-            }
-        }
+
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Eff Time.

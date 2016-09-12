@@ -450,7 +450,4 @@
     <data name="Chat" xml:space="preserve">
     <value>Chat</value>
   </data>
-  <data name="DpsWebsiteHistory" xml:space="preserve">
-    <value>Historique Moogourd</value>
-  </data>
 </root>

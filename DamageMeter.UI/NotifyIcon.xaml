@@ -23,7 +23,7 @@
       CornerRadius="0"
       Opacity="0.8">
 
-                <TabControl TabStripPlacement="Bottom" Height="300" Background="Transparent" BorderThickness="0" x:Name="TabControl">
+                <TabControl TabStripPlacement="Bottom" MinHeight="300" MaxHeight="300" MaxWidth="500" MinWidth="500" Background="Transparent" BorderThickness="0" x:Name="TabControl">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type ToolTip}">
                             <Setter Property="Background" Value="#8F000000" />
@@ -128,7 +128,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.DpsWebsiteHistory}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
+                                <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Site_export}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
                                 <CheckBox Grid.Row="1" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Autoexport_to_Excel}}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
                                 <CheckBox Grid.Row="2" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Count_only_bosses}}" Name="CountOnlyBoss"  Checked="EnableCountOnlyBoss"  Unchecked="DisableCountOnlyBoss" />
                                 <CheckBox Grid.Row="3" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Detect_bosses_by_HP_bar}}" Name="BossByHpBar"  Checked="EnableBossByHpBar"  Unchecked="DisableBossByHpBar" />
