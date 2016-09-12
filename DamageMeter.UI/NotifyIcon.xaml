@@ -23,7 +23,7 @@
       CornerRadius="0"
       Opacity="0.8">
 
-                <TabControl TabStripPlacement="Bottom" Background="Transparent" BorderThickness="0" x:Name="TabControl">
+                <TabControl TabStripPlacement="Bottom" Height="300" Background="Transparent" BorderThickness="0" x:Name="TabControl">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type ToolTip}">
                             <Setter Property="Background" Value="#8F000000" />
@@ -127,7 +127,6 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.DpsWebsiteHistory}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
                                 <CheckBox Grid.Row="1" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Autoexport_to_Excel}}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
@@ -154,14 +153,7 @@
                                     <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="Delay to wait when pasting: " />
                                     <xctk:IntegerUpDown Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" Value="150" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
                                 </Grid>
-                                <Grid Grid.Row="11">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="40" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Foreground="White" Name="ExcelDirectory" Content="ExcelDirectory: " />
-                                    <Button Grid.Column="1" Content="Test" Name="ExcelDirectorySelecter" Click="SelectExcelDirectory" />
-                                </Grid>
+                              
                                 
                             </Grid>
                         </TabItem.Content>

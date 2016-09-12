@@ -45,8 +45,6 @@ namespace DamageMeter.UI
             StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
             NumberPlayersSpinner.Value = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed;
             LFDelaySpinner.Value = BasicTeraData.Instance.WindowData.LFDelay;
-            ExcelDirectorySelecter.Content = BasicTeraData.Instance.WindowData.ExcelSaveDirectory;
-
         }
 
         private IWavePlayer _waveOutDevice = null;
@@ -58,7 +56,7 @@ namespace DamageMeter.UI
             Tray.HideBalloonTip();
             var balloon = new Balloon();
             balloon.Value(flash.Item1, flash.Item2);
-            Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, 6000);
+            Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, BasicTeraData.Instance.WindowData.PopupDisplayTime);
 
             if(_waveOutDevice != null)
             {
@@ -67,10 +65,15 @@ namespace DamageMeter.UI
                 _waveOutDevice.Dispose();
             }
             _waveOutDevice = new WaveOut();
-            _audioFileReader = new AudioFileReader(BasicTeraData.Instance.ResourceDirectory + "sound/whisper.mp3");
+            _audioFileReader = new AudioFileReader(BasicTeraData.Instance.ResourceDirectory + "sound/"+ "TERA Soundtrack - Popolin Nightfall.mp3");
             _waveOutDevice.Init(_audioFileReader);
             _waveOutDevice.Play();
 
+
+            var timer = new System.Threading.Timer((obj) =>
+            {
+                _waveOutDevice.Stop();
+             }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
             //hide balloon
             //MyNotifyIcon.HideBalloonTip();
         }
@@ -236,18 +239,6 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.LFDelay = (int)LFDelaySpinner.Value;
         }
 
-        private void SelectExcelDirectory(object sender, RoutedEventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-
-            DialogResult result = fbd.ShowDialog();
-
-            if (!string.IsNullOrWhiteSpace(fbd.SelectedPath))
-            {
-                BasicTeraData.Instance.WindowData.ExcelSaveDirectory = fbd.SelectedPath;
-                ExcelDirectorySelecter.Content = BasicTeraData.Instance.WindowData.ExcelSaveDirectory;
-            }
-        }
-            
+      
     }
 }

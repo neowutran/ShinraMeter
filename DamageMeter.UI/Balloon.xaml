@@ -9,15 +9,15 @@
              Opacity="0.8"
              BorderBrush="Transparent"
              BorderThickness="0"
-             d:DesignHeight="150" d:DesignWidth="250">
+             d:DesignWidth="500">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
-            <RowDefinition Height="15" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Name="Title" Grid.Row="0" FontSize="24" Foreground="White" Background="Transparent" />
+        <Label Name="Title" Margin="5" Grid.Row="0" FontSize="24" Foreground="Red" Background="Transparent" />
         <Separator Grid.Row="1" />
-        <TextBlock Name="Content" Background="Transparent" Foreground="White" FontSize="14" Grid.Row="2" />
+        <TextBlock Margin="5" Name="Content" Background="Transparent" Foreground="White" FontSize="14" Grid.Row="2" />
     </Grid>
 </UserControl>

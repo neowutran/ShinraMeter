@@ -35,6 +35,9 @@ namespace Data
         public bool ShowHealCrit { get; set; }
         public bool OnlyBoss { get; set; }
         public bool DetectBosses { get; set; }
+
+        public int SoundNotifyDuration { get; set; }
+        public int PopupDisplayTime { get; set; }
         public bool DateInExcelPath { get; set; }
 
         public int NumberOfPlayersDisplayed { get; set; }
@@ -67,6 +70,8 @@ namespace Data
             DetectBosses = false;
             DateInExcelPath = false;
             NumberOfPlayersDisplayed = 5;
+            PopupDisplayTime = 10000;
+            SoundNotifyDuration = 2500;
         }
 
 
@@ -127,6 +132,14 @@ namespace Data
             Parse("only_bosses", "OnlyBoss");
             Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
             Parse("date_in_excel_path", "DateInExcelPath");
+
+
+
+            Parse("popup_display_time", "PopupDisplayTime");
+            Parse("sound_notify_duration", "SoundNotifyDuration");
+
+
+
             ParseLocation();
             ParseOpacity();
             ParseTeraDps();

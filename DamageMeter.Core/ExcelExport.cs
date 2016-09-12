@@ -156,7 +156,6 @@ namespace DamageMeter
                 {
                     dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}";
                 }
-                dir = BTD.WindowData.ExcelSaveDirectory;
                 
 
                 /*
@@ -178,8 +177,8 @@ namespace DamageMeter
                         dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
                     }
-                    Directory.CreateDirectory(dir);
                 }
+
                 var fname = "";
                 if (BTD.WindowData.DateInExcelPath)
                 {

@@ -47,11 +47,14 @@ namespace DamageMeter
             message = rgx.Replace(message, "");
             message = WebUtility.HtmlDecode(message);
 
-            
-
             if(chatType == ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive())
             {
                 NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Whisper: "+sender, message);
+            }
+
+            if (chatType == ChatType.Normal && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive() && message.Contains("@"+ NetworkController.Instance.EntityTracker.MeterUser.Name))
+            {
+                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Chat: " + sender, message);
             }
 
             var chatMessage = new ChatMessage(sender, message, chatType);
