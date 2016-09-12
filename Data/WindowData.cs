@@ -61,7 +61,7 @@ namespace Data
             PartyOnly = false;
             SiteExport = false;
             ShowHealCrit = true;
-            ExcelSaveDirectory = "";
+            ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
             LFDelay = 150;
             OnlyBoss = false;
             DetectBosses = false;
@@ -105,6 +105,13 @@ namespace Data
             Parse("lf_delay", "LFDelay");
             Parse("number_of_players_displayed", "NumberOfPlayersDisplayed");
             Parse("excel_save_directory", "ExcelSaveDirectory");
+
+            if (ExcelSaveDirectory == "")
+            {
+                ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
+            }
+
+
             Parse("showhealcrit", "ShowHealCrit");
             Parse("partyonly", "PartyOnly");
             Parse("excel", "Excel");

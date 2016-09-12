@@ -126,6 +126,8 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.DpsWebsiteHistory}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
                                 <CheckBox Grid.Row="1" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Autoexport_to_Excel}}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
@@ -143,6 +145,22 @@
                                     </Grid.ColumnDefinitions>
                                     <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="Numbers players displayed: " />
                                     <xctk:IntegerUpDown Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" Value="5" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
+                                </Grid>
+                                <Grid Grid.Row="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="60" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="Delay to wait when pasting: " />
+                                    <xctk:IntegerUpDown Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" Value="150" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
+                                </Grid>
+                                <Grid Grid.Row="11">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Foreground="White" Name="ExcelDirectory" Content="ExcelDirectory: " />
+                                    <Button Grid.Column="1" Content="Test" Name="ExcelDirectorySelecter" Click="SelectExcelDirectory" />
                                 </Grid>
                                 
                             </Grid>

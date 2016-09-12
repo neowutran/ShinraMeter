@@ -8,13 +8,14 @@ using System.Windows;
 using System.Windows.Controls;
 using NAudio;
 using NAudio.Wave;
+using System.Windows.Forms;
 
 namespace DamageMeter.UI
 {
     /// <summary>
     /// Logique d'interaction pour NotifyIcon.xaml
     /// </summary>
-    public partial class NotifyIcon : UserControl
+    public partial class NotifyIcon
     {
 
         public NotifyIcon()
@@ -43,6 +44,9 @@ namespace DamageMeter.UI
             ShowAlways.IsChecked = BasicTeraData.Instance.WindowData.AlwaysVisible;
             StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
             NumberPlayersSpinner.Value = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed;
+            LFDelaySpinner.Value = BasicTeraData.Instance.WindowData.LFDelay;
+            ExcelDirectorySelecter.Content = BasicTeraData.Instance.WindowData.ExcelSaveDirectory;
+
         }
 
         private IWavePlayer _waveOutDevice = null;
@@ -52,7 +56,9 @@ namespace DamageMeter.UI
         {
             if (flash == null) return;
             Tray.HideBalloonTip();
-            Tray.ShowBalloonTip(flash.Item1, flash.Item2, BalloonIcon.Info);
+            var balloon = new Balloon();
+            balloon.Value(flash.Item1, flash.Item2);
+            Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, 6000);
 
             if(_waveOutDevice != null)
             {
@@ -224,5 +230,24 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed = (int)NumberPlayersSpinner.Value;
         }
+
+        private void LFDelayChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.LFDelay = (int)LFDelaySpinner.Value;
+        }
+
+        private void SelectExcelDirectory(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            DialogResult result = fbd.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(fbd.SelectedPath))
+            {
+                BasicTeraData.Instance.WindowData.ExcelSaveDirectory = fbd.SelectedPath;
+                ExcelDirectorySelecter.Content = BasicTeraData.Instance.WindowData.ExcelSaveDirectory;
+            }
+        }
+            
     }
 }

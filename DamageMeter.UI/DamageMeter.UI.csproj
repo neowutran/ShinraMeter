@@ -134,6 +134,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Balloon.xaml.cs">
+      <DependentUpon>Balloon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Chatbox.xaml.cs">
       <DependentUpon>Chatbox.xaml</DependentUpon>
     </Compile>
@@ -204,6 +207,10 @@
       <DependentUpon>TeradpsHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowServices.cs" />
+    <Page Include="Balloon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Chatbox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

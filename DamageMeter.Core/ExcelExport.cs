@@ -147,31 +147,17 @@ namespace DamageMeter
                 Select save directory
                 */
                 string dir;
-                if (BTD.WindowData.ExcelSaveDirectory == "")
+                                   
+                if (BTD.WindowData.DateInExcelPath)
                 {
-                    if (BTD.WindowData.DateInExcelPath)
-                    {
-                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                        $"ShinraMeter/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}");
-                    } 
-                    else
-                    {
-                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                        $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
-                    }
+                    dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}";
                 }
                 else
                 {
-                    if (BTD.WindowData.DateInExcelPath)
-                    {
-                        dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}";
-                    }
-                    else
-                    {
-                        dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}";
-                    }
-                    dir = BTD.WindowData.ExcelSaveDirectory;
+                    dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}";
                 }
+                dir = BTD.WindowData.ExcelSaveDirectory;
+                
 
                 /*
                 Test if you have access to the user choice directory, if not, switch back to the default save directory

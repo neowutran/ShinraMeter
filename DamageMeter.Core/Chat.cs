@@ -47,7 +47,9 @@ namespace DamageMeter
             message = rgx.Replace(message, "");
             message = WebUtility.HtmlDecode(message);
 
-            if(chatType == ChatType.Whisper)
+            
+
+            if(chatType == ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive())
             {
                 NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Whisper: "+sender, message);
             }

@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="DamageMeter.UI.Balloon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DamageMeter.UI"
+             mc:Ignorable="d" 
+             Background="Black"
+             Opacity="0.8"
+             BorderBrush="Transparent"
+             BorderThickness="0"
+             d:DesignHeight="150" d:DesignWidth="250">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="15" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Name="Title" Grid.Row="0" FontSize="24" Foreground="White" Background="Transparent" />
+        <Separator Grid.Row="1" />
+        <TextBlock Name="Content" Background="Transparent" Foreground="White" FontSize="14" Grid.Row="2" />
+    </Grid>
+</UserControl>
