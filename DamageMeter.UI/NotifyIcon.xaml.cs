@@ -266,7 +266,7 @@ namespace DamageMeter.UI
 
         }
 
-        private void SoundFileChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void SoundFileChanged(object sender, RoutedEventArgs e)
         {
             if (!File.Exists(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", SoundFileTextbox.Text)))
             {
