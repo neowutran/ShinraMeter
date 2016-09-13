@@ -18,12 +18,12 @@
               <tb:TaskbarIcon.TrayPopup>
                 <Border
       Background="Black"
-      BorderBrush="DarkGray"
+      BorderBrush="Transparent"
       BorderThickness="0"
-      CornerRadius="0"
+      CornerRadius="4"
       Opacity="0.8">
 
-                <TabControl TabStripPlacement="Bottom" MinHeight="300" MaxHeight="300" MaxWidth="500" MinWidth="500" Background="Transparent" BorderThickness="0" x:Name="TabControl">
+                <TabControl TabStripPlacement="Bottom" MinHeight="300" MaxHeight="300" MaxWidth="450" MinWidth="450" Background="Transparent" BorderThickness="0" x:Name="TabControl">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type ToolTip}">
                             <Setter Property="Background" Value="#8F000000" />
@@ -127,6 +127,9 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Site_export}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
                                 <CheckBox Grid.Row="1" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Autoexport_to_Excel}}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
@@ -143,7 +146,7 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
                                     <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="Numbers players displayed: " />
-                                    <xctk:IntegerUpDown Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" Value="5" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
+                                    <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" Value="5" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
                                 </Grid>
                                 <Grid Grid.Row="10">
                                     <Grid.ColumnDefinitions>
@@ -151,10 +154,32 @@
                                         <ColumnDefinition Width="60" />
                                     </Grid.ColumnDefinitions>
                                     <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="Delay to wait when pasting: " />
-                                    <xctk:IntegerUpDown Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" Value="150" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
+                                    <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" Value="150" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
                                 </Grid>
-                              
-                                
+                                <Grid Grid.Row="11">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="60" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Foreground="White" Name="PopupTime" Content="Popup stay active for X ms: " />
+                                    <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" Value="6000" ValueChanged="PopupTimeChange" FormatString="N0" Increment="100" Maximum="60000" Minimum="0" />
+                                </Grid>
+                                <Grid Grid.Row="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="60" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Foreground="White" Name="SoundTime" Content="Sound stay active for X ms: " />
+                                    <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundTimeSpinner" Value="2500" ValueChanged="SoundTimeChanged" FormatString="N0" Increment="100" Maximum="600000" Minimum="0" />
+                                </Grid>
+                                <Grid Grid.Row="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="60" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Foreground="White" Name="SoundFile" Content="Sound filename (./resources/sound/): " />
+                                    <TextBox Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundFileTextbox" TextChanged="SoundFileChanged" />
+                                </Grid>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

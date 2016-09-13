@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              Background="Black"
              Opacity="0.8"
-             BorderBrush="Transparent"
-             BorderThickness="0"
+             BorderBrush="DarkGray"
+             BorderThickness="1"
              d:DesignWidth="500">
     <Grid>
         <Grid.RowDefinitions>

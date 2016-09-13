@@ -40,6 +40,8 @@ namespace Data
         public int PopupDisplayTime { get; set; }
         public bool DateInExcelPath { get; set; }
 
+        public string NotifySound { get; set; }
+
         public int NumberOfPlayersDisplayed { get; set; }
 
         private void DefaultValue()
@@ -72,6 +74,7 @@ namespace Data
             NumberOfPlayersDisplayed = 5;
             PopupDisplayTime = 10000;
             SoundNotifyDuration = 2500;
+            NotifySound = "TERA Soundtrack - Popolin Nightfall.mp3";
         }
 
 
@@ -134,7 +137,7 @@ namespace Data
             Parse("date_in_excel_path", "DateInExcelPath");
 
 
-
+            Parse("notify_sound", "NotifySound");
             Parse("popup_display_time", "PopupDisplayTime");
             Parse("sound_notify_duration", "SoundNotifyDuration");
 
@@ -282,7 +285,11 @@ namespace Data
             xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", DetectBosses));
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));
             xml.Root.Add(new XElement("number_of_players_displayed", NumberOfPlayersDisplayed));
-            
+
+
+            xml.Root.Add(new XElement("notify_sound", NotifySound));
+            xml.Root.Add(new XElement("popup_display_time", PopupDisplayTime));
+            xml.Root.Add(new XElement("sound_notify_duration", SoundNotifyDuration));
 
             _filestream.SetLength(0);
             using (var sr = new StreamWriter(_filestream))

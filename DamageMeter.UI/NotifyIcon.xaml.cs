@@ -1,14 +1,11 @@
 ﻿using DamageMeter.AutoUpdate;
 using Data;
-using Hardcodet.Wpf.TaskbarNotification;
 using Lang;
 using System;
 using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using NAudio;
 using NAudio.Wave;
-using System.Windows.Forms;
+using System.IO;
 
 namespace DamageMeter.UI
 {
@@ -45,11 +42,15 @@ namespace DamageMeter.UI
             StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
             NumberPlayersSpinner.Value = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed;
             LFDelaySpinner.Value = BasicTeraData.Instance.WindowData.LFDelay;
+            SoundTimeSpinner.Value = BasicTeraData.Instance.WindowData.SoundNotifyDuration;
+            PopupTimeSpinner.Value = BasicTeraData.Instance.WindowData.PopupDisplayTime;
+            SoundFileTextbox.Text = BasicTeraData.Instance.WindowData.NotifySound;
+
         }
 
         private IWavePlayer _waveOutDevice = null;
         private AudioFileReader _audioFileReader = null;
-        private Object _lock = new Object();
+        private static readonly object _lock = new object();
         private bool _needToStop = false;
 
         public void ShowBallon(Tuple<string, string> flash)
@@ -77,7 +78,7 @@ namespace DamageMeter.UI
                 }
             }
             _waveOutDevice = new WaveOut();
-            _audioFileReader = new AudioFileReader(BasicTeraData.Instance.ResourceDirectory + "sound/"+ "TERA Soundtrack - Popolin Nightfall.mp3");
+            _audioFileReader = new AudioFileReader(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound));
             _waveOutDevice.Init(_audioFileReader);
             _waveOutDevice.Play();
 
@@ -90,8 +91,7 @@ namespace DamageMeter.UI
                     
                 }
              }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
-            //hide balloon
-            //MyNotifyIcon.HideBalloonTip();
+         
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -255,6 +255,26 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.LFDelay = (int)LFDelaySpinner.Value;
         }
 
-      
+        private void PopupTimeChange(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.PopupDisplayTime = (int)PopupTimeSpinner.Value;
+        }
+
+        private void SoundTimeChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.SoundNotifyDuration = (int)SoundTimeSpinner.Value;
+
+        }
+
+        private void SoundFileChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (!File.Exists(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", SoundFileTextbox.Text)))
+            {
+                SoundFileTextbox.Text = BasicTeraData.Instance.WindowData.NotifySound;
+                return;
+            }
+            BasicTeraData.Instance.WindowData.NotifySound = SoundFileTextbox.Text;
+
+        }
     }
 }
