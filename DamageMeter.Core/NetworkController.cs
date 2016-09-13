@@ -515,9 +515,9 @@ namespace DamageMeter
                     if (!TeraWindow.IsTeraActive())
                     {
                         FlashMessage = new Tuple<string, string>(
-                        "Trading: " + trading.PlayerName,
-                        "Seller Price: " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.SellerPrice) + "\n" +
-                        "OfferedPrice: " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.OfferedPrice)
+                        LP.Trading+": " + trading.PlayerName,
+                        LP.SellerPrice+": " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.SellerPrice) + Environment.NewLine +
+                        LP.OfferedPrice+": " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.OfferedPrice)
                         );
                     }
                     continue;
@@ -530,14 +530,27 @@ namespace DamageMeter
                     if (!TeraWindow.IsTeraActive())
                     {
                         FlashMessage = new Tuple<string, string>(
-                            userApply.PlayerName + " apply to your party",
-                            "Class: " + userApply.PlayerClass + "\n" +
-                            "Lvl: " + userApply.Lvl + "\n"
+                            userApply.PlayerName + " " + LP.ApplyToYourParty,
+                            LP.Class+": " + userApply.PlayerClass + Environment.NewLine +
+                            LP.Lvl+": " + userApply.Lvl + Environment.NewLine
                             );
                     }
                     continue;
                 }
 
+                var partyMatch = message as S_FIN_INTER_PARTY_MATCH;
+                var bgMatch = message as S_BATTLE_FIELD_ENTRANCE_INFO;
+                if (partyMatch != null || bgMatch != null)
+                {
+                    if (!TeraWindow.IsTeraActive())
+                    {
+                        FlashMessage = new Tuple<string, string>(
+                            LP.PartyMatchingSuccess,
+                            LP.PartyMatchingSuccess
+                            );
+                    }
+                    continue;
+                }
 
                 var spawnMe = message as SpawnMeServerMessage;
                 if (spawnMe != null)

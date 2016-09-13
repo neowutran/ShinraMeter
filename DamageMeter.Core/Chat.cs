@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Lang;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -11,7 +12,7 @@ namespace DamageMeter
         private static Chat _instance;
 
         private readonly LinkedList<ChatMessage> _chat = new LinkedList<ChatMessage>();
-        private readonly int _maxMessage = 100;
+        private readonly int _maxMessage = 200;
 
         public enum ChatType
         {
@@ -55,12 +56,12 @@ namespace DamageMeter
 
             if(chatType == ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive())
             {
-                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Whisper: "+sender, message);
+                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>(LP.Whisper +": "+sender, message);
             }
 
             if (chatType != ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive() && message.Contains("@"+ NetworkController.Instance.EntityTracker.MeterUser.Name))
             {
-                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Chat: " + sender, message);
+                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>( LP.Chat +": " + sender, message);
             }
 
             var chatMessage = new ChatMessage(sender, message, chatType);

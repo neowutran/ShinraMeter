@@ -447,4 +447,25 @@
   <data name="Chat" xml:space="preserve">
     <value>Chat</value>
   </data>
+  <data name="ApplyToYourParty" xml:space="preserve">
+    <value>apply to your party</value>
+  </data>
+  <data name="Lvl" xml:space="preserve">
+    <value>Lvl</value>
+  </data>
+  <data name="OfferedPrice" xml:space="preserve">
+    <value>Offered price</value>
+  </data>
+  <data name="PartyMatchingSuccess" xml:space="preserve">
+    <value>Party matching success</value>
+  </data>
+  <data name="SellerPrice" xml:space="preserve">
+    <value>Seller price</value>
+  </data>
+  <data name="Trading" xml:space="preserve">
+    <value>Trading</value>
+  </data>
+  <data name="Whisper" xml:space="preserve">
+    <value>Whisper</value>
+  </data>
 </root>

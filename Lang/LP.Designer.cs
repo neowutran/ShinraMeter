@@ -133,6 +133,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à apply to your party.
+        /// </summary>
+        public static string ApplyToYourParty {
+            get {
+                return ResourceManager.GetString("ApplyToYourParty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Archer.
         /// </summary>
         public static string Archer {
@@ -392,7 +401,6 @@ namespace Lang {
                 return ResourceManager.GetString("Dps", resourceCulture);
             }
         }
-
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Eff Time.
@@ -517,6 +525,15 @@ namespace Lang {
         public static string Lancer {
             get {
                 return ResourceManager.GetString("Lancer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Lvl.
+        /// </summary>
+        public static string Lvl {
+            get {
+                return ResourceManager.GetString("Lvl", resourceCulture);
             }
         }
         
@@ -647,6 +664,24 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Offered price.
+        /// </summary>
+        public static string OfferedPrice {
+            get {
+                return ResourceManager.GetString("OfferedPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Party matching success.
+        /// </summary>
+        public static string PartyMatchingSuccess {
+            get {
+                return ResourceManager.GetString("PartyMatchingSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à /s.
         /// </summary>
         public static string PerSecond {
@@ -706,6 +741,15 @@ namespace Lang {
         public static string Seconds {
             get {
                 return ResourceManager.GetString("Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Seller price.
+        /// </summary>
+        public static string SellerPrice {
+            get {
+                return ResourceManager.GetString("SellerPrice", resourceCulture);
             }
         }
         
@@ -1007,6 +1051,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Trading.
+        /// </summary>
+        public static string Trading {
+            get {
+                return ResourceManager.GetString("Trading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Unable to get key from string.
         /// </summary>
         public static string Unable_to_get_key_from_string {
@@ -1021,6 +1074,15 @@ namespace Lang {
         public static string Warrior {
             get {
                 return ResourceManager.GetString("Warrior", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Whisper.
+        /// </summary>
+        public static string Whisper {
+            get {
+                return ResourceManager.GetString("Whisper", resourceCulture);
             }
         }
         
