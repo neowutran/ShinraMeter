@@ -16,7 +16,8 @@ namespace DamageMeter
         public enum ChatType
         {
             Whisper = 0,
-            Normal = 1
+            Normal = 1,
+            PrivateChannel = 2
         }
 
 
@@ -29,6 +30,11 @@ namespace DamageMeter
         public void Add(S_CHAT message)
         {
             Add(message.Username, message.Text, ChatType.Normal);
+        }
+
+        public void Add(S_PRIVATE_CHAT message)
+        {
+            Add(message.AuthorName, message.Text, ChatType.PrivateChannel);
         }
 
         public void Add(S_WHISPER message)
@@ -52,7 +58,7 @@ namespace DamageMeter
                 NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Whisper: "+sender, message);
             }
 
-            if (chatType == ChatType.Normal && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive() && message.Contains("@"+ NetworkController.Instance.EntityTracker.MeterUser.Name))
+            if (chatType != ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive() && message.Contains("@"+ NetworkController.Instance.EntityTracker.MeterUser.Name))
             {
                 NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Chat: " + sender, message);
             }

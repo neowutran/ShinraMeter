@@ -424,6 +424,14 @@ namespace DamageMeter
                     continue;
                 }
 
+                var privateChatMessage = message as S_PRIVATE_CHAT;
+                if (privateChatMessage != null)
+                {
+                    Chat.Instance.Add(privateChatMessage);
+                    continue;
+                }
+                
+
                 var despawnUser = message as SDespawnUser;
                 if (despawnUser != null)
                 {

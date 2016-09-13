@@ -73,8 +73,8 @@ namespace Data
             DateInExcelPath = false;
             NumberOfPlayersDisplayed = 5;
             PopupDisplayTime = 10000;
-            SoundNotifyDuration = 2500;
-            NotifySound = "TERA Soundtrack - Popolin Nightfall.mp3";
+            SoundNotifyDuration = 3000;
+            NotifySound = "ElinuDance.mp3";
         }
 
 
