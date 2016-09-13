@@ -504,22 +504,29 @@ namespace DamageMeter
                 var trading = message as S_TRADE_BROKER_DEAL_SUGGESTED;
                 if (trading != null)
                 {
-                    FlashMessage = new Tuple<string, string>(
+                    if (!TeraWindow.IsTeraActive())
+                    {
+                        FlashMessage = new Tuple<string, string>(
                         "Trading: " + trading.PlayerName,
                         "Seller Price: " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.SellerPrice) + "\n" +
                         "OfferedPrice: " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.OfferedPrice)
                         );
+                    }
                     continue;
+                
                 }
 
                 var userApply = message as S_OTHER_USER_APPLY_PARTY;
                 if (userApply != null)
                 {
-                    FlashMessage = new Tuple<string, string>(
-                        userApply.PlayerName + " apply to your party",
-                        "Class: "+ userApply.PlayerClass + "\n"+
-                        "Lvl: " + userApply.Lvl + "\n"                 
-                        );
+                    if (!TeraWindow.IsTeraActive())
+                    {
+                        FlashMessage = new Tuple<string, string>(
+                            userApply.PlayerName + " apply to your party",
+                            "Class: " + userApply.PlayerClass + "\n" +
+                            "Lvl: " + userApply.Lvl + "\n"
+                            );
+                    }
                     continue;
                 }
 
