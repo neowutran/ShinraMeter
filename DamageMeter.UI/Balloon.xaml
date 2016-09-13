@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Name="Title" Margin="5" Grid.Row="0" FontSize="24" Foreground="Red" Background="Transparent" />
+        <Label Name="Title" Margin="5" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="0" FontSize="24" Foreground="Red" Background="Transparent" />
         <Separator Grid.Row="1" />
         <TextBlock Margin="5" Name="Content" Background="Transparent" Foreground="White" FontSize="14" Grid.Row="2" />
     </Grid>
