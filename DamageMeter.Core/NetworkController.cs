@@ -529,9 +529,10 @@ namespace DamageMeter
                 {
                     if (!TeraWindow.IsTeraActive())
                     {
+
                         FlashMessage = new Tuple<string, string>(
                             userApply.PlayerName + " " + LP.ApplyToYourParty,
-                            LP.Class+": " + userApply.PlayerClass + Environment.NewLine +
+                            LP.Class+": " + LP.ResourceManager.GetString(userApply.PlayerClass.ToString(), LP.Culture) + Environment.NewLine +
                             LP.Lvl+": " + userApply.Lvl + Environment.NewLine
                             );
                     }
