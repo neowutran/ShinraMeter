@@ -354,7 +354,8 @@ namespace DamageMeter
                 var changeMp = message as SPlayerChangeMp;
                 if (changeMp != null)
                 {
-                    if (changeMp.SourceId != EntityTracker.MeterUser.Id && changeMp.TargetId != EntityTracker.MeterUser.Id) BasicTeraData.LogError("SPlayerChangeMp need rootowner", false, true);
+                    if (changeMp.SourceId != EntityTracker.MeterUser.Id && changeMp.TargetId != EntityTracker.MeterUser.Id &&
+                        EntityTracker.GetOrPlaceholder(changeHp.TargetId).RootOwner == EntityTracker.MeterUser) BasicTeraData.LogError("SPlayerChangeMp need rootowner update1", false, true);
                     _abnormalityTracker.Update(changeMp);
                     continue;
                 }

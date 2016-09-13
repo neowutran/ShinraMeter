@@ -166,7 +166,7 @@
     <value>Определять боссов по полоске здоровья (игнорировать базу)</value>
   </data>
   <data name="SystemTray_Site_export" xml:space="preserve">
-    <value>Выгружать на сайт</value>
+    <value>Выгрузка на сайт</value>
   </data>
   <data name="SystemTray_Count_only_party_members" xml:space="preserve">
     <value>Считать только членов пати</value>
@@ -441,5 +441,29 @@
   </data>
   <data name="NumberPlayersDisplayed" xml:space="preserve">
     <value>Количество отображаемых игроков</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>Чат</value>
+  </data>
+  <data name="ApplyToYourParty" xml:space="preserve">
+    <value>просится в пати</value>
+  </data>
+  <data name="Lvl" xml:space="preserve">
+    <value>ур.</value>
+  </data>
+  <data name="OfferedPrice" xml:space="preserve">
+    <value>Предложенная цена</value>
+  </data>
+  <data name="PartyMatchingSuccess" xml:space="preserve">
+    <value>Завершен подбор подземелья</value>
+  </data>
+  <data name="SellerPrice" xml:space="preserve">
+    <value>Цена продавца</value>
+  </data>
+  <data name="Trading" xml:space="preserve">
+    <value>Торговля</value>
+  </data>
+  <data name="Whisper" xml:space="preserve">
+    <value>Личное сообщение</value>
   </data>
 </root>
