@@ -73,8 +73,8 @@
 
         <ScrollViewer Name="ScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
-                <ItemsControl Name="ChatboxList" PreviewMouseWheel="ChatboxList_PreviewMouseWheel" Background="Transparent" BorderThickness="0"
-                              Focusable="False"
+                <ListBox Name="ChatboxList" Background="Transparent" BorderThickness="0" PreviewMouseWheel="ChatboxList_PreviewMouseWheel" 
+                              Focusable="False" SelectionMode="Extended" SelectionChanged="ChatboxList_OnSelectionChanged"
                               HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False"
                               HorizontalAlignment="Left" />
             </ScrollViewer>
