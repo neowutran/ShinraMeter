@@ -9,15 +9,22 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="90" />
             <ColumnDefinition Width="90" />
+            <ColumnDefinition Width="90" />
             <ColumnDefinition Width="500" />
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Label Focusable="False" Grid.Column="0" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
+               x:Name="Time" HorizontalContentAlignment="Left"
+               VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
+               MinHeight="29" />
+
+        <Label Focusable="False" Grid.Column="1" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
                x:Name="Channel" HorizontalContentAlignment="Left"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
                MinHeight="29" />
-        
-        <Label Focusable="False" Grid.Column="1" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
+
+     
+        <Label Focusable="False" Grid.Column="2" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
                x:Name="Sender" HorizontalContentAlignment="Left"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
                MinHeight="29" />
@@ -25,8 +32,8 @@
         <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True"
                  FontSize="14" HorizontalContentAlignment="Left" SelectionBrush="Black"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" MinHeight="29"
-         TextWrapping="Wrap" Grid.Column="2" x:Name="Message"  />
-        <Image Grid.Column="3" MouseLeftButtonDown="Copy_MouseLeftButtonDown" x:Name="Copy" Focusable="False"
+         TextWrapping="Wrap" Grid.Column="3" x:Name="Message"  />
+        <Image Grid.Column="4" MouseLeftButtonDown="Copy_MouseLeftButtonDown" x:Name="Copy" Focusable="False"
                Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
                Height="25" VerticalAlignment="Top" Width="25" Margin="0,0,0,0" />
     </Grid>

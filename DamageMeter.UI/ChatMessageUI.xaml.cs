@@ -30,6 +30,8 @@ namespace DamageMeter.UI
                 Channel.Content = message.ChatType;
             }
 
+            Time.Content = message.Time;
+
             Channel.Content = "[" + Channel.Content + "]";
             
             Brush foreground = null;
@@ -50,7 +52,7 @@ namespace DamageMeter.UI
                             foreground = Brushes.Yellow;
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Group:
-                            foreground = Brushes.LightBlue;
+                            foreground = Brushes.Cyan;
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Guild:
                             foreground = Brushes.LightGreen;
@@ -63,6 +65,9 @@ namespace DamageMeter.UI
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Trading:
                             foreground = Brushes.Sienna;
+                            break;
+                        default:
+                            foreground = Brushes.White;
                             break;
                     }
                     break;

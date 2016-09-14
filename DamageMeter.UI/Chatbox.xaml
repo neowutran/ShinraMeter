@@ -5,10 +5,11 @@
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:ui="clr-namespace:DamageMeter.UI"
                      mc:Ignorable="d"
-                     MaxHeight="200"
+                     Height="800"
+                     ResizeMode="CanResizeWithGrip"
                      Title="Chatbox">
     <Window.Background>
-        <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.3" />
+        <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
     </Window.Background>
     <Window.Resources>
         <Style TargetType="{x:Type ToolTip}">
@@ -70,7 +71,7 @@
                 </Button>
         </Grid>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
                 <ItemsControl Name="ChatboxList" Background="Transparent" BorderThickness="0"
                               Focusable="False"

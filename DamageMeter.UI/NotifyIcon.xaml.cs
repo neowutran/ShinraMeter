@@ -68,14 +68,10 @@ namespace DamageMeter.UI
                 {
                     if (_needToStop)
                     {
-                        _waveOutDevice.Stop();
-                        _audioFileReader.Dispose();
-                        _waveOutDevice.Dispose();
-                        _needToStop = false;
-                    }else
-                    {
                         return;
                     }
+                    _audioFileReader.Dispose();
+                    _waveOutDevice.Dispose();
                 }
             }
             _waveOutDevice = new WaveOut();
@@ -83,14 +79,14 @@ namespace DamageMeter.UI
             _waveOutDevice.Init(_audioFileReader);
             _audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
             _waveOutDevice.Play();
+            _needToStop = true;
 
             var timer = new System.Threading.Timer((obj) =>
             {
                 lock (_lock)
                 {
+                    _needToStop = false;
                     _waveOutDevice.Stop();
-                    _needToStop = true;
-                    
                 }
              }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
          
@@ -301,5 +297,6 @@ namespace DamageMeter.UI
         {
             PlaySound();
         }
+
     }
 }

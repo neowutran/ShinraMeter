@@ -1,4 +1,5 @@
 ﻿using Lang;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -46,34 +47,42 @@ namespace DamageMeter
 
         private void Add(string sender, string message, ChatType chatType, ChannelEnum? channel = null)
         {
+            var time = DateTime.Now.ToString("HH:mm:ss");
+            var rgx = new Regex("<[^>]+>");
+            message = rgx.Replace(message, "");
+            message = WebUtility.HtmlDecode(message);
+            if (string.IsNullOrWhiteSpace(message)) { return; }
+
             if (_chat.Count == _maxMessage)
             {
                 _chat.RemoveFirst();
             }
-
-            var rgx = new Regex("<[^>]+>");
-            message = rgx.Replace(message, "");
-            message = WebUtility.HtmlDecode(message);
-
-            if(chatType == ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive())
+            
+            if(chatType == ChatType.Whisper 
+                && NetworkController.Instance.EntityTracker.MeterUser.Name != sender 
+                && !TeraWindow.IsTeraActive())
             {
-                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>(LP.Whisper +": "+sender, message);
+                NetworkController.Instance.FlashMessage = new Tuple<string, string>(LP.Whisper +": "+sender, message);
             }
 
-            if (chatType != ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender && !TeraWindow.IsTeraActive() && message.Contains("@"+ NetworkController.Instance.EntityTracker.MeterUser.Name))
+            if (chatType != ChatType.Whisper &&
+                NetworkController.Instance.EntityTracker.MeterUser.Name != sender &&
+                !TeraWindow.IsTeraActive() &&
+                message.Contains("@"+ NetworkController.Instance.EntityTracker.MeterUser.Name))
             {
-                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>( LP.Chat +": " + sender, message);
+                NetworkController.Instance.FlashMessage = new Tuple<string, string>( LP.Chat +": " + sender, message);
             }
 
             if ((chatType == ChatType.PrivateChannel ||
                 (chatType == ChatType.Normal &&
                 (channel == ChannelEnum.Group || channel == ChannelEnum.Guild || channel == ChannelEnum.Raid)))
                 && !TeraWindow.IsTeraActive()
-                && message.Contains("@@")){
-                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name, "Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name);
+                && message.Contains("@@"))
+            {
+                NetworkController.Instance.FlashMessage = new Tuple<string, string>("Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name, "Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name);
             }
 
-            var chatMessage = new ChatMessage(sender, message, chatType, channel);
+            var chatMessage = new ChatMessage(sender, message, chatType, channel, time);
             _chat.AddLast(chatMessage);
         }
 
