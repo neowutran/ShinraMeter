@@ -45,6 +45,7 @@ namespace DamageMeter.UI
             SoundTimeSpinner.Value = BasicTeraData.Instance.WindowData.SoundNotifyDuration;
             PopupTimeSpinner.Value = BasicTeraData.Instance.WindowData.PopupDisplayTime;
             SoundFileTextbox.Text = BasicTeraData.Instance.WindowData.NotifySound;
+            SoundVolumeSpinner.Value = BasicTeraData.Instance.WindowData.Volume;
 
         }
 
@@ -80,6 +81,7 @@ namespace DamageMeter.UI
             _waveOutDevice = new WaveOut();
             _audioFileReader = new AudioFileReader(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound));
             _waveOutDevice.Init(_audioFileReader);
+            _audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
             _waveOutDevice.Play();
 
             var timer = new System.Threading.Timer((obj) =>
@@ -92,6 +94,19 @@ namespace DamageMeter.UI
                 }
              }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
          
+        }
+
+        private void PlaySound()
+        {
+            var waveOutDevice = new WaveOut();
+            var audioFileReader = new AudioFileReader(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound));
+            waveOutDevice.Init(audioFileReader);
+            audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
+            waveOutDevice.Play();
+            var timer = new System.Threading.Timer((obj) =>
+            {  
+               waveOutDevice.Stop();
+            }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -275,6 +290,16 @@ namespace DamageMeter.UI
             }
             BasicTeraData.Instance.WindowData.NotifySound = SoundFileTextbox.Text;
 
+        }
+
+        private void SoundVolumeChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.Volume = (float)SoundVolumeSpinner.Value;
+        }
+
+        private void TestSoundAction(object sender, RoutedEventArgs e)
+        {
+            PlaySound();
         }
     }
 }

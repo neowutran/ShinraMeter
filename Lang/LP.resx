@@ -468,4 +468,25 @@
   <data name="Whisper" xml:space="preserve">
     <value>Whisper</value>
   </data>
+  <data name="DelayToWaitPasting" xml:space="preserve">
+    <value>Delay to wait when pasting</value>
+  </data>
+  <data name="NumberPlayerDisplayed" xml:space="preserve">
+    <value>Numbers players displayed</value>
+  </data>
+  <data name="PopupStayActiveForXms" xml:space="preserve">
+    <value>Popup stay active for X ms</value>
+  </data>
+  <data name="SoundFilename" xml:space="preserve">
+    <value>Sound filename</value>
+  </data>
+  <data name="SoundStayActiveForXms" xml:space="preserve">
+    <value>Sound stay active for X ms</value>
+  </data>
+  <data name="SoundVolume" xml:space="preserve">
+    <value>Sound volume</value>
+  </data>
+  <data name="TestSound" xml:space="preserve">
+    <value>Test sound</value>
+  </data>
 </root>

@@ -29,6 +29,7 @@ namespace DamageMeter.UI
             InitializeComponent();
             //ContentWidth = 900;
             if (skills==null)return;
+            if (skills.Count() == 0) return;
             _received = received;
             _skills = skills;
             _initialized = true;

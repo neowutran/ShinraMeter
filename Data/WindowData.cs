@@ -43,6 +43,7 @@ namespace Data
         public string NotifySound { get; set; }
 
         public int NumberOfPlayersDisplayed { get; set; }
+        public float Volume { get; set; }
 
         private void DefaultValue()
         {
@@ -74,6 +75,7 @@ namespace Data
             NumberOfPlayersDisplayed = 5;
             PopupDisplayTime = 10000;
             SoundNotifyDuration = 3000;
+            Volume = 1.0f;
             NotifySound = "ElinuDance.mp3";
         }
 
@@ -140,6 +142,7 @@ namespace Data
             Parse("notify_sound", "NotifySound");
             Parse("popup_display_time", "PopupDisplayTime");
             Parse("sound_notify_duration", "SoundNotifyDuration");
+            Parse("volume", "Volume");
 
 
 
@@ -288,6 +291,7 @@ namespace Data
 
 
             xml.Root.Add(new XElement("notify_sound", NotifySound));
+            xml.Root.Add(new XElement("volume", Volume));
             xml.Root.Add(new XElement("popup_display_time", PopupDisplayTime));
             xml.Root.Add(new XElement("sound_notify_duration", SoundNotifyDuration));
 
@@ -319,6 +323,15 @@ namespace Data
             {
                 double value;
                 var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
+                if (parseSuccess)
+                {
+                    setting.SetValue(this, value, null);
+                }
+            }
+            if (setting.PropertyType == typeof(float))
+            {
+                float value;
+                var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
                 if (parseSuccess)
                 {
                     setting.SetValue(this, value, null);

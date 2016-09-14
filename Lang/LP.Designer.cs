@@ -385,6 +385,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Delay to wait when pasting.
+        /// </summary>
+        public static string DelayToWaitPasting {
+            get {
+                return ResourceManager.GetString("DelayToWaitPasting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à DOT.
         /// </summary>
         public static string Dot {
@@ -655,6 +664,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Numbers players displayed.
+        /// </summary>
+        public static string NumberPlayerDisplayed {
+            get {
+                return ResourceManager.GetString("NumberPlayerDisplayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Number of players displayed.
         /// </summary>
         public static string NumberPlayersDisplayed {
@@ -696,6 +714,15 @@ namespace Lang {
         public static string Pet {
             get {
                 return ResourceManager.GetString("Pet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Popup stay active for X ms.
+        /// </summary>
+        public static string PopupStayActiveForXms {
+            get {
+                return ResourceManager.GetString("PopupStayActiveForXms", resourceCulture);
             }
         }
         
@@ -822,6 +849,33 @@ namespace Lang {
         public static string Sorcerer {
             get {
                 return ResourceManager.GetString("Sorcerer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sound filename.
+        /// </summary>
+        public static string SoundFilename {
+            get {
+                return ResourceManager.GetString("SoundFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sound stay active for X ms.
+        /// </summary>
+        public static string SoundStayActiveForXms {
+            get {
+                return ResourceManager.GetString("SoundStayActiveForXms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Sound volume.
+        /// </summary>
+        public static string SoundVolume {
+            get {
+                return ResourceManager.GetString("SoundVolume", resourceCulture);
             }
         }
         
@@ -1029,6 +1083,15 @@ namespace Lang {
         public static string TeraDpsIoApiError {
             get {
                 return ResourceManager.GetString("TeraDpsIoApiError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Test sound.
+        /// </summary>
+        public static string TestSound {
+            get {
+                return ResourceManager.GetString("TestSound", resourceCulture);
             }
         }
         
