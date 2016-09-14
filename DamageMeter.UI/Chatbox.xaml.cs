@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using Data;
 
 namespace DamageMeter.UI
@@ -37,6 +39,17 @@ namespace DamageMeter.UI
                     ChatboxList.Items.Add(new ChatMessageUi(chatbox[i]));
                 }
             }
+        }
+
+        private void ChatboxList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ListBox)sender).SelectedItems.Count<=1)return;
+            string messages="";
+            foreach (ChatMessageUi messageUi in ((ListBox) sender).SelectedItems.Cast<ChatMessageUi>())
+            {
+                messages = messages + $"{messageUi.Time.Content} {messageUi.Channel.Content} {messageUi.Sender.Content}: {messageUi.Message.Text}"+ System.Environment.NewLine;
+            }
+            Clipboard.SetDataObject(messages);
         }
     }
 }
