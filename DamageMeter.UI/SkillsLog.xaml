@@ -19,9 +19,9 @@
             <CheckBox Grid.Column="1" IsChecked="True" Foreground="LightGreen" Content="Heal" Height="30" Name="Heal"  Checked="ValueChanged"  Unchecked="ValueChanged" />
             <CheckBox Grid.Column="2" IsChecked="True" Foreground="LightBlue"  Content="Mana" Height="30" Name="Mana" Checked="ValueChanged"  Unchecked="ValueChanged" />
         </Grid>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500">
+        <ScrollViewer Name="ScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500">
 
-            <ItemsControl Name="Skills" Background="Transparent" BorderThickness="0"
+            <ItemsControl Name="Skills" PreviewMouseWheel="Skills_PreviewMouseWheel" Background="Transparent" BorderThickness="0"
                       Focusable="False" Grid.IsSharedSizeScope="True"
                       ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.VerticalScrollBarVisibility="Hidden"

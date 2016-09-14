@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -45,6 +46,24 @@ namespace Data
         public int NumberOfPlayersDisplayed { get; set; }
         public float Volume { get; set; }
 
+
+
+
+
+        public Color WhisperColor { get; set; }
+        public Color AllianceColor { get; set; }
+        public Color AreaColor { get; set; }
+        public Color GeneralColor { get; set; }
+        public Color GroupColor { get; set; }
+        public Color GuildColor { get; set; }
+        public Color RaidColor { get; set; }
+        public Color SayColor { get; set; }
+        public Color TradingColor { get; set; }
+        public Color EmotesColor { get; set; }
+
+        public Color PrivateChannelColor { get; set; }
+
+      
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -77,6 +96,18 @@ namespace Data
             SoundNotifyDuration = 3000;
             Volume = 1.0f;
             NotifySound = "ElinuDance.mp3";
+
+            WhisperColor = Brushes.Pink.Color;
+            AllianceColor = Brushes.Green.Color;
+            AreaColor = Brushes.Purple.Color;
+            GeneralColor = Brushes.Yellow.Color;
+            GroupColor = Brushes.Cyan.Color;
+            GuildColor = Brushes.LightGreen.Color;
+            RaidColor = Brushes.Orange.Color;
+            SayColor = Brushes.White.Color;
+            TradingColor = Brushes.Sienna.Color;
+            EmotesColor = Brushes.White.Color;
+            PrivateChannelColor = Brushes.Red.Color;
         }
 
 
@@ -144,13 +175,31 @@ namespace Data
             Parse("sound_notify_duration", "SoundNotifyDuration");
             Parse("volume", "Volume");
 
-
+            ParseColor("say_color","SayColor");
+            ParseColor("alliance_color", "AllianceColor");
+            ParseColor("area_color", "AreaColor");
+            ParseColor("guild_color", "GuildColor");
+            ParseColor("whisper_color", "WhisperColor");
+            ParseColor("general_color", "GeneralColor");
+            ParseColor("group_color", "GroupColor");
+            ParseColor("trading_color", "TradingColor");
+            ParseColor("emotes_color", "EmotesColor");
+            ParseColor("private_channel_color", "PrivateChannelColor");
 
             ParseLocation();
             ParseOpacity();
             ParseTeraDps();
             ParseLanguage();
             ParseUILanguage();
+        }
+
+        private void ParseColor(string xmlName, string settingName)
+        {
+            var root = _xml.Root;
+            var xml = root?.Element(xmlName);
+            if (xml == null) return;
+            var setting = this.GetType().GetProperty(settingName);
+            setting.SetValue(this, (Color)ColorConverter.ConvertFromString(xml.Value), null);
         }
 
         private void ParseTeraDps()
@@ -289,11 +338,21 @@ namespace Data
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));
             xml.Root.Add(new XElement("number_of_players_displayed", NumberOfPlayersDisplayed));
 
-
             xml.Root.Add(new XElement("notify_sound", NotifySound));
             xml.Root.Add(new XElement("volume", Volume));
             xml.Root.Add(new XElement("popup_display_time", PopupDisplayTime));
             xml.Root.Add(new XElement("sound_notify_duration", SoundNotifyDuration));
+
+            xml.Root.Add(new XElement("say_color", SayColor.ToString()));
+            xml.Root.Add(new XElement("alliance_color", AllianceColor.ToString()));
+            xml.Root.Add(new XElement("area_color", AreaColor.ToString()));
+            xml.Root.Add(new XElement("guild_color", GuildColor.ToString()));
+            xml.Root.Add(new XElement("whisper_color", WhisperColor.ToString()));
+            xml.Root.Add(new XElement("general_color", GeneralColor.ToString()));
+            xml.Root.Add(new XElement("group_color", GroupColor.ToString()));
+            xml.Root.Add(new XElement("trading_color", TradingColor.ToString()));
+            xml.Root.Add(new XElement("emotes_color", EmotesColor.ToString()));
+            xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
 
             _filestream.SetLength(0);
             using (var sr = new StreamWriter(_filestream))

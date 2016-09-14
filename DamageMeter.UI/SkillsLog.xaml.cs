@@ -99,5 +99,11 @@ namespace DamageMeter.UI
             if (!_initialized) return;
             Display();
         }
+
+        private void Skills_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
     }
 }

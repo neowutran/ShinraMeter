@@ -44,5 +44,11 @@ namespace DamageMeter.UI
         }
 
         public double ContentWidth { get; private set; }
+
+        private void EnduranceAbnormality_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
     }
 }

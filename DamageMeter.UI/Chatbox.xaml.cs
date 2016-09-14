@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using Data;
+using System.Windows.Controls;
 
 namespace DamageMeter.UI
 {
@@ -37,6 +38,13 @@ namespace DamageMeter.UI
                     ChatboxList.Items.Add(new ChatMessageUi(chatbox[i]));
                 }
             }
+           
+        }
+
+        private void ChatboxList_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 }

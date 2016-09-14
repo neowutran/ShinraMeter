@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows;
 using NAudio.Wave;
 using System.IO;
+using System.Windows.Media;
 
 namespace DamageMeter.UI
 {
@@ -46,6 +47,18 @@ namespace DamageMeter.UI
             PopupTimeSpinner.Value = BasicTeraData.Instance.WindowData.PopupDisplayTime;
             SoundFileTextbox.Text = BasicTeraData.Instance.WindowData.NotifySound;
             SoundVolumeSpinner.Value = BasicTeraData.Instance.WindowData.Volume;
+
+            SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
+            GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
+            AllianceColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.AllianceColor;
+            AreaColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.AreaColor;
+            WhisperColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.WhisperColor;
+            GuildColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GuildColor;
+            EmotesColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
+            TradingColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.TradingColor;
+            PrivateChannelColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.PrivateChannelColor;
+            GeneralColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GeneralColor;
+            RaidColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.RaidColor;
 
         }
 
@@ -298,5 +311,69 @@ namespace DamageMeter.UI
             PlaySound();
         }
 
+        private void Grid_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            ConfigScrollViewer.ScrollToVerticalOffset(ConfigScrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
+
+        private void PrivateChannelColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.PrivateChannelColor = (Color)e.NewValue;
+        }
+
+        private void EmotesColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.EmotesColor = (Color)e.NewValue;
+        }
+
+        private void TradingColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.TradingColor = (Color)e.NewValue;
+        }
+
+        private void SayColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.SayColor = (Color)e.NewValue;
+        }
+
+        private void RaidColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.RaidColor = (Color)e.NewValue;
+
+        }
+
+        private void GuildColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.GuildColor = (Color)e.NewValue;
+
+        }
+
+        private void GroupColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.GroupColor = (Color)e.NewValue;
+
+        }
+
+        private void GeneralColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.GeneralColor = (Color)e.NewValue;
+
+        }
+
+        private void AreaColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.AreaColor = (Color)e.NewValue;
+        }
+
+        private void AllianceColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.AllianceColor = (Color)e.NewValue;
+        }
+
+        private void WhisperColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.WhisperColor = (Color)e.NewValue;
+        }
     }
 }

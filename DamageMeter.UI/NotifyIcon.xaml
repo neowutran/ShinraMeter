@@ -46,6 +46,7 @@
                                 Name="Border"
                                 Background="Transparent"
                                 BorderThickness="1"
+                                CornerRadius="4"
                                 BorderBrush="Transparent"
                                 >
                                                 <ContentPresenter x:Name="ContentSite"
@@ -114,82 +115,189 @@
                     </TabItem>
                     <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Config}" x:Name="Configs" Background="Transparent" Foreground="White">
                         <TabItem.Content>
+
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Site_export}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
-                                <CheckBox Grid.Row="1" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Autoexport_to_Excel}}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
-                                <CheckBox Grid.Row="2" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Count_only_bosses}}" Name="CountOnlyBoss"  Checked="EnableCountOnlyBoss"  Unchecked="DisableCountOnlyBoss" />
-                                <CheckBox Grid.Row="3" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Detect_bosses_by_HP_bar}}" Name="BossByHpBar"  Checked="EnableBossByHpBar"  Unchecked="DisableBossByHpBar" />
-                                <CheckBox Grid.Row="4" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Count_only_party_members}}" Name="PartyOnly"  Checked="EnablePartyOnly"  Unchecked="DisablePartyOnly" />
-                                <CheckBox Grid.Row="5" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Click_throu}}" Name="ClickThrou"  Checked="EnableClickThrou"  Unchecked="DisableClickThrou" />
-                                <CheckBox Grid.Row="6" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Invisible_when_no_stats}}" Name="InvisibleWhenNoStats"  Checked="EnableInvisibleWhenNoStats"  Unchecked="DisableInvisibleWhenNoStats" />
-                                <CheckBox Grid.Row="7" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Show_always}}" Name="ShowAlways"  Checked="EnableShowAlways"  Unchecked="DisableShowAlways" />
-                                <CheckBox Grid.Row="8" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Stay_topmost}}" Name="StayTopMost"  Checked="EnableStayTopMost"  Unchecked="DisableStayTopMost" />
-                                <Grid Grid.Row="9">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="90" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="{Binding Source={x:Static l:LP.NumberPlayersDisplayed}, StringFormat='\{0\}:'}" />
-                                    <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" Value="5" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
-                                </Grid>
-                                <Grid Grid.Row="10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="90" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="{Binding Source={x:Static l:LP.DelayToWaitPasting}, StringFormat='\{0\}: '}" />
-                                    <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" Value="150" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
-                                </Grid>
-                                <Grid Grid.Row="11">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="90" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Foreground="White" Name="PopupTime" Content="{Binding Source={x:Static l:LP.PopupStayActiveForXms}, StringFormat='\{0\}: '}" />
-                                    <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" Value="6000" ValueChanged="PopupTimeChange" FormatString="N0" Increment="100" Maximum="60000" Minimum="0" />
-                                </Grid>
-                                <Grid Grid.Row="12">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="90" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Foreground="White" Name="SoundTime" Content="{Binding Source={x:Static l:LP.SoundStayActiveForXms}, StringFormat='\{0\}: '}" />
-                                    <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundTimeSpinner" Value="2500" ValueChanged="SoundTimeChanged" FormatString="N0" Increment="100" Maximum="600000" Minimum="0" />
-                                </Grid>
-                                <Grid Grid.Row="13">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="300" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Foreground="White" Name="SoundFile" Content="{Binding Source={x:Static l:LP.SoundFilename}, StringFormat='\{0\}: '}" />
-                                    <TextBox LostFocus="SoundFileChanged" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundFileTextbox" />
-                                </Grid>
-                                <Grid Grid.Row="14">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="90" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Foreground="White" Name="SoundVolume" Content="{Binding Source={x:Static l:LP.SoundVolume}, StringFormat='\{0\}: '}" />
-                                    <xctk:DoubleUpDown Name="SoundVolumeSpinner" ValueChanged="SoundVolumeChanged"  Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  FormatString="F2" Value="1.0" Minimum="0.0" Increment="0.01"  Maximum="1.0" />
-                                </Grid>
+                                <ScrollViewer Name="ConfigScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Auto" MaxHeight="500">
+
+                                    <Grid PreviewMouseWheel="Grid_PreviewMouseWheel">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Site_export}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
+                                        <CheckBox Grid.Row="1" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Autoexport_to_Excel}}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
+                                        <CheckBox Grid.Row="2" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Count_only_bosses}}" Name="CountOnlyBoss"  Checked="EnableCountOnlyBoss"  Unchecked="DisableCountOnlyBoss" />
+                                        <CheckBox Grid.Row="3" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Detect_bosses_by_HP_bar}}" Name="BossByHpBar"  Checked="EnableBossByHpBar"  Unchecked="DisableBossByHpBar" />
+                                        <CheckBox Grid.Row="4" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Count_only_party_members}}" Name="PartyOnly"  Checked="EnablePartyOnly"  Unchecked="DisablePartyOnly" />
+                                        <CheckBox Grid.Row="5" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Click_throu}}" Name="ClickThrou"  Checked="EnableClickThrou"  Unchecked="DisableClickThrou" />
+                                        <CheckBox Grid.Row="6" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Invisible_when_no_stats}}" Name="InvisibleWhenNoStats"  Checked="EnableInvisibleWhenNoStats"  Unchecked="DisableInvisibleWhenNoStats" />
+                                        <CheckBox Grid.Row="7" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Show_always}}" Name="ShowAlways"  Checked="EnableShowAlways"  Unchecked="DisableShowAlways" />
+                                        <CheckBox Grid.Row="8" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Stay_topmost}}" Name="StayTopMost"  Checked="EnableStayTopMost"  Unchecked="DisableStayTopMost" />
+                                        <Grid Grid.Row="9">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="{Binding Source={x:Static l:LP.NumberPlayersDisplayed}, StringFormat='\{0\}:'}" />
+                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" Value="5" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
+                                        </Grid>
+                                        <Grid Grid.Row="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="{Binding Source={x:Static l:LP.DelayToWaitPasting}, StringFormat='\{0\}: '}" />
+                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" Value="150" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
+                                        </Grid>
+                                        <Grid Grid.Row="11">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="PopupTime" Content="{Binding Source={x:Static l:LP.PopupStayActiveForXms}, StringFormat='\{0\}: '}" />
+                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" Value="6000" ValueChanged="PopupTimeChange" FormatString="N0" Increment="100" Maximum="60000" Minimum="0" />
+                                        </Grid>
+                                        <Grid Grid.Row="12">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="SoundTime" Content="{Binding Source={x:Static l:LP.SoundStayActiveForXms}, StringFormat='\{0\}: '}" />
+                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundTimeSpinner" Value="2500" ValueChanged="SoundTimeChanged" FormatString="N0" Increment="100" Maximum="600000" Minimum="0" />
+                                        </Grid>
+                                        <Grid Grid.Row="13">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="SoundFile" Content="{Binding Source={x:Static l:LP.SoundFilename}, StringFormat='\{0\}: '}" />
+                                            <TextBox LostFocus="SoundFileChanged" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundFileTextbox" />
+                                        </Grid>
+                                        <Grid Grid.Row="14">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="SoundVolume" Content="{Binding Source={x:Static l:LP.SoundVolume}, StringFormat='\{0\}: '}" />
+                                            <xctk:DoubleUpDown Name="SoundVolumeSpinner" ValueChanged="SoundVolumeChanged"  Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  FormatString="F2" Value="1.0" Minimum="0.0" Increment="0.01"  Maximum="1.0" />
+                                        </Grid>
+
+
+                                        <Grid Grid.Row="15">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="WhisperColor" Content="Whisper color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True"  Name="WhisperColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="WhisperColorChanged" />
+                                        </Grid>
+
+                                        <Grid Grid.Row="16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="AllianceColor" Content="Alliance color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="AllianceColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="AllianceColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="17">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="AreaColor" Content="Area color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="AreaColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="AreaColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="18">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="GeneralColor" Content="General color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="GeneralColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GeneralColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="19">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="GroupColor" Content="Group color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="GroupColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GroupColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="GuildColor" Content="Guild color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="GuildColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GuildColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="21">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="RaidColor" Content="Raid color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="RaidColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="RaidColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="22">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="SayColor" Content="Say color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="SayColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="SayColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="23">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="TradingColor" Content="Trading color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="TradingColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="TradingColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="24">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="EmotesColor" Content="Emotes color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="EmotesColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="EmotesColorChanged" />
+                                        </Grid>
+                                        <Grid Grid.Row="25">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="200" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="PrivateChannelColor" Content="Private channel color: " />
+                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="PrivateChannelColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="PrivateChannelColorChanged" />
+                                        </Grid>
+                                    </Grid>
+                                </ScrollViewer>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

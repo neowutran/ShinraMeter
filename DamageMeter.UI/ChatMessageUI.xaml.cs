@@ -38,33 +38,36 @@ namespace DamageMeter.UI
             switch (message.ChatType)
             {
                 case Chat.ChatType.Whisper:
-                    foreground = Brushes.Pink;
+                    foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.WhisperColor);
                     break;
                 case Chat.ChatType.Normal:
                     switch (message.Channel) {
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Alliance:                   
-                            foreground = Brushes.Green;
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.AllianceColor);
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Area:
-                            foreground = Brushes.Purple;
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.AreaColor);
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.General:
-                            foreground = Brushes.Yellow;
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.GeneralColor);
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Group:
-                            foreground = Brushes.Cyan;
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.GroupColor);
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Guild:
-                            foreground = Brushes.LightGreen;
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.GuildColor);
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Raid:
-                            foreground = Brushes.Orange;
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.RaidColor);
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Say:
-                            foreground = Brushes.White;
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.SayColor);
                             break;
                         case Tera.Game.Messages.S_CHAT.ChannelEnum.Trading:
-                            foreground = Brushes.Sienna;
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.TradingColor);
+                            break;
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.Emotes:
+                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.EmotesColor);
                             break;
                         default:
                             foreground = Brushes.White;
@@ -72,7 +75,7 @@ namespace DamageMeter.UI
                     }
                     break;
                 case Chat.ChatType.PrivateChannel:
-                    foreground = Brushes.Red;
+                    foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.PrivateChannelColor);
                     break;
 
 

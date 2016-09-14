@@ -394,5 +394,11 @@ namespace DamageMeter.UI
             Ascending = 1,
             Descending = 2
         }
+
+        private void SkillsList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
     }
 }
