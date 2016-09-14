@@ -132,7 +132,6 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <CheckBox Grid.Row="0" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Site_export}}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
                                 <CheckBox Grid.Row="1" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Autoexport_to_Excel}}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
@@ -191,7 +190,6 @@
                                     <Label Grid.Column="0" Foreground="White" Name="SoundVolume" Content="{Binding Source={x:Static l:LP.SoundVolume}, StringFormat='\{0\}: '}" />
                                     <xctk:DoubleUpDown Name="SoundVolumeSpinner" ValueChanged="SoundVolumeChanged"  Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  FormatString="F2" Value="1.0" Minimum="0.0" Increment="0.01"  Maximum="1.0" />
                                 </Grid>
-                                <Button Grid.Row="15" Content="{Binding Source={x:Static l:LP.TestSound}}" Name="TestSound"  Click="TestSoundAction" />
                             </Grid>
                         </TabItem.Content>
                     </TabItem>
@@ -203,12 +201,14 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Button Grid.Row="0" Content="{Binding Source={x:Static l:LP.Reset}}" Name="Reset"  Click="ResetAction" />
                                 <Button Grid.Row="1" Content="{Binding Source={x:Static l:LP.Close}}" Name="Close"  Click="CloseAction" />
                                 <Button Grid.Row="2" Content="{Binding Source={x:Static l:LP.SystemTray_Export_current_to_Excel}}" Name="ExcelExport"  Click="ExcelExportAction"  />
                                 <Button Grid.Row="3" Content="{Binding Source={x:Static l:LP.SystemTray_Stay_topmost}}" Name="StayTopMostAction"  Click="ClickStayTopMostAction"  />
-                                
+                                <Button Grid.Row="4" Content="{Binding Source={x:Static l:LP.TestSound}}" Name="TestSound"  Click="TestSoundAction" />
+
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

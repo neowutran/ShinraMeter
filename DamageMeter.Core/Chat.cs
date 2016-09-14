@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using Tera.Game.Messages;
+using static Tera.Game.Messages.S_CHAT;
 
 namespace DamageMeter
 {
@@ -30,7 +31,7 @@ namespace DamageMeter
 
         public void Add(S_CHAT message)
         {
-            Add(message.Username, message.Text, ChatType.Normal);
+            Add(message.Username, message.Text, ChatType.Normal, message.Channel);
         }
 
         public void Add(S_PRIVATE_CHAT message)
@@ -43,7 +44,7 @@ namespace DamageMeter
             Add(message.Sender, message.Text, ChatType.Whisper);
         }
 
-        private void Add(string sender, string message, ChatType chatType)
+        private void Add(string sender, string message, ChatType chatType, ChannelEnum? channel = null)
         {
             if (_chat.Count == _maxMessage)
             {
@@ -64,7 +65,15 @@ namespace DamageMeter
                 NetworkController.Instance.FlashMessage = new System.Tuple<string, string>( LP.Chat +": " + sender, message);
             }
 
-            var chatMessage = new ChatMessage(sender, message, chatType);
+            if ((chatType == ChatType.PrivateChannel ||
+                (chatType == ChatType.Normal &&
+                (channel == ChannelEnum.Group || channel == ChannelEnum.Guild || channel == ChannelEnum.Raid)))
+                && !TeraWindow.IsTeraActive()
+                && message.Contains("@@")){
+                NetworkController.Instance.FlashMessage = new System.Tuple<string, string>("Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name, "Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name);
+            }
+
+            var chatMessage = new ChatMessage(sender, message, chatType, channel);
             _chat.AddLast(chatMessage);
         }
 

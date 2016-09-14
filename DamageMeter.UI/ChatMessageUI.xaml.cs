@@ -22,20 +22,59 @@ namespace DamageMeter.UI
         {
             Sender.Content = message.Sender;
             Message.Text = message.Text;
+            if (message.ChatType == Chat.ChatType.Normal)
+            {
+                Channel.Content = message.Channel;
+            }else
+            {
+                Channel.Content = message.ChatType;
+            }
 
+            Channel.Content = "[" + Channel.Content + "]";
+            
             Brush foreground = null;
             switch (message.ChatType)
             {
                 case Chat.ChatType.Whisper:
-                    foreground = new SolidColorBrush(Color.FromArgb(255, 230, 113, 184));
+                    foreground = Brushes.Pink;
                     break;
                 case Chat.ChatType.Normal:
-                    foreground = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+                    switch (message.Channel) {
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.Alliance:                   
+                            foreground = Brushes.Green;
+                            break;
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.Area:
+                            foreground = Brushes.Purple;
+                            break;
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.General:
+                            foreground = Brushes.Yellow;
+                            break;
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.Group:
+                            foreground = Brushes.LightBlue;
+                            break;
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.Guild:
+                            foreground = Brushes.LightGreen;
+                            break;
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.Raid:
+                            foreground = Brushes.Orange;
+                            break;
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.Say:
+                            foreground = Brushes.White;
+                            break;
+                        case Tera.Game.Messages.S_CHAT.ChannelEnum.Trading:
+                            foreground = Brushes.Sienna;
+                            break;
+                    }
                     break;
+                case Chat.ChatType.PrivateChannel:
+                    foreground = Brushes.Red;
+                    break;
+
 
             }
 
             Sender.Foreground = foreground;
+            Channel.Foreground = foreground;
             Message.Foreground = foreground;
 
         }
