@@ -471,9 +471,6 @@
   <data name="DelayToWaitPasting" xml:space="preserve">
     <value>Delay to wait when pasting</value>
   </data>
-  <data name="NumberPlayerDisplayed" xml:space="preserve">
-    <value>Numbers players displayed</value>
-  </data>
   <data name="PopupStayActiveForXms" xml:space="preserve">
     <value>Popup stay active for X ms</value>
   </data>

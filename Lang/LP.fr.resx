@@ -474,9 +474,6 @@
   <data name="DelayToWaitPasting" xml:space="preserve">
     <value>Délai d'attente lors du collage</value>
   </data>
-  <data name="NumberPlayerDisplayed" xml:space="preserve">
-    <value>Nombre de joueurs affiché</value>
-  </data>
   <data name="PopupStayActiveForXms" xml:space="preserve">
     <value>Alerte affichée pendant X ms</value>
   </data>
