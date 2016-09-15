@@ -89,6 +89,13 @@ namespace DamageMeter
             }
         }
 
+
+        public void Update()
+        {
+            ClearHotkeys();
+            Register();
+        }
+
         public void RegisterKeyboardHook()
         {
             // register the event that is fired after the key press.
@@ -110,6 +117,10 @@ namespace DamageMeter
                 BasicTeraData.Instance.HotkeysData.ExcelSave.Key);
             RegisterHotKey(BasicTeraData.Instance.HotkeysData.ClickThrou.Value,
                 BasicTeraData.Instance.HotkeysData.ClickThrou.Key);
+            if (BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey)
+            {
+                RegisterHotKey(HotkeysData.ModifierKeys.Alt, Keys.Enter);
+            }
             foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy)
             {
                 RegisterHotKey(copy.Modifier, copy.Key);

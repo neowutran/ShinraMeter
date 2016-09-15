@@ -47,6 +47,7 @@ namespace DamageMeter.UI
             PopupTimeSpinner.Value = BasicTeraData.Instance.WindowData.PopupDisplayTime;
             SoundFileTextbox.Text = BasicTeraData.Instance.WindowData.NotifySound;
             SoundVolumeSpinner.Value = BasicTeraData.Instance.WindowData.Volume;
+            RemoveTeraAltEnterHotkey.IsChecked = BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey;
 
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
@@ -374,6 +375,18 @@ namespace DamageMeter.UI
         private void WhisperColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             BasicTeraData.Instance.WindowData.WhisperColor = (Color)e.NewValue;
+        }
+
+        private void EnableRemoveTeraAltEnterHotkey(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey = true;
+            KeyboardHook.Instance.Update();
+        }
+
+        private void DisableRemoveTeraAltEnterHotkey(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey = false;
+            KeyboardHook.Instance.Update();
         }
     }
 }

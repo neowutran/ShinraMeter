@@ -63,7 +63,7 @@ namespace Data
         public Color EmotesColor { get; set; }
 
         public Color PrivateChannelColor { get; set; }
-
+        public bool RemoveTeraAltEnterHotkey { get; set; }
       
         private void DefaultValue()
         {
@@ -110,6 +110,7 @@ namespace Data
             EmotesColor = Brushes.White.Color;
             PrivateChannelColor = Brushes.Red.Color;
             LowPriority = true;
+            RemoveTeraAltEnterHotkey = false;
         }
 
 
@@ -176,6 +177,7 @@ namespace Data
             Parse("popup_display_time", "PopupDisplayTime");
             Parse("sound_notify_duration", "SoundNotifyDuration");
             Parse("volume", "Volume");
+            Parse("remove_tera_alt_enter_hotkey", "RemoveTeraAltEnterHotkey");
 
             ParseColor("say_color","SayColor");
             ParseColor("alliance_color", "AllianceColor");
@@ -356,6 +358,7 @@ namespace Data
             xml.Root.Add(new XElement("trading_color", TradingColor.ToString()));
             xml.Root.Add(new XElement("emotes_color", EmotesColor.ToString()));
             xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
+            xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", RemoveTeraAltEnterHotkey));
 
             _filestream.SetLength(0);
             using (var sr = new StreamWriter(_filestream))
