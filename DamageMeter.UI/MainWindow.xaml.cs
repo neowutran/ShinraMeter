@@ -279,7 +279,7 @@ namespace DamageMeter.UI
                         if (!Controls.ContainsKey(item.Source)) continue;
                         if (Players.Items.Contains(Controls[item.Source]))
                         {
-                            BasicTeraData.LogError("duplicate playerinfo: \r\n"+String.Join("\r\n ",statsDamage.Select(x=>x.Source.ToString()+" -> "+x.Target+": "+x.Amount)),false,true);
+                            BasicTeraData.LogError("duplicate playerinfo: \r\n"+String.Join("\r\n ",statsDamage.Select(x=>x.Source.ToString()+" ->  "+x.Amount)),false,true);
                             continue;
                         }
                         Players.Items.Add(Controls[item.Source]);

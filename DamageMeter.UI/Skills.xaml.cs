@@ -134,7 +134,7 @@ namespace DamageMeter.UI
                 //    {
                 _skillDealtLog =
                     new SkillsLog(
-                        _skills?.GetSkillsDealt(playerDamageDealt.Source.User.Id, entityInformation.Entity,
+                        _skills?.GetSkillsDealt(playerDamageDealt.Source.User, entityInformation.Entity,
                             timedEncounter), false);
                 //    }
                 SkillsDealtPanel.Content = _skillDealtLog;
@@ -144,7 +144,7 @@ namespace DamageMeter.UI
                 //    {
                 _skillReceivedLog =
                     new SkillsLog(
-                        _skills?.GetSkillsReceived(playerDamageDealt.Source.User.Id, timedEncounter), true);
+                        _skills?.GetSkillsReceived(playerDamageDealt.Source.User, timedEncounter), true);
                 //    }
                 SkillsReceivedPanel.Content = _skillReceivedLog;
                 //return;

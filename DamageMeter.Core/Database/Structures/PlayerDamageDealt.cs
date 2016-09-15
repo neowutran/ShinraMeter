@@ -4,8 +4,7 @@ namespace DamageMeter.Database.Structures
 {
     public class PlayerDamageDealt
     {
-        public PlayerDamageDealt(long amount, long beginTime, long endTime, long critic, long hit, Player source,
-            EntityId target)
+        public PlayerDamageDealt(long amount, long beginTime, long endTime, long critic, long hit, Player source)
         {
             Amount = amount;
             BeginTime = beginTime;
@@ -13,7 +12,6 @@ namespace DamageMeter.Database.Structures
             Critic = critic;
             Hit = hit;
             Source = source;
-            Target = target;
         }
 
         public long Amount { get; }
@@ -23,8 +21,6 @@ namespace DamageMeter.Database.Structures
         public long Critic { get; }
         public long Hit { get; }
         public Player Source { get; }
-
-        public EntityId Target { get; }
 
         public double CritRate => Critic*100/Hit;
         public long Interval => EndTime - BeginTime;

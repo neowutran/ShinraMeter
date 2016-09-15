@@ -9,10 +9,10 @@ namespace DamageMeter.Database.Structures
     {
         private readonly Dictionary<string, object> _caching = new Dictionary<string, object>();
 
-        public Skills(Dictionary<EntityId, Dictionary<EntityId, List<Skill>>> sourceTargetSkill,
-            Dictionary<EntityId, Dictionary<EntityId, List<Skill>>> targetSourceSkill,
-            Dictionary<EntityId, Dictionary<EntityId, Dictionary<int, List<Skill>>>> sourceTargetIdSkill,
-            Dictionary<EntityId, Dictionary<int, List<Skill>>> sourceIdSkill
+        public Skills(Dictionary<Entity, Dictionary<Entity, List<Skill>>> sourceTargetSkill,
+            Dictionary<Entity, Dictionary<Entity, List<Skill>>> targetSourceSkill,
+            Dictionary<Entity, Dictionary<Entity, Dictionary<int, List<Skill>>>> sourceTargetIdSkill,
+            Dictionary<Entity, Dictionary<int, List<Skill>>> sourceIdSkill
             )
         {
             SourceTargetSkill = sourceTargetSkill;
@@ -22,13 +22,13 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        private Dictionary<EntityId, Dictionary<EntityId, List<Skill>>> SourceTargetSkill { get; }
-        private Dictionary<EntityId, Dictionary<EntityId, List<Skill>>> TargetSourceSkill { get; }
-        private Dictionary<EntityId, Dictionary<int, List<Skill>>> SourceIdSkill { get; }
-        private Dictionary<EntityId, Dictionary<EntityId, Dictionary<int, List<Skill>>>> SourceTargetIdSkill { get; }
+        private Dictionary<Entity, Dictionary<Entity, List<Skill>>> SourceTargetSkill { get; }
+        private Dictionary<Entity, Dictionary<Entity, List<Skill>>> TargetSourceSkill { get; }
+        private Dictionary<Entity, Dictionary<int, List<Skill>>> SourceIdSkill { get; }
+        private Dictionary<Entity, Dictionary<Entity, Dictionary<int, List<Skill>>>> SourceTargetIdSkill { get; }
 
 
-        public long DamageReceived(EntityId target, Entity source, bool timed)
+        public long DamageReceived(Entity target, Entity source, bool timed)
         {
             var sourceString = source?.Id.ToString() ?? "";
             var key = "damage_received/" + target + "/" + sourceString + "/" + timed;
@@ -39,9 +39,9 @@ namespace DamageMeter.Database.Structures
             {
                 if (!timed && source != null)
                  {
-                    if (TargetSourceSkill[target].ContainsKey(source.Id))
+                    if (TargetSourceSkill[target].ContainsKey(source))
                     {
-                        result = from skills in TargetSourceSkill[target][source.Id]
+                        result = from skills in TargetSourceSkill[target][source]
                             where skills.Type == Database.Type.Damage
                             select skills.Amount;
                     }
@@ -61,7 +61,7 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        public int HitsReceived(EntityId target, Entity source, bool timed)
+        public int HitsReceived(Entity target, Entity source, bool timed)
         {
             var sourceString = source?.Id.ToString() ?? "";
             var key = "hits_received/" + target + "/" + sourceString + "/" + timed;
@@ -72,9 +72,9 @@ namespace DamageMeter.Database.Structures
             {
                 if (!timed && source != null)
                 {
-                    if (TargetSourceSkill[target].ContainsKey(source.Id))
+                    if (TargetSourceSkill[target].ContainsKey(source))
                     {
-                        result = from skills in TargetSourceSkill[target][source.Id]
+                        result = from skills in TargetSourceSkill[target][source]
                             where skills.Type == Database.Type.Damage
                             select skills;
                     }
@@ -93,7 +93,7 @@ namespace DamageMeter.Database.Structures
             return count;
         }
 
-        public long BiggestCrit(EntityId source, Entity target, bool timed)
+        public long BiggestCrit(Entity source, Entity target, bool timed)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_crit/" + source + "/" + targetString + "/" + timed;
@@ -111,7 +111,7 @@ namespace DamageMeter.Database.Structures
             }
             else
             {
-                result = from skills in SourceTargetSkill[source][target.Id]
+                result = from skills in SourceTargetSkill[source][target]
                     where skills.Type == Database.Type.Damage
                     where skills.Critic
                     select skills.Amount;
@@ -128,10 +128,10 @@ namespace DamageMeter.Database.Structures
 
             if (timed || target == null)
             {
-                result = from skills in SourceTargetSkill[source.Id].Values
+                result = from skills in SourceTargetSkill[source].Values
                     from skill in skills
                     select
-                        SkillResult.GetSkill(source.Id, skill.Pet, skill.SkillId, skill.HotDot,
+                        SkillResult.GetSkill(source, skill.Pet, skill.SkillId, skill.HotDot,
                             NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                             BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
 
@@ -139,32 +139,32 @@ namespace DamageMeter.Database.Structures
             }
 
 
-            result = from skills in SourceTargetSkill[source.Id][target.Id]
+            result = from skills in SourceTargetSkill[source][target]
                 select
-                    SkillResult.GetSkill(source.Id, skills.Pet, skills.SkillId, skills.HotDot,
+                    SkillResult.GetSkill(source, skills.Pet, skills.SkillId, skills.HotDot,
                         NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                         BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
             return result.Distinct();
         }
 
 
-        public IEnumerable<KeyValuePair<EntityId, Tera.Game.Skill>> SkillsIdByTarget(Entity target)
+        public IEnumerable<KeyValuePair<Entity, Tera.Game.Skill>> SkillsIdByTarget(Entity target)
         {
-            if (!TargetSourceSkill.ContainsKey(target.Id))
+            if (!TargetSourceSkill.ContainsKey(target))
             {
-                return new List<KeyValuePair<EntityId, Tera.Game.Skill>>();
+                return new List<KeyValuePair<Entity, Tera.Game.Skill>>();
             }
 
-            var result = from skills in TargetSourceSkill[target.Id].Values
+            var result = from skills in TargetSourceSkill[target].Values
                 from skill in skills
                 select
-                    new KeyValuePair<EntityId, Tera.Game.Skill>( skill.Source, SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot,
+                    new KeyValuePair<Entity, Tera.Game.Skill>( skill.Source(), SkillResult.GetSkill(skill.Source(), skill.Pet, skill.SkillId, skill.HotDot,
                         NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                         BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase));
             return result.Where(x => x.Value != null).Distinct();
         }
 
-        public bool Type(EntityId source, Entity target, int skillid, NpcInfo pet, bool timed, Database.Type type)
+        public bool Type(Entity source, Entity target, int skillid, NpcInfo pet, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var name = "";
@@ -200,7 +200,7 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public long Amount(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public long Amount(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "amount/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -216,16 +216,16 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        private IEnumerable<Skill> DataSource(EntityId source, Entity target, int skillid, bool timed)
+        private IEnumerable<Skill> DataSource(Entity source, Entity target, int skillid, bool timed)
         {
 
             return timed || target == null
                 ? SourceIdSkill[source][skillid]
-                : SourceTargetIdSkill[source][target.Id][skillid];
+                : SourceTargetIdSkill[source][target][skillid];
         }
 
 
-        public long AmountWhite(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public long AmountWhite(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "amount_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -243,7 +243,7 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        public long AmountCrit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public long AmountCrit(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "amount_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -260,7 +260,7 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        public double AverageCrit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public double AverageCrit(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "average_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -278,7 +278,7 @@ namespace DamageMeter.Database.Structures
             return sum;
         }
 
-        public double AverageWhite(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public double AverageWhite(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "average_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -296,7 +296,7 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public double Average(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public double Average(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "average/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -312,7 +312,7 @@ namespace DamageMeter.Database.Structures
             return average;
         }
 
-        public int CritRate(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public int CritRate(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "critrate/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -329,7 +329,7 @@ namespace DamageMeter.Database.Structures
             return crit;
         }
 
-        public long BiggestCrit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public long BiggestCrit(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -347,7 +347,7 @@ namespace DamageMeter.Database.Structures
             return max;
         }
 
-        public long BiggestWhite(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public long BiggestWhite(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -365,7 +365,7 @@ namespace DamageMeter.Database.Structures
             return max;
         }
 
-        public long BiggestHit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public long BiggestHit(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_hit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -382,7 +382,7 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public int Crits(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public int Crits(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "crits/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -398,7 +398,7 @@ namespace DamageMeter.Database.Structures
             return crit;
         }
 
-        public List<Skill> GetSkillsDealt(EntityId source, Entity target, bool timed)
+        public List<Skill> GetSkillsDealt(Entity source, Entity target, bool timed)
         {
             IEnumerable<Skill> result;
 
@@ -410,12 +410,12 @@ namespace DamageMeter.Database.Structures
                 return result.ToList();
             }
 
-            result = from skills in SourceTargetSkill[source][target.Id]
+            result = from skills in SourceTargetSkill[source][target]
                 select skills;
             return result.ToList();
         }
 
-        public List<Skill> GetSkillsReceived(EntityId target, bool timed)
+        public List<Skill> GetSkillsReceived(Entity target, bool timed)
         {
             if (!TargetSourceSkill.ContainsKey(target))
             {
@@ -428,7 +428,7 @@ namespace DamageMeter.Database.Structures
             return result.ToList();
         }
 
-        public int White(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public int White(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
@@ -445,7 +445,7 @@ namespace DamageMeter.Database.Structures
         }
 
 
-        public long LowestCrit(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public long LowestCrit(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -455,7 +455,7 @@ namespace DamageMeter.Database.Structures
             return !enumerable.Any() ? 0 : enumerable.Min();
         }
 
-        public int Hits(EntityId source, Entity target, int skillid, bool timed, Database.Type type)
+        public int Hits(Entity source, Entity target, int skillid, bool timed, Database.Type type)
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "hits/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;

@@ -450,4 +450,46 @@
     <data name="Chat" xml:space="preserve">
     <value>Chat</value>
   </data>
+    <data name="ApplyToYourParty" xml:space="preserve">
+    <value>apply to your party</value>
+  </data>
+  <data name="Lvl" xml:space="preserve">
+    <value>Lvl</value>
+  </data>
+  <data name="OfferedPrice" xml:space="preserve">
+    <value>Offered price</value>
+  </data>
+  <data name="PartyMatchingSuccess" xml:space="preserve">
+    <value>Partie trouvée avec succès</value>
+  </data>
+  <data name="SellerPrice" xml:space="preserve">
+    <value>Prix du vendeur</value>
+  </data>
+  <data name="Trading" xml:space="preserve">
+    <value>Commerce</value>
+  </data>
+  <data name="Whisper" xml:space="preserve">
+    <value>Chuchotement</value>
+  </data>
+  <data name="DelayToWaitPasting" xml:space="preserve">
+    <value>Délai d'attente lors du collage</value>
+  </data>
+  <data name="NumberPlayerDisplayed" xml:space="preserve">
+    <value>Nombre de joueurs affiché</value>
+  </data>
+  <data name="PopupStayActiveForXms" xml:space="preserve">
+    <value>Alerte affichée pendant X ms</value>
+  </data>
+  <data name="SoundFilename" xml:space="preserve">
+    <value>Nom du fichier son</value>
+  </data>
+  <data name="SoundStayActiveForXms" xml:space="preserve">
+    <value>Son reste actif pendant X ms</value>
+  </data>
+  <data name="SoundVolume" xml:space="preserve">
+    <value>Volume du son</value>
+  </data>
+  <data name="TestSound" xml:space="preserve">
+    <value>Tester le son</value>
+  </data>
 </root>

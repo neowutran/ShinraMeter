@@ -44,7 +44,7 @@ namespace DamageMeter
                         playerInfosOrdered =
                             playersInfos.OrderBy(
                                 playerInfo =>
-                                    skills.DamageReceived(playerInfo.Source.User.Id, entityInfo.Entity,
+                                    skills.DamageReceived(playerInfo.Source.User, entityInfo.Entity,
                                         timedEncounter));
                         break;
                     case "name":
@@ -62,7 +62,7 @@ namespace DamageMeter
                         playerInfosOrdered =
                             playersInfos.OrderBy(
                                 playerInfo =>
-                                    skills.HitsReceived(playerInfo.Source.User.Id, entityInfo.Entity, timedEncounter));
+                                    skills.HitsReceived(playerInfo.Source.User, entityInfo.Entity, timedEncounter));
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -77,7 +77,7 @@ namespace DamageMeter
                         playerInfosOrdered =
                             playersInfos.OrderByDescending(
                                 playerInfo =>
-                                    skills.DamageReceived(playerInfo.Source.User.Id, entityInfo.Entity,
+                                    skills.DamageReceived(playerInfo.Source.User, entityInfo.Entity,
                                         timedEncounter));
                         break;
                     case "name":
@@ -95,7 +95,7 @@ namespace DamageMeter
                         playerInfosOrdered =
                             playersInfos.OrderByDescending(
                                 playerInfo =>
-                                    skills.HitsReceived(playerInfo.Source.User.Id, entityInfo.Entity, timedEncounter));
+                                    skills.HitsReceived(playerInfo.Source.User, entityInfo.Entity, timedEncounter));
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");
@@ -164,13 +164,13 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{crit_rate_heal}",
                     healCritrate + "%");
                 currentContent = currentContent.Replace("{biggest_crit}",
-                    FormatHelpers.Instance.FormatValue(skills.BiggestCrit(playerStats.Source.User.Id, entityInfo.Entity,
+                    FormatHelpers.Instance.FormatValue(skills.BiggestCrit(playerStats.Source.User, entityInfo.Entity,
                         timedEncounter)));
                 currentContent = currentContent.Replace("{damage_received}",
-                    FormatHelpers.Instance.FormatValue(skills.DamageReceived(playerStats.Source.User.Id,
+                    FormatHelpers.Instance.FormatValue(skills.DamageReceived(playerStats.Source.User,
                         entityInfo.Entity, timedEncounter)));
                 currentContent = currentContent.Replace("{hits_received}",
-                    FormatHelpers.Instance.FormatValue(skills.HitsReceived(playerStats.Source.User.Id,
+                    FormatHelpers.Instance.FormatValue(skills.HitsReceived(playerStats.Source.User,
                         entityInfo.Entity, timedEncounter)));
 
                 dpsString += currentContent;

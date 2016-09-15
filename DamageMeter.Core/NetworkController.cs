@@ -103,12 +103,6 @@ namespace DamageMeter
             Connected?.Invoke(server.Name);
         }
 
-        private void PlayerTrackerOnPlayerIdChangedAction(EntityId oldId, EntityId newId)
-        {
-            Database.Database.Instance.PlayerEntityIdChange(oldId, newId);
-        }
-
-
         public void Reset()
         {
             DamageTracker.Instance.Reset();
@@ -614,7 +608,6 @@ namespace DamageMeter
                     BasicTeraData.Instance.HotDotDatabase.Get(8888889).Tooltip= LP.SlayingTooltip;
                     EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
                     PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
-                    PlayerTracker.PlayerIdChangedAction += PlayerTrackerOnPlayerIdChangedAction;
                     EntityTracker.Update(message);
                     PlayerTracker.UpdateParty(message);
                     _needInit = false;

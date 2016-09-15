@@ -14,20 +14,20 @@ namespace DamageMeter
         private readonly Entity _target;
         private readonly bool _timed;
 
-        public SkillAggregate(Skill skill, Skills skillsData, EntityId source, Entity target, PlayerDamageDealt playerDamageDealt,
+        public SkillAggregate(Skill skill, Skills skillsData, Entity source, Entity target, PlayerDamageDealt playerDamageDealt,
             bool timed, Database.Database.Type type)
         {
             _playerDamageDealt = playerDamageDealt;
             _timed = timed;
             _target = target;
             Type = type;
-            Skills = new Dictionary<Skill, List<EntityId>>();
+            Skills = new Dictionary<Skill, List<Entity>>();
             Name = skill.ShortName;
             SkillsData = skillsData;
-            Skills.Add(skill, new List<EntityId>{ source });
+            Skills.Add(skill, new List<Entity>{ source });
         }
 
-        public Dictionary<Skill, List<EntityId>> Skills { get; }
+        public Dictionary<Skill, List<Entity>> Skills { get; }
         public string Name { get; }
 
         private Skills SkillsData { get; }
@@ -36,7 +36,7 @@ namespace DamageMeter
 
         public Database.Database.Type Type { get; }
 
-        public bool Add(Skill skill, EntityId source)
+        public bool Add(Skill skill, Entity source)
         {
             if (skill.ShortName != Name) return false;
             if (Skills.Any(sk => skill.Id == sk.Key.Id && skill.IsHotDot == sk.Key.IsHotDot && sk.Value.Contains(source)))
@@ -51,7 +51,7 @@ namespace DamageMeter
             }
             else
             {
-                Skills.Add(skill, new List<EntityId> {source});
+                Skills.Add(skill, new List<Entity> {source});
             }
             return true;
         }
@@ -116,7 +116,7 @@ namespace DamageMeter
             {
                 throw new Exception("Player Dealt unrelieable");
             }
-            return SkillsData.Amount(_playerDamageDealt.Source.User.Id, _target, skillId, _timed, Type) *100/Amount();
+            return SkillsData.Amount(_playerDamageDealt.Source.User, _target, skillId, _timed, Type) *100/Amount();
         }
 
         public long Hits()
@@ -333,7 +333,7 @@ namespace DamageMeter
                 foreach (var skill in skills)
                 {
                     if (skill == null) continue;
-                    if (!skillsData.Type(playerDamageDealt.Source.User.Id, null, skill.Id, skill.NpcInfo, true, type))
+                    if (!skillsData.Type(playerDamageDealt.Source.User, null, skill.Id, skill.NpcInfo, true, type))
                     {
                         continue;
                     }
@@ -341,11 +341,11 @@ namespace DamageMeter
                     if (!skillsAggregate.ContainsKey(skill.ShortName))
                     {
                         skillsAggregate.Add(skill.ShortName,
-                            new SkillAggregate(skill, skillsData, playerDamageDealt.Source.User.Id, null, playerDamageDealt,
+                            new SkillAggregate(skill, skillsData, playerDamageDealt.Source.User, null, playerDamageDealt,
                                 true, type));
                         continue;
                     }
-                    skillsAggregate[skill.ShortName].Add(skill, playerDamageDealt.Source.User.Id);
+                    skillsAggregate[skill.ShortName].Add(skill, playerDamageDealt.Source.User);
                 }
                 return skillsAggregate.Values;
             }
@@ -357,18 +357,18 @@ namespace DamageMeter
                 foreach (var skill in skills)
                 {
                     if (skill == null) continue;
-                    if (!skillsData.Type(playerDamageDealt.Source.User.Id, entity, skill.Id, skill.NpcInfo , timedEncounter, type))
+                    if (!skillsData.Type(playerDamageDealt.Source.User, entity, skill.Id, skill.NpcInfo , timedEncounter, type))
                     {
                         continue;
                     }
                     if (!skillsAggregate.ContainsKey(skill.ShortName))
                     {
                         skillsAggregate.Add(skill.ShortName,
-                            new SkillAggregate(skill, skillsData, playerDamageDealt.Source.User.Id, entity, playerDamageDealt,
+                            new SkillAggregate(skill, skillsData, playerDamageDealt.Source.User, entity, playerDamageDealt,
                                 timedEncounter, type));
                         continue;
                     }
-                    skillsAggregate[skill.ShortName].Add(skill, playerDamageDealt.Source.User.Id);
+                    skillsAggregate[skill.ShortName].Add(skill, playerDamageDealt.Source.User);
                 }
                 return skillsAggregate.Values;
             }

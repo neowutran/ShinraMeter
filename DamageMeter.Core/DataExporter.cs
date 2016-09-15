@@ -126,7 +126,7 @@ namespace DamageMeter
                 teradpsUser.playerDps = TimeSpan.TicksPerSecond*damage/interTick + "";
                 teradpsUser.playerTotalDamagePercentage = user.Amount*100/entityInfo.TotalDamage + "";
 
-                extendedStats.PlayerReceived.Add(user.Source.Name, Tuple.Create(skills.HitsReceived(user.Source.User.Id, entity, timedEncounter), skills.DamageReceived(user.Source.User.Id, entity, timedEncounter)));
+                extendedStats.PlayerReceived.Add(user.Source.Name, Tuple.Create(skills.HitsReceived(user.Source.User, entity, timedEncounter), skills.DamageReceived(user.Source.User, entity, timedEncounter)));
 
                 var death = buffs.Death;
                 teradpsUser.playerDeaths = death.Count(firstTick, lastTick) + "";
@@ -148,7 +148,7 @@ namespace DamageMeter
                 }
                 var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
                 extendedStats.PlayerSkills.Add(serverPlayerName,
-                    skills.GetSkillsDealt(user.Source.User.Id, entity, timedEncounter));
+                    skills.GetSkillsDealt(user.Source.User, entity, timedEncounter));
                 extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
                 var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
