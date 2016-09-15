@@ -57,6 +57,8 @@ namespace DamageMeter
             {
                 _chat.RemoveFirst();
             }
+
+
             
             if(chatType == ChatType.Whisper 
                 && NetworkController.Instance.EntityTracker.MeterUser.Name != sender 

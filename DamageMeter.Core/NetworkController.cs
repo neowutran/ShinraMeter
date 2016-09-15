@@ -300,6 +300,50 @@ namespace DamageMeter
 
                 EntityTracker?.Update(message);
 
+                var cVersion = message as C_CHECK_VERSION;
+                if (cVersion != null)
+                {
+                    Console.WriteLine("VERSION0 = " + cVersion.Versions[0]);
+                    Console.WriteLine("VERSION1 = " + cVersion.Versions[1]);
+                    var opCodeNamer =
+                        new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
+                            $"data/opcodes/{cVersion.Versions[0]}.txt"));
+                    _messageFactory = new MessageFactory(opCodeNamer, Server.Region);
+                    continue;
+                }
+
+                var sLogin = message as LoginServerMessage;
+                if (sLogin != null)
+                {
+                    if (_needInit)
+                    {
+                        Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
+                        Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
+                        _messageFactory.Version = Server.Region;
+                        TeraData = BasicTeraData.Instance.DataForRegion(Server.Region);
+                        BasicTeraData.Instance.HotDotDatabase.Get(8888888).Name = LP.Enrage;
+                        BasicTeraData.Instance.HotDotDatabase.Get(8888889).Name = LP.Slaying;
+                        BasicTeraData.Instance.HotDotDatabase.Get(8888889).Tooltip = LP.SlayingTooltip;
+                        EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
+                        PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
+                        EntityTracker.Update(message);
+                        PlayerTracker.UpdateParty(message);
+                        _needInit = false;
+                    }
+                    _abnormalityStorage.EndAll(message.Time.Ticks);
+                    _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
+                        BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
+                    _charmTracker = new CharmTracker(_abnormalityTracker);
+                    OnGuildIconAction(UserLogoTracker.GetLogo(sLogin.PlayerId));
+                }
+
+                if (_needInit)
+                {
+                    //Wait for initialization
+                    continue;
+                }
+
+
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
                 {
@@ -583,40 +627,6 @@ namespace DamageMeter
                     continue;
                 }
 
-                var cVersion = message as C_CHECK_VERSION;
-                if (cVersion != null)
-                {
-                    Console.WriteLine("VERSION0 = "+cVersion.Versions[0]);
-                    Console.WriteLine("VERSION1 = "+cVersion.Versions[1]);
-                    var opCodeNamer =
-                        new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
-                            $"data/opcodes/{cVersion.Versions[0]}.txt"));
-                    _messageFactory = new MessageFactory(opCodeNamer, Server.Region);
-                    continue;
-                }
-
-                var sLogin = message as LoginServerMessage;
-                if (sLogin == null) continue;
-                if (_needInit)
-                {
-                    Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
-                    Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
-                    _messageFactory.Version = Server.Region;
-                    TeraData = BasicTeraData.Instance.DataForRegion(Server.Region);
-                    BasicTeraData.Instance.HotDotDatabase.Get(8888888).Name = LP.Enrage;
-                    BasicTeraData.Instance.HotDotDatabase.Get(8888889).Name = LP.Slaying;
-                    BasicTeraData.Instance.HotDotDatabase.Get(8888889).Tooltip= LP.SlayingTooltip;
-                    EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
-                    PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
-                    EntityTracker.Update(message);
-                    PlayerTracker.UpdateParty(message);
-                    _needInit = false;
-                }
-                _abnormalityStorage.EndAll(message.Time.Ticks);
-                _abnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker,
-                    BasicTeraData.Instance.HotDotDatabase, _abnormalityStorage, DamageTracker.Instance.Update);
-                _charmTracker = new CharmTracker(_abnormalityTracker);
-                OnGuildIconAction(UserLogoTracker.GetLogo(sLogin.PlayerId));
                 //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
             }
         }
