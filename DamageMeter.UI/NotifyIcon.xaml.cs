@@ -88,35 +88,55 @@ namespace DamageMeter.UI
                     _waveOutDevice.Dispose();
                 }
             }
-            _waveOutDevice = new WaveOut();
-            _audioFileReader = new AudioFileReader(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound));
-            _waveOutDevice.Init(_audioFileReader);
-            _audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
-            _waveOutDevice.Play();
-            _needToStop = true;
-
-            var timer = new System.Threading.Timer((obj) =>
+            var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound);
+            if (!File.Exists(file)) { return; }
+            try
             {
-                lock (_lock)
+                _waveOutDevice = new WaveOut();
+                _audioFileReader = new AudioFileReader(file);
+                _waveOutDevice.Init(_audioFileReader);
+                _audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
+                _waveOutDevice.Play();
+                _needToStop = true;
+
+                var timer = new System.Threading.Timer((obj) =>
                 {
-                    _needToStop = false;
-                    _waveOutDevice.Stop();
-                }
-             }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
-         
+                    lock (_lock)
+                    {
+                        _needToStop = false;
+                        _waveOutDevice.Stop();
+                    }
+                 }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
+            }
+            catch (Exception e)
+            {
+                BasicTeraData.LogError("Sound ERROR main" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file, false, true);
+            }
+
         }
 
         private void PlaySound()
         {
-            var waveOutDevice = new WaveOut();
-            var audioFileReader = new AudioFileReader(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound));
-            waveOutDevice.Init(audioFileReader);
-            audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
-            waveOutDevice.Play();
-            var timer = new System.Threading.Timer((obj) =>
-            {  
-               waveOutDevice.Stop();
-            }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
+            var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound);
+            if (!File.Exists(file)) { return; }
+            try
+            {
+                var waveOutDevice = new WaveOut();
+                var audioFileReader = new AudioFileReader(file);
+                waveOutDevice.Init(audioFileReader);
+                audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
+                waveOutDevice.Play();
+                var timer = new System.Threading.Timer((obj) =>
+                {
+                    waveOutDevice.Stop();
+                }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
+            }
+            catch (Exception e)
+            {
+                BasicTeraData.LogError("Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file, false, true);
+            }
+         
+           
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
