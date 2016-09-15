@@ -163,7 +163,7 @@
                                                 <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="{Binding Source={x:Static l:LP.NumberPlayersDisplayed}, StringFormat='\{0\}:'}" />
-                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" Value="5" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
+                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
                                         </Grid>
                                         <Grid Grid.Row="10">
                                             <Grid.ColumnDefinitions>
@@ -171,7 +171,7 @@
                                                 <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="{Binding Source={x:Static l:LP.DelayToWaitPasting}, StringFormat='\{0\}: '}" />
-                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" Value="150" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
+                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
                                         </Grid>
                                         <Grid Grid.Row="11">
                                             <Grid.ColumnDefinitions>
@@ -179,7 +179,7 @@
                                                 <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="PopupTime" Content="{Binding Source={x:Static l:LP.PopupStayActiveForXms}, StringFormat='\{0\}: '}" />
-                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" Value="6000" ValueChanged="PopupTimeChange" FormatString="N0" Increment="100" Maximum="60000" Minimum="0" />
+                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" ValueChanged="PopupTimeChange" FormatString="N0" Increment="100" Maximum="60000" Minimum="0" />
                                         </Grid>
                                         <Grid Grid.Row="12">
                                             <Grid.ColumnDefinitions>
@@ -187,7 +187,7 @@
                                                 <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="SoundTime" Content="{Binding Source={x:Static l:LP.SoundStayActiveForXms}, StringFormat='\{0\}: '}" />
-                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundTimeSpinner" Value="2500" ValueChanged="SoundTimeChanged" FormatString="N0" Increment="100" Maximum="600000" Minimum="0" />
+                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundTimeSpinner" ValueChanged="SoundTimeChanged" FormatString="N0" Increment="100" Maximum="600000" Minimum="0" />
                                         </Grid>
                                         <Grid Grid.Row="13">
                                             <Grid.ColumnDefinitions>
@@ -203,7 +203,7 @@
                                                 <ColumnDefinition Width="200" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="SoundVolume" Content="{Binding Source={x:Static l:LP.SoundVolume}, StringFormat='\{0\}: '}" />
-                                            <xctk:DoubleUpDown Name="SoundVolumeSpinner" ValueChanged="SoundVolumeChanged"  Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  FormatString="F2" Value="1.0" Minimum="0.0" Increment="0.01"  Maximum="1.0" />
+                                            <xctk:DoubleUpDown Name="SoundVolumeSpinner" ValueChanged="SoundVolumeChanged"  Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  FormatString="F2" Minimum="0.0" Increment="0.01"  Maximum="1.0" />
                                         </Grid>
 
 
