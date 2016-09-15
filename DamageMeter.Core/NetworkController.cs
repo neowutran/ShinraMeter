@@ -316,16 +316,24 @@ namespace DamageMeter
                     if (_needInit)
                     {
                         Connected(BasicTeraData.Instance.Servers.GetServerName(sLogin.ServerId, Server));
+                        bool trackerreset = true;
+                        if (EntityTracker != null)
+                        {
+                            var oldregion = BasicTeraData.Instance.Servers.GetServer(EntityTracker.MeterUser.ServerId).Region;
+                            trackerreset = Server.Region == oldregion;
+                        }
                         Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
                         _messageFactory.Version = Server.Region;
-                        TeraData = BasicTeraData.Instance.DataForRegion(Server.Region);
-                        BasicTeraData.Instance.HotDotDatabase.Get(8888888).Name = LP.Enrage;
-                        BasicTeraData.Instance.HotDotDatabase.Get(8888889).Name = LP.Slaying;
-                        BasicTeraData.Instance.HotDotDatabase.Get(8888889).Tooltip = LP.SlayingTooltip;
-                        EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
-                        PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
-                        EntityTracker.Update(message);
-                        PlayerTracker.UpdateParty(message);
+                        if (trackerreset)
+                        {
+                            TeraData = BasicTeraData.Instance.DataForRegion(Server.Region);
+                            BasicTeraData.Instance.HotDotDatabase.Get(8888888).Name = LP.Enrage;
+                            BasicTeraData.Instance.HotDotDatabase.Get(8888889).Name = LP.Slaying;
+                            BasicTeraData.Instance.HotDotDatabase.Get(8888889).Tooltip = LP.SlayingTooltip;
+                            EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
+                            PlayerTracker = new PlayerTracker(EntityTracker, BasicTeraData.Instance.Servers);
+                            Database.Database.Instance.DeleteAll();
+                        }
                         _needInit = false;
                     }
                     _abnormalityStorage.EndAll(message.Time.Ticks);
