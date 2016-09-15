@@ -159,142 +159,142 @@
                                         <CheckBox Grid.Row="8" Foreground="White" Content="{Binding Source={x:Static l:LP.SystemTray_Stay_topmost}}" Name="StayTopMost"  Checked="EnableStayTopMost"  Unchecked="DisableStayTopMost" />
                                         <Grid Grid.Row="9">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="{Binding Source={x:Static l:LP.NumberPlayersDisplayed}, StringFormat='\{0\}:'}" />
-                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
+                                            <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="{Binding Source={x:Static l:LP.NumberPlayersDisplayed}}" />
+                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
                                         </Grid>
                                         <Grid Grid.Row="10">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="{Binding Source={x:Static l:LP.DelayToWaitPasting}, StringFormat='\{0\}: '}" />
-                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
+                                            <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="{Binding Source={x:Static l:LP.DelayToWaitPasting}}" />
+                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
                                         </Grid>
                                         <Grid Grid.Row="11">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="PopupTime" Content="{Binding Source={x:Static l:LP.PopupStayActiveForXms}, StringFormat='\{0\}: '}" />
-                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" ValueChanged="PopupTimeChange" FormatString="N0" Increment="100" Maximum="60000" Minimum="0" />
+                                            <Label Grid.Column="0" Foreground="White" Name="PopupTime" Content="{Binding Source={x:Static l:LP.PopupStayActiveForXms}}" />
+                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" ValueChanged="PopupTimeChange" FormatString="N0" Increment="100" Maximum="60000" Minimum="0" />
                                         </Grid>
                                         <Grid Grid.Row="12">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="SoundTime" Content="{Binding Source={x:Static l:LP.SoundStayActiveForXms}, StringFormat='\{0\}: '}" />
-                                            <xctk:IntegerUpDown Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundTimeSpinner" ValueChanged="SoundTimeChanged" FormatString="N0" Increment="100" Maximum="600000" Minimum="0" />
+                                            <Label Grid.Column="0" Foreground="White" Name="SoundTime" Content="{Binding Source={x:Static l:LP.SoundStayActiveForXms}}" />
+                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundTimeSpinner" ValueChanged="SoundTimeChanged" FormatString="N0" Increment="100" Maximum="600000" Minimum="0" />
                                         </Grid>
                                         <Grid Grid.Row="13">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="SoundFile" Content="{Binding Source={x:Static l:LP.SoundFilename}, StringFormat='\{0\}: '}" />
-                                            <TextBox LostFocus="SoundFileChanged" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundFileTextbox" />
+                                            <Label Grid.Column="0" Foreground="White" Name="SoundFile" Content="{Binding Source={x:Static l:LP.SoundFilename}}" />
+                                            <TextBox LostFocus="SoundFileChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundFileTextbox" />
                                         </Grid>
                                         <Grid Grid.Row="14">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="SoundVolume" Content="{Binding Source={x:Static l:LP.SoundVolume}, StringFormat='\{0\}: '}" />
-                                            <xctk:DoubleUpDown Name="SoundVolumeSpinner" ValueChanged="SoundVolumeChanged"  Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  FormatString="F2" Minimum="0.0" Increment="0.01"  Maximum="1.0" />
+                                            <Label Grid.Column="0" Foreground="White" Name="SoundVolume" Content="{Binding Source={x:Static l:LP.SoundVolume}}" />
+                                            <xctk:DoubleUpDown HorizontalAlignment="Right" Width="70" Name="SoundVolumeSpinner" ValueChanged="SoundVolumeChanged"  Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  FormatString="F2" Minimum="0.0" Increment="0.01"  Maximum="1.0" />
                                         </Grid>
 
 
                                         <Grid Grid.Row="15">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="WhisperColor" Content="Whisper color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True"  Name="WhisperColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="WhisperColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="WhisperColor" Content="Whisper color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True"  Name="WhisperColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="WhisperColorChanged" />
                                         </Grid>
 
                                         <Grid Grid.Row="16">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="AllianceColor" Content="Alliance color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="AllianceColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="AllianceColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="AllianceColor" Content="Alliance color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="AllianceColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="AllianceColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="17">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="AreaColor" Content="Area color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="AreaColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="AreaColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="AreaColor" Content="Area color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="AreaColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="AreaColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="18">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="GeneralColor" Content="General color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="GeneralColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GeneralColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="GeneralColor" Content="General color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="GeneralColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GeneralColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="19">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="GroupColor" Content="Group color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="GroupColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GroupColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="GroupColor" Content="Group color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="GroupColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GroupColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="20">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="GuildColor" Content="Guild color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="GuildColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GuildColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="GuildColor" Content="Guild color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="GuildColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GuildColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="21">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="RaidColor" Content="Raid color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="RaidColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="RaidColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="RaidColor" Content="Raid color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="RaidColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="RaidColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="22">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="SayColor" Content="Say color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="SayColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="SayColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="SayColor" Content="Say color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="SayColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="SayColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="23">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="TradingColor" Content="Trading color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="TradingColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="TradingColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="TradingColor" Content="Trading color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="TradingColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="TradingColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="24">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="EmotesColor" Content="Emotes color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="EmotesColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="EmotesColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="EmotesColor" Content="Emotes color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="EmotesColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="EmotesColorChanged" />
                                         </Grid>
                                         <Grid Grid.Row="25">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="200" />
-                                                <ColumnDefinition Width="200" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="PrivateChannelColor" Content="Private channel color: " />
-                                            <xctk:ColorPicker DisplayColorAndName ="True" Name="PrivateChannelColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="PrivateChannelColorChanged" />
+                                            <Label Grid.Column="0" Foreground="White" Name="PrivateChannelColor" Content="Private channel color" />
+                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="PrivateChannelColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="PrivateChannelColorChanged" />
                                         </Grid>
                                     </Grid>
                                 </ScrollViewer>
