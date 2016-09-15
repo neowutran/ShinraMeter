@@ -45,6 +45,7 @@ namespace Data
 
         public int NumberOfPlayersDisplayed { get; set; }
         public float Volume { get; set; }
+        public bool LowPriority { get; set; }
 
 
 
@@ -108,6 +109,7 @@ namespace Data
             TradingColor = Brushes.Sienna.Color;
             EmotesColor = Brushes.White.Color;
             PrivateChannelColor = Brushes.Red.Color;
+            LowPriority = true;
         }
 
 
@@ -168,7 +170,7 @@ namespace Data
             Parse("only_bosses", "OnlyBoss");
             Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
             Parse("date_in_excel_path", "DateInExcelPath");
-
+            Parse("low_priority", "LowPriority");
 
             Parse("notify_sound", "NotifySound");
             Parse("popup_display_time", "PopupDisplayTime");
@@ -336,6 +338,7 @@ namespace Data
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
             xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", DetectBosses));
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));
+            xml.Root.Add(new XElement("low_priority", LowPriority));
             xml.Root.Add(new XElement("number_of_players_displayed", NumberOfPlayersDisplayed));
 
             xml.Root.Add(new XElement("notify_sound", NotifySound));

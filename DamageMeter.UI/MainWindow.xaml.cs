@@ -55,7 +55,7 @@ namespace DamageMeter.UI
                 Visibility = Visibility.Hidden;
             }
             System.Windows.Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
-            Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
+            if (BasicTeraData.Instance.WindowData.LowPriority) Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
             NetworkController.Instance.TickUpdated += Update;

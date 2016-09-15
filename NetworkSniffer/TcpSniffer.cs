@@ -62,11 +62,6 @@ namespace NetworkSniffer
                     if (!isInterestingConnection)
                         return;
 
-                    if ((ipPacket.Flags & 1) == 1)
-                    {
-                        BasicTeraData.LogError("Fragmented packet");
-                    }
-
                     if (!string.IsNullOrEmpty(TcpLogFile))
                         File.AppendAllText(TcpLogFile,
                             string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",

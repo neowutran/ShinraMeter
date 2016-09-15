@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Data;
-using System.Windows.Controls;
 
 namespace DamageMeter.UI
 {
@@ -53,7 +52,7 @@ namespace DamageMeter.UI
         {
             if (((ListBox)sender).SelectedItems.Count<=1)return;
             string messages="";
-            foreach (ChatMessageUi messageUi in ((ListBox) sender).SelectedItems.Cast<ChatMessageUi>())
+            foreach (ChatMessageUi messageUi in ((ListBox) sender).SelectedItems.Cast<ChatMessageUi>().OrderBy(x=>x.Time.Content))
             {
                 messages = messages + $"{messageUi.Time.Content} {messageUi.Channel.Content} {messageUi.Sender.Content}: {messageUi.Message.Text}"+ System.Environment.NewLine;
             }

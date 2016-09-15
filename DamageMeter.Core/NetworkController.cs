@@ -318,10 +318,15 @@ namespace DamageMeter
                 var changeHp = message as SCreatureChangeHp;
                 if (changeHp != null)
                 {
-                    if (changeHp.SourceId != EntityTracker.MeterUser.Id && 
+                    if (changeHp.SourceId != EntityTracker.MeterUser.Id &&
                         changeHp.TargetId != EntityTracker.MeterUser.Id &&
-                        EntityTracker.GetOrPlaceholder(changeHp.TargetId).RootOwner == EntityTracker.MeterUser // don't care about damage received by our pets
-                        ) BasicTeraData.LogError("SCreatureChangeHP need rootowner update1",false,true);
+                        EntityTracker.GetOrPlaceholder(changeHp.TargetId).RootOwner != EntityTracker.MeterUser
+                        // don't care about damage received by our pets
+                        )
+                    {
+                        var source = EntityTracker.GetOrPlaceholder(changeHp.SourceId);
+                        BasicTeraData.LogError("SCreatureChangeHP need rootowner update2: "+ (source as NpcEntity)?.Info.Name ?? source.GetType()+": "+source, false,true);
+                    }
                     _abnormalityTracker.Update(changeHp);
                     continue;
                 }
@@ -354,8 +359,13 @@ namespace DamageMeter
                 var changeMp = message as SPlayerChangeMp;
                 if (changeMp != null)
                 {
-                    if (changeMp.SourceId != EntityTracker.MeterUser.Id && changeMp.TargetId != EntityTracker.MeterUser.Id &&
-                        EntityTracker.GetOrPlaceholder(changeHp.TargetId).RootOwner == EntityTracker.MeterUser) BasicTeraData.LogError("SPlayerChangeMp need rootowner update1", false, true);
+                    if (changeMp.SourceId != EntityTracker.MeterUser.Id &&
+                        changeMp.TargetId != EntityTracker.MeterUser.Id &&
+                        EntityTracker.GetOrPlaceholder(changeHp.TargetId).RootOwner != EntityTracker.MeterUser)
+                    {
+                        var source = EntityTracker.GetOrPlaceholder(changeMp.SourceId);
+                        BasicTeraData.LogError("SPlayerChangeMp need rootowner update2:" + (source as NpcEntity)?.Info.Name ?? source.GetType() + ": " + source, false, true);
+                    }
                     _abnormalityTracker.Update(changeMp);
                     continue;
                 }
