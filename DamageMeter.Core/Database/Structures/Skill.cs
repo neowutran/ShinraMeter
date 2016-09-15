@@ -19,13 +19,10 @@ namespace DamageMeter.Database.Structures
             Time = time;
             Pet = pet;
             Direction = direction;
-            Source  = SourceIsPlayer ? PlayerSource.User : EntitySource;
-            Target = TargetIsPlayer ? PlayerTarget.User : EntityTarget;
+            Source  = PlayerSource?.User ?? EntitySource;
+            Target = PlayerTarget?.User ?? EntityTarget;
             
         }
-
-        public bool SourceIsPlayer => PlayerSource != null;
-        public bool TargetIsPlayer => PlayerTarget != null;
 
         public HitDirection Direction { get; }
 
