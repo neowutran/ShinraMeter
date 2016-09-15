@@ -158,7 +158,7 @@ namespace DamageMeter.Database.Structures
             var result = from skills in TargetSourceSkill[target].Values
                 from skill in skills
                 select
-                    new KeyValuePair<Entity, Tera.Game.Skill>( skill.Source(), SkillResult.GetSkill(skill.Source(), skill.Pet, skill.SkillId, skill.HotDot,
+                    new KeyValuePair<Entity, Tera.Game.Skill>( skill.Source, SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot,
                         NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
                         BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase));
             return result.Where(x => x.Value != null).Distinct();

@@ -19,6 +19,9 @@ namespace DamageMeter.Database.Structures
             Time = time;
             Pet = pet;
             Direction = direction;
+            Source  = SourceIsPlayer ? PlayerSource.User : EntitySource;
+            Target = TargetIsPlayer ? PlayerTarget.User : EntityTarget;
+            
         }
 
         public bool SourceIsPlayer => PlayerSource != null;
@@ -32,23 +35,9 @@ namespace DamageMeter.Database.Structures
         public long Amount { get; }
         public Database.Type Type { get; }
         private Entity EntityTarget { get; }
-        public Entity Source()
-        {
-            if (SourceIsPlayer)
-            {
-                return PlayerSource.User;
-            }
-            return EntitySource;
-        }
+        public Entity Source { get; private set; }
 
-        public Entity Target()
-        {
-            if (TargetIsPlayer)
-            {
-                return PlayerTarget.User;
-            }
-            return EntityTarget;
-        }
+        public Entity Target { get; private set; }
         private Player PlayerTarget { get; }
         private Player PlayerSource { get; }
 

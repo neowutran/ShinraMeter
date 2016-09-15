@@ -289,43 +289,43 @@ namespace DamageMeter.Database
                 var entitySource = NetworkController.Instance.EntityTracker.GetOrNull(source);
                 var skill = new Skill(amount, type, entityTarget, targetPlayer, entitySource, sourcePlayer, (int) skillid, hotdot, critic, time, pet, direction);
 
-                if (!targetSourceSkills.ContainsKey(skill.Target()))
+                if (!targetSourceSkills.ContainsKey(skill.Target))
                 {
-                    targetSourceSkills.Add(skill.Target(), new Dictionary<Entity, List<Skill>>());
+                    targetSourceSkills.Add(skill.Target, new Dictionary<Entity, List<Skill>>());
                 }
 
-                if (!targetSourceSkills[skill.Target()].ContainsKey(skill.Source()))
+                if (!targetSourceSkills[skill.Target].ContainsKey(skill.Source))
                 {
-                    targetSourceSkills[skill.Target()].Add(skill.Source(), new List<Skill>());
+                    targetSourceSkills[skill.Target].Add(skill.Source, new List<Skill>());
                 }
 
-                if (!sourceTargetSkills.ContainsKey(skill.Source()))
+                if (!sourceTargetSkills.ContainsKey(skill.Source))
                 {
-                    sourceTargetIdSkill.Add(skill.Source(), new Dictionary<Entity, Dictionary<int, List<Skill>>>());
-                    sourceIdSkill.Add(skill.Source(), new Dictionary<int, List<Skill>>());
-                    sourceTargetSkills.Add(skill.Source(), new Dictionary<Entity, List<Skill>>());
+                    sourceTargetIdSkill.Add(skill.Source, new Dictionary<Entity, Dictionary<int, List<Skill>>>());
+                    sourceIdSkill.Add(skill.Source, new Dictionary<int, List<Skill>>());
+                    sourceTargetSkills.Add(skill.Source, new Dictionary<Entity, List<Skill>>());
                 }
 
-                if (!sourceTargetSkills[skill.Source()].ContainsKey(skill.Target()))
+                if (!sourceTargetSkills[skill.Source].ContainsKey(skill.Target))
                 {
-                    sourceTargetSkills[skill.Source()].Add(skill.Target(), new List<Skill>());
-                    sourceTargetIdSkill[skill.Source()].Add(skill.Target(), new Dictionary<int, List<Skill>>());
+                    sourceTargetSkills[skill.Source].Add(skill.Target, new List<Skill>());
+                    sourceTargetIdSkill[skill.Source].Add(skill.Target, new Dictionary<int, List<Skill>>());
                 }
 
-                if (!sourceTargetIdSkill[skill.Source()][skill.Target()].ContainsKey(skill.SkillId))
+                if (!sourceTargetIdSkill[skill.Source][skill.Target].ContainsKey(skill.SkillId))
                 {
-                    sourceTargetIdSkill[skill.Source()][skill.Target()].Add(skill.SkillId, new List<Skill>());
+                    sourceTargetIdSkill[skill.Source][skill.Target].Add(skill.SkillId, new List<Skill>());
                 }
 
-                if (!sourceIdSkill[skill.Source()].ContainsKey(skill.SkillId))
+                if (!sourceIdSkill[skill.Source].ContainsKey(skill.SkillId))
                 {
-                    sourceIdSkill[skill.Source()].Add(skill.SkillId, new List<Skill>());
+                    sourceIdSkill[skill.Source].Add(skill.SkillId, new List<Skill>());
                 }
 
-                targetSourceSkills[skill.Target()][skill.Source()].Add(skill);
-                sourceTargetSkills[skill.Source()][skill.Target()].Add(skill);
-                sourceTargetIdSkill[skill.Source()][skill.Target()][skill.SkillId].Add(skill);
-                sourceIdSkill[skill.Source()][skill.SkillId].Add(skill);
+                targetSourceSkills[skill.Target][skill.Source].Add(skill);
+                sourceTargetSkills[skill.Source][skill.Target].Add(skill);
+                sourceTargetIdSkill[skill.Source][skill.Target][skill.SkillId].Add(skill);
+                sourceIdSkill[skill.Source][skill.SkillId].Add(skill);
             }
 
             var skills = new Skills(sourceTargetSkills, targetSourceSkills, sourceTargetIdSkill, sourceIdSkill);
