@@ -298,8 +298,6 @@ namespace DamageMeter
 
                 var message = _messageFactory.Create(obj);
 
-                EntityTracker?.Update(message);
-
                 var cVersion = message as C_CHECK_VERSION;
                 if (cVersion != null)
                 {
@@ -343,6 +341,7 @@ namespace DamageMeter
                     continue;
                 }
 
+                EntityTracker.Update(message);
 
                 var skillResultMessage = message as EachSkillResultServerMessage;
                 if (skillResultMessage != null)
@@ -546,9 +545,7 @@ namespace DamageMeter
                     continue;
                 }
        
-
-                PlayerTracker?.UpdateParty(message);
-
+                PlayerTracker.UpdateParty(message);
 
                 var sSpawnUser = message as SpawnUserServerMessage;
                 if (sSpawnUser != null)

@@ -80,7 +80,7 @@ namespace NetworkSniffer
                 while (_bufferedPackets.Values.First().Length >= 500)
                      _bufferedPackets.Remove(_bufferedPackets.Keys.First());
                     //we don't know, whether large packet is continuation of previous message or not - so skip until new short message.
-                if (BytesReceived + 500 >= _bufferedPackets.Keys.First())
+                if (BytesReceived + 500 <= _bufferedPackets.Keys.First())
                     _bufferedPackets.Remove(_bufferedPackets.Keys.First()); 
                     //and even after skipping long fragments we don't know, whether small fragment after big is a new short message or a big message tail - skip small one too.
                 BytesReceived = _bufferedPackets.Keys.First();
