@@ -320,7 +320,7 @@ namespace DamageMeter
                         if (EntityTracker != null)
                         {
                             var oldregion = BasicTeraData.Instance.Servers.GetServer(EntityTracker.MeterUser.ServerId).Region;
-                            trackerreset = Server.Region == oldregion;
+                            trackerreset = Server.Region != oldregion;
                         }
                         Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
                         _messageFactory.Version = Server.Region;
