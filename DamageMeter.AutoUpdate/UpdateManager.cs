@@ -16,7 +16,7 @@ namespace DamageMeter.AutoUpdate
 {
     public class UpdateManager
     {
-        public static readonly string Version = "1.32";
+        public static readonly string Version = "1.33";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -125,7 +125,7 @@ namespace DamageMeter.AutoUpdate
                 }
             }
             if (!Directory.Exists(ExecutableDirectory + @"\..\..\resources\")) return;
-            foreach (var s in Directory.GetDirectories(ExecutableDirectory + @"\..\..\resources\").Where(t => !t.EndsWith("config")))
+            foreach (var s in Directory.GetDirectories(ExecutableDirectory + @"\..\..\resources\").Where(t => !t.EndsWith("config") && !t.EndsWith("sound")))
             {
                 if (Directory.Exists(s))
                 {
