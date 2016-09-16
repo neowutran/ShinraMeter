@@ -8,6 +8,7 @@ using NAudio.Wave;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Media;
+using NAudio.Vorbis;
 
 namespace DamageMeter.UI
 {
@@ -64,8 +65,9 @@ namespace DamageMeter.UI
 
         }
 
-        private IWavePlayer _waveOutDevice = null;
-        private AudioFileReader _audioFileReader = null;
+        private MediaFoundationReader _outputStream = null;
+        private WaveChannel32 _volumeStream = null;
+        private WaveOutEvent _player = null;
         private static readonly object _lock = new object();
         private bool _needToStop = false;
 
@@ -80,18 +82,6 @@ namespace DamageMeter.UI
                 Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, BasicTeraData.Instance.WindowData.PopupDisplayTime);
             }
 
-            if(_waveOutDevice != null)
-            {
-                lock (_lock)
-                {
-                    if (_needToStop)
-                    {
-                        return;
-                    }
-                    _audioFileReader.Dispose();
-                    _waveOutDevice.Dispose();
-                }
-            }
             var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound);
             if (!File.Exists(file))
             {
@@ -99,13 +89,20 @@ namespace DamageMeter.UI
                 if (!File.Exists(file))
                     return;
             }
+            lock (_lock)
+            {
+                if (_needToStop) return;
+            }
             try
             {
-                _waveOutDevice = new WaveOut();
-                _audioFileReader = new AudioFileReader(file);
-                _waveOutDevice.Init(_audioFileReader);
-                _audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
-                _waveOutDevice.Play();
+                _outputStream = new MediaFoundationReader(file);
+                _volumeStream = new WaveChannel32(_outputStream);
+                _volumeStream.Volume = BasicTeraData.Instance.WindowData.Volume;
+                //Create WaveOutEvent since it works in Background and UI Threads
+                _player = new WaveOutEvent();
+                //Init Player with Configured Volume Stream
+                _player.Init(_volumeStream);
+                _player.Play();
                 _needToStop = true;
 
                 var timer = new System.Threading.Timer((obj) =>
@@ -113,7 +110,14 @@ namespace DamageMeter.UI
                     lock (_lock)
                     {
                         _needToStop = false;
-                        _waveOutDevice.Stop();
+                        _player.Stop();
+                        _player.Dispose();
+                        _volumeStream.Dispose();
+                        _outputStream.Dispose();
+                        _outputStream = null;
+                        _player = null;
+                        _volumeStream = null;
+                       
                     }
                  }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
             }
@@ -141,14 +145,28 @@ namespace DamageMeter.UI
             }
             try
             {
-                var waveOutDevice = new WaveOut();
-                var audioFileReader = new AudioFileReader(file);
-                waveOutDevice.Init(audioFileReader);
-                audioFileReader.Volume = BasicTeraData.Instance.WindowData.Volume;
-                waveOutDevice.Play();
+
+                //Create Output Stream with Data from Audio File / Network Stream
+                var outputStream = new MediaFoundationReader(file);
+                //Create Volume Stream to control volume of output 
+                //ex: volumeStream.Volume = 0.5f; Float between 0 & 1 
+                var volumeStream = new WaveChannel32(outputStream);
+                volumeStream.Volume = BasicTeraData.Instance.WindowData.Volume;
+                //Create WaveOutEvent since it works in Background and UI Threads
+                var player = new WaveOutEvent();
+                //Init Player with Configured Volume Stream
+                player.Init(volumeStream);
+                player.Play();
+
                 var timer = new System.Threading.Timer((obj) =>
                 {
-                    waveOutDevice.Stop();
+                    player.Stop();
+                    player.Dispose();
+                    volumeStream.Dispose();
+                    outputStream.Dispose();
+                    outputStream = null;
+                    player = null;
+                    volumeStream = null;
                 }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
             }
             catch (Exception e)

@@ -179,7 +179,7 @@ namespace Data
                 new CopyKey(
                     @"Damage Done @ {encounter} {timer} {partyDps} {enrage}:\",
                     "",
-                    @"[{class}] {name}: {damage_percentage} | {crit_rate} Crit | {global_dps}\",
+                    @"[{class}] {name}: {damage_percentage} ({damage_dealt}) | Crit: {crit_rate} | {global_dps}\",
                     ModifierKeys.Shift,
                     Keys.End,
                     "damage_percentage",

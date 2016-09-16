@@ -319,8 +319,16 @@ namespace DamageMeter
                         bool trackerreset = true;
                         if (EntityTracker != null)
                         {
-                            var oldregion = BasicTeraData.Instance.Servers.GetServer(EntityTracker.MeterUser.ServerId).Region;
-                            trackerreset = Server.Region != oldregion;
+                            try
+                            {
+                                var oldregion = BasicTeraData.Instance.Servers.GetServer(EntityTracker.MeterUser.ServerId).Region;
+                                trackerreset = Server.Region != oldregion;
+                            }
+                            catch (Exception e)
+                            {
+                                BasicTeraData.LogError("New server:"+Server, false, true);
+                                throw;
+                            }
                         }
                         Server = BasicTeraData.Instance.Servers.GetServer(sLogin.ServerId, Server);
                         _messageFactory.Version = Server.Region;

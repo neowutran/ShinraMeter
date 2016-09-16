@@ -109,9 +109,15 @@ namespace DamageMeter
             if (BasicTeraData.Instance.WindowData.OnlyBoss && !(((entityTarget as NpcEntity)?.Info.Boss ?? false) ||
                                                                 (skillResult.SourcePlayer != null && skillResult.TargetPlayer != null) ||
                                                                 ((entitySource["root_source"] as NpcEntity)?.Info.Boss ?? false))) return;
-            if (entityTarget == null)
+            if (entitySource["root_source"] is PlaceHolderEntity)
             {
-                throw new Exception("Unknow target" + skillResult.Target.GetType());
+                return;
+            }
+            if(entityTarget == null)
+            {
+                var targetDebug = NetworkController.Instance.EntityTracker.GetOrNull(skillResult.Target.Id);
+                BasicTeraData.LogError("Unknow target, skill = " + skillResult.SkillId + ";" + skillResult.SkillName + ";" + skillResult.Skill.Id+";targetid:"+skillResult.Target.Id+";target type:"+targetDebug.GetType().ToString(), false, true);
+                return;
             }
 
             InsertSkill(entityTarget, entitySource["root_source"], entitySource["source"], skillResult);
