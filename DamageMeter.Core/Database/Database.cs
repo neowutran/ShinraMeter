@@ -294,6 +294,29 @@ namespace DamageMeter.Database
                     targetSourceSkills.Add(skill.Target, new Dictionary<Entity, List<Skill>>());
                 }
 
+
+
+
+
+                /////// DEBUG
+                if(skill.Source == null)
+                {
+                    var message = "";
+                    if (skill.PlayerSource == null)
+                    {
+                        message += "PlayerSource is null.";
+
+                    }
+                    message += "SourceEntity = " + skill.EntitySource;
+                    message += "Source = " + skill.Source;
+                    BasicTeraData.LogError("DATABASE FAILURE: skill source: "+message, false, true);
+                }
+                ////////
+
+
+
+
+
                 if (!targetSourceSkills[skill.Target].ContainsKey(skill.Source))
                 {
                     targetSourceSkills[skill.Target].Add(skill.Source, new List<Skill>());

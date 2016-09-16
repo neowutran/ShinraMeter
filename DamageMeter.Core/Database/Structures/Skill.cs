@@ -19,8 +19,17 @@ namespace DamageMeter.Database.Structures
             Time = time;
             Pet = pet;
             Direction = direction;
-            Source  = PlayerSource?.User ?? EntitySource;
-            Target = PlayerTarget?.User ?? EntityTarget;
+            Source = source;
+            Target = target;
+            if(PlayerSource != null)
+            {
+                Source = PlayerSource.User;
+            }
+            if(PlayerTarget != null)
+            {
+                Target = PlayerTarget.User;
+            }
+
             
         }
 
@@ -31,14 +40,14 @@ namespace DamageMeter.Database.Structures
         public bool HotDot { get; }
         public long Amount { get; }
         public Database.Type Type { get; }
-        private Entity EntityTarget { get; }
+        public Entity EntityTarget { get; }
         public Entity Source { get; private set; }
 
         public Entity Target { get; private set; }
-        private Player PlayerTarget { get; }
-        private Player PlayerSource { get; }
+        public Player PlayerTarget { get; }
+        public Player PlayerSource { get; }
 
-        private Entity EntitySource { get; }
+        public Entity EntitySource { get; }
         public int SkillId { get; }
         public bool Critic { get; }
         public long Time { get; }
