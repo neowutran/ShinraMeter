@@ -378,7 +378,7 @@ namespace DamageMeter
                         )
                     {
                         var source = EntityTracker.GetOrPlaceholder(changeHp.SourceId);
-                        BasicTeraData.LogError("SCreatureChangeHP need rootowner update2: "+ (source as NpcEntity)?.Info.Name ?? source.GetType()+": "+source, false,true);
+                        BasicTeraData.LogError("SCreatureChangeHP need rootowner update3: "+ changeHp.HpChange +" -> "+ (source as NpcEntity)?.Info.Name ?? source.GetType()+": "+source, false,true);
                     }
                     _abnormalityTracker.Update(changeHp);
                     continue;

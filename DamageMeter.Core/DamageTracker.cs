@@ -12,7 +12,7 @@ namespace DamageMeter
         private static DamageTracker _instance;
 
         private List<Entity> _toDelete = new List<Entity>();
-
+        private List<EntityId> _unknownEntityIds = new List<EntityId>();
 
         private DamageTracker()
         {
@@ -111,12 +111,17 @@ namespace DamageMeter
                                                                 ((entitySource["root_source"] as NpcEntity)?.Info.Boss ?? false))) return;
             if (entitySource["root_source"] is PlaceHolderEntity)
             {
-                return;
+                if (_unknownEntityIds.Contains(entitySource["root_source"].Id))
+                    return;
+                _unknownEntityIds.Add(entitySource["root_source"].Id);
+                BasicTeraData.LogError("Unknow source " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName + ";" + skillResult.Skill.Id, false, true);
             }
             if(entityTarget == null)
             {
-                var targetDebug = NetworkController.Instance.EntityTracker.GetOrNull(skillResult.Target.Id);
-                BasicTeraData.LogError("Unknow target, skill = " + skillResult.SkillId + ";" + skillResult.SkillName + ";" + skillResult.Skill.Id+";targetid:"+skillResult.Target.Id+";target type:"+targetDebug.GetType().ToString(), false, true);
+                if (_unknownEntityIds.Contains(skillResult.Target.Id))
+                    return;
+                _unknownEntityIds.Add(skillResult.Target.Id);
+                BasicTeraData.LogError("Unknow target " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName + ";" + skillResult.Skill.Id, false, true);
                 return;
             }
 
