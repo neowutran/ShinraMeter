@@ -156,6 +156,7 @@ namespace DamageMeter.UI
                 var player = new WaveOutEvent();
                 //Init Player with Configured Volume Stream
                 player.Init(volumeStream);
+                
                 player.Play();
 
                 var timer = new System.Threading.Timer((obj) =>

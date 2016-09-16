@@ -326,7 +326,7 @@ namespace DamageMeter
                             }
                             catch (Exception e)
                             {
-                                BasicTeraData.LogError("New server:"+Server, false, true);
+                                BasicTeraData.LogError("New server:"+Server+";Old server Id:" +EntityTracker.MeterUser.ServerId, false, true);
                                 throw;
                             }
                         }
