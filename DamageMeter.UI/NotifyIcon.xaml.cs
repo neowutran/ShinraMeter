@@ -75,7 +75,7 @@ namespace DamageMeter.UI
         {
             if (flash == null) return;
             Tray.HideBalloonTip();
-            if (BasicTeraData.Instance.WindowData.PopupDisplayTime < 500)
+            if (BasicTeraData.Instance.WindowData.PopupDisplayTime > 500)
             {
                 var balloon = new Balloon();
                 balloon.Value(flash.Item1, flash.Item2);

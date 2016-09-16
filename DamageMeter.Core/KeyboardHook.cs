@@ -27,7 +27,6 @@ namespace DamageMeter
 
 
         public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
-        private static readonly Object _lock = new Object();
 
         public bool SetHotkeys(bool value)
         {
