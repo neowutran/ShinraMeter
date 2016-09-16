@@ -73,9 +73,12 @@ namespace DamageMeter.UI
         {
             if (flash == null) return;
             Tray.HideBalloonTip();
-            var balloon = new Balloon();
-            balloon.Value(flash.Item1, flash.Item2);
-            Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, BasicTeraData.Instance.WindowData.PopupDisplayTime);
+            if (BasicTeraData.Instance.WindowData.PopupDisplayTime < 500)
+            {
+                var balloon = new Balloon();
+                balloon.Value(flash.Item1, flash.Item2);
+                Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, BasicTeraData.Instance.WindowData.PopupDisplayTime);
+            }
 
             if(_waveOutDevice != null)
             {
@@ -116,7 +119,13 @@ namespace DamageMeter.UI
             }
             catch (Exception e)
             {
-                BasicTeraData.LogError("Sound ERROR main" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file, false, true);
+                // Get stack trace for the exception with source file information
+                var st = new StackTrace(e, true);
+                // Get the top stack frame
+                var frame = st.GetFrame(0);
+                // Get the line number from the stack frame
+                var line = frame.GetFileLineNumber();
+                BasicTeraData.LogError("Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file + Environment.NewLine + "line:" + line, false, true);
             }
 
         }
@@ -144,7 +153,13 @@ namespace DamageMeter.UI
             }
             catch (Exception e)
             {
-                BasicTeraData.LogError("Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file, false, true);
+                // Get stack trace for the exception with source file information
+                var st = new StackTrace(e, true);
+                // Get the top stack frame
+                var frame = st.GetFrame(0);
+                // Get the line number from the stack frame
+                var line = frame.GetFileLineNumber();
+                BasicTeraData.LogError("Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file + Environment.NewLine + "line:"+line, false, true);
             }
          
            
@@ -428,7 +443,7 @@ namespace DamageMeter.UI
             dlg.DefaultExt = ".mp3";
             dlg.Filter = "Sound (*.wav;*.mp3;*.aiff) |*.wav;*.mp3;*.aiff"; // Filter files by extension
 
-            Nullable<bool> result = dlg.ShowDialog(Window.GetWindow(this));
+            bool? result = dlg.ShowDialog(Window.GetWindow(this));
             if (result == true)
             {
                 SoundFileTextbox.Text = dlg.FileName;

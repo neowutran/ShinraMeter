@@ -182,7 +182,7 @@
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="PopupTime" Content="{Binding Source={x:Static l:LP.PopupStayActiveForXms}}" />
-                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" ValueChanged="PopupTimeChange" FormatString="N0" Increment="100" Maximum="60000" Minimum="0" />
+                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" ValueChanged="PopupTimeChange" FormatString="N0" Increment="500" Maximum="60000" Minimum="0" />
                                         </Grid>
                                         <Grid Grid.Row="13">
                                             <Grid.ColumnDefinitions>
