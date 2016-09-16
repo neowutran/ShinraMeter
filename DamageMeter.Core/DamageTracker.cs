@@ -115,8 +115,9 @@ namespace DamageMeter
                     return;
                 _unknownEntityIds.Add(entitySource["root_source"].Id);
                 BasicTeraData.LogError("Unknow source " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName + ";" + skillResult.Skill.Id, false, true);
+                return;
             }
-            if(entityTarget == null)
+            if (entityTarget == null)
             {
                 if (_unknownEntityIds.Contains(skillResult.Target.Id))
                     return;
