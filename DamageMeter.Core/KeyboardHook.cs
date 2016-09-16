@@ -31,19 +31,18 @@ namespace DamageMeter
 
         public bool SetHotkeys(bool value)
         {
-            lock (_lock)
+          
+            if (value && !_isRegistered)
             {
-                if (value && !_isRegistered)
-                {
-                    Register();
-                    return true;
-                }
-                if (!value && _isRegistered)
-                {
-                    ClearHotkeys();
-                }
-                return false;
+                Register();
+                return true;
             }
+            if (!value && _isRegistered)
+            {
+                ClearHotkeys();
+            }
+            return false;
+            
         }
 
         private static void hook_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -98,21 +97,21 @@ namespace DamageMeter
 
         public void Update()
         {
-            lock (_lock)
-            {
-                ClearHotkeys();
-                Register();
-            }
+            ClearHotkeys();
+            Register();       
         }
 
         public void RegisterKeyboardHook()
         {
-            lock (_lock)
-            {
+          
                 // register the event that is fired after the key press.
                 Instance.KeyPressed += hook_KeyPressed;
-                Register();
-            }
+          
+                if (!_isRegistered)
+                {
+                    Register();
+                }
+            
         }
 
         private void Register()
