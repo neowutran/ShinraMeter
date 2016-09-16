@@ -27,23 +27,29 @@ namespace DamageMeter
 
 
         public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
+        private static readonly Object _lock = new Object();
 
         public bool SetHotkeys(bool value)
         {
-            if (value && !_isRegistered)
+            lock (_lock)
             {
-                Register();
-                return true;
+                if (value && !_isRegistered)
+                {
+                    Register();
+                    return true;
+                }
+                if (!value && _isRegistered)
+                {
+                    ClearHotkeys();
+                }
+                return false;
             }
-            if (!value && _isRegistered)
-            {
-                ClearHotkeys();
-            }
-            return false;
         }
 
         private static void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
+
+
             if (e.Key == BasicTeraData.Instance.HotkeysData.Topmost.Key &&
                 e.Modifier == BasicTeraData.Instance.HotkeysData.Topmost.Value)
             {
@@ -92,19 +98,27 @@ namespace DamageMeter
 
         public void Update()
         {
-            ClearHotkeys();
-            Register();
+            lock (_lock)
+            {
+                ClearHotkeys();
+                Register();
+            }
         }
 
         public void RegisterKeyboardHook()
         {
-            // register the event that is fired after the key press.
-            Instance.KeyPressed += hook_KeyPressed;
-            Register();
+            lock (_lock)
+            {
+                // register the event that is fired after the key press.
+                Instance.KeyPressed += hook_KeyPressed;
+                Register();
+            }
         }
 
         private void Register()
         {
+            //MessageBox.Show("PASSE" + Environment.StackTrace, "ERROR: "+ Environment.StackTrace, MessageBoxButtons.OKCancel);
+
             RegisterHotKey(BasicTeraData.Instance.HotkeysData.Topmost.Value,
                 BasicTeraData.Instance.HotkeysData.Topmost.Key);
             RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value,
