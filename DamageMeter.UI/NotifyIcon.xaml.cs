@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows;
 using NAudio.Wave;
 using System.IO;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace DamageMeter.UI
@@ -89,7 +90,12 @@ namespace DamageMeter.UI
                 }
             }
             var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound);
-            if (!File.Exists(file)) { return; }
+            if (!File.Exists(file))
+            {
+                file = BasicTeraData.Instance.WindowData.NotifySound;
+                if (!File.Exists(file))
+                    return;
+            }
             try
             {
                 _waveOutDevice = new WaveOut();
@@ -118,7 +124,12 @@ namespace DamageMeter.UI
         private void PlaySound()
         {
             var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound);
-            if (!File.Exists(file)) { return; }
+            if (!File.Exists(file))
+            {
+                file = BasicTeraData.Instance.WindowData.NotifySound;
+                if (!File.Exists(file))
+                    return;
+            }
             try
             {
                 var waveOutDevice = new WaveOut();
@@ -407,6 +418,22 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey = false;
             KeyboardHook.Instance.Update();
+        }
+
+        private void SoundFileTextbox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Tray.TrayPopupResolved.StaysOpen = true;
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = BasicTeraData.Instance.WindowData.NotifySound;
+            dlg.DefaultExt = ".mp3";
+            dlg.Filter = "Sound (*.wav;*.mp3;*.aiff) |*.wav;*.mp3;*.aiff"; // Filter files by extension
+
+            Nullable<bool> result = dlg.ShowDialog(Window.GetWindow(this));
+            if (result == true)
+            {
+                SoundFileTextbox.Text = dlg.FileName;
+            }
+            Tray.TrayPopupResolved.StaysOpen = false;
         }
     }
 }

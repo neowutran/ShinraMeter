@@ -486,4 +486,37 @@
   <data name="TestSound" xml:space="preserve">
     <value>Test sound</value>
   </data>
+  <data name="WhisperColor" xml:space="preserve">
+    <value>Whisper color</value>
+  </data>
+  <data name="AllianceColor" xml:space="preserve">
+    <value>Alliance color</value>
+  </data>
+  <data name="AreaColor" xml:space="preserve">
+    <value>Area color</value>
+  </data>
+  <data name="GeneralColor" xml:space="preserve">
+    <value>General color</value>
+  </data>
+  <data name="GroupColor" xml:space="preserve">
+    <value>Group color</value>
+  </data>
+  <data name="GuildColor" xml:space="preserve">
+    <value>Guild color</value>
+  </data>
+  <data name="RaidColor" xml:space="preserve">
+    <value>Raid color</value>
+  </data>
+  <data name="SayColor" xml:space="preserve">
+    <value>Say color</value>
+  </data>
+  <data name="TradingColor" xml:space="preserve">
+    <value>Trading color</value>
+  </data>
+  <data name="EmotesColor" xml:space="preserve">
+    <value>Emotes color</value>
+  </data>
+  <data name="PrivateChannelColor" xml:space="preserve">
+    <value>Private channel color</value>
+  </data>
 </root>

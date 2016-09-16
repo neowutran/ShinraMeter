@@ -97,6 +97,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alliance color.
+        /// </summary>
+        public static string AllianceColor {
+            get {
+                return ResourceManager.GetString("AllianceColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  probably is already in use..
         /// </summary>
         public static string AlreadyInUse {
@@ -147,6 +156,15 @@ namespace Lang {
         public static string Archer {
             get {
                 return ResourceManager.GetString("Archer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area color.
+        /// </summary>
+        public static string AreaColor {
+            get {
+                return ResourceManager.GetString("AreaColor", resourceCulture);
             }
         }
         
@@ -421,6 +439,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Emotes color.
+        /// </summary>
+        public static string EmotesColor {
+            get {
+                return ResourceManager.GetString("EmotesColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enrage.
         /// </summary>
         public static string Enrage {
@@ -462,6 +489,33 @@ namespace Lang {
         public static string Front {
             get {
                 return ResourceManager.GetString("Front", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General color.
+        /// </summary>
+        public static string GeneralColor {
+            get {
+                return ResourceManager.GetString("GeneralColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group color.
+        /// </summary>
+        public static string GroupColor {
+            get {
+                return ResourceManager.GetString("GroupColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guild color.
+        /// </summary>
+        public static string GuildColor {
+            get {
+                return ResourceManager.GetString("GuildColor", resourceCulture);
             }
         }
         
@@ -727,6 +781,24 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Private channel color.
+        /// </summary>
+        public static string PrivateChannelColor {
+            get {
+                return ResourceManager.GetString("PrivateChannelColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raid color.
+        /// </summary>
+        public static string RaidColor {
+            get {
+                return ResourceManager.GetString("RaidColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reaper.
         /// </summary>
         public static string Reaper {
@@ -750,6 +822,15 @@ namespace Lang {
         public static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Say color.
+        /// </summary>
+        public static string SayColor {
+            get {
+                return ResourceManager.GetString("SayColor", resourceCulture);
             }
         }
         
@@ -1114,6 +1195,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trading color.
+        /// </summary>
+        public static string TradingColor {
+            get {
+                return ResourceManager.GetString("TradingColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get key from string.
         /// </summary>
         public static string Unable_to_get_key_from_string {
@@ -1137,6 +1227,15 @@ namespace Lang {
         public static string Whisper {
             get {
                 return ResourceManager.GetString("Whisper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Whisper color.
+        /// </summary>
+        public static string WhisperColor {
+            get {
+                return ResourceManager.GetString("WhisperColor", resourceCulture);
             }
         }
         

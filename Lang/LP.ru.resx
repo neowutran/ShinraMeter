@@ -483,4 +483,38 @@
   <data name="TestSound" xml:space="preserve">
     <value>Проверка звука</value>
   </data>
+  <data name="WhisperColor" xml:space="preserve">
+    <value>Цвет личного сообщения</value>
+  </data>
+  <data name="AllianceColor" xml:space="preserve">
+    <value>Цвет чата альянса</value>
+  </data>
+  <data name="AreaColor" xml:space="preserve">
+    <value>Цвет чата локации</value>
+  </data>
+  <data name="GeneralColor" xml:space="preserve">
+    <value>Цвет общего чата</value>
+  </data>
+  <data name="GroupColor" xml:space="preserve">
+    <value>Цвет чата группы</value>
+  </data>
+  <data name="GuildColor" xml:space="preserve">
+    <value>Цвет чата гильдии</value>
+  </data>
+  <data name="RaidColor" xml:space="preserve">
+    <value>Цвет чата рейда</value>
+  </data>
+  <data name="SayColor" xml:space="preserve">
+    <value>Цвет чата рядом</value>
+  </data>
+  <data name="TradingColor" xml:space="preserve">
+    <value>Цвет торгового чата</value>
+  </data>
+  <data name="EmotesColor" xml:space="preserve">
+    <value>Цвет чата эмоций</value>
+  </data>
+  <data name="PrivateChannelColor" xml:space="preserve">
+    <value>Цвет приватного канала чата</value>
+  </data>
+
 </root>
