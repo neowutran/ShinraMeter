@@ -114,7 +114,7 @@ namespace DamageMeter
                 if (_unknownEntityIds.Contains(entitySource["root_source"].Id))
                     return;
                 _unknownEntityIds.Add(entitySource["root_source"].Id);
-                BasicTeraData.LogError("Unknow source " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName + ";" + skillResult.Skill.Id, false, true);
+                BasicTeraData.LogError("Unknow source " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName, false, true);
                 return;
             }
             if (entityTarget == null)
@@ -122,7 +122,7 @@ namespace DamageMeter
                 if (_unknownEntityIds.Contains(skillResult.Target.Id))
                     return;
                 _unknownEntityIds.Add(skillResult.Target.Id);
-                BasicTeraData.LogError("Unknow target " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName + ";" + skillResult.Skill.Id, false, true);
+                BasicTeraData.LogError("Unknow target " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName, false, true);
                 return;
             }
 
