@@ -339,8 +339,11 @@ namespace DamageMeter.UI
         internal void StayTopMost()
         {
             if (!Topmost || !_topMost) return;
-            Topmost = false;
-            Topmost = true;
+            foreach (Window window in System.Windows.Application.Current.Windows)
+            {
+                window.Topmost = false;
+                window.Topmost = true;
+            }
         }
 
         private bool NeedUpdateEncounter(IReadOnlyList<NpcEntity> entities)
@@ -448,14 +451,11 @@ namespace DamageMeter.UI
         public void CloseEntityStats()
         {
             _entityStats.Hide();
-            _entityStats.Topmost = false;
         }
 
         private void EntityStatsImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _entityStats.Show();
-            _entityStats.Topmost = false;
-            _entityStats.Topmost = true;
         }
 
         private void Chrono_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
