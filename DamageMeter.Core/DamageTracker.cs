@@ -12,7 +12,6 @@ namespace DamageMeter
         private static DamageTracker _instance;
 
         private List<Entity> _toDelete = new List<Entity>();
-        private List<EntityId> _unknownEntityIds = new List<EntityId>();
 
         private DamageTracker()
         {
@@ -109,23 +108,10 @@ namespace DamageMeter
             if (BasicTeraData.Instance.WindowData.OnlyBoss && !(((entityTarget as NpcEntity)?.Info.Boss ?? false) ||
                                                                 (skillResult.SourcePlayer != null && skillResult.TargetPlayer != null) ||
                                                                 ((entitySource["root_source"] as NpcEntity)?.Info.Boss ?? false))) return;
-            if (entitySource["root_source"] is PlaceHolderEntity)
+            if (entitySource["root_source"] is PlaceHolderEntity|| entityTarget == null)
             {
-                if (_unknownEntityIds.Contains(entitySource["root_source"].Id))
-                    return;
-                _unknownEntityIds.Add(entitySource["root_source"].Id);
-                BasicTeraData.LogError("Unknow source " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName, false, true);
                 return;
             }
-            if (entityTarget == null)
-            {
-                if (_unknownEntityIds.Contains(skillResult.Target.Id))
-                    return;
-                _unknownEntityIds.Add(skillResult.Target.Id);
-                BasicTeraData.LogError("Unknow target " + _unknownEntityIds.Count + ", skill = " + skillResult.SkillId + ";" + skillResult.SkillName, false, true);
-                return;
-            }
-
             InsertSkill(entityTarget, entitySource["root_source"], entitySource["source"], skillResult);
         }
 

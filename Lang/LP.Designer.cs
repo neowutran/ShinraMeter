@@ -817,6 +817,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove Tera alt+enter hotkey.
+        /// </summary>
+        public static string RemoveTeraAltEnterHotkey {
+            get {
+                return ResourceManager.GetString("RemoveTeraAltEnterHotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
         public static string Reset {

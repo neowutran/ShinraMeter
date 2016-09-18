@@ -219,6 +219,7 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.Topmost = !BasicTeraData.Instance.WindowData.Topmost;
             StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
             _mainWindow.Topmost = BasicTeraData.Instance.WindowData.Topmost;
+            _mainWindow.ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
         }
 
         private void DpsWebsiteAction(object sender, RoutedEventArgs e)
@@ -260,12 +261,14 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.Topmost = false;
             _mainWindow.Topmost = BasicTeraData.Instance.WindowData.Topmost;
+            _mainWindow.ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
         }
 
         private void EnableStayTopMost(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.Topmost = true;
             _mainWindow.Topmost = BasicTeraData.Instance.WindowData.Topmost;
+            _mainWindow.ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
         }
 
         private void EnableShowAlways(object sender, RoutedEventArgs e)

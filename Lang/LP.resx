@@ -519,4 +519,7 @@
   <data name="PrivateChannelColor" xml:space="preserve">
     <value>Private channel color</value>
   </data>
+  <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
+    <value>Remove Tera alt+enter hotkey</value>
+  </data>
 </root>

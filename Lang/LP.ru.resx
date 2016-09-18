@@ -516,5 +516,7 @@
   <data name="PrivateChannelColor" xml:space="preserve">
     <value>Цвет приватного канала чата</value>
   </data>
-
+  <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
+    <value>Отключить комбинацию Alt+Enter в Tera</value>
+  </data>
 </root>
