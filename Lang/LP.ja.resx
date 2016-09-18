@@ -169,7 +169,7 @@
     <value>HPバーによってボスを検出(データベース無視)</value>
   </data>
   <data name="SystemTray_Site_export" xml:space="preserve">
-    <value>サイトへ出力</value>
+    <value>サイトへアップロード</value>
   </data>
   <data name="SystemTray_Count_only_party_members" xml:space="preserve">
     <value>パーティーメンバーのみ計測</value>
@@ -442,5 +442,89 @@
   </data>
   <data name="Mot" xml:space="preserve">
     <value>MOT</value>
+  </data>
+  <data name="NumberPlayersDisplayed" xml:space="preserve">
+    <value>表示されるプレイヤーの数</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>チャット</value>
+  </data>
+  <data name="ApplyToYourParty" xml:space="preserve">
+    <value>あなたのパーティーに志願しました。</value>
+  </data>
+  <data name="Lvl" xml:space="preserve">
+    <value>Lvl</value>
+  </data>
+  <data name="OfferedPrice" xml:space="preserve">
+    <value>提示価格</value>
+  </data>
+  <data name="PartyMatchingSuccess" xml:space="preserve">
+    <value>パーティーマッチング成功</value>
+  </data>
+  <data name="SellerPrice" xml:space="preserve">
+    <value>登録価格</value>
+  </data>
+  <data name="Trading" xml:space="preserve">
+    <value>交渉</value>
+  </data>
+  <data name="Whisper" xml:space="preserve">
+    <value>ささやき</value>
+  </data>
+  <data name="DelayToWaitPasting" xml:space="preserve">
+    <value>貼り付け時のタイムアウト</value>
+  </data>
+  <data name="PopupStayActiveForXms" xml:space="preserve">
+    <value>通知が表示されている時間(ミリ秒)</value>
+  </data>
+  <data name="SoundFilename" xml:space="preserve">
+    <value>サウンドファイル名</value>
+  </data>
+  <data name="SoundStayActiveForXms" xml:space="preserve">
+    <value>サウンド再生時間(ミリ秒)</value>
+  </data>
+  <data name="SoundVolume" xml:space="preserve">
+    <value>音量</value>
+  </data>
+  <data name="TestSound" xml:space="preserve">
+    <value>サウンドテスト</value>
+  </data>
+  <data name="WhisperColor" xml:space="preserve">
+    <value>ささやきの色</value>
+  </data>
+  <data name="AllianceColor" xml:space="preserve">
+    <value>連盟チャットの色</value>
+  </data>
+  <data name="AreaColor" xml:space="preserve">
+    <value>領チャットの色</value>
+  </data>
+  <data name="GeneralColor" xml:space="preserve">
+    <value>全体チャットの色</value>
+  </data>
+  <data name="GroupColor" xml:space="preserve">
+    <value>パーティーチャットの色</value>
+  </data>
+  <data name="GuildColor" xml:space="preserve">
+    <value>ギルドチャットの色</value>
+  </data>
+  <data name="RaidColor" xml:space="preserve">
+    <value>レイドチャットの色</value>
+  </data>
+  <data name="SayColor" xml:space="preserve">
+    <value>一般チャットの色</value>
+  </data>
+  <data name="TradingColor" xml:space="preserve">
+    <value>取引チャットの色</value>
+  </data>
+  <data name="EmotesColor" xml:space="preserve">
+    <value>エモーションの色</value>
+  </data>
+  <data name="PrivateChannelColor" xml:space="preserve">
+    <value>個人チャンネルの色</value>
+  </data>
+  <data name="PartyInvite" xml:space="preserve">
+    <value>パーティー招待</value>
+  </data>
+  <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
+    <value>TERAの「Alt+Enter」ホットキーを無効</value>
   </data>
 </root>

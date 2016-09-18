@@ -592,6 +592,19 @@ namespace DamageMeter
                     continue;
                 }
 
+                var partyInvite = message as S_BEGIN_THROUGH_ARBITER_CONTRACT;
+                if (partyInvite != null)
+                {
+                    if (!TeraWindow.IsTeraActive())
+                    {
+                        FlashMessage = new Tuple<string, string>(
+                            LP.PartyInvite + ": " + partyInvite.InviteName,
+                            LP.PartyInvite + ": " + partyInvite.InviteName
+                            );
+                    }
+                    continue;
+                }
+
                 var partyMatch = message as S_FIN_INTER_PARTY_MATCH;
                 var bgMatch = message as S_BATTLE_FIELD_ENTRANCE_INFO;
                 if (partyMatch != null || bgMatch != null)
