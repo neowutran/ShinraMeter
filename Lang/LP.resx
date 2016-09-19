@@ -522,4 +522,10 @@
   <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
     <value>Remove Tera alt+enter hotkey</value>
   </data>
+  <data name="ContactTry" xml:space="preserve">
+    <value>Contact try</value>
+  </data>
+  <data name="PartyInvite" xml:space="preserve">
+    <value>Party invite</value>
+  </data>
 </root>
