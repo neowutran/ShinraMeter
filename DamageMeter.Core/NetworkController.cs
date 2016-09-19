@@ -601,22 +601,22 @@ namespace DamageMeter
                         if (contact.Type == S_REQUEST_CONTRACT.RequestType.PartyInvite)
                         {
                             FlashMessage = new Tuple<string, string>(
-                             "Party invite",
+                             LP.PartyInvite + ": "+contact.Sender,
                              contact.Sender
                              );
                         }
                         else if (contact.Type == S_REQUEST_CONTRACT.RequestType.TradeRequest)
                         {
                             FlashMessage = new Tuple<string, string>(
-                             "Trade request",
+                             LP.Trading + ": "+contact.Sender ,
                              contact.Sender
                              );
                         }
                         else
                         {
                             FlashMessage = new Tuple<string, string>(
-                              "Contact try",
-                              "Contact try"
+                              LP.ContactTry,
+                              LP.ContactTry
                               );
                         }
                     }
