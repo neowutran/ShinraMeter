@@ -21,7 +21,8 @@ namespace DamageMeter.UI
             WindowStyle = WindowStyle.None;
             Focusable = false;
             BorderThickness = new Thickness(0);
-            Topmost = true;
+            Topmost = BasicTeraData.Instance.WindowData.Topmost;
+            ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
             Icon = BasicTeraData.Instance.ImageDatabase.Icon;
             SizeToContent = SizeToContent.WidthAndHeight;
             MouseLeftButtonDown += Move;
