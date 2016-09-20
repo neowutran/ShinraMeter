@@ -519,4 +519,13 @@
   <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
     <value>Отключить комбинацию Alt+Enter в Tera</value>
   </data>
+  <data name="ContactTry" xml:space="preserve">
+    <value>Что-то требует вашего внимания</value>
+  </data>
+  <data name="PartyInvite" xml:space="preserve">
+    <value>Приглашение в группу</value>
+  </data>
+  <data name="EnableChat" xml:space="preserve">
+    <value>Включить функции чата и оповещения</value>
+  </data>
 </root>

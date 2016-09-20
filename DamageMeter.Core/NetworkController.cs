@@ -465,28 +465,6 @@ namespace DamageMeter
                     continue;
                 }
 
-                var chatMessage = message as S_CHAT;
-                if (chatMessage != null)
-                {
-                    Chat.Instance.Add(chatMessage);
-                    continue;
-                }
-
-                var whisperMessage = message as S_WHISPER;
-                if (whisperMessage != null)
-                {
-                    Chat.Instance.Add(whisperMessage);
-                    continue;
-                }
-
-                var privateChatMessage = message as S_PRIVATE_CHAT;
-                if (privateChatMessage != null)
-                {
-                    Chat.Instance.Add(privateChatMessage);
-                    continue;
-                }
-                
-
                 var despawnUser = message as SDespawnUser;
                 if (despawnUser != null)
                 {
@@ -562,82 +540,108 @@ namespace DamageMeter
                     continue;
                 }
 
-                var trading = message as S_TRADE_BROKER_DEAL_SUGGESTED;
-                if (trading != null)
+                if (BasicTeraData.Instance.WindowData.EnableChat)
                 {
-                    if (!TeraWindow.IsTeraActive())
+                    var chatMessage = message as S_CHAT;
+                    if (chatMessage != null)
                     {
-                        FlashMessage = new Tuple<string, string>(
-                        LP.Trading+": " + trading.PlayerName,
-                        LP.SellerPrice+": " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.SellerPrice) + Environment.NewLine +
-                        LP.OfferedPrice+": " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.OfferedPrice)
-                        );
+                        Chat.Instance.Add(chatMessage);
+                        continue;
                     }
-                    continue;
-                
-                }
 
-                var userApply = message as S_OTHER_USER_APPLY_PARTY;
-                if (userApply != null)
-                {
-                    if (!TeraWindow.IsTeraActive())
+                    var whisperMessage = message as S_WHISPER;
+                    if (whisperMessage != null)
                     {
-
-                        FlashMessage = new Tuple<string, string>(
-                            userApply.PlayerName + " " + LP.ApplyToYourParty,
-                            LP.Class+": " + LP.ResourceManager.GetString(userApply.PlayerClass.ToString(), LP.Culture) + Environment.NewLine +
-                            LP.Lvl+": " + userApply.Lvl + Environment.NewLine
-                            );
+                        Chat.Instance.Add(whisperMessage);
+                        continue;
                     }
-                    continue;
-                }
 
-
-                var contact = message as S_REQUEST_CONTRACT;
-                if (contact != null)
-                {
-                    if (!TeraWindow.IsTeraActive())
+                    var privateChatMessage = message as S_PRIVATE_CHAT;
+                    if (privateChatMessage != null)
                     {
-                        if (contact.Type == S_REQUEST_CONTRACT.RequestType.PartyInvite)
+                        Chat.Instance.Add(privateChatMessage);
+                        continue;
+                    }
+
+                    var trading = message as S_TRADE_BROKER_DEAL_SUGGESTED;
+                    if (trading != null)
+                    {
+                        if (!TeraWindow.IsTeraActive())
                         {
                             FlashMessage = new Tuple<string, string>(
-                             LP.PartyInvite + ": "+contact.Sender,
-                             contact.Sender
-                             );
+                                LP.Trading + ": " + trading.PlayerName,
+                                LP.SellerPrice + ": " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.SellerPrice) +
+                                Environment.NewLine +
+                                LP.OfferedPrice + ": " + S_TRADE_BROKER_DEAL_SUGGESTED.Gold(trading.OfferedPrice)
+                                );
                         }
-                        else if (contact.Type == S_REQUEST_CONTRACT.RequestType.TradeRequest)
-                        {
-                            FlashMessage = new Tuple<string, string>(
-                             LP.Trading + ": "+contact.Sender ,
-                             contact.Sender
-                             );
-                        }
-                        else
-                        {
-                            FlashMessage = new Tuple<string, string>(
-                              LP.ContactTry,
-                              LP.ContactTry
-                              );
-                        }
-                    }
-                    continue;
-                }
-                        
+                        continue;
 
-                var partyMatch = message as S_FIN_INTER_PARTY_MATCH;
-                var bgMatch = message as S_BATTLE_FIELD_ENTRANCE_INFO;
-                if (partyMatch != null || bgMatch != null)
-                {
-                    if (!TeraWindow.IsTeraActive())
+                    }
+
+                    var userApply = message as S_OTHER_USER_APPLY_PARTY;
+                    if (userApply != null)
                     {
-                        FlashMessage = new Tuple<string, string>(
-                            LP.PartyMatchingSuccess,
-                            LP.PartyMatchingSuccess
-                            );
-                    }
-                    continue;
-                }
+                        if (!TeraWindow.IsTeraActive())
+                        {
 
+                            FlashMessage = new Tuple<string, string>(
+                                userApply.PlayerName + " " + LP.ApplyToYourParty,
+                                LP.Class + ": " +
+                                LP.ResourceManager.GetString(userApply.PlayerClass.ToString(), LP.Culture) +
+                                Environment.NewLine +
+                                LP.Lvl + ": " + userApply.Lvl + Environment.NewLine
+                                );
+                        }
+                        continue;
+                    }
+
+
+                    var contact = message as S_REQUEST_CONTRACT;
+                    if (contact != null)
+                    {
+                        if (!TeraWindow.IsTeraActive())
+                        {
+                            if (contact.Type == S_REQUEST_CONTRACT.RequestType.PartyInvite)
+                            {
+                                FlashMessage = new Tuple<string, string>(
+                                    LP.PartyInvite + ": " + contact.Sender,
+                                    contact.Sender
+                                    );
+                            }
+                            else if (contact.Type == S_REQUEST_CONTRACT.RequestType.TradeRequest)
+                            {
+                                FlashMessage = new Tuple<string, string>(
+                                    LP.Trading + ": " + contact.Sender,
+                                    contact.Sender
+                                    );
+                            }
+                            else
+                            {
+                                FlashMessage = new Tuple<string, string>(
+                                    LP.ContactTry,
+                                    LP.ContactTry
+                                    );
+                            }
+                        }
+                        continue;
+                    }
+
+
+                    var partyMatch = message as S_FIN_INTER_PARTY_MATCH;
+                    var bgMatch = message as S_BATTLE_FIELD_ENTRANCE_INFO;
+                    if (partyMatch != null || bgMatch != null)
+                    {
+                        if (!TeraWindow.IsTeraActive())
+                        {
+                            FlashMessage = new Tuple<string, string>(
+                                LP.PartyMatchingSuccess,
+                                LP.PartyMatchingSuccess
+                                );
+                        }
+                        continue;
+                    }
+                }
                 var spawnMe = message as SpawnMeServerMessage;
                 if (spawnMe != null)
                 {

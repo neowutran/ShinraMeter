@@ -50,6 +50,7 @@ namespace DamageMeter.UI
             SoundFileTextbox.Text = BasicTeraData.Instance.WindowData.NotifySound;
             SoundVolumeSpinner.Value = BasicTeraData.Instance.WindowData.Volume;
             RemoveTeraAltEnterHotkey.IsChecked = BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey;
+            ChatEnabled.IsChecked = BasicTeraData.Instance.WindowData.EnableChat;
 
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
@@ -476,6 +477,16 @@ namespace DamageMeter.UI
                 SoundFileTextbox.Text = dlg.FileName;
             }
             Tray.TrayPopupResolved.StaysOpen = false;
+        }
+
+        private void EnableChat(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.EnableChat = true;
+        }
+
+        private void DisableChat(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.EnableChat = false;
         }
     }
 }

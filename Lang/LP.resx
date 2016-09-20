@@ -528,4 +528,7 @@
   <data name="PartyInvite" xml:space="preserve">
     <value>Party invite</value>
   </data>
+  <data name="EnableChat" xml:space="preserve">
+    <value>Enable chat and notification functions</value>
+  </data>
 </root>

@@ -88,7 +88,7 @@ namespace DamageMeter
                          from source in skill.Value
                          select SkillsData.LowestCrit(source, _target, skill.Key.Id, _timed, Type);
             var enumerable = result as long[] ?? result.ToArray();
-            return !enumerable.Any() ? 0 : enumerable.Max();
+            return !enumerable.Any() ? 0 : enumerable.Min();
         }
 
         public long BiggestCrit(int skillId)
