@@ -295,6 +295,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Combat ready check に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CombatReadyCheck {
+            get {
+                return ResourceManager.GetString("CombatReadyCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Common に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Common {
@@ -444,6 +453,15 @@ namespace Lang {
         public static string EmotesColor {
             get {
                 return ResourceManager.GetString("EmotesColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Enable chat and notification functions に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string EnableChat {
+            get {
+                return ResourceManager.GetString("EnableChat", resourceCulture);
             }
         }
         

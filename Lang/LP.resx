@@ -525,4 +525,10 @@
   <data name="PartyInvite" xml:space="preserve">
     <value>PartyInvite</value>
   </data>
+  <data name="CombatReadyCheck" xml:space="preserve">
+    <value>Combat ready check</value>
+  </data>
+  <data name="EnableChat" xml:space="preserve">
+    <value>Enable chat and notification functions</value>
+  </data>
 </root>

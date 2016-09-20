@@ -613,8 +613,8 @@ namespace DamageMeter
                         if (!TeraWindow.IsTeraActive())
                         {
                             FlashMessage = new Tuple<string, string>(
-                                "Check battle state",
-                                "戦闘状態確認"
+                                LP.CombatReadyCheck,
+                                LP.CombatReadyCheck
                                 );
                         }
                     }

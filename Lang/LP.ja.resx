@@ -527,4 +527,11 @@
   <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
     <value>TERAの「Alt+Enter」ホットキーを無効</value>
   </data>
+  <data name="CombatReadyCheck" xml:space="preserve">
+    <value>戦闘準備確認</value>
+  </data>
+  <data name="EnableChat" xml:space="preserve">
+    <value>チャットや通知機能を有効にします。</value>
+  </data>
+
 </root>
