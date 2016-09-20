@@ -605,6 +605,22 @@ namespace DamageMeter
                     continue;
                 }
 
+                var readyParty = message as S_CHECK_TO_READY_PARTY;
+                if (readyParty != null)
+                {
+                    if (readyParty.Count == 1)
+                    {
+                        if (!TeraWindow.IsTeraActive())
+                        {
+                            FlashMessage = new Tuple<string, string>(
+                                "Check battle state",
+                                "戦闘状態確認"
+                                );
+                        }
+                    }
+                    continue;
+                }
+
                 var partyMatch = message as S_FIN_INTER_PARTY_MATCH;
                 var bgMatch = message as S_BATTLE_FIELD_ENTRANCE_INFO;
                 if (partyMatch != null || bgMatch != null)
