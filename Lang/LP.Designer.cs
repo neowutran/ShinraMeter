@@ -313,6 +313,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy &quot;/inspect Name&quot; on party apply request.
+        /// </summary>
+        public static string CopyInspect {
+            get {
+                return ResourceManager.GetString("CopyInspect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Critical.
         /// </summary>
         public static string Critical {

@@ -593,9 +593,21 @@ namespace DamageMeter
                                 LP.Lvl + ": " + userApply.Lvl + Environment.NewLine
                                 );
                         }
+                        for (var i = 0; i < 3; i++)
+                        {
+                            try
+                            {
+                                Clipboard.SetDataObject("/inspect " + userApply.PlayerName);
+                                break;
+                            }
+                            catch
+                            {
+                                Thread.Sleep(100);
+                                //Ignore
+                            }
+                        }
                         continue;
                     }
-
 
                     var contact = message as S_REQUEST_CONTRACT;
                     if (contact != null)

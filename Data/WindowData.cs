@@ -47,7 +47,8 @@ namespace Data
         public float Volume { get; set; }
         public bool LowPriority { get; set; }
         public bool EnableChat { get; set; }
-        
+        public bool CopyInspect { get; set; }
+
 
 
         public Color WhisperColor { get; set; }
@@ -111,6 +112,7 @@ namespace Data
             LowPriority = true;
             RemoveTeraAltEnterHotkey = false;
             EnableChat = true;
+            CopyInspect = true;
         }
 
 
@@ -179,6 +181,7 @@ namespace Data
             Parse("volume", "Volume");
             Parse("remove_tera_alt_enter_hotkey", "RemoveTeraAltEnterHotkey");
             Parse("enable_chat_and_notifications", "EnableChat");
+            Parse("copy_inspect", "CopyInspect");
 
             ParseColor("say_color","SayColor");
             ParseColor("alliance_color", "AllianceColor");
@@ -361,6 +364,7 @@ namespace Data
             xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
             xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", RemoveTeraAltEnterHotkey));
             xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
+            xml.Root.Add(new XElement("copy_inspect", CopyInspect));
 
             _filestream.SetLength(0);
             using (var sr = new StreamWriter(_filestream))

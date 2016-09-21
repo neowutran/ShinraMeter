@@ -488,5 +488,15 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.EnableChat = false;
         }
+
+        private void EnableCopyInspect(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.CopyInspect = true;
+        }
+
+        private void DisableCopyInspect(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.CopyInspect = false;
+        }
     }
 }

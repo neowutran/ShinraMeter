@@ -149,6 +149,7 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <CheckBox Grid.Row="0" Foreground="White" Content="{x:Static l:LP.SystemTray_Site_export}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
                                         <CheckBox Grid.Row="1" Foreground="White" Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
@@ -161,8 +162,9 @@
                                         <CheckBox Grid.Row="8" Foreground="White" Content="{x:Static l:LP.SystemTray_Stay_topmost}" Name="StayTopMost"  Checked="EnableStayTopMost"  Unchecked="DisableStayTopMost" />
                                         <CheckBox Grid.Row="9" Foreground="White" Content="{x:Static l:LP.RemoveTeraAltEnterHotkey}" Name="RemoveTeraAltEnterHotkey"  Checked="EnableRemoveTeraAltEnterHotkey"  Unchecked="DisableRemoveTeraAltEnterHotkey" />
                                         <CheckBox Grid.Row="10" Foreground="White" Content="{x:Static l:LP.EnableChat}" Name="ChatEnabled"  Checked="EnableChat"  Unchecked="DisableChat" />
+                                        <CheckBox Grid.Row="11" Foreground="White" Content="{x:Static l:LP.CopyInspect}" Name="CopyInspect"  Checked="EnableCopyInspect"  Unchecked="DisableCopyInspect" />
 
-                                        <Grid Grid.Row="11">
+                                        <Grid Grid.Row="12">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -170,7 +172,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel" Content="{x:Static l:LP.NumberPlayersDisplayed}" />
                                             <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="NumberPlayersSpinner" ValueChanged="NumberPlayersChanged" FormatString="N0" Increment="1" Maximum="30" Minimum="1" />
                                         </Grid>
-                                        <Grid Grid.Row="12">
+                                        <Grid Grid.Row="13">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -178,7 +180,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="LFDelay" Content="{x:Static l:LP.DelayToWaitPasting}" />
                                             <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="LFDelaySpinner" ValueChanged="LFDelayChanged" FormatString="N0" Increment="1" Maximum="500" Minimum="150" />
                                         </Grid>
-                                        <Grid Grid.Row="13">
+                                        <Grid Grid.Row="14">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -186,7 +188,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="PopupTime" Content="{x:Static l:LP.PopupStayActiveForXms}" />
                                             <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="PopupTimeSpinner" ValueChanged="PopupTimeChange" FormatString="N0" Increment="500" Maximum="60000" Minimum="0" />
                                         </Grid>
-                                        <Grid Grid.Row="14">
+                                        <Grid Grid.Row="15">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -194,7 +196,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="SoundTime" Content="{x:Static l:LP.SoundStayActiveForXms}" />
                                             <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundTimeSpinner" ValueChanged="SoundTimeChanged" FormatString="N0" Increment="100" Maximum="600000" Minimum="0" />
                                         </Grid>
-                                        <Grid Grid.Row="15">
+                                        <Grid Grid.Row="16">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -202,7 +204,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="SoundFile" Content="{x:Static l:LP.SoundFilename}" />
                                             <TextBox MouseDoubleClick="SoundFileTextbox_OnMouseDoubleClick" LostFocus="SoundFileChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="SoundFileTextbox" />
                                         </Grid>
-                                        <Grid Grid.Row="16">
+                                        <Grid Grid.Row="17">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -212,7 +214,7 @@
                                         </Grid>
 
 
-                                        <Grid Grid.Row="17">
+                                        <Grid Grid.Row="18">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -221,7 +223,7 @@
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True"  Name="WhisperColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="WhisperColorChanged" />
                                         </Grid>
 
-                                        <Grid Grid.Row="18">
+                                        <Grid Grid.Row="19">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -229,7 +231,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="AllianceColor" Content="{x:Static l:LP.AllianceColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="AllianceColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="AllianceColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="19">
+                                        <Grid Grid.Row="20">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -237,7 +239,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="AreaColor" Content="{x:Static l:LP.AreaColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="AreaColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="AreaColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="20">
+                                        <Grid Grid.Row="21">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -245,7 +247,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="GeneralColor" Content="{x:Static l:LP.GeneralColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="GeneralColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GeneralColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="21">
+                                        <Grid Grid.Row="22">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -253,7 +255,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="GroupColor" Content="{x:Static l:LP.GroupColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="GroupColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GroupColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="22">
+                                        <Grid Grid.Row="23">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -261,7 +263,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="GuildColor" Content="{x:Static l:LP.GuildColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="GuildColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="GuildColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="23">
+                                        <Grid Grid.Row="24">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -269,7 +271,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="RaidColor" Content="{x:Static l:LP.RaidColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="RaidColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="RaidColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="24">
+                                        <Grid Grid.Row="25">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -277,7 +279,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="SayColor" Content="{x:Static l:LP.SayColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="SayColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="SayColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="25">
+                                        <Grid Grid.Row="26">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -285,7 +287,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="TradingColor" Content="{x:Static l:LP.TradingColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="TradingColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="TradingColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="26">
+                                        <Grid Grid.Row="27">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -293,7 +295,7 @@
                                             <Label Grid.Column="0" Foreground="White" Name="EmotesColor" Content="{x:Static l:LP.EmotesColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="EmotesColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="EmotesColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="27">
+                                        <Grid Grid.Row="28">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />

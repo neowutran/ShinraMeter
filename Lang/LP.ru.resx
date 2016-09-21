@@ -528,4 +528,7 @@
   <data name="EnableChat" xml:space="preserve">
     <value>Включить функции чата и оповещения</value>
   </data>
+  <data name="CopyInspect" xml:space="preserve">
+    <value>Копировать "/inspect Имя" при запросе вступления в пати</value>
+  </data>
 </root>
