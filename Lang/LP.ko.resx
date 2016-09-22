@@ -433,4 +433,106 @@
   <data name="Front" xml:space="preserve">
     <value>전방</value>
   </data>
+  <data name="Pet" xml:space="preserve">
+    <value>펫</value>
+  </data>
+  <data name="Hot" xml:space="preserve">
+    <value>HOT</value>
+  </data>
+  <data name="Mot" xml:space="preserve">
+    <value>MOT</value>
+  </data>
+  <data name="NumberPlayersDisplayed" xml:space="preserve">
+    <value>한 화면에 표시될 유저수</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="ApplyToYourParty" xml:space="preserve">
+    <value>파티에 적용</value>
+  </data>
+  <data name="Lvl" xml:space="preserve">
+    <value>Lvl</value>
+  </data>
+  <data name="OfferedPrice" xml:space="preserve">
+    <value>흥정가</value>
+  </data>
+  <data name="PartyMatchingSuccess" xml:space="preserve">
+    <value>파티 매칭 완료</value>
+  </data>
+  <data name="SellerPrice" xml:space="preserve">
+    <value>판매가</value>
+  </data>
+  <data name="Trading" xml:space="preserve">
+    <value>거래</value>
+  </data>
+  <data name="Whisper" xml:space="preserve">
+    <value>귓속말</value>
+  </data>
+  <data name="DelayToWaitPasting" xml:space="preserve">
+    <value>붙여넣기중...</value>
+  </data>
+  <data name="PopupStayActiveForXms" xml:space="preserve">
+    <value>알림창 유지 시간(ms)</value>
+  </data>
+  <data name="SoundFilename" xml:space="preserve">
+    <value>알림음 파일이름</value>
+  </data>
+  <data name="SoundStayActiveForXms" xml:space="preserve">
+    <value>알림음 유지 시간 (ms)</value>
+  </data>
+  <data name="SoundVolume" xml:space="preserve">
+    <value>알림음 소리크기</value>
+  </data>
+  <data name="TestSound" xml:space="preserve">
+    <value>알림음 확인하기</value>
+  </data>
+  <data name="WhisperColor" xml:space="preserve">
+    <value>귓속말 색깔</value>
+  </data>
+  <data name="AllianceColor" xml:space="preserve">
+    <value>Alliance color</value>
+  </data>
+  <data name="AreaColor" xml:space="preserve">
+    <value>가드말 색상</value>
+  </data>
+  <data name="GeneralColor" xml:space="preserve">
+    <value>General color</value>
+  </data>
+  <data name="GroupColor" xml:space="preserve">
+    <value>그룹말 색깔</value>
+  </data>
+  <data name="GuildColor" xml:space="preserve">
+    <value>길드말 색깔</value>
+  </data>
+  <data name="RaidColor" xml:space="preserve">
+    <value>레이드말 색깔</value>
+  </data>
+  <data name="SayColor" xml:space="preserve">
+    <value>일반 색깔</value>
+  </data>
+  <data name="TradingColor" xml:space="preserve">
+    <value>거래말 색깔</value>
+  </data>
+  <data name="EmotesColor" xml:space="preserve">
+    <value>Emotes color</value>
+  </data>
+  <data name="PrivateChannelColor" xml:space="preserve">
+    <value>파티말 색깔</value>
+  </data>
+  <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
+    <value>alt+Enter키 비활성</value>
+  </data>
+  <data name="ContactTry" xml:space="preserve">
+    <value>Contact try</value>
+  </data>
+  <data name="PartyInvite" xml:space="preserve">
+    <value>파티 초대</value>
+  </data>
+  <data name="EnableChat" xml:space="preserve">
+    <value>채팅 및 알림기능 사용</value>
+  </data>
+  <data name="CopyInspect" xml:space="preserve">
+    <value>Copy "/inspect Name" on party apply request</value>
+  </data>  
 </root>
