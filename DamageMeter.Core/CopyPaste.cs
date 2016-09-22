@@ -6,6 +6,7 @@ using DamageMeter.Database.Structures;
 using Data;
 using Lang;
 using Tera.Game.Abnormality;
+using System.Windows;
 
 namespace DamageMeter
 {
@@ -18,6 +19,23 @@ namespace DamageMeter
             if (!Monitor.TryEnter(Lock)) return;
             TeraWindow.SendString(text);
             Monitor.Exit(Lock);
+        }
+
+        public static void CopyInspect(string name)
+        {
+            for (var i = 0; i < 3; i++)
+            {
+                try
+                {
+                    Clipboard.SetText("/inspect " + name);
+                    break;
+                }
+                catch
+                {
+                    Thread.Sleep(100);
+                    //Ignore
+                }
+            }
         }
 
 

@@ -609,18 +609,12 @@ namespace DamageMeter
                                 LP.Lvl + ": " + userApply.Lvl + Environment.NewLine
                                 );
                         }
-                        for (var i = 0; i < 3; i++)
+
+                        if (BasicTeraData.Instance.WindowData.CopyInspect)
                         {
-                            try
-                            {
-                                Clipboard.SetDataObject("/inspect " + userApply.PlayerName);
-                                break;
-                            }
-                            catch
-                            {
-                                Thread.Sleep(100);
-                                //Ignore
-                            }
+                            var thread = new Thread(() => CopyPaste.CopyInspect(userApply.PlayerName));
+                            thread.SetApartmentState(ApartmentState.STA);
+                            thread.Start();
                         }
                         continue;
                     }
