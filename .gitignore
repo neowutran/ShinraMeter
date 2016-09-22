@@ -7,3 +7,5 @@ resources/logs/*
 *.suo
 *.user
 ShinraMeter*
+resources/hotkeys.xml
+resources/window.xml
