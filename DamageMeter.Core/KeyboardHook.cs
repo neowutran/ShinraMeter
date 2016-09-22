@@ -132,6 +132,8 @@ namespace DamageMeter
             if (BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey)
             {
                 RegisterHotKey(HotkeysData.ModifierKeys.Alt, Keys.Enter);
+                RegisterHotKey(HotkeysData.ModifierKeys.Alt | HotkeysData.ModifierKeys.Control, Keys.Enter);
+
             }
             foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy)
             {
