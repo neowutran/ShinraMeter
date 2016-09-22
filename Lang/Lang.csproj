@@ -42,9 +42,9 @@
   <ItemGroup>
     <Compile Include="LangPack.cs" />
     <Compile Include="LP.Designer.cs">
-      <DependentUpon>LP.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>LP.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,8 +57,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LP.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LP.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>LP.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

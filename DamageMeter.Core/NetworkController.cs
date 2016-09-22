@@ -563,6 +563,22 @@ namespace DamageMeter
                         continue;
                     }
 
+                    var readyParty = message as S_CHECK_TO_READY_PARTY;
+                    if (readyParty != null)
+                    {
+                        if (readyParty.Count == 1)
+                        {
+                            if (!TeraWindow.IsTeraActive())
+                            {
+                                FlashMessage = new Tuple<string, string>(
+                                    LP.CombatReadyCheck,
+                                    LP.CombatReadyCheck
+                                    );
+                            }
+                        }
+                        continue;
+                    }
+
                     var trading = message as S_TRADE_BROKER_DEAL_SUGGESTED;
                     if (trading != null)
                     {

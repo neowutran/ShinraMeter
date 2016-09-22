@@ -1,6 +1,6 @@
 [submodule "TeraCommon"]
 	path = TeraCommon
-	url = https://github.com/neowutran/Tera
+	url = https://github.com/radasuka/Tera
 [submodule "resources/data"]
 	path = resources/data
 	url = https://github.com/neowutran/TeraDpsMeterData
