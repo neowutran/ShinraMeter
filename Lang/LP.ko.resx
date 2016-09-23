@@ -178,7 +178,7 @@
     <value>맨 앞에 표시</value>
   </data>
   <data name="SystemTray_Click_throu" xml:space="preserve">
-    <value>클릭 허용</value>
+    <value>클릭 비 허용</value>
   </data>
   <data name="SystemTray_Invisible_when_no_stats" xml:space="preserve">
     <value>정보가 없을시 숨기기</value>
@@ -470,7 +470,7 @@
     <value>귓속말</value>
   </data>
   <data name="DelayToWaitPasting" xml:space="preserve">
-    <value>붙여넣기중...</value>
+    <value>붙여넣기 딜레이</value>
   </data>
   <data name="PopupStayActiveForXms" xml:space="preserve">
     <value>알림창 유지 시간(ms)</value>
@@ -479,7 +479,7 @@
     <value>알림음 파일이름</value>
   </data>
   <data name="SoundStayActiveForXms" xml:space="preserve">
-    <value>알림음 유지 시간 (ms)</value>
+    <value>알림음 유지 시간(ms)</value>
   </data>
   <data name="SoundVolume" xml:space="preserve">
     <value>알림음 소리크기</value>
