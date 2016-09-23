@@ -23,11 +23,13 @@ namespace DamageMeter
 
         public static void CopyInspect(string name)
         {
+            var clip = NetworkController.Instance.Server.Region=="TW" ? "/查看 " : 
+                                                                        "/inspect ";// todo JP & KR command if needed.
             for (var i = 0; i < 3; i++)
             {
                 try
                 {
-                    Clipboard.SetText("/inspect " + name);
+                    Clipboard.SetText(clip + name);
                     break;
                 }
                 catch
