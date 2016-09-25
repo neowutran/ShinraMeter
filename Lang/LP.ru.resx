@@ -531,4 +531,7 @@
   <data name="CopyInspect" xml:space="preserve">
     <value>Копировать "/inspect Имя" при запросе вступления в пати</value>
   </data>
+  <data name="UploadGlyphBuild" xml:space="preserve">
+    <value>Загрузить глиф билд на moongourd.net</value>
+  </data>
 </root>

@@ -103,6 +103,7 @@
     <Compile Include="SkillAggregate.cs" />
     <Compile Include="TeraDpsApi\EncounterBase.cs" />
     <Compile Include="TeraDpsApi\ExtendedStats.cs" />
+    <Compile Include="TeraDpsApi\GlyphBuild.cs" />
     <Compile Include="TeraDpsApi\Members.cs" />
     <Compile Include="TeraDpsApi\SkillLog.cs" />
     <Compile Include="TeraWindow.cs" />

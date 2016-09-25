@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
@@ -40,6 +41,7 @@ namespace DamageMeter.UI
         internal bool ForceWindowVisibilityHidden;
         private bool _keyboardInitialized;
         private bool _topMost = true;
+        private double _oldWidth = 0;
         //private readonly SystemTray _systemTray;
 
         public MainWindow()
@@ -307,7 +309,17 @@ namespace DamageMeter.UI
                             Visibility = Visibility.Visible;
                         }
                     }
-                   
+                    if (ActualWidth != _oldWidth) // auto snap to right screen border on width change
+                    {
+                        Screen screen = Screen.FromHandle(new WindowInteropHelper(Window.GetWindow(this)).Handle);
+                        // Transform screen point to WPF device independent point
+                        PresentationSource source = PresentationSource.FromVisual(this);
+                        if (source?.CompositionTarget == null) return;
+                        double dx = source.CompositionTarget.TransformToDevice.M11;
+                        if (Math.Abs(screen.WorkingArea.X + screen.WorkingArea.Width - (Left + _oldWidth)*dx) < 50) //snap at 50 px
+                            Left = Left + _oldWidth - ActualWidth;
+                        _oldWidth = ActualWidth;
+                    }
                 };
             Dispatcher.Invoke(changeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory,
                 nchatbox, npacketWaiting, nflash);

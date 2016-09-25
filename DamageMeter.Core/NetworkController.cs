@@ -57,6 +57,7 @@ namespace DamageMeter
         public bool NeedToResetCurrent;
         public PlayerTracker PlayerTracker;
         public Server Server;
+        public Dictionary<uint, bool> Glyphs=new Dictionary<uint, bool>();
 
         private NetworkController()
         {
@@ -689,6 +690,12 @@ namespace DamageMeter
                     continue;
                 }
 
+                var crest_info = message as S_CREST_INFO;
+                if (crest_info != null)
+                {
+                    Glyphs = crest_info.Glyphs;
+                    continue;
+                }
                 //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
             }
         }

@@ -8,7 +8,12 @@ using NAudio.Wave;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Media;
+using DamageMeter.TeraDpsApi;
 using NAudio.Vorbis;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DamageMeter.UI
 {
@@ -31,7 +36,7 @@ namespace DamageMeter.UI
         }
 
         private MainWindow _mainWindow;
-
+        private long _lastSend = 0;
         public void Initialize(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
@@ -250,11 +255,6 @@ namespace DamageMeter.UI
         private void DisableExcelExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.Excel = false;
-        }
-
-        private void ClickStayTopMostAction(object sender, RoutedEventArgs e)
-        {
-            _mainWindow.StayTopMost();
         }
 
         private void DisableStayTopMost(object sender, RoutedEventArgs e)
@@ -497,6 +497,50 @@ namespace DamageMeter.UI
         private void DisableCopyInspect(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.CopyInspect = false;
+        }
+
+        private void ClickUploadGlyphAction(object sender, RoutedEventArgs e)
+        {
+            if (_lastSend+TimeSpan.TicksPerSecond*30 >= DateTime.Now.Ticks) return;
+            _lastSend = DateTime.Now.Ticks;
+            GlyphBuild glyphs = new GlyphBuild()
+            {
+                playerServer =
+                    BasicTeraData.Instance.Servers.GetServerName(
+                        NetworkController.Instance.EntityTracker.MeterUser.ServerId),
+                playerName = NetworkController.Instance.EntityTracker.MeterUser.Name,
+                playerClass = NetworkController.Instance.EntityTracker.MeterUser.RaceGenderClass.Class.ToString(),
+                glyphs = NetworkController.Instance.Glyphs
+            };
+            var json = JsonConvert.SerializeObject(glyphs, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            Debug.WriteLine(json);
+            Task.Run(() =>
+                {
+                    try
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
+                            //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
+
+                            client.Timeout = TimeSpan.FromSeconds(40);
+                            var response = client.PostAsync("http://moongourd.net/glyph_data.php", new StringContent(
+                                json,
+                                Encoding.UTF8,
+                                "application/json")
+                                );
+
+                            var responseString = response.Result.Content.ReadAsStringAsync();
+                            Debug.WriteLine(responseString.Result);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        Debug.WriteLine(ex.StackTrace);
+                    }
+                }
+            );
         }
     }
 }

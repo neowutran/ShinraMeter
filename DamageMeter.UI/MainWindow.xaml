@@ -246,7 +246,7 @@
             <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
                   SelectionChanged="ListEncounter_OnSelectionChanged"
                   x:Name="ListEncounter" HorizontalAlignment="Left"
-                  Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="235" HorizontalContentAlignment="Left"
+                  Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="235" Width="Auto" HorizontalContentAlignment="Left"
                   MinHeight="29" Height="5" Grid.Column="0"/>
 
             <Image x:Name="CloseWindow" PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown"
