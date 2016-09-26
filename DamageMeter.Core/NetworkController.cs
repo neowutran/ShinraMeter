@@ -620,6 +620,33 @@ namespace DamageMeter
                         continue;
                     }
 
+                    var guildquest = message as S_GUILD_QUEST_LIST;
+                    if(guildquest != null)
+                    {
+
+                        var activeQuest = guildquest.ActiveQuest();
+                        if(activeQuest != null)
+                        {
+                            string name = "";
+                            if (activeQuest.GuildQuestType1 == S_GUILD_QUEST_LIST.GuildQuestType.Dungeon)
+                            {
+                                name = BasicTeraData.Instance.MonsterDatabase.GetAreaName((ushort)activeQuest.ZoneId);
+                            }
+                            var activeQuestStr = ":dart: "+activeQuest.GuildQuestType1 + ": "+ name+"\n"+activeQuest.Count+"/"+activeQuest.Total;
+                            var activeQuestThread = new Thread(() => Discord.Instance.Send(BasicTeraData.Instance.WindowData.DiscordServer, BasicTeraData.Instance.WindowData.DiscordChannelGuildQuest,activeQuestStr,true));
+                            activeQuestThread.Start();
+                        }
+                        else
+                        {
+                            var activeQuestThread = new Thread(() => Discord.Instance.Send(BasicTeraData.Instance.WindowData.DiscordServer, BasicTeraData.Instance.WindowData.DiscordChannelGuildQuest, ":dart: No active quest at the moment", true));
+                            activeQuestThread.Start();
+                        }
+
+                        var guildStr = ":dart: "+guildquest.GuildName + " - lvl " + guildquest.GuildLevel + " - " + guildquest.GuildMaster + "\nQuests done status: " + guildquest.NumberQuestsDone + "/" + guildquest.NumberTotalDailyQuest;
+                        var thread = new Thread(() => Discord.Instance.Send(BasicTeraData.Instance.WindowData.DiscordServer, BasicTeraData.Instance.WindowData.DiscordChannelGuildInfo, guildStr,true));
+                        thread.Start();
+                    }
+
                     var contact = message as S_REQUEST_CONTRACT;
                     if (contact != null)
                     {

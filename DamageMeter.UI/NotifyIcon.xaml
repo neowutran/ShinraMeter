@@ -150,6 +150,11 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <CheckBox Grid.Row="0" Foreground="White" Content="{x:Static l:LP.SystemTray_Site_export}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
                                         <CheckBox Grid.Row="1" Foreground="White" Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
@@ -303,6 +308,55 @@
                                             <Label Grid.Column="0" Foreground="White" Name="PrivateChannelColor" Content="{x:Static l:LP.PrivateChannelColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="PrivateChannelColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="PrivateChannelColorChanged" />
                                         </Grid>
+
+                                        <Grid Grid.Row="29">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="DiscordLogin" Content="Discord login" />
+                                            <TextBox LostFocus="DiscordLoginChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordLoginTextBox"/>
+                                        </Grid>
+
+                                        <Grid Grid.Row="30">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="DiscordPassword" Content="Discord password" />
+                                            <TextBox LostFocus="DiscordPasswordChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordPasswordTextBox"/>
+                                        </Grid>
+
+                                        <Grid Grid.Row="31">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="DiscordServer" Content="Discord server" />
+                                            <xctk:LongUpDown ValueChanged="DiscordServerChanged" HorizontalAlignment="Right" Width="200" Name="DiscordServerSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"   />
+                                        </Grid>
+
+                                        <Grid Grid.Row="32">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="DiscordGuildInfosChannel" Content="Discord Guild Infos channel" />
+                                            <xctk:LongUpDown ValueChanged="DiscordGuildInfoChannelChanged" HorizontalAlignment="Right" Width="200" Name="DiscordGuildInfoSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"   />
+                                        </Grid>
+
+                                        <Grid Grid.Row="33">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="DiscordGuildQuestsChannel" Content="Discord Guild Quests Channel" />
+                                            <xctk:LongUpDown ValueChanged="DiscordGuildQuestsChannelChanged" HorizontalAlignment="Right" Width="200" Name="DiscordGuildQuestsSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"   />
+                                        </Grid>
+
+
+
+
                                     </Grid>
                                 </ScrollViewer>
                             </Grid>
