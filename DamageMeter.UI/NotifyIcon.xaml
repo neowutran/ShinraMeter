@@ -327,36 +327,6 @@
                                             <TextBox LostFocus="DiscordPasswordChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordPasswordTextBox"/>
                                         </Grid>
 
-                                        <Grid Grid.Row="31">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="DiscordServer" Content="Discord server" />
-                                            <xctk:LongUpDown ValueChanged="DiscordServerChanged" HorizontalAlignment="Right" Width="200" Name="DiscordServerSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"   />
-                                        </Grid>
-
-                                        <Grid Grid.Row="32">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="DiscordGuildInfosChannel" Content="Discord Guild Infos channel" />
-                                            <xctk:LongUpDown ValueChanged="DiscordGuildInfoChannelChanged" HorizontalAlignment="Right" Width="200" Name="DiscordGuildInfoSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"   />
-                                        </Grid>
-
-                                        <Grid Grid.Row="33">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="DiscordGuildQuestsChannel" Content="Discord Guild Quests Channel" />
-                                            <xctk:LongUpDown ValueChanged="DiscordGuildQuestsChannelChanged" HorizontalAlignment="Right" Width="200" Name="DiscordGuildQuestsSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"   />
-                                        </Grid>
-
-
-
-
                                     </Grid>
                                 </ScrollViewer>
                             </Grid>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -49,11 +50,11 @@ namespace Data
         public bool EnableChat { get; set; }
         public bool CopyInspect { get; set; }
 
-        public ulong DiscordServer { get; set; }
-        public ulong DiscordChannelGuildInfo { get; set; }
-        public ulong DiscordChannelGuildQuest { get; set; }
+     
         public string DiscordLogin { get; set; }
         public string DiscordPassword { get; set; }
+
+       public Dictionary<string, DiscordInfoByGuild> DiscordInfoByGuild { get; set; }
 
         public Color WhisperColor { get; set; }
         public Color AllianceColor { get; set; }
@@ -68,6 +69,8 @@ namespace Data
 
         public Color PrivateChannelColor { get; set; }
         public bool RemoveTeraAltEnterHotkey { get; set; }
+
+        
       
         private void DefaultValue()
         {
@@ -117,9 +120,7 @@ namespace Data
             RemoveTeraAltEnterHotkey = false;
             EnableChat = true;
             CopyInspect = true;
-            DiscordServer = 0;
-            DiscordChannelGuildInfo = 0;
-            DiscordChannelGuildQuest = 0;
+            DiscordInfoByGuild = new Dictionary<string, Data.DiscordInfoByGuild>();
             DiscordLogin = "";
             DiscordPassword = "";
     }
@@ -250,6 +251,7 @@ namespace Data
 
         private void ParseDiscord()
         {
+            Console.WriteLine("start parse discord");
             var root = _xml.Root;
             var discord = root?.Element("discord");
             var user = discord?.Element("login");
@@ -266,39 +268,53 @@ namespace Data
                 DiscordLogin = "";
             }
 
-            var server = discord.Element("server");
-            if (server != null)
+          
+
+            var guilds = discord.Element("guilds");
+            if (guilds == null) return;
+            foreach(var guild in guilds.Elements())
             {
+
+                ulong discordServer = 0;
+                ulong discordChannelGuildInfo = 0;
+                ulong discordChannelGuildQuest = 0;
+
+                var server = guild.Element("server");
+                if (server == null) return;
+               
 
                 ulong val;
                 var parseSuccess = ulong.TryParse(server.Value, out val);
                 if (parseSuccess)
                 {
-                    DiscordServer = val;
+                    discordServer = val;
                 }
-            }
+                
 
-            var guild_infos_channel = discord.Element("guild_infos_channel");
-            if (guild_infos_channel != null)
-            {
-                ulong val;
-                var parseSuccess = ulong.TryParse(guild_infos_channel.Value, out val);
+                var guild_infos_channel = guild.Element("guild_infos_channel");
+                if (guild_infos_channel == null) return;
+                
+                parseSuccess = ulong.TryParse(guild_infos_channel.Value, out val);
                 if (parseSuccess)
                 {
-                    DiscordChannelGuildInfo = val;
+                    discordChannelGuildInfo = val;
                 }
-            }
+                
 
-            var guild_quests_channel = discord.Element("guild_quests_channel");
-            if (guild_quests_channel != null)
-            {
-                ulong val;
-                var parseSuccess = ulong.TryParse(guild_quests_channel.Value, out val);
+                var guild_quests_channel = guild.Element("guild_quests_channel");
+                if (guild_quests_channel == null) return;
+                
+                parseSuccess = ulong.TryParse(guild_quests_channel.Value, out val);
                 if (parseSuccess)
                 {
-                    DiscordChannelGuildQuest = val;
+                    discordChannelGuildQuest = val;
                 }
+                
+
+                DiscordInfoByGuild.Add(guild.Name.ToString().ToLowerInvariant(), new Data.DiscordInfoByGuild(discordServer, discordChannelGuildInfo, discordChannelGuildQuest));
             }
+
+         
         }
 
         private void ParseLocation()
@@ -400,9 +416,15 @@ namespace Data
             xml.Root.Add(new XElement("discord"));
             xml.Root.Element("discord").Add(new XElement("login", DiscordLogin));
             xml.Root.Element("discord").Add(new XElement("password", DiscordPassword));
-            xml.Root.Element("discord").Add(new XElement("guild_infos_channel", DiscordChannelGuildInfo));
-            xml.Root.Element("discord").Add(new XElement("guild_quests_channel", DiscordChannelGuildQuest));
-            xml.Root.Element("discord").Add(new XElement("server", DiscordServer));
+            xml.Root.Element("discord").Add(new XElement("guilds"));
+            foreach (var discordData in DiscordInfoByGuild)
+            {
+                var name = discordData.Key.ToString().ToLowerInvariant();
+                xml.Root.Element("discord").Element("guilds").Add(new XElement(name));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_infos_channel", discordData.Value.DiscordChannelGuildInfo));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_quests_channel", discordData.Value.DiscordChannelGuildQuest));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("server", discordData.Value.DiscordServer));
+            }
 
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));

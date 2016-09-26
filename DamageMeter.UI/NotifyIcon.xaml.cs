@@ -71,9 +71,7 @@ namespace DamageMeter.UI
 
             DiscordLoginTextBox.Text = BasicTeraData.Instance.WindowData.DiscordLogin;
             DiscordPasswordTextBox.Text = BasicTeraData.Instance.WindowData.DiscordPassword;
-            DiscordServerSelecter.Value = (long) BasicTeraData.Instance.WindowData.DiscordServer;
-            DiscordGuildInfoSelecter.Value = (long) BasicTeraData.Instance.WindowData.DiscordChannelGuildInfo;
-            DiscordGuildQuestsSelecter.Value = (long) BasicTeraData.Instance.WindowData.DiscordChannelGuildQuest;
+
 
 
         }
@@ -548,22 +546,6 @@ namespace DamageMeter.UI
                     }
                 }
             );
-        }
-
-        private void DiscordGuildQuestsChannelChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            BasicTeraData.Instance.WindowData.DiscordChannelGuildQuest = (ulong)DiscordGuildQuestsSelecter.Value;
-        }
-
-        private void DiscordGuildInfoChannelChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            BasicTeraData.Instance.WindowData.DiscordChannelGuildInfo = (ulong)DiscordGuildInfoSelecter.Value;
-        }
-
-        private void DiscordServerChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            BasicTeraData.Instance.WindowData.DiscordServer = (ulong)DiscordServerSelecter.Value;
-
         }
 
         private void DiscordPasswordChanged(object sender, RoutedEventArgs e)

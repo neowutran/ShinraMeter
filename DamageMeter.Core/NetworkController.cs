@@ -623,7 +623,12 @@ namespace DamageMeter
                     var guildquest = message as S_GUILD_QUEST_LIST;
                     if(guildquest != null)
                     {
+                        if(BasicTeraData.Instance.WindowData.DiscordLogin == "") { return; }
+                        DiscordInfoByGuild discordData = null;
+                        var guildname = Server.Name.ToLowerInvariant() + "_" + guildquest.GuildName.ToLowerInvariant();
+                        BasicTeraData.Instance.WindowData.DiscordInfoByGuild.TryGetValue(guildname, out discordData);
 
+                        if (discordData == null) { return; }
                         var activeQuest = guildquest.ActiveQuest();
                         if(activeQuest != null)
                         {
@@ -633,17 +638,17 @@ namespace DamageMeter
                                 name = BasicTeraData.Instance.MonsterDatabase.GetAreaName((ushort)activeQuest.ZoneId);
                             }
                             var activeQuestStr = ":dart: "+activeQuest.GuildQuestType1 + ": "+ name+"\n"+activeQuest.Count+"/"+activeQuest.Total;
-                            var activeQuestThread = new Thread(() => Discord.Instance.Send(BasicTeraData.Instance.WindowData.DiscordServer, BasicTeraData.Instance.WindowData.DiscordChannelGuildQuest,activeQuestStr,true));
+                            var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest ,activeQuestStr,true));
                             activeQuestThread.Start();
                         }
                         else
                         {
-                            var activeQuestThread = new Thread(() => Discord.Instance.Send(BasicTeraData.Instance.WindowData.DiscordServer, BasicTeraData.Instance.WindowData.DiscordChannelGuildQuest, ":dart: No active quest at the moment", true));
+                            var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ":dart: No active quest at the moment", true));
                             activeQuestThread.Start();
                         }
 
                         var guildStr = ":dart: "+guildquest.GuildName + " - lvl " + guildquest.GuildLevel + " - " + guildquest.GuildMaster + "\nQuests done status: " + guildquest.NumberQuestsDone + "/" + guildquest.NumberTotalDailyQuest;
-                        var thread = new Thread(() => Discord.Instance.Send(BasicTeraData.Instance.WindowData.DiscordServer, BasicTeraData.Instance.WindowData.DiscordChannelGuildInfo, guildStr,true));
+                        var thread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildInfo, guildStr,true));
                         thread.Start();
                     }
 
