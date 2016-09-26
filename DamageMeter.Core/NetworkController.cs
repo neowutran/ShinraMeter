@@ -666,7 +666,7 @@ namespace DamageMeter
                                     contact.Sender
                                     );
                             }
-                            else
+                            else if (contact.Type != S_REQUEST_CONTRACT.RequestType.Craft)
                             {
                                 FlashMessage = new Tuple<string, string>(
                                     LP.ContactTry,
