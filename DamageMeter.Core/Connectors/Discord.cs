@@ -43,7 +43,7 @@ namespace DamageMeter
                 {
                     if (msg.IsAuthor)
                     {
-                        if(msg.Timestamp < DateTime.Now.AddSeconds(30))
+                        if(msg.Timestamp > DateTime.Now.AddSeconds(-30))
                         {
                             //Don't send too much msg
                             return;
