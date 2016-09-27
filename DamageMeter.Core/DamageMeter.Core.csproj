@@ -131,6 +131,7 @@
     <Compile Include="FormatHelpers.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="NpcOccupierResult.cs" />
+    <Compile Include="Processing\GuildQuestList.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkillAggregate.cs" />

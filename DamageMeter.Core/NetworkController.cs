@@ -17,6 +17,7 @@ using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
+using DamageMeter.Processing;
 
 namespace DamageMeter
 {
@@ -632,33 +633,7 @@ namespace DamageMeter
                     var guildquest = message as S_GUILD_QUEST_LIST;
                     if(guildquest != null)
                     {
-                        if(BasicTeraData.Instance.WindowData.DiscordLogin == "") continue;
-                        DiscordInfoByGuild discordData = null;
-                        var guildname = Server.Name.ToLowerInvariant() + "_" + guildquest.GuildName.ToLowerInvariant();
-                        BasicTeraData.Instance.WindowData.DiscordInfoByGuild.TryGetValue(guildname, out discordData);
-
-                        if (discordData == null) continue;
-                        var activeQuest = guildquest.ActiveQuest();
-                        if(activeQuest != null)
-                        {
-                            string name = "";
-                            if (activeQuest.GuildQuestType1 == S_GUILD_QUEST_LIST.GuildQuestType.Dungeon)
-                            {
-                                name = BasicTeraData.Instance.MonsterDatabase.GetAreaName((ushort)activeQuest.ZoneId);
-                            }
-                            var activeQuestStr = ":dart: "+activeQuest.GuildQuestType1 + ": "+ name+"\n"+activeQuest.Count+"/"+activeQuest.Total;
-                            var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest ,activeQuestStr,true));
-                            activeQuestThread.Start();
-                        }
-                        else
-                        {
-                            var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ":dart: "+LP.No_active_quest, true));
-                            activeQuestThread.Start();
-                        }
-
-                        var guildStr = ":dart: "+guildquest.GuildName + " - lvl " + guildquest.GuildLevel + " - " + guildquest.GuildMaster + "\n"+LP.Quests_status + guildquest.NumberQuestsDone + "/" + guildquest.NumberTotalDailyQuest;
-                        var thread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildInfo, guildStr,true));
-                        thread.Start();
+                        GuildQuestList.Process(guildquest);
                     }
 
                     var contact = message as S_REQUEST_CONTRACT;
