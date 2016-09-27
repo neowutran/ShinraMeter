@@ -363,6 +363,12 @@ namespace DamageMeter
                         UserLogoTracker.AddLogo(guildIcon1);
                         continue;
                     }
+                    var user_list1 = message as S_GET_USER_LIST;
+                    if (user_list1 != null)
+                    {
+                        UserLogoTracker.SetUserList(user_list1);
+                        continue;
+                    }
 
                     //Wait for initialization
                     continue;
