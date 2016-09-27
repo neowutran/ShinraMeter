@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace DamageMeter.UI
 {
@@ -72,8 +73,7 @@ namespace DamageMeter.UI
             DiscordLoginTextBox.Text = BasicTeraData.Instance.WindowData.DiscordLogin;
             DiscordPasswordTextBox.Text = BasicTeraData.Instance.WindowData.DiscordPassword;
 
-
-
+            ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
         }
 
         private MediaFoundationReader _outputStream = null;
@@ -487,11 +487,35 @@ namespace DamageMeter.UI
         private void EnableChat(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableChat = true;
+            ChatSettingsVisible(true);
         }
 
         private void DisableChat(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableChat = false;
+            ChatSettingsVisible(false);
+        }
+        private void ChatSettingsVisible(bool show)
+        {
+            CopyInspect.Height = show ? Double.NaN : 0;
+            PopupTime.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            SoundTime.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            SoundFile.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            SoundVolume.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            WhisperColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            AllianceColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            AreaColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            GeneralColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            GroupColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            GuildColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            RaidColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            SayColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            TradingColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            EmotesColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            PrivateChannelColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            DiscordLogin.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            DiscordPassword.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            //for (int i = 14; i <= 28; i++) GridS.RowDefinitions[i].Height = show ? new GridLength(0, GridUnitType.Auto) : new GridLength(0);
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)

@@ -119,7 +119,7 @@
                             <Grid>
                                 <ScrollViewer Name="ConfigScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Auto" MaxHeight="500">
 
-                                    <Grid PreviewMouseWheel="Grid_PreviewMouseWheel">
+                                    <Grid PreviewMouseWheel="Grid_PreviewMouseWheel" Name="GridS">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />

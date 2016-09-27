@@ -46,7 +46,7 @@ namespace DamageMeter
         private bool _forceUiUpdate;
         private bool _needInit;
         private long _lastTick;
-        private MessageFactory _messageFactory;
+        private MessageFactory _messageFactory = new MessageFactory();
         private UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
         public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
@@ -119,6 +119,7 @@ namespace DamageMeter
 
         private void UpdateUi(int packetsWaiting = 0)
         {
+            if (BasicTeraData.Instance.WindowData.EnableChat != _messageFactory.ChatEnabled) _messageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;
             _lastTick = DateTime.UtcNow.Ticks;
             var handler = TickUpdated;
             var currentBoss = Encounter;
@@ -643,11 +644,11 @@ namespace DamageMeter
                         }
                         else
                         {
-                            var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ":dart: No active quest at the moment", true));
+                            var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ":dart: "+LP.No_active_quest, true));
                             activeQuestThread.Start();
                         }
 
-                        var guildStr = ":dart: "+guildquest.GuildName + " - lvl " + guildquest.GuildLevel + " - " + guildquest.GuildMaster + "\nQuests done status: " + guildquest.NumberQuestsDone + "/" + guildquest.NumberTotalDailyQuest;
+                        var guildStr = ":dart: "+guildquest.GuildName + " - lvl " + guildquest.GuildLevel + " - " + guildquest.GuildMaster + "\n"+LP.Quests_status + guildquest.NumberQuestsDone + "/" + guildquest.NumberTotalDailyQuest;
                         var thread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildInfo, guildStr,true));
                         thread.Start();
                     }

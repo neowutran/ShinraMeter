@@ -534,4 +534,10 @@
   <data name="UploadGlyphBuild" xml:space="preserve">
     <value>Загрузить глиф билд на moongourd.net</value>
   </data>
+  <data name="No_active_quest" xml:space="preserve">
+    <value>Нет активных заданий.</value>
+  </data>
+  <data name="Quests_status" xml:space="preserve">
+    <value>Статус выполнения заданий: </value>
+  </data>
 </root>

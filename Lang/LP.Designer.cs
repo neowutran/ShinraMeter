@@ -754,6 +754,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No active quest at the moment.
+        /// </summary>
+        public static string No_active_quest {
+            get {
+                return ResourceManager.GetString("No_active_quest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of players displayed.
         /// </summary>
         public static string NumberPlayersDisplayed {
@@ -831,6 +840,15 @@ namespace Lang {
         public static string PrivateChannelColor {
             get {
                 return ResourceManager.GetString("PrivateChannelColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quests done status: .
+        /// </summary>
+        public static string Quests_status {
+            get {
+                return ResourceManager.GetString("Quests_status", resourceCulture);
             }
         }
         

@@ -540,4 +540,10 @@
   <data name="UploadGlyphBuild" xml:space="preserve">
     <value>Upload glyph build to moongoued.net</value>
   </data>
+  <data name="No_active_quest" xml:space="preserve">
+    <value>No active quest at the moment</value>
+  </data>
+  <data name="Quests_status" xml:space="preserve">
+    <value>Quests done status: </value>
+  </data>
 </root>
