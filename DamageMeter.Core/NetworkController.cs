@@ -356,6 +356,13 @@ namespace DamageMeter
 
                 if (_needInit)
                 {
+                    var guildIcon1 = message as S_GET_USER_GUILD_LOGO;
+                    if (guildIcon1 != null)
+                    {
+                        UserLogoTracker.AddLogo(guildIcon1);
+                        continue;
+                    }
+
                     //Wait for initialization
                     continue;
                 }
@@ -625,12 +632,12 @@ namespace DamageMeter
                     var guildquest = message as S_GUILD_QUEST_LIST;
                     if(guildquest != null)
                     {
-                        if(BasicTeraData.Instance.WindowData.DiscordLogin == "") { return; }
+                        if(BasicTeraData.Instance.WindowData.DiscordLogin == "") continue;
                         DiscordInfoByGuild discordData = null;
                         var guildname = Server.Name.ToLowerInvariant() + "_" + guildquest.GuildName.ToLowerInvariant();
                         BasicTeraData.Instance.WindowData.DiscordInfoByGuild.TryGetValue(guildname, out discordData);
 
-                        if (discordData == null) { return; }
+                        if (discordData == null) continue;
                         var activeQuest = guildquest.ActiveQuest();
                         if(activeQuest != null)
                         {
