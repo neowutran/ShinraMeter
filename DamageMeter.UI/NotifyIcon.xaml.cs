@@ -531,17 +531,9 @@ namespace DamageMeter.UI
         private void ClickUploadGlyphAction(object sender, RoutedEventArgs e)
         {
             if (_lastSend+TimeSpan.TicksPerSecond*30 >= DateTime.Now.Ticks) return;
+            if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) return;
             _lastSend = DateTime.Now.Ticks;
-            GlyphBuild glyphs = new GlyphBuild()
-            {
-                playerServer =
-                    BasicTeraData.Instance.Servers.GetServerName(
-                        NetworkController.Instance.EntityTracker.MeterUser.ServerId),
-                playerName = NetworkController.Instance.EntityTracker.MeterUser.Name,
-                playerClass = NetworkController.Instance.EntityTracker.MeterUser.RaceGenderClass.Class.ToString(),
-                glyphs = NetworkController.Instance.Glyphs
-            };
-            var json = JsonConvert.SerializeObject(glyphs, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             Debug.WriteLine(json);
             Task.Run(() =>
                 {

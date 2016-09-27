@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
 using DamageMeter.Sniffing;
+using DamageMeter.TeraDpsApi;
 using Data;
 using log4net;
 using Lang;
@@ -57,7 +58,7 @@ namespace DamageMeter
         public bool NeedToResetCurrent;
         public PlayerTracker PlayerTracker;
         public Server Server;
-        public Dictionary<uint, bool> Glyphs=new Dictionary<uint, bool>();
+        public GlyphBuild Glyphs = new GlyphBuild();
 
         private NetworkController()
         {
@@ -726,7 +727,10 @@ namespace DamageMeter
                 var crest_info = message as S_CREST_INFO;
                 if (crest_info != null)
                 {
-                    Glyphs = crest_info.Glyphs;
+                    Glyphs.playerServer = BasicTeraData.Instance.Servers.GetServerName(EntityTracker.MeterUser.ServerId);
+                    Glyphs.playerName = EntityTracker.MeterUser.Name;
+                    Glyphs.playerClass = EntityTracker.MeterUser.RaceGenderClass.Class.ToString();
+                    Glyphs.glyphs = crest_info.Glyphs;
                     continue;
                 }
                 //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
