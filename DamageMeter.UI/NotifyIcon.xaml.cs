@@ -545,7 +545,7 @@ namespace DamageMeter.UI
                             //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
 
                             client.Timeout = TimeSpan.FromSeconds(40);
-                            var response = client.PostAsync("http://moongourd.net/glyph_data.php", new StringContent(
+                            var response = client.PostAsync("http://moongourd.net/shared/glyph_data.php", new StringContent(
                                 json,
                                 Encoding.UTF8,
                                 "application/json")
