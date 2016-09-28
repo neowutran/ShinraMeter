@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
 using DamageMeter.Sniffing;
+using DamageMeter.TeraDpsApi;
 using Data;
 using log4net;
 using Lang;
@@ -16,6 +17,7 @@ using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
+using DamageMeter.Processing;
 
 namespace DamageMeter
 {
@@ -46,7 +48,7 @@ namespace DamageMeter
         private bool _forceUiUpdate;
         private bool _needInit;
         private long _lastTick;
-        private MessageFactory _messageFactory;
+        private MessageFactory _messageFactory = new MessageFactory();
         private UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
         public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
@@ -57,6 +59,7 @@ namespace DamageMeter
         public bool NeedToResetCurrent;
         public PlayerTracker PlayerTracker;
         public Server Server;
+        public GlyphBuild Glyphs = new GlyphBuild();
 
         private NetworkController()
         {
@@ -118,6 +121,7 @@ namespace DamageMeter
 
         private void UpdateUi(int packetsWaiting = 0)
         {
+            if (BasicTeraData.Instance.WindowData.EnableChat != _messageFactory.ChatEnabled) _messageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;
             _lastTick = DateTime.UtcNow.Ticks;
             var handler = TickUpdated;
             var currentBoss = Encounter;
@@ -353,6 +357,19 @@ namespace DamageMeter
 
                 if (_needInit)
                 {
+                    var guildIcon1 = message as S_GET_USER_GUILD_LOGO;
+                    if (guildIcon1 != null)
+                    {
+                        UserLogoTracker.AddLogo(guildIcon1);
+                        continue;
+                    }
+                    var user_list1 = message as S_GET_USER_LIST;
+                    if (user_list1 != null)
+                    {
+                        UserLogoTracker.SetUserList(user_list1);
+                        continue;
+                    }
+
                     //Wait for initialization
                     continue;
                 }
@@ -619,6 +636,12 @@ namespace DamageMeter
                         continue;
                     }
 
+                    var guildquest = message as S_GUILD_QUEST_LIST;
+                    if(guildquest != null)
+                    {
+                        GuildQuestList.Process(guildquest);
+                    }
+
                     var contact = message as S_REQUEST_CONTRACT;
                     if (contact != null)
                     {
@@ -638,7 +661,7 @@ namespace DamageMeter
                                     contact.Sender
                                     );
                             }
-                            else
+                            else if (contact.Type != S_REQUEST_CONTRACT.RequestType.Craft)
                             {
                                 FlashMessage = new Tuple<string, string>(
                                     LP.ContactTry,
@@ -689,6 +712,15 @@ namespace DamageMeter
                     continue;
                 }
 
+                var crest_info = message as S_CREST_INFO;
+                if (crest_info != null)
+                {
+                    Glyphs.playerServer = BasicTeraData.Instance.Servers.GetServerName(EntityTracker.MeterUser.ServerId);
+                    Glyphs.playerName = EntityTracker.MeterUser.Name;
+                    Glyphs.playerClass = EntityTracker.MeterUser.RaceGenderClass.Class.ToString();
+                    Glyphs.glyphs = crest_info.Glyphs;
+                    continue;
+                }
                 //Debug.WriteLine(sLogin.Name + " : " + BitConverter.ToString(BitConverter.GetBytes(sLogin.Id.Id)));
             }
         }

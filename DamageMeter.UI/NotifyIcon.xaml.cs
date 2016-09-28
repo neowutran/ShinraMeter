@@ -8,7 +8,13 @@ using NAudio.Wave;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Media;
+using DamageMeter.TeraDpsApi;
 using NAudio.Vorbis;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace DamageMeter.UI
 {
@@ -31,7 +37,7 @@ namespace DamageMeter.UI
         }
 
         private MainWindow _mainWindow;
-
+        private long _lastSend = 0;
         public void Initialize(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
@@ -64,6 +70,10 @@ namespace DamageMeter.UI
             GeneralColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GeneralColor;
             RaidColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.RaidColor;
 
+            DiscordLoginTextBox.Text = BasicTeraData.Instance.WindowData.DiscordLogin;
+            DiscordPasswordTextBox.Text = BasicTeraData.Instance.WindowData.DiscordPassword;
+
+            ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
         }
 
         private MediaFoundationReader _outputStream = null;
@@ -250,11 +260,6 @@ namespace DamageMeter.UI
         private void DisableExcelExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.Excel = false;
-        }
-
-        private void ClickStayTopMostAction(object sender, RoutedEventArgs e)
-        {
-            _mainWindow.StayTopMost();
         }
 
         private void DisableStayTopMost(object sender, RoutedEventArgs e)
@@ -482,11 +487,35 @@ namespace DamageMeter.UI
         private void EnableChat(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableChat = true;
+            ChatSettingsVisible(true);
         }
 
         private void DisableChat(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableChat = false;
+            ChatSettingsVisible(false);
+        }
+        private void ChatSettingsVisible(bool show)
+        {
+            CopyInspect.Height = show ? Double.NaN : 0;
+            PopupTime.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            SoundTime.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            SoundFile.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            SoundVolume.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            WhisperColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            AllianceColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            AreaColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            GeneralColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            GroupColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            GuildColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            RaidColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            SayColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            TradingColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            EmotesColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            PrivateChannelColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            DiscordLogin.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            DiscordPassword.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            //for (int i = 14; i <= 28; i++) GridS.RowDefinitions[i].Height = show ? new GridLength(0, GridUnitType.Auto) : new GridLength(0);
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)
@@ -497,6 +526,52 @@ namespace DamageMeter.UI
         private void DisableCopyInspect(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.CopyInspect = false;
+        }
+
+        private void ClickUploadGlyphAction(object sender, RoutedEventArgs e)
+        {
+            if (_lastSend+TimeSpan.TicksPerSecond*30 >= DateTime.Now.Ticks) return;
+            if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) return;
+            _lastSend = DateTime.Now.Ticks;
+            var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            Debug.WriteLine(json);
+            Task.Run(() =>
+                {
+                    try
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
+                            //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
+
+                            client.Timeout = TimeSpan.FromSeconds(40);
+                            var response = client.PostAsync("http://moongourd.net/shared/glyph_data.php", new StringContent(
+                                json,
+                                Encoding.UTF8,
+                                "application/json")
+                                );
+
+                            var responseString = response.Result.Content.ReadAsStringAsync();
+                            Debug.WriteLine(responseString.Result);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                        Debug.WriteLine(ex.StackTrace);
+                    }
+                }
+            );
+        }
+
+        private void DiscordPasswordChanged(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DiscordPassword = DiscordPasswordTextBox.Text;
+        }
+
+        private void DiscordLoginChanged(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DiscordLogin = DiscordLoginTextBox.Text;
         }
     }
 }
