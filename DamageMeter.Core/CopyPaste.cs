@@ -174,7 +174,7 @@ namespace DamageMeter
                 currentContent = currentContent.Replace("{interval}", playerStats.Interval + LP.Seconds);
                 currentContent = currentContent.Replace("{damage_dealt}",
                     FormatHelpers.Instance.FormatValue(playerStats.Amount));
-                currentContent = currentContent.Replace("{class}", playerStats.Source.Class + "");
+                currentContent = currentContent.Replace("{class}", LP.ResourceManager.GetString(playerStats.Source.Class.ToString(), LP.Culture)  + "");
                 currentContent = currentContent.Replace("{fullname}", playerStats.Source.FullName);
                 currentContent = currentContent.Replace("{name}", playerStats.Source.Name);
                 currentContent = currentContent.Replace("{deaths}", buffs.Death.Count(firstTick, lastTick) + "");

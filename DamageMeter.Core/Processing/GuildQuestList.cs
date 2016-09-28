@@ -43,7 +43,7 @@ namespace DamageMeter.Processing
                         break;
                 }
 
-                var activeQuestStr = ":dart:" + guildquest.GuildName + ":dart:\n";
+                var activeQuestStr = ":dart:   " + guildquest.GuildName + "   :dart:\n";
                 activeQuestStr += "\n" + activeQuest.QuestSize + " " + activeQuest.GuildQuestType1 + " (" + activeQuest.GuildQuestType2 + ") quest, activated by the guild " + activeQuest.GuildName;
                 activeQuestStr += "\nRemaining time: " + activeQuest.TimeRemaining.ToString(@"hh\:mm\:ss");
                 activeQuestStr += "\n" + targets;
@@ -52,13 +52,13 @@ namespace DamageMeter.Processing
             }
             else
             {
-                var activeQuestStr = ":dart:" + guildquest.GuildName + ":dart: \n\n";
+                var activeQuestStr = ":dart:   " + guildquest.GuildName + "   :dart: \n\n";
                 activeQuestStr += LP.No_active_quest;
                 var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, activeQuestStr, true));
                 activeQuestThread.Start();
             }
 
-            var guildStr = ":dart: " + guildquest.GuildName + " :dart: \n\n";
+            var guildStr = ":dart:   " + guildquest.GuildName + "   :dart: \n\n";
             guildStr += "lvl " + guildquest.GuildLevel + "\n" + guildquest.GuildMaster + " - " + guildquest.GuildSize + "\n";
             guildStr += BasicTeraData.Instance.QuestInfoDatabase.Get(20000000) + ": " + guildquest.Gold + "\n";
             guildStr += "XP for next lvl: " + (guildquest.GuildXpNextLevel - guildquest.GuildXpCurrent) + "\n";
