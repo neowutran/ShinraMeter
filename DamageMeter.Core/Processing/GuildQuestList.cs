@@ -133,7 +133,7 @@ namespace DamageMeter.Processing
                 var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(ReplaceQuestInfo(discordData.QuestInfoText, quest, discordData), guildquest, discordData), true));
                 activeQuestThread.Start();
             }
-            var thread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(discordData.GuildInfosText, guildquest, discordData), true));
+            var thread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildInfo, ReplaceGuildInfo(discordData.GuildInfosText, guildquest, discordData), true));
             thread.Start();            
         }
     }

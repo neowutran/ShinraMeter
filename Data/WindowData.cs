@@ -314,13 +314,13 @@ namespace Data
                 string guildInfosText = ":dart: {guild_guildname}  :dart:\n\n{guild_master} - {guild_size}\n{gold_label}: {guild_gold}\n{xp_label} for next level: {guild_xp_to_next_level}\nCreation time: {guild_creationtime}\nQuest done status:{guild_number_quest_remaining}/{guild_total_number_quest}\n";
                 string questInfoText = ":dart: {quest_guildname} - {quest_type} - {quest_size} :dart:\n\nTime remaining: {quest_time_remaining}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n";
                 string rewardFooterText = "---------\n";
-                string rewardContentText = "{reward_name}: {reward_amount}";
-                string rewardHeaderText = "---------\n";
+                string rewardContentText = "{reward_name}: {reward_amount}\n";
+                string rewardHeaderText = "";
 
                 string targetHeaderText = "==========\n";
                 string targetContentText = "{target_name}: {target_current_count}/{target_total_count}\n";
-                string targetFooterText = "==========\n";
-                string questNoActiveText = ":dart:   {guild_guildname}   :dart:\n\n{no_quest_text}";
+                string targetFooterText = "";
+                string questNoActiveText = ":dart:   {guild_guildname}   :dart:\n\n{no_quest_text}\n";
 
                 var guildInfosTextElement = guild.Element("guild_infos_text");
                 if (guildInfosTextElement != null) guildInfosText = guildInfosTextElement.Value;
@@ -521,26 +521,12 @@ namespace Data
             xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
             xml.Root.Add(new XElement("copy_inspect", CopyInspect));
 
-
-
-            XmlWriterSettings settings = new XmlWriterSettings
-            {
-                Encoding = Encoding.UTF8,
-                ConformanceLevel = ConformanceLevel.Document,
-                OmitXmlDeclaration = false,
-                CloseOutput = true,
-                Indent = true,
-                IndentChars = "  ",
-                NewLineHandling = NewLineHandling.Replace
-            };
-
-            _filestream.SetLength(0);
+            _filestream.SetLength(0); 
             using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true)))
-            using (XmlWriter writer = XmlWriter.Create(sw, settings))
             {
-                xml.WriteTo(writer);
-                writer.Close();
+                sw.Write(xml.Declaration + Environment.NewLine + xml);
             }
+            _filestream.Close();
         }
 
         private void Parse(string xmlName, string settingName)
