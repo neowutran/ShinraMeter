@@ -17,7 +17,7 @@ namespace DamageMeter.Processing
         {
             if (BasicTeraData.Instance.WindowData.DiscordLogin == "") return;
             DiscordInfoByGuild discordData = null;
-            var guildname = NetworkController.Instance.Server.Name.ToLowerInvariant() + "_" + guildquest.GuildName.ToLowerInvariant();
+            var guildname = (NetworkController.Instance.Server.Name.ToLowerInvariant() + "_" + guildquest.GuildName.ToLowerInvariant()).Replace(" ","");
             BasicTeraData.Instance.WindowData.DiscordInfoByGuild.TryGetValue(guildname, out discordData);
 
             if (discordData == null) return;
