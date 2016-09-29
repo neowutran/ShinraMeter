@@ -29,6 +29,8 @@ namespace DamageMeter
                 clip = "/查看 ";
             else if (NetworkController.Instance.Server.Region == "JP")
                 clip = "/詳細確認 ";
+            else if (NetworkController.Instance.Server.Region == "KR")
+                clip = "/살펴보기 ";
             else
                 clip = "/inspect ";
 
