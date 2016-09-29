@@ -18,7 +18,7 @@ namespace DamageMeter.Processing
         {
             str = str.Replace("{guild_guildname}", guildquest.GuildName);
             str = str.Replace("{guild_gold}", guildquest.Gold.ToString());
-            str = str.Replace("{guild_creationtime}", guildquest.GuildCreationTime.ToString(@"yyyy-mm-dd"));
+            str = str.Replace("{guild_creationtime}", guildquest.GuildCreationTime.ToString(@"yyyy-MM-dd"));
             str = str.Replace("{guild_lvl}", guildquest.GuildLevel.ToString());
             str = str.Replace("{guild_master}", guildquest.GuildMaster);
             str = str.Replace("{guild_size}", guildquest.GuildSize.ToString());
@@ -54,7 +54,7 @@ namespace DamageMeter.Processing
             str = str.Replace("{quest_guildname}", quest.GuildName);
             str = str.Replace("{quest_type}", quest.GuildQuestType1.ToString());
             str = str.Replace("{quest_size}", quest.QuestSize.ToString());
-            str = str.Replace("{quest_time_remaining", quest.TimeRemaining.ToString(@"hh\:mm\:ss"));
+            str = str.Replace("{quest_time_remaining}", quest.TimeRemaining.ToString(@"hh\:mm\:ss"));
             var isBamQuest = false;
             foreach(var target in quest.Targets)
             {
@@ -122,9 +122,17 @@ namespace DamageMeter.Processing
             BasicTeraData.Instance.WindowData.DiscordInfoByGuild.TryGetValue(guildname, out discordData);
 
             if (discordData == null) return;
-
-            var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(discordData.QuestInfoText, guildquest, discordData), true));
-            activeQuestThread.Start();
+            var quest = guildquest.ActiveQuest();
+            if (quest == null)
+            {
+                var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(ReplaceNoQuest(discordData.QuestNoActiveText), guildquest, discordData), true));
+                activeQuestThread.Start();
+            }
+            else
+            {
+                var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(ReplaceQuestInfo(discordData.QuestInfoText, quest, discordData), guildquest, discordData), true));
+                activeQuestThread.Start();
+            }
             var thread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(discordData.GuildInfosText, guildquest, discordData), true));
             thread.Start();            
         }

@@ -254,7 +254,6 @@ namespace Data
 
         private void ParseDiscord()
         {
-            Console.WriteLine("start parse discord");
             var root = _xml.Root;
             var discord = root?.Element("discord");
             var user = discord?.Element("login");
@@ -270,8 +269,6 @@ namespace Data
                 DiscordPassword = "";
                 DiscordLogin = "";
             }
-
-          
 
             var guilds = discord.Element("guilds");
             if (guilds == null) return;
@@ -315,7 +312,7 @@ namespace Data
 
 
                 string guildInfosText = ":dart: {guild_guildname}  :dart:\n\n{guild_master} - {guild_size}\n{gold_label}: {guild_gold}\n{xp_label} for next level: {guild_xp_to_next_level}\nCreation time: {guild_creationtime}\nQuest done status:{guild_number_quest_remaining}/{guild_total_number_quest}\n";
-                string questInfoText = ":dart: {guild_guildname}  :dart:\n\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n";
+                string questInfoText = ":dart: {quest_guildname} - {quest_type} - {quest_size} :dart:\n\nTime remaining: {quest_time_remaining}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n";
                 string rewardFooterText = "---------\n";
                 string rewardContentText = "{reward_name}: {reward_amount}";
                 string rewardHeaderText = "---------\n";

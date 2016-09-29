@@ -16,13 +16,27 @@ namespace DamageMeter
         private bool _ready = false;
         private Discord()
         {
+            Connect();
+        }
+
+        private void Connect()
+        {
             _client = new DiscordClient();
 
             //Convert our sync method to an async one and block the Main function until the bot disconnects
 
             _client.Ready += _client_Ready;
-            Console.WriteLine(BasicTeraData.Instance.WindowData.DiscordLogin + ":" + BasicTeraData.Instance.WindowData.DiscordPassword);
-            _client.Connect(BasicTeraData.Instance.WindowData.DiscordLogin, BasicTeraData.Instance.WindowData.DiscordPassword);
+            try
+            {
+                _client.Connect(BasicTeraData.Instance.WindowData.DiscordLogin, BasicTeraData.Instance.WindowData.DiscordPassword);
+            }
+            catch (Exception e)
+            {
+
+                //Failing here is not a reason to make the meter crash
+                BasicTeraData.LogError(e.Message + "\n" + e.StackTrace + "\n" + e.InnerException + "\n" + e, false, false);
+                return;
+            }
             while (!_ready)
             {
                 Thread.Sleep(1000);
@@ -36,23 +50,34 @@ namespace DamageMeter
 
         public async void Send(ulong server, ulong channel,string message, bool removeAll)
         {
-            if (removeAll)
-            {    
-                var messages = await _client.GetServer(server).GetChannel(channel).DownloadMessages();
-                foreach(var msg in messages)
+            if (!_ready)
+            {
+                Connect();
+            }
+            try
+            {
+                if (removeAll)
                 {
-                    if (msg.IsAuthor)
+                    var messages = await _client.GetServer(server).GetChannel(channel).DownloadMessages();
+                    foreach (var msg in messages)
                     {
-                        if(msg.Timestamp > DateTime.Now.AddSeconds(-30))
+                        if (msg.IsAuthor)
                         {
-                            //Don't send too much msg
-                            return;
+                            if (msg.Timestamp > DateTime.Now.AddSeconds(-30))
+                            {
+                                //Don't send too much msg
+                                return;
+                            }
+                            await msg.Delete();
                         }
-                        await msg.Delete();
                     }
                 }
+                await _client.GetServer(server).GetChannel(channel).SendMessage(message);
+            }catch(Exception e)
+            {
+                //Failing here is not a reason to make the meter crash
+                BasicTeraData.LogError(e.Message + "\n" + e.StackTrace + "\n" + e.InnerException + "\n" + e, false, false);
             }
-            await _client.GetServer(server).GetChannel(channel).SendMessage(message);
         }
 
         private static Discord _instance;
