@@ -535,7 +535,7 @@ namespace Data
             };
 
             _filestream.SetLength(0);
-            using (var sw = new StreamWriter(_filestream))
+            using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true)))
             using (XmlWriter writer = XmlWriter.Create(sw, settings))
             {
                 xml.WriteTo(writer);
