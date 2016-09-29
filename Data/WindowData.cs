@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml;
@@ -393,7 +394,7 @@ namespace Data
             }
 
 
-            var xml = new XDocument(new XElement("window"));
+            var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
             xml.Root.Add(new XElement("location"));
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
@@ -460,10 +461,10 @@ namespace Data
             xml.Root.Add(new XElement("copy_inspect", CopyInspect));
 
             _filestream.SetLength(0);
-            using (var sr = new StreamWriter(_filestream))
+            using (var sr = new StreamWriter(_filestream, new UTF8Encoding(true)))
             {
                 // File writing as usual
-                sr.Write(xml);
+                sr.Write(xml.Declaration + Environment.NewLine + xml);
             }
             _filestream.Close();
         }
