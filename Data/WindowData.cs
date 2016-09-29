@@ -444,7 +444,7 @@ namespace Data
             }
 
 
-            var xml = new XDocument(new XElement("window"));
+            var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
             xml.Root.Add(new XElement("location"));
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));

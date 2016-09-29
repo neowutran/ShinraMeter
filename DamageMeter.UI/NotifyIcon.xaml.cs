@@ -57,6 +57,7 @@ namespace DamageMeter.UI
             SoundVolumeSpinner.Value = BasicTeraData.Instance.WindowData.Volume;
             RemoveTeraAltEnterHotkey.IsChecked = BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey;
             ChatEnabled.IsChecked = BasicTeraData.Instance.WindowData.EnableChat;
+            CopyInspect.IsChecked = BasicTeraData.Instance.WindowData.CopyInspect;
 
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
