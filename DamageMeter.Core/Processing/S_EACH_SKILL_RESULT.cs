@@ -13,10 +13,10 @@ namespace DamageMeter.Processing
 
         internal S_EACH_SKILL_RESULT(Tera.Game.Messages.EachSkillResultServerMessage message)
         {
+            NetworkController.Instance.EntityTracker.Update(message);
             var skillResult = new SkillResult(message, NetworkController.Instance.EntityTracker, NetworkController.Instance.PlayerTracker,
                        BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.PetSkillDatabase);
             DamageTracker.Instance.Update(skillResult);
-            NetworkController.Instance.EntityTracker.Update(message);
         }
     }
 }
