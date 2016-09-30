@@ -308,8 +308,9 @@ namespace DamageMeter
                 }
 
                 var message = MessageFactory.Create(obj);
+                if (message.GetType() == typeof(UnknownMessage)) continue;
 
-                if (!_packetProcessing.Process(message) && message.GetType() != typeof(UnknownMessage))
+                if (!_packetProcessing.Process(message))
                 {
                     EntityTracker.Update(message);
                     PlayerTracker.UpdateParty(message);
