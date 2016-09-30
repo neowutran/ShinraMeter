@@ -309,7 +309,7 @@ namespace DamageMeter
                     ws.PrinterSettings.FitToPage = true;
 
                     // I don't know why, but sometimes column height setting is lost.
-                    for (var x = 1; x < j; ++x)
+                    for (var x = 1; x <= j; ++x)
                     {
                         ws.Row(x).CustomHeight = true;
                         ws.Row(x).Height = 30;
@@ -730,7 +730,7 @@ namespace DamageMeter
             ws.PrinterSettings.FitToPage = true;
 
             // I don't know why, but sometimes column height setting is lost.
-            for (var x = 1; x < j; ++x)
+            for (var x = 1; x <= j; ++x)
             {
                 ws.Row(x).CustomHeight = true;
                 ws.Row(x).Height = 30;
