@@ -7,14 +7,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Tera.Game;
-using Tera.Game.Messages;
 
 namespace DamageMeter.Processing
 {
-    public static class GuildQuestList
+    internal class S_GUILD_QUEST_LIST
     {
 
-        private static string ReplaceGuildInfo(string str, S_GUILD_QUEST_LIST guildquest, DiscordInfoByGuild discordInfo)
+        private static string ReplaceGuildInfo(string str, Tera.Game.Messages.S_GUILD_QUEST_LIST guildquest, DiscordInfoByGuild discordInfo)
         {
             str = str.Replace("{guild_guildname}", guildquest.GuildName);
             str = str.Replace("{guild_gold}", guildquest.Gold.ToString());
@@ -101,11 +100,11 @@ namespace DamageMeter.Processing
             var targetName = "";
             switch (quest.GuildQuestType1)
             {
-                case S_GUILD_QUEST_LIST.GuildQuestType.Hunt:
+                case Tera.Game.Messages.S_GUILD_QUEST_LIST.GuildQuestType.Hunt:
                     targetName = BasicTeraData.Instance.MonsterDatabase.GetAreaName((ushort)target.ZoneId);
                     break;
-                case S_GUILD_QUEST_LIST.GuildQuestType.Battleground:
-                case S_GUILD_QUEST_LIST.GuildQuestType.Gathering:
+                case Tera.Game.Messages.S_GUILD_QUEST_LIST.GuildQuestType.Battleground:
+                case Tera.Game.Messages.S_GUILD_QUEST_LIST.GuildQuestType.Gathering:
                     targetName += BasicTeraData.Instance.QuestInfoDatabase.Get((int)target.TargetId);
                     break;
             }
@@ -114,7 +113,7 @@ namespace DamageMeter.Processing
 
         }
      
-       public static void Process(S_GUILD_QUEST_LIST guildquest)
+       internal S_GUILD_QUEST_LIST(Tera.Game.Messages.S_GUILD_QUEST_LIST guildquest)
         {
             if (BasicTeraData.Instance.WindowData.DiscordLogin == "") return;
             DiscordInfoByGuild discordData = null;
