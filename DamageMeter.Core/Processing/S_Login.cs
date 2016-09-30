@@ -49,6 +49,7 @@ namespace DamageMeter.Processing
                 BasicTeraData.Instance.HotDotDatabase, NetworkController.Instance.AbnormalityStorage, DamageTracker.Instance.Update);
             NetworkController.Instance.CharmTracker = new CharmTracker(NetworkController.Instance.AbnormalityTracker);
             NetworkController.Instance.OnGuildIconAction(NetworkController.Instance.UserLogoTracker.GetLogo(message.PlayerId));
+            NetworkController.Instance.EntityTracker.Update(message);
         }
     }
 }

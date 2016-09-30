@@ -221,6 +221,8 @@ namespace DamageMeter
             CopyPaste.Paste(text);
         }
 
+        private PacketProcessingFactory _packetProcessing = new PacketProcessingFactory();
+
         private void PacketAnalysisLoop()
         {
             try { Database.Database.Instance.DeleteAll(); }
@@ -306,13 +308,13 @@ namespace DamageMeter
                 }
 
                 var message = MessageFactory.Create(obj);
-                PacketProcessingFactory.Process(message);
 
-                if (!NeedInit)
+                if (!_packetProcessing.Process(message) && message.GetType() != typeof(UnknownMessage))
                 {
                     EntityTracker.Update(message);
                     PlayerTracker.UpdateParty(message);
                 }
+
 
             }
         }

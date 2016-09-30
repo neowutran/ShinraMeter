@@ -11,6 +11,7 @@ namespace DamageMeter.Processing
         internal S_SPAWN_USER(Tera.Game.Messages.SpawnUserServerMessage message)
         {
             NetworkController.Instance.AbnormalityTracker.RegisterDead(message.Id, message.Time.Ticks, message.Dead);
+            NetworkController.Instance.EntityTracker.Update(message);
         }
     }
 }
