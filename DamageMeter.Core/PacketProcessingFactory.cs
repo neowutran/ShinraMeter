@@ -35,7 +35,7 @@ namespace DamageMeter
             {typeof(Tera.Game.Messages.S_GUILD_QUEST_LIST), Helpers.Contructor<Func<Tera.Game.Messages.S_GUILD_QUEST_LIST , DamageMeter.Processing.S_GUILD_QUEST_LIST>>() }
         };
 
-        private static readonly Dictionary<Type, Delegate> MessageToProcessing = new Dictionary<Type, Delegate>
+        private static Dictionary<Type, Delegate> MessageToProcessing = new Dictionary<Type, Delegate>
         {
             {typeof(Tera.Game.Messages.EachSkillResultServerMessage), Helpers.Contructor<Func<Tera.Game.Messages.EachSkillResultServerMessage , S_EACH_SKILL_RESULT>>()},
             {typeof(Tera.Game.Messages.SpawnUserServerMessage), Helpers.Contructor<Func<Tera.Game.Messages.SpawnUserServerMessage , S_SPAWN_USER>>()},
@@ -61,7 +61,7 @@ namespace DamageMeter
             {typeof(Tera.Game.Messages.SPartyMemberCharmReset), Helpers.Contructor<Func<Tera.Game.Messages.SPartyMemberCharmReset , Charm>>()},
             {typeof(Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE), Helpers.Contructor<Func<Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE , DamageMeter.Processing.S_PARTY_MEMBER_STAT_UPDATE>>()},
             {typeof(Tera.Game.Messages.S_PLAYER_STAT_UPDATE), Helpers.Contructor<Func<Tera.Game.Messages.S_PLAYER_STAT_UPDATE , DamageMeter.Processing.S_PLAYER_STAT_UPDATE>>()},        
-            {typeof(Tera.Game.Messages.S_CREST_INFO), Helpers.Contructor<Func<Tera.Game.Messages.S_CREST_INFO , DamageMeter.Processing.S_CREST_INFO>>() },
+            {typeof(Tera.Game.Messages.S_CREST_INFO), Helpers.Contructor<Func<Tera.Game.Messages.S_CREST_INFO , DamageMeter.Processing.S_CREST_INFO>>() },        
         };
 
         private static Dictionary<Type, Delegate> MessageToProcessingInitAndCommon = new Dictionary<Type, Delegate>();
@@ -69,6 +69,58 @@ namespace DamageMeter
         public PacketProcessingFactory()
         {
             MessageToProcessingInitAndCommon = MessageToProcessing.Union(MessageToProcessingInit).ToDictionary(x => x.Key, y => y.Value);
+        }
+
+        public void UpdateEntityTracker()
+        {
+            var entityTrackerProcessing = new Dictionary<Type, Delegate>
+            {
+            { typeof(Tera.Game.Messages.S_BOSS_GAGE_INFO) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_BOSS_GAGE_INFO>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.S_USER_LOCATION) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_USER_LOCATION>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.SNpcLocation) , Helpers.InstanceMethod<Action<Tera.Game.Messages.SNpcLocation>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.S_CREATURE_ROTATE) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_CREATURE_ROTATE>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.S_INSTANT_MOVE) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_INSTANT_MOVE>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.S_ACTION_END) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_ACTION_END>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.S_ACTION_STAGE) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_ACTION_STAGE>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.S_CHANGE_DESTPOS_PROJECTILE) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_CHANGE_DESTPOS_PROJECTILE>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.C_PLAYER_LOCATION) , Helpers.InstanceMethod<Action<Tera.Game.Messages.C_PLAYER_LOCATION>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.S_MOUNT_VEHICLE_EX) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_MOUNT_VEHICLE_EX>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.StartUserProjectileServerMessage) , Helpers.InstanceMethod<Action<Tera.Game.Messages.StartUserProjectileServerMessage>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.SpawnProjectileServerMessage) , Helpers.InstanceMethod<Action<Tera.Game.Messages.SpawnProjectileServerMessage>>(NetworkController.Instance.EntityTracker, "Update") },
+            { typeof(Tera.Game.Messages.SpawnNpcServerMessage) , Helpers.InstanceMethod<Action<Tera.Game.Messages.SpawnNpcServerMessage>>(NetworkController.Instance.EntityTracker, "Update") },
+            };
+            AddToMainDictionnary(entityTrackerProcessing);
+        }
+
+        private void AddToMainDictionnary(Dictionary<Type, Delegate> dic)
+        {
+            foreach (var item in dic)
+            {
+                if (!MessageToProcessing.ContainsKey(item.Key))
+                {
+                    MessageToProcessing.Add(item.Key, item.Value);
+                    continue;
+                }
+                MessageToProcessing[item.Key] = item.Value;
+            }
+            MessageToProcessingInitAndCommon = MessageToProcessing.Union(MessageToProcessingInit).ToDictionary(x => x.Key, y => y.Value);
+
+        }
+
+
+
+        public void UpdatePlayerTracker()
+        {
+            var playerTrackerProcessing = new Dictionary<Type, Delegate>
+            {
+            {typeof(Tera.Game.Messages.S_PARTY_MEMBER_LIST) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_PARTY_MEMBER_LIST>>(NetworkController.Instance.PlayerTracker,"UpdateParty") },
+            {typeof(Tera.Game.Messages.S_BAN_PARTY_MEMBER) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_BAN_PARTY_MEMBER>>(NetworkController.Instance.PlayerTracker,"UpdateParty") },
+            {typeof(Tera.Game.Messages.S_LEAVE_PARTY_MEMBER) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_LEAVE_PARTY_MEMBER>>(NetworkController.Instance.PlayerTracker,"UpdateParty") },
+            {typeof(Tera.Game.Messages.S_LEAVE_PARTY) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_LEAVE_PARTY>>(NetworkController.Instance.PlayerTracker,"UpdateParty") },
+            {typeof(Tera.Game.Messages.S_BAN_PARTY) , Helpers.InstanceMethod<Action<Tera.Game.Messages.S_BAN_PARTY>>(NetworkController.Instance.PlayerTracker,"UpdateParty") },
+                };
+            AddToMainDictionnary(playerTrackerProcessing);
+
         }
 
         public bool Process(Tera.Game.Messages.ParsedMessage message)
@@ -88,7 +140,7 @@ namespace DamageMeter
             }
 
             if (type == null) return false;
-            type.DynamicInvoke(message);
+             type.DynamicInvoke(message);
             return true;
         }
 

@@ -40,7 +40,6 @@ namespace DamageMeter
         private static NetworkController _instance;
         internal readonly AbnormalityStorage AbnormalityStorage;
         internal AbnormalityTracker AbnormalityTracker;
-        internal CharmTracker CharmTracker;
         public Tuple<string, string> FlashMessage { get; set; }
 
         private bool _clickThrou;
@@ -57,7 +56,7 @@ namespace DamageMeter
         public bool NeedToExport;
         public bool NeedToReset;
         public bool NeedToResetCurrent;
-        public PlayerTracker PlayerTracker;
+        public PlayerTracker PlayerTracker { get; internal set; }
         public Server Server;
         public GlyphBuild Glyphs = new GlyphBuild();
 
@@ -221,7 +220,7 @@ namespace DamageMeter
             CopyPaste.Paste(text);
         }
 
-        private PacketProcessingFactory _packetProcessing = new PacketProcessingFactory();
+        internal PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
 
         private void PacketAnalysisLoop()
         {
@@ -310,10 +309,9 @@ namespace DamageMeter
                 var message = MessageFactory.Create(obj);
                 if (message.GetType() == typeof(UnknownMessage)) continue;
 
-                if (!_packetProcessing.Process(message))
+                if (!PacketProcessing.Process(message))
                 {
-                    EntityTracker.Update(message);
-                    PlayerTracker.UpdateParty(message);
+                    //Unprocessed packet
                 }
 
 
