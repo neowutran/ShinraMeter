@@ -154,8 +154,6 @@
     <Compile Include="Processing\S_PARTY_MEMBER_STAT_UPDATE.cs" />
     <Compile Include="Processing\S_PLAYER_CHANGE_MP.cs" />
     <Compile Include="Processing\S_PLAYER_STAT_UPDATE.cs" />
-    <Compile Include="Processing\Chat.cs" />
-    <Compile Include="Processing\S_REMOVE_CHARM_STATUS.cs" />
     <Compile Include="Processing\S_REQUEST_CONTRACT.cs" />
     <Compile Include="Processing\S_SPAWN_ME.cs" />
     <Compile Include="Processing\S_SPAWN_USER.cs" />

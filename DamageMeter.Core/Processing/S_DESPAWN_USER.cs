@@ -11,8 +11,7 @@ namespace DamageMeter.Processing
     {
         internal S_DESPAWN_USER(Tera.Game.Messages.SDespawnUser message )
         {
-            NetworkController.Instance.CharmTracker.CharmReset(message.User, new List<CharmStatus>(), message.Time.Ticks);
-            NetworkController.Instance.AbnormalityTracker.DeleteAbnormality(message);
+            NetworkController.Instance.AbnormalityTracker.Update(message);
         }
     }
 }
