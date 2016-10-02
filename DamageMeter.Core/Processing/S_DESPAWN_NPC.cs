@@ -10,8 +10,7 @@ namespace DamageMeter.Processing
     {
         internal S_DESPAWN_NPC(Tera.Game.Messages.SDespawnNpc message)
         {
-            NetworkController.Instance.AbnormalityTracker.StopAggro(message);
-            NetworkController.Instance.AbnormalityTracker.DeleteAbnormality(message);
+            NetworkController.Instance.AbnormalityTracker.Update(message);
             DataExporter.Export(message, NetworkController.Instance.AbnormalityStorage);
         }
     }

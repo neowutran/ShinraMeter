@@ -125,7 +125,11 @@ namespace DamageMeter
 
         private void UpdateUi(int packetsWaiting = 0)
         {
-            if (BasicTeraData.Instance.WindowData.EnableChat != MessageFactory.ChatEnabled) MessageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;
+            if (BasicTeraData.Instance.WindowData.EnableChat != MessageFactory.ChatEnabled)
+            {
+                MessageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;
+                PacketProcessing.Update();
+            }
             _lastTick = DateTime.UtcNow.Ticks;
             var handler = TickUpdated;
             var currentBoss = Encounter;

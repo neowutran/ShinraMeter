@@ -41,8 +41,6 @@ namespace DamageMeter.Processing
                     NetworkController.Instance.EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
                     NetworkController.Instance.PlayerTracker = new PlayerTracker(NetworkController.Instance.EntityTracker, BasicTeraData.Instance.Servers);
                     Database.Database.Instance.DeleteAll();
-                    NetworkController.Instance.PacketProcessing.UpdateEntityTracker();
-                    NetworkController.Instance.PacketProcessing.UpdatePlayerTracker();
                 }
                 NetworkController.Instance.NeedInit = false;
             }
@@ -51,6 +49,7 @@ namespace DamageMeter.Processing
                 BasicTeraData.Instance.HotDotDatabase, NetworkController.Instance.AbnormalityStorage, DamageTracker.Instance.Update);
             NetworkController.Instance.OnGuildIconAction(NetworkController.Instance.UserLogoTracker.GetLogo(message.PlayerId));
             NetworkController.Instance.EntityTracker.Update(message);
+            NetworkController.Instance.PacketProcessing.Update();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace DamageMeter.Processing
         internal S_CREATURE_LIFE(Tera.Game.Messages.SCreatureLife message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
-            NetworkController.Instance.AbnormalityTracker.RegisterDead(message);
+            NetworkController.Instance.AbnormalityTracker.Update(message);
         }
     }
 }
