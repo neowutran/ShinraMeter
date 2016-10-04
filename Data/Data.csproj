@@ -58,6 +58,7 @@
     <Compile Include="BasicTeraData.cs" />
     <Compile Include="ClassIcons.cs" />
     <Compile Include="CopyKey.cs" />
+    <Compile Include="DiscordInfoByGuild.cs" />
     <Compile Include="HotkeysData.cs" />
     <Compile Include="InvalidConfigFileException.cs" />
     <Compile Include="ImageDatabase.cs" />

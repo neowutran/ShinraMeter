@@ -34,6 +34,7 @@ namespace Data
             Icons = new IconsDatabase(Path.Combine(ResourceDirectory, "data/"));
         }
 
+        public QuestInfoDatabase QuestInfoDatabase { get; set; }
         public HotDotDatabase HotDotDatabase { get; set; }
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
         public PetSkillDatabase PetSkillDatabase { get; set; }

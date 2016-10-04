@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -49,7 +50,11 @@ namespace Data
         public bool EnableChat { get; set; }
         public bool CopyInspect { get; set; }
 
+     
+        public string DiscordLogin { get; set; }
+        public string DiscordPassword { get; set; }
 
+       public Dictionary<string, DiscordInfoByGuild> DiscordInfoByGuild { get; set; }
 
         public Color WhisperColor { get; set; }
         public Color AllianceColor { get; set; }
@@ -64,6 +69,8 @@ namespace Data
 
         public Color PrivateChannelColor { get; set; }
         public bool RemoveTeraAltEnterHotkey { get; set; }
+
+        
       
         private void DefaultValue()
         {
@@ -113,7 +120,10 @@ namespace Data
             RemoveTeraAltEnterHotkey = false;
             EnableChat = true;
             CopyInspect = true;
-        }
+            DiscordInfoByGuild = new Dictionary<string, Data.DiscordInfoByGuild>();
+            DiscordLogin = "";
+            DiscordPassword = "";
+    }
 
 
         public WindowData(BasicTeraData basicData)
@@ -197,6 +207,7 @@ namespace Data
             ParseLocation();
             ParseOpacity();
             ParseTeraDps();
+            ParseDiscord();
             ParseLanguage();
             ParseUILanguage();
         }
@@ -237,7 +248,75 @@ namespace Data
             }
         }
 
- 
+
+        private void ParseDiscord()
+        {
+            Console.WriteLine("start parse discord");
+            var root = _xml.Root;
+            var discord = root?.Element("discord");
+            var user = discord?.Element("login");
+            if (user == null) return;
+            var password = discord.Element("password");
+            if (password == null) return;
+
+            DiscordPassword = password.Value;
+            DiscordLogin = user.Value;
+
+            if (DiscordPassword == null || DiscordLogin == null)
+            {
+                DiscordPassword = "";
+                DiscordLogin = "";
+            }
+
+          
+
+            var guilds = discord.Element("guilds");
+            if (guilds == null) return;
+            foreach(var guild in guilds.Elements())
+            {
+
+                ulong discordServer = 0;
+                ulong discordChannelGuildInfo = 0;
+                ulong discordChannelGuildQuest = 0;
+
+                var server = guild.Element("server");
+                if (server == null) return;
+               
+
+                ulong val;
+                var parseSuccess = ulong.TryParse(server.Value, out val);
+                if (parseSuccess)
+                {
+                    discordServer = val;
+                }
+                
+
+                var guild_infos_channel = guild.Element("guild_infos_channel");
+                if (guild_infos_channel == null) return;
+                
+                parseSuccess = ulong.TryParse(guild_infos_channel.Value, out val);
+                if (parseSuccess)
+                {
+                    discordChannelGuildInfo = val;
+                }
+                
+
+                var guild_quests_channel = guild.Element("guild_quests_channel");
+                if (guild_quests_channel == null) return;
+                
+                parseSuccess = ulong.TryParse(guild_quests_channel.Value, out val);
+                if (parseSuccess)
+                {
+                    discordChannelGuildQuest = val;
+                }
+                
+
+                DiscordInfoByGuild.Add(guild.Name.ToString().ToLowerInvariant(), new Data.DiscordInfoByGuild(discordServer, discordChannelGuildInfo, discordChannelGuildQuest));
+            }
+
+         
+        }
+
         private void ParseLocation()
         {
             double x, y;
@@ -333,6 +412,20 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
             xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
             xml.Root.Element("teradps.io").Add(new XElement("enabled", SiteExport));
+
+            xml.Root.Add(new XElement("discord"));
+            xml.Root.Element("discord").Add(new XElement("login", DiscordLogin));
+            xml.Root.Element("discord").Add(new XElement("password", DiscordPassword));
+            xml.Root.Element("discord").Add(new XElement("guilds"));
+            foreach (var discordData in DiscordInfoByGuild)
+            {
+                var name = discordData.Key.ToString().ToLowerInvariant();
+                xml.Root.Element("discord").Element("guilds").Add(new XElement(name));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_infos_channel", discordData.Value.DiscordChannelGuildInfo));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_quests_channel", discordData.Value.DiscordChannelGuildQuest));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("server", discordData.Value.DiscordServer));
+            }
+
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
             xml.Root.Add(new XElement("date_in_excel_path", DateInExcelPath));

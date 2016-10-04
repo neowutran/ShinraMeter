@@ -119,8 +119,13 @@
                             <Grid>
                                 <ScrollViewer Name="ConfigScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Auto" MaxHeight="500">
 
-                                    <Grid PreviewMouseWheel="Grid_PreviewMouseWheel">
+                                    <Grid PreviewMouseWheel="Grid_PreviewMouseWheel" Name="GridS">
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -303,6 +308,25 @@
                                             <Label Grid.Column="0" Foreground="White" Name="PrivateChannelColor" Content="{x:Static l:LP.PrivateChannelColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="PrivateChannelColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="PrivateChannelColorChanged" />
                                         </Grid>
+
+                                        <Grid Grid.Row="29">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="DiscordLogin" Content="Discord login" />
+                                            <TextBox LostFocus="DiscordLoginChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordLoginTextBox"/>
+                                        </Grid>
+
+                                        <Grid Grid.Row="30">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Foreground="White" Name="DiscordPassword" Content="Discord password" />
+                                            <TextBox LostFocus="DiscordPasswordChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordPasswordTextBox"/>
+                                        </Grid>
+
                                     </Grid>
                                 </ScrollViewer>
                             </Grid>
@@ -317,11 +341,12 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Button Grid.Row="0" Content="{x:Static l:LP.Reset}" Name="Reset"  Click="ResetAction" />
                                 <Button Grid.Row="1" Content="{x:Static l:LP.Close}" Name="Close"  Click="CloseAction" />
                                 <Button Grid.Row="2" Content="{x:Static l:LP.SystemTray_Export_current_to_Excel}" Name="ExcelExport"  Click="ExcelExportAction"  />
-                                <Button Grid.Row="3" Content="{x:Static l:LP.SystemTray_Stay_topmost}" Name="StayTopMostAction"  Click="ClickStayTopMostAction"  />
+                                <Button Grid.Row="3" Content="{x:Static l:LP.UploadGlyphBuild}" Name="UploadGlyphAction"  Click="ClickUploadGlyphAction"  />
                                 <Button Grid.Row="4" Content="{x:Static l:LP.TestSound}" Name="TestSound"  Click="TestSoundAction" />
 
                             </Grid>
