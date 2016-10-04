@@ -1285,7 +1285,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload glyph build to moongoued.net.
+        ///   Looks up a localized string similar to Upload glyph build to moongourd.net.
         /// </summary>
         public static string UploadGlyphBuild {
             get {

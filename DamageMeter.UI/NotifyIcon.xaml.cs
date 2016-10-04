@@ -57,6 +57,7 @@ namespace DamageMeter.UI
             SoundVolumeSpinner.Value = BasicTeraData.Instance.WindowData.Volume;
             RemoveTeraAltEnterHotkey.IsChecked = BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey;
             ChatEnabled.IsChecked = BasicTeraData.Instance.WindowData.EnableChat;
+            CopyInspect.IsChecked = BasicTeraData.Instance.WindowData.CopyInspect;
 
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
@@ -532,6 +533,7 @@ namespace DamageMeter.UI
         {
             if (_lastSend+TimeSpan.TicksPerSecond*30 >= DateTime.Now.Ticks) return;
             if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) return;
+            if (NetworkController.Instance.EntityTracker.MeterUser.Level<65) return;
             _lastSend = DateTime.Now.Ticks;
             var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             Debug.WriteLine(json);

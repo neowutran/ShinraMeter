@@ -26,6 +26,7 @@ using Application = System.Windows.Forms.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
+using System.Text;
 
 namespace DamageMeter.UI
 {

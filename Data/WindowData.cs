@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml;
@@ -53,6 +54,8 @@ namespace Data
      
         public string DiscordLogin { get; set; }
         public string DiscordPassword { get; set; }
+
+       
 
        public Dictionary<string, DiscordInfoByGuild> DiscordInfoByGuild { get; set; }
 
@@ -251,7 +254,6 @@ namespace Data
 
         private void ParseDiscord()
         {
-            Console.WriteLine("start parse discord");
             var root = _xml.Root;
             var discord = root?.Element("discord");
             var user = discord?.Element("login");
@@ -267,8 +269,6 @@ namespace Data
                 DiscordPassword = "";
                 DiscordLogin = "";
             }
-
-          
 
             var guilds = discord.Element("guilds");
             if (guilds == null) return;
@@ -309,9 +309,60 @@ namespace Data
                 {
                     discordChannelGuildQuest = val;
                 }
-                
 
-                DiscordInfoByGuild.Add(guild.Name.ToString().ToLowerInvariant(), new Data.DiscordInfoByGuild(discordServer, discordChannelGuildInfo, discordChannelGuildQuest));
+
+                string guildInfosText = ":dart: {guild_guildname}  :dart:\n\n{guild_master} - {guild_size}\n{gold_label}: {guild_gold}\n{xp_label} for next level: {guild_xp_to_next_level}\nCreation time: {guild_creationtime}\nQuest done status: {guild_number_quest_done}/{guild_total_number_quest}\n";
+                string questInfoText = ":dart: {quest_guildname} - {quest_type} - {quest_size} :dart:\n\nTime remaining: {quest_time_remaining}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n";
+                string rewardFooterText = "";
+                string rewardContentText = "{reward_name}: {reward_amount}\n";
+                string rewardHeaderText = "---------\n";
+
+                string targetHeaderText = "---------\n";
+                string targetContentText = "{target_name}: {target_current_count}/{target_total_count}\n";
+                string targetFooterText = "";
+                string questNoActiveText = ":dart:   {guild_guildname}   :dart:\n\n{no_quest_text}\n";
+
+                var guildInfosTextElement = guild.Element("guild_infos_text");
+                if (guildInfosTextElement != null) guildInfosText = guildInfosTextElement.Value;
+
+                var questInfoTextElement = guild.Element("quest_infos_text");
+                if (questInfoTextElement != null) questInfoText = questInfoTextElement.Value;
+
+                var rewardFooterTextElement = guild.Element("reward_footer_text");
+                if (rewardFooterTextElement != null) rewardFooterText = rewardFooterTextElement.Value;
+
+                var rewardContentTextElement = guild.Element("reward_content_text");
+                if (rewardContentTextElement != null) rewardContentText = rewardContentTextElement.Value;
+
+                var rewardHeaderTextElement = guild.Element("reward_header_text");
+                if (rewardHeaderTextElement != null) rewardHeaderText = rewardHeaderTextElement.Value;
+
+                var targetHeaderTextElement = guild.Element("target_header_text");
+                if (targetHeaderTextElement != null) targetHeaderText = targetHeaderTextElement.Value;
+
+                var targetContentTextElement = guild.Element("target_content_text");
+                if (targetContentTextElement != null) targetContentText = targetContentTextElement.Value;
+
+                var targetFooterTextElement = guild.Element("target_footer_text");
+                if (targetFooterTextElement != null) targetFooterText = targetFooterTextElement.Value;
+
+                var questNoActiveTextElement = guild.Element("no_active_quest_text");
+                if (questNoActiveTextElement != null) questNoActiveText = questNoActiveTextElement.Value;
+
+                DiscordInfoByGuild.Add(guild.Name.ToString().ToLowerInvariant(), new DiscordInfoByGuild(
+                    discordServer,
+                    discordChannelGuildInfo,
+                    discordChannelGuildQuest,
+                    guildInfosText,
+                    questInfoText,
+                    rewardFooterText,
+                    rewardContentText,
+                    rewardHeaderText,
+                    targetHeaderText,
+                    targetContentText,
+                    targetFooterText,
+                   questNoActiveText
+                    ));
             }
 
          
@@ -393,7 +444,7 @@ namespace Data
             }
 
 
-            var xml = new XDocument(new XElement("window"));
+            var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
             xml.Root.Add(new XElement("location"));
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
@@ -424,6 +475,17 @@ namespace Data
                 xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_infos_channel", discordData.Value.DiscordChannelGuildInfo));
                 xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_quests_channel", discordData.Value.DiscordChannelGuildQuest));
                 xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("server", discordData.Value.DiscordServer));
+
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_infos_text", discordData.Value.GuildInfosText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("quest_infos_text", discordData.Value.QuestInfoText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("reward_footer_text", discordData.Value.RewardFooterText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("reward_content_text", discordData.Value.RewardContentText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("reward_header_text", discordData.Value.RewardHeaderText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("target_header_text", discordData.Value.TargetHeaderText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("target_content_text", discordData.Value.TargetContentText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("target_footer_text", discordData.Value.TargetFooterText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("no_active_quest_text", discordData.Value.QuestNoActiveText));
+
             }
 
             xml.Root.Add(new XElement("debug", Debug));
@@ -459,11 +521,10 @@ namespace Data
             xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
             xml.Root.Add(new XElement("copy_inspect", CopyInspect));
 
-            _filestream.SetLength(0);
-            using (var sr = new StreamWriter(_filestream))
+            _filestream.SetLength(0); 
+            using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true)))
             {
-                // File writing as usual
-                sr.Write(xml);
+                sw.Write(xml.Declaration + Environment.NewLine + xml);
             }
             _filestream.Close();
         }
