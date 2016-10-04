@@ -33,12 +33,35 @@ namespace DamageMeter.Processing
             str = str.Replace("{xp_label}", BasicTeraData.Instance.QuestInfoDatabase.Get(20000001));
             var activeQuest = ReplaceNoQuest(discordInfo.QuestNoActiveText);
             var quest = guildquest.ActiveQuest();
-            if(quest != null)
+            if (quest != null)
             {
                 activeQuest = discordInfo.QuestInfoText;
                 activeQuest = ReplaceQuestInfo(activeQuest, quest, discordInfo);
             }
             str = str.Replace("{active_quest}", activeQuest);
+
+            var questList = ReplaceQuestListInfo(guildquest, discordInfo);
+            if (discordInfo.QuestLists)
+                str = str.Replace("{quest_list}", questList);
+            else
+                str = str.Replace("{quest_list}", "");
+
+            return str;
+        }
+
+        private static string ReplaceQuestListInfo(Tera.Game.Messages.S_GUILD_QUEST_LIST guildquest, DiscordInfoByGuild discordInfo)
+        {
+            var str = discordInfo.QuestListHeaderText;
+            var questLists = ReplaceNoQuest(discordInfo.QuestNoActiveText);
+            foreach (var nonActiveQuest in guildquest.GuildQuests.Where(
+                x => x.GuildQuestType1 == Tera.Game.Messages.S_GUILD_QUEST_LIST.GuildQuestType.Hunt &&
+                x.QuestSize == (Tera.Game.Messages.S_GUILD_QUEST_LIST.QuestSizeType)guildquest.GuildSize &&
+                !x.Active))
+            {
+                questLists = discordInfo.QuestListInfoText;
+                questLists = ReplaceQuestInfo(questLists, nonActiveQuest, discordInfo);
+                str += questLists;
+            }
             return str;
         }
 
@@ -55,9 +78,9 @@ namespace DamageMeter.Processing
             str = str.Replace("{quest_size}", quest.QuestSize.ToString());
             str = str.Replace("{quest_time_remaining}", quest.TimeRemaining.ToString(@"hh\:mm\:ss"));
             var isBamQuest = false;
-            foreach(var target in quest.Targets)
+            foreach (var target in quest.Targets)
             {
-                if(target.TotalQuest == 1)
+                if (target.TotalQuest == 1)
                 {
                     isBamQuest = true;
                 }
@@ -66,10 +89,10 @@ namespace DamageMeter.Processing
             str = str.Replace("{quest_is_bam_quest}", isBamQuest.ToString());
 
             var rewardStr = discordInfo.RewardHeaderText;
-            foreach(var reward in quest.Rewards)
+            foreach (var reward in quest.Rewards)
             {
                 rewardStr += ReplaceRewardInfo(discordInfo.RewardContentText, reward);
-            }            
+            }
             rewardStr += discordInfo.RewardFooterText;
             str = str.Replace("{rewards}", rewardStr);
 
@@ -112,8 +135,8 @@ namespace DamageMeter.Processing
             return str;
 
         }
-     
-       internal S_GUILD_QUEST_LIST(Tera.Game.Messages.S_GUILD_QUEST_LIST guildquest)
+
+        internal S_GUILD_QUEST_LIST(Tera.Game.Messages.S_GUILD_QUEST_LIST guildquest)
         {
             if (BasicTeraData.Instance.WindowData.DiscordLogin == "") return;
             DiscordInfoByGuild discordData = null;
@@ -135,7 +158,7 @@ namespace DamageMeter.Processing
                 activeQuestThread.Start();
             }
             var thread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildInfo, ReplaceGuildInfo(discordData.GuildInfosText, guildquest, discordData), true));
-            thread.Start();            
+            thread.Start();
         }
     }
 }
