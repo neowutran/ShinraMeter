@@ -533,4 +533,7 @@
   <data name="EnableChat" xml:space="preserve">
     <value>チャットや通知機能を有効にします。</value>
   </data>
+  <data name="CopyInspect" xml:space="preserve">
+    <value>パーティー志願時 "/詳細確認 名前" をコピー</value>
+  </data>
 </root>
