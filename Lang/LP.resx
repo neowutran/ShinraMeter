@@ -538,12 +538,18 @@
     <value>Copy "/inspect Name" on party apply request</value>
   </data>
   <data name="UploadGlyphBuild" xml:space="preserve">
-    <value>Upload glyph build to moongoued.net</value>
+    <value>Upload glyph build to moongourd.net</value>
   </data>
   <data name="No_active_quest" xml:space="preserve">
     <value>No active quest at the moment</value>
   </data>
   <data name="Quests_status" xml:space="preserve">
     <value>Quests done status: </value>
+  </data>
+  <data name="NoCrystalBind" xml:space="preserve">
+    <value> have no CrystalBind or it soon times out.</value>
+  </data>
+  <data name="NotifyCB" xml:space="preserve">
+    <value>Notify about CrystalBinds.</value>
   </data>
 </root>

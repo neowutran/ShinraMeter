@@ -763,6 +763,24 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  have no CrystalBind or it soon times out..
+        /// </summary>
+        public static string NoCrystalBind {
+            get {
+                return ResourceManager.GetString("NoCrystalBind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notify about CrystalBinds..
+        /// </summary>
+        public static string NotifyCB {
+            get {
+                return ResourceManager.GetString("NotifyCB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of players displayed.
         /// </summary>
         public static string NumberPlayersDisplayed {
@@ -1285,7 +1303,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload glyph build to moongoued.net.
+        ///   Looks up a localized string similar to Upload glyph build to moongourd.net.
         /// </summary>
         public static string UploadGlyphBuild {
             get {

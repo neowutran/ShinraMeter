@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml;
@@ -54,6 +55,8 @@ namespace Data
         public string DiscordLogin { get; set; }
         public string DiscordPassword { get; set; }
 
+       
+
        public Dictionary<string, DiscordInfoByGuild> DiscordInfoByGuild { get; set; }
 
         public Color WhisperColor { get; set; }
@@ -69,6 +72,7 @@ namespace Data
 
         public Color PrivateChannelColor { get; set; }
         public bool RemoveTeraAltEnterHotkey { get; set; }
+        public bool DoNotWarnOnCB { get; set; }
 
         
       
@@ -120,6 +124,7 @@ namespace Data
             RemoveTeraAltEnterHotkey = false;
             EnableChat = true;
             CopyInspect = true;
+            DoNotWarnOnCB = false;
             DiscordInfoByGuild = new Dictionary<string, Data.DiscordInfoByGuild>();
             DiscordLogin = "";
             DiscordPassword = "";
@@ -192,7 +197,8 @@ namespace Data
             Parse("remove_tera_alt_enter_hotkey", "RemoveTeraAltEnterHotkey");
             Parse("enable_chat_and_notifications", "EnableChat");
             Parse("copy_inspect", "CopyInspect");
-
+            Parse("do_not_warn_on_crystalbind", "DoNotWarnOnCB");
+            
             ParseColor("say_color","SayColor");
             ParseColor("alliance_color", "AllianceColor");
             ParseColor("area_color", "AreaColor");
@@ -251,7 +257,6 @@ namespace Data
 
         private void ParseDiscord()
         {
-            Console.WriteLine("start parse discord");
             var root = _xml.Root;
             var discord = root?.Element("discord");
             var user = discord?.Element("login");
@@ -267,8 +272,6 @@ namespace Data
                 DiscordPassword = "";
                 DiscordLogin = "";
             }
-
-          
 
             var guilds = discord.Element("guilds");
             if (guilds == null) return;
@@ -309,9 +312,60 @@ namespace Data
                 {
                     discordChannelGuildQuest = val;
                 }
-                
 
-                DiscordInfoByGuild.Add(guild.Name.ToString().ToLowerInvariant(), new Data.DiscordInfoByGuild(discordServer, discordChannelGuildInfo, discordChannelGuildQuest));
+
+                string guildInfosText = ":dart: {guild_guildname}  :dart:\n\n{guild_master} - {guild_size}\n{gold_label}: {guild_gold}\n{xp_label} for next level: {guild_xp_to_next_level}\nCreation time: {guild_creationtime}\nQuest done status: {guild_number_quest_done}/{guild_total_number_quest}\n";
+                string questInfoText = ":dart: {quest_guildname} - {quest_type} - {quest_size} :dart:\n\nTime remaining: {quest_time_remaining}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n";
+                string rewardFooterText = "";
+                string rewardContentText = "{reward_name}: {reward_amount}\n";
+                string rewardHeaderText = "---------\n";
+
+                string targetHeaderText = "---------\n";
+                string targetContentText = "{target_name}: {target_current_count}/{target_total_count}\n";
+                string targetFooterText = "";
+                string questNoActiveText = ":dart:   {guild_guildname}   :dart:\n\n{no_quest_text}\n";
+
+                var guildInfosTextElement = guild.Element("guild_infos_text");
+                if (guildInfosTextElement != null) guildInfosText = guildInfosTextElement.Value;
+
+                var questInfoTextElement = guild.Element("quest_infos_text");
+                if (questInfoTextElement != null) questInfoText = questInfoTextElement.Value;
+
+                var rewardFooterTextElement = guild.Element("reward_footer_text");
+                if (rewardFooterTextElement != null) rewardFooterText = rewardFooterTextElement.Value;
+
+                var rewardContentTextElement = guild.Element("reward_content_text");
+                if (rewardContentTextElement != null) rewardContentText = rewardContentTextElement.Value;
+
+                var rewardHeaderTextElement = guild.Element("reward_header_text");
+                if (rewardHeaderTextElement != null) rewardHeaderText = rewardHeaderTextElement.Value;
+
+                var targetHeaderTextElement = guild.Element("target_header_text");
+                if (targetHeaderTextElement != null) targetHeaderText = targetHeaderTextElement.Value;
+
+                var targetContentTextElement = guild.Element("target_content_text");
+                if (targetContentTextElement != null) targetContentText = targetContentTextElement.Value;
+
+                var targetFooterTextElement = guild.Element("target_footer_text");
+                if (targetFooterTextElement != null) targetFooterText = targetFooterTextElement.Value;
+
+                var questNoActiveTextElement = guild.Element("no_active_quest_text");
+                if (questNoActiveTextElement != null) questNoActiveText = questNoActiveTextElement.Value;
+
+                DiscordInfoByGuild.Add(guild.Name.ToString().ToLowerInvariant(), new DiscordInfoByGuild(
+                    discordServer,
+                    discordChannelGuildInfo,
+                    discordChannelGuildQuest,
+                    guildInfosText,
+                    questInfoText,
+                    rewardFooterText,
+                    rewardContentText,
+                    rewardHeaderText,
+                    targetHeaderText,
+                    targetContentText,
+                    targetFooterText,
+                   questNoActiveText
+                    ));
             }
 
          
@@ -393,7 +447,7 @@ namespace Data
             }
 
 
-            var xml = new XDocument(new XElement("window"));
+            var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
             xml.Root.Add(new XElement("location"));
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
@@ -408,24 +462,6 @@ namespace Data
             xml.Root.Add(new XElement("invisible_ui_when_no_stats", InvisibleUi));
             xml.Root.Add(new XElement("allow_transparency", AllowTransparency));
             xml.Root.Add(new XElement("topmost", Topmost));
-            xml.Root.Add(new XElement("teradps.io"));
-            xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
-            xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
-            xml.Root.Element("teradps.io").Add(new XElement("enabled", SiteExport));
-
-            xml.Root.Add(new XElement("discord"));
-            xml.Root.Element("discord").Add(new XElement("login", DiscordLogin));
-            xml.Root.Element("discord").Add(new XElement("password", DiscordPassword));
-            xml.Root.Element("discord").Add(new XElement("guilds"));
-            foreach (var discordData in DiscordInfoByGuild)
-            {
-                var name = discordData.Key.ToString().ToLowerInvariant();
-                xml.Root.Element("discord").Element("guilds").Add(new XElement(name));
-                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_infos_channel", discordData.Value.DiscordChannelGuildInfo));
-                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_quests_channel", discordData.Value.DiscordChannelGuildQuest));
-                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("server", discordData.Value.DiscordServer));
-            }
-
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
             xml.Root.Add(new XElement("date_in_excel_path", DateInExcelPath));
@@ -439,6 +475,10 @@ namespace Data
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));
             xml.Root.Add(new XElement("low_priority", LowPriority));
             xml.Root.Add(new XElement("number_of_players_displayed", NumberOfPlayersDisplayed));
+            xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", RemoveTeraAltEnterHotkey));
+            xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
+            xml.Root.Add(new XElement("copy_inspect", CopyInspect));
+            xml.Root.Add(new XElement("do_not_warn_on_crystalbind", DoNotWarnOnCB));
 
             xml.Root.Add(new XElement("notify_sound", NotifySound));
             xml.Root.Add(new XElement("volume", Volume));
@@ -455,15 +495,40 @@ namespace Data
             xml.Root.Add(new XElement("trading_color", TradingColor.ToString()));
             xml.Root.Add(new XElement("emotes_color", EmotesColor.ToString()));
             xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
-            xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", RemoveTeraAltEnterHotkey));
-            xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
-            xml.Root.Add(new XElement("copy_inspect", CopyInspect));
 
-            _filestream.SetLength(0);
-            using (var sr = new StreamWriter(_filestream))
+            xml.Root.Add(new XElement("teradps.io"));
+            xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
+            xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
+            xml.Root.Element("teradps.io").Add(new XElement("enabled", SiteExport));
+
+            xml.Root.Add(new XElement("discord"));
+            xml.Root.Element("discord").Add(new XElement("login", DiscordLogin));
+            xml.Root.Element("discord").Add(new XElement("password", DiscordPassword));
+            xml.Root.Element("discord").Add(new XElement("guilds"));
+            foreach (var discordData in DiscordInfoByGuild)
             {
-                // File writing as usual
-                sr.Write(xml);
+                var name = discordData.Key.ToString().ToLowerInvariant();
+                xml.Root.Element("discord").Element("guilds").Add(new XElement(name));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_infos_channel", discordData.Value.DiscordChannelGuildInfo));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_quests_channel", discordData.Value.DiscordChannelGuildQuest));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("server", discordData.Value.DiscordServer));
+
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_infos_text", discordData.Value.GuildInfosText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("quest_infos_text", discordData.Value.QuestInfoText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("reward_footer_text", discordData.Value.RewardFooterText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("reward_content_text", discordData.Value.RewardContentText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("reward_header_text", discordData.Value.RewardHeaderText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("target_header_text", discordData.Value.TargetHeaderText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("target_content_text", discordData.Value.TargetContentText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("target_footer_text", discordData.Value.TargetFooterText));
+                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("no_active_quest_text", discordData.Value.QuestNoActiveText));
+            }
+
+
+            _filestream.SetLength(0); 
+            using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true)))
+            {
+                sw.Write(xml.Declaration + Environment.NewLine + xml);
             }
             _filestream.Close();
         }

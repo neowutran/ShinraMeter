@@ -57,6 +57,8 @@ namespace DamageMeter.UI
             SoundVolumeSpinner.Value = BasicTeraData.Instance.WindowData.Volume;
             RemoveTeraAltEnterHotkey.IsChecked = BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey;
             ChatEnabled.IsChecked = BasicTeraData.Instance.WindowData.EnableChat;
+            CopyInspect.IsChecked = BasicTeraData.Instance.WindowData.CopyInspect;
+            NotifyCB.IsChecked = !BasicTeraData.Instance.WindowData.DoNotWarnOnCB;
 
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
@@ -498,6 +500,7 @@ namespace DamageMeter.UI
         private void ChatSettingsVisible(bool show)
         {
             CopyInspect.Height = show ? Double.NaN : 0;
+            NotifyCB.Height = show ? Double.NaN : 0;
             PopupTime.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             SoundTime.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             SoundFile.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
@@ -532,6 +535,7 @@ namespace DamageMeter.UI
         {
             if (_lastSend+TimeSpan.TicksPerSecond*30 >= DateTime.Now.Ticks) return;
             if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) return;
+            if (NetworkController.Instance.EntityTracker.MeterUser.Level<65) return;
             _lastSend = DateTime.Now.Ticks;
             var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             Debug.WriteLine(json);
@@ -572,6 +576,16 @@ namespace DamageMeter.UI
         private void DiscordLoginChanged(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.DiscordLogin = DiscordLoginTextBox.Text;
+        }
+
+        private void EnableNotifyCB(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DoNotWarnOnCB = false;
+        }
+
+        private void DisableNotifyCB(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DoNotWarnOnCB = true;
         }
     }
 }

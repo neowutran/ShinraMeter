@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
@@ -267,7 +268,7 @@ namespace Data
 
         public void Save()
         {
-            var xml = new XDocument(new XElement("hotkeys"));
+            var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("hotkeys"));
             SaveKey(xml, "topmost", Topmost);
             SaveKey(xml, "paste",Paste,false);
             SaveKey(xml, "reset", Reset);
@@ -303,10 +304,10 @@ namespace Data
             }
 
             _filestream.SetLength(0);
-            using (var sr = new StreamWriter(_filestream))
+            using (var sr = new StreamWriter(_filestream, new UTF8Encoding(true)))
             {
                 // File writing as usual
-                sr.Write(xml);
+                sr.Write(xml.Declaration + Environment.NewLine + xml);
             }
             _filestream.Close();
         }
