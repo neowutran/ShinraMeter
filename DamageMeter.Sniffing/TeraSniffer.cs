@@ -139,6 +139,12 @@ namespace DamageMeter.Sniffing
                         _isNew.Remove(connection);
                         _clientToServer = connection;
                     }
+                    if (connection.BytesReceived > 5) //if received more bytes but still not recognized - not interesting.
+                    {
+                        _isNew.Remove(connection);
+                        connection.DataReceived -= HandleTcpDataReceived;
+                        connection._removeCallback();
+                    }
                 }
 
                 if (!(connection == _clientToServer || connection == _serverToClient))

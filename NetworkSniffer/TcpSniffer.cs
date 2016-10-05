@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Data;
 using NetworkSniffer.Packets;
 
@@ -29,6 +30,11 @@ namespace NetworkSniffer
             handler?.Invoke(connection);
         }
 
+        internal void RemoveConnection(TcpConnection connection)
+        {
+            if (_connections.ContainsValue(connection)) _connections.Remove(_connections.First(x => x.Value == connection).Key);
+        }
+
         private void Receive(ArraySegment<byte> ipData)
         {
             var ipPacket = new Ip4Packet(ipData);
@@ -48,7 +54,7 @@ namespace NetworkSniffer
                 bool isInterestingConnection;
                 if (isFirstPacket)
                 {
-                    connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber);
+                    connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber, RemoveConnection);
                     OnNewConnection(connection);
                     isInterestingConnection = connection.HasSubscribers;
                     if (!isInterestingConnection)
