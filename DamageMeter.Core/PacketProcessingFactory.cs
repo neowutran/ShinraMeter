@@ -14,29 +14,30 @@ namespace DamageMeter
     {
         private static readonly Dictionary<Type, Delegate> MessageToProcessingInit = new Dictionary<Type, Delegate>
         {
-            {typeof(Tera.Game.Messages.S_GET_USER_LIST), new Action<Tera.Game.Messages.S_GET_USER_LIST>((x)=>NetworkController.Instance.UserLogoTracker.SetUserList(x))},
-            {typeof(Tera.Game.Messages.S_GET_USER_GUILD_LOGO), new Action<Tera.Game.Messages.S_GET_USER_GUILD_LOGO>((x)=>NetworkController.Instance.UserLogoTracker.AddLogo(x))},
+            {typeof(Tera.Game.Messages.S_GET_USER_LIST), new Action<Tera.Game.Messages.S_GET_USER_LIST>(x=>NetworkController.Instance.UserLogoTracker.SetUserList(x))},
+            {typeof(Tera.Game.Messages.S_GET_USER_GUILD_LOGO), new Action<Tera.Game.Messages.S_GET_USER_GUILD_LOGO>(x=>NetworkController.Instance.UserLogoTracker.AddLogo(x))},
             {typeof(Tera.Game.Messages.C_CHECK_VERSION) , Helpers.Contructor<Func<Tera.Game.Messages.C_CHECK_VERSION, DamageMeter.Processing.C_CHECK_VERSION>>()},
             {typeof(Tera.Game.Messages.LoginServerMessage), Helpers.Contructor<Func<Tera.Game.Messages.LoginServerMessage, DamageMeter.Processing.S_LOGIN>>()}
         };
         private static readonly Dictionary<Type, Delegate> MessageToProcessingOptionnal = new Dictionary<Type, Delegate>
         {
-            {typeof(Tera.Game.Messages.S_CHAT), new Action<Tera.Game.Messages.S_CHAT>((x)=> DamageMeter.Chat.Instance.Add(x))},
-            {typeof(Tera.Game.Messages.S_WHISPER), new Action<Tera.Game.Messages.S_WHISPER>((x)=>DamageMeter.Chat.Instance.Add(x))},
-            {typeof(Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED), Helpers.Contructor<Func<Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED , DamageMeter.Processing.S_TRADE_BROKER_DEAL_SUGGESTED>>()},
-            {typeof(Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY) , Helpers.Contructor<Func<Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY , DamageMeter.Processing.S_OTHER_USER_APPLY_PARTY>>()},
-            {typeof(Tera.Game.Messages.S_PRIVATE_CHAT) , new Action<Tera.Game.Messages.S_PRIVATE_CHAT>((x)=>DamageMeter.Chat.Instance.Add(x))},
-            {typeof(Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH), Helpers.Contructor<Func<Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH , InstanceMatchingSuccess>>() },
-            {typeof(Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO), Helpers.Contructor<Func<Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO , InstanceMatchingSuccess>>() },
-            {typeof(Tera.Game.Messages.S_REQUEST_CONTRACT), Helpers.Contructor<Func<Tera.Game.Messages.S_REQUEST_CONTRACT , DamageMeter.Processing.S_REQUEST_CONTRACT>>() },
-            {typeof(Tera.Game.Messages.S_CHECK_TO_READY_PARTY), Helpers.Contructor<Func<Tera.Game.Messages.S_CHECK_TO_READY_PARTY , DamageMeter.Processing.S_CHECK_TO_READY_PARTY>>() },
+            {typeof(Tera.Game.Messages.S_BOSS_GAGE_INFO) , new Action<Tera.Game.Messages.S_BOSS_GAGE_INFO>((x)=>NotifyProcessor.S_BOSS_GAGE_INFO(x)) },//override with optional processing
+            {typeof(Tera.Game.Messages.S_CHAT), new Action<Tera.Game.Messages.S_CHAT>(x=> DamageMeter.Chat.Instance.Add(x))},
+            {typeof(Tera.Game.Messages.S_WHISPER), new Action<Tera.Game.Messages.S_WHISPER>(x=>DamageMeter.Chat.Instance.Add(x))},
+            {typeof(Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED), new Action<Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED> (x=>NotifyProcessor.S_TRADE_BROKER_DEAL_SUGGESTED(x)) },
+            {typeof(Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY) , new Action<Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY>(x=> NotifyProcessor.S_OTHER_USER_APPLY_PARTY(x)) },
+            {typeof(Tera.Game.Messages.S_PRIVATE_CHAT) , new Action<Tera.Game.Messages.S_PRIVATE_CHAT>(x=>DamageMeter.Chat.Instance.Add(x))},
+            {typeof(Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH), new Action<Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH>(x=> NotifyProcessor.InstanceMatchingSuccess(x)) },
+            {typeof(Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO), new Action<Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO>(x=>NotifyProcessor.InstanceMatchingSuccess(x)) },
+            {typeof(Tera.Game.Messages.S_REQUEST_CONTRACT), new Action<Tera.Game.Messages.S_REQUEST_CONTRACT>(x=>NotifyProcessor.S_REQUEST_CONTRACT(x)) },
+            {typeof(Tera.Game.Messages.S_CHECK_TO_READY_PARTY), new Action<Tera.Game.Messages.S_CHECK_TO_READY_PARTY>(x=>NotifyProcessor.S_CHECK_TO_READY_PARTY(x)) },
             {typeof(Tera.Game.Messages.S_GUILD_QUEST_LIST), Helpers.Contructor<Func<Tera.Game.Messages.S_GUILD_QUEST_LIST , DamageMeter.Processing.S_GUILD_QUEST_LIST>>() }
         };
         private static readonly Dictionary<Type, Delegate> MessageToProcessing = new Dictionary<Type, Delegate>
         {
             {typeof(Tera.Game.Messages.EachSkillResultServerMessage), Helpers.Contructor<Func<Tera.Game.Messages.EachSkillResultServerMessage , S_EACH_SKILL_RESULT>>()},
             {typeof(Tera.Game.Messages.SpawnUserServerMessage), Helpers.Contructor<Func<Tera.Game.Messages.SpawnUserServerMessage , S_SPAWN_USER>>()},
-            {typeof(Tera.Game.Messages.SNpcOccupierInfo), new Action<Tera.Game.Messages.SNpcOccupierInfo>((x)=>DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(x), x.Time.Ticks))},
+            {typeof(Tera.Game.Messages.SNpcOccupierInfo), new Action<Tera.Game.Messages.SNpcOccupierInfo>(x=>DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(x), x.Time.Ticks))},
             {typeof(Tera.Game.Messages.SDespawnNpc), Helpers.Contructor<Func<Tera.Game.Messages.SDespawnNpc , S_DESPAWN_NPC>>()},
             {typeof(Tera.Game.Messages.SCreatureLife), Helpers.Contructor<Func<Tera.Game.Messages.SCreatureLife , S_CREATURE_LIFE>>()},
             {typeof(Tera.Game.Messages.S_CREST_INFO), Helpers.Contructor<Func<Tera.Game.Messages.S_CREST_INFO , DamageMeter.Processing.S_CREST_INFO>>() },        
@@ -113,7 +114,7 @@ namespace DamageMeter
             { typeof(Tera.Game.Messages.SPartyMemberChangeHp) , new Action<Tera.Game.Messages.SPartyMemberChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SDespawnUser) , new Action<Tera.Game.Messages.SDespawnUser>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SNpcStatus) , new Action<Tera.Game.Messages.SNpcStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE) , new Action<Tera.Game.Messages.SEnableCharmStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
+            { typeof(Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE) , new Action<Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_PLAYER_STAT_UPDATE) , new Action<Tera.Game.Messages.S_PLAYER_STAT_UPDATE>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             };
             abnormalityTrackerProcessing.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
