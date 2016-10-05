@@ -143,7 +143,7 @@ namespace DamageMeter.Sniffing
                     {
                         _isNew.Remove(connection);
                         connection.DataReceived -= HandleTcpDataReceived;
-                        connection._removeCallback();
+                        connection.RemoveCallback();
                     }
                 }
 

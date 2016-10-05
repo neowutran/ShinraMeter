@@ -718,6 +718,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Meter missed some packets and can&apos;t continue counting until you relog to Tera.
+        /// </summary>
+        public static string MissedPacket {
+            get {
+                return ResourceManager.GetString("MissedPacket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MOT.
         /// </summary>
         public static string Mot {

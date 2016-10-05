@@ -14,10 +14,12 @@ namespace NetworkSniffer
             new Dictionary<ConnectionId, TcpConnection>();
 
         private readonly object _lock = new object();
+        private string SnifferType;
 
         public TcpSniffer(IpSniffer ipSniffer)
         {
             ipSniffer.PacketReceived += Receive;
+            SnifferType = ipSniffer.GetType().FullName;
         }
 
         public string TcpLogFile { get; set; }
@@ -54,7 +56,7 @@ namespace NetworkSniffer
                 bool isInterestingConnection;
                 if (isFirstPacket)
                 {
-                    connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber, RemoveConnection);
+                    connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber, RemoveConnection, SnifferType);
                     OnNewConnection(connection);
                     isInterestingConnection = connection.HasSubscribers;
                     if (!isInterestingConnection)
@@ -68,13 +70,13 @@ namespace NetworkSniffer
                     if (!isInterestingConnection)
                         return;
 
-                    if (!string.IsNullOrEmpty(TcpLogFile))
-                        File.AppendAllText(TcpLogFile,
-                            string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
-                                connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived,
-                                connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber),
-                                tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber,
-                                connection.BufferedPacketDescription));
+                    //if (!string.IsNullOrEmpty(TcpLogFile))
+                    //    File.AppendAllText(TcpLogFile,
+                    //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
+                    //            connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived,
+                    //            connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber),
+                    //            tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber,
+                    //            connection.BufferedPacketDescription));
                     connection.HandleTcpReceived(tcpPacket.SequenceNumber, tcpPacket.Payload);
                 }
             }
