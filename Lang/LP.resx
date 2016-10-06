@@ -552,7 +552,4 @@
   <data name="NotifyCB" xml:space="preserve">
     <value>Notify about CrystalBinds.</value>
   </data>
-  <data name="MissedPacket" xml:space="preserve">
-    <value>Meter missed some packets and can't continue counting until you relog to Tera</value>
-  </data>
 </root>
