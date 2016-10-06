@@ -111,9 +111,11 @@ namespace DamageMeter.Processing
         }
 
         private static long _nextCBNotifyCheck;
+        private static EntityId? _lastBoss;
         internal static void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
+            _lastBoss = message.EntityId;
             CheckCB(message);
         }
 
@@ -121,6 +123,7 @@ namespace DamageMeter.Processing
         {
             if (BasicTeraData.Instance.WindowData.DoNotWarnOnCB) return;
             if (message.Time.Ticks < _nextCBNotifyCheck) return;
+            if (_lastBoss == null) return;
             _nextCBNotifyCheck = message.Time.Ticks + 30 * TimeSpan.TicksPerSecond;// check no more than once per 30s
             var party = NetworkController.Instance.PlayerTracker.PartyList();
             string notify = "";
@@ -136,6 +139,17 @@ namespace DamageMeter.Processing
                 _nextCBNotifyCheck = message.Time.Ticks + 10 * TimeSpan.TicksPerMinute;// no more than 1 notify in 10 minutes
                 NetworkController.Instance.FlashMessage = new Tuple<string, string>(notify.Remove(notify.IndexOf(Environment.NewLine)), notify);
             }
+        }
+
+        internal static void SpawnMe(Tera.Game.Messages.SpawnMeServerMessage message)
+        {
+            NetworkController.Instance.AbnormalityTracker.Update(message);
+            _nextCBNotifyCheck = message.Time.Ticks + 15 * TimeSpan.TicksPerSecond;// delay check after respawn
+        }
+
+        internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
+        {
+            if (message.Npc == _lastBoss) _lastBoss = null;
         }
     }
 }
