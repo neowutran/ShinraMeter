@@ -145,6 +145,7 @@ namespace DamageMeter.Processing
         {
             NetworkController.Instance.AbnormalityTracker.Update(message);
             _nextCBNotifyCheck = message.Time.Ticks + 15 * TimeSpan.TicksPerSecond;// delay check after respawn
+            _lastBoss = null;
         }
 
         internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
