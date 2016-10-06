@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Windows.Forms;
 using Data;
+using Lang;
 
 namespace NetworkSniffer
 {
@@ -12,12 +14,16 @@ namespace NetworkSniffer
         private readonly SortedDictionary<long, byte[]> _bufferedPackets = new SortedDictionary<long, byte[]>();
         public readonly IPEndPoint Destination;
         public readonly IPEndPoint Source;
+        public Action RemoveCallback;
+        public string SnifferType;
 
-        internal TcpConnection(ConnectionId connectionId, uint sequenceNumber)
+        internal TcpConnection(ConnectionId connectionId, uint sequenceNumber, Action<TcpConnection>removeCallback, string snifferType)
         {
             Source = connectionId.Source.ToIpEndpoint();
             Destination = connectionId.Destination.ToIpEndpoint();
             InitialSequenceNumber = sequenceNumber;
+            RemoveCallback = () => removeCallback(this);
+            SnifferType = snifferType;
         }
 
         public long BytesReceived { get; private set; }
@@ -37,7 +43,7 @@ namespace NetworkSniffer
 
         public static uint NextSequenceNumber { get; private set; }
 
-        public event Action<TcpConnection, ArraySegment<byte>> DataReceived;
+        public event Action<TcpConnection, ArraySegment<byte>,int> DataReceived;
 
         public long SequenceNumberToBytesReceived(uint sequenceNumber)
         {
@@ -45,19 +51,20 @@ namespace NetworkSniffer
             return BytesReceived + offsetToCurrent;
         }
 
-        internal void OnDataReceived(ArraySegment<byte> data)
+        internal void OnDataReceived(ArraySegment<byte> data, int needToSkip)
         {
             var dataReceived = DataReceived;
-            dataReceived?.Invoke(this, data);
+            dataReceived?.Invoke(this, data, needToSkip);
         }
 
         internal void HandleTcpReceived(uint sequenceNumber, ArraySegment<byte> data)
         {
             var dataPosition = SequenceNumberToBytesReceived(sequenceNumber);
+            long needToSkip=0;
             NextSequenceNumber = (uint) (sequenceNumber + data.Count);
             if (dataPosition == BytesReceived)
             {
-                OnDataReceived(data);
+                OnDataReceived(data, (int)needToSkip);
                 BytesReceived += data.Count;
             }
             else
@@ -71,20 +78,19 @@ namespace NetworkSniffer
                 }
             }
 
-            if (_bufferedPackets.Count > 1000)
+            if (_bufferedPackets.Count > 100)
             {
-                string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority" : "Normal priority") +
-                               " Received: " + BytesReceived + "\r\n" +
-                               String.Join("\r\n",
-                                   _bufferedPackets.Take(10).Select(x => "" + x.Key + ": " + x.Value.Length)) + "\r\nQueue length:" + _bufferedPackets.Count;
+                string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority " : "Normal priority ") + SnifferType +
+                    " Received: " + BytesReceived + "\r\n" + _bufferedPackets.Take(1).Select(x => "" + x.Key + ": " + x.Value.Length) + "\r\nQueue length:" + _bufferedPackets.Count;
                 while (_bufferedPackets.Values.First().Length >= 500)
-                     _bufferedPackets.Remove(_bufferedPackets.Keys.First());
-                    //we don't know, whether large packet is continuation of previous message or not - so skip until new short message.
+                    _bufferedPackets.Remove(_bufferedPackets.Keys.First());
+                //we don't know, whether large packet is continuation of previous message or not - so skip until new short message.
                 if (BytesReceived + 500 <= _bufferedPackets.Keys.First())
-                    _bufferedPackets.Remove(_bufferedPackets.Keys.First()); 
-                    //and even after skipping long fragments we don't know, whether small fragment after big is a new short message or a big message tail - skip small one too.
+                    _bufferedPackets.Remove(_bufferedPackets.Keys.First());
+                //and even after skipping long fragments we don't know, whether small fragment after big is a new short message or a big message tail - skip small one too.
+                needToSkip = _bufferedPackets.Keys.First() - BytesReceived;
                 BytesReceived = _bufferedPackets.Keys.First();
-                BasicTeraData.LogError(debug+"\r\nNew Queue length:" + _bufferedPackets.Count, false, true);
+                BasicTeraData.LogError(debug + "\r\nNew Queue length:" + _bufferedPackets.Count+"\r\nSkipping bytes:"+needToSkip, false, true);
             }
             long firstBufferedPosition;
             while (_bufferedPackets.Any() && ((firstBufferedPosition = _bufferedPackets.Keys.First()) <= BytesReceived))
@@ -97,8 +103,9 @@ namespace NetworkSniffer
 
                 if (alreadyReceivedBytes >= dataArray.Length) continue;
                 var count = dataArray.Length - alreadyReceivedBytes;
-                OnDataReceived(new ArraySegment<byte>(dataArray, (int) alreadyReceivedBytes, (int) count));
+                OnDataReceived(new ArraySegment<byte>(dataArray, (int) alreadyReceivedBytes, (int) count), (int)needToSkip);
                 BytesReceived += count;
+                needToSkip = 0;
             }
         }
 

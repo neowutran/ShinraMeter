@@ -5,13 +5,12 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Windows.Forms;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NetworkSniffer
 {
-    // Doesn't work since Microsoft crippled raw sockets on the Desktop variants of Windows.
-    // In particular it doesn't receive incoming TCP packets
-    // Might work on Server variants of Windows, but I didn't test that
     public class IpSnifferRawSocketSingleInterface : IpSniffer
     {
         private readonly byte[] _buffer;
@@ -23,7 +22,6 @@ namespace NetworkSniffer
         public IpSnifferRawSocketSingleInterface(IPAddress localIp)
         {
             _localIp = localIp;
-            _buffer = new byte[1 << 22];
         }
 
         private void Init()
@@ -38,11 +36,23 @@ namespace NetworkSniffer
             _socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
             var receiveAllIp = BitConverter.GetBytes(3);
             _socket.IOControl(IOControlCode.ReceiveAll, receiveAllIp, null);
+            _socket.ReceiveBufferSize = 1 << 23;
+            Task.Run(()=>ReadAsync(_socket));
+        }
 
-            //_socket.ReceiveBufferSize = 1 << 16;
-            _socket.ReceiveBufferSize = 1 << 22;
-
-            Read();
+        async Task ReadAsync(Socket s)
+        {
+            // Reusable SocketAsyncEventArgs and awaitable wrapper 
+            var args = new SocketAsyncEventArgs();
+            args.SetBuffer(new byte[0x1000], 0, 0x1000);
+            var awaitable = new SocketAwaitable(args);
+            while (true)
+            {
+                await s.ReceiveAsync(awaitable);
+                int bytesRead = args.BytesTransferred;
+                if (bytesRead <= 0) throw new Exception("Raw socket is disconnected");
+                OnPacketReceived(new ArraySegment<byte>(args.Buffer, 0, bytesRead));
+            }
         }
 
         private void Finish()
@@ -55,30 +65,7 @@ namespace NetworkSniffer
             _socket.Close();
             _socket = null;
         }
-
-        private void Read()
-        {
-            _socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, Receive, _socket);
-        }
-
-        private void Receive(IAsyncResult ar)
-        {
-            if (!Enabled)
-            {
-                return;
-            }
-            var socket = (Socket) ar.AsyncState;
-            var count = socket.EndReceive(ar);
-            if (count == 0)
-            {
-                Console.WriteLine("Socket disconnected");
-                MessageBox.Show("Socket disconnected. If you see this message, report to the dev");
-            }
-
-            OnPacketReceived(new ArraySegment<byte>(_buffer, 0, count));
-            Read();
-        }
-
+        
         protected override void SetEnabled(bool value)
         {
             if (value)
@@ -103,6 +90,64 @@ namespace NetworkSniffer
         public override string ToString()
         {
             return $"{base.ToString()} {_localIp}";
+        }
+    }
+
+    public sealed class SocketAwaitable : INotifyCompletion
+    {
+        private readonly static Action SENTINEL = () => { };
+
+        internal bool m_wasCompleted;
+        internal Action m_continuation;
+        internal SocketAsyncEventArgs m_eventArgs;
+
+        public SocketAwaitable(SocketAsyncEventArgs eventArgs)
+        {
+            if (eventArgs == null) throw new ArgumentNullException("eventArgs");
+            m_eventArgs = eventArgs;
+            eventArgs.Completed += delegate
+            {
+                var prev = m_continuation ?? Interlocked.CompareExchange(
+                    ref m_continuation, SENTINEL, null);
+                if (prev != null) prev();
+            };
+        }
+
+        internal void Reset()
+        {
+            m_wasCompleted = false;
+            m_continuation = null;
+        }
+
+        public SocketAwaitable GetAwaiter() { return this; }
+
+        public bool IsCompleted { get { return m_wasCompleted; } }
+
+        public void OnCompleted(Action continuation)
+        {
+            if (m_continuation == SENTINEL ||
+                Interlocked.CompareExchange(
+                    ref m_continuation, continuation, null) == SENTINEL)
+            {
+                Task.Run(continuation);
+            }
+        }
+
+        public void GetResult()
+        {
+            if (m_eventArgs.SocketError != SocketError.Success)
+                throw new SocketException((int)m_eventArgs.SocketError);
+        }
+    }
+    public static class SocketExtensions
+    {
+        public static SocketAwaitable ReceiveAsync(this Socket socket,
+            SocketAwaitable awaitable)
+        {
+            awaitable.Reset();
+            if (!socket.ReceiveAsync(awaitable.m_eventArgs))
+                awaitable.m_wasCompleted = true;
+            return awaitable;
         }
     }
 }

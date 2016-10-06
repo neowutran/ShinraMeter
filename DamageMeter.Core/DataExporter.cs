@@ -186,7 +186,7 @@ namespace DamageMeter
             if (!despawnNpc.Dead) return;
 
             var entity = (NpcEntity)DamageTracker.Instance.GetEntity(despawnNpc.Npc);
-
+            if (entity==null) return;// killing mob spawned by missed packet
             var stats = GenerateStats(entity, abnormality);
             if (stats == null)
             {
