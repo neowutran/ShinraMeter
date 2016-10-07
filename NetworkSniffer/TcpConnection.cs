@@ -81,7 +81,7 @@ namespace NetworkSniffer
             if (_bufferedPackets.Count > 100)
             {
                 string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority " : "Normal priority ") + SnifferType +
-                    " Received: " + BytesReceived + "\r\n" + _bufferedPackets.Take(1).Select(x => "" + x.Key + ": " + x.Value.Length) + "\r\nQueue length:" + _bufferedPackets.Count;
+                    " Received: " + BytesReceived + "\r\n" + _bufferedPackets.First().Key + ": " + _bufferedPackets.First().Value.Length + "\r\nQueue length:" + _bufferedPackets.Count;
                 while (_bufferedPackets.Values.First().Length >= 500)
                     _bufferedPackets.Remove(_bufferedPackets.Keys.First());
                 //we don't know, whether large packet is continuation of previous message or not - so skip until new short message.
