@@ -536,4 +536,13 @@
   <data name="CopyInspect" xml:space="preserve">
     <value>パーティー志願時 "/詳細確認 名前" をコピー</value>
   </data>
+  <data name="UploadGlyphBuild" xml:space="preserve">
+    <value>moongourd.net に紋章構成をアップロード</value>
+  </data>
+  <data name="No_active_quest" xml:space="preserve">
+    <value>現時点でアクティブなクエストはありません。</value>
+  </data>
+  <data name="Quests_status" xml:space="preserve">
+    <value>完了したクエスト: </value>
+  </data>
 </root>
