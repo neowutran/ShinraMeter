@@ -152,5 +152,24 @@ namespace DamageMeter.Processing
         {
             if (message.Npc == _lastBoss) _lastBoss = null;
         }
+
+        internal static void CheckJoyOfPartying()
+        {
+            if (!BasicTeraData.Instance.WindowData.EnableChat) return;
+
+            var player = NetworkController.Instance.PlayerTracker.Me();
+            if (player == null) return;
+
+            var joyOfPartying = BasicTeraData.Instance.HotDotDatabase.Get(999001021);
+            if (joyOfPartying == null) return;
+
+            if (!TeraWindow.IsTeraActive())
+            {
+                if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.User.Id, joyOfPartying))
+                {
+                    NetworkController.Instance.FlashMessage = new Tuple<string, string>(LP.JoyOfPartying, LP.JoyOfPartying);
+                }
+            }
+        }
     }
 }
