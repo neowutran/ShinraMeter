@@ -524,7 +524,7 @@
     <value>alt+Enter키 비활성</value>
   </data>
   <data name="ContactTry" xml:space="preserve">
-    <value>Contact try</value>
+    <value>전투 준비</value>
   </data>
   <data name="PartyInvite" xml:space="preserve">
     <value>파티 초대</value>
@@ -533,6 +533,6 @@
     <value>채팅 및 알림기능 사용</value>
   </data>
   <data name="CopyInspect" xml:space="preserve">
-    <value>Copy "/inspect Name" on party apply request</value>
+    <value>파티 지원시 "/살펴보기 닉네임" 클립보드에 복사하기</value>
   </data>  
 </root>
