@@ -108,7 +108,7 @@ namespace DamageMeter.Sniffing
         }
 
         // called from the tcp sniffer, so it needs to lock
-        private void HandleTcpDataReceived(TcpConnection connection, ArraySegment<byte> data)
+        private void HandleTcpDataReceived(TcpConnection connection, ArraySegment<byte> data, int needToSkip)
         {
             lock (_eventLock)
             {
@@ -139,6 +139,12 @@ namespace DamageMeter.Sniffing
                         _isNew.Remove(connection);
                         _clientToServer = connection;
                     }
+                    if (connection.BytesReceived > 5) //if received more bytes but still not recognized - not interesting.
+                    {
+                        _isNew.Remove(connection);
+                        connection.DataReceived -= HandleTcpDataReceived;
+                        connection.RemoveCallback();
+                    }
                 }
 
                 if (!(connection == _clientToServer || connection == _serverToClient))
@@ -147,9 +153,9 @@ namespace DamageMeter.Sniffing
                     return;
                 var dataArray = data.Array.Skip(data.Offset).Take(data.Count).ToArray();
                 if (connection == _clientToServer)
-                    _decrypter.ClientToServer(dataArray);
+                    _decrypter.ClientToServer(dataArray, needToSkip);
                 else
-                    _decrypter.ServerToClient(dataArray);
+                    _decrypter.ServerToClient(dataArray, needToSkip);
             }
         }
 

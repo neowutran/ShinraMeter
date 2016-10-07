@@ -551,4 +551,7 @@
   <data name="NotifyCB" xml:space="preserve">
     <value>クリスタル保護の通知</value>
   </data>
+  <data name="JoyOfPartying" xml:space="preserve">
+    <value>レッツパーティー！ 100%</value>
+  </data>
 </root>

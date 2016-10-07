@@ -53,9 +53,9 @@ namespace DamageMeter.Processing
         {
             var str = discordInfo.QuestListHeaderText;
             var questLists = ReplaceNoQuest(discordInfo.QuestNoActiveText);
-            foreach (var nonActiveQuest in guildquest.GuildQuests.Where(
-                x => x.GuildQuestType1 == Tera.Game.Messages.S_GUILD_QUEST_LIST.GuildQuestType.Hunt &&
-                x.QuestSize == (Tera.Game.Messages.S_GUILD_QUEST_LIST.QuestSizeType)guildquest.GuildSize &&
+            foreach (var nonActiveQuest in guildquest.GuildQuests.Where(x =>
+                x.GuildQuestType1 == Tera.Game.Messages.S_GUILD_QUEST_LIST.GuildQuestType.Hunt &&
+                x.QuestSize <= (Tera.Game.Messages.S_GUILD_QUEST_LIST.QuestSizeType)guildquest.GuildSize &&
                 !x.Active))
             {
                 questLists = discordInfo.QuestListInfoText;
