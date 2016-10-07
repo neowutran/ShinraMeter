@@ -234,6 +234,9 @@
   <data name="White" xml:space="preserve">
     <value>白字</value>
   </data>
+  <data name="Unknown_Skill" xml:space="preserve">
+    <value>不明技能</value>
+  </data>
   <data name="Archer" xml:space="preserve">
     <value>弓箭手</value>
   </data>
@@ -442,5 +445,116 @@
   </data>
   <data name="Mot" xml:space="preserve">
     <value>MOT</value>
+  </data>
+  <data name="NumberPlayersDisplayed" xml:space="preserve">
+    <value>顯示隊伍人數 </value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="ApplyToYourParty" xml:space="preserve">
+    <value>申請組隊</value>
+  </data>
+  <data name="Lvl" xml:space="preserve">
+    <value>Lvl</value>
+  </data>
+  <data name="OfferedPrice" xml:space="preserve">
+    <value>議價</value>
+  </data>
+  <data name="PartyMatchingSuccess" xml:space="preserve">
+    <value>配隊成功</value>
+  </data>
+  <data name="SellerPrice" xml:space="preserve">
+    <value>登入價格</value>
+  </data>
+  <data name="Trading" xml:space="preserve">
+    <value>交易</value>
+  </data>
+  <data name="Whisper" xml:space="preserve">
+    <value>密語</value>
+  </data>
+  <data name="DelayToWaitPasting" xml:space="preserve">
+    <value>延遲貼上時間</value>
+  </data>
+  <data name="PopupStayActiveForXms" xml:space="preserve">
+    <value>提示通知時間(毫秒)</value>
+  </data>
+  <data name="SoundFilename" xml:space="preserve">
+    <value>聲音檔</value>
+  </data>
+  <data name="SoundStayActiveForXms" xml:space="preserve">
+    <value>通知持續播放時間(毫秒)</value>
+  </data>
+  <data name="SoundVolume" xml:space="preserve">
+    <value>音量</value>
+  </data>
+  <data name="TestSound" xml:space="preserve">
+    <value>測試播放</value>
+  </data>
+  <data name="WhisperColor" xml:space="preserve">
+    <value>密語</value>
+  </data>
+  <data name="AllianceColor" xml:space="preserve">
+    <value>聯盟</value>
+  </data>
+  <data name="AreaColor" xml:space="preserve">
+    <value>領地</value>
+  </data>
+  <data name="GeneralColor" xml:space="preserve">
+    <value>全體</value>
+  </data>
+  <data name="GroupColor" xml:space="preserve">
+    <value>組隊</value>
+  </data>
+  <data name="GuildColor" xml:space="preserve">
+    <value>公會</value>
+  </data>
+  <data name="RaidColor" xml:space="preserve">
+    <value>攻擊隊</value>
+  </data>
+  <data name="SayColor" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="TradingColor" xml:space="preserve">
+    <value>交易</value>
+  </data>
+  <data name="EmotesColor" xml:space="preserve">
+    <value>表情符號</value>
+  </data>
+  <data name="PrivateChannelColor" xml:space="preserve">
+    <value>個人頻道</value>
+  </data>
+  <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
+    <value>「Alt+Enter」無效</value>
+  </data>
+  <data name="ContactTry" xml:space="preserve">
+    <value>Contact try</value>
+  </data>
+  <data name="PartyInvite" xml:space="preserve">
+    <value>隊伍邀請</value>
+  </data>
+  <data name="EnableChat" xml:space="preserve">
+    <value>開啟通知功能</value>
+  </data>
+  <data name="CopyInspect" xml:space="preserve">
+    <value>當有玩家申請組隊時，複製「/查看 ID」．</value>
+  </data>
+  <data name="CombatReadyCheck" xml:space="preserve">
+    <value>戰鬥準備確認</value>
+  </data>
+  <data name="UploadGlyphBuild" xml:space="preserve">
+    <value>上傳紋章至moongourd.net</value>
+  </data>
+  <data name="No_active_quest" xml:space="preserve">
+    <value>No active quest at the moment</value>
+  </data>
+  <data name="Quests_status" xml:space="preserve">
+    <value>任務完成: </value>
+  </data>
+  <data name="NoCrystalBind" xml:space="preserve">
+    <value>無水晶防護卷軸效果</value>
+  </data>
+  <data name="NotifyCB" xml:space="preserve">
+    <value>通知：水晶防護卷 </value>
   </data>
 </root>
