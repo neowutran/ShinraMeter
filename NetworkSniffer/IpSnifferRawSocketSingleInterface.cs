@@ -44,7 +44,7 @@ namespace NetworkSniffer
         {
             // Reusable SocketAsyncEventArgs and awaitable wrapper 
             var args = new SocketAsyncEventArgs();
-            args.SetBuffer(new byte[0x1000], 0, 0x1000);
+            args.SetBuffer(new byte[0x100000], 0, 0x100000);
             var awaitable = new SocketAwaitable(args);
             while (true)
             {
