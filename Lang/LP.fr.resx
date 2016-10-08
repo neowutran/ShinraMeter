@@ -522,4 +522,40 @@
   <data name="PrivateChannelColor" xml:space="preserve">
     <value>Couleur Canal privé</value>
   </data>
+  <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
+    <value>Supprimer raccourci Alt+Entré de Tera (Plein écrant)</value>
+  </data>
+  <data name="ContactTry" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="PartyInvite" xml:space="preserve">
+    <value>Invitation de partie</value>
+  </data>
+  <data name="CombatReadyCheck" xml:space="preserve">
+    <value>Début de combat détecté</value>
+  </data>
+  <data name="EnableChat" xml:space="preserve">
+    <value>Activer notification de chat et des fonctions</value>
+  </data>
+  <data name="CopyInspect" xml:space="preserve">
+    <value>Copier "/inspect Pseudo" dans chat pour inspecter</value>
+  </data>
+  <data name="UploadGlyphBuild" xml:space="preserve">
+    <value>Envoyer mes glyphes vers moongourd.net</value>
+  </data>
+  <data name="No_active_quest" xml:space="preserve">
+    <value>Pas de quête active pour le moment</value>
+  </data>
+  <data name="Quests_status" xml:space="preserve">
+    <value>Status quêtes terminées: </value>
+  </data>
+  <data name="NoCrystalBind" xml:space="preserve">
+    <value> n'a pas de lien de cristal ou le CD se termine bientôt.</value>
+  </data>
+  <data name="NotifyCB" xml:space="preserve">
+    <value>Notification pour les liens de cristal.</value>
+  </data>
+  <data name="JoyOfPartying" xml:space="preserve">
+    <value>Loot de partie à à 100%</value>
+  </data>
 </root>
