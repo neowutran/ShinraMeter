@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Aggro" xml:space="preserve">
+    <value>仇恨</value>
+  </data>
+  <data name="Aggro_Time" xml:space="preserve">
+    <value>仇恨时间</value>
+  </data>
+  <data name="Aggro_Time_Tooltip" xml:space="preserve">
+    <value>"保持BOSS仇恨时间"</value>
+  </data>
+  <data name="Aggro_Tooltip" xml:space="preserve">
+    <value>获得仇恨次数</value>
+  </data>
+  <data name="AllianceColor" xml:space="preserve">
+    <value>联盟</value>
+  </data>
+  <data name="AlreadyInUse" xml:space="preserve">
+    <value>已经在使用</value>
+  </data>
+  <data name="ApplyToYourParty" xml:space="preserve">
+    <value>申请组队</value>
+  </data>
+  <data name="App_Do_you_want_to_update" xml:space="preserve">
+    <value>是否更新程序?</value>
+  </data>
+  <data name="App_Unable_to_contact_update_server" xml:space="preserve">
+    <value>无法连接更新服务器,请稍后再试．在error.log中提供了额外的错误信息。</value>
+  </data>
+  <data name="App_Update_Available" xml:space="preserve">
+    <value>开启自动更新</value>
+  </data>
+  <data name="Archer" xml:space="preserve">
+    <value>弓箭手</value>
+  </data>
+  <data name="AreaColor" xml:space="preserve">
+    <value>领地</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>平均</value>
+  </data>
+  <data name="AverageCrit" xml:space="preserve">
+    <value>平均暴击</value>
+  </data>
+  <data name="AvgDPS" xml:space="preserve">
+    <value>平均DPS</value>
+  </data>
+  <data name="AvgWhite" xml:space="preserve">
+    <value>平均白字</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>后方</value>
+  </data>
+  <data name="Berserker" xml:space="preserve">
+    <value>狂战士</value>
+  </data>
+  <data name="Boss" xml:space="preserve">
+    <value>Boss</value>
+  </data>
+  <data name="BossHP" xml:space="preserve">
+    <value>Boss血量</value>
+  </data>
+  <data name="Brawler" xml:space="preserve">
+    <value>魔拳师</value>
+  </data>
+  <data name="Buff" xml:space="preserve">
+    <value>BUFF</value>
+  </data>
+  <data name="Chained" xml:space="preserve">
+    <value>连击</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>职业</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="CombatReadyCheck" xml:space="preserve">
+    <value>战斗准备确认</value>
+  </data>
+  <data name="Common" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="ContactTry" xml:space="preserve">
+    <value>Contact try</value>
+  </data>
+  <data name="CopyInspect" xml:space="preserve">
+    <value>当有玩家申请组队时,复制「/查看 ID」．</value>
+  </data>
+  <data name="Critical" xml:space="preserve">
+    <value>暴击</value>
+  </data>
+  <data name="CritPercent" xml:space="preserve">
+    <value>暴击率</value>
+  </data>
+  <data name="Crits" xml:space="preserve">
+    <value>暴击次数</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>伤害</value>
+  </data>
+  <data name="DamagePercent" xml:space="preserve">
+    <value>伤害%</value>
+  </data>
+  <data name="Damage_done" xml:space="preserve">
+    <value>造成伤害</value>
+  </data>
+  <data name="DamgeTaken" xml:space="preserve">
+    <value>承受伤害</value>
+  </data>
+  <data name="Deaths" xml:space="preserve">
+    <value>死亡</value>
+  </data>
+  <data name="Deaths_Tooltip" xml:space="preserve">
+    <value>死亡次数</value>
+  </data>
+  <data name="Death_Time" xml:space="preserve">
+    <value>死亡时间</value>
+  </data>
+  <data name="Death_Time_Tooltip" xml:space="preserve">
+    <value>"倒地时间"</value>
+  </data>
+  <data name="DelayToWaitPasting" xml:space="preserve">
+    <value>粘贴等待延迟</value>
+  </data>
+  <data name="DOT" xml:space="preserve">
+    <value>DOT</value>
+  </data>
+  <data name="Dps" xml:space="preserve">
+    <value>DPS</value>
+  </data>
+  <data name="EffectTime" xml:space="preserve">
+    <value>效果时间</value>
+  </data>
+  <data name="EmotesColor" xml:space="preserve">
+    <value>表情符号</value>
+  </data>
+  <data name="EnableChat" xml:space="preserve">
+    <value>开启通知功能</value>
+  </data>
+  <data name="Enrage" xml:space="preserve">
+    <value>愤怒</value>
+  </data>
+  <data name="Fight" xml:space="preserve">
+    <value>战斗</value>
+  </data>
+  <data name="FightPercent" xml:space="preserve">
+    <value>战斗时间百分比</value>
+  </data>
+  <data name="Fight_Duration" xml:space="preserve">
+    <value>战斗时间</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>前方</value>
+  </data>
+  <data name="GeneralColor" xml:space="preserve">
+    <value>全体</value>
+  </data>
+  <data name="GroupColor" xml:space="preserve">
+    <value>组队</value>
+  </data>
+  <data name="GuildColor" xml:space="preserve">
+    <value>公会</value>
+  </data>
+  <data name="Gunner" xml:space="preserve">
+    <value>魔工师</value>
+  </data>
+  <data name="Heal" xml:space="preserve">
+    <value>治愈</value>
+  </data>
+  <data name="HealCritPercent" xml:space="preserve">
+    <value>治愈暴击率</value>
+  </data>
+  <data name="Hits" xml:space="preserve">
+    <value>攻击次数</value>
+  </data>
+  <data name="HitsTaken" xml:space="preserve">
+    <value>被攻击次数</value>
+  </data>
+  <data name="Hot" xml:space="preserve">
+    <value>HOT</value>
+  </data>
+  <data name="Individual_dps" xml:space="preserve">
+    <value>个人DPS</value>
+  </data>
+  <data name="Lancer" xml:space="preserve">
+    <value>枪骑士</value>
+  </data>
+  <data name="Lvl" xml:space="preserve">
+    <value>等级</value>
+  </data>
+  <data name="MainWindow_Boss_Adds" xml:space="preserve">
+    <value>BOSS + 一般怪</value>
+  </data>
+  <data name="MainWindow_Close_Shinra_Meter_V" xml:space="preserve">
+    <value>结束神罗V</value>
+  </data>
+  <data name="MainWindow_Do_you_want_to_close_the_application" xml:space="preserve">
+    <value>要关闭应用程序吗?</value>
+  </data>
+  <data name="MainWindow_Fatal_error" xml:space="preserve">
+    <value>发现一个严重错误，请查看error.log文件以获取更多信息。</value>
+  </data>
+  <data name="MainWindow_Only_boss" xml:space="preserve">
+    <value>只计算BOSS</value>
+  </data>
+  <data name="Mana" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="MaxCrit" xml:space="preserve">
+    <value>最大暴击</value>
+  </data>
+  <data name="MaxWhite" xml:space="preserve">
+    <value>最大白字</value>
+  </data>
+  <data name="MinCrit" xml:space="preserve">
+    <value>最小暴击</value>
+  </data>
+  <data name="Mot" xml:space="preserve">
+    <value>MOT</value>
+  </data>
+  <data name="Mystic" xml:space="preserve">
+    <value>元素使</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="Ninja" xml:space="preserve">
+    <value>忍术师</value>
+  </data>
+  <data name="NoCrystalBind" xml:space="preserve">
+    <value>无水晶防护卷轴效果</value>
+  </data>
+  <data name="NotifyCB" xml:space="preserve">
+    <value>通知:水晶防护卷</value>
+  </data>
+  <data name="No_active_quest" xml:space="preserve">
+    <value>现在没有活动任务</value>
+  </data>
+  <data name="NumberPlayersDisplayed" xml:space="preserve">
+    <value>显示队伍人数</value>
+  </data>
+  <data name="OfferedPrice" xml:space="preserve">
+    <value>议价</value>
+  </data>
+  <data name="PartyInvite" xml:space="preserve">
+    <value>组队邀请</value>
+  </data>
+  <data name="PartyMatchingSuccess" xml:space="preserve">
+    <value>匹配成功</value>
+  </data>
+  <data name="PerSecond" xml:space="preserve">
+    <value>/秒</value>
+  </data>
+  <data name="Pet" xml:space="preserve">
+    <value>宠物</value>
+  </data>
+  <data name="PopupStayActiveForXms" xml:space="preserve">
+    <value>提示通知时间(ms)</value>
+  </data>
+  <data name="Priest" xml:space="preserve">
+    <value>祭司</value>
+  </data>
+  <data name="PrivateChannelColor" xml:space="preserve">
+    <value>个人频道</value>
+  </data>
+  <data name="Quests_status" xml:space="preserve">
+    <value>任务完成:</value>
+  </data>
+  <data name="RaidColor" xml:space="preserve">
+    <value>Raid</value>
+  </data>
+  <data name="Reaper" xml:space="preserve">
+    <value>飞剑士</value>
+  </data>
+  <data name="RegisterHotKeyError" xml:space="preserve">
+    <value>无法注册热键</value>
+  </data>
+  <data name="RemoveTeraAltEnterHotkey" xml:space="preserve">
+    <value>「Alt+Enter」无效</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="SayColor" xml:space="preserve">
+    <value>一般</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>秒</value>
+  </data>
+  <data name="SellerPrice" xml:space="preserve">
+    <value>登记价格</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>侧面</value>
+  </data>
+  <data name="SkillDealt" xml:space="preserve">
+    <value>输出判定</value>
+  </data>
+  <data name="SkillName" xml:space="preserve">
+    <value>技能名称</value>
+  </data>
+  <data name="SkillReceived" xml:space="preserve">
+    <value>损伤判定</value>
+  </data>
+  <data name="Slayer" xml:space="preserve">
+    <value>屠杀者</value>
+  </data>
+  <data name="Slaying" xml:space="preserve">
+    <value>必杀一击</value>
+  </data>
+  <data name="SlayingTooltip" xml:space="preserve">
+    <value>当HP低于50%,必杀一击水晶效果将会发动</value>
+  </data>
+  <data name="Sorcerer" xml:space="preserve">
+    <value>魔导士</value>
+  </data>
+  <data name="SoundFilename" xml:space="preserve">
+    <value>音效文件</value>
+  </data>
+  <data name="SoundStayActiveForXms" xml:space="preserve">
+    <value>通知持续播放时间(ms)</value>
+  </data>
+  <data name="SoundVolume" xml:space="preserve">
+    <value>音量</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="SystemTray_Action" xml:space="preserve">
+    <value>动作</value>
+  </data>
+  <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
+    <value>输出至EXCEL(自动)</value>
+  </data>
+  <data name="SystemTray_before_crash" xml:space="preserve">
+    <value>崩溃前</value>
+  </data>
+  <data name="SystemTray_Click_throu" xml:space="preserve">
+    <value>禁用点击</value>
+  </data>
+  <data name="SystemTray_Config" xml:space="preserve">
+    <value>设定</value>
+  </data>
+  <data name="SystemTray_Count_only_bosses" xml:space="preserve">
+    <value>只计算BOSS</value>
+  </data>
+  <data name="SystemTray_Count_only_party_members" xml:space="preserve">
+    <value>只计算队伍</value>
+  </data>
+  <data name="SystemTray_Detect_bosses_by_HP_bar" xml:space="preserve">
+    <value>由HP条检测BOSS(忽略数据库)</value>
+  </data>
+  <data name="SystemTray_Discord" xml:space="preserve">
+    <value>Discord</value>
+  </data>
+  <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
+    <value>將目前数据輸出至EXCEL</value>
+  </data>
+  <data name="SystemTray_Invisible_when_no_stats" xml:space="preserve">
+    <value>自动隐藏(不活动时)</value>
+  </data>
+  <data name="SystemTray_Links" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="SystemTray_No_server" xml:space="preserve">
+    <value>无法连接服务器.</value>
+  </data>
+  <data name="SystemTray_Packet_waiting" xml:space="preserve">
+    <value>封包等待处理中.</value>
+  </data>
+  <data name="SystemTray_Patch_note" xml:space="preserve">
+    <value>更新日志</value>
+  </data>
+  <data name="SystemTray_Performance_information" xml:space="preserve">
+    <value>性能信息</value>
+  </data>
+  <data name="SystemTray_Report_issue" xml:space="preserve">
+    <value>反馈问题</value>
+  </data>
+  <data name="SystemTray_Show_always" xml:space="preserve">
+    <value>保持显示</value>
+  </data>
+  <data name="SystemTray_Site_export" xml:space="preserve">
+    <value>输出到网站</value>
+  </data>
+  <data name="SystemTray_Stay_topmost" xml:space="preserve">
+    <value>显示在最上层</value>
+  </data>
+  <data name="SystemTray_Wiki" xml:space="preserve">
+    <value>Wiki</value>
+  </data>
+  <data name="TeraDpsIoApiError" xml:space="preserve">
+    <value>API错误或暂停</value>
+  </data>
+  <data name="TestSound" xml:space="preserve">
+    <value>测试播放</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="TotalEncounter" xml:space="preserve">
+    <value>总计</value>
+  </data>
+  <data name="Trading" xml:space="preserve">
+    <value>交易</value>
+  </data>
+  <data name="TradingColor" xml:space="preserve">
+    <value>交易</value>
+  </data>
+  <data name="Unable_to_get_key_from_string" xml:space="preserve">
+    <value>无法从字符串获得密钥</value>
+  </data>
+  <data name="Unknown_Skill" xml:space="preserve">
+    <value>不明技能</value>
+  </data>
+  <data name="UploadGlyphBuild" xml:space="preserve">
+    <value>上传纹章配置至moongourd.net</value>
+  </data>
+  <data name="Warrior" xml:space="preserve">
+    <value>剑斗士</value>
+  </data>
+  <data name="Whisper" xml:space="preserve">
+    <value>密语</value>
+  </data>
+  <data name="WhisperColor" xml:space="preserve">
+    <value>密语</value>
+  </data>
+  <data name="White" xml:space="preserve">
+    <value>白字</value>
+  </data>
+  <data name="Your_computer_is_too_slow" xml:space="preserve">
+    <value>由于你的电脑性能过低，无法分析数据,即将退出.</value>
+  </data>
+  <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
+    <value>你的hotkeys.xml文件无效</value>
+  </data>
+</root>
