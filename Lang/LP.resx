@@ -552,4 +552,7 @@
   <data name="NotifyCB" xml:space="preserve">
     <value>Notify about CrystalBinds.</value>
   </data>
+  <data name="JoyOfPartying" xml:space="preserve">
+    <value>JoyOfPartying 100%</value>
+  </data>
 </root>

@@ -14,6 +14,8 @@ namespace Data
 
         public string GuildInfosText { get; private set; }
         public string QuestInfoText { get; private set; }
+        public string QuestListInfoText { get; private set; }
+        public string QuestListHeaderText { get; private set; }
         public string RewardContentText { get; private set; }
         public string RewardFooterText { get; private set; }
         public string RewardHeaderText { get; private set; }
@@ -22,19 +24,24 @@ namespace Data
         public string TargetFooterText { get; private set; }
         public string QuestNoActiveText { get; private set; }
 
+        public bool QuestLists { get; private set; }
+
         public DiscordInfoByGuild(
             ulong discordServer, 
             ulong discordChannelGuildInfo, 
             ulong discordChannelGuildQuest,
             string guildInfosText,
             string questInfoText,
+            string questListInfoText,
+            string questListHeaderText,
             string rewardFooterText,
             string rewardContentText,
             string rewardHeaderText,
             string targetHeaderText,
             string targetContentText,
             string targetFooterText,
-            string questNoActiveText
+            string questNoActiveText,
+            bool questLists
             )
         {
             DiscordServer = discordServer;
@@ -42,6 +49,8 @@ namespace Data
             DiscordChannelGuildInfo = discordChannelGuildInfo;
             GuildInfosText = guildInfosText;
             QuestInfoText = questInfoText;
+            QuestListInfoText = questListInfoText;
+            QuestListHeaderText = questListHeaderText;
             RewardFooterText = rewardFooterText;
             RewardContentText =  rewardContentText;
             RewardHeaderText = rewardHeaderText;
@@ -49,6 +58,7 @@ namespace Data
             TargetContentText =  targetContentText;
             TargetFooterText = targetFooterText;
             QuestNoActiveText = questNoActiveText;
+            QuestLists = questLists;
         }
     }
 }
