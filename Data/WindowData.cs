@@ -312,17 +312,6 @@ namespace Data
                     discordChannelGuildQuest = val;
                 }
 
-                bool questLists = false;
-                bool value;
-                var questListsElement = guild.Element("questLists");
-                if (questListsElement == null) return;
-                parseSuccess = bool.TryParse(questListsElement.Value, out value);
-                if (parseSuccess)
-                {
-                    questLists = value;
-                }
-
-
                 string guildInfosText = ":dart: {guild_guildname}  :dart:\n\n{guild_master} - {guild_size}\n{gold_label}: {guild_gold}\n{xp_label} for next level: {guild_xp_to_next_level}\nCreation time: {guild_creationtime}\nQuest done status: {guild_number_quest_done}/{guild_total_number_quest}\n";
                 string questInfoText = ":dart: {quest_guildname} - {quest_type} - {quest_size} :dart:\n\nTime remaining: {quest_time_remaining}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n{quest_list}\n";
                 string questListInfoText = "QuestSize: {quest_size}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n";
@@ -383,8 +372,8 @@ namespace Data
                     targetHeaderText,
                     targetContentText,
                     targetFooterText,
-                    questNoActiveText,
-                    questLists
+                    questNoActiveText
+                    
                     ));
             }
 
@@ -533,7 +522,6 @@ namespace Data
                 xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_quests_channel", discordData.Value.DiscordChannelGuildQuest));
                 xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("server", discordData.Value.DiscordServer));
 
-                xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("questLists", discordData.Value.QuestLists));
                 xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("guild_infos_text", discordData.Value.GuildInfosText));
                 xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("quest_infos_text", discordData.Value.QuestInfoText));
                 xml.Root.Element("discord").Element("guilds").Element(name).Add(new XElement("quest_list_infos_text", discordData.Value.QuestListInfoText));

@@ -84,16 +84,19 @@ namespace DamageMeter.UI
         private static readonly object _lock = new object();
         private bool _needToStop = false;
 
-        public void ShowBallon(Tuple<string, string> flash)
+        public void ShowBallon(NotifyMessage flash)
         {
             if (flash == null) return;
+
             Tray.HideBalloonTip();
             if (BasicTeraData.Instance.WindowData.PopupDisplayTime >= 500)
             {
                 var balloon = new Balloon();
-                balloon.Value(flash.Item1, flash.Item2);
+                balloon.Value(flash.Title, flash.Content);
                 Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, BasicTeraData.Instance.WindowData.PopupDisplayTime);
             }
+
+            if (!flash.HaveSound) { return; }
 
             var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound);
             if (!File.Exists(file))

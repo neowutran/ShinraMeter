@@ -64,7 +64,7 @@ namespace DamageMeter
                 && NetworkController.Instance.EntityTracker.MeterUser.Name != sender 
                 && !TeraWindow.IsTeraActive())
             {
-                NetworkController.Instance.FlashMessage = new Tuple<string, string>(LP.Whisper +": "+sender, message);
+                NetworkController.Instance.FlashMessage = new NotifyMessage(LP.Whisper +": "+sender, message);
             }
 
             if (chatType != ChatType.Whisper &&
@@ -72,7 +72,7 @@ namespace DamageMeter
                 !TeraWindow.IsTeraActive() &&
                 message.Contains("@"+ NetworkController.Instance.EntityTracker.MeterUser.Name))
             {
-                NetworkController.Instance.FlashMessage = new Tuple<string, string>( LP.Chat +": " + sender, message);
+                NetworkController.Instance.FlashMessage = new NotifyMessage( LP.Chat +": " + sender, message);
             }
 
             if ((chatType == ChatType.PrivateChannel ||
@@ -81,7 +81,7 @@ namespace DamageMeter
                 && !TeraWindow.IsTeraActive()
                 && message.Contains("@@"))
             {
-                NetworkController.Instance.FlashMessage = new Tuple<string, string>("Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name, "Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name);
+                NetworkController.Instance.FlashMessage = new NotifyMessage("Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name, "Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name);
             }
 
             var chatMessage = new ChatMessage(sender, message, chatType, channel, time);

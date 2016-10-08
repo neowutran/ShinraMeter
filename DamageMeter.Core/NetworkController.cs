@@ -33,14 +33,14 @@ namespace DamageMeter
         public delegate void UpdateUiHandler(
             StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter,
             AbnormalityStorage abnormals,
-            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, Tuple<string, string> flash);
+            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, NotifyMessage flash);
 
         public delegate void GuildIconEvent(Bitmap icon);
 
         private static NetworkController _instance;
         internal readonly AbnormalityStorage AbnormalityStorage;
         internal AbnormalityTracker AbnormalityTracker;
-        public Tuple<string, string> FlashMessage { get; set; }
+        public NotifyMessage FlashMessage { get; set; }
 
         private bool _clickThrou;
 

@@ -24,8 +24,6 @@ namespace Data
         public string TargetFooterText { get; private set; }
         public string QuestNoActiveText { get; private set; }
 
-        public bool QuestLists { get; private set; }
-
         public DiscordInfoByGuild(
             ulong discordServer, 
             ulong discordChannelGuildInfo, 
@@ -40,8 +38,7 @@ namespace Data
             string targetHeaderText,
             string targetContentText,
             string targetFooterText,
-            string questNoActiveText,
-            bool questLists
+            string questNoActiveText
             )
         {
             DiscordServer = discordServer;
@@ -58,7 +55,6 @@ namespace Data
             TargetContentText =  targetContentText;
             TargetFooterText = targetFooterText;
             QuestNoActiveText = questNoActiveText;
-            QuestLists = questLists;
         }
     }
 }

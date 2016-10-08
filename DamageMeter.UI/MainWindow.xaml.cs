@@ -222,13 +222,13 @@ namespace DamageMeter.UI
 
         public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities,
             bool ntimedEncounter, AbnormalityStorage nabnormals,
-            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting, Tuple<string,string> nflash)
+            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting, NotifyMessage nflash)
         {
             NetworkController.UpdateUiHandler changeUi =
                 delegate(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities,
                     bool timedEncounter,
                     AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory,
-                    List<ChatMessage> chatbox, int packetWaiting, Tuple<string,string> flash)
+                    List<ChatMessage> chatbox, int packetWaiting, NotifyMessage flash)
                 {
 
                     Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;

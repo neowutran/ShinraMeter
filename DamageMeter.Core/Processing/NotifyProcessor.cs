@@ -26,7 +26,7 @@ namespace DamageMeter.Processing
         {
             if (!TeraWindow.IsTeraActive())
             {
-                NetworkController.Instance.FlashMessage = new Tuple<string, string>(
+                NetworkController.Instance.FlashMessage = new NotifyMessage(
                     LP.PartyMatchingSuccess,
                     LP.PartyMatchingSuccess
                     );
@@ -39,7 +39,7 @@ namespace DamageMeter.Processing
             {
                 if (!TeraWindow.IsTeraActive())
                 {
-                    NetworkController.Instance.FlashMessage = new Tuple<string, string>(
+                    NetworkController.Instance.FlashMessage = new NotifyMessage(
                         LP.CombatReadyCheck,
                         LP.CombatReadyCheck
                         );
@@ -52,7 +52,7 @@ namespace DamageMeter.Processing
             if (!TeraWindow.IsTeraActive())
             {
 
-                NetworkController.Instance.FlashMessage = new Tuple<string, string>(
+                NetworkController.Instance.FlashMessage = new NotifyMessage(
                     message.PlayerName + " " + LP.ApplyToYourParty,
                     LP.Class + ": " +
                     LP.ResourceManager.GetString(message.PlayerClass.ToString(), LP.Culture) +
@@ -73,7 +73,7 @@ namespace DamageMeter.Processing
         {
             if (!TeraWindow.IsTeraActive())
             {
-                NetworkController.Instance.FlashMessage = new Tuple<string, string>(
+                NetworkController.Instance.FlashMessage = new NotifyMessage(
                     LP.Trading + ": " + message.PlayerName,
                     LP.SellerPrice + ": " + Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED.Gold(message.SellerPrice) +
                     Environment.NewLine +
@@ -88,21 +88,21 @@ namespace DamageMeter.Processing
             {
                 if (message.Type == Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.PartyInvite)
                 {
-                    NetworkController.Instance.FlashMessage = new Tuple<string, string>(
+                    NetworkController.Instance.FlashMessage = new NotifyMessage(
                         LP.PartyInvite + ": " + message.Sender,
                         message.Sender
                         );
                 }
                 else if (message.Type == Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.TradeRequest)
                 {
-                    NetworkController.Instance.FlashMessage = new Tuple<string, string>(
+                    NetworkController.Instance.FlashMessage = new NotifyMessage(
                         LP.Trading + ": " + message.Sender,
                         message.Sender
                         );
                 }
                 else if (message.Type != Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.Craft)
                 {
-                    NetworkController.Instance.FlashMessage = new Tuple<string, string>(
+                    NetworkController.Instance.FlashMessage = new NotifyMessage(
                         LP.ContactTry,
                         LP.ContactTry
                         );
@@ -119,25 +119,45 @@ namespace DamageMeter.Processing
             CheckCB(message);
         }
 
+        private static List<UserEntity> playerWithUnkownBuff = new List<UserEntity>();
+
         internal static void CheckCB(ParsedMessage message)
         {
             if (BasicTeraData.Instance.WindowData.DoNotWarnOnCB) return;
             if (_lastBoss == null) return;
             if (message.Time.Ticks < _nextCBNotifyCheck) return;
-            _nextCBNotifyCheck = message.Time.Ticks + 30 * TimeSpan.TicksPerSecond;// check no more than once per 30s
+            _nextCBNotifyCheck = message.Time.Ticks + 2 * TimeSpan.TicksPerSecond;// check no more than once per 30s
             var party = NetworkController.Instance.PlayerTracker.PartyList();
             string notify = "";
             foreach (var player in party)
             {
+                if (!NetworkController.Instance.AbnormalityTracker.EntityHaveAbnormality(player.Id))
+                {
+                    //If a player have no buff, he is not in the dungeons / connected / ..., so no notify since we don't have the data for everyone
+                    //TODO: if a some player don't have buff, display CCrystalbind for other player + when we get buffs list from those player, display a new notify
+                    //window with updated data
+                    return;
+                }
                 var cbleft = Math.Max(
                     NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CCrystalBind),
                     NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CrystalBind));
-                if (cbleft != 0 && cbleft < 15 * TimeSpan.TicksPerMinute) notify = player.Name + LP.NoCrystalBind + Environment.NewLine + notify;
+                if (cbleft != 0 && cbleft < 15 * TimeSpan.TicksPerMinute)
+                {
+                    if (cbleft < 0)
+                    {
+                        notify = player.Name + LP.NoCrystalBind + Environment.NewLine + notify;
+                    }
+                    else
+                    {
+                        notify = player.Name + " " + (cbleft/TimeSpan.TicksPerMinute) +" min left" + Environment.NewLine + notify;
+                    }
+                }
+
             }
             if (!string.IsNullOrEmpty(notify))
             {
                 _nextCBNotifyCheck = message.Time.Ticks + 10 * TimeSpan.TicksPerMinute;// no more than 1 notify in 10 minutes
-                NetworkController.Instance.FlashMessage = new Tuple<string, string>(notify.Remove(notify.IndexOf(Environment.NewLine)), notify);
+                NetworkController.Instance.FlashMessage = new NotifyMessage(notify.Remove(notify.IndexOf(Environment.NewLine)), notify, false);
             }
         }
 
@@ -173,7 +193,7 @@ namespace DamageMeter.Processing
             {
                 if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying))
                 {
-                    NetworkController.Instance.FlashMessage = new Tuple<string, string>(LP.JoyOfPartying, LP.JoyOfPartying);
+                    NetworkController.Instance.FlashMessage = new NotifyMessage(LP.JoyOfPartying, LP.JoyOfPartying);
                 }
             }
         }

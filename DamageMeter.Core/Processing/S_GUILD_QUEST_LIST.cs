@@ -41,11 +41,8 @@ namespace DamageMeter.Processing
             str = str.Replace("{active_quest}", activeQuest);
 
             var questList = ReplaceQuestListInfo(guildquest, discordInfo);
-            if (discordInfo.QuestLists)
-                str = str.Replace("{quest_list}", questList);
-            else
-                str = str.Replace("{quest_list}", "");
-
+            str = str.Replace("{quest_list}", questList);
+       
             return str;
         }
 
