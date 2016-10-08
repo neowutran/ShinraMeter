@@ -131,13 +131,8 @@ namespace DamageMeter.Processing
             string notify = "";
             foreach (var player in party)
             {
-                if (!NetworkController.Instance.AbnormalityTracker.EntityHaveAbnormality(player.Id))
-                {
-                    //If a player have no buff, he is not in the dungeons / connected / ..., so no notify since we don't have the data for everyone
-                    //TODO: if a some player don't have buff, display CCrystalbind for other player + when we get buffs list from those player, display a new notify
-                    //window with updated data
-                    return;
-                }
+
+                if (NetworkController.Instance.AbnormalityTracker.AbnormalityCount(player.Id)==0) continue;
                 var cbleft = Math.Max(
                     NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CCrystalBind),
                     NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CrystalBind));
