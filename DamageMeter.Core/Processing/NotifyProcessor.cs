@@ -122,8 +122,8 @@ namespace DamageMeter.Processing
         internal static void CheckCB(ParsedMessage message)
         {
             if (BasicTeraData.Instance.WindowData.DoNotWarnOnCB) return;
-            if (message.Time.Ticks < _nextCBNotifyCheck) return;
             if (_lastBoss == null) return;
+            if (message.Time.Ticks < _nextCBNotifyCheck) return;
             _nextCBNotifyCheck = message.Time.Ticks + 30 * TimeSpan.TicksPerSecond;// check no more than once per 30s
             var party = NetworkController.Instance.PlayerTracker.PartyList();
             string notify = "";
@@ -148,6 +148,12 @@ namespace DamageMeter.Processing
             _lastBoss = null;
         }
 
+        internal static void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)
+        {
+            var check= message.Time.Ticks + 10 * TimeSpan.TicksPerSecond;// delay check after respawn
+            _nextCBNotifyCheck = check > _nextCBNotifyCheck ? check : _nextCBNotifyCheck;
+            CheckJoyOfPartying();
+        }
         internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
             if (message.Npc == _lastBoss) _lastBoss = null;

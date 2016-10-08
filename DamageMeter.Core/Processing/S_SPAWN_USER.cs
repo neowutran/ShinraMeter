@@ -11,8 +11,7 @@ namespace DamageMeter.Processing
         internal S_SPAWN_USER(Tera.Game.Messages.SpawnUserServerMessage message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
-            NetworkController.Instance.AbnormalityTracker.Update(message);
-            NotifyProcessor.CheckJoyOfPartying();
+            NotifyProcessor.SpawnUser(message);
         }
     }
 }

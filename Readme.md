@@ -4,7 +4,7 @@ ShinraMeter is a DPS Meter for TERA based off https://github.com/gothos-folly/Te
 
 Wiki: https://github.com/neowutran/TeraDamageMeter/wiki
 
-Download: http://neowutran.ovh:8083/updates/
+Download: https://neowutran.ovh/updates/
 
 TERADATA: https://github.com/neowutran/TeraDpsMeterData
 
