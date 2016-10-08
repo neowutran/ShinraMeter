@@ -129,6 +129,7 @@ namespace DamageMeter.Processing
             string notify = "";
             foreach (var player in party)
             {
+                if (NetworkController.Instance.AbnormalityTracker.AbnormalityCount(player.Id)==0) continue;
                 var cbleft = Math.Max(
                     NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CCrystalBind),
                     NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CrystalBind));
