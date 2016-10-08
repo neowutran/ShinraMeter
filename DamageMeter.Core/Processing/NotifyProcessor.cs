@@ -150,7 +150,7 @@ namespace DamageMeter.Processing
 
         internal static void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)
         {
-            var check= message.Time.Ticks + 10 * TimeSpan.TicksPerSecond;// delay check after respawn
+            var check= message.Time.Ticks + 15 * TimeSpan.TicksPerSecond;// delay check after respawn
             _nextCBNotifyCheck = check > _nextCBNotifyCheck ? check : _nextCBNotifyCheck;
             CheckJoyOfPartying();
         }
@@ -163,7 +163,7 @@ namespace DamageMeter.Processing
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
 
-            var player = NetworkController.Instance.PlayerTracker.Me();
+            var player = NetworkController.Instance.EntityTracker.MeterUser;
             if (player == null) return;
 
             var joyOfPartying = BasicTeraData.Instance.HotDotDatabase.Get(999001021);
@@ -171,7 +171,7 @@ namespace DamageMeter.Processing
 
             if (!TeraWindow.IsTeraActive())
             {
-                if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.User.Id, joyOfPartying))
+                if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying))
                 {
                     NetworkController.Instance.FlashMessage = new Tuple<string, string>(LP.JoyOfPartying, LP.JoyOfPartying);
                 }

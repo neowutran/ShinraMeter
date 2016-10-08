@@ -546,4 +546,7 @@
   <data name="NotifyCB" xml:space="preserve">
     <value>Оповещать о хранителях кристаллов</value>
   </data>
+  <data name="JoyOfPartying" xml:space="preserve">
+    <value>Сила в единстве 100%</value>
+  </data>
 </root>
