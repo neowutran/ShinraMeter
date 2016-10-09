@@ -124,6 +124,7 @@ namespace DamageMeter.Sniffing
                         _serverToClient = connection;
                         _clientToServer = null;
 
+                        if (connection.BytesReceived>0x100) BasicTeraData.LogError("Proxy overhead:"+connection.BytesReceived);
                         _decrypter = new ConnectionDecrypter(server.Region);
                         _decrypter.ClientToServerDecrypted += HandleClientToServerDecrypted;
                         _decrypter.ServerToClientDecrypted += HandleServerToClientDecrypted;
@@ -139,7 +140,7 @@ namespace DamageMeter.Sniffing
                         _isNew.Remove(connection);
                         _clientToServer = connection;
                     }
-                    if (connection.BytesReceived > 0x100) //if received more bytes but still not recognized - not interesting.
+                    if (connection.BytesReceived > 0x10000) //if received more bytes but still not recognized - not interesting.
                     {
                         _isNew.Remove(connection);
                         connection.DataReceived -= HandleTcpDataReceived;

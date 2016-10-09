@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using log4net;
 using log4net.Config;
 using Tera.Game;
 using DamageMeter.AutoUpdate;
+using Lang;
 
 namespace Data
 {
@@ -30,8 +32,24 @@ namespace Data
             WindowData = new WindowData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
             Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));
+            //handle overrides
+            var serversOverridePath = Path.Combine(ResourceDirectory, "config/server-overrides.txt");
+            if (!File.Exists(serversOverridePath))//create the default file if it doesn't exist
+                File.WriteAllText(serversOverridePath, LP.ServerOverrides );
+            var overriddenServers = GetServers(serversOverridePath).ToList();
+            Servers.AddOverrides(overriddenServers);
+
+
             ImageDatabase = new ImageDatabase(Path.Combine(ResourceDirectory, "img/"));
             Icons = new IconsDatabase(Path.Combine(ResourceDirectory, "data/"));
+        }
+
+        private static IEnumerable<Server> GetServers(string filename)
+        {
+            return File.ReadAllLines(filename)
+                       .Where(s => !s.StartsWith("#") && !string.IsNullOrWhiteSpace(s))
+                       .Select(s => s.Split(new[] { ' ' }, 3))
+                       .Select(parts => new Server(parts[2], parts[1], parts[0]));
         }
 
         public QuestInfoDatabase QuestInfoDatabase { get; set; }

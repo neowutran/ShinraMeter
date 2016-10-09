@@ -555,4 +555,20 @@
   <data name="JoyOfPartying" xml:space="preserve">
     <value>JoyOfPartying 100%</value>
   </data>
+  <data name="ServerOverrides" xml:space="preserve">
+    <value>###########################################################
+# Add additional servers in this file (needed only for
+# VPN/Proxy that is not supported out-of-box)
+#
+# Format must follow the format IP Region ServerName
+#
+# Example:
+# 111.22.33.44 NA VPN Server 1
+#
+# Current possible regions: EU, NA, RU, KR, TW, JP
+#
+# Lines starting with '#' are ignored
+# Place servers below the next line
+###########################################################</value>
+  </data>
 </root>
