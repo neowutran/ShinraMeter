@@ -133,7 +133,7 @@
     <value>联盟</value>
   </data>
   <data name="AlreadyInUse" xml:space="preserve">
-    <value>已经在使用</value>
+    <value>已经在使用中</value>
   </data>
   <data name="ApplyToYourParty" xml:space="preserve">
     <value>申请组队</value>
@@ -142,7 +142,7 @@
     <value>是否更新程序?</value>
   </data>
   <data name="App_Unable_to_contact_update_server" xml:space="preserve">
-    <value>无法连接更新服务器,请稍后再试．在error.log中提供了额外的错误信息。</value>
+    <value>无法连接更新服务器,请稍后再试.在error.log中提供了额外的错误信息.</value>
   </data>
   <data name="App_Update_Available" xml:space="preserve">
     <value>开启自动更新</value>
@@ -205,7 +205,7 @@
     <value>Contact try</value>
   </data>
   <data name="CopyInspect" xml:space="preserve">
-    <value>当有玩家申请组队时,复制「/查看 ID」．</value>
+    <value>当有玩家申请组队时,复制「/查看 ID」.</value>
   </data>
   <data name="Critical" xml:space="preserve">
     <value>暴击</value>
@@ -319,7 +319,7 @@
     <value>要关闭应用程序吗?</value>
   </data>
   <data name="MainWindow_Fatal_error" xml:space="preserve">
-    <value>发现一个严重错误，请查看error.log文件以获取更多信息。</value>
+    <value>发现一个严重错误,请查看error.log文件以获取更多信息.</value>
   </data>
   <data name="MainWindow_Only_boss" xml:space="preserve">
     <value>只计算BOSS</value>
@@ -376,7 +376,7 @@
     <value>宠物</value>
   </data>
   <data name="PopupStayActiveForXms" xml:space="preserve">
-    <value>提示通知时间(ms)</value>
+    <value>提示通知持续时间(ms)</value>
   </data>
   <data name="Priest" xml:space="preserve">
     <value>祭司</value>
@@ -385,7 +385,7 @@
     <value>个人频道</value>
   </data>
   <data name="Quests_status" xml:space="preserve">
-    <value>任务完成:</value>
+    <value>任务状态:</value>
   </data>
   <data name="RaidColor" xml:space="preserve">
     <value>Raid</value>
@@ -409,7 +409,7 @@
     <value>秒</value>
   </data>
   <data name="SellerPrice" xml:space="preserve">
-    <value>登记价格</value>
+    <value>出售价格</value>
   </data>
   <data name="Side" xml:space="preserve">
     <value>侧面</value>
@@ -439,7 +439,7 @@
     <value>音效文件</value>
   </data>
   <data name="SoundStayActiveForXms" xml:space="preserve">
-    <value>通知持续播放时间(ms)</value>
+    <value>通知音效持续时间(ms)</value>
   </data>
   <data name="SoundVolume" xml:space="preserve">
     <value>音量</value>
@@ -454,13 +454,13 @@
     <value>输出至EXCEL(自动)</value>
   </data>
   <data name="SystemTray_before_crash" xml:space="preserve">
-    <value>崩溃前</value>
+    <value>异常退出前</value>
   </data>
   <data name="SystemTray_Click_throu" xml:space="preserve">
     <value>禁用点击</value>
   </data>
   <data name="SystemTray_Config" xml:space="preserve">
-    <value>设定</value>
+    <value>设置</value>
   </data>
   <data name="SystemTray_Count_only_bosses" xml:space="preserve">
     <value>只计算BOSS</value>
@@ -472,10 +472,10 @@
     <value>由HP条检测BOSS(忽略数据库)</value>
   </data>
   <data name="SystemTray_Discord" xml:space="preserve">
-    <value>Discord</value>
+    <value>Discord论坛</value>
   </data>
   <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
-    <value>將目前数据輸出至EXCEL</value>
+    <value>將目前数据输出至EXCEL</value>
   </data>
   <data name="SystemTray_Invisible_when_no_stats" xml:space="preserve">
     <value>自动隐藏(不活动时)</value>
@@ -487,7 +487,7 @@
     <value>无法连接服务器.</value>
   </data>
   <data name="SystemTray_Packet_waiting" xml:space="preserve">
-    <value>封包等待处理中.</value>
+    <value>正在等待数据包.</value>
   </data>
   <data name="SystemTray_Patch_note" xml:space="preserve">
     <value>更新日志</value>
@@ -505,13 +505,13 @@
     <value>输出到网站</value>
   </data>
   <data name="SystemTray_Stay_topmost" xml:space="preserve">
-    <value>显示在最上层</value>
+    <value>保持在顶层</value>
   </data>
   <data name="SystemTray_Wiki" xml:space="preserve">
     <value>Wiki</value>
   </data>
   <data name="TeraDpsIoApiError" xml:space="preserve">
-    <value>API错误或暂停</value>
+    <value>API错误</value>
   </data>
   <data name="TestSound" xml:space="preserve">
     <value>测试播放</value>
@@ -532,7 +532,7 @@
     <value>无法从字符串获得密钥</value>
   </data>
   <data name="Unknown_Skill" xml:space="preserve">
-    <value>不明技能</value>
+    <value>未知技能</value>
   </data>
   <data name="UploadGlyphBuild" xml:space="preserve">
     <value>上传纹章配置至moongourd.net</value>
@@ -550,7 +550,7 @@
     <value>白字</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>由于你的电脑性能过低，无法分析数据,即将退出.</value>
+    <value>由于你的电脑性能过低,无法分析数据,即将退出.</value>
   </data>
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
     <value>你的hotkeys.xml文件无效</value>
