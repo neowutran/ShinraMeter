@@ -313,14 +313,14 @@ namespace Data
                 }
 
                 string guildInfosText = ":dart: {guild_guildname}  :dart:\n\n{guild_master} - {guild_size}\n{gold_label}: {guild_gold}\n{xp_label} for next level: {guild_xp_to_next_level}\nCreation time: {guild_creationtime}\nQuest done status: {guild_number_quest_done}/{guild_total_number_quest}\n";
-                string questInfoText = ":dart: {quest_guildname} - {quest_type} - {quest_size} :dart:\n\nTime remaining: {quest_time_remaining}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n{quest_list}\n";
-                string questListInfoText = "QuestSize: {quest_size}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n";
+                string questInfoText = ":dart: {quest_guildname} - {quest_type} - {quest_size} :dart:\n\nTime remaining: {quest_time_remaining}\nIs bam quest: {quest_is_bam_quest}\n{targets}\n{rewards}\n";
+                string questListInfoText = "{quest_type} - {targets}\n";
                 string questListHeaderText = "----NoActiveQuest----\n\n";
                 string rewardFooterText = "";
                 string rewardContentText = "{reward_name}: {reward_amount}\n";
                 string rewardHeaderText = "---------\n";
 
-                string targetHeaderText = "---------\n";
+                string targetHeaderText = "";
                 string targetContentText = "{target_name}: {target_current_count}/{target_total_count}\n";
                 string targetFooterText = "";
                 string questNoActiveText = ":dart:   {guild_guildname}   :dart:\n\n{no_quest_text}\n\n{quest_list}\n";

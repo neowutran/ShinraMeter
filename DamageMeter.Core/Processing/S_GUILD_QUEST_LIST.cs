@@ -31,6 +31,7 @@ namespace DamageMeter.Processing
             str = str.Replace("{guild_number_quest_remaining}", (guildquest.NumberTotalDailyQuest - guildquest.NumberQuestsDone).ToString());
             str = str.Replace("{gold_label}", BasicTeraData.Instance.QuestInfoDatabase.Get(20000000));
             str = str.Replace("{xp_label}", BasicTeraData.Instance.QuestInfoDatabase.Get(20000001));
+
             var activeQuest = ReplaceNoQuest(discordInfo.QuestNoActiveText);
             var quest = guildquest.ActiveQuest();
             if (quest != null)
@@ -39,10 +40,8 @@ namespace DamageMeter.Processing
                 activeQuest = ReplaceQuestInfo(activeQuest, quest, discordInfo);
             }
             str = str.Replace("{active_quest}", activeQuest);
-
             var questList = ReplaceQuestListInfo(guildquest, discordInfo);
             str = str.Replace("{quest_list}", questList);
-       
             return str;
         }
 
@@ -51,13 +50,9 @@ namespace DamageMeter.Processing
             var str = discordInfo.QuestListHeaderText;
             var questLists = ReplaceNoQuest(discordInfo.QuestNoActiveText);
             foreach (var nonActiveQuest in guildquest.GuildQuests.Where(x =>
-                x.GuildQuestType1 == Tera.Game.Messages.S_GUILD_QUEST_LIST.GuildQuestType.Hunt &&
-                x.QuestSize <= (Tera.Game.Messages.S_GUILD_QUEST_LIST.QuestSizeType)guildquest.GuildSize &&
-                !x.Active))
+                (int)x.QuestSize <= (int)guildquest.GuildSize && !x.Active).OrderBy(x => x.GuildQuestType1))
             {
-                questLists = discordInfo.QuestListInfoText;
-                questLists = ReplaceQuestInfo(questLists, nonActiveQuest, discordInfo);
-                str += questLists;
+                str += ReplaceQuestInfo(discordInfo.QuestListInfoText, nonActiveQuest, discordInfo);
             }
             return str;
         }
@@ -65,6 +60,7 @@ namespace DamageMeter.Processing
         private static string ReplaceNoQuest(string str)
         {
             str = str.Replace("{no_quest_text}", LP.No_active_quest);
+          
             return str;
         }
 
