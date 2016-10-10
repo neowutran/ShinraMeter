@@ -189,23 +189,25 @@ namespace DamageMeter.Processing
             var joyOfPartying20 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying20);
             var joyOfPartying50 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying50);
             var joyOfPartying0 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying0);
+            var joyOfPartying100 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying100);
 
-            if(joyOfPartying0 != null || joyOfPartying20 != null || joyOfPartying50 != null)
+            if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying0) ||
+                NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying20) ||
+                NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying50))
             {
                 _joyOfPartyingIs100 = false;
                 return;
             }
 
-            var joyOfPartying100 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying100);
-            if (joyOfPartying100 == null || _joyOfPartyingIs100) return;
-
-            _joyOfPartyingIs100 = true;
-            if (!TeraWindow.IsTeraActive())
+            if (_joyOfPartyingIs100) return;
+            if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying100))
             {
-                if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying100))
+                if (!TeraWindow.IsTeraActive())
                 {
+                
                     NetworkController.Instance.FlashMessage = new NotifyMessage(LP.JoyOfPartying, LP.JoyOfPartying, false);
                 }
+                _joyOfPartyingIs100 = true;
             }
         }
     }
