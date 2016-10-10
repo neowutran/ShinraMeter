@@ -145,7 +145,7 @@ namespace DamageMeter.Processing
                     }
                     else
                     {
-                        notify += player.Name + " "+LP.Time+": " + timeLeft.ToString("hh:mm:ss");
+                        notify += player.Name + " "+LP.Time+": " + timeLeft.ToString(@"hh\:mm\:ss");
                     }
                     notify += Environment.NewLine;
                 }
