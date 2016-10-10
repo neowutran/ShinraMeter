@@ -186,10 +186,12 @@ namespace DamageMeter.Processing
             if (player == null) return;
 
 
-            var joyOfPartying20 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying20);
-            var joyOfPartying50 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying50);
-            var joyOfPartying0 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying0);
-            var joyOfPartying100 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying100);
+            var joyOfPartying20 = BasicTeraData.Instance.HotDotDatabase.JoyOfPartying20;
+            var joyOfPartying50 = BasicTeraData.Instance.HotDotDatabase.JoyOfPartying50;
+            var joyOfPartying0 = BasicTeraData.Instance.HotDotDatabase.JoyOfPartying0;
+            var joyOfPartying100 = BasicTeraData.Instance.HotDotDatabase.JoyOfPartying100;
+
+            if (joyOfPartying0==null||joyOfPartying20==null||joyOfPartying50==null||joyOfPartying100==null) return;
 
             if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying0) ||
                 NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying20) ||
@@ -204,7 +206,6 @@ namespace DamageMeter.Processing
             {
                 if (!TeraWindow.IsTeraActive())
                 {
-                
                     NetworkController.Instance.FlashMessage = new NotifyMessage(LP.JoyOfPartying, LP.JoyOfPartying, false);
                 }
                 _joyOfPartyingIs100 = true;
