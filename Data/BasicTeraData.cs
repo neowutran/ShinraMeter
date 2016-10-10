@@ -52,6 +52,8 @@ namespace Data
                        .Select(parts => new Server(parts[2], parts[1], parts[0]));
         }
 
+
+
         public QuestInfoDatabase QuestInfoDatabase { get; set; }
         public HotDotDatabase HotDotDatabase { get; set; }
         public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());

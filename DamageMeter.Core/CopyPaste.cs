@@ -7,6 +7,7 @@ using Data;
 using Lang;
 using Tera.Game.Abnormality;
 using System.Windows;
+using Tera.Game;
 
 namespace DamageMeter
 {
@@ -136,7 +137,7 @@ namespace DamageMeter
 
             var name = entityInfo.Entity?.Info.Name ?? "";
             AbnormalityDuration enrage;
-            abnormals.Get(entityInfo.Entity).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888888), out enrage);
+            abnormals.Get(entityInfo.Entity).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged), out enrage);
             var enrageperc = lastTick - firstTick == 0
                 ? 0
                 : (double) (enrage?.Duration(firstTick, lastTick) ?? 0)/(lastTick - firstTick);
@@ -162,7 +163,7 @@ namespace DamageMeter
                 {
                     healCritrate = firstOrDefault.CritRate;
                 }
-                buffs.Times.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get(8888889), out slaying);
+                buffs.Times.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.Slaying), out slaying);
                 var slayingperc = lastTick - firstTick == 0
                     ? 0
                     : (double) (slaying?.Duration(firstTick, lastTick) ?? 0)/(lastTick - firstTick);

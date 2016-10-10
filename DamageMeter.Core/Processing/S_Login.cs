@@ -35,9 +35,9 @@ namespace DamageMeter.Processing
                 if (trackerreset)
                 {
                     NetworkController.Instance.TeraData = BasicTeraData.Instance.DataForRegion(NetworkController.Instance.Server.Region);
-                    BasicTeraData.Instance.HotDotDatabase.Get(8888888).Name = LP.Enrage;
-                    BasicTeraData.Instance.HotDotDatabase.Get(8888889).Name = LP.Slaying;
-                    BasicTeraData.Instance.HotDotDatabase.Get(8888889).Tooltip = LP.SlayingTooltip;
+                    BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged).Name = LP.Enrage;
+                    BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.Slaying).Name = LP.Slaying;
+                    BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.Slaying).Tooltip = LP.SlayingTooltip;
                     NetworkController.Instance.EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
                     NetworkController.Instance.PlayerTracker = new PlayerTracker(NetworkController.Instance.EntityTracker, BasicTeraData.Instance.Servers);
                     Database.Database.Instance.DeleteAll();

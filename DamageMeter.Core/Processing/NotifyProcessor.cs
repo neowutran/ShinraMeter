@@ -138,21 +138,23 @@ namespace DamageMeter.Processing
                     NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CrystalBind));
                 if (cbleft != 0 && cbleft < 15 * TimeSpan.TicksPerMinute)
                 {
+                    var timeLeft = TimeSpan.FromTicks(cbleft);
                     if (cbleft < 0)
                     {
-                        notify = player.Name + LP.NoCrystalBind + Environment.NewLine + notify;
+                        notify += player.Name + LP.NoCrystalBind;
                     }
                     else
                     {
-                        notify = player.Name + " " + (cbleft/TimeSpan.TicksPerMinute) +" min left" + Environment.NewLine + notify;
+                        notify += player.Name + " "+LP.Time+": " + timeLeft.ToString("hh:mm:ss");
                     }
+                    notify += Environment.NewLine;
                 }
 
             }
             if (!string.IsNullOrEmpty(notify))
             {
                 _nextCBNotifyCheck = message.Time.Ticks + 10 * TimeSpan.TicksPerMinute;// no more than 1 notify in 10 minutes
-                NetworkController.Instance.FlashMessage = new NotifyMessage(notify.Remove(notify.IndexOf(Environment.NewLine)), notify, false);
+                NetworkController.Instance.FlashMessage = new NotifyMessage(LP.NotifyCB, notify, false);
             }
         }
 
@@ -174,6 +176,8 @@ namespace DamageMeter.Processing
             if (message.Npc == _lastBoss) _lastBoss = null;
         }
 
+        private static bool _joyOfPartyingIs100 = false;
+
         internal static void CheckJoyOfPartying()
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
@@ -181,14 +185,26 @@ namespace DamageMeter.Processing
             var player = NetworkController.Instance.EntityTracker.MeterUser;
             if (player == null) return;
 
-            var joyOfPartying = BasicTeraData.Instance.HotDotDatabase.Get(999001021);
-            if (joyOfPartying == null) return;
 
+            var joyOfPartying20 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying20);
+            var joyOfPartying50 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying50);
+            var joyOfPartying0 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying0);
+
+            if(joyOfPartying0 != null || joyOfPartying20 != null || joyOfPartying50 != null)
+            {
+                _joyOfPartyingIs100 = false;
+                return;
+            }
+
+            var joyOfPartying100 = BasicTeraData.Instance.HotDotDatabase.Get((int)HotDotDatabase.StaticallyUsedBuff.JoyOfPartying100);
+            if (joyOfPartying100 == null || _joyOfPartyingIs100) return;
+
+            _joyOfPartyingIs100 = true;
             if (!TeraWindow.IsTeraActive())
             {
-                if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying))
+                if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying100))
                 {
-                    NetworkController.Instance.FlashMessage = new NotifyMessage(LP.JoyOfPartying, LP.JoyOfPartying);
+                    NetworkController.Instance.FlashMessage = new NotifyMessage(LP.JoyOfPartying, LP.JoyOfPartying, false);
                 }
             }
         }
