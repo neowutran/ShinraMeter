@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DamageMeter.Sniffing;
 using Tera.Game;
 using Tera.Game.Messages;
 
@@ -22,6 +23,8 @@ namespace DamageMeter.Processing
                 new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory,
                     $"data/opcodes/{message.Versions[0]}.txt"));
             NetworkController.Instance.MessageFactory = new MessageFactory(opCodeNamer, NetworkController.Instance.Server.Region);
+            if (TeraSniffer.Instance.ClientProxyOverhead + TeraSniffer.Instance.ServerProxyOverhead > 0x100)
+                BasicTeraData.LogError("Client Proxy overhead: " + TeraSniffer.Instance.ClientProxyOverhead + "\r\nServer Proxy overhead: " + TeraSniffer.Instance.ServerProxyOverhead);
         }
 
     }

@@ -27,7 +27,8 @@ namespace DamageMeter.Sniffing
         private ConnectionDecrypter _decrypter;
         private MessageSplitter _messageSplitter;
         private TcpConnection _serverToClient;
-
+        public int ClientProxyOverhead;
+        public int ServerProxyOverhead;
         public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
 
         private TeraSniffer()
@@ -124,7 +125,7 @@ namespace DamageMeter.Sniffing
                         _serverToClient = connection;
                         _clientToServer = null;
 
-                        if (connection.BytesReceived>0x100) BasicTeraData.LogError("Proxy overhead:"+connection.BytesReceived);
+                        ServerProxyOverhead = (int) connection.BytesReceived;
                         _decrypter = new ConnectionDecrypter(server.Region);
                         _decrypter.ClientToServerDecrypted += HandleClientToServerDecrypted;
                         _decrypter.ServerToClientDecrypted += HandleServerToClientDecrypted;
@@ -137,7 +138,7 @@ namespace DamageMeter.Sniffing
                         _serverToClient.Destination.Equals(connection.Source) &&
                         _serverToClient.Source.Equals(connection.Destination))
                     {
-                        if (connection.BytesReceived > 0x100) BasicTeraData.LogError("Proxy overhead:" + connection.BytesReceived);
+                        ClientProxyOverhead=(int)connection.BytesReceived;
                         _isNew.Remove(connection);
                         _clientToServer = connection;
                     }
