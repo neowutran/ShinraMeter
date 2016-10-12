@@ -48,9 +48,6 @@ namespace DamageMeter.UI
         public MainWindow()
         {
             InitializeComponent();
-            var currentDomain = AppDomain.CurrentDomain;
-            // Handler for unhandled exceptions.
-            currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
             // Handler for exceptions in threads behind forms.
             Application.ThreadException += GlobalThreadExceptionHandler;
             if (BasicTeraData.Instance.WindowData.InvisibleUi)
@@ -161,15 +158,6 @@ namespace DamageMeter.UI
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
             keyEventArgs.Handled = true;
-        }
-
-        private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
-        {
-            var ex = (Exception) e.ExceptionObject;
-            BasicTeraData.LogError("##### CRASH #####\r\n" + ex.Message + "\r\n" +
-                     ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
-                     "\r\n" + ex.TargetSite);
-            MessageBox.Show(LP.MainWindow_Fatal_error);
         }
 
         private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
