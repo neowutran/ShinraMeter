@@ -211,5 +211,10 @@ namespace DamageMeter.Processing
                 _joyOfPartyingIs100 = true;
             }
         }
+
+        internal static void S_BEGIN_THROUGH_ARBITER_CONTRACT(S_BEGIN_THROUGH_ARBITER_CONTRACT message)
+        {
+            if (message.PlayerName.StartsWith("Error")) BasicTeraData.LogError(message.PlayerName);
+        }
     }
 }
