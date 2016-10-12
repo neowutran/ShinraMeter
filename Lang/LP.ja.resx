@@ -537,7 +537,7 @@
     <value>パーティー志願者の "/詳細確認 名前" をコピー</value>
   </data>
   <data name="UploadGlyphBuild" xml:space="preserve">
-    <value>moongourd.net に紋章構成をアップロード</value>
+    <value>moongourd.com に紋章構成をアップロード</value>
   </data>
   <data name="No_active_quest" xml:space="preserve">
     <value>現時点でアクティブなクエストはありません。</value>
@@ -546,12 +546,28 @@
     <value>完了したクエスト: </value>
   </data>
   <data name="NoCrystalBind" xml:space="preserve">
-    <value> クリスタル保護が付いていないかもうすぐ切れます。</value>
+    <value> クリスタル保護が切れています。</value>
   </data>
   <data name="NotifyCB" xml:space="preserve">
     <value>クリスタル保護の通知</value>
   </data>
   <data name="JoyOfPartying" xml:space="preserve">
     <value>レッツパーティー！ 100%</value>
+  </data>
+  <data name="ServerOverrides" xml:space="preserve">
+    <value>###########################################################
+# このファイルに追加のサーバーを追加します。
+# (VPN/Proxyに必要 "out-of-box"はサポートしていません。)
+#
+# フォーマット: IP 地域名 サーバー名
+#
+# 例:
+# 111.22.33.44 NA VPN Server 1
+#
+# 現在可能な地域: EU, NA, RU, KR, TW, JP
+#
+# '#' で始まる行は無視されます。
+# 次の行の下からサーバーを記述してください。
+###########################################################</value>
   </data>
 </root>

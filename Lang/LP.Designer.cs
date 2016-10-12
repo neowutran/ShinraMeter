@@ -772,7 +772,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  have no CrystalBind or it soon times out..
+        ///   Looks up a localized string similar to  have no CrystalBind..
         /// </summary>
         public static string NoCrystalBind {
             get {
@@ -1334,7 +1334,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upload glyph build to moongourd.net.
+        ///   Looks up a localized string similar to Upload glyph build to moongourd.com.
         /// </summary>
         public static string UploadGlyphBuild {
             get {

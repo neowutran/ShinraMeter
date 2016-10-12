@@ -137,6 +137,7 @@ namespace DamageMeter.Sniffing
                         _serverToClient.Destination.Equals(connection.Source) &&
                         _serverToClient.Source.Equals(connection.Destination))
                     {
+                        if (connection.BytesReceived > 0x100) BasicTeraData.LogError("Proxy overhead:" + connection.BytesReceived);
                         _isNew.Remove(connection);
                         _clientToServer = connection;
                     }

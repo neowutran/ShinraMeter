@@ -541,7 +541,7 @@
     <value>Copier "/inspect Pseudo" dans chat pour inspecter</value>
   </data>
   <data name="UploadGlyphBuild" xml:space="preserve">
-    <value>Envoyer mes glyphes vers moongourd.net</value>
+    <value>Envoyer mes glyphes vers moongourd.com</value>
   </data>
   <data name="No_active_quest" xml:space="preserve">
     <value>Pas de quête active pour le moment</value>

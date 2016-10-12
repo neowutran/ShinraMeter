@@ -239,7 +239,7 @@ namespace DamageMeter.UI
 
         private void DpsWebsiteAction(object sender, RoutedEventArgs e)
         {
-            Process.Start("explorer.exe", "http://moongourd.net");
+            Process.Start("explorer.exe", "http://moongourd.com");
         }
 
         private void EnableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
@@ -552,7 +552,7 @@ namespace DamageMeter.UI
                             //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
 
                             client.Timeout = TimeSpan.FromSeconds(40);
-                            var response = client.PostAsync("http://moongourd.net/shared/glyph_data.php", new StringContent(
+                            var response = client.PostAsync("http://moongourd.com/shared/glyph_data.php", new StringContent(
                                 json,
                                 Encoding.UTF8,
                                 "application/json")

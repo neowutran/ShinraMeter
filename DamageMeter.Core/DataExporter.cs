@@ -316,7 +316,7 @@ namespace DamageMeter
                     //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
 
                     client.Timeout = TimeSpan.FromSeconds(40);
-                    var response = client.PostAsync("http://moongourd.net/dpsmeter_data.php", new StringContent(
+                    var response = client.PostAsync("http://moongourd.com/dpsmeter_data.php", new StringContent(
                                           json,
                                           Encoding.UTF8,
                                           "application/json")

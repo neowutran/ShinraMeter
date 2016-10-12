@@ -532,7 +532,7 @@
     <value>Копировать "/inspect Имя" при запросе вступления в пати</value>
   </data>
   <data name="UploadGlyphBuild" xml:space="preserve">
-    <value>Загрузить глиф билд на moongourd.net</value>
+    <value>Загрузить глиф билд на moongourd.com</value>
   </data>
   <data name="No_active_quest" xml:space="preserve">
     <value>Нет активных заданий.</value>
