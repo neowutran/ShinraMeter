@@ -169,7 +169,6 @@ namespace DamageMeter.Processing
         {
             var check= message.Time.Ticks + 15 * TimeSpan.TicksPerSecond;// delay check after respawn
             _nextCBNotifyCheck = check > _nextCBNotifyCheck ? check : _nextCBNotifyCheck;
-            CheckJoyOfPartying();
         }
         internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {

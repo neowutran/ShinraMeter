@@ -133,6 +133,7 @@
     <Compile Include="NotifyMessage.cs" />
     <Compile Include="PacketProcessingFactory.cs" />
     <Compile Include="NpcOccupierResult.cs" />
+    <Compile Include="Processing\Abnormalities.cs" />
     <Compile Include="Processing\C_CHECK_VERSION.cs" />
     <Compile Include="Processing\NotifyProcessor.cs" />
     <Compile Include="Processing\S_CREATURE_LIFE.cs" />
