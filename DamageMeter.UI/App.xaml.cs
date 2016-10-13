@@ -27,10 +27,22 @@ namespace DamageMeter.UI
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            var ex = (Exception)e.ExceptionObject;
+            MessageBox.Show(LP.MainWindow_Fatal_error);
+            BasicTeraData.LogError("##### CRASH #####\r\n" + ex.Message + "\r\n" +
+                     ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
+                     "\r\n" + ex.TargetSite);
+        }
+
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
             bool aIsNewInstance;
             bool isUpdating;
+            var currentDomain = AppDomain.CurrentDomain;
+            // Handler for unhandled exceptions.
+            currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
             var updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
 

@@ -1,6 +1,7 @@
 ﻿using Lang;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -145,7 +146,7 @@ namespace DamageMeter.Processing
                     }
                     else
                     {
-                        notify += player.Name + " "+LP.Time+": " + timeLeft.ToString(@"hh\:mm\:ss");
+                        notify += player.Name + " "+LP.Time+": " + timeLeft.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
                     }
                     notify += Environment.NewLine;
                 }
