@@ -104,7 +104,7 @@ namespace DamageMeter
                     ));
             }
 
-            foreach (var user in playersInfo)
+            foreach (var user in playersInfo.OrderByDescending(x=>x.Amount))
             {
                 var teradpsUser = new Members();
                 var damage = user.Amount;
@@ -135,7 +135,7 @@ namespace DamageMeter
                 var aggro = buffs.Aggro(entity);
                 teradpsUser.aggro = 100*aggro.Duration(firstTick, lastTick)/interTick + "";
 
-                foreach (var buff in buffs.Times)
+                foreach (var buff in buffs.Times.OrderByDescending(x=>x.Value.Duration(firstTick, lastTick)))
                 {
                     var percentage = buff.Value.Duration(firstTick, lastTick)*100/interTick;
                     if (percentage == 0)
@@ -154,7 +154,7 @@ namespace DamageMeter
                 var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
                 extendedStats.PlayerSkillsAggregated[teradpsUser.playerServer + "/" + teradpsUser.playerName] = skillsId;
 
-                foreach (var skill in skillsId)
+                foreach (var skill in skillsId.OrderByDescending(x=>x.Amount()))
                 {
                     var skillLog = new SkillLog();
                     var skilldamage = skill.Amount();
