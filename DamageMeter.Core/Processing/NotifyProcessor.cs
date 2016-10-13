@@ -127,7 +127,7 @@ namespace DamageMeter.Processing
             if (BasicTeraData.Instance.WindowData.DoNotWarnOnCB) return;
             if (_lastBoss == null) return;
             if (message.Time.Ticks < _nextCBNotifyCheck) return;
-            _nextCBNotifyCheck = message.Time.Ticks + 2 * TimeSpan.TicksPerSecond;// check no more than once per 30s
+            _nextCBNotifyCheck = message.Time.Ticks + 15 * TimeSpan.TicksPerSecond;// check no more than once per 15s
             var party = NetworkController.Instance.PlayerTracker.PartyList();
             string notify = "";
             foreach (var player in party)
@@ -154,7 +154,7 @@ namespace DamageMeter.Processing
             }
             if (!string.IsNullOrEmpty(notify))
             {
-                _nextCBNotifyCheck = message.Time.Ticks + 10 * TimeSpan.TicksPerMinute;// no more than 1 notify in 10 minutes
+                _nextCBNotifyCheck = message.Time.Ticks + 15 * TimeSpan.TicksPerMinute;// no more than 1 notify in 10 minutes
                 NetworkController.Instance.FlashMessage = new NotifyMessage(LP.NotifyCB, notify, false);
             }
         }
