@@ -92,7 +92,7 @@ namespace DamageMeter
             teradpsData.partyDps = partyDps + "";
             extendedStats.Debuffs = _abnormals.Get(entity);
 
-            foreach (var debuff in extendedStats.Debuffs)
+            foreach (var debuff in extendedStats.Debuffs.OrderByDescending(x => x.Value.Duration(firstTick, lastTick)))
             {
                 var percentage = debuff.Value.Duration(firstTick, lastTick)*100/interTick;
                 if (percentage == 0)
