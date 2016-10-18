@@ -34,7 +34,7 @@ namespace DamageMeter.Processing
 
             var activeQuest = ReplaceNoQuest(discordInfo.QuestNoActiveText);
             var quests = guildquest.ActiveQuests();
-            if (quests.Count != 0)
+            if (quests.Count > 0)
             {
                 foreach (var quest in quests)
                 {
