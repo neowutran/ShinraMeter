@@ -529,6 +529,7 @@ namespace DamageMeter.UI
             DiscordLogin.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             DiscordPassword.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             //for (int i = 14; i <= 28; i++) GridS.RowDefinitions[i].Height = show ? new GridLength(0, GridUnitType.Auto) : new GridLength(0);
+            SiteExport.MaxHeight=0;//temporary disable manual site uploads
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)
