@@ -254,7 +254,14 @@ namespace DamageMeter.UI
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
         {
-            NetworkController.Instance.NeedToExport = true;
+            NetworkController.Instance.NeedToExport = DataExporter.Dest.Excel;
+        }
+
+        private void SiteExportAction(object sender, RoutedEventArgs e)
+        {
+            if (_lastSend + TimeSpan.TicksPerSecond * 60 >= DateTime.Now.Ticks) return;
+            NetworkController.Instance.NeedToExport = DataExporter.Dest.Site;
+            _lastSend = DateTime.Now.Ticks;
         }
 
         private void EnableAutoExcelExportAction(object sender, RoutedEventArgs e)

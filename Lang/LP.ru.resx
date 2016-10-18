@@ -566,4 +566,7 @@
 # Пропишите сервера ниже следующей линии
 ###########################################################</value>
   </data>
+  <data name="SystemTray_Export_current_to_Site" xml:space="preserve">
+    <value>Выгрузить текущий бой на сайт</value>
+  </data>
 </root>

@@ -571,4 +571,7 @@
 # Place servers below the next line
 ###########################################################</value>
   </data>
+  <data name="SystemTray_Export_current_to_Site" xml:space="preserve">
+    <value>Export current to site</value>
+  </data>
 </root>

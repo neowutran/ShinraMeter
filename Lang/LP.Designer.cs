@@ -1172,6 +1172,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export current to site.
+        /// </summary>
+        public static string SystemTray_Export_current_to_Site {
+            get {
+                return ResourceManager.GetString("SystemTray_Export_current_to_Site", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invisible when no stats.
         /// </summary>
         public static string SystemTray_Invisible_when_no_stats {
