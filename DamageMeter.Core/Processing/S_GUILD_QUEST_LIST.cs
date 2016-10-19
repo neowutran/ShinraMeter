@@ -36,10 +36,12 @@ namespace DamageMeter.Processing
             var quests = guildquest.ActiveQuests();
             if (quests.Count > 0)
             {
+                var activeQuests = string.Empty;
                 foreach (var quest in quests)
                 {
-                    activeQuest += ReplaceQuestInfo(discordInfo.QuestInfoText, quest, discordInfo);
+                    activeQuests += ReplaceQuestInfo(discordInfo.QuestInfoText, quest, discordInfo);
                 }
+                activeQuest = activeQuests;
             }
             str = str.Replace("{active_quest}", activeQuest);
             var questList = ReplaceQuestListInfo(guildquest, discordInfo);
