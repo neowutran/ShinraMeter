@@ -13,7 +13,6 @@ namespace NetworkSniffer
 {
     public class IpSnifferRawSocketSingleInterface : IpSniffer
     {
-        private readonly byte[] _buffer;
         private readonly IPAddress _localIp;
 
         private bool _isInit;
