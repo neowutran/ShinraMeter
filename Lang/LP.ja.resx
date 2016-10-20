@@ -570,4 +570,7 @@
 # 次の行の下からサーバーを記述してください。
 ###########################################################</value>
   </data>
+  <data name="SystemTray_Export_current_to_Site" xml:space="preserve">
+    <value>サイトへアップロード</value>
+  </data>
 </root>
