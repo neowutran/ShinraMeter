@@ -254,7 +254,14 @@ namespace DamageMeter.UI
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
         {
-            NetworkController.Instance.NeedToExport = true;
+            NetworkController.Instance.NeedToExport = DataExporter.Dest.Excel;
+        }
+
+        private void SiteExportAction(object sender, RoutedEventArgs e)
+        {
+            if (_lastSend + TimeSpan.TicksPerSecond * 60 >= DateTime.Now.Ticks) return;
+            NetworkController.Instance.NeedToExport = DataExporter.Dest.Site;
+            _lastSend = DateTime.Now.Ticks;
         }
 
         private void EnableAutoExcelExportAction(object sender, RoutedEventArgs e)
@@ -522,6 +529,7 @@ namespace DamageMeter.UI
             DiscordLogin.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             DiscordPassword.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             //for (int i = 14; i <= 28; i++) GridS.RowDefinitions[i].Height = show ? new GridLength(0, GridUnitType.Auto) : new GridLength(0);
+            SiteExport.MaxHeight=0;//temporary disable manual site uploads
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)

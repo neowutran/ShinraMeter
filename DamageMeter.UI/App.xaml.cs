@@ -39,11 +39,11 @@ namespace DamageMeter.UI
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
             bool aIsNewInstance;
-            bool isUpdating;
+            bool notUpdating;
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
             currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
-            var updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
+            var updating = new Mutex(true, "ShinraMeterUpdating", out notUpdating);
             _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
 
 
@@ -81,24 +81,17 @@ namespace DamageMeter.UI
                 Environment.Exit(0);
             }
 
-            if (!isUpdating)
+            if (!notUpdating)
             {
                 SetForeground();
             }
             bool isWaitingUpdateEnd;
             var waitUpdateEnd = new Mutex(true, "ShinraMeterWaitUpdateEnd", out isWaitingUpdateEnd);
-
             if (!isWaitingUpdateEnd)
             {
                 SetForeground();
             }
-
-            while (isUpdating)
-            {
-                Thread.Sleep(1000);
-                updating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
-            }
-
+            updating.WaitOne();
             DeleteTmp();
             updating.Close();
             waitUpdateEnd.Close();

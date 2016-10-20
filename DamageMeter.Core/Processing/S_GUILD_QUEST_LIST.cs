@@ -33,11 +33,15 @@ namespace DamageMeter.Processing
             str = str.Replace("{xp_label}", BasicTeraData.Instance.QuestInfoDatabase.Get(20000001));
 
             var activeQuest = ReplaceNoQuest(discordInfo.QuestNoActiveText);
-            var quest = guildquest.ActiveQuest();
-            if (quest != null)
+            var quests = guildquest.ActiveQuests();
+            if (quests.Count > 0)
             {
-                activeQuest = discordInfo.QuestInfoText;
-                activeQuest = ReplaceQuestInfo(activeQuest, quest, discordInfo);
+                var activeQuests = string.Empty;
+                foreach (var quest in quests)
+                {
+                    activeQuests += ReplaceQuestInfo(discordInfo.QuestInfoText, quest, discordInfo);
+                }
+                activeQuest = activeQuests;
             }
             str = str.Replace("{active_quest}", activeQuest);
             var questList = ReplaceQuestListInfo(guildquest, discordInfo);
@@ -138,15 +142,20 @@ namespace DamageMeter.Processing
             BasicTeraData.Instance.WindowData.DiscordInfoByGuild.TryGetValue(guildname, out discordData);
 
             if (discordData == null) return;
-            var quest = guildquest.ActiveQuest();
-            if (quest == null)
+            var quests = guildquest.ActiveQuests();
+            if (quests.Count == 0)
             {
                 var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(ReplaceNoQuest(discordData.QuestNoActiveText), guildquest, discordData), true));
                 activeQuestThread.Start();
             }
             else
             {
-                var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(ReplaceQuestInfo(discordData.QuestInfoText, quest, discordData), guildquest, discordData), true));
+                var str = string.Empty;
+                foreach (var quest in quests)
+                {
+                    str += ReplaceQuestInfo(discordData.QuestInfoText, quest, discordData);
+                }
+                var activeQuestThread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildQuest, ReplaceGuildInfo(str, guildquest, discordData), true));
                 activeQuestThread.Start();
             }
             var thread = new Thread(() => Discord.Instance.Send(discordData.DiscordServer, discordData.DiscordChannelGuildInfo, ReplaceGuildInfo(discordData.GuildInfosText, guildquest, discordData), true));

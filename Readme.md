@@ -10,6 +10,12 @@ TERADATA: https://github.com/neowutran/TeraDpsMeterData
 
 ShinraMeter is dev by Gl0 and Yukikoo/Neowutran
 
+
+Projects linked to the ShinraMeter: 
+
+- Shinra launcher, a program to launch the shinraMeter automatically when Tera is starting:
+https://bitbucket.org/Vysse/shinra-launcher/overview
+
 Original Readme
 ================
 

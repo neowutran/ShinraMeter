@@ -5,6 +5,7 @@ namespace DamageMeter.TeraDpsApi
 {
     public class EncounterBase
     {
+        public long encounterUnixEpoch;
         public string areaId;
         public string bossId;
         public string fightDuration;
