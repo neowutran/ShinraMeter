@@ -1,10 +1,9 @@
 ﻿using Data;
 using Lang;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Drawing.Text;
+
 using Tera.Game;
 
 namespace DamageMeter.Processing
@@ -41,6 +40,7 @@ namespace DamageMeter.Processing
                     NetworkController.Instance.EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
                     NetworkController.Instance.PlayerTracker = new PlayerTracker(NetworkController.Instance.EntityTracker, BasicTeraData.Instance.Servers);
                     Database.Database.Instance.DeleteAll();
+                    SelectFont(NetworkController.Instance.Server.Region);
                 }
                 NetworkController.Instance.NeedInit = false;
             }
@@ -50,6 +50,22 @@ namespace DamageMeter.Processing
             NetworkController.Instance.OnGuildIconAction(NetworkController.Instance.UserLogoTracker.GetLogo(message.PlayerId));
             NetworkController.Instance.EntityTracker.Update(message);
             NetworkController.Instance.PacketProcessing.Update();
+        }
+        internal static void SelectFont(string region)
+        {
+            CopyPaste.PFC = new PrivateFontCollection();
+            if (region=="RU")
+                CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Fira Sans.ttf");
+            else if (region == "KR")
+                CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\2002L_chat.ttf");
+            else if (region == "TW")
+                CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\2002L_chat.ttf");
+            else if (region == "JP")
+                CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\TT-UDShinGo-Medium.ttf");
+            else
+                CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Frutiger LT Pro 55 Roman.ttf");
+            CopyPaste.Font = new Font(CopyPaste.PFC.Families[0], 12, FontStyle.Regular, GraphicsUnit.Pixel);
+
         }
     }
 }

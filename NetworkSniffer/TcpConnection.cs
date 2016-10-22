@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Windows.Forms;
 using Data;
@@ -80,7 +81,9 @@ namespace NetworkSniffer
 
             if (_bufferedPackets.Count > 100)
             {
-                string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority " : "Normal priority ") + SnifferType +
+                var name = (from x in new ManagementObjectSearcher("SELECT Version FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
+                            select x.GetPropertyValue("Version")).FirstOrDefault()?.ToString() ?? "unknown";
+                string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority " : "Normal priority ") + SnifferType + " running on win "+name+
                     " Received: " + BytesReceived + "\r\n" + _bufferedPackets.First().Key + ": " + _bufferedPackets.First().Value.Length + "\r\nQueue length:" + _bufferedPackets.Count;
                 while (_bufferedPackets.Values.First().Length >= 500)
                     _bufferedPackets.Remove(_bufferedPackets.Keys.First());

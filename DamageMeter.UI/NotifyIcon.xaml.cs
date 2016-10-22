@@ -363,22 +363,22 @@ namespace DamageMeter.UI
 
         private void NumberPlayersChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed = (int)NumberPlayersSpinner.Value;
+            BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed = (int?)NumberPlayersSpinner?.Value??5;
         }
 
         private void LFDelayChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.LFDelay = (int)LFDelaySpinner.Value;
+            BasicTeraData.Instance.WindowData.LFDelay = (int?)LFDelaySpinner?.Value??150;
         }
 
         private void PopupTimeChange(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.PopupDisplayTime = (int)PopupTimeSpinner.Value;
+            BasicTeraData.Instance.WindowData.PopupDisplayTime = (int?)PopupTimeSpinner?.Value??0;
         }
 
         private void SoundTimeChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.SoundNotifyDuration = (int)SoundTimeSpinner.Value;
+            BasicTeraData.Instance.WindowData.SoundNotifyDuration = (int?)SoundTimeSpinner?.Value??0;
 
         }
 
@@ -395,7 +395,7 @@ namespace DamageMeter.UI
 
         private void SoundVolumeChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.Volume = (float)SoundVolumeSpinner.Value;
+            BasicTeraData.Instance.WindowData.Volume = (float?)SoundVolumeSpinner?.Value??0;
         }
 
         private void TestSoundAction(object sender, RoutedEventArgs e)
