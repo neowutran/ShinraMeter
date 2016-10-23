@@ -212,7 +212,7 @@ namespace DamageMeter
             {
                 try
                 {
-                    Clipboard.SetText(text);
+                    Clipboard.SetText(text.Item2);
                     break;
                 }
                 catch
@@ -221,7 +221,7 @@ namespace DamageMeter
                     //Ignore
                 }
             }
-            CopyPaste.Paste(text);
+            CopyPaste.Paste(text.Item1);
         }
 
         internal PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
