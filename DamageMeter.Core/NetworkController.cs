@@ -43,7 +43,7 @@ namespace DamageMeter
         public NotifyMessage FlashMessage { get; set; }
 
         private bool _clickThrou;
-
+        private static object pasteLock=new object();
         private bool _forceUiUpdate;
         internal bool NeedInit;
         private long _lastTick;
@@ -206,22 +206,26 @@ namespace DamageMeter
             bool timedEncounter, CopyKey copy)
         {
             if (BasicTeraData.Instance.HotDotDatabase == null) return;//no database loaded yet => no need to do anything
-            var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content, copy.Footer,
-                copy.OrderBy, copy.Order);
-            for (var i = 0; i < 3; i++)
+            lock (pasteLock)
             {
-                try
+                var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content,
+                    copy.Footer,
+                    copy.OrderBy, copy.Order);
+                for (var i = 0; i < 3; i++)
                 {
-                    Clipboard.SetText(text.Item2);
-                    break;
+                    try
+                    {
+                        Clipboard.SetText(text.Item2);
+                        break;
+                    }
+                    catch
+                    {
+                        Thread.Sleep(100);
+                        //Ignore
+                    }
                 }
-                catch
-                {
-                    Thread.Sleep(100);
-                    //Ignore
-                }
+                CopyPaste.Paste(text.Item1);
             }
-            CopyPaste.Paste(text.Item1);
         }
 
         internal PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
