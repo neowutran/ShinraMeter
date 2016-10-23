@@ -59,7 +59,7 @@ namespace DamageMeter.Processing
             else if (region == "KR")
                 CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\2002L_chat.ttf");
             else if (region == "TW")
-                CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\2002L_chat.ttf");
+                CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\DFPHeiMedium-B5.ttf");
             else if (region == "JP")
                 CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\TT-UDShinGo-Medium.ttf");
             else
