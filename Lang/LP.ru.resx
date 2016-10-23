@@ -569,4 +569,7 @@
   <data name="SystemTray_Export_current_to_Site" xml:space="preserve">
     <value>Выгрузить текущий бой на сайт</value>
   </data>
+  <data name="FormatPasteString" xml:space="preserve">
+    <value>Форматировать таблицу для вставки в чат</value>
+  </data>
 </root>

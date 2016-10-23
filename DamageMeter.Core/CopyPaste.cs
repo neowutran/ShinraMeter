@@ -195,7 +195,7 @@ namespace DamageMeter
             var placeholderLength = placeholders.SelectMany(x => x.Value).GroupBy(x=>x.Key).ToDictionary(x=>x.Key,x=>x.Max(z=> graphics.MeasureString(z.Value, Font, default(PointF), StringFormat.GenericTypographic).Width));
             var dpsmono = new StringBuilder(dpsString.ToString());
             var placeholderMono = placeholders.SelectMany(x => x.Value).GroupBy(x => x.Key).ToDictionary(x => x.Key, x => x.Max(z => z.Value.Length));
-            if (content.Contains('\\'))
+            if (content.Contains('\\') && BasicTeraData.Instance.WindowData.FormatPasteString)
                 placeholders.ForEach(x =>
                 {
                     var currentContent = new StringBuilder(content);
@@ -216,8 +216,9 @@ namespace DamageMeter
                 }
             dpsString.Append(footer);
             dpsmono.Append(footer);
+            var paste = dpsString.ToString();
             dpsmono.Replace("\\", Environment.NewLine);
-            return new Tuple<string,string>(dpsString.ToString(),dpsmono.ToString());
+            return new Tuple<string,string>(paste ,dpsmono.ToString());
         }
 
         private static string PadLeft(string str, double length)

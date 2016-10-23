@@ -72,7 +72,7 @@ namespace Data
         public Color PrivateChannelColor { get; set; }
         public bool RemoveTeraAltEnterHotkey { get; set; }
         public bool DoNotWarnOnCB { get; set; }
-
+        public bool FormatPasteString { get; set; }
         
       
         private void DefaultValue()
@@ -107,7 +107,7 @@ namespace Data
             SoundNotifyDuration = 3000;
             Volume = 1.0f;
             NotifySound = "ElinuDance.mp3";
-
+            FormatPasteString = true;
             WhisperColor = Brushes.Pink.Color;
             AllianceColor = Brushes.Green.Color;
             AreaColor = Brushes.Purple.Color;
@@ -188,7 +188,7 @@ namespace Data
             Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
             Parse("date_in_excel_path", "DateInExcelPath");
             Parse("low_priority", "LowPriority");
-
+            Parse("format_paste_string", "FormatPasteString");           
             Parse("notify_sound", "NotifySound");
             Parse("popup_display_time", "PopupDisplayTime");
             Parse("sound_notify_duration", "SoundNotifyDuration");
@@ -488,7 +488,7 @@ namespace Data
             xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
             xml.Root.Add(new XElement("copy_inspect", CopyInspect));
             xml.Root.Add(new XElement("do_not_warn_on_crystalbind", DoNotWarnOnCB));
-
+            xml.Root.Add(new XElement("format_paste_string", FormatPasteString));
             xml.Root.Add(new XElement("notify_sound", NotifySound));
             xml.Root.Add(new XElement("volume", Volume));
             xml.Root.Add(new XElement("popup_display_time", PopupDisplayTime));
