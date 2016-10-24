@@ -220,7 +220,7 @@ namespace DamageMeter
             }
             var sendThread = new Thread(() =>
             {
-                if ((type&Dest.Site)!=0)
+                if ((type&Dest.Site)!=0 && NetworkController.Instance.BossLink.Any(x=>x.Value==entity&&x.Key.StartsWith("!")))
                     ToTeraDpsApi(stats.BaseStats, entity);
                 if ((type&Dest.Excel)!=0)
                     ExcelExport.ExcelSave(stats);

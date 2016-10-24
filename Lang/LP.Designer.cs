@@ -520,6 +520,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Format paste string.
+        /// </summary>
+        public static string FormatPasteString {
+            get {
+                return ResourceManager.GetString("FormatPasteString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Front.
         /// </summary>
         public static string Front {

@@ -574,4 +574,7 @@
   <data name="SystemTray_Export_current_to_Site" xml:space="preserve">
     <value>Export current to site</value>
   </data>
+  <data name="FormatPasteString" xml:space="preserve">
+    <value>Format paste string</value>
+  </data>
 </root>

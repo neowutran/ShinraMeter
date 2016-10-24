@@ -59,6 +59,7 @@ namespace DamageMeter.UI
             ChatEnabled.IsChecked = BasicTeraData.Instance.WindowData.EnableChat;
             CopyInspect.IsChecked = BasicTeraData.Instance.WindowData.CopyInspect;
             NotifyCB.IsChecked = !BasicTeraData.Instance.WindowData.DoNotWarnOnCB;
+            FormatPasteString.IsChecked = BasicTeraData.Instance.WindowData.FormatPasteString;
 
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
@@ -529,7 +530,6 @@ namespace DamageMeter.UI
             DiscordLogin.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             DiscordPassword.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             //for (int i = 14; i <= 28; i++) GridS.RowDefinitions[i].Height = show ? new GridLength(0, GridUnitType.Auto) : new GridLength(0);
-            SiteExport.MaxHeight=0;//temporary disable manual site uploads
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)
@@ -597,6 +597,16 @@ namespace DamageMeter.UI
         private void DisableNotifyCB(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.DoNotWarnOnCB = true;
+        }
+
+        private void EnableFormatPasteString(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.FormatPasteString = true;
+        }
+
+        private void DisableFormatPasteString(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.FormatPasteString = false;
         }
     }
 }
