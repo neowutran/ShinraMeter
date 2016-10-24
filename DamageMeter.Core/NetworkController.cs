@@ -62,11 +62,9 @@ namespace DamageMeter
 
         private NetworkController()
         {
-         
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
             AbnormalityStorage = new AbnormalityStorage();
             var packetAnalysis = new Thread(PacketAnalysisLoop);
-
             packetAnalysis.Start();
         }
 

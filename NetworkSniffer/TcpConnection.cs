@@ -15,11 +15,13 @@ namespace NetworkSniffer
         private readonly SortedDictionary<long, byte[]> _bufferedPackets = new SortedDictionary<long, byte[]>();
         public readonly IPEndPoint Destination;
         public readonly IPEndPoint Source;
+        internal readonly ConnectionId ConnectionId;
         public Action RemoveCallback;
         public string SnifferType;
 
         internal TcpConnection(ConnectionId connectionId, uint sequenceNumber, Action<TcpConnection>removeCallback, string snifferType)
         {
+            ConnectionId = connectionId;
             Source = connectionId.Source.ToIpEndpoint();
             Destination = connectionId.Destination.ToIpEndpoint();
             InitialSequenceNumber = sequenceNumber;
