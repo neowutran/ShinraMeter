@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using NetworkSniffer.Packets;
 
@@ -9,13 +8,11 @@ namespace NetworkSniffer
 {
     public class TcpSniffer
     {
-        private readonly Dictionary<ConnectionId, TcpConnection> _connections =
-            new Dictionary<ConnectionId, TcpConnection>();
+        private readonly ConcurrentDictionary<ConnectionId, TcpConnection> _connections =
+            new ConcurrentDictionary<ConnectionId, TcpConnection>();
 
-        private readonly object _lock = new object();
-        private readonly object _bufferLock = new object();
         private string SnifferType;
-        private List<Tuple<TcpConnection,TcpPacket>> _buffer =new List<Tuple<TcpConnection, TcpPacket>>();
+        private ConcurrentQueue<Tuple<TcpConnection,TcpPacket>> _buffer = new ConcurrentQueue<Tuple<TcpConnection, TcpPacket>>();
         public TcpSniffer(IpSniffer ipSniffer)
         {
             ipSniffer.PacketReceived += Receive;
@@ -35,28 +32,19 @@ namespace NetworkSniffer
 
         internal void RemoveConnection(TcpConnection connection)
         {
-            lock (_lock) if (_connections.ContainsValue(connection))
-                             _connections.Remove(_connections.First(x => x.Value == connection).Key);
+            TcpConnection temp;
+            if (_connections.ContainsKey(connection.ConnectionId))
+                             _connections.TryRemove(connection.ConnectionId, out temp);
         }
 
         private void ParsePacketsLoop()
         {
             while (true)
             {
-                bool sleep = true;
-                lock (_bufferLock) if (_buffer.Count != 0) sleep = false;
-                if (sleep) System.Threading.Thread.Sleep(1);
-                else
-                {
-                    List<Tuple<TcpConnection, TcpPacket>> toProcess;
-                    lock (_bufferLock)
-                    {
-                        toProcess = _buffer;
-                        _buffer = new List<Tuple<TcpConnection, TcpPacket>>();
-                    }
-                    foreach (var packet in toProcess)
-                        packet.Item1.HandleTcpReceived(packet.Item2.SequenceNumber, packet.Item2.Payload);
-                }
+                Tuple<TcpConnection, TcpPacket> toProcess;
+                if (_buffer.TryDequeue(out toProcess))
+                    toProcess.Item1.HandleTcpReceived(toProcess.Item2.SequenceNumber, toProcess.Item2.Payload);
+                else System.Threading.Thread.Sleep(1);
             }
         }
 
@@ -79,14 +67,14 @@ namespace NetworkSniffer
                 OnNewConnection(connection);
                 isInterestingConnection = connection.HasSubscribers;
                 if (!isInterestingConnection) return;
-                lock (_lock) _connections[connectionId] = connection;
+                _connections[connectionId] = connection;
                 Debug.Assert(tcpPacket.Payload.Count == 0);
             }
             else
             {
-                lock (_lock) isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
+                isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
                 if (!isInterestingConnection) return;
-                lock (_bufferLock) _buffer.Add(Tuple.Create(connection,tcpPacket));
+                _buffer.Enqueue(Tuple.Create(connection,tcpPacket));
                 //if (!string.IsNullOrEmpty(TcpLogFile))
                 //    File.AppendAllText(TcpLogFile,
                 //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",

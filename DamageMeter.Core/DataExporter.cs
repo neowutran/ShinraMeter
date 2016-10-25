@@ -280,10 +280,10 @@ namespace DamageMeter
             var areaId = int.Parse(teradpsData.areaId);
             if (
                  //areaId != 886 &&
-                 areaId != 467 &&
-                 areaId != 767 &&
-                 areaId != 768 &&
-                 areaId != 468 &&
+                 //areaId != 467 &&
+                 //areaId != 767 &&
+                 //areaId != 768 &&
+                 //areaId != 468 &&
                  areaId != 770 &&
                  areaId != 769 &&
                  areaId != 916 &&
