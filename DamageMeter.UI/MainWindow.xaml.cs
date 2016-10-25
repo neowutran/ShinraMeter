@@ -56,6 +56,8 @@ namespace DamageMeter.UI
             }
             System.Windows.Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
             if (BasicTeraData.Instance.WindowData.LowPriority) Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
+
+            
             TeraSniffer.Instance.Enabled = true;
             NetworkController.Instance.Connected += HandleConnected;
             NetworkController.Instance.TickUpdated += Update;
@@ -88,6 +90,7 @@ namespace DamageMeter.UI
                 "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             NotifyIcon.Initialize(this);
             KeyboardHook.Instance.SwitchTopMost += delegate { NotifyIcon.SwitchStayTop(); };
+            
         }
 
         private void InstanceOnGuildIconAction(Bitmap icon)

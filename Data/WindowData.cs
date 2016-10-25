@@ -39,14 +39,10 @@ namespace Data
         public bool OnlyBoss { get; set; }
         public bool DetectBosses { get; set; }
 
-        public int SoundNotifyDuration { get; set; }
         public int PopupDisplayTime { get; set; }
         public bool DateInExcelPath { get; set; }
 
-        public string NotifySound { get; set; }
-
         public int NumberOfPlayersDisplayed { get; set; }
-        public float Volume { get; set; }
         public bool LowPriority { get; set; }
         public bool EnableChat { get; set; }
         public bool CopyInspect { get; set; }
@@ -104,9 +100,6 @@ namespace Data
             DateInExcelPath = false;
             NumberOfPlayersDisplayed = 5;
             PopupDisplayTime = 10000;
-            SoundNotifyDuration = 3000;
-            Volume = 1.0f;
-            NotifySound = "ElinuDance.mp3";
             FormatPasteString = true;
             WhisperColor = Brushes.Pink.Color;
             AllianceColor = Brushes.Green.Color;
@@ -133,6 +126,8 @@ namespace Data
         public WindowData(BasicTeraData basicData)
         {
             DefaultValue();
+
+            
             // Load XML File
             var windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
 
@@ -189,10 +184,7 @@ namespace Data
             Parse("date_in_excel_path", "DateInExcelPath");
             Parse("low_priority", "LowPriority");
             Parse("format_paste_string", "FormatPasteString");           
-            Parse("notify_sound", "NotifySound");
             Parse("popup_display_time", "PopupDisplayTime");
-            Parse("sound_notify_duration", "SoundNotifyDuration");
-            Parse("volume", "Volume");
             Parse("remove_tera_alt_enter_hotkey", "RemoveTeraAltEnterHotkey");
             Parse("enable_chat_and_notifications", "EnableChat");
             Parse("copy_inspect", "CopyInspect");
@@ -215,6 +207,7 @@ namespace Data
             ParseDiscord();
             ParseLanguage();
             ParseUILanguage();
+            
         }
 
         private void ParseColor(string xmlName, string settingName)
@@ -489,10 +482,7 @@ namespace Data
             xml.Root.Add(new XElement("copy_inspect", CopyInspect));
             xml.Root.Add(new XElement("do_not_warn_on_crystalbind", DoNotWarnOnCB));
             xml.Root.Add(new XElement("format_paste_string", FormatPasteString));
-            xml.Root.Add(new XElement("notify_sound", NotifySound));
-            xml.Root.Add(new XElement("volume", Volume));
             xml.Root.Add(new XElement("popup_display_time", PopupDisplayTime));
-            xml.Root.Add(new XElement("sound_notify_duration", SoundNotifyDuration));
 
             xml.Root.Add(new XElement("say_color", SayColor.ToString()));
             xml.Root.Add(new XElement("alliance_color", AllianceColor.ToString()));

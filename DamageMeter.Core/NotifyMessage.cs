@@ -8,13 +8,22 @@ namespace DamageMeter
 {
     public class NotifyMessage
     {
-        public bool HaveSound { get; private set; }
+        public SoundEnum Sound { get; private set; }
         public string Title { get; private set; }
         public string Content { get; private set; }
 
-        public NotifyMessage(string title, string content, bool haveSound = true)
+        public enum SoundEnum
         {
-            HaveSound = haveSound;
+            NoSound = 0,
+            Type1 = 1,
+            Type2 = 2,
+            Type3 = 3,
+            Type4 = 4
+        }
+
+        public NotifyMessage(string title, string content, SoundEnum sound = SoundEnum.NoSound)
+        {
+            Sound = sound;
             Title = title;
             Content = content;
         }

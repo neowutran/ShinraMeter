@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Data;
 using Tera.Game;
 using Tera.Game.Messages;
+using static Tera.Game.HotDotDatabase;
 
 namespace DamageMeter.Processing
 {
@@ -111,6 +112,59 @@ namespace DamageMeter.Processing
             }
         }
 
+
+
+        internal static void CallCheckBuffStart(EntityId target, EntityId source, int abnormalityId)
+        {
+            Thread thread = new Thread(() => CheckBuffStart(target, source, abnormalityId));
+            thread.SetApartmentState(ApartmentState.STA); //Set the thread to STA
+            thread.Start();
+        }
+
+        internal static void CheckBuffStart(EntityId target, EntityId source, int abnormalityId)
+        {
+            if (!BasicTeraData.Instance.WindowData.EnableChat) return;
+
+            var player = NetworkController.Instance.EntityTracker.MeterUser;
+            if (player == null || _lastBoss == null) return;
+
+
+            Dictionary<int, HotDot> monitored = new Dictionary<int, HotDot>();
+            var contagion1 = BasicTeraData.Instance.HotDotDatabase.Contagion1;
+            var contagion2 = BasicTeraData.Instance.HotDotDatabase.Contagion2;
+            var enrage = BasicTeraData.Instance.HotDotDatabase.Enrage;
+            var hurricane = BasicTeraData.Instance.HotDotDatabase.Hurricane;
+
+            monitored.Add(contagion1.Id, contagion1);
+            monitored.Add(contagion2.Id, contagion2);
+            monitored.Add(enrage.Id, enrage);
+            monitored.Add(hurricane.Id, hurricane);
+
+
+            if (_lastBoss.Value == target && monitored.ContainsKey(abnormalityId))
+            {
+                var buff = monitored[abnormalityId];
+                NotifyMessage.SoundEnum sound = NotifyMessage.SoundEnum.Type1;
+
+                if (abnormalityId == BasicTeraData.Instance.HotDotDatabase.Contagion1.Id ||
+                    abnormalityId == BasicTeraData.Instance.HotDotDatabase.Contagion2.Id)
+                {
+                    sound = NotifyMessage.SoundEnum.Type2;
+                }
+                else if (abnormalityId == BasicTeraData.Instance.HotDotDatabase.Enraged.Id)
+                {
+                    sound = NotifyMessage.SoundEnum.Type3;
+                }
+                else if (abnormalityId == BasicTeraData.Instance.HotDotDatabase.Hurricane.Id) { 
+                    sound = NotifyMessage.SoundEnum.Type4;
+                }
+            
+            NetworkController.Instance.FlashMessage = new NotifyMessage(buff.Name, buff.Name, sound);
+            }
+        }
+
+
+
         private static long _nextCBNotifyCheck;
         private static EntityId? _lastBoss;
         internal static void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
@@ -155,7 +209,7 @@ namespace DamageMeter.Processing
             if (!string.IsNullOrEmpty(notify))
             {
                 _nextCBNotifyCheck = message.Time.Ticks + 15 * TimeSpan.TicksPerMinute;// no more than 1 notify in 10 minutes
-                NetworkController.Instance.FlashMessage = new NotifyMessage(LP.NotifyCB, notify, false);
+                NetworkController.Instance.FlashMessage = new NotifyMessage(LP.NotifyCB, notify, NotifyMessage.SoundEnum.Type1);
             }
         }
 
@@ -206,7 +260,7 @@ namespace DamageMeter.Processing
             {
                 if (!TeraWindow.IsTeraActive())
                 {
-                    NetworkController.Instance.FlashMessage = new NotifyMessage(LP.JoyOfPartying, LP.JoyOfPartying, false);
+                    NetworkController.Instance.FlashMessage = new NotifyMessage(LP.JoyOfPartying, LP.JoyOfPartying, NotifyMessage.SoundEnum.Type1);
                 }
                 _joyOfPartyingIs100 = true;
             }

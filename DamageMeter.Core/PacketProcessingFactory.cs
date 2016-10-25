@@ -99,14 +99,6 @@ namespace DamageMeter
         {
             var abnormalityTrackerProcessing = new Dictionary<Type, Delegate>
             {
-            { typeof(Tera.Game.Messages.SAddCharmStatus) , new Action<Tera.Game.Messages.SAddCharmStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SEnableCharmStatus) , new Action<Tera.Game.Messages.SEnableCharmStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SRemoveCharmStatus) , new Action<Tera.Game.Messages.SRemoveCharmStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SResetCharmStatus) , new Action<Tera.Game.Messages.SResetCharmStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SPartyMemberCharmAdd) , new Action<Tera.Game.Messages.SPartyMemberCharmAdd>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SPartyMemberCharmDel) , new Action<Tera.Game.Messages.SPartyMemberCharmDel>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SPartyMemberCharmEnable) , new Action<Tera.Game.Messages.SPartyMemberCharmEnable>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SPartyMemberCharmReset) , new Action<Tera.Game.Messages.SPartyMemberCharmReset>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityBegin) , new Action<Tera.Game.Messages.SAbnormalityBegin>((x)=> Abnormalities.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityEnd) , new Action<Tera.Game.Messages.SAbnormalityEnd>((x)=>Abnormalities.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityRefresh) , new Action<Tera.Game.Messages.SAbnormalityRefresh>((x)=>Abnormalities.Update(x)) },
