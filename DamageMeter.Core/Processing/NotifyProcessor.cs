@@ -171,7 +171,6 @@ namespace DamageMeter.Processing
         {
             NetworkController.Instance.EntityTracker.Update(message);
             _lastBoss = message.EntityId;
-            CheckCB(message);
         }
 
         private static List<UserEntity> playerWithUnkownBuff = new List<UserEntity>();
