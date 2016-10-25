@@ -12,7 +12,22 @@ namespace NetworkSniffer
             new ConcurrentDictionary<ConnectionId, TcpConnection>();
 
         private string SnifferType;
-        private ConcurrentQueue<Tuple<TcpConnection,TcpPacket>> _buffer = new ConcurrentQueue<Tuple<TcpConnection, TcpPacket>>();
+        internal struct QPacket
+        {
+            internal TcpConnection Connection;
+            internal uint SequenceNumber;
+            internal ArraySegment<byte> Packet;
+
+            internal QPacket(TcpConnection connection, uint sequenceNumber, ArraySegment<byte> packet)
+            {
+                Connection = connection;
+                SequenceNumber = sequenceNumber;
+                var data = new byte[packet.Count];
+                Array.Copy(packet.Array, packet.Offset, data, 0, packet.Count);
+                Packet = new ArraySegment<byte>(data,0,data.Length);
+            }
+        }
+        private ConcurrentQueue<QPacket> _buffer = new ConcurrentQueue<QPacket>();
         public TcpSniffer(IpSniffer ipSniffer)
         {
             ipSniffer.PacketReceived += Receive;
@@ -41,9 +56,9 @@ namespace NetworkSniffer
         {
             while (true)
             {
-                Tuple<TcpConnection, TcpPacket> toProcess;
+                QPacket toProcess;
                 if (_buffer.TryDequeue(out toProcess))
-                    toProcess.Item1.HandleTcpReceived(toProcess.Item2.SequenceNumber, toProcess.Item2.Payload);
+                    toProcess.Connection.HandleTcpReceived(toProcess.SequenceNumber, toProcess.Packet);
                 else System.Threading.Thread.Sleep(1);
             }
         }
@@ -74,7 +89,7 @@ namespace NetworkSniffer
             {
                 isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
                 if (!isInterestingConnection) return;
-                _buffer.Enqueue(Tuple.Create(connection,tcpPacket));
+                _buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber,tcpPacket.Payload));
                 //if (!string.IsNullOrEmpty(TcpLogFile))
                 //    File.AppendAllText(TcpLogFile,
                 //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
