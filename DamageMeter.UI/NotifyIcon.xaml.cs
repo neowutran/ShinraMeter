@@ -670,5 +670,15 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.FormatPasteString = false;
         }
+
+        private void EnableSoundConsoleBeepFallback(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback = true;
+        }
+
+        private void DisableSoundConsoleBeepFallback(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback = true;
+        }
     }
 }

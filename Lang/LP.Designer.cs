@@ -293,7 +293,19 @@ namespace Lang {
                 return ResourceManager.GetString("Close", resourceCulture);
             }
         }
+		
+        /// <summary>
+        ///   Looks up a localized string similar to SoundConsoleBeepFallback.
+        /// </summary>
+        public static string SoundConsoleBeepFallback {
+            get {
+                return ResourceManager.GetString("SoundConsoleBeepFallback", resourceCulture);
+            }
+        }
         
+		
+		
+		
         /// <summary>
         ///   Looks up a localized string similar to Combat ready check.
         /// </summary>

@@ -577,4 +577,9 @@
   <data name="FormatPasteString" xml:space="preserve">
     <value>Format paste string</value>
   </data>
+  <data name="SoundConsoleBeepFallback" xml:space="preserve">
+    <value>Switch to another sound system</value>
+  </data>
+  
+  
 </root>
