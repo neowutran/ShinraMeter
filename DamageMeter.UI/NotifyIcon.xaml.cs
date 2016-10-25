@@ -190,6 +190,7 @@ namespace DamageMeter.UI
                 Sound1();
                 Sound2();
                 Sound3();
+                Sound4();
                 Monitor.Exit(_lock);
                 return;
             }
@@ -245,22 +246,22 @@ namespace DamageMeter.UI
 
         private void Sound1()
         {
-            Console.Beep(990, 250);
+            Console.Beep(261, 250);
         }
 
         private void Sound2()
         {
-            Console.Beep(1056, 250);
+            Console.Beep(293, 250);
         }
 
         private void Sound3()
         {
-            Console.Beep(1056, 250);
+            Console.Beep(329, 250);
         }
         
         private void Sound4()
         {
-            Console.Beep(1056, 250);
+            Console.Beep(349, 250);
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
