@@ -59,6 +59,7 @@ namespace DamageMeter.UI
 
             
             TeraSniffer.Instance.Enabled = true;
+            TeraSniffer.Instance.Warning += PcapWarning;
             NetworkController.Instance.Connected += HandleConnected;
             NetworkController.Instance.TickUpdated += Update;
             NetworkController.Instance.SetClickThrouAction += SetClickThrou;
@@ -507,6 +508,10 @@ namespace DamageMeter.UI
             PopupMenu.IsOpen = true;
         }
 
+        public void PcapWarning(string str)
+        {
+            BasicTeraData.LogError(str, false, true);
+        }
 
         private delegate void ChangeTitle(string servername);
     }

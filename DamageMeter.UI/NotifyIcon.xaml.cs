@@ -61,6 +61,7 @@ namespace DamageMeter.UI
             CopyInspect.IsChecked = BasicTeraData.Instance.WindowData.CopyInspect;
             NotifyCB.IsChecked = !BasicTeraData.Instance.WindowData.DoNotWarnOnCB;
             FormatPasteString.IsChecked = BasicTeraData.Instance.WindowData.FormatPasteString;
+            SoundConsoleBeepFallback.IsChecked=BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback;
 
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
@@ -679,7 +680,7 @@ namespace DamageMeter.UI
 
         private void DisableSoundConsoleBeepFallback(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback = true;
+            BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback = false;
         }
     }
 }
