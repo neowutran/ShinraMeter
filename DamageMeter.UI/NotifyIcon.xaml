@@ -329,7 +329,7 @@
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="DiscordPassword" Content="Discord password" />
-                                            <TextBox LostFocus="DiscordPasswordChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordPasswordTextBox"/>
+                                            <PasswordBox LostFocus="DiscordPasswordChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordPasswordTextBox"/>
                                         </Grid>
 
                                     </Grid>
