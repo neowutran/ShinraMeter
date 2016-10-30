@@ -76,7 +76,7 @@ namespace DamageMeter.UI
             RaidColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.RaidColor;
 
             DiscordLoginTextBox.Text = BasicTeraData.Instance.WindowData.DiscordLogin;
-            DiscordPasswordTextBox.Text = BasicTeraData.Instance.WindowData.DiscordPassword;
+            DiscordPasswordTextBox.Password = BasicTeraData.Instance.WindowData.DiscordPassword;
 
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
         }
@@ -645,7 +645,7 @@ namespace DamageMeter.UI
 
         private void DiscordPasswordChanged(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.DiscordPassword = DiscordPasswordTextBox.Text;
+            BasicTeraData.Instance.WindowData.DiscordPassword = DiscordPasswordTextBox.Password;
         }
 
         private void DiscordLoginChanged(object sender, RoutedEventArgs e)
