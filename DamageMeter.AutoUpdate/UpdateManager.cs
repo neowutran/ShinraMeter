@@ -116,7 +116,7 @@ namespace DamageMeter.AutoUpdate
 
         public static void DestroyRelease()
         {
-            Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\"), File.Delete);
+            Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\").Where(t=>!t.EndsWith("ShinraLauncher.exe")).ToArray(), File.Delete);
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\resources\"), File.Delete);
             foreach (var s in Directory.GetDirectories(ExecutableDirectory + @"\..\..\").Where(t=> !(t.EndsWith("resources")||t.EndsWith("tmp"))))
             {
