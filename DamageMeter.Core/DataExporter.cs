@@ -295,6 +295,23 @@ namespace DamageMeter
                 return;
             }
 
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(40);
+                    var response = client.GetAsync("http://moongourd.com/shared/servertime");
+                    var timediff = (response.Result.Headers.Date.Value.UtcDateTime.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerSecond;
+                    teradpsData.encounterUnixEpoch += timediff;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Get server time error");
+                NetworkController.Instance.BossLink.TryAdd(
+                    "!" + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.Now.Ticks, entity);
+                return;
+            }
             //if (int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468)
             //{
             //    return;
@@ -323,7 +340,7 @@ namespace DamageMeter
                 {
                     //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
                     //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
-
+                    client.DefaultRequestHeaders.Add("X-Local-Time",DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString());
                     client.Timeout = TimeSpan.FromSeconds(40);
                     var response = client.PostAsync("http://moongourd.com/dpsmeter_data.php", new StringContent(
                                           json,

@@ -11,6 +11,7 @@ namespace NetworkSniffer
         private readonly ConcurrentDictionary<ConnectionId, TcpConnection> _connections =
             new ConcurrentDictionary<ConnectionId, TcpConnection>();
 
+        private object _lock=new object();
         private string SnifferType;
         internal struct QPacket
         {
@@ -32,7 +33,7 @@ namespace NetworkSniffer
         {
             ipSniffer.PacketReceived += Receive;
             SnifferType = ipSniffer.GetType().FullName;
-            Task.Run(()=>ParsePacketsLoop());
+            //Task.Run(()=>ParsePacketsLoop());
         }
 
         public string TcpLogFile { get; set; }
@@ -65,38 +66,43 @@ namespace NetworkSniffer
 
         private void Receive(ArraySegment<byte> ipData)
         {
-            var ipPacket = new Ip4Packet(ipData);
-            var protocol = ipPacket.Protocol;
-            if (protocol != IpProtocol.Tcp) return;
-            var tcpPacket = new TcpPacket(ipPacket.Payload);
-            if (tcpPacket.Bad) return;
-            var isFirstPacket = (tcpPacket.Flags & TcpFlags.Syn) != 0;
-            var connectionId = new ConnectionId(ipPacket.SourceIp, tcpPacket.SourcePort, ipPacket.DestinationIp, tcpPacket.DestinationPort);
+            lock (_lock)
+            {
+                var ipPacket = new Ip4Packet(ipData);
+                var protocol = ipPacket.Protocol;
+                if (protocol != IpProtocol.Tcp) return;
+                var tcpPacket = new TcpPacket(ipPacket.Payload);
+                if (tcpPacket.Bad) return;
+                var isFirstPacket = (tcpPacket.Flags & TcpFlags.Syn) != 0;
+                var connectionId = new ConnectionId(ipPacket.SourceIp, tcpPacket.SourcePort, ipPacket.DestinationIp,
+                    tcpPacket.DestinationPort);
 
 
-            TcpConnection connection;
-            bool isInterestingConnection;
-            if (isFirstPacket)
-            {
-                connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber, RemoveConnection, SnifferType);
-                OnNewConnection(connection);
-                isInterestingConnection = connection.HasSubscribers;
-                if (!isInterestingConnection) return;
-                _connections[connectionId] = connection;
-                Debug.Assert(tcpPacket.Payload.Count == 0);
-            }
-            else
-            {
-                isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
-                if (!isInterestingConnection) return;
-                _buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber,tcpPacket.Payload));
-                //if (!string.IsNullOrEmpty(TcpLogFile))
-                //    File.AppendAllText(TcpLogFile,
-                //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
-                //            connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived,
-                //            connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber),
-                //            tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber,
-                //            connection.BufferedPacketDescription));
+                TcpConnection connection;
+                bool isInterestingConnection;
+                if (isFirstPacket)
+                {
+                    connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber, RemoveConnection, SnifferType);
+                    OnNewConnection(connection);
+                    isInterestingConnection = connection.HasSubscribers;
+                    if (!isInterestingConnection) return;
+                    _connections[connectionId] = connection;
+                    Debug.Assert(tcpPacket.Payload.Count == 0);
+                }
+                else
+                {
+                    isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
+                    if (!isInterestingConnection) return;
+                    //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
+                    connection.HandleTcpReceived(tcpPacket.SequenceNumber, tcpPacket.Payload);
+                    //if (!string.IsNullOrEmpty(TcpLogFile))
+                    //    File.AppendAllText(TcpLogFile,
+                    //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
+                    //            connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived,
+                    //            connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber),
+                    //            tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber,
+                    //            connection.BufferedPacketDescription));
+                }
             }
         }
     }
