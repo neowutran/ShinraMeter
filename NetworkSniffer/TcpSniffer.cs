@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using NetworkSniffer.Packets;
+using PacketDotNet;
+using TcpPacket = NetworkSniffer.Packets.TcpPacket;
 
 namespace NetworkSniffer
 {
@@ -13,22 +15,22 @@ namespace NetworkSniffer
 
         private object _lock=new object();
         private string SnifferType;
-        internal struct QPacket
-        {
-            internal TcpConnection Connection;
-            internal uint SequenceNumber;
-            internal ArraySegment<byte> Packet;
+        //internal struct QPacket
+        //{
+        //    internal TcpConnection Connection;
+        //    internal uint SequenceNumber;
+        //    internal ArraySegment<byte> Packet;
 
-            internal QPacket(TcpConnection connection, uint sequenceNumber, ArraySegment<byte> packet)
-            {
-                Connection = connection;
-                SequenceNumber = sequenceNumber;
-                var data = new byte[packet.Count];
-                Array.Copy(packet.Array, packet.Offset, data, 0, packet.Count);
-                Packet = new ArraySegment<byte>(data,0,data.Length);
-            }
-        }
-        private ConcurrentQueue<QPacket> _buffer = new ConcurrentQueue<QPacket>();
+        //    internal QPacket(TcpConnection connection, uint sequenceNumber, ArraySegment<byte> packet)
+        //    {
+        //        Connection = connection;
+        //        SequenceNumber = sequenceNumber;
+        //        var data = new byte[packet.Count];
+        //        Array.Copy(packet.Array, packet.Offset, data, 0, packet.Count);
+        //        Packet = new ArraySegment<byte>(data,0,data.Length);
+        //    }
+        //}
+        //private ConcurrentQueue<QPacket> _buffer = new ConcurrentQueue<QPacket>();
         public TcpSniffer(IpSniffer ipSniffer)
         {
             ipSniffer.PacketReceived += Receive;
@@ -53,28 +55,25 @@ namespace NetworkSniffer
                              _connections.TryRemove(connection.ConnectionId, out temp);
         }
 
-        private void ParsePacketsLoop()
-        {
-            while (true)
-            {
-                QPacket toProcess;
-                if (_buffer.TryDequeue(out toProcess))
-                    toProcess.Connection.HandleTcpReceived(toProcess.SequenceNumber, toProcess.Packet);
-                else System.Threading.Thread.Sleep(1);
-            }
-        }
+        //private void ParsePacketsLoop()
+        //{
+        //    while (true)
+        //    {
+        //        QPacket toProcess;
+        //        if (_buffer.TryDequeue(out toProcess))
+        //            toProcess.Connection.HandleTcpReceived(toProcess.SequenceNumber, toProcess.Packet);
+        //        else System.Threading.Thread.Sleep(1);
+        //    }
+        //}
 
-        private void Receive(ArraySegment<byte> ipData)
+        private void Receive(IPv4Packet ipData)
         {
             lock (_lock)
             {
-                var ipPacket = new Ip4Packet(ipData);
-                var protocol = ipPacket.Protocol;
-                if (protocol != IpProtocol.Tcp) return;
-                var tcpPacket = new TcpPacket(ipPacket.Payload);
-                if (tcpPacket.Bad) return;
-                var isFirstPacket = (tcpPacket.Flags & TcpFlags.Syn) != 0;
-                var connectionId = new ConnectionId(ipPacket.SourceIp, tcpPacket.SourcePort, ipPacket.DestinationIp,
+                var tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket;
+                if (tcpPacket==null || !tcpPacket.ValidTCPChecksum) return;
+                var isFirstPacket = tcpPacket.Syn;
+                var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress,
                     tcpPacket.DestinationPort);
 
 
@@ -87,14 +86,14 @@ namespace NetworkSniffer
                     isInterestingConnection = connection.HasSubscribers;
                     if (!isInterestingConnection) return;
                     _connections[connectionId] = connection;
-                    Debug.Assert(tcpPacket.Payload.Count == 0);
+                    Debug.Assert(tcpPacket.PayloadData.Length == 0);
                 }
                 else
                 {
                     isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
                     if (!isInterestingConnection) return;
                     //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
-                    connection.HandleTcpReceived(tcpPacket.SequenceNumber, tcpPacket.Payload);
+                    connection.HandleTcpReceived(tcpPacket.SequenceNumber, tcpPacket.PayloadData);
                     //if (!string.IsNullOrEmpty(TcpLogFile))
                     //    File.AppendAllText(TcpLogFile,
                     //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",

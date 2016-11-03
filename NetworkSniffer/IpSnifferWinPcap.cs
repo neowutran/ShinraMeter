@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Data;
 using log4net;
 using PacketDotNet;
 using PacketDotNet.Utils;
@@ -32,6 +33,7 @@ namespace NetworkSniffer
             _servers = servers;
             BufferSize = 8192*1024;
             _devices = WinPcapDeviceList.New();
+            //BasicTeraData.LogError(string.Join("\r\n",_devices.Select(x=>x.Description)),true,true);
             //check for winpcap installed if not - exception to fallback to rawsockets
             _devices = null;
         }
@@ -135,7 +137,7 @@ namespace NetworkSniffer
                 {
                     ipPacket = new IPv4Packet(new ByteArraySegment(e.Packet.Data,4,e.Packet.Data.Length-4));
                 }
-                if (ipPacket == null || ipPacket.Protocol!=IPProtocolType.TCP)
+                if (ipPacket == null)
                     return;
             }
             catch
@@ -143,11 +145,8 @@ namespace NetworkSniffer
                 return;
                 // ignored bad packet
             }
-            ;
-            var ipData = ipPacket.BytesHighPerformance;
-            var ipData2 = new ArraySegment<byte>(ipData.ActualBytes());
 
-            OnPacketReceived(ipData2);
+            OnPacketReceived(ipPacket);
 
             var device = (WinPcapDevice) sender;
             if (device.Statistics.DroppedPackets == _droppedPackets &&

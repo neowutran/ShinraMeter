@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using PacketDotNet;
 
 namespace NetworkSniffer
 {
@@ -22,9 +23,9 @@ namespace NetworkSniffer
             }
         }
 
-        public event Action<ArraySegment<byte>> PacketReceived;
+        public event Action<IPv4Packet> PacketReceived;
 
-        protected void OnPacketReceived(ArraySegment<byte> data)
+        protected void OnPacketReceived(IPv4Packet data)
         {
             var packetReceived = PacketReceived;
             packetReceived?.Invoke(data);

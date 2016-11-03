@@ -18,9 +18,9 @@ namespace DamageMeter.Sniffing
         private static TeraSniffer _instance;
         // Only take this lock in callbacks from tcp sniffing, not in code that can be called by the user.
         // Otherwise this could cause a deadlock if the user calls such a method from a callback that already holds a lock
-        private readonly object _eventLock = new object();
+        //private readonly object _eventLock = new object();
         private readonly IpSniffer _ipSniffer;
-        private readonly HashSet<TcpConnection> _isNew = new HashSet<TcpConnection>();
+        private readonly ConcurrentDictionary<TcpConnection,byte> _isNew = new ConcurrentDictionary<TcpConnection, byte>();
 
         private readonly Dictionary<string, Server> _serversByIp;
         private TcpConnection _clientToServer;
@@ -99,29 +99,28 @@ namespace DamageMeter.Sniffing
         // called from the tcp sniffer, so it needs to lock
         private void HandleNewConnection(TcpConnection connection)
         {
-            lock (_eventLock)
             {
                 if (!_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
                     !_serversByIp.ContainsKey(connection.Source.Address.ToString()))
                     return;
-                _isNew.Add(connection);
+                _isNew.TryAdd(connection,1);
                 connection.DataReceived += HandleTcpDataReceived;
             }
         }
 
         // called from the tcp sniffer, so it needs to lock
-        private void HandleTcpDataReceived(TcpConnection connection, ArraySegment<byte> data, int needToSkip)
+        private void HandleTcpDataReceived(TcpConnection connection, byte[] data, int needToSkip)
         {
-            lock (_eventLock)
             {
-                if (data.Count == 0)
+                if (data.Length == 0)
                     return;
-                if (_isNew.Contains(connection))
+                if (_isNew.ContainsKey(connection))
                 {
                     if (_serversByIp.ContainsKey(connection.Source.Address.ToString()) &&
-                        data.Array.Skip(data.Offset).Take(4).SequenceEqual(new byte[] {1, 0, 0, 0}))
+                        data.Take(4).SequenceEqual(new byte[] {1, 0, 0, 0}))
                     {
-                        _isNew.Remove(connection);
+                        byte q;
+                        _isNew.TryRemove(connection, out q);
                         var server = _serversByIp[connection.Source.Address.ToString()];
                         _serverToClient = connection;
                         _clientToServer = null;
@@ -140,12 +139,14 @@ namespace DamageMeter.Sniffing
                         _serverToClient.Source.Equals(connection.Destination))
                     {
                         ClientProxyOverhead=(int)connection.BytesReceived;
-                        _isNew.Remove(connection);
+                        byte q;
+                        _isNew.TryRemove(connection, out q);
                         _clientToServer = connection;
                     }
                     if (connection.BytesReceived > 0x1000) //if received more bytes but still not recognized - not interesting.
                     {
-                        _isNew.Remove(connection);
+                        byte q;
+                        _isNew.TryRemove(connection, out q);
                         connection.DataReceived -= HandleTcpDataReceived;
                         connection.RemoveCallback();
                     }
@@ -155,11 +156,10 @@ namespace DamageMeter.Sniffing
                     return;
                 if (_decrypter == null)
                     return;
-                var dataArray = data.Array.Skip(data.Offset).Take(data.Count).ToArray();
                 if (connection == _clientToServer)
-                    _decrypter.ClientToServer(dataArray, needToSkip);
+                    _decrypter.ClientToServer(data, needToSkip);
                 else
-                    _decrypter.ServerToClient(dataArray, needToSkip);
+                    _decrypter.ServerToClient(data, needToSkip);
             }
         }
 

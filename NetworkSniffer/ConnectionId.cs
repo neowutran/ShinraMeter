@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Net;
 
 namespace NetworkSniffer
 {
     internal struct ConnectionId : IEquatable<ConnectionId>
     {
-        public readonly EndpointIpv4 Source;
-        public readonly EndpointIpv4 Destination;
+        public readonly IPEndPoint Source;
+        public readonly IPEndPoint Destination;
 
-        public ConnectionId(uint sourceIp, ushort sourcePort, uint destinationIp, ushort destinationPort)
+        public ConnectionId(IPAddress sourceIp, ushort sourcePort, IPAddress destinationIp, ushort destinationPort)
         {
-            Source = new EndpointIpv4(sourceIp, sourcePort);
-            Destination = new EndpointIpv4(destinationIp, destinationPort);
+            Source = new IPEndPoint(sourceIp, sourcePort);
+            Destination = new IPEndPoint(destinationIp, destinationPort);
         }
 
         public static bool operator ==(ConnectionId x, ConnectionId y)

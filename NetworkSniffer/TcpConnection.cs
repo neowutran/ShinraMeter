@@ -7,6 +7,7 @@ using System.Net;
 using System.Windows.Forms;
 using Data;
 using Lang;
+using PacketDotNet;
 
 namespace NetworkSniffer
 {
@@ -22,8 +23,8 @@ namespace NetworkSniffer
         internal TcpConnection(ConnectionId connectionId, uint sequenceNumber, Action<TcpConnection>removeCallback, string snifferType)
         {
             ConnectionId = connectionId;
-            Source = connectionId.Source.ToIpEndpoint();
-            Destination = connectionId.Destination.ToIpEndpoint();
+            Source = connectionId.Source;
+            Destination = connectionId.Destination;
             InitialSequenceNumber = sequenceNumber;
             RemoveCallback = () => removeCallback(this);
             SnifferType = snifferType;
@@ -46,7 +47,7 @@ namespace NetworkSniffer
 
         public static uint NextSequenceNumber { get; private set; }
 
-        public event Action<TcpConnection, ArraySegment<byte>,int> DataReceived;
+        public event Action<TcpConnection, byte[], int> DataReceived;
 
         public long SequenceNumberToBytesReceived(uint sequenceNumber)
         {
@@ -54,30 +55,28 @@ namespace NetworkSniffer
             return BytesReceived + offsetToCurrent;
         }
 
-        internal void OnDataReceived(ArraySegment<byte> data, int needToSkip)
+        internal void OnDataReceived(byte[] data, int needToSkip)
         {
             var dataReceived = DataReceived;
             dataReceived?.Invoke(this, data, needToSkip);
         }
 
-        internal void HandleTcpReceived(uint sequenceNumber, ArraySegment<byte> data)
+        internal void HandleTcpReceived(uint sequenceNumber, byte[] data)
         {
             var dataPosition = SequenceNumberToBytesReceived(sequenceNumber);
             long needToSkip=0;
-            NextSequenceNumber = (uint) (sequenceNumber + data.Count);
+            NextSequenceNumber = (uint) (sequenceNumber + data.Length);
             if (dataPosition == BytesReceived)
             {
                 OnDataReceived(data, (int)needToSkip);
-                BytesReceived += data.Count;
+                BytesReceived += data.Length;
             }
             else
             {
-                var dataArray = new byte[data.Count];
-                Array.Copy(data.Array, data.Offset, dataArray, 0, data.Count);
                 if (!_bufferedPackets.ContainsKey(dataPosition) ||
-                    _bufferedPackets[dataPosition].Length < dataArray.Length)
+                    _bufferedPackets[dataPosition].Length < data.Length)
                 {
-                    _bufferedPackets[dataPosition] = dataArray;
+                    _bufferedPackets[dataPosition] = data;
                 }
             }
 
@@ -108,7 +107,7 @@ namespace NetworkSniffer
 
                 if (alreadyReceivedBytes >= dataArray.Length) continue;
                 var count = dataArray.Length - alreadyReceivedBytes;
-                OnDataReceived(new ArraySegment<byte>(dataArray, (int) alreadyReceivedBytes, (int) count), (int)needToSkip);
+                OnDataReceived(dataArray.Skip((int) alreadyReceivedBytes).Take((int) count).ToArray(), (int)needToSkip);
                 BytesReceived += count;
                 needToSkip = 0;
             }

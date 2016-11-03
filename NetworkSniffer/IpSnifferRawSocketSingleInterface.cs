@@ -8,6 +8,8 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using PacketDotNet;
+using PacketDotNet.Utils;
 
 namespace NetworkSniffer
 {
@@ -50,7 +52,10 @@ namespace NetworkSniffer
                 await s.ReceiveAsync(awaitable);
                 int bytesRead = args.BytesTransferred;
                 if (bytesRead <= 0) throw new Exception("Raw socket is disconnected");
-                OnPacketReceived(new ArraySegment<byte>(args.Buffer, 0, bytesRead));
+                var ipPacket = new IPv4Packet(new ByteArraySegment(args.Buffer, 0, bytesRead));
+                if (ipPacket.Version != IpVersion.IPv4 || ipPacket.Protocol!=IPProtocolType.TCP)
+                    continue;
+                OnPacketReceived(ipPacket);
             }
         }
 
