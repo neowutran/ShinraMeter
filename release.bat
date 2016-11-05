@@ -9,6 +9,7 @@ md "%output%\resources"
 md "%output%\resources\config"
 
 xcopy "%source%\DamageMeter.UI\bin\%variant%" "%output%\" /E
+copy "%source%\ShinraLauncher.exe" "%output%\"
 copy "%source%\Randomizer\bin\%variant%\Randomizer.exe" "%output%\"
 copy "%source%\Randomizer\bin\%variant%\Randomizer.exe.config" "%output%\"
 copy "%source%\ReadmeUser.txt" "%output%\readme.txt"

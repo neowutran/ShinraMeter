@@ -100,6 +100,10 @@ namespace DamageMeter.AutoUpdate
             Directory.CreateDirectory(targetDir);
             foreach (var file in Directory.GetFiles(sourceDir))
             {
+                if (Path.GetFileName(file) == "ShinraLauncher.exe")
+                {
+                    if (File.Exists(Path.Combine(targetDir, Path.GetFileName(file)))) continue;
+                }
                 File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), true);
             }
 

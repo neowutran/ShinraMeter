@@ -29,9 +29,7 @@ namespace DamageMeter.Database
 
         private Database()
         {
-            Connexion = new SQLiteConnection("Data Source=:memory:;Version=3;");
-            Connexion.Open();
-            Init();
+            Connect();
         }
 
         public static Database Instance => _instance ?? (_instance = new Database());
@@ -64,6 +62,34 @@ namespace DamageMeter.Database
             sql = "CREATE INDEX `index_time` ON `skills` (`time` ASC);";
             command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
+
+            sql = "PRAGMA journal_mode = DELETE;";
+            command = new SQLiteCommand(sql, Connexion);
+            command.ExecuteNonQuery();
+
+            sql = "PRAGMA auto_vacuum = FULL;";
+            command = new SQLiteCommand(sql, Connexion);
+            command.ExecuteNonQuery();
+
+            command.Dispose();
+            
+
+        }
+
+        private void Connect()
+        {
+            Connexion = new SQLiteConnection("Data Source=:memory:;Version=3;");
+
+            Connexion.Open();
+            Init();
+        }
+
+        private void Reconnect()
+        {
+            Connexion.Close();
+            Connexion.Dispose();
+            Connexion = null;
+            Connect();
         }
 
         public void DeleteAll()
@@ -71,6 +97,8 @@ namespace DamageMeter.Database
             var sql = "DELETE FROM skills;";
             var command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
+            command.Dispose();
+            Reconnect();
         }
 
         public void DeleteEntity(Entity entity)
@@ -79,6 +107,7 @@ namespace DamageMeter.Database
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$entity", entity.Id.Id);
             command.ExecuteNonQuery();
+            command.Dispose();
         }
 
         public void Insert(long amount, Type type, Entity target, Entity source, long skillId, bool hotdot, bool critic,
@@ -134,6 +163,7 @@ namespace DamageMeter.Database
             }
 
             command.ExecuteNonQuery();
+            command.Dispose();
         }
 
         public List<EntityId> AllEntity()
@@ -163,6 +193,7 @@ namespace DamageMeter.Database
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$time", entityInfo.BeginTime);
             command.ExecuteNonQuery();
+            command.Dispose();
         }
 
         public EntityInformation GlobalInformationEntity(NpcEntity entity, bool timed)
@@ -207,6 +238,7 @@ namespace DamageMeter.Database
 
 
             var rdr = command.ExecuteReader();
+            command.Dispose();
             long sumTotalDamage = 0;
             long minBeginTime = 0;
             long maxEndTime = 0;
@@ -253,6 +285,7 @@ namespace DamageMeter.Database
             var sourceTargetIdSkill = new Dictionary<Entity, Dictionary<Entity, Dictionary<int, List<Skill>>>>();
             var sourceIdSkill = new Dictionary<Entity, Dictionary<int, List<Skill>>>();
             var rdr = command.ExecuteReader();
+            command.Dispose();
 
             while (rdr.Read())
             {
@@ -347,6 +380,8 @@ namespace DamageMeter.Database
             var result = new List<PlayerHealDealt>();
 
             var rdr = command.ExecuteReader();
+            command.Dispose();
+    
 
             while (rdr.Read())
             {
@@ -392,6 +427,7 @@ namespace DamageMeter.Database
             var result = new List<PlayerDamageDealt>();
 
             var rdr = command.ExecuteReader();
+            command.Dispose();
 
             while (rdr.Read())
             {
