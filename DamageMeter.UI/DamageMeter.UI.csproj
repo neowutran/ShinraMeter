@@ -144,6 +144,9 @@
       <DependentUpon>ChatMessageUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClickThrouWindow.cs" />
+    <Compile Include="EntityStats\EnduranceDebuffDetail.xaml.cs">
+      <DependentUpon>EnduranceDebuffDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EntityStats\EnduranceDebuffHeader.xaml.cs">
       <DependentUpon>EnduranceDebuffHeader.xaml</DependentUpon>
     </Compile>
@@ -218,6 +221,10 @@
     <Page Include="ChatMessageUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EntityStats\EnduranceDebuffDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="EntityStats\EnduranceDebuffHeader.xaml">
       <Generator>MSBuild:Compile</Generator>

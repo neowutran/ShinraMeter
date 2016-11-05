@@ -7,6 +7,7 @@
     <StackPanel>
         <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="b0" Width="25" />
                 <ColumnDefinition SharedSizeGroup="b1" Width="40" />
                 <ColumnDefinition SharedSizeGroup="b2" MinWidth="70" />
                 <ColumnDefinition SharedSizeGroup="b3" MinWidth="300" />
@@ -14,31 +15,31 @@
                 <ColumnDefinition SharedSizeGroup="b5" MinWidth="70" />
                 <ColumnDefinition SharedSizeGroup="b6" MinWidth="70" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelClass"
                    Foreground="Yellow"
                    BorderThickness="1" BorderBrush="Gray"
                    MinHeight="29" />
 
 
-            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelName" VerticalAlignment="Center"
                    MinHeight="29"
                    BorderThickness="1" BorderBrush="Gray"
                    Foreground="Yellow" />
 
 
-            <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDuration" VerticalAlignment="Center"
                    MinHeight="29"
                    BorderThickness="1" BorderBrush="Gray"
                    Foreground="White" />
-            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelInterval" VerticalAlignment="Center"
                    MinHeight="29"
                    BorderThickness="1" BorderBrush="Gray"
                    Foreground="White" />
-            <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDurationPercentage" VerticalAlignment="Center"
                    MinHeight="29"
                    BorderThickness="1" BorderBrush="Gray"
