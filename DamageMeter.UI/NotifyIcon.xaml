@@ -353,8 +353,6 @@
                                 <Button Grid.Row="2" Content="{x:Static l:LP.SystemTray_Export_current_to_Excel}" Name="ExcelExport"  Click="ExcelExportAction"  />
                                 <Button Grid.Row="3" Content="{x:Static l:LP.SystemTray_Export_current_to_Site}" Name="SiteExport"  Click="SiteExportAction"  />
                                 <Button Grid.Row="4" Content="{x:Static l:LP.UploadGlyphBuild}" Name="UploadGlyphAction"  Click="ClickUploadGlyphAction"  />
-                                <Button Grid.Row="5" Content="{x:Static l:LP.TestSound}" Name="TestSound"  Click="TestSoundAction" />
-
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

@@ -27,6 +27,7 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 using System.Text;
+using Data.Actions.Notify;
 
 namespace DamageMeter.UI
 {
@@ -214,13 +215,13 @@ namespace DamageMeter.UI
 
         public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities,
             bool ntimedEncounter, AbnormalityStorage nabnormals,
-            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting, NotifyMessage nflash)
+            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting, NotifyAction nflash)
         {
             NetworkController.UpdateUiHandler changeUi =
                 delegate(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities,
                     bool timedEncounter,
                     AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory,
-                    List<ChatMessage> chatbox, int packetWaiting, NotifyMessage flash)
+                    List<ChatMessage> chatbox, int packetWaiting, NotifyAction flash)
                 {
 
                     Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;

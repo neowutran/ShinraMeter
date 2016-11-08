@@ -17,7 +17,7 @@ namespace DamageMeter.Processing
             var skillResult = new SkillResult(message, NetworkController.Instance.EntityTracker, NetworkController.Instance.PlayerTracker,
                        BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.PetSkillDatabase);
             DamageTracker.Instance.Update(skillResult);
-            NotifyProcessor.CheckCB(message);
+            NotifyProcessor.AbnormalityNotifierMissing(message.Target, message.Source);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Data.Events;
+﻿using Data.Actions.Notify;
+using Data.Actions.Notify.SoundElements;
+using Data.Events;
+using Data.Events.Abnormality;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,6 +11,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml;
 using System.Xml.Linq;
+using Tera.Game;
 
 namespace Data
 {
@@ -28,7 +32,9 @@ namespace Data
         {
             DefaultValue();
             // Load XML File
-            var windowFile = Path.Combine(basicData.ResourceDirectory, "config/events.xml");
+
+            //TODO load the file depending on meter user class.
+            var windowFile = Path.Combine(basicData.ResourceDirectory, "config/events/events-mystic.xml");
 
             try
             {
@@ -47,16 +53,18 @@ namespace Data
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
+                BasicTeraData.LogError(ex.Message, true, true);
                 Save();
                 _filestream = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 return;
             }
-            catch
+            catch(Exception ex)
             {
+                BasicTeraData.LogError(ex.Message, true, true);
                 return;
             }
        
-            Parse("do_not_warn_on_crystalbind", "DoNotWarnOnCB");
+            ParseAbnormalities();
         }
 
         public void Save()
@@ -68,10 +76,7 @@ namespace Data
 
 
             var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("events"));
-            xml.Root.Add(new XElement("location"));
-            xml.Root.Element("location").Add(new XElement("x", ""));
-           
-
+            xml.Root.Add(Events.Serialize());
             _filestream.SetLength(0); 
             using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true)))
             {
@@ -80,51 +85,89 @@ namespace Data
             _filestream.Close();
         }
 
-        private void Parse(string xmlName, string settingName)
+        private void ParseAbnormalities()
         {
             var root = _xml.Root;
-            var xml = root?.Element(xmlName);
-            if (xml == null) return;
-            var setting = this.GetType().GetProperty(settingName);
-            if (setting.PropertyType == typeof(int))
+            foreach (var abnormality in root.Elements("abnormality"))
             {
-                int value;
-                var parseSuccess = int.TryParse(xml.Value, out value);
-                if (parseSuccess)
+                List<int> ids = new List<int>();
+                List<HotDot.Types> types = new List<HotDot.Types>();
+                var abnormalities = abnormality.Element("abnormalities");
+                foreach (var abnormalityId in abnormalities.Elements("abnormality"))
                 {
-                    setting.SetValue(this, value, null);
+                    var idElement = abnormalityId.Value;
+                    int id;
+
+                    if(int.TryParse(idElement, out id))
+                    {
+                        ids.Add(id);
+                        continue;
+                    }
+                    HotDot.Types type;
+                    if(!Enum.TryParse(idElement, true, out type))
+                    {
+                        throw new Exception(idElement + " is not an acceptable value.");
+                    }
+                    types.Add(type);
                 }
-            }
-            if (setting.PropertyType == typeof(double))
-            {
-                double value;
-                var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
-                if (parseSuccess)
+
+
+                var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
+                AbnormalityTargetType target;
+                AbnormalityTriggerType trigger;
+                Enum.TryParse(abnormality.Attribute("target").Value, true, out target);
+                Enum.TryParse(abnormality.Attribute("trigger").Value, true, out trigger);
+                var remainingSecondsBeforeTrigger = 0;
+                if (trigger == AbnormalityTriggerType.MissingDuringFight)
                 {
-                    setting.SetValue(this, value, null);
+                    remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                 }
-            }
-            if (setting.PropertyType == typeof(float))
-            {
-                float value;
-                var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
-                if (parseSuccess)
+                var abnormalityEvent = new AbnormalityEvent(ingame, ids, types, target, trigger, remainingSecondsBeforeTrigger);
+                Events.Add(abnormalityEvent, new List<Actions.Action>());
+                foreach(var notify in abnormality.Element("actions").Elements("notify"))
                 {
-                    setting.SetValue(this, value, null);
+                    Balloon ballonData = null;
+                    Sound soundData = null;
+                    var balloon = notify.Element("balloon");
+                    if (balloon != null) {
+                        var titleText = balloon.Attribute("title_text").Value;
+                        var bodyText = balloon.Attribute("body_text").Value;
+                        var displayDuration = int.Parse(balloon.Attribute("display_time").Value);
+                        ballonData = new Balloon(titleText, bodyText, displayDuration);
+                    }
+                    var sound = notify.Element("sound");
+                    if(sound != null)
+                    {
+                        Music musicData = null;
+                        List<Beep> beepsData = null;
+                        var music = sound.Element("music");
+                        if(music != null)
+                        {
+                            var musicFile = music.Attribute("file").Value;
+                            var volume = float.Parse(music.Attribute("volume").Value);
+                            var duration = int.Parse(music.Attribute("duration").Value);
+                            musicData = new Music(musicFile, volume, duration);
+                        }
+                        var beeps = sound.Element("beeps");
+                        if(beeps != null)
+                        {
+                            beepsData = new List<Beep>();
+                            foreach(var beep in beeps.Elements())
+                            {
+                                var frequency = int.Parse(beep.Attribute("frequency").Value);
+                                var duration = int.Parse(beep.Attribute("duration").Value);
+                                beepsData.Add(new Beep(frequency, duration));
+                            }
+                        }
+
+                        SoundType soundType;
+                        Enum.TryParse(sound.Attribute("type").Value, true, out soundType);
+                        soundData = new Sound(beepsData, musicData, soundType);
+                    }
+
+                    var notifyAction = new NotifyAction(soundData, ballonData);
+                    Events[abnormalityEvent].Add(notifyAction);
                 }
-            }
-            if (setting.PropertyType == typeof(bool))
-            {
-                bool value;
-                var parseSuccess = bool.TryParse(xml.Value, out value);
-                if (parseSuccess)
-                {
-                    setting.SetValue(this, value, null);
-                }
-            }
-            if (setting.PropertyType == typeof(string))
-            {
-                setting.SetValue(this, xml.Value, null);
             }
         }
     }

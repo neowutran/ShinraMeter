@@ -16,6 +16,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Threading;
+using Data.Actions.Notify;
+using System.Collections.Generic;
+using Data.Actions.Notify.SoundElements;
 
 namespace DamageMeter.UI
 {
@@ -81,90 +84,56 @@ namespace DamageMeter.UI
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
         }
 
-        private static readonly object _lock = new object();
-        private MediaFoundationReader _outputStream = null;
-        private WaveChannel32 _volumeStream = null;
-        private WaveOutEvent _player = null;
-        private bool _needToStop = false;
+        private static void PlayBeeps(List<Beep> beeps)
+        {
+            foreach(var beep in beeps)
+            {
+                Console.Beep(beep.Frequency, beep.Duration);
+            }
+        }
+        
 
-        public void ShowBallon(NotifyMessage flash)
+        public void ShowBallon(NotifyAction flash)
         {
             if (flash == null) return;
 
             Tray.HideBalloonTip();
-            if (BasicTeraData.Instance.WindowData.PopupDisplayTime >= 500)
+            if (BasicTeraData.Instance.WindowData.PopupDisplayTime >= 500 && flash.Balloon != null)
             {
                 var balloon = new Balloon();
-                balloon.Value(flash.Title, flash.Content);
-                Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, BasicTeraData.Instance.WindowData.PopupDisplayTime);
+                balloon.Value(flash.Balloon.TitleText, flash.Balloon.BodyText);
+                Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, flash.Balloon.DisplayTime);
             }
 
-
-
-
-            if (BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback)
+            if(flash.Sound == null) { return; }
+            if(flash.Sound.SoundType == SoundType.Beeps)
             {
-
-
-
-                switch (flash.Sound)
-                {
-                    case NotifyMessage.SoundEnum.Type1:
-                        Sound1();
-                        break;
-                    case NotifyMessage.SoundEnum.Type2:
-                        Sound2();
-                        break;
-                    case NotifyMessage.SoundEnum.Type3:
-                        Sound3();
-                        break;
-                    case NotifyMessage.SoundEnum.Type4:
-                        Sound4();
-                        break;
-                    case NotifyMessage.SoundEnum.NoSound:
-                        break;
-                }
+                PlayBeeps(flash.Sound.Beeps);
                 return;
             }
 
-            var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound);
-            if (!File.Exists(file))
-            {
-                file = BasicTeraData.Instance.WindowData.NotifySound;
-                if (!File.Exists(file))
-                    return;
-            }
-            lock (_lock)
-            {
-                if (_needToStop) return;
-            }
+            var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", flash.Sound.Music.File);
             try
             {
-                _outputStream = new MediaFoundationReader(file);
-                _volumeStream = new WaveChannel32(_outputStream);
-                _volumeStream.Volume = BasicTeraData.Instance.WindowData.Volume;
+                var outputStream = new MediaFoundationReader(file);
+                var volumeStream = new WaveChannel32(outputStream);
+                volumeStream.Volume = flash.Sound.Music.Volume;
                 //Create WaveOutEvent since it works in Background and UI Threads
-                _player = new WaveOutEvent();
+                var player = new WaveOutEvent();
                 //Init Player with Configured Volume Stream
-                _player.Init(_volumeStream);
-                _player.Play();
-                _needToStop = true;
+                player.Init(volumeStream);
+                player.Play();
 
-                var timer = new System.Threading.Timer((obj) =>
+                var timer = new Timer((obj) =>
                 {
-                    lock (_lock)
-                    {
-                        _needToStop = false;
-                        _player.Stop();
-                        _player.Dispose();
-                        _volumeStream.Dispose();
-                        _outputStream.Dispose();
-                        _outputStream = null;
-                        _player = null;
-                        _volumeStream = null;
-
-                    }
-                }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
+                    player.Stop();
+                    player.Dispose();
+                    volumeStream.Dispose();
+                    outputStream.Dispose();
+                    outputStream = null;
+                    player = null;
+                    volumeStream = null;
+                }, null, flash.Sound.Music.Duration, Timeout.Infinite);
             }
             catch (Exception e)
             {
@@ -177,92 +146,6 @@ namespace DamageMeter.UI
                 BasicTeraData.LogError("Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file + Environment.NewLine + "line:" + line, false, true);
             }
             
-        }
-
-
-
-        private void PlaySound()
-        {
-
-            if (BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback)
-            {
-
-                if (!Monitor.TryEnter(_lock)) return;
-                Sound1();
-                Sound2();
-                Sound3();
-                Sound4();
-                Monitor.Exit(_lock);
-                return;
-            }
-
-
-            var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", BasicTeraData.Instance.WindowData.NotifySound);
-            if (!File.Exists(file))
-            {
-                file = BasicTeraData.Instance.WindowData.NotifySound;
-                if (!File.Exists(file))
-                    return;
-            }
-            try
-            {
-
-                //Create Output Stream with Data from Audio File / Network Stream
-                var outputStream = new MediaFoundationReader(file);
-                //Create Volume Stream to control volume of output 
-                //ex: volumeStream.Volume = 0.5f; Float between 0 & 1 
-                var volumeStream = new WaveChannel32(outputStream);
-                volumeStream.Volume = BasicTeraData.Instance.WindowData.Volume;
-                //Create WaveOutEvent since it works in Background and UI Threads
-                var player = new WaveOutEvent();
-                //Init Player with Configured Volume Stream
-                player.Init(volumeStream);
-
-                player.Play();
-
-                var timer = new System.Threading.Timer((obj) =>
-                {
-                    player.Stop();
-                    player.Dispose();
-                    volumeStream.Dispose();
-                    outputStream.Dispose();
-                    outputStream = null;
-                    player = null;
-                    volumeStream = null;
-                }, null, BasicTeraData.Instance.WindowData.SoundNotifyDuration, System.Threading.Timeout.Infinite);
-            }
-            catch (Exception e)
-            {
-                // Get stack trace for the exception with source file information
-                var st = new StackTrace(e, true);
-                // Get the top stack frame
-                var frame = st.GetFrame(0);
-                // Get the line number from the stack frame
-                var line = frame.GetFileLineNumber();
-                BasicTeraData.LogError("Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file + Environment.NewLine + "line:" + line, false, true);
-            }
-
-
-        }
-
-        private void Sound1()
-        {
-            Console.Beep(261, 250);
-        }
-
-        private void Sound2()
-        {
-            Console.Beep(293, 250);
-        }
-
-        private void Sound3()
-        {
-            Console.Beep(329, 250);
-        }
-        
-        private void Sound4()
-        {
-            Console.Beep(349, 250);
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -463,10 +346,6 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.Volume = (float?)SoundVolumeSpinner?.Value??0;
         }
 
-        private void TestSoundAction(object sender, RoutedEventArgs e)
-        {
-            PlaySound();
-        }
 
         private void Grid_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {

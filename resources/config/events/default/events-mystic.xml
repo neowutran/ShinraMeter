@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	<abnormality ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="5000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>999001021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="5000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="900" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>CrystalBind</abnormality>
+			<abnormality>CCrystalBind</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="CristalBind missing" body_text="{player_name} : {time_left}" display_time="5000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>27120</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="Thrall of protection" body_text="{player_name} : {time_left}" display_time="5000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>700700</abnormality>
+			<abnormality>700300</abnormality>
+			<abnormality>700701</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="Aura" body_text="Activate the fucking aura" display_time="5000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>700600</abnormality>
+			<abnormality>700601</abnormality>
+			<abnormality>700602</abnormality>
+			<abnormality>700603</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="Aura" body_text="Activate the fucking aura" display_time="5000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>4031</abnormality>
+			<abnormality>4030</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="Everfull nostrum" body_text="No mana soon! {time_left}" display_time="5000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+</events>

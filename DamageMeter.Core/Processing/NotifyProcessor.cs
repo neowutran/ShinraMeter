@@ -10,6 +10,10 @@ using Data;
 using Tera.Game;
 using Tera.Game.Messages;
 using static Tera.Game.HotDotDatabase;
+using Data.Events.Abnormality;
+using Data.Events;
+using Data.Actions.Notify;
+using Data.Actions.Notify.SoundElements;
 
 namespace DamageMeter.Processing
 {
@@ -24,11 +28,29 @@ namespace DamageMeter.Processing
         {
             Process();
         }
+
+        internal static NotifyAction DefaultNotifyAction(string titleText, string bodyText)
+        {
+            var balloon = new Balloon(titleText, bodyText, BasicTeraData.Instance.WindowData.PopupDisplayTime);
+            List<Beep> beeps = new List<Beep>();
+            beeps.Add(new Beep(440, 500));
+            beeps.Add(new Beep(440, 500));
+            beeps.Add(new Beep(440, 500));
+            var music = new Music(BasicTeraData.Instance.WindowData.NotifySound, BasicTeraData.Instance.WindowData.Volume, BasicTeraData.Instance.WindowData.SoundNotifyDuration);
+            var type = SoundType.Music;
+            if (BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback)
+            {
+                type = SoundType.Beeps;
+            }
+            var sound = new Sound(beeps, music, type);
+            return new NotifyAction(sound, balloon);
+           
+        }
         private static void Process()
         {
             if (!TeraWindow.IsTeraActive())
             {
-                NetworkController.Instance.FlashMessage = new NotifyMessage(
+                NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                     LP.PartyMatchingSuccess,
                     LP.PartyMatchingSuccess
                     );
@@ -41,7 +63,7 @@ namespace DamageMeter.Processing
             {
                 if (!TeraWindow.IsTeraActive())
                 {
-                    NetworkController.Instance.FlashMessage = new NotifyMessage(
+                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                         LP.CombatReadyCheck,
                         LP.CombatReadyCheck
                         );
@@ -54,7 +76,7 @@ namespace DamageMeter.Processing
             if (!TeraWindow.IsTeraActive())
             {
 
-                NetworkController.Instance.FlashMessage = new NotifyMessage(
+                NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                     message.PlayerName + " " + LP.ApplyToYourParty,
                     LP.Class + ": " +
                     LP.ResourceManager.GetString(message.PlayerClass.ToString(), LP.Culture) +
@@ -75,7 +97,7 @@ namespace DamageMeter.Processing
         {
             if (!TeraWindow.IsTeraActive())
             {
-                NetworkController.Instance.FlashMessage = new NotifyMessage(
+                NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                     LP.Trading + ": " + message.PlayerName,
                     LP.SellerPrice + ": " + Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED.Gold(message.SellerPrice) +
                     Environment.NewLine +
@@ -90,21 +112,21 @@ namespace DamageMeter.Processing
             {
                 if (message.Type == Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.PartyInvite)
                 {
-                    NetworkController.Instance.FlashMessage = new NotifyMessage(
+                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                         LP.PartyInvite + ": " + message.Sender,
                         message.Sender
                         );
                 }
                 else if (message.Type == Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.TradeRequest)
                 {
-                    NetworkController.Instance.FlashMessage = new NotifyMessage(
+                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                         LP.Trading + ": " + message.Sender,
                         message.Sender
                         );
                 }
                 else if (message.Type != Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.Craft)
                 {
-                    NetworkController.Instance.FlashMessage = new NotifyMessage(
+                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                         LP.ContactTry,
                         LP.ContactTry
                         );
@@ -113,59 +135,165 @@ namespace DamageMeter.Processing
         }
 
 
-
-        internal static void CallCheckBuffStart(EntityId target, EntityId source, int abnormalityId)
-        {
-            Thread thread = new Thread(() => CheckBuffStart(target, source, abnormalityId));
-            thread.SetApartmentState(ApartmentState.STA); //Set the thread to STA
-            thread.Start();
-        }
-
-        internal static void CheckBuffStart(EntityId target, EntityId source, int abnormalityId)
+        internal static void AbnormalityNotifierMissing(EntityId target, EntityId source)
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
 
-            var player = NetworkController.Instance.EntityTracker.MeterUser;
-            if (player == null || _lastBoss == null) return;
+            var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
+            if (meterUser == null || _lastBoss == null) return;
+            if (_lastBoss != target && _lastBoss != source) return;
+            UserEntity player = meterUser;
+            var teraActive = TeraWindow.IsTeraActive();
 
 
-            Dictionary<int, HotDot> monitored = new Dictionary<int, HotDot>();
-            var contagion1 = BasicTeraData.Instance.HotDotDatabase.Contagion1;
-            var contagion2 = BasicTeraData.Instance.HotDotDatabase.Contagion2;
-            var enrage = BasicTeraData.Instance.HotDotDatabase.Enrage;
-            var hurricane = BasicTeraData.Instance.HotDotDatabase.Hurricane;
-
-            monitored.Add(contagion1.Id, contagion1);
-            monitored.Add(contagion2.Id, contagion2);
-            monitored.Add(enrage.Id, enrage);
-            monitored.Add(hurricane.Id, hurricane);
-
-
-            if (_lastBoss.Value == target && monitored.ContainsKey(abnormalityId))
+            foreach (var e in BasicTeraData.Instance.EventsData.Events)
             {
-                var buff = monitored[abnormalityId];
-                NotifyMessage.SoundEnum sound = NotifyMessage.SoundEnum.Type1;
+                if (e.Key.GetType() != typeof(AbnormalityEvent)) { continue; }
+                var abnormalityEvent = (AbnormalityEvent)e.Key;
+                if (!abnormalityEvent.InGame && teraActive) { continue; }
+                if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) { continue; }
+                if (abnormalityEvent.Target == AbnormalityTargetType.Boss && ( _lastBoss.Value != target || _lastBoss.Value != source)) { continue; }
+                if (abnormalityEvent.Target == AbnormalityTargetType.Self && ( meterUser.Id != target || meterUser.Id != source)) { continue; }
+                if (abnormalityEvent.Target == AbnormalityTargetType.Party)
+                {
+                    bool found = false;
+                    foreach (var partyPlayer in NetworkController.Instance.PlayerTracker.PartyList())
+                    {
+                        if (partyPlayer.Id == target || partyPlayer.Id == source)
+                        {
+                            player = partyPlayer;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) { continue; }
+                }
+                TimeSpan? abnormalityTimeLeft = null;
+                var noAbnormalitiesMissing = false;
 
-                if (abnormalityId == BasicTeraData.Instance.HotDotDatabase.Contagion1.Id ||
-                    abnormalityId == BasicTeraData.Instance.HotDotDatabase.Contagion2.Id)
+                foreach(var type in abnormalityEvent.Types)
                 {
-                    sound = NotifyMessage.SoundEnum.Type2;
+                    var timeLeft = NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, type);
+                    if (timeLeft >= abnormalityEvent.RemainingSecondBeforeTrigger * TimeSpan.TicksPerSecond)
+                    {
+                        noAbnormalitiesMissing = true;
+                        break;
+                    }
+                    if (timeLeft != -1 && ((abnormalityTimeLeft != null && timeLeft > abnormalityTimeLeft.Value.Ticks) || abnormalityTimeLeft == null))
+                    {
+                        abnormalityTimeLeft = TimeSpan.FromTicks(timeLeft);
+                    }
+                    
                 }
-                else if (abnormalityId == BasicTeraData.Instance.HotDotDatabase.Enraged.Id)
+
+                if (noAbnormalitiesMissing) continue;
+                
+                foreach (var id in abnormalityEvent.Ids)
                 {
-                    sound = NotifyMessage.SoundEnum.Type3;
+                   
+                    var timeLeft = NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, id);
+                    if (timeLeft >= abnormalityEvent.RemainingSecondBeforeTrigger * TimeSpan.TicksPerSecond)
+                    {
+                        noAbnormalitiesMissing = true;
+                        break;
+                    }
+                    if ( timeLeft != -1 && ((abnormalityTimeLeft != null && timeLeft > abnormalityTimeLeft.Value.Ticks) || abnormalityTimeLeft == null))
+                    {
+                        abnormalityTimeLeft = TimeSpan.FromTicks(timeLeft);
+                    }
                 }
-                else if (abnormalityId == BasicTeraData.Instance.HotDotDatabase.Hurricane.Id) { 
-                    sound = NotifyMessage.SoundEnum.Type4;
+
+                if (noAbnormalitiesMissing) continue;
+
+                foreach (var a in e.Value)
+                {
+                    if (a.GetType() != typeof(NotifyAction)) { continue; }
+                    var notifyAction = ((NotifyAction)a).Clone();
+                    if (notifyAction.Balloon != null)
+                    {
+                      
+                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{player_name}", player.Name);
+                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{player_name}", player.Name);
+                     
+                        if (abnormalityTimeLeft.HasValue) {
+                            notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{time_left}", abnormalityTimeLeft.Value.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture));
+                            notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{time_left}", abnormalityTimeLeft.Value.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture));
+                        }else
+                        {
+                            notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{time_left}", "");
+                            notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{time_left}", "");
+                        }
+
+                    }
+                    NetworkController.Instance.FlashMessage = notifyAction;
                 }
-            
-            NetworkController.Instance.FlashMessage = new NotifyMessage(buff.Name, buff.Name, sound);
             }
         }
 
+        internal static void AbnormalityNotifierAdded(EntityId target, int abnormalityId)
+        {
+            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Added);
+        }
 
+        internal static void AbnormalityNotifierRemoved(EntityId target, int abnormalityId)
+        {
+            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Removed);
+        }
 
-        private static long _nextCBNotifyCheck;
+        private static void AbnormalityNotifierCommon(EntityId target, int abnormalityId, AbnormalityTriggerType trigger)
+        {
+            if (!BasicTeraData.Instance.WindowData.EnableChat) return;
+
+            var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
+            if (meterUser == null || _lastBoss == null) return;
+            if (_lastBoss != target) return;
+
+            var teraActive = TeraWindow.IsTeraActive();
+            UserEntity player = null;
+
+            foreach (var e in BasicTeraData.Instance.EventsData.Events)
+            {
+                if (e.Key.GetType() != typeof(AbnormalityEvent)){ continue; }
+                var abnormalityEvent = (AbnormalityEvent)e.Key;
+                if(!abnormalityEvent.Ids.Contains(abnormalityId)) { continue; }
+                if (!abnormalityEvent.InGame && teraActive) { continue; }
+                if (abnormalityEvent.Trigger != trigger) { continue; }
+                if(abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target) { continue; }
+                if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) { continue; }
+                if(abnormalityEvent.Target == AbnormalityTargetType.Party)
+                {
+                    bool found = false;
+                    foreach (var partyPlayer in NetworkController.Instance.PlayerTracker.PartyList())
+                    {
+                        if(partyPlayer.Id == target)
+                        {
+                            player = partyPlayer;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) { continue; }
+                }
+                foreach(var a in e.Value)
+                {
+                    if(a.GetType() != typeof(NotifyAction)) { continue; }
+                    var notifyAction = ((NotifyAction)a).Clone();
+                    var abnormality = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityId);
+                    if(notifyAction.Balloon != null)
+                    {
+                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", abnormality.Name);
+                        if (player != null)
+                        {
+                            notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{party_player}", player.Name);
+                            notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{party_player}", player.Name);
+                        }
+                        notifyAction.Balloon.TitleText=  notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abnormality.Name);
+                    }
+                    NetworkController.Instance.FlashMessage = notifyAction;
+                }
+            }
+        }
+
         private static EntityId? _lastBoss;
         internal static void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
         {
@@ -175,94 +303,19 @@ namespace DamageMeter.Processing
 
         private static List<UserEntity> playerWithUnkownBuff = new List<UserEntity>();
 
-        internal static void CheckCB(ParsedMessage message)
-        {
-            if (BasicTeraData.Instance.WindowData.DoNotWarnOnCB) return;
-            if (_lastBoss == null) return;
-            if (message.Time.Ticks < _nextCBNotifyCheck) return;
-            _nextCBNotifyCheck = message.Time.Ticks + 15 * TimeSpan.TicksPerSecond;// check no more than once per 15s
-            var party = NetworkController.Instance.PlayerTracker.PartyList();
-            string notify = "";
-            foreach (var player in party)
-            {
-
-                if (NetworkController.Instance.AbnormalityTracker.AbnormalityCount(player.Id)==0) continue;
-                var cbleft = Math.Max(
-                    NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CCrystalBind),
-                    NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, HotDot.Types.CrystalBind));
-                if (cbleft != 0 && cbleft < 15 * TimeSpan.TicksPerMinute)
-                {
-                    var timeLeft = TimeSpan.FromTicks(cbleft);
-                    if (cbleft < 0)
-                    {
-                        notify += player.Name + LP.NoCrystalBind;
-                    }
-                    else
-                    {
-                        notify += player.Name + " "+LP.Time+": " + timeLeft.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
-                    }
-                    notify += Environment.NewLine;
-                }
-
-            }
-            if (!string.IsNullOrEmpty(notify))
-            {
-                _nextCBNotifyCheck = message.Time.Ticks + 15 * TimeSpan.TicksPerMinute;// no more than 1 notify in 10 minutes
-                NetworkController.Instance.FlashMessage = new NotifyMessage(LP.NotifyCB, notify, NotifyMessage.SoundEnum.Type1);
-            }
-        }
-
         internal static void SpawnMe(Tera.Game.Messages.SpawnMeServerMessage message)
         {
             NetworkController.Instance.AbnormalityTracker.Update(message);
-            _nextCBNotifyCheck = message.Time.Ticks + 15 * TimeSpan.TicksPerSecond;// delay check after respawn
             _lastBoss = null;
         }
 
         internal static void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)
         {
-            var check= message.Time.Ticks + 15 * TimeSpan.TicksPerSecond;// delay check after respawn
-            _nextCBNotifyCheck = check > _nextCBNotifyCheck ? check : _nextCBNotifyCheck;
+
         }
         internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
             if (message.Npc == _lastBoss) _lastBoss = null;
-        }
-
-        private static bool _joyOfPartyingIs100 = false;
-
-        internal static void CheckJoyOfPartying()
-        {
-            if (!BasicTeraData.Instance.WindowData.EnableChat) return;
-
-            var player = NetworkController.Instance.EntityTracker.MeterUser;
-            if (player == null) return;
-
-
-            var joyOfPartying20 = BasicTeraData.Instance.HotDotDatabase.JoyOfPartying20;
-            var joyOfPartying50 = BasicTeraData.Instance.HotDotDatabase.JoyOfPartying50;
-            var joyOfPartying0 = BasicTeraData.Instance.HotDotDatabase.JoyOfPartying0;
-            var joyOfPartying100 = BasicTeraData.Instance.HotDotDatabase.JoyOfPartying100;
-
-            if (joyOfPartying0==null||joyOfPartying20==null||joyOfPartying50==null||joyOfPartying100==null) return;
-
-            if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying0) ||
-                NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying20) ||
-                NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying50))
-            {
-                _joyOfPartyingIs100 = false;
-                return;
-            }
-
-            if (_joyOfPartyingIs100) return;
-            if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, joyOfPartying100))
-            {
-                if (!TeraWindow.IsTeraActive())
-                {
-                    NetworkController.Instance.FlashMessage = new NotifyMessage(LP.JoyOfPartying, LP.JoyOfPartying, NotifyMessage.SoundEnum.Type1);
-                }
-                _joyOfPartyingIs100 = true;
-            }
         }
 
         internal static void S_BEGIN_THROUGH_ARBITER_CONTRACT(S_BEGIN_THROUGH_ARBITER_CONTRACT message)

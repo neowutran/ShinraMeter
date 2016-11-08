@@ -54,18 +54,22 @@ namespace DamageMeter.Database
                       "); ";
             var command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
+            command.Dispose();
 
             sql = "CREATE INDEX `index_target` ON `skills` (`target` ASC);";
             command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
+            command.Dispose();
 
             sql = "CREATE INDEX `index_time` ON `skills` (`time` ASC);";
             command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
+            command.Dispose();
 
             sql = "PRAGMA journal_mode = DELETE;";
             command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
+            command.Dispose();
 
             sql = "PRAGMA auto_vacuum = FULL;";
             command = new SQLiteCommand(sql, Connexion);
@@ -94,10 +98,6 @@ namespace DamageMeter.Database
 
         public void DeleteAll()
         {
-            var sql = "DELETE FROM skills;";
-            var command = new SQLiteCommand(sql, Connexion);
-            command.ExecuteNonQuery();
-            command.Dispose();
             Reconnect();
         }
 
@@ -172,6 +172,7 @@ namespace DamageMeter.Database
             var sql = "SELECT target, MAX(time) as max_time FROM skills GROUP BY target ORDER BY `max_time` DESC;";
             var command = new SQLiteCommand(sql, Connexion);
             var rdr = command.ExecuteReader();
+            command.Dispose();
             while (rdr.Read())
             {
                 if (rdr.IsDBNull(0)) return entities;

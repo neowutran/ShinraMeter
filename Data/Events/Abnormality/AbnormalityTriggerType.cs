@@ -10,7 +10,6 @@ namespace Data.Events.Abnormality
     {
         Added = 0,
         Removed = 1,
-        Refreshed = 2,
-        MissingDuringFight = 3
+        MissingDuringFight = 2
     }
 }

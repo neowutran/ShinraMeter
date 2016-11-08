@@ -130,7 +130,6 @@
     <Compile Include="ExcelExport.cs" />
     <Compile Include="FormatHelpers.cs" />
     <Compile Include="KeyboardHook.cs" />
-    <Compile Include="NotifyMessage.cs" />
     <Compile Include="PacketProcessingFactory.cs" />
     <Compile Include="NpcOccupierResult.cs" />
     <Compile Include="Processing\Abnormalities.cs" />

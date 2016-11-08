@@ -30,6 +30,7 @@ namespace Data
             XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
+            EventsData = new EventsData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
             Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));
             //handle overrides
@@ -62,6 +63,7 @@ namespace Data
         public ImageDatabase ImageDatabase { get; private set; }
         public NpcDatabase MonsterDatabase { get; set; }
         public WindowData WindowData { get; }
+        public EventsData EventsData { get; }
         public HotkeysData HotkeysData { get; private set; }
         public string ResourceDirectory { get; }
         public ServerDatabase Servers { get; private set; }

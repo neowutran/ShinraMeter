@@ -18,6 +18,7 @@ using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
 using DamageMeter.Processing;
+using Data.Actions.Notify;
 
 namespace DamageMeter
 {
@@ -33,14 +34,14 @@ namespace DamageMeter
         public delegate void UpdateUiHandler(
             StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter,
             AbnormalityStorage abnormals,
-            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, NotifyMessage flash);
+            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, NotifyAction flash);
 
         public delegate void GuildIconEvent(Bitmap icon);
 
         private static NetworkController _instance;
         internal readonly AbnormalityStorage AbnormalityStorage;
         internal AbnormalityTracker AbnormalityTracker;
-        public NotifyMessage FlashMessage { get; set; }
+        public NotifyAction FlashMessage { get; set; }
 
         private bool _clickThrou;
         private static object pasteLock=new object();
