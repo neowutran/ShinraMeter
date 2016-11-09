@@ -47,6 +47,7 @@ namespace DamageMeter.UI
             _mainWindow = mainWindow;
             DpsWebsiteExport.IsChecked = BasicTeraData.Instance.WindowData.SiteExport;
             AutoExcelExport.IsChecked = BasicTeraData.Instance.WindowData.Excel;
+            ExcelSMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds;
             CountOnlyBoss.IsChecked = BasicTeraData.Instance.WindowData.OnlyBoss;
             BossByHpBar.IsChecked = BasicTeraData.Instance.WindowData.DetectBosses;
             PartyOnly.IsChecked = BasicTeraData.Instance.WindowData.PartyOnly;
@@ -560,6 +561,11 @@ namespace DamageMeter.UI
         private void DisableSoundConsoleBeepFallback(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback = false;
+        }
+
+        private void ExcelSMADPSChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds = (int?)ExcelSMADPSSpinner?.Value??1;
         }
     }
 }

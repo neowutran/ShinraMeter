@@ -196,7 +196,7 @@
     <value>Действия</value>
   </data>
   <data name="SystemTray_Performance_information" xml:space="preserve">
-    <value>Информация о производительности</value>
+    <value>Очередь сообщений</value>
   </data>
   <data name="App_Unable_to_contact_update_server" xml:space="preserve">
     <value>Ощибка доступа к серверу обновлений, попробуйте позже, подробная информация в error.log</value>
@@ -571,5 +571,14 @@
   </data>
   <data name="FormatPasteString" xml:space="preserve">
     <value>Форматировать таблицу для вставки в чат</value>
+  </data>
+  <data name="SoundConsoleBeepFallback" xml:space="preserve">
+    <value>Использовать пищалку вместо MP3</value>
+  </data>
+  <data name="SMADPS" xml:space="preserve">
+    <value>c скольз.сред. ДПС</value>
+  </data>
+  <data name="SystemTray_ExcelSMADPSSeconds" xml:space="preserve">
+    <value>Скользящее среднее в Excel расчитывать для X сек.</value>
   </data>
 </root>

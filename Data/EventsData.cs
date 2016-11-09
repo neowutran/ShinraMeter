@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml;
 using System.Xml.Linq;
+using Lang;
 using Tera.Game;
 
 namespace Data
@@ -73,8 +74,21 @@ namespace Data
         public EventsData(BasicTeraData basicData)
         {
             _basicData = basicData;
-
-            //TODO load the file depending on meter user class.
+            var eventsdir = Path.Combine(_basicData.ResourceDirectory, "config/events");
+            try
+            {
+                Directory.CreateDirectory(eventsdir);
+                foreach (var pclass in Enum.GetNames(typeof(PlayerClass)))
+                {
+                    var fname = Path.Combine(_basicData.ResourceDirectory, "config/events/events-" + pclass.ToLowerInvariant() + ".xml");
+                    if (!File.Exists(fname))
+                        File.WriteAllText(fname, LP.ResourceManager.GetString("events_" + pclass.ToLowerInvariant()));
+                }
+            }
+            catch (Exception ex)
+            {
+                BasicTeraData.LogError(ex.Message, true);
+            }
             var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-common.xml");
             XDocument xml;
 

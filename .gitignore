@@ -1,8 +1,7 @@
 bin/
 obj/
 /release/
-resources/config/*.xml
-resources/config/*.txt
+resources/config/*
 resources/logs/*
 /debug/
 *.suo

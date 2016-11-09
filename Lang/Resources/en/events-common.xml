@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 	<abnormality ingame="true" trigger="Added" target="Boss">
 		<abnormalities>
@@ -50,6 +50,8 @@
 		<abnormalities>
 			<abnormality>4031</abnormality>
 			<abnormality>4030</abnormality>
+			<abnormality>4020</abnormality>
+			<abnormality>4021</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
