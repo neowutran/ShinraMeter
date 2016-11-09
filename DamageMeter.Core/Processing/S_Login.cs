@@ -52,6 +52,7 @@ namespace DamageMeter.Processing
 
             NetworkController.Instance.OnGuildIconAction(NetworkController.Instance.UserLogoTracker.GetLogo(message.PlayerId));
             NetworkController.Instance.EntityTracker.Update(message);
+            BasicTeraData.Instance.EventsData.Load(NetworkController.Instance.EntityTracker.MeterUser.RaceGenderClass.Class);
             NetworkController.Instance.PacketProcessing.Update();
         }
         internal static void SelectFont(string region)

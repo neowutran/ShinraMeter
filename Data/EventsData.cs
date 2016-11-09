@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
@@ -17,24 +18,65 @@ namespace Data
 {
     public class EventsData
     {
-        private readonly FileStream _filestream;
-        private readonly XDocument _xml;
+        private FileStream _filestreamCommon;
+        private FileStream _filestreamClass;
 
-        public Dictionary<Event, List<Actions.Action>> Events = new Dictionary<Event, List<Actions.Action>>();
-      
-        private void DefaultValue()
+        private Dictionary<Event, List<Actions.Action>> EventsCommon = new Dictionary<Event, List<Actions.Action>>();
+        private Dictionary<Event, List<Actions.Action>> EventsClass = new Dictionary<Event, List<Actions.Action>>();
+        public Dictionary<Event, List<Actions.Action>> Events
         {
-          
+            get
+            {
+                return EventsCommon.Union(EventsClass).ToDictionary(k => k.Key, v => v.Value);
+            }
         }
+
+        public void Load(PlayerClass playerClass)
+        {
+            //TODO load the file depending on meter user class.
+            var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-"+playerClass.ToString().ToLowerInvariant()+".xml");
+            XDocument xml;
+            try
+            {
+                var attrs = File.GetAttributes(windowFile);
+                File.SetAttributes(windowFile, attrs & ~FileAttributes.ReadOnly);
+            }
+            catch
+            {
+                //ignore
+            }
+
+            try
+            {
+                _filestreamClass = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                xml = XDocument.Load(_filestreamClass);
+            }
+            catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
+            {
+                BasicTeraData.LogError(ex.Message, true, true);
+                Save();
+                _filestreamClass = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                return;
+            }
+            catch (Exception ex)
+            {
+                BasicTeraData.LogError(ex.Message, true, true);
+                return;
+            }
+            EventsClass = new Dictionary<Event, List<Actions.Action>>();
+            ParseAbnormalities(EventsClass, xml);
+        }
+
+        BasicTeraData _basicData;
 
 
         public EventsData(BasicTeraData basicData)
         {
-            DefaultValue();
-            // Load XML File
+            _basicData = basicData;
 
             //TODO load the file depending on meter user class.
-            var windowFile = Path.Combine(basicData.ResourceDirectory, "config/events/events-mystic.xml");
+            var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-common.xml");
+            XDocument xml;
 
             try
             {
@@ -48,27 +90,28 @@ namespace Data
 
             try
             {
-                _filestream = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-                _xml = XDocument.Load(_filestream);
+                _filestreamCommon = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                xml = XDocument.Load(_filestreamCommon);
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 BasicTeraData.LogError(ex.Message, true, true);
                 Save();
-                _filestream = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _filestreamCommon = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 return;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 BasicTeraData.LogError(ex.Message, true, true);
                 return;
             }
-       
-            ParseAbnormalities();
+
+            ParseAbnormalities(EventsCommon, xml);
         }
 
         public void Save()
         {
+            /*
             if (_filestream == null)
             {
                 return;
@@ -83,11 +126,12 @@ namespace Data
                 sw.Write(xml.Declaration + Environment.NewLine + xml);
             }
             _filestream.Close();
+            */
         }
 
-        private void ParseAbnormalities()
+        private void ParseAbnormalities(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
         {
-            var root = _xml.Root;
+            var root = xml.Root;
             foreach (var abnormality in root.Elements("abnormality"))
             {
                 List<int> ids = new List<int>();
@@ -123,7 +167,7 @@ namespace Data
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                 }
                 var abnormalityEvent = new AbnormalityEvent(ingame, ids, types, target, trigger, remainingSecondsBeforeTrigger);
-                Events.Add(abnormalityEvent, new List<Actions.Action>());
+                events.Add(abnormalityEvent, new List<Actions.Action>());
                 foreach(var notify in abnormality.Element("actions").Elements("notify"))
                 {
                     Balloon ballonData = null;
@@ -166,7 +210,7 @@ namespace Data
                     }
 
                     var notifyAction = new NotifyAction(soundData, ballonData);
-                    Events[abnormalityEvent].Add(notifyAction);
+                    events[abnormalityEvent].Add(notifyAction);
                 }
             }
         }
