@@ -580,6 +580,10 @@
   <data name="SoundConsoleBeepFallback" xml:space="preserve">
     <value>Switch to another sound system</value>
   </data>
-  
-  
+  <data name="SMADPS" xml:space="preserve">
+    <value>s SMA DPS</value>
+  </data>
+  <data name="SystemTray_ExcelSMADPSSeconds" xml:space="preserve">
+    <value>Excel: calc moving average DPS for X seconds</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -133,7 +134,7 @@ namespace DamageMeter
     {
         private static readonly BasicTeraData BTD = BasicTeraData.Instance;
         private static readonly object savelock = new object();
-
+        private static double scale;
 
         public static void ExcelSave(ExtendedStats exdata, string userName="")
         {
@@ -142,6 +143,7 @@ namespace DamageMeter
                 if (!BTD.WindowData.Excel) return;
                 var data = exdata.BaseStats;
                 var Boss = exdata.Entity.Info;
+                scale= 96/Graphics.FromImage(new Bitmap(1, 1)).DpiX;//needed if user have not standart DPI setting in control panel, workaround EPPlus autofit bug
 
                 /*
                 Select save directory
@@ -295,15 +297,15 @@ namespace DamageMeter
                     ws.Column(9).AutoFit();
                     ws.Column(10).AutoFit();
                     ws.Column(11).Width = 20;
-                    ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
-                    ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width);
-                    ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width);
-                    ws.Column(5).Width = GetTrueColumnWidth(ws.Column(5).Width);
-                    ws.Column(6).Width = GetTrueColumnWidth(ws.Column(6).Width);
-                    ws.Column(7).Width = GetTrueColumnWidth(ws.Column(7).Width);
-                    ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width);
-                    ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width);
-                    ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width);
+                    ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width * scale);
+                    ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width * scale);
+                    ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width * scale);
+                    ws.Column(5).Width = GetTrueColumnWidth(ws.Column(5).Width * scale);
+                    ws.Column(6).Width = GetTrueColumnWidth(ws.Column(6).Width * scale);
+                    ws.Column(7).Width = GetTrueColumnWidth(ws.Column(7).Width * scale);
+                    ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width * scale);
+                    ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width * scale);
+                    ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width * scale);
                     ws.Cells[1, 1, j, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                     ws.Cells[1, 1, j, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     ws.PrinterSettings.FitToPage = true;
@@ -342,12 +344,12 @@ namespace DamageMeter
             if (!bossSheet)
             {
                 typeDmg = dps.PlotArea.ChartTypes[0];
-                typeDmg.YAxis.Title.Text = LP.Damage;
+                typeDmg.YAxis.Title.Text = BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds + LP.SMADPS;
                 typeDmg.YAxis.Title.Rotation = 90;
 
                 serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 5, time + 3, offset + 5],
                     details.Cells[3, 2, time + 3, 2]);
-                serieDmg.Header = ws.Name + " "+LP.Damage;
+                serieDmg.Header = ws.Name + " "+ BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds + LP.SMADPS;
             }
             else 
             {
@@ -447,8 +449,8 @@ namespace DamageMeter
             details.Column(5).Style.Numberformat.Format = timeFormat;
             details.Cells[2, 6].Value = "BuffName";
             details.Cells[2, 7].Value = "Axis";
-            details.Cells[2, 8].Value = "Damage";
-            details.Column(8).Style.Numberformat.Format = @"#,#0\k";
+            details.Cells[2, 8].Value = "SMADPS";
+            details.Column(8).Style.Numberformat.Format = @"#,#0\k\/\s";
             details.Cells[2, 9].Value = "AvgDPS";
             details.Column(9).Style.Numberformat.Format = @"#,#0\k\/\s";
             details.Cells[2, 10].Value = "BossHP";
@@ -481,6 +483,8 @@ namespace DamageMeter
             x => x.Value.Where(time => time.Time >= exdata.FirstTick && time.Time <= exdata.LastTick)
              .Sum(y => y.Amount));
             j = 0;
+            var xSMA = BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds<=0 ? 1: BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds;
+            var last=new Queue<long>();
             for (var curTick = exdata.FirstTick;
                 curTick <= exdata.LastTick;
                 curTick += TimeSpan.TicksPerSecond)
@@ -491,12 +495,20 @@ namespace DamageMeter
                         x => x.Value.Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond)
                             .Sum(skill => skill.Amount));
                 dealtDamage += damage;
-                details.Cells[j + 2, 8].Value = damage/1000;
-                if (curTick >= exdata.LastTick+TimeSpan.TicksPerSecond)
-                    details.Cells[j + 2, 9].Value = dealtDamage*TimeSpan.TicksPerSecond/
-                                                    (exdata.LastTick - exdata.FirstTick)/1000;
-                else if (j != 1)
-                    details.Cells[j + 2, 9].Value = dealtDamage/(j - 1)/1000;
+                last.Enqueue(damage);
+                if (last.Count> xSMA) last.Dequeue();
+                if (curTick >= exdata.LastTick - TimeSpan.TicksPerSecond)
+                {
+                    if (j > xSMA)
+                        details.Cells[j + 2 - xSMA / 2, 8].Value = last.ToArray().Sum(x => x)/(xSMA>1?xSMA-1+TimeSpan.TicksPerSecond/(exdata.LastTick-curTick):1)/1000;
+                    details.Cells[j + 2, 9].Value = dealtDamage*TimeSpan.TicksPerSecond/(exdata.LastTick - exdata.FirstTick)/1000;
+                }
+                else
+                {
+                    if (j >= xSMA)
+                        details.Cells[j + 2 - xSMA / 2, 8].Value = last.ToArray().Sum(x => x) / xSMA / 1000;
+                    if (j != 1) details.Cells[j + 2, 9].Value = dealtDamage/(j - 1)/1000;
+                }
                 details.Cells[j + 2, 10].Value = totalDamage == 0 ? 0 : (double)(totalDamage - dealtDamage) / totalDamage;
             }
             var i = 4;
@@ -511,8 +523,8 @@ namespace DamageMeter
                 details.Column(i + 2).Style.Numberformat.Format = timeFormat;
                 details.Cells[2, i + 3].Value = "BuffName";
                 details.Cells[2, i + 4].Value = "Axis";
-                details.Cells[2, i + 5].Value = "Damage";
-                details.Column(i + 5).Style.Numberformat.Format = @"#,#0\k";
+                details.Cells[2, i + 5].Value = "SMADPS";
+                details.Column(i + 5).Style.Numberformat.Format = @"#,#0\k\/\s";
                 details.Cells[2, i + 6].Value = "AvgDPS";
                 details.Column(i + 6).Style.Numberformat.Format = @"#,#0\k\/\s";
                 details.Cells[1, i, 1, i + 6].Merge = true;
@@ -563,22 +575,30 @@ namespace DamageMeter
                 }
                 dealtDamage = 0;
                 j = 0;
+                last = new Queue<long>();
                 for (var curTick = exdata.FirstTick;
-                   curTick <= exdata.LastTick;
-                   curTick += TimeSpan.TicksPerSecond)
+                    curTick <= exdata.LastTick;
+                    curTick += TimeSpan.TicksPerSecond)
                 {
                     j++;
                     var damage =
                         exdata.PlayerSkills.Where(all => all.Key == user.Key).Sum(
-                            x => x.Value.Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond)
-                                .Sum(skill => skill.Amount));
+                            x => x.Value.Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond).Sum(skill => skill.Amount));
                     dealtDamage += damage;
-                    details.Cells[j + 2, i + 5].Value = damage/1000;
-                    if (curTick >= exdata.LastTick + TimeSpan.TicksPerSecond)
-                        details.Cells[j + 2, i + 6].Value = dealtDamage*TimeSpan.TicksPerSecond/
-                                                            (exdata.LastTick - exdata.FirstTick)/1000;
-                    else if (j != 1)
-                        details.Cells[j + 2, i + 6].Value = dealtDamage/(j - 1)/1000;
+                    last.Enqueue(damage);
+                    if (last.Count > xSMA) last.Dequeue();
+                    if (curTick >= exdata.LastTick - TimeSpan.TicksPerSecond)
+                    {
+                        if (j>xSMA)
+                            details.Cells[j + 2 - xSMA / 2, i + 5].Value = last.ToArray().Sum(x=>x)/(xSMA>1?xSMA-1+TimeSpan.TicksPerSecond/(exdata.LastTick-curTick):1)/1000;
+                        details.Cells[j + 2, i + 6].Value = dealtDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick) / 1000;
+                    }
+                    else 
+                    {
+                        if (j >= xSMA)
+                            details.Cells[j + 2 - xSMA /2, i + 5].Value = last.ToArray().Sum(x => x) / xSMA / 1000;
+                        if (j != 1) details.Cells[j + 2, i + 6].Value = dealtDamage/(j - 1) / 1000;
+                    }
                 }
             }
 
@@ -715,16 +735,16 @@ namespace DamageMeter
             ws.Column(9).AutoFit();
             ws.Column(10).AutoFit();
             ws.Column(11).AutoFit();
-            ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width);
-            ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width);
-            ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width);
-            ws.Column(5).Width = GetTrueColumnWidth(ws.Column(5).Width);
-            ws.Column(6).Width = GetTrueColumnWidth(ws.Column(6).Width);
-            ws.Column(7).Width = GetTrueColumnWidth(ws.Column(7).Width);
-            ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width);
-            ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width);
-            ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width);
-            ws.Column(11).Width = GetTrueColumnWidth(ws.Column(11).Width);
+            ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width * scale);
+            ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width * scale);
+            ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width * scale);
+            ws.Column(5).Width = GetTrueColumnWidth(ws.Column(5).Width * scale);
+            ws.Column(6).Width = GetTrueColumnWidth(ws.Column(6).Width * scale);
+            ws.Column(7).Width = GetTrueColumnWidth(ws.Column(7).Width * scale);
+            ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width * scale);
+            ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width * scale);
+            ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width * scale);
+            ws.Column(11).Width = GetTrueColumnWidth(ws.Column(11).Width * scale);
             ws.Cells[1, 1, j, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             ws.Cells[1, 1, j, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ws.PrinterSettings.FitToPage = true;

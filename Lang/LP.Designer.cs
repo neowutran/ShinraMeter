@@ -293,19 +293,7 @@ namespace Lang {
                 return ResourceManager.GetString("Close", resourceCulture);
             }
         }
-		
-        /// <summary>
-        ///   Looks up a localized string similar to SoundConsoleBeepFallback.
-        /// </summary>
-        public static string SoundConsoleBeepFallback {
-            get {
-                return ResourceManager.GetString("SoundConsoleBeepFallback", resourceCulture);
-            }
-        }
         
-		
-		
-		
         /// <summary>
         ///   Looks up a localized string similar to Combat ready check.
         /// </summary>
@@ -1058,11 +1046,29 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to s SMA DPS.
+        /// </summary>
+        public static string SMADPS {
+            get {
+                return ResourceManager.GetString("SMADPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorcerer.
         /// </summary>
         public static string Sorcerer {
             get {
                 return ResourceManager.GetString("Sorcerer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch to another sound system.
+        /// </summary>
+        public static string SoundConsoleBeepFallback {
+            get {
+                return ResourceManager.GetString("SoundConsoleBeepFallback", resourceCulture);
             }
         }
         
@@ -1180,6 +1186,15 @@ namespace Lang {
         public static string SystemTray_Discord {
             get {
                 return ResourceManager.GetString("SystemTray_Discord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel: calc moving average DPS for X seconds.
+        /// </summary>
+        public static string SystemTray_ExcelSMADPSSeconds {
+            get {
+                return ResourceManager.GetString("SystemTray_ExcelSMADPSSeconds", resourceCulture);
             }
         }
         
