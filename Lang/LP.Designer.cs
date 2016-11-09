@@ -493,6 +493,176 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_archer {
+            get {
+                return ResourceManager.GetString("events_archer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_berserker {
+            get {
+                return ResourceManager.GetString("events_berserker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_brawler {
+            get {
+                return ResourceManager.GetString("events_brawler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///	&lt;abnormality ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
+        ///		&lt;abnormalities&gt;
+        ///			&lt;abnormality&gt;8888888&lt;/abnormality&gt;
+        ///		&lt;/abnormalities&gt;
+        ///		&lt;actions&gt;
+        ///			&lt;notify&gt;
+        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;5000&quot; /&gt;
+        ///				&lt;sound type=&quot;Beeps&quot;&gt;
+        ///					&lt;beeps&gt;
+        ///						&lt;beep frequency=&quot;440&quot; duration=&quot;500&quot;/&gt;
+        ///					&lt;/beeps&gt;
+        ///				&lt;/sound&gt;
+        ///			&lt;/notify&gt;
+        ///		&lt;/actions&gt;
+        ///	&lt;/abnormality&gt;
+        ///	&lt;abnormality ingame= [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string events_common {
+            get {
+                return ResourceManager.GetString("events_common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_gunner {
+            get {
+                return ResourceManager.GetString("events_gunner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_lancer {
+            get {
+                return ResourceManager.GetString("events_lancer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///	&lt;abnormality ingame=&quot;true&quot; remaining_seconds_before_trigger=&quot;40&quot; trigger=&quot;MissingDuringFight&quot; target=&quot;Party&quot;&gt;
+        ///		&lt;abnormalities&gt;
+        ///			&lt;abnormality&gt;27120&lt;/abnormality&gt;
+        ///		&lt;/abnormalities&gt;
+        ///		&lt;actions&gt;
+        ///			&lt;notify&gt;
+        ///				&lt;balloon title_text=&quot;Thrall of protection&quot; body_text=&quot;{player_name} {time_left}&quot; display_time=&quot;5000&quot; /&gt;
+        ///				&lt;sound type=&quot;Beeps&quot;&gt;
+        ///					&lt;beeps&gt;
+        ///						&lt;beep frequency=&quot;440&quot; duration=&quot;500&quot;/&gt;
+        ///					&lt;/beeps&gt;
+        ///				&lt;/sound&gt;
+        ///			&lt;/no [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string events_mystic {
+            get {
+                return ResourceManager.GetString("events_mystic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_ninja {
+            get {
+                return ResourceManager.GetString("events_ninja", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_priest {
+            get {
+                return ResourceManager.GetString("events_priest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_reaper {
+            get {
+                return ResourceManager.GetString("events_reaper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_slayer {
+            get {
+                return ResourceManager.GetString("events_slayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_sorcerer {
+            get {
+                return ResourceManager.GetString("events_sorcerer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
+        ///&lt;/events&gt;.
+        /// </summary>
+        public static string events_warrior {
+            get {
+                return ResourceManager.GetString("events_warrior", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fight.
         /// </summary>
         public static string Fight {

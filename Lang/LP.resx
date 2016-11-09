@@ -586,4 +586,44 @@
   <data name="SystemTray_ExcelSMADPSSeconds" xml:space="preserve">
     <value>Excel: calc moving average DPS for X seconds</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="events_common" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-common.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_archer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-archer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_berserker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-berserker.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_brawler" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-brawler.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_gunner" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-gunner.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_lancer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-lancer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_mystic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-mystic.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_ninja" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-ninja.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_priest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-priest.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_reaper" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-reaper.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_slayer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-slayer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_sorcerer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-sorcerer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_warrior" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-warrior.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>
