@@ -50,6 +50,8 @@
 		<abnormalities>
 			<abnormality>4031</abnormality>
 			<abnormality>4030</abnormality>
+			<abnormality>4020</abnormality>
+			<abnormality>4021</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>

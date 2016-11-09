@@ -173,6 +173,15 @@ namespace DamageMeter.Processing
 
                 foreach(var type in abnormalityEvent.Types)
                 {
+                    if (abnormalityEvent.RemainingSecondBeforeTrigger == 0)
+                    {
+                        if (NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, type))
+                        {
+                            noAbnormalitiesMissing = true;
+                            break;
+                        }
+                        continue;
+                    }
                     var timeLeft = NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, type);
                     if (timeLeft >= abnormalityEvent.RemainingSecondBeforeTrigger * TimeSpan.TicksPerSecond)
                     {
@@ -190,7 +199,15 @@ namespace DamageMeter.Processing
                 
                 foreach (var id in abnormalityEvent.Ids)
                 {
-                   
+                   if(abnormalityEvent.RemainingSecondBeforeTrigger == 0)
+                    {
+                        if(NetworkController.Instance.AbnormalityTracker.AbnormalityExist(player.Id, id))
+                        {
+                            noAbnormalitiesMissing = true;
+                            break;
+                        }
+                        continue;
+                    }
                     var timeLeft = NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(player.Id, id);
                     if (timeLeft >= abnormalityEvent.RemainingSecondBeforeTrigger * TimeSpan.TicksPerSecond)
                     {

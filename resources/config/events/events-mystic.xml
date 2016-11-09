@@ -32,6 +32,22 @@
 			</notify>
 		</actions>
 	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>27160</abnormality>
+			<abnormality>28090</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="Endurance debuff" body_text="Endurance debuff" display_time="5000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
 	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>700600</abnormality>
