@@ -34,7 +34,7 @@ namespace Data
         public bool Topmost { get; set; }
         public bool Debug { get; set; }
         public bool Excel { get; set; }
-        public int ExcelSMADPSSeconds { get; set; }
+        public int ExcelCMADPSSeconds { get; set; }
         public bool SiteExport { get; set; }
         public bool ShowHealCrit { get; set; }
         public bool OnlyBoss { get; set; }
@@ -96,7 +96,7 @@ namespace Data
             TeraDpsToken = "";
             TeraDpsUser = "";
             Excel = false;
-            ExcelSMADPSSeconds = 1;
+            ExcelCMADPSSeconds = 1;
             AlwaysVisible = false;
             Scale = 1;
             PartyOnly = false;
@@ -203,7 +203,7 @@ namespace Data
             Parse("enable_chat_and_notifications", "EnableChat");
             Parse("copy_inspect", "CopyInspect");
             Parse("do_not_warn_on_crystalbind", "DoNotWarnOnCB");
-            Parse("excel_sma_dps_seconds", "ExcelSMADPSSeconds");
+            Parse("excel_cma_dps_seconds", "ExcelCMADPSSeconds");
 
             ParseColor("say_color","SayColor");
             ParseColor("alliance_color", "AllianceColor");
@@ -482,7 +482,7 @@ namespace Data
             xml.Root.Add(new XElement("excel", Excel));
             xml.Root.Add(new XElement("date_in_excel_path", DateInExcelPath));
             xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
-            xml.Root.Add(new XElement("excel_sma_dps_seconds", ExcelSMADPSSeconds));
+            xml.Root.Add(new XElement("excel_cma_dps_seconds", ExcelCMADPSSeconds));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
             xml.Root.Add(new XElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("lf_delay", LFDelay));

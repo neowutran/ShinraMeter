@@ -295,6 +295,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to s CMA DPS.
+        /// </summary>
+        public static string CMADPS {
+            get {
+                return ResourceManager.GetString("CMADPS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Combat ready check.
         /// </summary>
         public static string CombatReadyCheck {
@@ -1216,15 +1225,6 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to s SMA DPS.
-        /// </summary>
-        public static string SMADPS {
-            get {
-                return ResourceManager.GetString("SMADPS", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sorcerer.
         /// </summary>
         public static string Sorcerer {
@@ -1362,9 +1362,9 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to Excel: calc moving average DPS for X seconds.
         /// </summary>
-        public static string SystemTray_ExcelSMADPSSeconds {
+        public static string SystemTray_ExcelCMADPSSeconds {
             get {
-                return ResourceManager.GetString("SystemTray_ExcelSMADPSSeconds", resourceCulture);
+                return ResourceManager.GetString("SystemTray_ExcelCMADPSSeconds", resourceCulture);
             }
         }
         
