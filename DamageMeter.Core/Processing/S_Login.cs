@@ -23,7 +23,7 @@ namespace DamageMeter.Processing
                         var oldregion = BasicTeraData.Instance.Servers.GetServer(NetworkController.Instance.EntityTracker.MeterUser.ServerId).Region;
                         trackerreset = NetworkController.Instance.Server.Region != oldregion;
                     }
-                    catch (Exception e)
+                    catch
                     {
                         BasicTeraData.LogError("New server:" + NetworkController.Instance.Server + ";Old server Id:" + NetworkController.Instance.EntityTracker.MeterUser.ServerId, false, true);
                         throw;
