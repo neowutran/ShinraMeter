@@ -102,7 +102,7 @@ namespace DamageMeter
             { typeof(Tera.Game.Messages.SAbnormalityBegin) , new Action<Tera.Game.Messages.SAbnormalityBegin>((x)=> Abnormalities.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityEnd) , new Action<Tera.Game.Messages.SAbnormalityEnd>((x)=>Abnormalities.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityRefresh) , new Action<Tera.Game.Messages.SAbnormalityRefresh>((x)=>Abnormalities.Update(x)) },
-            { typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
+            { typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>S_SPAWN_ME.Process(x)) },
             { typeof(Tera.Game.Messages.SCreatureChangeHp) , new Action<Tera.Game.Messages.SCreatureChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPlayerChangeMp) , new Action<Tera.Game.Messages.SPlayerChangeMp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPartyMemberChangeHp) , new Action<Tera.Game.Messages.SPartyMemberChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },

@@ -141,6 +141,7 @@
     <Compile Include="Processing\S_EACH_SKILL_RESULT.cs" />
     <Compile Include="Processing\S_GUILD_QUEST_LIST.cs" />
     <Compile Include="Processing\S_LOGIN.cs" />
+    <Compile Include="Processing\S_SPAWN_ME.cs" />
     <Compile Include="Processing\S_SPAWN_USER.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

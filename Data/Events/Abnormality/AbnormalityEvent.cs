@@ -11,6 +11,7 @@ namespace Data.Events.Abnormality
     {
         public List<int> Ids { get; set; }
 
+      
         public int RemainingSecondBeforeTrigger { get; set; }
         public List<HotDot.Types> Types { get; set; }
         public AbnormalityTargetType Target { get; set; }

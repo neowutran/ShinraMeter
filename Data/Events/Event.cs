@@ -8,6 +8,7 @@ namespace Data.Events
 {
     public abstract class Event
     {
+
         public bool InGame { get; set; }
         public Event(bool inGame)
         {

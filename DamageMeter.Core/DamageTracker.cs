@@ -10,11 +10,13 @@ namespace DamageMeter
         public delegate void CurrentBossChange(Entity entity);
 
         private static DamageTracker _instance;
+        public bool ResetAllOnNewBoss { get; set; }
 
         private List<Entity> _toDelete = new List<Entity>();
 
         private DamageTracker()
         {
+            ResetAllOnNewBoss = false;
         }
 
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
@@ -150,6 +152,12 @@ namespace DamageMeter
                  */
                 if (skillType == Database.Database.Type.Damage && entity.Info.Boss)
                 {
+                    if (ResetAllOnNewBoss)
+                    {
+                        Console.WriteLine("!! RESETTING !!");
+                        ResetAllOnNewBoss = false;
+                        NetworkController.Instance.Reset();
+                    }
                     foreach (var delete in _toDelete)
                     {
                         DeleteEntity(delete);
