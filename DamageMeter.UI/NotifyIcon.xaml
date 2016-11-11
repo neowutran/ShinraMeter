@@ -158,8 +158,8 @@
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="ExcelSMADPSSecLabel" Content="{x:Static l:LP.SystemTray_ExcelSMADPSSeconds}" />
-                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="ExcelSMADPSSpinner" ValueChanged="ExcelSMADPSChanged" FormatString="N0" Increment="1" Maximum="60" Minimum="1" />
+                                            <Label Grid.Column="0" Foreground="White" Name="ExcelCMADPSSecLabel" Content="{x:Static l:LP.SystemTray_ExcelCMADPSSeconds}" />
+                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="ExcelCMADPSSpinner" ValueChanged="ExcelCMADPSChanged" FormatString="N0" Increment="1" Maximum="60" Minimum="1" />
                                         </Grid>
                                         <CheckBox Grid.Row="3" Foreground="White" Content="{x:Static l:LP.SystemTray_Count_only_bosses}" Name="CountOnlyBoss"  Checked="EnableCountOnlyBoss"  Unchecked="DisableCountOnlyBoss" />
                                         <CheckBox Grid.Row="4" Foreground="White" Content="{x:Static l:LP.SystemTray_Detect_bosses_by_HP_bar}" Name="BossByHpBar"  Checked="EnableBossByHpBar"  Unchecked="DisableBossByHpBar" />

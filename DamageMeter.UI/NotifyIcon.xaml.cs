@@ -47,7 +47,7 @@ namespace DamageMeter.UI
             _mainWindow = mainWindow;
             DpsWebsiteExport.IsChecked = BasicTeraData.Instance.WindowData.SiteExport;
             AutoExcelExport.IsChecked = BasicTeraData.Instance.WindowData.Excel;
-            ExcelSMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds;
+            ExcelCMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             CountOnlyBoss.IsChecked = BasicTeraData.Instance.WindowData.OnlyBoss;
             BossByHpBar.IsChecked = BasicTeraData.Instance.WindowData.DetectBosses;
             PartyOnly.IsChecked = BasicTeraData.Instance.WindowData.PartyOnly;
@@ -487,9 +487,10 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.FormatPasteString = false;
         }
 
-        private void ExcelSMADPSChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+
+        private void ExcelCMADPSChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds = (int?)ExcelSMADPSSpinner?.Value??1;
+            BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds = (int?)ExcelCMADPSSpinner?.Value??1;
         }
     }
 }

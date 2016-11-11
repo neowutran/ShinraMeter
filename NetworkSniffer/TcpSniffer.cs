@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Data;
 using NetworkSniffer.Packets;
 using PacketDotNet;
 using TcpPacket = NetworkSniffer.Packets.TcpPacket;
@@ -70,8 +71,11 @@ namespace NetworkSniffer
         {
             lock (_lock)
             {
-                var tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket;
-                if (tcpPacket==null || !tcpPacket.ValidTCPChecksum) return;
+                PacketDotNet.TcpPacket tcpPacket;
+                try { tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket; }
+                catch {BasicTeraData.LogError("Bad ip packet",false,true);return; }
+                
+                if (tcpPacket==null||tcpPacket.DataOffset*4<ipData.PayloadLength) return;
                 var isFirstPacket = tcpPacket.Syn;
                 var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress,
                     tcpPacket.DestinationPort);

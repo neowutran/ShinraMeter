@@ -344,12 +344,12 @@ namespace DamageMeter
             if (!bossSheet)
             {
                 typeDmg = dps.PlotArea.ChartTypes[0];
-                typeDmg.YAxis.Title.Text = BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds + LP.SMADPS;
+                typeDmg.YAxis.Title.Text = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds + LP.CMADPS;
                 typeDmg.YAxis.Title.Rotation = 90;
 
                 serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 5, time + 3, offset + 5],
                     details.Cells[3, 2, time + 3, 2]);
-                serieDmg.Header = ws.Name + " "+ BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds + LP.SMADPS;
+                serieDmg.Header = ws.Name + " "+ BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds + LP.CMADPS;
             }
             else 
             {
@@ -483,7 +483,7 @@ namespace DamageMeter
             x => x.Value.Where(time => time.Time >= exdata.FirstTick && time.Time <= exdata.LastTick)
              .Sum(y => y.Amount));
             j = 0;
-            var xSMA = BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds<=0 ? 1: BasicTeraData.Instance.WindowData.ExcelSMADPSSeconds;
+            var xCMA = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds<=0 ? 1: BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             var last=new Queue<long>();
             for (var curTick = exdata.FirstTick;
                 curTick <= exdata.LastTick;
@@ -496,17 +496,17 @@ namespace DamageMeter
                             .Sum(skill => skill.Amount));
                 dealtDamage += damage;
                 last.Enqueue(damage);
-                if (last.Count> xSMA) last.Dequeue();
+                if (last.Count> xCMA) last.Dequeue();
                 if (curTick >= exdata.LastTick - TimeSpan.TicksPerSecond)
                 {
-                    if (j > xSMA)
-                        details.Cells[j + 2 - xSMA / 2, 8].Value = last.ToArray().Sum(x => x)/(xSMA>1?xSMA-1+TimeSpan.TicksPerSecond/(exdata.LastTick-curTick):1)/1000;
+                    if (j > xCMA)
+                        details.Cells[j + 2 - xCMA / 2, 8].Value = last.ToArray().Sum(x => x)/(xCMA>1?xCMA-1+TimeSpan.TicksPerSecond/(exdata.LastTick-curTick):1)/1000;
                     details.Cells[j + 2, 9].Value = dealtDamage*TimeSpan.TicksPerSecond/(exdata.LastTick - exdata.FirstTick)/1000;
                 }
                 else
                 {
-                    if (j >= xSMA)
-                        details.Cells[j + 2 - xSMA / 2, 8].Value = last.ToArray().Sum(x => x) / xSMA / 1000;
+                    if (j >= xCMA)
+                        details.Cells[j + 2 - xCMA / 2, 8].Value = last.ToArray().Sum(x => x) / xCMA / 1000;
                     if (j != 1) details.Cells[j + 2, 9].Value = dealtDamage/(j - 1)/1000;
                 }
                 details.Cells[j + 2, 10].Value = totalDamage == 0 ? 0 : (double)(totalDamage - dealtDamage) / totalDamage;
@@ -586,17 +586,17 @@ namespace DamageMeter
                             x => x.Value.Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond).Sum(skill => skill.Amount));
                     dealtDamage += damage;
                     last.Enqueue(damage);
-                    if (last.Count > xSMA) last.Dequeue();
+                    if (last.Count > xCMA) last.Dequeue();
                     if (curTick >= exdata.LastTick - TimeSpan.TicksPerSecond)
                     {
-                        if (j>xSMA)
-                            details.Cells[j + 2 - xSMA / 2, i + 5].Value = last.ToArray().Sum(x=>x)/(xSMA>1?xSMA-1+TimeSpan.TicksPerSecond/(exdata.LastTick-curTick):1)/1000;
+                        if (j>xCMA)
+                            details.Cells[j + 2 - xCMA / 2, i + 5].Value = last.ToArray().Sum(x=>x)/(xCMA>1?xCMA-1+TimeSpan.TicksPerSecond/(exdata.LastTick-curTick):1)/1000;
                         details.Cells[j + 2, i + 6].Value = dealtDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick) / 1000;
                     }
                     else 
                     {
-                        if (j >= xSMA)
-                            details.Cells[j + 2 - xSMA /2, i + 5].Value = last.ToArray().Sum(x => x) / xSMA / 1000;
+                        if (j >= xCMA)
+                            details.Cells[j + 2 - xCMA /2, i + 5].Value = last.ToArray().Sum(x => x) / xCMA / 1000;
                         if (j != 1) details.Cells[j + 2, i + 6].Value = dealtDamage/(j - 1) / 1000;
                     }
                 }

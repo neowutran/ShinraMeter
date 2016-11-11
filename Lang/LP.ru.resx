@@ -575,10 +575,10 @@
   <data name="SoundConsoleBeepFallback" xml:space="preserve">
     <value>Использовать пищалку вместо MP3</value>
   </data>
-  <data name="SMADPS" xml:space="preserve">
+  <data name="CMADPS" xml:space="preserve">
     <value>c скольз.сред. ДПС</value>
   </data>
-  <data name="SystemTray_ExcelSMADPSSeconds" xml:space="preserve">
+  <data name="SystemTray_ExcelCMADPSSeconds" xml:space="preserve">
     <value>Скользящее среднее в Excel расчитывать для X сек.</value>
   </data>
 </root>

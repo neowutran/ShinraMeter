@@ -305,7 +305,7 @@ namespace DamageMeter
                     teradpsData.encounterUnixEpoch += timediff;
                 }
             }
-            catch (Exception e)
+            catch
             {
                 Console.WriteLine("Get server time error");
                 NetworkController.Instance.BossLink.TryAdd(
