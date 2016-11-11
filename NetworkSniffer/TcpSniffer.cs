@@ -75,7 +75,7 @@ namespace NetworkSniffer
                 try { tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket; }
                 catch {BasicTeraData.LogError("Bad ip packet",false,true);return; }
                 
-                if (tcpPacket==null||tcpPacket.DataOffset*4<ipData.PayloadLength) return;
+                if (tcpPacket==null||tcpPacket.DataOffset*4>ipData.PayloadLength) return;
                 var isFirstPacket = tcpPacket.Syn;
                 var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress,
                     tcpPacket.DestinationPort);

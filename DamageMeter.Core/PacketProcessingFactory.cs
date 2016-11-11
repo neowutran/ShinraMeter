@@ -42,7 +42,7 @@ namespace DamageMeter
             {typeof(Tera.Game.Messages.SDespawnNpc), Helpers.Contructor<Func<Tera.Game.Messages.SDespawnNpc , S_DESPAWN_NPC>>()},
             {typeof(Tera.Game.Messages.SCreatureLife), Helpers.Contructor<Func<Tera.Game.Messages.SCreatureLife , S_CREATURE_LIFE>>()},
             {typeof(Tera.Game.Messages.S_CREST_INFO), Helpers.Contructor<Func<Tera.Game.Messages.S_CREST_INFO , DamageMeter.Processing.S_CREST_INFO>>() },
-            {typeof(Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT), new Action<Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT>(x=>NotifyProcessor.S_BEGIN_THROUGH_ARBITER_CONTRACT(x))}
+//            {typeof(Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT), new Action<Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT>(x=>NotifyProcessor.S_BEGIN_THROUGH_ARBITER_CONTRACT(x))}
         };
         private static Dictionary<Type, Delegate> MainProcessor = new Dictionary<Type, Delegate>();
 
@@ -79,7 +79,7 @@ namespace DamageMeter
             { typeof(Tera.Game.Messages.S_MOUNT_VEHICLE_EX) , new Action<Tera.Game.Messages.S_MOUNT_VEHICLE_EX>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.StartUserProjectileServerMessage) , new Action<Tera.Game.Messages.StartUserProjectileServerMessage>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SpawnProjectileServerMessage) , new Action<Tera.Game.Messages.SpawnProjectileServerMessage>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SpawnNpcServerMessage) , new Action<Tera.Game.Messages.SpawnNpcServerMessage>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
+            { typeof(Tera.Game.Messages.SpawnNpcServerMessage) , new Action<Tera.Game.Messages.SpawnNpcServerMessage>((x)=>S_SPAWN_NPC.Process(x)) },
             };
             entityTrackerProcessing.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
         }
@@ -102,7 +102,7 @@ namespace DamageMeter
             { typeof(Tera.Game.Messages.SAbnormalityBegin) , new Action<Tera.Game.Messages.SAbnormalityBegin>((x)=> Abnormalities.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityEnd) , new Action<Tera.Game.Messages.SAbnormalityEnd>((x)=>Abnormalities.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityRefresh) , new Action<Tera.Game.Messages.SAbnormalityRefresh>((x)=>Abnormalities.Update(x)) },
-            { typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>S_SPAWN_ME.Process(x)) },
+            { typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SCreatureChangeHp) , new Action<Tera.Game.Messages.SCreatureChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPlayerChangeMp) , new Action<Tera.Game.Messages.SPlayerChangeMp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPartyMemberChangeHp) , new Action<Tera.Game.Messages.SPartyMemberChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },

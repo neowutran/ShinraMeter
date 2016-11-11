@@ -138,7 +138,7 @@ namespace DamageMeter.Processing
         }
 
 
-        internal static void AbnormalityNotifierMissing(EntityId target, EntityId source)
+        internal static void AbnormalityNotifierMissing(EntityId target, EntityId source, SkillResult skillResult)
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
 
@@ -160,18 +160,9 @@ namespace DamageMeter.Processing
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss){ entityIdToCheck = NetworkController.Instance.Encounter.Id; }
                 if (abnormalityEvent.Target == AbnormalityTargetType.Party)
                 {
-                    bool found = false;
-                    foreach (var partyPlayer in NetworkController.Instance.PlayerTracker.PartyList())
-                    {
-                        if (partyPlayer.Id == target || partyPlayer.Id == source)
-                        {
-                            player = partyPlayer;
-                            entityIdToCheck = partyPlayer.Id;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) { continue; }
+                    player = skillResult.TargetPlayer?.User ?? skillResult.SourcePlayer?.User;
+                    if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player)) continue;
+                    entityIdToCheck = player.Id;
                 }
 
                 TimeSpan? abnormalityTimeLeft = null;
@@ -287,17 +278,8 @@ namespace DamageMeter.Processing
                 if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) { continue; }
                 if(abnormalityEvent.Target == AbnormalityTargetType.Party)
                 {
-                    bool found = false;
-                    foreach (var partyPlayer in NetworkController.Instance.PlayerTracker.PartyList())
-                    {
-                        if(partyPlayer.Id == target)
-                        {
-                            player = partyPlayer;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) { continue; }
+                    player = NetworkController.Instance.EntityTracker.GetOrNull(target) as UserEntity;
+                    if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player)) continue;
                 }
                 foreach(var a in e.Value)
                 {
@@ -328,7 +310,7 @@ namespace DamageMeter.Processing
 
         internal static void SpawnMe(Tera.Game.Messages.SpawnMeServerMessage message)
         {
-            S_SPAWN_ME.Process(message);
+            NetworkController.Instance.AbnormalityTracker.Update(message);
         }
 
         internal static void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)

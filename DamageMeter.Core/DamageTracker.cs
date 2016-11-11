@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Data;
 using Tera.Game;
+using Tera.Game.Messages;
 
 namespace DamageMeter
 {
@@ -10,13 +11,11 @@ namespace DamageMeter
         public delegate void CurrentBossChange(Entity entity);
 
         private static DamageTracker _instance;
-        public bool ResetAllOnNewBoss { get; set; }
 
         private List<Entity> _toDelete = new List<Entity>();
 
         private DamageTracker()
         {
-            ResetAllOnNewBoss = false;
         }
 
         public static DamageTracker Instance => _instance ?? (_instance = new DamageTracker());
@@ -35,9 +34,15 @@ namespace DamageMeter
             {
                 _toDelete.Add(entity);
             }
-
         }
 
+        public void UpdateEntities(SpawnNpcServerMessage message)
+        {
+            var entity = NetworkController.Instance.EntityTracker.GetOrNull(message.Id);
+            var npcEntity = entity as NpcEntity;
+            if (npcEntity!=null && NetworkController.Instance.Encounter == npcEntity)
+                _toDelete.Add(entity);
+        }
 
         public void DeleteEntity(Entity entity)
         {
@@ -152,12 +157,6 @@ namespace DamageMeter
                  */
                 if (skillType == Database.Database.Type.Damage && entity.Info.Boss)
                 {
-                    if (ResetAllOnNewBoss)
-                    {
-                        Console.WriteLine("!! RESETTING !!");
-                        ResetAllOnNewBoss = false;
-                        NetworkController.Instance.Reset();
-                    }
                     foreach (var delete in _toDelete)
                     {
                         DeleteEntity(delete);
