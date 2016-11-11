@@ -15,7 +15,7 @@ namespace DamageMeter.UI
         public void Value(string title, string text)
         {
             Title.Content = title;
-            Content.Text = text;
+            TextBlock.Text = text;
         }
     }
 }

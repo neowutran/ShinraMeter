@@ -121,10 +121,12 @@ namespace Data
             }
 
             ParseAbnormalities(EventsCommon, xml);
+            ParseCommonAFK(EventsCommon, xml);
         }
 
         public void Save()
         {
+            //TODO, too lazy atm
             /*
             if (_filestream == null)
             {
@@ -141,6 +143,62 @@ namespace Data
             }
             _filestream.Close();
             */
+        }
+
+        private void ParseCommonAFK(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
+        {
+            var root = xml.Root;
+            var commonAfk = root.Element("common_afk");
+            if (commonAfk == null) { return; }
+
+            var abnormalityEvent = new CommonAFKEvent();
+            events.Add(abnormalityEvent, new List<Actions.Action>());
+            foreach (var notify in commonAfk.Element("actions").Elements("notify"))
+            {
+                Balloon ballonData = null;
+                Sound soundData = null;
+                var balloon = notify.Element("balloon");
+                if (balloon != null)
+                {
+                    var titleText = balloon.Attribute("title_text").Value;
+                    var bodyText = balloon.Attribute("body_text").Value;
+                    var displayDuration = int.Parse(balloon.Attribute("display_time").Value);
+                    ballonData = new Balloon(titleText, bodyText, displayDuration);
+                }
+                var sound = notify.Element("sound");
+                if (sound != null)
+                {
+                    Music musicData = null;
+                    List<Beep> beepsData = null;
+                    var music = sound.Element("music");
+                    if (music != null)
+                    {
+                        var musicFile = music.Attribute("file").Value;
+                        var volume = float.Parse(music.Attribute("volume").Value);
+                        var duration = int.Parse(music.Attribute("duration").Value);
+                        musicData = new Music(musicFile, volume, duration);
+                    }
+                    var beeps = sound.Element("beeps");
+                    if (beeps != null)
+                    {
+                        beepsData = new List<Beep>();
+                        foreach (var beep in beeps.Elements())
+                        {
+                            var frequency = int.Parse(beep.Attribute("frequency").Value);
+                            var duration = int.Parse(beep.Attribute("duration").Value);
+                            beepsData.Add(new Beep(frequency, duration));
+                        }
+                    }
+
+                    SoundType soundType;
+                    Enum.TryParse(sound.Attribute("type").Value, true, out soundType);
+                    soundData = new Sound(beepsData, musicData, soundType);
+                }
+
+                var notifyAction = new NotifyAction(soundData, ballonData);
+                events[abnormalityEvent].Add(notifyAction);
+            }
+
         }
 
         private void ParseAbnormalities(Dictionary<Event, List<Actions.Action>> events, XDocument xml)

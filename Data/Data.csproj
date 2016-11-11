@@ -72,6 +72,7 @@
     <Compile Include="DiscordInfoByGuild.cs" />
     <Compile Include="Events\Abnormality\AbnormalityEvent.cs" />
     <Compile Include="Events\Abnormality\AbnormalityTriggerType.cs" />
+    <Compile Include="Events\CommonAFKEvent.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\Abnormality\AbnormalityTargetType.cs" />
     <Compile Include="HotkeysData.cs" />

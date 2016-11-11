@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
+	<common_afk>
+		<actions>
+				<notify>
+					<balloon title_text="{afk_title}" body_text="{afk_body}" display_time="3000" />
+					<sound type="Beeps">
+						<beeps>
+							<beep frequency="440" duration="500"/>
+						</beeps>
+					</sound>
+				</notify>
+			</actions>
+	</common_afk>
 	<abnormality ingame="true" trigger="Added" target="Boss">
 		<abnormalities>
 			<abnormality>8888888</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="5000" />
+				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
-						<beep frequency="440" duration="500"/>
+						<beep frequency="185" duration="500"/>
 					</beeps>
 				</sound>
 			</notify>
@@ -21,10 +33,10 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="5000" />
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
-						<beep frequency="440" duration="500"/>
+						<beep frequency="110" duration="500"/>
 					</beeps>
 				</sound>
 			</notify>
@@ -36,22 +48,22 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="5000" />
+				<balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
-						<beep frequency="440" duration="500"/>
+						<beep frequency="185" duration="500"/>
 					</beeps>
 				</sound>
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" trigger="Added" target="Self">
+	<abnormality ingame="false" trigger="Added" target="Self">
 		<abnormalities>
 			<abnormality>999001021</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="5000" />
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
 						<beep frequency="440" duration="500"/>
@@ -67,7 +79,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="CristalBind missing" body_text="{player_name} {time_left}" display_time="5000" />
+				<balloon title_text="CristalBind missing" body_text="{player_name} {time_left}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
 						<beep frequency="440" duration="500"/>
@@ -85,10 +97,10 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="Everfull nostrum" body_text="{player_name} {time_left}" display_time="5000" />
+				<balloon title_text="Everfull nostrum" body_text="{player_name} {time_left}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
-						<beep frequency="440" duration="500"/>
+						<beep frequency="196" duration="500"/>
 					</beeps>
 				</sound>
 			</notify>

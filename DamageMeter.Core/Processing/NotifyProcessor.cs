@@ -31,20 +31,23 @@ namespace DamageMeter.Processing
 
         internal static NotifyAction DefaultNotifyAction(string titleText, string bodyText)
         {
-            var balloon = new Balloon(titleText, bodyText, BasicTeraData.Instance.WindowData.PopupDisplayTime);
-            List<Beep> beeps = new List<Beep>();
-            beeps.Add(new Beep(440, 500));
-            beeps.Add(new Beep(440, 500));
-            beeps.Add(new Beep(440, 500));
-            var music = new Music(BasicTeraData.Instance.WindowData.NotifySound, BasicTeraData.Instance.WindowData.Volume, BasicTeraData.Instance.WindowData.SoundNotifyDuration);
-            var type = SoundType.Music;
-            if (BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback)
+            foreach(var ev in BasicTeraData.Instance.EventsData.Events)
             {
-                type = SoundType.Beeps;
+                if(ev.Key is CommonAFKEvent)
+                {
+                    foreach(var action in ev.Value)
+                    {
+                        if(action is NotifyAction)
+                        {
+                            var notifyAction = ((NotifyAction)action).Clone();
+                            notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{afk_body}", bodyText);
+                            notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{afk_title}", titleText);
+                            return notifyAction;
+                        }
+                    }
+                }
             }
-            var sound = new Sound(beeps, music, type);
-            return new NotifyAction(sound, balloon);
-           
+            return null;     
         }
         private static void Process()
         {

@@ -56,17 +56,10 @@ namespace DamageMeter.UI
             StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
             NumberPlayersSpinner.Value = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed;
             LFDelaySpinner.Value = BasicTeraData.Instance.WindowData.LFDelay;
-            SoundTimeSpinner.Value = BasicTeraData.Instance.WindowData.SoundNotifyDuration;
-            PopupTimeSpinner.Value = BasicTeraData.Instance.WindowData.PopupDisplayTime;
-            SoundFileTextbox.Text = BasicTeraData.Instance.WindowData.NotifySound;
-            SoundVolumeSpinner.Value = BasicTeraData.Instance.WindowData.Volume;
             RemoveTeraAltEnterHotkey.IsChecked = BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey;
             ChatEnabled.IsChecked = BasicTeraData.Instance.WindowData.EnableChat;
             CopyInspect.IsChecked = BasicTeraData.Instance.WindowData.CopyInspect;
-            NotifyCB.IsChecked = !BasicTeraData.Instance.WindowData.DoNotWarnOnCB;
             FormatPasteString.IsChecked = BasicTeraData.Instance.WindowData.FormatPasteString;
-            SoundConsoleBeepFallback.IsChecked=BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback;
-
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
             AllianceColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.AllianceColor;
@@ -99,7 +92,7 @@ namespace DamageMeter.UI
             if (flash == null) return;
 
             Tray.HideBalloonTip();
-            if (BasicTeraData.Instance.WindowData.PopupDisplayTime >= 500 && flash.Balloon != null)
+            if (flash.Balloon.DisplayTime >= 500 && flash.Balloon != null)
             {
                 var balloon = new Balloon();
                 balloon.Value(flash.Balloon.TitleText, flash.Balloon.BodyText);
@@ -319,35 +312,7 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.LFDelay = (int?)LFDelaySpinner?.Value??150;
         }
-
-        private void PopupTimeChange(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            BasicTeraData.Instance.WindowData.PopupDisplayTime = (int?)PopupTimeSpinner?.Value??0;
-        }
-
-        private void SoundTimeChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            BasicTeraData.Instance.WindowData.SoundNotifyDuration = (int?)SoundTimeSpinner?.Value??0;
-
-        }
-
-        private void SoundFileChanged(object sender, RoutedEventArgs e)
-        {
-            if (!File.Exists(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", SoundFileTextbox.Text)))
-            {
-                SoundFileTextbox.Text = BasicTeraData.Instance.WindowData.NotifySound;
-                return;
-            }
-            BasicTeraData.Instance.WindowData.NotifySound = SoundFileTextbox.Text;
-
-        }
-
-        private void SoundVolumeChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            BasicTeraData.Instance.WindowData.Volume = (float?)SoundVolumeSpinner?.Value??0;
-        }
-
-
+        
         private void Grid_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
             ConfigScrollViewer.ScrollToVerticalOffset(ConfigScrollViewer.VerticalOffset - e.Delta);
@@ -425,22 +390,6 @@ namespace DamageMeter.UI
             KeyboardHook.Instance.Update();
         }
 
-        private void SoundFileTextbox_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Tray.TrayPopupResolved.StaysOpen = true;
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.FileName = BasicTeraData.Instance.WindowData.NotifySound;
-            dlg.DefaultExt = ".mp3";
-            dlg.Filter = "Sound (*.wav;*.mp3;*.aiff) |*.wav;*.mp3;*.aiff"; // Filter files by extension
-
-            bool? result = dlg.ShowDialog(Window.GetWindow(this));
-            if (result == true)
-            {
-                SoundFileTextbox.Text = dlg.FileName;
-            }
-            Tray.TrayPopupResolved.StaysOpen = false;
-        }
-
         private void EnableChat(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableChat = true;
@@ -455,11 +404,6 @@ namespace DamageMeter.UI
         private void ChatSettingsVisible(bool show)
         {
             CopyInspect.Height = show ? Double.NaN : 0;
-            NotifyCB.Height = show ? Double.NaN : 0;
-            PopupTime.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            SoundTime.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            SoundFile.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            SoundVolume.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             WhisperColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             AllianceColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             AreaColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
@@ -533,16 +477,6 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.DiscordLogin = DiscordLoginTextBox.Text;
         }
 
-        private void EnableNotifyCB(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.DoNotWarnOnCB = false;
-        }
-
-        private void DisableNotifyCB(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.DoNotWarnOnCB = true;
-        }
-
         private void EnableFormatPasteString(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.FormatPasteString = true;
@@ -551,16 +485,6 @@ namespace DamageMeter.UI
         private void DisableFormatPasteString(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.FormatPasteString = false;
-        }
-
-        private void EnableSoundConsoleBeepFallback(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback = true;
-        }
-
-        private void DisableSoundConsoleBeepFallback(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.SoundConsoleBeepFallback = false;
         }
 
         private void ExcelSMADPSChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

@@ -40,16 +40,12 @@ namespace Data
         public bool OnlyBoss { get; set; }
         public bool DetectBosses { get; set; }
 
-        public int SoundNotifyDuration { get; set; }
-        public int PopupDisplayTime { get; set; }
         public bool DateInExcelPath { get; set; }
 
         public string NotifySound { get; set; }
 
-        public bool SoundConsoleBeepFallback { get; set; }
-
         public int NumberOfPlayersDisplayed { get; set; }
-        public float Volume { get; set; }
+     
         public bool LowPriority { get; set; }
         public bool EnableChat { get; set; }
         public bool CopyInspect { get; set; }
@@ -74,7 +70,6 @@ namespace Data
 
         public Color PrivateChannelColor { get; set; }
         public bool RemoveTeraAltEnterHotkey { get; set; }
-        public bool DoNotWarnOnCB { get; set; }
         public bool FormatPasteString { get; set; }
         
       
@@ -85,7 +80,6 @@ namespace Data
             UILanguage = "Auto";
             MainWindowOpacity = 0.5;
             SkillWindowOpacity = 0.7;
-            SoundConsoleBeepFallback = true;
             AutoUpdate = true;
             RememberPosition = true;
             InvisibleUi = false;
@@ -108,9 +102,6 @@ namespace Data
             DetectBosses = false;
             DateInExcelPath = false;
             NumberOfPlayersDisplayed = 5;
-            PopupDisplayTime = 10000;
-            SoundNotifyDuration = 3000;
-            Volume = 1.0f;
             NotifySound = "ElinuDance.mp3";
             FormatPasteString = true;
             WhisperColor = Brushes.Pink.Color;
@@ -128,7 +119,6 @@ namespace Data
             RemoveTeraAltEnterHotkey = false;
             EnableChat = true;
             CopyInspect = true;
-            DoNotWarnOnCB = false;
             DiscordInfoByGuild = new Dictionary<string, Data.DiscordInfoByGuild>();
             DiscordLogin = "";
             DiscordPassword = "";
@@ -193,16 +183,10 @@ namespace Data
             Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
             Parse("date_in_excel_path", "DateInExcelPath");
             Parse("low_priority", "LowPriority");
-            Parse("format_paste_string", "FormatPasteString");           
-            Parse("notify_sound", "NotifySound");
-            Parse("popup_display_time", "PopupDisplayTime");
-            Parse("sound_notify_duration", "SoundNotifyDuration");
-            Parse("volume", "Volume");
-            Parse("sound_console_beep_fallback", "SoundConsoleBeepFallback");
+            Parse("format_paste_string", "FormatPasteString");                    
             Parse("remove_tera_alt_enter_hotkey", "RemoveTeraAltEnterHotkey");
             Parse("enable_chat_and_notifications", "EnableChat");
             Parse("copy_inspect", "CopyInspect");
-            Parse("do_not_warn_on_crystalbind", "DoNotWarnOnCB");
             Parse("excel_sma_dps_seconds", "ExcelSMADPSSeconds");
 
             ParseColor("say_color","SayColor");
@@ -495,15 +479,8 @@ namespace Data
             xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", RemoveTeraAltEnterHotkey));
             xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
             xml.Root.Add(new XElement("copy_inspect", CopyInspect));
-            xml.Root.Add(new XElement("do_not_warn_on_crystalbind", DoNotWarnOnCB));
             xml.Root.Add(new XElement("format_paste_string", FormatPasteString));
             xml.Root.Add(new XElement("notify_sound", NotifySound));
-            xml.Root.Add(new XElement("volume", Volume));
-            xml.Root.Add(new XElement("popup_display_time", PopupDisplayTime));
-            xml.Root.Add(new XElement("sound_notify_duration", SoundNotifyDuration));
-            xml.Root.Add(new XElement("sound_console_beep_fallback", SoundConsoleBeepFallback));
-
-
             xml.Root.Add(new XElement("say_color", SayColor.ToString()));
             xml.Root.Add(new XElement("alliance_color", AllianceColor.ToString()));
             xml.Root.Add(new XElement("area_color", AreaColor.ToString()));
