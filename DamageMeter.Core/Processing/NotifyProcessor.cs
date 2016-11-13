@@ -143,13 +143,17 @@ namespace DamageMeter.Processing
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
 
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
-            if (meterUser == null || NetworkController.Instance.Encounter == null) return;
-            if (NetworkController.Instance.Encounter.Id != target) return;
+            if (meterUser == null || _lastBoss == null) return;
+            if (_lastBoss.Value != target) return;
             var teraActive = TeraWindow.IsTeraActive();
 
-
+            var time = DateTime.Now;
             foreach (var e in BasicTeraData.Instance.EventsData.Events)
             {
+
+                if(time.AddMilliseconds(2000) < e.Key.LastCheck) { continue; }
+                e.Key.LastCheck = time;
+
                 EntityId entityIdToCheck = meterUser.Id;
                 UserEntity player = meterUser;
                 if (e.Key.GetType() != typeof(AbnormalityEvent)) { continue; }
@@ -157,7 +161,7 @@ namespace DamageMeter.Processing
                 if (!abnormalityEvent.InGame && teraActive) { continue; }
                 if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) { continue; }
                 if (abnormalityEvent.Target == AbnormalityTargetType.Self && ( meterUser.Id != source)) { continue; }
-                if (abnormalityEvent.Target == AbnormalityTargetType.Boss){ entityIdToCheck = NetworkController.Instance.Encounter.Id; }
+                if (abnormalityEvent.Target == AbnormalityTargetType.Boss){ entityIdToCheck = _lastBoss.Value; }
                 if (abnormalityEvent.Target == AbnormalityTargetType.Party)
                 {
                     player = skillResult.TargetPlayer?.User ?? skillResult.SourcePlayer?.User;
@@ -261,8 +265,8 @@ namespace DamageMeter.Processing
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
 
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
-            if (meterUser == null || NetworkController.Instance.Encounter == null) return;
-            if (NetworkController.Instance.Encounter.Id != target) return;
+            if (meterUser == null || _lastBoss == null) return;
+            if (_lastBoss.Value != target) return;
 
             var teraActive = TeraWindow.IsTeraActive();
 
@@ -274,7 +278,7 @@ namespace DamageMeter.Processing
                 if(!abnormalityEvent.Ids.Contains(abnormalityId)) { continue; }
                 if (!abnormalityEvent.InGame && teraActive) { continue; }
                 if (abnormalityEvent.Trigger != trigger) { continue; }
-                if(abnormalityEvent.Target == AbnormalityTargetType.Boss && NetworkController.Instance.Encounter.Id != target) { continue; }
+                if(abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target) { continue; }
                 if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) { continue; }
                 if(abnormalityEvent.Target == AbnormalityTargetType.Party)
                 {
@@ -300,10 +304,11 @@ namespace DamageMeter.Processing
                 }
             }
         }
-
+        private static EntityId? _lastBoss;
         internal static void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
+            _lastBoss = message.EntityId;
         }
 
         private static List<UserEntity> playerWithUnkownBuff = new List<UserEntity>();
@@ -319,6 +324,7 @@ namespace DamageMeter.Processing
         }
         internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
+            _lastBoss = null;
         }
 
         internal static void S_BEGIN_THROUGH_ARBITER_CONTRACT(S_BEGIN_THROUGH_ARBITER_CONTRACT message)

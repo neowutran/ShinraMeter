@@ -8,10 +8,11 @@ namespace Data.Events
 {
     public abstract class Event
     {
-
+        public DateTime LastCheck { get; set; }
         public bool InGame { get; set; }
         public Event(bool inGame)
         {
+            LastCheck = DateTime.Now;
             InGame = inGame;
         }
     }
