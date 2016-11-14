@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	<common_afk>
+		<actions>
+				<notify>
+					<balloon title_text="{afk_title}" body_text="{afk_body}" display_time="3000" />
+					<sound type="Beeps">
+						<beeps>
+							<beep frequency="440" duration="500"/>
+						</beeps>
+					</sound>
+				</notify>
+			</actions>
+	</common_afk>
+	<abnormality ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="185" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>60010</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="110" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="false" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>999001021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="900" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>CrystalBind</abnormality>
+			<abnormality>CCrystalBind</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="クリスタル保護が切れています。" body_text="{player_name} {time_left}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>4031</abnormality>
+			<abnormality>4030</abnormality>
+			<abnormality>4020</abnormality>
+			<abnormality>4021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="万能戦闘秘薬" body_text="{player_name} {time_left}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="196" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>4830</abnormality>
+			<abnormality>4831</abnormality>
+			<abnormality>4832</abnormality>
+			<abnormality>4833</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="勇猛のポーション" body_text="{player_name} {time_left}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="196" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+</events>
