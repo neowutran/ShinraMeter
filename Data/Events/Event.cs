@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tera.Game;
 
 namespace Data.Events
 {
     public abstract class Event
     {
-        public DateTime LastCheck { get; set; }
+        public Dictionary<EntityId, DateTime> LastChecks { get; set; }
         public bool InGame { get; set; }
         public Event(bool inGame)
         {
-            LastCheck = DateTime.Now;
+            LastChecks = new Dictionary<EntityId, DateTime>();
             InGame = inGame;
         }
     }

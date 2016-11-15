@@ -150,10 +150,7 @@ namespace DamageMeter.Processing
             var time = DateTime.Now;
             foreach (var e in BasicTeraData.Instance.EventsData.Events)
             {
-
-                if(time.AddMilliseconds(2000) < e.Key.LastCheck) { continue; }
-                e.Key.LastCheck = time;
-
+ 
                 EntityId entityIdToCheck = meterUser.Id;
                 UserEntity player = meterUser;
                 if (e.Key.GetType() != typeof(AbnormalityEvent)) { continue; }
@@ -168,6 +165,17 @@ namespace DamageMeter.Processing
                     if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player)) continue;
                     entityIdToCheck = player.Id;
                 }
+
+                if (!e.Key.LastChecks.ContainsKey(entityIdToCheck))
+                {
+                    e.Key.LastChecks.Add(entityIdToCheck, time);
+                }
+                else
+                {
+                    if (time < e.Key.LastChecks[entityIdToCheck].AddMilliseconds(3000)) { continue; }
+                    e.Key.LastChecks[entityIdToCheck] = time;
+                }
+
 
                 TimeSpan? abnormalityTimeLeft = null;
                 var noAbnormalitiesMissing = false;
