@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	<abnormality ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>27120</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="プロテクションエレメント(保護)" body_text="{player_name} {time_left}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="196" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>700330</abnormality>
+			<abnormality>700300</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="オーラ" body_text="マナオーラをアクティブに" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="220" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>27160</abnormality>
+			<abnormality>28090</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="耐久力デバフ" body_text="耐久力デバフ" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="392" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>700600</abnormality>
+			<abnormality>700601</abnormality>
+			<abnormality>700602</abnormality>
+			<abnormality>700603</abnormality>
+			<abnormality>700700</abnormality>
+			<abnormality>700701</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="オーラ" body_text="レイジ/ヘイストオーラをアクティブに" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+</events>

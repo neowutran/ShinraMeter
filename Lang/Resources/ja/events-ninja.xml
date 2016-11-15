@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>10154030</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}をアクティブに" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="220" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+</events>

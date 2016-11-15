@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	<abnormality ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>805101</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="196" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>805600</abnormality>
+			<abnormality>805601</abnormality>
+			<abnormality>805602</abnormality>
+			<abnormality>805603</abnormality>
+			<abnormality>805604</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="196" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="5" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>801500</abnormality>
+			<abnormality>801501</abnormality>
+			<abnormality>801502</abnormality>
+			<abnormality>801503</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="196" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>27160</abnormality>
+			<abnormality>28090</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="耐久力デバフ" body_text="耐久力デバフ" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="392" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+</events>
