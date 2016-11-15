@@ -3,6 +3,7 @@
 	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
 			<abnormality>26220</abnormality>
+			<abnormality>101300</abnormality>
 			<abnormality>26251</abnormality>
 		</abnormalities>
 		<actions>

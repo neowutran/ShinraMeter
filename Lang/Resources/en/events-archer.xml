@@ -1,3 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>26220</abnormality>
+			<abnormality>101300</abnormality>
+			<abnormality>26251</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="Endurance debuff" body_text="Endurance debuff" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="392" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
 </events>

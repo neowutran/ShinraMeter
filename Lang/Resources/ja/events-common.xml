@@ -42,6 +42,21 @@
 			</notify>
 		</actions>
 	</abnormality>
+	<abnormality ingame="true" trigger="Removed" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="185" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
 	<abnormality ingame="false" trigger="Added" target="Self">
 		<abnormalities>
 			<abnormality>999001021</abnormality>
@@ -83,24 +98,6 @@
 		<actions>
 			<notify>
 				<balloon title_text="万能戦闘秘薬" body_text="{player_name} {time_left}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="196" duration="500"/>
-					</beeps>
-				</sound>
-			</notify>
-		</actions>
-	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="10" trigger="MissingDuringFight" target="Party">
-		<abnormalities>
-			<abnormality>4830</abnormality>
-			<abnormality>4831</abnormality>
-			<abnormality>4832</abnormality>
-			<abnormality>4833</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<balloon title_text="勇猛のポーション" body_text="{player_name} {time_left}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
 						<beep frequency="196" duration="500"/>
