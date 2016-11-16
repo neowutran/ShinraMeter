@@ -35,7 +35,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="5" trigger="MissingDuringFight" target="Party">
+	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>801500</abnormality>
 			<abnormality>801501</abnormality>

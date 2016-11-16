@@ -57,7 +57,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="900" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Party">
+	<abnormality ingame="true" remaining_seconds_before_trigger="240" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>CrystalBind</abnormality>
 			<abnormality>CCrystalBind</abnormality>
@@ -73,7 +73,36 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Party">
+	<abnormality ingame="true" remaining_seconds_before_trigger="240" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
+		<abnormalities>
+			<abnormality>CrystalBind</abnormality>
+			<abnormality>CCrystalBind</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>4031</abnormality>
+			<abnormality>4030</abnormality>
+			<abnormality>4020</abnormality>
+			<abnormality>4021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="196" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
 		<abnormalities>
 			<abnormality>4031</abnormality>
 			<abnormality>4030</abnormality>

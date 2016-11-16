@@ -165,17 +165,14 @@ namespace DamageMeter.Processing
                     if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player)) continue;
                     entityIdToCheck = player.Id;
                 }
-
-                if (!e.Key.NextChecks.ContainsKey(entityIdToCheck))
+                if(abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded)
                 {
-                    e.Key.NextChecks.Add(entityIdToCheck, time.AddSeconds(3));
-                }
-                else
-                {
-                    if (time < e.Key.NextChecks[entityIdToCheck]) { continue; }
-                    e.Key.NextChecks[entityIdToCheck] = time.AddSeconds(3);
+                    player = skillResult.TargetPlayer?.User ?? skillResult.SourcePlayer?.User;
+                    if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player) || meterUser.Id == player.Id) continue;
+                    entityIdToCheck = player.Id;
                 }
 
+             
 
                 TimeSpan? abnormalityTimeLeft = null;
                 var noAbnormalitiesMissing = false;
@@ -232,7 +229,16 @@ namespace DamageMeter.Processing
                 }
 
                 if (noAbnormalitiesMissing) continue;
-                abnormalityEvent.NextChecks[entityIdToCheck]+=TimeSpan.FromSeconds(abnormalityEvent.RewarnTimeoutSeconds);
+                if (!e.Key.NextChecks.ContainsKey(entityIdToCheck))
+                {
+                    e.Key.NextChecks.Add(entityIdToCheck, time.AddSeconds(abnormalityEvent.RewarnTimeoutSeconds));
+                }
+                else
+                {
+                    if (time < e.Key.NextChecks[entityIdToCheck]) { continue; }
+                    e.Key.NextChecks[entityIdToCheck] = time.AddSeconds(abnormalityEvent.RewarnTimeoutSeconds);
+                }
+
                 foreach (var a in e.Value)
                 {
                     if (a.GetType() != typeof(NotifyAction)) { continue; }
@@ -303,7 +309,13 @@ namespace DamageMeter.Processing
                     player = NetworkController.Instance.EntityTracker.GetOrNull(target) as UserEntity;
                     if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player)) continue;
                 }
-                foreach(var a in e.Value)
+                if (abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded)
+                {
+                    player = NetworkController.Instance.EntityTracker.GetOrNull(target) as UserEntity;
+                    if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player) || meterUser.Id == player.Id) continue;
+                }
+
+                foreach (var a in e.Value)
                 {
                     if(a.GetType() != typeof(NotifyAction)) { continue; }
                     var notifyAction = ((NotifyAction)a).Clone();

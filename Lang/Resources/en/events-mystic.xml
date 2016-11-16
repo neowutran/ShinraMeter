@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
-	<abnormality ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+	<abnormality ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
 			<abnormality>27120</abnormality>
 		</abnormalities>
@@ -15,7 +15,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	<abnormality ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>700330</abnormality>
 			<abnormality>700300</abnormality>
@@ -31,7 +31,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+	<abnormality ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
 			<abnormality>27160</abnormality>
 			<abnormality>28090</abnormality>
@@ -47,7 +47,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	<abnormality ingame="true"  rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>700600</abnormality>
 			<abnormality>700601</abnormality>

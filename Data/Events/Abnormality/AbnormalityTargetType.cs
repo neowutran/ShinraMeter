@@ -10,6 +10,7 @@ namespace Data.Events.Abnormality
     {
         Self = 0,
         Party = 1,
-        Boss = 2
+        Boss = 2,
+        PartySelfExcluded = 3
     }
 }
