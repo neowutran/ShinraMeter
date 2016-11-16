@@ -144,7 +144,7 @@ namespace DamageMeter.Processing
 
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
             if (meterUser == null || _lastBoss == null) return;
-            if (_lastBoss.Value != target) return;
+            if (_lastBossHP==0) return;
             var teraActive = TeraWindow.IsTeraActive();
 
             var time = DateTime.Now;
@@ -284,7 +284,7 @@ namespace DamageMeter.Processing
 
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
             if (meterUser == null || _lastBoss == null) return;
-            if (_lastBoss.Value != target) return;
+            if (_lastBossHP==0) return;
 
             var teraActive = TeraWindow.IsTeraActive();
 
@@ -323,10 +323,12 @@ namespace DamageMeter.Processing
             }
         }
         private static EntityId? _lastBoss;
+        private static long _lastBossHP;
         internal static void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
             _lastBoss = message.EntityId;
+            if (message.TotalHp != message.HpRemaining) _lastBossHP = (long) message.HpRemaining;
         }
 
         private static List<UserEntity> playerWithUnkownBuff = new List<UserEntity>();
@@ -335,6 +337,7 @@ namespace DamageMeter.Processing
         {
             NetworkController.Instance.AbnormalityTracker.Update(message);
             _lastBoss = null;
+            _lastBossHP = 0;
             foreach (var e in BasicTeraData.Instance.EventsData.Events.Keys)
             {
                 e.NextChecks=new Dictionary<EntityId, DateTime>();
@@ -348,6 +351,7 @@ namespace DamageMeter.Processing
         internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
             _lastBoss = null;
+            _lastBossHP = 0;
         }
 
         internal static void S_BEGIN_THROUGH_ARBITER_CONTRACT(S_BEGIN_THROUGH_ARBITER_CONTRACT message)
