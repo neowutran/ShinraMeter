@@ -29,6 +29,22 @@
 	</abnormality>
 	<abnormality ingame="true" trigger="Added" target="Boss">
 		<abnormalities>
+			<abnormality>701700</abnormality>
+			<abnormality>701701</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="110" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	<abnormality ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
 			<abnormality>60010</abnormality>
 		</abnormalities>
 		<actions>
