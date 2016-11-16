@@ -2,6 +2,7 @@
 <events>
 	<abnormality ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
+			<abnormality>805102</abnormality>
 			<abnormality>805101</abnormality>
 		</abnormalities>
 		<actions>
