@@ -541,7 +541,7 @@
     <value>Статус выполнения заданий: </value>
   </data>
   <data name="NoCrystalBind" xml:space="preserve">
-    <value>: отсутствует хранитель кристалла.</value>
+    <value>Отсутствует хранитель кристалла.</value>
   </data>
   <data name="NotifyCB" xml:space="preserve">
     <value>Оповещение о хранителях кристаллов</value>
@@ -580,5 +580,44 @@
   </data>
   <data name="SystemTray_ExcelCMADPSSeconds" xml:space="preserve">
     <value>Скользящее среднее в Excel расчитывать для X сек.</value>
+  </data>
+  <data name="events_common" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-common.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_archer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-archer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_berserker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-berserker.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_brawler" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-brawler.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_gunner" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-gunner.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_lancer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-lancer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_mystic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\ru\events-mystic.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_ninja" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-ninja.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_priest" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-priest.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_reaper" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-reaper.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_slayer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-slayer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_sorcerer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-sorcerer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="events_warrior" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-warrior.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

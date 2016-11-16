@@ -2,17 +2,17 @@
 <events>
 	<abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
+			<abnormality>401500</abnormality>
 			<abnormality>101200</abnormality>
 			<abnormality>101220</abnormality>
 			<abnormality>200300</abnormality>
 			<abnormality>200301</abnormality>
 			<abnormality>200302</abnormality>
 			<abnormality>10153140</abnormality>
-			<abnormality>401500</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="アーマーブレイク" body_text="アーマーブレイク" display_time="3000" />
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
 						<beep frequency="392" duration="500"/>

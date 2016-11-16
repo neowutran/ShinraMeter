@@ -234,11 +234,13 @@ namespace Data
                 Enum.TryParse(abnormality.Attribute("target").Value, true, out target);
                 Enum.TryParse(abnormality.Attribute("trigger").Value, true, out trigger);
                 var remainingSecondsBeforeTrigger = 0;
+                var rewarnTimeoutSeconds = 0;
                 if (trigger == AbnormalityTriggerType.MissingDuringFight)
                 {
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
+                    rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value??"0");
                 }
-                var abnormalityEvent = new AbnormalityEvent(ingame, ids, types, target, trigger, remainingSecondsBeforeTrigger);
+                var abnormalityEvent = new AbnormalityEvent(ingame, ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Actions.Action>());
                 foreach(var notify in abnormality.Element("actions").Elements("notify"))
                 {

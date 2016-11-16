@@ -166,14 +166,14 @@ namespace DamageMeter.Processing
                     entityIdToCheck = player.Id;
                 }
 
-                if (!e.Key.LastChecks.ContainsKey(entityIdToCheck))
+                if (!e.Key.NextChecks.ContainsKey(entityIdToCheck))
                 {
-                    e.Key.LastChecks.Add(entityIdToCheck, time);
+                    e.Key.NextChecks.Add(entityIdToCheck, time.AddSeconds(3));
                 }
                 else
                 {
-                    if (time < e.Key.LastChecks[entityIdToCheck].AddMilliseconds(3000)) { continue; }
-                    e.Key.LastChecks[entityIdToCheck] = time;
+                    if (time < e.Key.NextChecks[entityIdToCheck]) { continue; }
+                    e.Key.NextChecks[entityIdToCheck] = time.AddSeconds(3);
                 }
 
 
@@ -232,14 +232,24 @@ namespace DamageMeter.Processing
                 }
 
                 if (noAbnormalitiesMissing) continue;
-
+                abnormalityEvent.NextChecks[entityIdToCheck]+=TimeSpan.FromSeconds(abnormalityEvent.RewarnTimeoutSeconds);
                 foreach (var a in e.Value)
                 {
                     if (a.GetType() != typeof(NotifyAction)) { continue; }
                     var notifyAction = ((NotifyAction)a).Clone();
                     if (notifyAction.Balloon != null)
                     {
-                      
+                        if (abnormalityEvent.Ids.Count > 0)
+                        {
+                            var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids[0]).Name;
+                            notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", abName);
+                            notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abName);
+                        }
+                        else
+                        {
+                            notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", LP.NoCrystalBind);
+                            notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{abnormality_name}", LP.NoCrystalBind);
+                        }
                         notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{player_name}", player.Name);
                         notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{player_name}", player.Name);
                      
@@ -324,6 +334,11 @@ namespace DamageMeter.Processing
         internal static void SpawnMe(Tera.Game.Messages.SpawnMeServerMessage message)
         {
             NetworkController.Instance.AbnormalityTracker.Update(message);
+            _lastBoss = null;
+            foreach (var e in BasicTeraData.Instance.EventsData.Events.Keys)
+            {
+                e.NextChecks=new Dictionary<EntityId, DateTime>();
+            }
         }
 
         internal static void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)

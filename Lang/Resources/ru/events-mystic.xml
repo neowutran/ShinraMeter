@@ -22,7 +22,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="Aura" body_text="Activate the fucking mana aura" display_time="3000" />
+				<balloon title_text="Aura" body_text="Включи ауру на ману!" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
 						<beep frequency="220" duration="500"/>
@@ -58,7 +58,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="Aura" body_text="Activate the crit/swift aura" display_time="3000" />
+				<balloon title_text="Aura" body_text="Включи ауру на крит!" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
 						<beep frequency="440" duration="500"/>

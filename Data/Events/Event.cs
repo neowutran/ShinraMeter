@@ -9,11 +9,11 @@ namespace Data.Events
 {
     public abstract class Event
     {
-        public Dictionary<EntityId, DateTime> LastChecks { get; set; }
+        public Dictionary<EntityId, DateTime> NextChecks { get; set; }
         public bool InGame { get; set; }
         public Event(bool inGame)
         {
-            LastChecks = new Dictionary<EntityId, DateTime>();
+            NextChecks = new Dictionary<EntityId, DateTime>();
             InGame = inGame;
         }
     }

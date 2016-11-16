@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 	<common_afk>
 		<actions>
@@ -72,7 +72,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="900" trigger="MissingDuringFight" target="Party">
+	<abnormality ingame="true" remaining_seconds_before_trigger="900" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
 			<abnormality>CrystalBind</abnormality>
 			<abnormality>CCrystalBind</abnormality>
@@ -88,7 +88,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="10" trigger="MissingDuringFight" target="Party">
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
 			<abnormality>4031</abnormality>
 			<abnormality>4030</abnormality>

@@ -13,16 +13,18 @@ namespace Data.Events.Abnormality
 
       
         public int RemainingSecondBeforeTrigger { get; set; }
+        public int RewarnTimeoutSeconds { get; set; }
         public List<HotDot.Types> Types { get; set; }
         public AbnormalityTargetType Target { get; set; }
         public AbnormalityTriggerType Trigger { get; set; }
-        public AbnormalityEvent(bool inGame, List<int> ids, List<HotDot.Types> types, AbnormalityTargetType target, AbnormalityTriggerType trigger, int remainingSecondsBeforeTrigger): base(inGame)
+        public AbnormalityEvent(bool inGame, List<int> ids, List<HotDot.Types> types, AbnormalityTargetType target, AbnormalityTriggerType trigger, int remainingSecondsBeforeTrigger, int rewarnTimeoutSecounds): base(inGame)
         {
             Types = types;
             Ids = ids;
             Target = target;
             Trigger = trigger;
             RemainingSecondBeforeTrigger = remainingSecondsBeforeTrigger;
+            RewarnTimeoutSeconds = rewarnTimeoutSecounds;
         }
     }
 }

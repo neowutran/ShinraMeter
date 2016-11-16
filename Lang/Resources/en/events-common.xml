@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 	<common_afk>
 		<actions>
@@ -57,14 +57,14 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="900" trigger="MissingDuringFight" target="Party">
+	<abnormality ingame="true" remaining_seconds_before_trigger="900" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
 			<abnormality>CrystalBind</abnormality>
 			<abnormality>CCrystalBind</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="CristalBind missing" body_text="{player_name} {time_left}" display_time="3000" />
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
 						<beep frequency="440" duration="500"/>
@@ -73,7 +73,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality ingame="true" remaining_seconds_before_trigger="10" trigger="MissingDuringFight" target="Party">
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
 			<abnormality>4031</abnormality>
 			<abnormality>4030</abnormality>
@@ -82,7 +82,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="Everfull nostrum" body_text="{player_name} {time_left}" display_time="3000" />
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
 				<sound type="Beeps">
 					<beeps>
 						<beep frequency="196" duration="500"/>
