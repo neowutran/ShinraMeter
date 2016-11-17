@@ -23,7 +23,7 @@ Logo
 
 Thanks to Se7en-Hellas for the new Shinra logo =) 
 
-Se7en website: http://se7enhellas.wixsite.com/mylogogr 
+Se7en-Hellas website: http://se7enhellas.wixsite.com/mylogogr 
 
 Original Readme
 ================
