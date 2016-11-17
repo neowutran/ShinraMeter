@@ -35,7 +35,8 @@ namespace DamageMeter.Processing
             {
                 if(ev.Key is CommonAFKEvent)
                 {
-                    foreach(var action in ev.Value)
+                    if (!ev.Key.Active) continue;
+                    foreach (var action in ev.Value)
                     {
                         if(action is NotifyAction)
                         {
@@ -150,7 +151,7 @@ namespace DamageMeter.Processing
             var time = DateTime.Now;
             foreach (var e in BasicTeraData.Instance.EventsData.Events)
             {
- 
+                if (!e.Key.Active) continue;
                 EntityId entityIdToCheck = meterUser.Id;
                 UserEntity player = meterUser;
                 if (e.Key.GetType() != typeof(AbnormalityEvent)) { continue; }
@@ -296,6 +297,7 @@ namespace DamageMeter.Processing
 
             foreach (var e in BasicTeraData.Instance.EventsData.Events)
             {
+                if (!e.Key.Active) continue;
                 UserEntity player = meterUser;
                 if (e.Key.GetType() != typeof(AbnormalityEvent)){ continue; }
                 var abnormalityEvent = (AbnormalityEvent)e.Key;

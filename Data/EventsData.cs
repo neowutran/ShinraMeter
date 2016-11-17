@@ -151,7 +151,8 @@ namespace Data
             var commonAfk = root.Element("common_afk");
             if (commonAfk == null) { return; }
 
-            var abnormalityEvent = new CommonAFKEvent();
+            var active = bool.Parse(commonAfk.Attribute("active")?.Value ?? "True");
+            var abnormalityEvent = new CommonAFKEvent(active);
             events.Add(abnormalityEvent, new List<Actions.Action>());
             foreach (var notify in commonAfk.Element("actions").Elements("notify"))
             {
@@ -229,6 +230,7 @@ namespace Data
 
 
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
+                var active = bool.Parse(abnormality.Attribute("active")?.Value??"True");
                 AbnormalityTargetType target;
                 AbnormalityTriggerType trigger;
                 Enum.TryParse(abnormality.Attribute("target").Value, true, out target);
@@ -240,7 +242,7 @@ namespace Data
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                     rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value??"0");
                 }
-                var abnormalityEvent = new AbnormalityEvent(ingame, ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
+                var abnormalityEvent = new AbnormalityEvent(ingame, active, ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Actions.Action>());
                 foreach(var notify in abnormality.Element("actions").Elements("notify"))
                 {

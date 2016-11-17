@@ -8,7 +8,7 @@ namespace Data.Events
 {
     public class CommonAFKEvent : Event
     {
-        public CommonAFKEvent() : base(false)
+        public CommonAFKEvent(bool active) : base(false, active)
         {
         }
     }

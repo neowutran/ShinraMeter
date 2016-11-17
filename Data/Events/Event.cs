@@ -11,10 +11,12 @@ namespace Data.Events
     {
         public Dictionary<EntityId, DateTime> NextChecks { get; set; }
         public bool InGame { get; set; }
-        public Event(bool inGame)
+        public bool Active { get; set; }
+        public Event(bool inGame, bool active)
         {
             NextChecks = new Dictionary<EntityId, DateTime>();
             InGame = inGame;
+            Active = active;
         }
     }
 }
