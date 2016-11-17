@@ -608,7 +608,7 @@
     <value>Resources\ja\events-ninja.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="events_priest" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\ja\events-priest.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Resources\en\events-priest.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="events_reaper" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ja\events-reaper.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -623,6 +623,6 @@
     <value>Resources\ja\events-warrior.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="events_common" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\ja\events-common.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Resources\en\events-common.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>
