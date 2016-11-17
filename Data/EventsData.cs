@@ -148,10 +148,11 @@ namespace Data
         private void ParseCommonAFK(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
         {
             var root = xml.Root;
+            var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
             var commonAfk = root.Element("common_afk");
             if (commonAfk == null) { return; }
 
-            var active = bool.Parse(commonAfk.Attribute("active")?.Value ?? "True");
+            var active = bool.Parse(commonAfk.Attribute("active")?.Value ?? default_active);
             var abnormalityEvent = new CommonAFKEvent(active);
             events.Add(abnormalityEvent, new List<Actions.Action>());
             foreach (var notify in commonAfk.Element("actions").Elements("notify"))
@@ -205,6 +206,7 @@ namespace Data
         private void ParseAbnormalities(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
         {
             var root = xml.Root;
+            var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
             foreach (var abnormality in root.Elements("abnormality"))
             {
                 List<int> ids = new List<int>();
@@ -230,7 +232,7 @@ namespace Data
 
 
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
-                var active = bool.Parse(abnormality.Attribute("active")?.Value??"True");
+                var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 AbnormalityTargetType target;
                 AbnormalityTriggerType trigger;
                 Enum.TryParse(abnormality.Attribute("target").Value, true, out target);
