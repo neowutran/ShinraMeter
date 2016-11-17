@@ -29,11 +29,12 @@
   </abnormality>
   <abnormality ingame="true" trigger="Added" target="Boss">
     <abnormalities>
-      <abnormality>60010</abnormality>
+      <abnormality>701700</abnormality>
+      <abnormality>701701</abnormality>
     </abnormalities>
     <actions>
       <notify>
-        <balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+        <balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
         <sound type="Beeps">
           <beeps>
             <beep frequency="110" duration="500"/>
@@ -42,16 +43,16 @@
       </notify>
     </actions>
   </abnormality>
-  <abnormality ingame="true" trigger="Removed" target="Boss">
+  <abnormality ingame="true" trigger="Added" target="Boss">
     <abnormalities>
-      <abnormality>8888888</abnormality>
+      <abnormality>60010</abnormality>
     </abnormalities>
     <actions>
       <notify>
-        <balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="3000" />
+        <balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
         <sound type="Beeps">
           <beeps>
-            <beep frequency="185" duration="500"/>
+            <beep frequency="110" duration="500"/>
           </beeps>
         </sound>
       </notify>
@@ -88,7 +89,25 @@
       </notify>
     </actions>
   </abnormality>
-  <abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Party">
+  <abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="Self">
+    <abnormalities>
+      <abnormality>4031</abnormality>
+      <abnormality>4030</abnormality>
+      <abnormality>4020</abnormality>
+      <abnormality>4021</abnormality>
+    </abnormalities>
+    <actions>
+      <notify>
+        <balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+        <sound type="Beeps">
+          <beeps>
+            <beep frequency="196" duration="500"/>
+          </beeps>
+        </sound>
+      </notify>
+    </actions>
+  </abnormality>
+  <abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
     <abnormalities>
       <abnormality>4031</abnormality>
       <abnormality>4030</abnormality>
