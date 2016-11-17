@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
-  <abnormality ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+  <abnormality active="false" ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
     <abnormalities>
       <abnormality>27120</abnormality>
     </abnormalities>
@@ -31,7 +31,7 @@
       </notify>
     </actions>
   </abnormality>
-  <abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+  <abnormality active="false" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
     <abnormalities>
       <abnormality>27160</abnormality>
       <abnormality>28090</abnormality>

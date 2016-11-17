@@ -15,7 +15,7 @@
       </notify>
     </actions>
   </abnormality>
-  <abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+  <abnormality active="false" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
     <abnormalities>
       <abnormality>101200</abnormality>
       <abnormality>101220</abnormality>
@@ -35,7 +35,7 @@
       </notify>
     </actions>
   </abnormality>
-  <abnormality ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+  <abnormality active="false" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
     <abnormalities>
       <abnormality>101300</abnormality>
     </abnormalities>
