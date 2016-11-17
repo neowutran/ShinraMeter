@@ -22,15 +22,10 @@ namespace Data
         private FileStream _filestreamCommon;
         private FileStream _filestreamClass;
 
-        private Dictionary<Event, List<Actions.Action>> EventsCommon = new Dictionary<Event, List<Actions.Action>>();
-        private Dictionary<Event, List<Actions.Action>> EventsClass = new Dictionary<Event, List<Actions.Action>>();
-        public Dictionary<Event, List<Actions.Action>> Events
-        {
-            get
-            {
-                return EventsCommon.Union(EventsClass).ToDictionary(k => k.Key, v => v.Value);
-            }
-        }
+        public Dictionary<Event, List<Actions.Action>> EventsCommon { get; private set; }
+        public Dictionary<Event, List<Actions.Action>> EventsClass { get; private set; }
+        public Dictionary<Event, List<Actions.Action>> Events { get; private set; }
+      
 
         public void Load(PlayerClass playerClass)
         {
@@ -65,7 +60,16 @@ namespace Data
                 return;
             }
             EventsClass = new Dictionary<Event, List<Actions.Action>>();
+            Events = new Dictionary<Event, List<Actions.Action>>();
             ParseAbnormalities(EventsClass, xml);
+            foreach(var e in EventsCommon)
+            {
+                Events.Add(e.Key, e.Value);
+            }
+            foreach(var e in EventsClass)
+            {
+                Events.Add(e.Key, e.Value);
+            }
         }
 
         BasicTeraData _basicData;
@@ -119,7 +123,8 @@ namespace Data
                 BasicTeraData.LogError(ex.Message, true, true);
                 return;
             }
-
+            Events = new Dictionary<Event, List<Actions.Action>>();
+            EventsCommon = new Dictionary<Event, List<Actions.Action>>();
             ParseAbnormalities(EventsCommon, xml);
             ParseCommonAFK(EventsCommon, xml);
         }
