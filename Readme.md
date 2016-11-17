@@ -16,6 +16,8 @@ Projects linked to the ShinraMeter:
 - Shinra launcher, a program to launch the shinraMeter automatically when Tera is starting:
 https://bitbucket.org/Vysse/shinra-launcher/wiki/Home
 
+Thanks to Se7en for the new Shinra logo =) 
+
 Original Readme
 ================
 
