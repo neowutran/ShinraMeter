@@ -145,7 +145,7 @@ namespace DamageMeter.Processing
 
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
             if (meterUser == null || _lastBoss == null) return;
-            if (_lastBossHP==0) return;
+            if (_lastBossHP==0 || target != _lastBoss.Value) return;
             var teraActive = TeraWindow.IsTeraActive();
 
             var time = DateTime.Now;

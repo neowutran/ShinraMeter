@@ -1,53 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
-  <abnormality ingame="true" trigger="Removed" target="Boss">
-    <abnormalities>
-      <abnormality>8888888</abnormality>
-    </abnormalities>
-    <actions>
-      <notify>
-        <balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="3000" />
-        <sound type="Beeps">
-          <beeps>
-            <beep frequency="185" duration="500"/>
-          </beeps>
-        </sound>
-      </notify>
-    </actions>
-  </abnormality>
-  <abnormality active="false" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
-    <abnormalities>
-      <abnormality>200300</abnormality>
-      <abnormality>200301</abnormality>
-      <abnormality>200302</abnormality>
-    </abnormalities>
-    <actions>
-      <notify>
-        <balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-        <sound type="Beeps">
-          <beeps>
-            <beep frequency="392" duration="500"/>
-          </beeps>
-        </sound>
-      </notify>
-    </actions>
-  </abnormality>
-  <abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Self">
-    <abnormalities>
-      <abnormality>4830</abnormality>
-      <abnormality>4831</abnormality>
-      <abnormality>4832</abnormality>
-      <abnormality>4833</abnormality>
-    </abnormalities>
-    <actions>
-      <notify>
-        <balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-        <sound type="Beeps">
-          <beeps>
-            <beep frequency="196" duration="500"/>
-          </beeps>
-        </sound>
-      </notify>
-    </actions>
-  </abnormality>
+
+	<!-- The boss is not enraged anymore  -->
+	<abnormality ingame="true" trigger="Removed" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="185" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Endurance debuff -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>200300</abnormality>
+			<abnormality>200301</abnormality>
+			<abnormality>200302</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<sound type="Beeps">
+					<beeps>
+						<beep frequency="392" duration="500"/>
+					</beeps>
+				</sound>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Bravery pot -->
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+		  <abnormality>4830</abnormality>
+		  <abnormality>4831</abnormality>
+		  <abnormality>4832</abnormality>
+		  <abnormality>4833</abnormality>
+		</abnormalities>
+		<actions>
+		  <notify>
+			<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+			<sound type="Beeps">
+			  <beeps>
+				<beep frequency="196" duration="500"/>
+			  </beeps>
+			</sound>
+		  </notify>
+		</actions>
+	</abnormality>
+	
 </events>

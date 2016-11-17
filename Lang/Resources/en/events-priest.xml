@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
-	<abnormality active="false" ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+
+	<!-- Blessing of Shakan -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
 			<abnormality>805102</abnormality>
 			<abnormality>805101</abnormality>
@@ -16,7 +18,9 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality active="false" ingame="true" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+	
+	<!-- Blessing of Balder --> 
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
 			<abnormality>805600</abnormality>
 			<abnormality>805601</abnormality>
@@ -35,7 +39,9 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality active="false" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	
+	<!-- Energy Stars -->
+	<abnormality active="false" ingame="true"  rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>801500</abnormality>
 			<abnormality>801501</abnormality>
@@ -53,7 +59,9 @@
 			</notify>
 		</actions>
 	</abnormality>
-	<abnormality active="false" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+	
+	<!-- Triple Nemesis -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5"  remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
 			<abnormality>28090</abnormality>
 		</abnormalities>

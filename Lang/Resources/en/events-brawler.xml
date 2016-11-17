@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
+
+	<!-- The boss is not enraged anymore  -->
 	<abnormality ingame="true" trigger="Removed" target="Boss">
 		<abnormalities>
 			<abnormality>8888888</abnormality>
@@ -15,7 +17,9 @@
 			</notify>
 		</actions>
 	</abnormality>
-		<abnormality active="false" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+	
+	<!-- Endurance debuff  -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
 			<abnormality>10153140</abnormality>
 			<abnormality>200300</abnormality>
@@ -33,4 +37,5 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
 </events>

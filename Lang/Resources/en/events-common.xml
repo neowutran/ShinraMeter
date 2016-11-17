@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
+
+	<!-- Notification when something happen & you are not on the Tera windows -->
 	<common_afk>
 		<actions>
 				<notify>
@@ -12,6 +14,8 @@
 				</notify>
 			</actions>
 	</common_afk>
+	
+	<!-- The boss became enraged -->
 	<abnormality ingame="true" trigger="Added" target="Boss">
 		<abnormalities>
 			<abnormality>8888888</abnormality>
@@ -27,6 +31,8 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	<!-- Mystic contagion -->
 	<abnormality ingame="true" trigger="Added" target="Boss">
 		<abnormalities>
 			<abnormality>701700</abnormality>
@@ -43,6 +49,8 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	<!-- Hurricane -->
 	<abnormality ingame="true" trigger="Added" target="Boss">
 		<abnormalities>
 			<abnormality>60010</abnormality>
@@ -58,6 +66,8 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	<!-- Joy of party is at 100% (everyone is in the dungeons) -->
 	<abnormality ingame="false" trigger="Added" target="Self">
 		<abnormalities>
 			<abnormality>999001021</abnormality>
@@ -73,6 +83,8 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	<!-- Crystal bind check for yourself -->
 	<abnormality ingame="true" remaining_seconds_before_trigger="240" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>CrystalBind</abnormality>
@@ -89,6 +101,8 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	<!-- Crystal bind check for your party members -->
 	<abnormality ingame="true" remaining_seconds_before_trigger="240" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
 		<abnormalities>
 			<abnormality>CrystalBind</abnormality>
@@ -100,6 +114,8 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	<!-- Everful Nostrum for yourself -->
 	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>4031</abnormality>
@@ -118,6 +134,8 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	<!-- Everful Nostrum for your party members -->
 	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
 		<abnormalities>
 			<abnormality>4031</abnormality>
