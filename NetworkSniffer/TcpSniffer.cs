@@ -96,8 +96,11 @@ namespace NetworkSniffer
                 {
                     isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
                     if (!isInterestingConnection) return;
+                    byte[] payload;
+                    try
+                    { payload = tcpPacket.PayloadData; } catch { return;}
                     //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
-                    connection.HandleTcpReceived(tcpPacket.SequenceNumber, tcpPacket.PayloadData);
+                    connection.HandleTcpReceived(tcpPacket.SequenceNumber, payload);
                     //if (!string.IsNullOrEmpty(TcpLogFile))
                     //    File.AppendAllText(TcpLogFile,
                     //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
