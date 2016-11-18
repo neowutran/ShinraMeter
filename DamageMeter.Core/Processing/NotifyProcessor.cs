@@ -157,7 +157,7 @@ namespace DamageMeter.Processing
                 UserEntity player = meterUser;
                 if (e.Key.GetType() != typeof(AbnormalityEvent)) continue;
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
-                if (!abnormalityEvent.InGame && teraActive) continue;
+                if (abnormalityEvent.InGame != teraActive) continue;
                 if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) continue; 
                 if (abnormalityEvent.Target == AbnormalityTargetType.Self && ( meterUser.Id != source)) continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss) entityIdToCheck = _lastBoss.Value;
@@ -303,7 +303,7 @@ namespace DamageMeter.Processing
                 if (e.Key.GetType() != typeof(AbnormalityEvent)){ continue; }
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
                 if(!abnormalityEvent.Ids.Contains(abnormalityId)) { continue; }
-                if (!abnormalityEvent.InGame && teraActive) { continue; }
+                if (abnormalityEvent.InGame != teraActive) { continue; }
                 if (abnormalityEvent.Trigger != trigger) { continue; }
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target)  continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) continue;
