@@ -146,7 +146,7 @@ namespace DamageMeter.Processing
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
             if (meterUser == null || _lastBoss == null) return;
             if (_lastBossHP==0 || target != _lastBoss.Value) return;
-            if (NetworkController.Instance.AbnormalityStorage.Dead(NetworkController.Instance.PlayerTracker.Me())) return;
+            if (NetworkController.Instance.AbnormalityStorage.DeadOrJustResurrected(NetworkController.Instance.PlayerTracker.Me())) return;
             var teraActive = TeraWindow.IsTeraActive();
 
             var time = DateTime.Now;
@@ -165,6 +165,7 @@ namespace DamageMeter.Processing
                 {
                     player = skillResult.SourcePlayer?.User;
                     if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player)) continue;
+                    if (NetworkController.Instance.AbnormalityStorage.DeadOrJustResurrected(skillResult.SourcePlayer)) return;
                     entityIdToCheck = player.Id;
                 }
                 if(abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded)
