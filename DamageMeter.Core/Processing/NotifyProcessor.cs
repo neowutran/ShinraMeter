@@ -146,6 +146,7 @@ namespace DamageMeter.Processing
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
             if (meterUser == null || _lastBoss == null) return;
             if (_lastBossHP==0 || target != _lastBoss.Value) return;
+            if (NetworkController.Instance.AbnormalityStorage.Dead(NetworkController.Instance.PlayerTracker.Me())) return;
             var teraActive = TeraWindow.IsTeraActive();
 
             var time = DateTime.Now;
@@ -154,12 +155,12 @@ namespace DamageMeter.Processing
                 if (!e.Key.Active) continue;
                 EntityId entityIdToCheck = meterUser.Id;
                 UserEntity player = meterUser;
-                if (e.Key.GetType() != typeof(AbnormalityEvent)) { continue; }
+                if (e.Key.GetType() != typeof(AbnormalityEvent)) continue;
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
-                if (!abnormalityEvent.InGame && teraActive) { continue; }
-                if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) { continue; }
-                if (abnormalityEvent.Target == AbnormalityTargetType.Self && ( meterUser.Id != source)) { continue; }
-                if (abnormalityEvent.Target == AbnormalityTargetType.Boss){ entityIdToCheck = _lastBoss.Value; }
+                if (!abnormalityEvent.InGame && teraActive) continue;
+                if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) continue; 
+                if (abnormalityEvent.Target == AbnormalityTargetType.Self && ( meterUser.Id != source)) continue;
+                if (abnormalityEvent.Target == AbnormalityTargetType.Boss) entityIdToCheck = _lastBoss.Value;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Party)
                 {
                     player = skillResult.SourcePlayer?.User;
@@ -304,8 +305,8 @@ namespace DamageMeter.Processing
                 if(!abnormalityEvent.Ids.Contains(abnormalityId)) { continue; }
                 if (!abnormalityEvent.InGame && teraActive) { continue; }
                 if (abnormalityEvent.Trigger != trigger) { continue; }
-                if(abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target) { continue; }
-                if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) { continue; }
+                if (abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target)  continue;
+                if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.Party)
                 {
                     player = NetworkController.Instance.EntityTracker.GetOrNull(target) as UserEntity;

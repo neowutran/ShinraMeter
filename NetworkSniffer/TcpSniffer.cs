@@ -14,7 +14,7 @@ namespace NetworkSniffer
         private readonly ConcurrentDictionary<ConnectionId, TcpConnection> _connections =
             new ConcurrentDictionary<ConnectionId, TcpConnection>();
 
-        private object _lock=new object();
+        private object _lock = new object();
         private string SnifferType;
         //internal struct QPacket
         //{
@@ -53,7 +53,7 @@ namespace NetworkSniffer
         {
             TcpConnection temp;
             if (_connections.ContainsKey(connection.ConnectionId))
-                             _connections.TryRemove(connection.ConnectionId, out temp);
+                _connections.TryRemove(connection.ConnectionId, out temp);
         }
 
         //private void ParsePacketsLoop()
@@ -69,47 +69,52 @@ namespace NetworkSniffer
 
         private void Receive(IPv4Packet ipData)
         {
-            lock (_lock)
+            PacketDotNet.TcpPacket tcpPacket;
+            try 
             {
-                PacketDotNet.TcpPacket tcpPacket;
-                try { tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket; }
-                catch {BasicTeraData.LogError("Bad ip packet",false,true);return; }
-                
-                if (tcpPacket==null||tcpPacket.DataOffset*4>ipData.PayloadLength) return;
-                var isFirstPacket = tcpPacket.Syn;
-                var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress,
-                    tcpPacket.DestinationPort);
+                tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket;
+            }
+            catch
+            {
+                BasicTeraData.LogError("Bad ip packet", false, true);
+                return;
+            }
+
+            if (tcpPacket == null || tcpPacket.DataOffset*4 > ipData.PayloadLength) return;
+            var isFirstPacket = tcpPacket.Syn;
+            var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress,
+                tcpPacket.DestinationPort);
 
 
-                TcpConnection connection;
-                bool isInterestingConnection;
-                if (isFirstPacket)
-                {
-                    connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber, RemoveConnection, SnifferType);
-                    OnNewConnection(connection);
-                    isInterestingConnection = connection.HasSubscribers;
-                    if (!isInterestingConnection) return;
-                    _connections[connectionId] = connection;
-                    Debug.Assert(tcpPacket.PayloadData.Length == 0);
-                }
-                else
-                {
-                    isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
-                    if (!isInterestingConnection) return;
-                    byte[] payload;
-                    try
-                    { payload = tcpPacket.PayloadData; } catch { return;}
-                    //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
+            TcpConnection connection;
+            bool isInterestingConnection;
+            if (isFirstPacket)
+            {
+                connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber, RemoveConnection, SnifferType);
+                OnNewConnection(connection);
+                isInterestingConnection = connection.HasSubscribers;
+                if (!isInterestingConnection) return;
+                _connections[connectionId] = connection;
+                Debug.Assert(tcpPacket.PayloadData.Length == 0);
+            }
+            else
+            {
+                isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
+                if (!isInterestingConnection) return;
+                byte[] payload;
+                try { payload = tcpPacket.PayloadData; } catch { return; }
+                //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
+                lock (_lock)
                     connection.HandleTcpReceived(tcpPacket.SequenceNumber, payload);
-                    //if (!string.IsNullOrEmpty(TcpLogFile))
-                    //    File.AppendAllText(TcpLogFile,
-                    //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
-                    //            connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived,
-                    //            connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber),
-                    //            tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber,
-                    //            connection.BufferedPacketDescription));
-                }
+                //if (!string.IsNullOrEmpty(TcpLogFile))
+                //    File.AppendAllText(TcpLogFile,
+                //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
+                //            connection.CurrentSequenceNumber, tcpPacket.SequenceNumber, connection.BytesReceived,
+                //            connection.SequenceNumberToBytesReceived(tcpPacket.SequenceNumber),
+                //            tcpPacket.Payload.Count, tcpPacket.AcknowledgementNumber,
+                //            connection.BufferedPacketDescription));
             }
         }
     }
+
 }
