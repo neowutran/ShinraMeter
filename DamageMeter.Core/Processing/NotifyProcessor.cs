@@ -246,6 +246,26 @@ namespace DamageMeter.Processing
                 {
                     if (a.GetType() != typeof(NotifyAction)) { continue; }
                     var notifyAction = ((NotifyAction)a).Clone();
+                    if (notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
+                    {
+                        var textToSpeech = (TextToSpeech)notifyAction.Sound;
+                        if (player != null)
+                        {
+                            textToSpeech.Text = textToSpeech.Text.Replace("{player_name}", player.Name);
+                        }
+
+                        if (abnormalityEvent.Ids.Count > 0)
+                        {
+                            var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids[0]).Name;
+                            textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", abName);
+                        }
+                        else
+                        {
+                            textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", LP.NoCrystalBind);
+                        }
+
+                    }
+
                     if (notifyAction.Balloon != null)
                     {
                         if (abnormalityEvent.Ids.Count > 0)
@@ -333,6 +353,15 @@ namespace DamageMeter.Processing
                             notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{player_name}", player.Name);
                         }
                         notifyAction.Balloon.TitleText=  notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abnormality.Name);
+                    }
+                    if(notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
+                    {
+                        var textToSpeech = (TextToSpeech)notifyAction.Sound;
+                        if (player != null)
+                        {
+                            textToSpeech.Text = textToSpeech.Text.Replace("{player_name}", player.Name);
+                        }
+                        textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", abnormality.Name);
                     }
                     NetworkController.Instance.FlashMessage = notifyAction;
                 }

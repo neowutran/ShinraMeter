@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Actions.Notify.SoundElements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,11 @@ namespace Data.Actions.Notify
     public class NotifyAction : Action
     {
 
-        public Sound Sound { get; set; }
+        public SoundInterface Sound { get; set; }
         public Balloon Balloon { get; set; }
 
-        public NotifyAction(Sound sound, Balloon balloon)
+      
+        public NotifyAction(SoundInterface sound, Balloon balloon)
         {
             Sound = sound;
             Balloon = balloon;

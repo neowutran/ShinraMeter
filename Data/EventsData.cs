@@ -14,6 +14,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Lang;
 using Tera.Game;
+using System.Speech.Synthesis;
 
 namespace Data
 {
@@ -158,12 +159,17 @@ namespace Data
             if (commonAfk == null) { return; }
 
             var active = bool.Parse(commonAfk.Attribute("active")?.Value ?? default_active);
-            var abnormalityEvent = new CommonAFKEvent(active);
-            events.Add(abnormalityEvent, new List<Actions.Action>());
-            foreach (var notify in commonAfk.Element("actions").Elements("notify"))
+            var ev = new CommonAFKEvent(active);
+            events.Add(ev, new List<Actions.Action>());
+            ParseActions(commonAfk, events, ev);
+        }
+
+
+        private void ParseActions(XElement root, Dictionary<Event, List<Actions.Action>> events, Event ev)
+        {
+            foreach (var notify in root.Element("actions").Elements("notify"))
             {
                 Balloon ballonData = null;
-                Sound soundData = null;
                 var balloon = notify.Element("balloon");
                 if (balloon != null)
                 {
@@ -172,40 +178,49 @@ namespace Data
                     var displayDuration = int.Parse(balloon.Attribute("display_time").Value);
                     ballonData = new Balloon(titleText, bodyText, displayDuration);
                 }
-                var sound = notify.Element("sound");
-                if (sound != null)
+                
+                SoundInterface soundInterface = null;
+                var music = notify.Element("music");
+                var beeps = notify.Element("beeps");
+                var textToSpeech = notify.Element("text_to_speech");
+                if ((music != null && beeps != null) || (music != null && textToSpeech != null) || (textToSpeech != null && beeps != null))
                 {
-                    Music musicData = null;
-                    List<Beep> beepsData = null;
-                    var music = sound.Element("music");
-                    if (music != null)
+                    throw new Exception("Only 1 type of sound allowed by notifyAction");
+                }
+                if (music != null)
+                {
+                    var musicFile = music.Attribute("file").Value;
+                    var volume = float.Parse(music.Attribute("volume").Value);
+                    var duration = int.Parse(music.Attribute("duration").Value);
+                    soundInterface = new Music(musicFile, volume, duration);
+                }
+                if (beeps != null)
+                {
+                    var beepsList = new List<Beep>();
+                    foreach (var beep in beeps.Elements())
                     {
-                        var musicFile = music.Attribute("file").Value;
-                        var volume = float.Parse(music.Attribute("volume").Value);
-                        var duration = int.Parse(music.Attribute("duration").Value);
-                        musicData = new Music(musicFile, volume, duration);
+                        var frequency = int.Parse(beep.Attribute("frequency").Value);
+                        var duration = int.Parse(beep.Attribute("duration").Value);
+                        beepsList.Add(new Beep(frequency, duration));
                     }
-                    var beeps = sound.Element("beeps");
-                    if (beeps != null)
-                    {
-                        beepsData = new List<Beep>();
-                        foreach (var beep in beeps.Elements())
-                        {
-                            var frequency = int.Parse(beep.Attribute("frequency").Value);
-                            var duration = int.Parse(beep.Attribute("duration").Value);
-                            beepsData.Add(new Beep(frequency, duration));
-                        }
-                    }
-
-                    SoundType soundType;
-                    Enum.TryParse(sound.Attribute("type").Value, true, out soundType);
-                    soundData = new Sound(beepsData, musicData, soundType);
+                    soundInterface = new Beeps(beepsList);
                 }
 
-                var notifyAction = new NotifyAction(soundData, ballonData);
-                events[abnormalityEvent].Add(notifyAction);
+                if (textToSpeech != null)
+                {
+                    var text = textToSpeech.Attribute("text").Value;
+                    var voiceGender = (VoiceGender)Enum.Parse(typeof(VoiceGender), textToSpeech.Attribute("voice_gender")?.Value ?? "Female", true);
+                    var voiceAge = (VoiceAge)Enum.Parse(typeof(VoiceAge), textToSpeech.Attribute("voice_age")?.Value ?? "Adult", true);
+                    var culture = textToSpeech.Attribute("culture")?.Value ?? "en-US";
+                    var voicePosition = int.Parse(textToSpeech.Attribute("voice_position")?.Value ?? "0");
+                    var volume = int.Parse(textToSpeech.Attribute("volume")?.Value ?? "30");
+                    var rate = int.Parse(textToSpeech.Attribute("rate")?.Value ?? "0");
+                    soundInterface = new TextToSpeech(text, voiceGender, voiceAge, voicePosition, culture, volume, rate);
+                }
+                
+                var notifyAction = new NotifyAction(soundInterface, ballonData);
+                events[ev].Add(notifyAction);
             }
-
         }
 
         private void ParseAbnormalities(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
@@ -251,50 +266,7 @@ namespace Data
                 }
                 var abnormalityEvent = new AbnormalityEvent(ingame, active, ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Actions.Action>());
-                foreach(var notify in abnormality.Element("actions").Elements("notify"))
-                {
-                    Balloon ballonData = null;
-                    Sound soundData = null;
-                    var balloon = notify.Element("balloon");
-                    if (balloon != null) {
-                        var titleText = balloon.Attribute("title_text").Value;
-                        var bodyText = balloon.Attribute("body_text").Value;
-                        var displayDuration = int.Parse(balloon.Attribute("display_time").Value);
-                        ballonData = new Balloon(titleText, bodyText, displayDuration);
-                    }
-                    var sound = notify.Element("sound");
-                    if(sound != null)
-                    {
-                        Music musicData = null;
-                        List<Beep> beepsData = null;
-                        var music = sound.Element("music");
-                        if(music != null)
-                        {
-                            var musicFile = music.Attribute("file").Value;
-                            var volume = float.Parse(music.Attribute("volume").Value);
-                            var duration = int.Parse(music.Attribute("duration").Value);
-                            musicData = new Music(musicFile, volume, duration);
-                        }
-                        var beeps = sound.Element("beeps");
-                        if(beeps != null)
-                        {
-                            beepsData = new List<Beep>();
-                            foreach(var beep in beeps.Elements())
-                            {
-                                var frequency = int.Parse(beep.Attribute("frequency").Value);
-                                var duration = int.Parse(beep.Attribute("duration").Value);
-                                beepsData.Add(new Beep(frequency, duration));
-                            }
-                        }
-
-                        SoundType soundType;
-                        Enum.TryParse(sound.Attribute("type").Value, true, out soundType);
-                        soundData = new Sound(beepsData, musicData, soundType);
-                    }
-
-                    var notifyAction = new NotifyAction(soundData, ballonData);
-                    events[abnormalityEvent].Add(notifyAction);
-                }
+                ParseActions(abnormality, events, abnormalityEvent);
             }
         }
     }

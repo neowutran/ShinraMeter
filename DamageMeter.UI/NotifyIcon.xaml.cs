@@ -19,6 +19,7 @@ using System.Threading;
 using Data.Actions.Notify;
 using System.Collections.Generic;
 using Data.Actions.Notify.SoundElements;
+using System.Windows.Interop;
 
 namespace DamageMeter.UI
 {
@@ -78,14 +79,7 @@ namespace DamageMeter.UI
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
         }
 
-        private static void PlayBeeps(List<Beep> beeps)
-        {
-            foreach(var beep in beeps)
-            {
-                Console.Beep(beep.Frequency, beep.Duration);
-            }
-        }
-        
+     
 
         public void ShowBallon(NotifyAction flash)
         {
@@ -99,46 +93,7 @@ namespace DamageMeter.UI
                 Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, flash.Balloon.DisplayTime);
             }
 
-            if(flash.Sound == null) { return; }
-            if(flash.Sound.SoundType == SoundType.Beeps)
-            {
-                PlayBeeps(flash.Sound.Beeps);
-                return;
-            }
-
-            var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", flash.Sound.Music.File);
-            try
-            {
-                var outputStream = new MediaFoundationReader(file);
-                var volumeStream = new WaveChannel32(outputStream);
-                volumeStream.Volume = flash.Sound.Music.Volume;
-                //Create WaveOutEvent since it works in Background and UI Threads
-                var player = new WaveOutEvent();
-                //Init Player with Configured Volume Stream
-                player.Init(volumeStream);
-                player.Play();
-
-                var timer = new Timer((obj) =>
-                {
-                    player.Stop();
-                    player.Dispose();
-                    volumeStream.Dispose();
-                    outputStream.Dispose();
-                    outputStream = null;
-                    player = null;
-                    volumeStream = null;
-                }, null, flash.Sound.Music.Duration, Timeout.Infinite);
-            }
-            catch (Exception e)
-            {
-                // Get stack trace for the exception with source file information
-                var st = new StackTrace(e, true);
-                // Get the top stack frame
-                var frame = st.GetFrame(0);
-                // Get the line number from the stack frame
-                var line = frame.GetFileLineNumber();
-                BasicTeraData.LogError("Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file + Environment.NewLine + "line:" + line, false, true);
-            }
+            flash.Sound?.Play();
             
         }
 

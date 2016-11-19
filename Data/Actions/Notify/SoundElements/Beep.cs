@@ -15,5 +15,7 @@ namespace Data.Actions.Notify.SoundElements
             Frequency = frequency;
             Duration = duration;
         }
+
+   
     }
 }

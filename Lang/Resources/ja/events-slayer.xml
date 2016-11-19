@@ -12,11 +12,9 @@
 		<actions>
 		  <notify>
 			<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-			<sound type="Beeps">
 			  <beeps>
 				<beep frequency="196" duration="500"/>
 			  </beeps>
-			</sound>
 		  </notify>
 		</actions>
 	</abnormality>

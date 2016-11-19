@@ -9,11 +9,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="185" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="185" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -29,11 +27,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="392" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="392" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -48,12 +44,10 @@
 		</abnormalities>
 		<actions>
 		  <notify>
-			<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-			<sound type="Beeps">
-			  <beeps>
-				<beep frequency="196" duration="500"/>
-			  </beeps>
-			</sound>
+		  <balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+		  <beeps>
+			<beep frequency="196" duration="500"/>
+		  </beeps>
 		  </notify>
 		</actions>
 	</abnormality>

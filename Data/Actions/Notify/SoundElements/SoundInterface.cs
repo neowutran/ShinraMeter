@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Actions.Notify
+namespace Data.Actions.Notify.SoundElements
 {
-    public enum SoundType
+    public interface SoundInterface
     {
-        Music = 0,
-        Beeps = 1
+        void Play();
     }
 }

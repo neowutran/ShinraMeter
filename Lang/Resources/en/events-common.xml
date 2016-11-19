@@ -6,11 +6,9 @@
 		<actions>
 				<notify>
 					<balloon title_text="{afk_title}" body_text="{afk_body}" display_time="3000" />
-					<sound type="Beeps">
-						<beeps>
-							<beep frequency="440" duration="500"/>
-						</beeps>
-					</sound>
+					<beeps>
+						<beep frequency="440" duration="500"/>
+					</beeps>
 				</notify>
 			</actions>
 	</common_afk>
@@ -23,11 +21,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="185" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="185" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -41,11 +37,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="110" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="110" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -58,11 +52,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="110" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="110" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -75,11 +67,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="440" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="440" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -93,11 +83,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="440" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="440" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -116,7 +104,7 @@
 	</abnormality>
 	
 	<!-- Everful Nostrum for yourself -->
-	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="Self">
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="3" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>4031</abnormality>
 			<abnormality>4030</abnormality>
@@ -126,11 +114,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="196" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -146,11 +132,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<sound type="Beeps">
-					<beeps>
-						<beep frequency="196" duration="500"/>
-					</beeps>
-				</sound>
+				<beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
