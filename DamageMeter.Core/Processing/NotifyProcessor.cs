@@ -172,6 +172,7 @@ namespace DamageMeter.Processing
                 {
                     player = skillResult.SourcePlayer?.User;
                     if (player == null || !NetworkController.Instance.PlayerTracker.PartyList().Contains(player) || meterUser.Id == player.Id) continue;
+                    if (NetworkController.Instance.AbnormalityStorage.DeadOrJustResurrected(skillResult.SourcePlayer)) return;
                     entityIdToCheck = player.Id;
                 }
 

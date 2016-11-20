@@ -88,7 +88,7 @@ namespace NetworkSniffer
                                        + " VFree:" + x.GetPropertyValue("FreeVirtualMemory")
                             ).FirstOrDefault() ?? "unknown";
                 name = name + " CPU:" + ((from x in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().Cast<ManagementObject>()
-                           select x.GetPropertyValue("Name")+" load:"+ x.GetPropertyValue("LoadPercentage")+"%").FirstOrDefault()?.ToString() ?? "processor unknown");
+                           select x.GetPropertyValue("Name")+" load:"+ x.GetPropertyValue("LoadPercentage")+"%").FirstOrDefault() ?? "processor unknown");
                 string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority " : "Normal priority ") + SnifferType + " running on win "+name+
                     " Received: " + BytesReceived + "\r\n" + _bufferedPackets.First().Key + ": " + _bufferedPackets.First().Value.Length + "\r\nQueue length:" + _bufferedPackets.Count;
                 while (_bufferedPackets.Values.First().Length >= 500)
