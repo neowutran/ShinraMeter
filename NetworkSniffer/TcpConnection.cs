@@ -80,14 +80,22 @@ namespace NetworkSniffer
                 }
             }
 
-            if (_bufferedPackets.Count > 100)
+            if (_bufferedPackets.Count > 300)
             {
-                var name = (from x in new ManagementObjectSearcher("SELECT Version FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
-                            select x.GetPropertyValue("Version")).FirstOrDefault()?.ToString() ?? "unknown";
+                var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
+                            select x.GetPropertyValue("Version")+ " Memory Total:" + x.GetPropertyValue("TotalVisibleMemorySize")
+                                       + " Virtual:" + x.GetPropertyValue("TotalVirtualMemorySize") + " PhFree:" + x.GetPropertyValue("FreePhysicalMemory")
+                                       + " VFree:" + x.GetPropertyValue("FreeVirtualMemory")
+                            ).FirstOrDefault() ?? "unknown";
+                name = name + " CPU:" + ((from x in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().Cast<ManagementObject>()
+                           select x.GetPropertyValue("Name")+" load:"+ x.GetPropertyValue("LoadPercentage")+"%").FirstOrDefault()?.ToString() ?? "processor unknown");
                 string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority " : "Normal priority ") + SnifferType + " running on win "+name+
                     " Received: " + BytesReceived + "\r\n" + _bufferedPackets.First().Key + ": " + _bufferedPackets.First().Value.Length + "\r\nQueue length:" + _bufferedPackets.Count;
                 while (_bufferedPackets.Values.First().Length >= 500)
+                {
                     _bufferedPackets.Remove(_bufferedPackets.Keys.First());
+                    if(_bufferedPackets.Count == 0)return;
+                }
                 //we don't know, whether large packet is continuation of previous message or not - so skip until new short message.
                 if (BytesReceived + 500 <= _bufferedPackets.Keys.First())
                     _bufferedPackets.Remove(_bufferedPackets.Keys.First());

@@ -69,17 +69,7 @@ namespace NetworkSniffer
 
         private void Receive(IPv4Packet ipData)
         {
-            PacketDotNet.TcpPacket tcpPacket;
-            try 
-            {
-                tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket;
-            }
-            catch
-            {
-                BasicTeraData.LogError("Bad ip packet", false, true);
-                return;
-            }
-
+            var tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket;
             if (tcpPacket == null || tcpPacket.DataOffset*4 > ipData.PayloadLength) return;
             if (tcpPacket.Checksum!=0 && !tcpPacket.ValidTCPChecksum) return;
             var isFirstPacket = tcpPacket.Syn;
