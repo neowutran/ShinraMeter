@@ -15,14 +15,13 @@ using System.Xml.Linq;
 using Lang;
 using Tera.Game;
 using System.Speech.Synthesis;
+using System.Threading;
 
 namespace Data
 {
     public class EventsData
     {
-        private FileStream _filestreamCommon;
-        private FileStream _filestreamClass;
-
+       
         public Dictionary<Event, List<Actions.Action>> EventsCommon { get; private set; }
         public Dictionary<Event, List<Actions.Action>> EventsClass { get; private set; }
         public Dictionary<Event, List<Actions.Action>> Events { get; private set; }
@@ -30,9 +29,12 @@ namespace Data
 
         public void Load(PlayerClass playerClass)
         {
+
+
             //TODO load the file depending on meter user class.
             var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-"+playerClass.ToString().ToLowerInvariant()+".xml");
             XDocument xml;
+            FileStream filestreamClass;
             try
             {
                 var attrs = File.GetAttributes(windowFile);
@@ -45,14 +47,14 @@ namespace Data
 
             try
             {
-                _filestreamClass = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-                xml = XDocument.Load(_filestreamClass);
+                filestreamClass = new FileStream(windowFile, FileMode.Open, FileAccess.ReadWrite);
+                xml = XDocument.Load(filestreamClass);
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 BasicTeraData.LogError(ex.Message, true, true);
                 Save();
-                _filestreamClass = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                filestreamClass = new FileStream(windowFile, FileMode.Open, FileAccess.ReadWrite);
                 return;
             }
             catch (Exception ex)
@@ -71,6 +73,7 @@ namespace Data
             {
                 Events.Add(e.Key, e.Value);
             }
+
         }
 
         BasicTeraData _basicData;
@@ -96,7 +99,7 @@ namespace Data
             }
             var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-common.xml");
             XDocument xml;
-
+            FileStream filestreamCommon;
             try
             {
                 var attrs = File.GetAttributes(windowFile);
@@ -109,14 +112,14 @@ namespace Data
 
             try
             {
-                _filestreamCommon = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-                xml = XDocument.Load(_filestreamCommon);
+                filestreamCommon = new FileStream(windowFile, FileMode.Open, FileAccess.ReadWrite);
+                xml = XDocument.Load(filestreamCommon);
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 BasicTeraData.LogError(ex.Message, true, true);
                 Save();
-                _filestreamCommon = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                filestreamCommon = new FileStream(windowFile, FileMode.Open, FileAccess.ReadWrite);
                 return;
             }
             catch (Exception ex)
@@ -212,7 +215,8 @@ namespace Data
                     var text = tts.Attribute("text").Value;
                     var voiceGender = (VoiceGender)Enum.Parse(typeof(VoiceGender), tts.Attribute("voice_gender")?.Value ?? "Female", true);
                     var voiceAge = (VoiceAge)Enum.Parse(typeof(VoiceAge), tts.Attribute("voice_age")?.Value ?? "Adult", true);
-                    var culture = tts.Attribute("culture")?.Value ?? "en-US";
+                    
+                    var culture = tts.Attribute("culture")?.Value ?? CultureInfo.CurrentUICulture.ToString();
                     var voicePosition = int.Parse(tts.Attribute("voice_position")?.Value ?? "0");
                     var volume = int.Parse(tts.Attribute("volume")?.Value ?? "30");
                     var rate = int.Parse(tts.Attribute("rate")?.Value ?? "0");

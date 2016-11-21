@@ -20,6 +20,7 @@ namespace Data.Actions.Notify.SoundElements
         public int Volume { get; set; }
         public int Rate { get; set; }
         public string CultureInfo { get; set; }
+
         public TextToSpeech(string text, VoiceGender voiceGender, VoiceAge voiceAge, int voicePosition, string culture, int volume, int rate )
         {
             Text = text;
@@ -34,8 +35,7 @@ namespace Data.Actions.Notify.SoundElements
         public void Play()
         {
             using (SpeechSynthesizer synth = new SpeechSynthesizer())
-            {
-                
+            {               
                 synth.SelectVoiceByHints(VoiceGender, VoiceAge, VoicePosition, new CultureInfo(CultureInfo));
                 synth.SetOutputToDefaultAudioDevice();
                 synth.Volume = Volume;

@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 
 	<!-- Focus -->
-	<abnormality active="false" rewarn_timeout_seconds="3" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	<abnormality active="true" rewarn_timeout_seconds="3" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>10154030</abnormality>
 		</abnormalities>
@@ -15,4 +15,21 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	
+	<!-- Mystic contagion -->
+	<abnormality active="true" ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>701700</abnormality>
+			<abnormality>701701</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="{abnormality_name}" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	
 </events>
