@@ -28,6 +28,8 @@ using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 using System.Text;
 using Data.Actions.Notify;
+using System.Speech.Synthesis;
+using System.Globalization;
 
 namespace DamageMeter.UI
 {

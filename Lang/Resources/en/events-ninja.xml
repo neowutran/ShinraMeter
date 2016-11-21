@@ -26,7 +26,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" />
+				<text_to_speech text="Contagion" />
 			</notify>
 		</actions>
 	</abnormality>
