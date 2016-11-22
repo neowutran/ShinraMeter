@@ -1,15 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 
 	<!-- United Thrall of Protection (endurance buff) -->
-	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="Party">
+	<abnormality active="false" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="Party">
 		<abnormalities>
 			<abnormality>27120</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<text_to_speech text="Thrall" />
+				<beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -22,14 +24,16 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="Aura" body_text="Activate the fucking mana aura!" display_time="3000" />
-				<text_to_speech text="Aura" />
+				<balloon title_text="Aura" body_text="Activate the fucking mana aura" display_time="3000" />
+				<beeps>
+					<beep frequency="220" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
 	
 	<!-- Endurance debuff -->
-	<abnormality active="true" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
 			<abnormality>27160</abnormality>
 			<abnormality>28090</abnormality>
@@ -37,7 +41,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Debuff" />
+				<beeps>
+					<beep frequency="392" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -55,7 +61,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="Aura" body_text="Activate the crit/swift aura" display_time="3000" />
-				<text_to_speech text="Aura" />
+				<beeps>
+					<beep frequency="440" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>

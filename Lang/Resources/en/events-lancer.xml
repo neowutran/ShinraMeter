@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 
 	<!-- The boss is not enraged anymore  -->
@@ -15,8 +15,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	
-	
+
 	<!-- Mystic contagion -->
 	<abnormality active="true" ingame="true" trigger="Added" target="Boss">
 		<abnormalities>
@@ -26,7 +25,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Contagion" />
+				<beeps>
+					<beep frequency="110" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>

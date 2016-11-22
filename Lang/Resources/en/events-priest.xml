@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 
 	<!-- Blessing of Shakan -->
@@ -10,7 +10,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<text_to_speech text="Shakan" />
+				<beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -27,7 +29,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<text_to_speech text="Balder" />
+				<beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -43,7 +47,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<text_to_speech text="Stars" />
+				<beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
@@ -56,7 +62,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Nemesis" />
+				<beeps>
+					<beep frequency="392" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>

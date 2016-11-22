@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
-
 	<!-- The boss is not enraged anymore  -->
 	<abnormality ingame="true" trigger="Removed" target="Boss">
 		<abnormalities>
@@ -36,7 +35,6 @@
 		</actions>
 	</abnormality>
 	
-		
 	<!-- Mystic contagion -->
 	<abnormality active="true" ingame="true" trigger="Added" target="Boss">
 		<abnormalities>
@@ -46,11 +44,13 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Contagion" />
+				<beeps>
+					<beep frequency="110" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>
-	
+
 	<!-- Endurance debuff (traverse cut) -->
 	<abnormality active="false" ingame="true" rewarn_timeout_seconds="8" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
@@ -65,5 +65,4 @@
 			</notify>
 		</actions>
 	</abnormality>
-	
 </events>
