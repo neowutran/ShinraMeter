@@ -71,7 +71,7 @@ namespace NetworkSniffer
         {
             var tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket;
             if (tcpPacket == null || tcpPacket.DataOffset*4 > ipData.PayloadLength) return;
-            if (tcpPacket.Checksum!=0 && !tcpPacket.ValidTCPChecksum) return;
+            //if (tcpPacket.Checksum!=0 && !tcpPacket.ValidTCPChecksum) return;
             var isFirstPacket = tcpPacket.Syn;
             var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress,
                 tcpPacket.DestinationPort);
