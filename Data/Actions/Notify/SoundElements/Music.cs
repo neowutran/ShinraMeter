@@ -34,7 +34,7 @@ namespace Data.Actions.Notify.SoundElements
                 var volumeStream = new WaveChannel32(outputStream);
                 volumeStream.Volume = Volume;
                 //Create WaveOutEvent since it works in Background and UI Threads
-                var player = new WaveOutEvent();
+                var player = new DirectSoundOut();
                 //Init Player with Configured Volume Stream
                 player.Init(volumeStream);
                 player.Play();
