@@ -174,7 +174,8 @@ namespace DamageMeter
                     skillLog.skillDamagePercent = skill.DamagePercent() + "";
                     skillLog.skillHighestCrit = skill.BiggestCrit() + "";
                     skillLog.skillHits = skill.Hits() + "";
-                    skillLog.skillId= skill.Skills.First().Key.Id + "";
+                    var skillKey = skill.Skills.First().Key;
+                    skillLog.skillId= BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(skillKey.NpcInfo?.Name, user.Source.RaceGenderClass)?.Id.ToString() ?? skillKey.Id.ToString();
                     skillLog.skillLowestCrit = skill.LowestCrit() + "";
                     skillLog.skillTotalDamage = skilldamage + "";
 
