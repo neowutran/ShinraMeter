@@ -61,7 +61,7 @@
 	<!-- Raid 30, phase 3, black debuff (Dust) -->
 	<abnormality ingame="false" trigger="Added" target="Self">
 		<abnormalities>
-			<abnormality>950180</abnormality>
+			<abnormality>950069</abnormality>
 			<abnormality>950180</abnormality>
 		</abnormalities>
 		<actions>
