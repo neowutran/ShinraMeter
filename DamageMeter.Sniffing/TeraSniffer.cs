@@ -46,7 +46,7 @@ namespace DamageMeter.Sniffing
 
                 try //fallback to raw sockets if no winpcap available
                 {
-                    _ipSniffer = new IpSnifferWinPcap(filter, _serversByIp.Keys.ToList());
+                    _ipSniffer = new IpSnifferWinPcap(filter);
                     (_ipSniffer as IpSnifferWinPcap).Warning += OnWarning;
                 }
                 catch

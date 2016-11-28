@@ -138,6 +138,7 @@
     <Compile Include="Processing\S_CREATURE_LIFE.cs" />
     <Compile Include="Processing\S_CREST_INFO.cs" />
     <Compile Include="Processing\S_DESPAWN_NPC.cs" />
+    <Compile Include="Processing\S_DESPAWN_USER.cs" />
     <Compile Include="Processing\S_EACH_SKILL_RESULT.cs" />
     <Compile Include="Processing\S_GUILD_QUEST_LIST.cs" />
     <Compile Include="Processing\S_LOGIN.cs" />

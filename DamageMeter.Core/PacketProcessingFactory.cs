@@ -32,7 +32,9 @@ namespace DamageMeter
             {typeof(Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO), new Action<Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO>(x=>NotifyProcessor.InstanceMatchingSuccess(x)) },
             {typeof(Tera.Game.Messages.S_REQUEST_CONTRACT), new Action<Tera.Game.Messages.S_REQUEST_CONTRACT>(x=>NotifyProcessor.S_REQUEST_CONTRACT(x)) },
             {typeof(Tera.Game.Messages.S_CHECK_TO_READY_PARTY), new Action<Tera.Game.Messages.S_CHECK_TO_READY_PARTY>(x=>NotifyProcessor.S_CHECK_TO_READY_PARTY(x)) },
-            {typeof(Tera.Game.Messages.S_GUILD_QUEST_LIST), Helpers.Contructor<Func<Tera.Game.Messages.S_GUILD_QUEST_LIST , DamageMeter.Processing.S_GUILD_QUEST_LIST>>() }
+            {typeof(Tera.Game.Messages.S_GUILD_QUEST_LIST), Helpers.Contructor<Func<Tera.Game.Messages.S_GUILD_QUEST_LIST , DamageMeter.Processing.S_GUILD_QUEST_LIST>>() },
+            {typeof(Tera.Game.Messages.S_CREST_MESSAGE), new Action<Tera.Game.Messages.S_CREST_MESSAGE>((x)=>NotifyProcessor.SkillReset(x.SkillId, x.Type)) },
+
         };
         private static readonly Dictionary<Type, Delegate> MessageToProcessing = new Dictionary<Type, Delegate>
         {
@@ -41,7 +43,7 @@ namespace DamageMeter
             {typeof(Tera.Game.Messages.SNpcOccupierInfo), new Action<Tera.Game.Messages.SNpcOccupierInfo>(x=>DamageTracker.Instance.UpdateEntities(new NpcOccupierResult(x), x.Time.Ticks))},
             {typeof(Tera.Game.Messages.SDespawnNpc), Helpers.Contructor<Func<Tera.Game.Messages.SDespawnNpc , S_DESPAWN_NPC>>()},
             {typeof(Tera.Game.Messages.SCreatureLife), Helpers.Contructor<Func<Tera.Game.Messages.SCreatureLife , S_CREATURE_LIFE>>()},
-            {typeof(Tera.Game.Messages.S_CREST_INFO), Helpers.Contructor<Func<Tera.Game.Messages.S_CREST_INFO , DamageMeter.Processing.S_CREST_INFO>>() },
+            {typeof(Tera.Game.Messages.S_CREST_INFO), Helpers.Contructor<Func<Tera.Game.Messages.S_CREST_INFO , S_CREST_INFO>>() },
 //            {typeof(Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT), new Action<Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT>(x=>NotifyProcessor.S_BEGIN_THROUGH_ARBITER_CONTRACT(x))}
         };
         private static Dictionary<Type, Delegate> MainProcessor = new Dictionary<Type, Delegate>();
@@ -50,7 +52,6 @@ namespace DamageMeter
         {
             MainProcessor.Clear();
             MessageToProcessingInit.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
-            if (NetworkController.Instance.NeedInit) return;
             MessageToProcessing.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
             UpdateEntityTracker();
             UpdatePlayerTracker();
@@ -63,7 +64,7 @@ namespace DamageMeter
             MessageToProcessingInit.ToList().ForEach(x => MainProcessor[x.Key] = x.Value); ;
         }
 
-        public void UpdateEntityTracker()
+        public static void UpdateEntityTracker()
         {
             var entityTrackerProcessing = new Dictionary<Type, Delegate>
             {
@@ -83,7 +84,7 @@ namespace DamageMeter
             };
             entityTrackerProcessing.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
         }
-        public void UpdatePlayerTracker()
+        public static void UpdatePlayerTracker()
         {
             var playerTrackerProcessing = new Dictionary<Type, Delegate>
             {
@@ -95,7 +96,7 @@ namespace DamageMeter
                 };
             playerTrackerProcessing.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
         }
-        public void UpdateAbnormalityTracker()
+        public static void UpdateAbnormalityTracker()
         {
             var abnormalityTrackerProcessing = new Dictionary<Type, Delegate>
             {
@@ -106,7 +107,7 @@ namespace DamageMeter
             { typeof(Tera.Game.Messages.SCreatureChangeHp) , new Action<Tera.Game.Messages.SCreatureChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPlayerChangeMp) , new Action<Tera.Game.Messages.SPlayerChangeMp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPartyMemberChangeHp) , new Action<Tera.Game.Messages.SPartyMemberChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
-            { typeof(Tera.Game.Messages.SDespawnUser) , new Action<Tera.Game.Messages.SDespawnUser>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
+            { typeof(Tera.Game.Messages.SDespawnUser) , Helpers.Contructor<Func<Tera.Game.Messages.SDespawnUser , S_DESPAWN_USER>>()},
             { typeof(Tera.Game.Messages.SNpcStatus) , new Action<Tera.Game.Messages.SNpcStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE) , new Action<Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_PLAYER_STAT_UPDATE) , new Action<Tera.Game.Messages.S_PLAYER_STAT_UPDATE>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },

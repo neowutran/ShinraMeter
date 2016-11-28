@@ -30,8 +30,6 @@ namespace Data
         public void Load(PlayerClass playerClass)
         {
 
-
-            //TODO load the file depending on meter user class.
             var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-"+playerClass.ToString().ToLowerInvariant()+".xml");
             XDocument xml;
             FileStream filestreamClass;
@@ -65,7 +63,9 @@ namespace Data
             EventsClass = new Dictionary<Event, List<Actions.Action>>();
             Events = new Dictionary<Event, List<Actions.Action>>();
             ParseAbnormalities(EventsClass, xml);
-            foreach(var e in EventsCommon)
+            ParseCooldown(EventsClass, xml);
+
+            foreach (var e in EventsCommon)
             {
                 Events.Add(e.Key, e.Value);
             }
@@ -130,28 +130,13 @@ namespace Data
             Events = new Dictionary<Event, List<Actions.Action>>();
             EventsCommon = new Dictionary<Event, List<Actions.Action>>();
             ParseAbnormalities(EventsCommon, xml);
+            ParseCooldown(EventsCommon, xml);
             ParseCommonAFK(EventsCommon, xml);
         }
 
         public void Save()
         {
-            //TODO, too lazy atm
-            /*
-            if (_filestream == null)
-            {
-                return;
-            }
-
-
-            var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("events"));
-            xml.Root.Add(Events.Serialize());
-            _filestream.SetLength(0); 
-            using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true)))
-            {
-                sw.Write(xml.Declaration + Environment.NewLine + xml);
-            }
-            _filestream.Close();
-            */
+            //TODO UI, too lazy atm
         }
 
         private void ParseCommonAFK(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
@@ -186,18 +171,18 @@ namespace Data
                 var music = notify.Descendants("music");
                 var beeps = notify.Descendants("beeps");
                 var textToSpeech = notify.Descendants("text_to_speech");
-                if ((music.Count()>0 && beeps.Count()>0) || ((music.Count() > 0 && textToSpeech.Count()>0) || textToSpeech.Count() > 0 && beeps.Count() > 0))
+                if ((music.Any() && beeps.Any()) || ((music.Any() && textToSpeech.Any()) || textToSpeech.Any() && beeps.Any()))
                 {
                     throw new Exception("Only 1 type of sound allowed by notifyAction");
                 }
-                if (music.Count() > 0)
+                if (music.Any())
                 {
                     var musicFile = music.First().Attribute("file").Value;
                     var volume = float.Parse(music.First().Attribute("volume").Value);
                     var duration = int.Parse(music.First().Attribute("duration").Value);
                     soundInterface = new Music(musicFile, volume, duration);
                 }
-                if (beeps.Count() > 0)
+                if (beeps.Any())
                 {
                     var beepsList = new List<Beep>();
                     foreach (var beep in beeps.First().Elements())
@@ -209,7 +194,7 @@ namespace Data
                     soundInterface = new Beeps(beepsList);
                 }
 
-                if (textToSpeech.Count()>0)
+                if (textToSpeech.Any())
                 {
                     var tts = textToSpeech.First();
                     var text = tts.Attribute("text").Value;
@@ -225,6 +210,22 @@ namespace Data
                 
                 var notifyAction = new NotifyAction(soundInterface, ballonData);
                 events[ev].Add(notifyAction);
+            }
+        }
+
+        private void ParseCooldown(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
+        {
+            var root = xml.Root;
+            var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
+            foreach (var abnormality in root.Elements("cooldown"))
+            {
+                var skillId = int.Parse(abnormality.Attribute("skill_id").Value);
+                var onlyResetted = bool.Parse(abnormality.Attribute("only_resetted").Value);
+                var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
+                var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
+                var cooldownEvent = new CooldownEvent(ingame, active, skillId, onlyResetted);
+                events.Add(cooldownEvent, new List<Actions.Action>());
+                ParseActions(abnormality, events, cooldownEvent);
             }
         }
 
@@ -254,8 +255,6 @@ namespace Data
                     }
                     types.Add(type);
                 }
-
-
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 AbnormalityTargetType target;
@@ -269,7 +268,7 @@ namespace Data
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                     rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value??"0");
                 }
-                var abnormalityEvent = new AbnormalityEvent(ingame, active, ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
+                var abnormalityEvent = new AbnormalityEvent(ingame,active, ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Actions.Action>());
                 ParseActions(abnormality, events, abnormalityEvent);
             }

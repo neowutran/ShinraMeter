@@ -22,15 +22,13 @@ namespace NetworkSniffer
             (MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string _filter;
-        private readonly List<string> _servers;
         private WinPcapDeviceList _devices;
         private volatile uint _droppedPackets;
         private volatile uint _interfaceDroppedPackets;
 
-        public IpSnifferWinPcap(string filter, List<string> servers)
+        public IpSnifferWinPcap(string filter)
         {
             _filter = filter;
-            _servers = servers;
             BufferSize = 8192*1024;
             _devices = WinPcapDeviceList.New();
             //BasicTeraData.LogError(string.Join("\r\n",_devices.Select(x=>x.Description)),true,true);

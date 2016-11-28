@@ -85,21 +85,23 @@ namespace DamageMeter.Processing
 
             str = str.Replace("{quest_is_bam_quest}", isBamQuest.ToString());
 
-            var rewardStr = discordInfo.RewardHeaderText;
+            var rewardStr = new StringBuilder();
+            rewardStr.Append(discordInfo.RewardHeaderText);
             foreach (var reward in quest.Rewards)
             {
-                rewardStr += ReplaceRewardInfo(discordInfo.RewardContentText, reward);
+                rewardStr.Append(ReplaceRewardInfo(discordInfo.RewardContentText, reward));
             }
-            rewardStr += discordInfo.RewardFooterText;
-            str = str.Replace("{rewards}", rewardStr);
+            rewardStr.Append(discordInfo.RewardFooterText);
+            str = str.Replace("{rewards}", rewardStr.ToString());
 
-            var targetStr = discordInfo.TargetHeaderText;
+            var targetStr = new StringBuilder();
+            targetStr.Append(discordInfo.TargetHeaderText);
             foreach (var target in quest.Targets)
             {
-                targetStr += ReplaceTargetInfo(discordInfo.TargetContentText, quest, target);
+                targetStr.Append(ReplaceTargetInfo(discordInfo.TargetContentText, quest, target));
             }
-            targetStr += discordInfo.TargetFooterText;
-            str = str.Replace("{targets}", targetStr);
+            targetStr.Append(discordInfo.TargetFooterText);
+            str = str.Replace("{targets}", targetStr.ToString());
 
             return str;
         }

@@ -72,7 +72,7 @@ namespace DamageMeter.UI
             PrivateChannelColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.PrivateChannelColor;
             GeneralColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GeneralColor;
             RaidColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.RaidColor;
-
+            PartyEvent.IsChecked = BasicTeraData.Instance.WindowData.DisablePartyEvent;
             DiscordLoginTextBox.Text = BasicTeraData.Instance.WindowData.DiscordLogin;
             DiscordPasswordTextBox.Password = BasicTeraData.Instance.WindowData.DiscordPassword;
 
@@ -86,7 +86,7 @@ namespace DamageMeter.UI
             if (flash == null) return;
 
             Tray.HideBalloonTip();
-            if (flash.Balloon.DisplayTime >= 500 && flash.Balloon != null)
+            if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
             {
                 var balloon = new Balloon();
                 balloon.Value(flash.Balloon.TitleText, flash.Balloon.BodyText);
@@ -447,5 +447,16 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds = (int?)ExcelCMADPSSpinner?.Value??1;
         }
+
+        private void DisablePartyEvent(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DisablePartyEvent = true;
+        }
+
+        private void EnablePartyEvent(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DisablePartyEvent = false;
+        }
+
     }
 }

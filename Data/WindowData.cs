@@ -54,6 +54,7 @@ namespace Data
         public string DiscordLogin { get; set; }
         public string DiscordPassword { get; set; }
 
+        public bool DisablePartyEvent { get; set; }
 
        public Dictionary<string, DiscordInfoByGuild> DiscordInfoByGuild { get; set; }
 
@@ -122,6 +123,7 @@ namespace Data
             DiscordInfoByGuild = new Dictionary<string, Data.DiscordInfoByGuild>();
             DiscordLogin = "";
             DiscordPassword = "";
+            DisablePartyEvent = false;
     }
 
 
@@ -188,6 +190,7 @@ namespace Data
             Parse("enable_chat_and_notifications", "EnableChat");
             Parse("copy_inspect", "CopyInspect");
             Parse("excel_cma_dps_seconds", "ExcelCMADPSSeconds");
+            Parse("disable_party_event", "DisablePartyEvent");
             ParseColor("say_color","SayColor");
             ParseColor("alliance_color", "AllianceColor");
             ParseColor("area_color", "AreaColor");
@@ -490,6 +493,7 @@ namespace Data
             xml.Root.Add(new XElement("trading_color", TradingColor.ToString()));
             xml.Root.Add(new XElement("emotes_color", EmotesColor.ToString()));
             xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
+            xml.Root.Add(new XElement("disable_party_event", DisablePartyEvent.ToString()));
 
             xml.Root.Add(new XElement("teradps.io"));
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
