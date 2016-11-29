@@ -617,8 +617,10 @@
     <value>Resources\ja\events-slayer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="events_sorcerer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\ja\events-sorcerer.xml;System.String, mscorlib, Version=4.0.0.0, 
-    =neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>
+      Resources\ja\events-sorcerer.xml;System.String, mscorlib, Version=4.0.0.0,
+      =neutral, PublicKeyToken=b77a5c561934e089;utf-8
+    </value>
   </data>
   <data name="events_warrior" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ja\events-warrior.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -626,4 +628,7 @@
   <data name="events_common" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\en\events-common.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="DisablePartyEvents" xml:space="preserve">
+    <value>パーティーについての通知を無効</value>
+ </data>
 </root>
