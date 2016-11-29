@@ -58,7 +58,7 @@ namespace DamageMeter
 
         public static Tuple<string,string> Copy(StatsSummary statsSummary, Skills skills, AbnormalityStorage abnormals,
             bool timedEncounter, string header, string content,
-            string footer, string orderby, string order)
+            string footer, string orderby, string order, string lowDpsContent, int lowDpsTreshold)
         {
             //stop if nothing to paste
             var entityInfo = statsSummary.EntityInformation;
@@ -142,7 +142,8 @@ namespace DamageMeter
 
             var name = entityInfo.Entity?.Info.Name ?? "";
             AbnormalityDuration enrage;
-            abnormals.Get(entityInfo.Entity).TryGetValue(BasicTeraData.Instance.HotDotDatabase.Enraged, out enrage);
+            var bossDebuff = abnormals.Get(entityInfo.Entity);
+            bossDebuff.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Enraged, out enrage);
             var enrageperc = lastTick - firstTick == 0
                 ? 0
                 : (double) (enrage?.Duration(firstTick, lastTick) ?? 0)/(lastTick - firstTick);
@@ -191,14 +192,19 @@ namespace DamageMeter
                 playerHolder["{biggest_crit}"] = FormatHelpers.Instance.FormatValue(skills.BiggestCrit(playerStats.Source.User, entityInfo.Entity, timedEncounter));
                 playerHolder["{damage_received}"] = FormatHelpers.Instance.FormatValue(skills.DamageReceived(playerStats.Source.User, entityInfo.Entity, timedEncounter));
                 playerHolder["{hits_received}"] = FormatHelpers.Instance.FormatValue(skills.HitsReceived(playerStats.Source.User, entityInfo.Entity, timedEncounter));
+                playerHolder["{debuff_list}"] = String.Join(" | ",
+                    bossDebuff.Where(x=>x.Key.Id!=8888888 && x.Value.InitialPlayerClass==playerStats.Source.Class && x.Value.Duration(firstTick,lastTick)>0).ToList().Select(
+                        x=>x.Key.Name + " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick,lastTick) / (lastTick - firstTick)) +
+                            " ("+ TimeSpan.FromTicks(x.Value.Duration(firstTick, lastTick)).ToString(@"mm\:ss")+") ")
+                );
             }
             var placeholderLength = placeholders.SelectMany(x => x.Value).GroupBy(x=>x.Key).ToDictionary(x=>x.Key,x=>x.Max(z=> graphics.MeasureString(z.Value, Font, default(PointF), StringFormat.GenericTypographic).Width));
             var dpsmono = new StringBuilder(dpsString.ToString());
             var placeholderMono = placeholders.SelectMany(x => x.Value).GroupBy(x => x.Key).ToDictionary(x => x.Key, x => x.Max(z => z.Value.Length));
-            if (content.Contains('\\') && BasicTeraData.Instance.WindowData.FormatPasteString)
+            if ((content.Contains('\\')||lowDpsContent.Contains('\\')) && BasicTeraData.Instance.WindowData.FormatPasteString)
                 placeholders.ForEach(x =>
                 {
-                    var currentContent = new StringBuilder(content);
+                    var currentContent = x.Key.Amount*100/entityInfo.TotalDamage >= lowDpsTreshold ? new StringBuilder(content): new StringBuilder(lowDpsContent);
                     x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, PadLeft(z.Value,placeholderLength[z.Key])));
                     dpsString.Append(currentContent);
                     currentContent = new StringBuilder(content);
@@ -223,7 +229,7 @@ namespace DamageMeter
 
         private static string PadLeft(string str, double length)
         {
-            var result = str;
+            var result = string.IsNullOrWhiteSpace(str)&&length>0?"-":str;
             var olddelta = length - graphics.MeasureString(result, Font, default(PointF), StringFormat.GenericTypographic).Width;
             var delta = length - graphics.MeasureString(result, Font, default(PointF), StringFormat.GenericTypographic).Width;
             while (delta > 0)

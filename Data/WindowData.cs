@@ -493,7 +493,7 @@ namespace Data
             xml.Root.Add(new XElement("trading_color", TradingColor.ToString()));
             xml.Root.Add(new XElement("emotes_color", EmotesColor.ToString()));
             xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
-            xml.Root.Add(new XElement("disable_party_event", DisablePartyEvent.ToString()));
+            xml.Root.Add(new XElement("disable_party_event", DisablePartyEvent));
 
             xml.Root.Add(new XElement("teradps.io"));
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));

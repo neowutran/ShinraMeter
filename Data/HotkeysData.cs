@@ -175,7 +175,9 @@ namespace Data
                     ModifierKeys.Control,
                     Keys.End,
                     "hits_received",
-                    "descending"
+                    "descending",
+                    @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\",
+                    6
                     ),
                 new CopyKey(
                     @"Damage Done @ {encounter} {timer} {partyDps} {enrage}:\",
@@ -184,7 +186,9 @@ namespace Data
                     ModifierKeys.Shift,
                     Keys.End,
                     "damage_percentage",
-                    "descending"
+                    "descending",
+                    @"[{class}] {name}: {debuff_list}\",
+                    6
                     )
             };
             ExcelSave = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
@@ -208,6 +212,8 @@ namespace Data
                     var header = copy.Element("string").Element("header").Value;
                     var footer = copy.Element("string").Element("footer").Value;
                     var content = copy.Element("string").Element("content").Value;
+                    var lowDpsContent = copy.Element("string").Element("low_dps_content")?.Value??content;
+                    var lowDpsTreshold = int.Parse(copy.Element("string").Element("low_dps_threshold")?.Value ?? "6");
                     Keys key;
                     var keyValue = copy.Element("key").Value;
                     if (!Enum.TryParse(keyValue, out key))
@@ -219,7 +225,7 @@ namespace Data
                     var order = copy.Element("string").Element("order").Value;
                     var orderBy = copy.Element("string").Element("order_by").Value;
                     var modifier = ConvertToModifierKey(ctrl, false, shift, window);
-                    Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order));
+                    Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order, lowDpsContent,lowDpsTreshold));
                 }
             }
             catch
@@ -295,6 +301,8 @@ namespace Data
 
                 stringElement.Add(new XElement("header", copy.Header));
                 stringElement.Add(new XElement("content", copy.Content));
+                stringElement.Add(new XElement("low_dps_content", copy.LowDpsContent));
+                stringElement.Add(new XElement("low_dps_threshold", copy.LowDpsTreshold));
                 stringElement.Add(new XElement("footer", copy.Footer));
                 stringElement.Add(new XElement("order_by", copy.OrderBy));
                 stringElement.Add(new XElement("order", copy.Order));

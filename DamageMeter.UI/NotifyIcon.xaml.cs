@@ -359,6 +359,7 @@ namespace DamageMeter.UI
         private void ChatSettingsVisible(bool show)
         {
             CopyInspect.Height = show ? Double.NaN : 0;
+            PartyEvent.Height = show ? Double.NaN : 0;
             WhisperColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             AllianceColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             AreaColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
@@ -450,12 +451,12 @@ namespace DamageMeter.UI
 
         private void DisablePartyEvent(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.DisablePartyEvent = true;
+            BasicTeraData.Instance.WindowData.DisablePartyEvent = false;
         }
 
         private void EnablePartyEvent(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.DisablePartyEvent = false;
+            BasicTeraData.Instance.WindowData.DisablePartyEvent = true;
         }
 
     }

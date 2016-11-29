@@ -322,13 +322,13 @@ namespace DamageMeter.Processing
                     var skill = BasicTeraData.Instance.SkillDatabase.GetOrNull(meterUser, skillId);
                     if (notifyAction.Balloon != null)
                     {
-                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{skill_name}", skill.Name);
-                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{skill_name}", skill.Name);
+                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{skill_name}", skill?.Name ?? skillId.ToString());
+                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{skill_name}", skill?.Name ?? skillId.ToString());
                     }
                     if (notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
                     {
                         var textToSpeech = (TextToSpeech)notifyAction.Sound;
-                        textToSpeech.Text = textToSpeech.Text.Replace("{skill_name}", skill.Name);
+                        textToSpeech.Text = textToSpeech.Text.Replace("{skill_name}", skill?.Name ?? skillId.ToString());
                     }
                     NetworkController.Instance.FlashMessage = notifyAction;
                 }
@@ -420,8 +420,12 @@ namespace DamageMeter.Processing
 
         internal static void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)
         {
-
+            foreach (var e in BasicTeraData.Instance.EventsData.Events.Keys)
+            {
+                e.NextChecks[message.Id] = DateTime.UtcNow.AddSeconds(5);
+            }
         }
+
         internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
             _lastBoss = null;

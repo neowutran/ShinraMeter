@@ -209,7 +209,7 @@ namespace DamageMeter
             {
                 var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content,
                     copy.Footer,
-                    copy.OrderBy, copy.Order);
+                    copy.OrderBy, copy.Order,copy.LowDpsContent,copy.LowDpsTreshold);
                 for (var i = 0; i < 3; i++)
                 {
                     try
