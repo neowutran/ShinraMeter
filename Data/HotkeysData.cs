@@ -302,7 +302,7 @@ namespace Data
                 stringElement.Add(new XElement("header", copy.Header));
                 stringElement.Add(new XElement("content", copy.Content));
                 stringElement.Add(new XElement("low_dps_content", copy.LowDpsContent));
-                stringElement.Add(new XElement("low_dps_threshold", copy.LowDpsTreshold));
+                stringElement.Add(new XElement("low_dps_threshold", copy.LowDpsThreshold));
                 stringElement.Add(new XElement("footer", copy.Footer));
                 stringElement.Add(new XElement("order_by", copy.OrderBy));
                 stringElement.Add(new XElement("order", copy.Order));

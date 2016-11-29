@@ -58,7 +58,7 @@ namespace DamageMeter
 
         public static Tuple<string,string> Copy(StatsSummary statsSummary, Skills skills, AbnormalityStorage abnormals,
             bool timedEncounter, string header, string content,
-            string footer, string orderby, string order, string lowDpsContent, int lowDpsTreshold)
+            string footer, string orderby, string order, string lowDpsContent, int lowDpsThreshold)
         {
             //stop if nothing to paste
             var entityInfo = statsSummary.EntityInformation;
@@ -204,7 +204,7 @@ namespace DamageMeter
             if ((content.Contains('\\')||lowDpsContent.Contains('\\')) && BasicTeraData.Instance.WindowData.FormatPasteString)
                 placeholders.ForEach(x =>
                 {
-                    var currentContent = x.Key.Amount*100/entityInfo.TotalDamage >= lowDpsTreshold ? new StringBuilder(content): new StringBuilder(lowDpsContent);
+                    var currentContent = x.Key.Amount*100/entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content): new StringBuilder(lowDpsContent);
                     x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, PadLeft(z.Value,placeholderLength[z.Key])));
                     dpsString.Append(currentContent);
                     currentContent = new StringBuilder(content);

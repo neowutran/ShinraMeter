@@ -80,7 +80,7 @@ namespace NetworkSniffer
                 }
             }
 
-            if (_bufferedPackets.Count > 300)
+            if (_bufferedPackets.Count > 600)
             {
                 var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
                             select x.GetPropertyValue("Version")+ " Memory Total:" + x.GetPropertyValue("TotalVisibleMemorySize")
