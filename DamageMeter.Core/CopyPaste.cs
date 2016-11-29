@@ -233,13 +233,15 @@ namespace DamageMeter
         private static string PadRight(string str, double length)
         {
             var result = string.IsNullOrWhiteSpace(str)&&length>0?"-":str;
+            var test = string.IsNullOrWhiteSpace(str) && length > 0 ? "-" : str;
             var olddelta = length - graphics.MeasureString(result, Font, default(PointF), StringFormat.GenericTypographic).Width;
             var delta = length - graphics.MeasureString(result, Font, default(PointF), StringFormat.GenericTypographic).Width;
             while (delta > 0)
             {
+                test = " " + test;
                 result = result + " ";
                 olddelta = delta;
-                delta = length - graphics.MeasureString(result, Font, default(PointF), StringFormat.GenericTypographic).Width;
+                delta = length - graphics.MeasureString(test, Font, default(PointF), StringFormat.GenericTypographic).Width;
             }
             return olddelta+delta>=0?result:result.EndsWith(" ")?result.Substring(0,result.Length-1):result;
         }
