@@ -205,16 +205,16 @@ namespace DamageMeter
                 placeholders.ForEach(x =>
                 {
                     var currentContent = x.Key.Amount*100/entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content): new StringBuilder(lowDpsContent);
-                    x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, PadLeft(z.Value,placeholderLength[z.Key])));
+                    x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, PadRight(z.Value,placeholderLength[z.Key])));
                     dpsString.Append(currentContent);
-                    currentContent = new StringBuilder(content);
-                    x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, z.Value.PadLeft(placeholderMono[z.Key])));
+                    currentContent = x.Key.Amount * 100 / entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content) : new StringBuilder(lowDpsContent);
+                    x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, z.Value.PadRight(placeholderMono[z.Key])));
                     dpsmono.Append(currentContent);
                 });
             else
                 { placeholders.ForEach(x =>
                     {
-                        var currentContent = new StringBuilder(content);
+                        var currentContent = x.Key.Amount * 100 / entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content) : new StringBuilder(lowDpsContent);
                         x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, z.Value));
                         dpsString.Append(currentContent);
                     });
@@ -223,22 +223,25 @@ namespace DamageMeter
             dpsString.Append(footer);
             dpsmono.Append(footer);
             var paste = dpsString.ToString();
-            dpsmono.Replace("\\", Environment.NewLine);
-            return new Tuple<string,string>(paste ,dpsmono.ToString());
+            var monoPaste = dpsmono.ToString();
+            while (paste.Contains(" \\")) paste = paste.Replace(" \\", "\\");
+            while (monoPaste.Contains(" \\")) monoPaste = monoPaste.Replace(" \\", "\\");
+            monoPaste = monoPaste.Replace("\\", Environment.NewLine);
+            return new Tuple<string,string>(paste ,monoPaste);
         }
 
-        private static string PadLeft(string str, double length)
+        private static string PadRight(string str, double length)
         {
             var result = string.IsNullOrWhiteSpace(str)&&length>0?"-":str;
             var olddelta = length - graphics.MeasureString(result, Font, default(PointF), StringFormat.GenericTypographic).Width;
             var delta = length - graphics.MeasureString(result, Font, default(PointF), StringFormat.GenericTypographic).Width;
             while (delta > 0)
             {
-                result = " " + result;
+                result = result + " ";
                 olddelta = delta;
                 delta = length - graphics.MeasureString(result, Font, default(PointF), StringFormat.GenericTypographic).Width;
             }
-            return olddelta+delta>=0?result:result.StartsWith(" ")?result.Substring(1,result.Length-1):result;
+            return olddelta+delta>=0?result:result.EndsWith(" ")?result.Substring(0,result.Length-1):result;
         }
     }
 }
