@@ -15,6 +15,21 @@
 			</notify>
 		</actions>
 	</abnormality>
+	<!-- Adrenaline Rush -->
+	<abnormality active="true" ingame="true" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>200701</abnormality>
+			<abnormality>200700</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+				<beeps>
+					<beep frequency="110" duration="500"/>
+				</beeps>
+			</notify>
+		</actions>
+	</abnormality>
 
 	<!-- The boss is not enraged anymore  -->
 	<abnormality ingame="true" trigger="Removed" target="Boss">
