@@ -58,10 +58,12 @@ namespace DamageMeter
             {
                 _chat.RemoveFirst();
             }
+            var chatMessage = new ChatMessage(sender, message, chatType, channel, time);
+            _chat.AddLast(chatMessage);
 
+            if (NetworkController.Instance.EntityTracker?.MeterUser == null) return;
 
-            
-            if(chatType == ChatType.Whisper 
+            if (chatType == ChatType.Whisper 
                 && NetworkController.Instance.EntityTracker.MeterUser.Name != sender 
                 && !TeraWindow.IsTeraActive())
             {
@@ -85,8 +87,6 @@ namespace DamageMeter
                 NetworkController.Instance.FlashMessage = NotifyProcessor.DefaultNotifyAction("Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name, "Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name);
             }
 
-            var chatMessage = new ChatMessage(sender, message, chatType, channel, time);
-            _chat.AddLast(chatMessage);
         }
 
         public List<ChatMessage> Get()
