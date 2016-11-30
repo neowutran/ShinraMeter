@@ -312,16 +312,16 @@
     <value>死亡していた時間</value>
   </data>
   <data name="Aggro" xml:space="preserve">
-    <value>戦闘</value>
+    <value>ヘイト</value>
   </data>
   <data name="Aggro_Tooltip" xml:space="preserve">
-    <value>戦闘回数</value>
+    <value>ヘイト獲得回数</value>
   </data>
   <data name="Aggro_Time" xml:space="preserve">
-    <value>戦闘時間</value>
+    <value>ヘイト保持時間</value>
   </data>
   <data name="Aggro_Time_Tooltip" xml:space="preserve">
-    <value>"戦闘時間"</value>
+    <value>"ボスのヘイト保持時間"</value>
   </data>
   <data name="Dps" xml:space="preserve">
     <value>DPS</value>
@@ -423,7 +423,7 @@
     <value>必死</value>
   </data>
   <data name="SlayingTooltip" xml:space="preserve">
-    <value>必死の一撃が装着されてる場合表示されます。</value>
+    <value>この状態で"必死の一撃"が装着されてる場合クリスタル効果が発動します。</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>後方</value>
@@ -571,7 +571,7 @@
 ###########################################################</value>
   </data>
   <data name="SystemTray_Export_current_to_Site" xml:space="preserve">
-    <value>サイトへアップロード</value>
+    <value>現在の計測をサイトへアップロード</value>
   </data>
   <data name="FormatPasteString" xml:space="preserve">
     <value>チャットに貼り付ける文字をフォーマット</value>
@@ -617,8 +617,10 @@
     <value>Resources\ja\events-slayer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="events_sorcerer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\ja\events-sorcerer.xml;System.String, mscorlib, Version=4.0.0.0, 
-    =neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>
+      Resources\ja\events-sorcerer.xml;System.String, mscorlib, Version=4.0.0.0,
+      =neutral, PublicKeyToken=b77a5c561934e089;utf-8
+    </value>
   </data>
   <data name="events_warrior" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ja\events-warrior.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -626,4 +628,7 @@
   <data name="events_common" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\en\events-common.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="DisablePartyEvents" xml:space="preserve">
+    <value>パーティーについての通知を無効</value>
+ </data>
 </root>
