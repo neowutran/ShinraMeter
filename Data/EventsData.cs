@@ -220,7 +220,7 @@ namespace Data
             foreach (var abnormality in root.Elements("cooldown"))
             {
                 var skillId = int.Parse(abnormality.Attribute("skill_id").Value);
-                var onlyResetted = bool.Parse(abnormality.Attribute("only_resetted").Value);
+                var onlyResetted = bool.Parse(abnormality.Attribute("only_resetted")?.Value??"True");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
                 var cooldownEvent = new CooldownEvent(ingame, active, skillId, onlyResetted);
