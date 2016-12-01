@@ -30,4 +30,21 @@
 			</notify>
 		</actions>
 	</abnormality>
+
+	<!-- Velik's Mark -->
+	<abnormality active="false" rewarn_timeout_seconds="5" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>600502</abnormality>
+			<abnormality>600501</abnormality>
+			<abnormality>600500</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<beeps>
+					<beep frequency="220" duration="500"/>
+				</beeps>
+			</notify>
+		</actions>
+	</abnormality>
 </events>
