@@ -17,7 +17,7 @@ namespace DamageMeter.AutoUpdate
     public class UpdateManager
     {
 
-        public static readonly string Version = "1.63";
+        public static readonly string Version = "1.64";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 

@@ -31,7 +31,7 @@ namespace DamageMeter
         {
 
             var clip = string.Empty;
-            if (NetworkController.Instance.Server.Region == "TW")   // todo JP & KR command if needed.
+            if (NetworkController.Instance.Server.Region == "TW")
                 clip = "/查看 ";
             else if (NetworkController.Instance.Server.Region == "JP")
                 clip = "/詳細確認 ";

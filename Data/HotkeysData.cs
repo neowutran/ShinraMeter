@@ -177,7 +177,7 @@ namespace Data
                     "hits_received",
                     "descending",
                     @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\",
-                    6
+                    4
                     ),
                 new CopyKey(
                     @"Damage Done @ {encounter} {timer} {partyDps} {enrage}:\",
@@ -188,7 +188,7 @@ namespace Data
                     "damage_percentage",
                     "descending",
                     @"[{class}] {name}: {debuff_list}\",
-                    6
+                    4
                     )
             };
             ExcelSave = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
