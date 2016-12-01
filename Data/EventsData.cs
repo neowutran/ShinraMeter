@@ -82,6 +82,8 @@ namespace Data
         public EventsData(BasicTeraData basicData)
         {
             _basicData = basicData;
+            Events = new Dictionary<Event, List<Actions.Action>>();
+            EventsCommon = new Dictionary<Event, List<Actions.Action>>();
             var eventsdir = Path.Combine(_basicData.ResourceDirectory, "config/events");
             try
             {
@@ -127,8 +129,6 @@ namespace Data
                 BasicTeraData.LogError(ex.Message, true, true);
                 return;
             }
-            Events = new Dictionary<Event, List<Actions.Action>>();
-            EventsCommon = new Dictionary<Event, List<Actions.Action>>();
             ParseAbnormalities(EventsCommon, xml);
             ParseCooldown(EventsCommon, xml);
             ParseCommonAFK(EventsCommon, xml);
