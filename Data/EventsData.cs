@@ -178,7 +178,7 @@ namespace Data
                 if (music.Any())
                 {
                     var musicFile = music.First().Attribute("file").Value;
-                    var volume = float.Parse(music.First().Attribute("volume").Value);
+                    var volume = float.Parse(music.First().Attribute("volume").Value,CultureInfo.InvariantCulture)/100;
                     var duration = int.Parse(music.First().Attribute("duration").Value);
                     soundInterface = new Music(musicFile, volume, duration);
                 }
