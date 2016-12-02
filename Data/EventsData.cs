@@ -82,6 +82,8 @@ namespace Data
         public EventsData(BasicTeraData basicData)
         {
             _basicData = basicData;
+            Events = new Dictionary<Event, List<Actions.Action>>();
+            EventsCommon = new Dictionary<Event, List<Actions.Action>>();
             var eventsdir = Path.Combine(_basicData.ResourceDirectory, "config/events");
             try
             {
@@ -127,8 +129,6 @@ namespace Data
                 BasicTeraData.LogError(ex.Message, true, true);
                 return;
             }
-            Events = new Dictionary<Event, List<Actions.Action>>();
-            EventsCommon = new Dictionary<Event, List<Actions.Action>>();
             ParseAbnormalities(EventsCommon, xml);
             ParseCooldown(EventsCommon, xml);
             ParseCommonAFK(EventsCommon, xml);
@@ -178,7 +178,7 @@ namespace Data
                 if (music.Any())
                 {
                     var musicFile = music.First().Attribute("file").Value;
-                    var volume = float.Parse(music.First().Attribute("volume").Value);
+                    var volume = float.Parse(music.First().Attribute("volume").Value,CultureInfo.InvariantCulture)/100;
                     var duration = int.Parse(music.First().Attribute("duration").Value);
                     soundInterface = new Music(musicFile, volume, duration);
                 }

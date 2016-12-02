@@ -93,7 +93,7 @@ namespace DamageMeter.UI
                 Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, flash.Balloon.DisplayTime);
             }
 
-            flash.Sound?.Play();
+            if (flash.Sound!=null) Task.Run(()=>flash.Sound.Play());
             
         }
 
