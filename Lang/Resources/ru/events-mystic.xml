@@ -9,9 +9,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}!" display_time="3000" />
-				<beeps>
-					<beep frequency="110" duration="500"/>
-				</beeps>
+				<text_to_speech text="Адреналин!" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -24,9 +22,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<beeps>
-					<beep frequency="196" duration="500"/>
-				</beeps>
+				<text_to_speech text="Баффни на выносливость!" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -40,9 +36,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="Aura" body_text="Включи ауру на ману!" display_time="3000" />
-				<beeps>
-					<beep frequency="220" duration="500"/>
-				</beeps>
+				<text_to_speech text="Включи ауру на ману!" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -56,9 +50,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="392" duration="500"/>
-				</beeps>
+				<text_to_speech text="Порежь босса!" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -76,9 +68,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="Aura" body_text="Включи ауру на крит/бег!" display_time="3000" />
-				<beeps>
-					<beep frequency="440" duration="500"/>
-				</beeps>
+				<text_to_speech text="Включи ауру на крит!" />
 			</notify>
 		</actions>
 	</abnormality>

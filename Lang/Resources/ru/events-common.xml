@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	<!-- Notification when something happen & you are not on the Tera windows -->
+	<common_afk>
+		<actions>
+				<notify>
+					<balloon title_text="{afk_title}" body_text="{afk_body}" display_time="3000" />
+					<text_to_speech text="{afk_title}" />
+				</notify>
+			</actions>
+	</common_afk>
+	
+	<!-- The boss became enraged -->
+	<abnormality ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="Ярость!" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Hurricane -->
+	<abnormality ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>60010</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="Ураган!" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Joy of party is at 100% (everyone is in the dungeons) -->
+	<abnormality ingame="false" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>999001021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="Все в сборе" />
+			</notify>
+		</actions>
+	</abnormality>
+		
+	<!-- Raid 30, phase 3, black debuff (Dust) -->
+	<abnormality ingame="false" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>950069</abnormality>
+			<abnormality>950180</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="Черный дебафф" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Raid 30, phase 3, red debuff (Flame) -->
+	<abnormality ingame="false" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>950068</abnormality>
+			<abnormality>950165</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="Красный дебафф" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Crystal bind check for yourself -->
+	<abnormality ingame="true" remaining_seconds_before_trigger="50" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>CrystalBind</abnormality>
+			<abnormality>CCrystalBind</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<text_to_speech text="Хранитель кончается!" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Crystal bind check for your party members -->
+	<abnormality ingame="true" remaining_seconds_before_trigger="240" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
+		<abnormalities>
+			<abnormality>CrystalBind</abnormality>
+			<abnormality>CCrystalBind</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<text_to_speech text="Люди в пати без хранителя!" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Everful Nostrum for yourself -->
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="3" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>4031</abnormality>
+			<abnormality>4030</abnormality>
+			<abnormality>4020</abnormality>
+			<abnormality>4021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<text_to_speech text="Желтая банка не выпита!" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Everful Nostrum for your party members -->
+	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
+		<abnormalities>
+			<abnormality>4031</abnormality>
+			<abnormality>4030</abnormality>
+			<abnormality>4020</abnormality>
+			<abnormality>4021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<text_to_speech text="Раки в пати без желтой банки!" />
+			</notify>
+		</actions>
+	</abnormality>
+</events>
