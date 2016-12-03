@@ -17,7 +17,8 @@ namespace Data.Events.Abnormality
         public List<HotDot.Types> Types { get; set; }
         public AbnormalityTargetType Target { get; set; }
         public AbnormalityTriggerType Trigger { get; set; }
-        public AbnormalityEvent(bool inGame, bool active, int priority, Dictionary<int,int> areaBossBlackList, List<int> ids, List<HotDot.Types> types, AbnormalityTargetType target, AbnormalityTriggerType trigger, int remainingSecondsBeforeTrigger, int rewarnTimeoutSecounds): base(inGame, active, priority, areaBossBlackList)
+        public bool BossAttackedBySelf { get; set; }
+        public AbnormalityEvent(bool inGame, bool active, int priority, Dictionary<int,int> areaBossBlackList, List<int> ids, List<HotDot.Types> types, AbnormalityTargetType target, AbnormalityTriggerType trigger, int remainingSecondsBeforeTrigger, int rewarnTimeoutSecounds, bool attackedBySelf): base(inGame, active, priority, areaBossBlackList)
         {
             Types = types;
             Ids = ids;
@@ -25,6 +26,7 @@ namespace Data.Events.Abnormality
             Trigger = trigger;
             RemainingSecondBeforeTrigger = remainingSecondsBeforeTrigger;
             RewarnTimeoutSeconds = rewarnTimeoutSecounds;
+            BossAttackedBySelf = attackedBySelf;
         }
     }
 }

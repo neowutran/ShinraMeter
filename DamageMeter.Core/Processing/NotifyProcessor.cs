@@ -172,6 +172,7 @@ namespace DamageMeter.Processing
                 if (boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId))) { continue; }
                 if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) continue; 
                 if (abnormalityEvent.Target == AbnormalityTargetType.Self && ( meterUser.Id != source)) continue;
+                if (abnormalityEvent.Target == AbnormalityTargetType.Boss && abnormalityEvent.BossAttackedBySelf && source != meterUser.Id) { continue; }
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss) entityIdToCheck = _lastBoss.Value;
                 if ((abnormalityEvent.Target == AbnormalityTargetType.Party || abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded) && BasicTeraData.Instance.WindowData.DisablePartyEvent) continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Party)
@@ -190,7 +191,6 @@ namespace DamageMeter.Processing
                 }
 
                 if (player.OutOfRange) { continue; }
-                //if (!NetworkController.Instance.AbnormalityTracker.HaveAbnormalities(entityIdToCheck)){ continue; }
 
                 if (!e.Key.NextChecks.ContainsKey(entityIdToCheck))
                 {

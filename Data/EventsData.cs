@@ -233,11 +233,7 @@ namespace Data
             foreach (var blacklist in root.Element("area_boss_blacklist").Elements("blacklist"))
             {
                 var areaId = int.Parse(blacklist.Attribute("area_id").Value);
-                int bossId = -1;
-                if(blacklist.Attribute("boss_id") != null)
-                {
-                    bossId = int.Parse(blacklist.Attribute("boss_id").Value);
-                }
+                int bossId = int.Parse(blacklist.Attribute("boss_id")?.Value ?? "-1");
                 areaBossBlacklist.Add(areaId, bossId);
 
             }
@@ -288,6 +284,7 @@ namespace Data
                     types.Add(type);
                 }
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
+                var attackedBySelf = bool.Parse(abnormality.Attribute("only_boss_attacked_by_self")?.Value ?? "false");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? "5");
                 AbnormalityTargetType target;
@@ -301,7 +298,7 @@ namespace Data
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                     rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value??"0");
                 }
-                var abnormalityEvent = new AbnormalityEvent(ingame,active, priority, ParseAreaBossBlackList(abnormality), ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
+                var abnormalityEvent = new AbnormalityEvent(ingame,active, priority, ParseAreaBossBlackList(abnormality), ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds, attackedBySelf);
                 events.Add(abnormalityEvent, new List<Actions.Action>());
                 ParseActions(abnormality, events, abnormalityEvent);
             }
