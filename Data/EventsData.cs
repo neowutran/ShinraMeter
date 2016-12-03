@@ -22,10 +22,16 @@ namespace Data
     public class EventsData
     {
        
-        public Dictionary<Event, List<Actions.Action>> EventsCommon { get; private set; }
-        public Dictionary<Event, List<Actions.Action>> EventsClass { get; private set; }
+        private Dictionary<Event, List<Actions.Action>> EventsCommon {  get; set; }
+        private Dictionary<Event, List<Actions.Action>> EventsClass { get; set; }
+        public Dictionary<Event, List<Actions.Action>> MissingAbnormalities { get; private set; }
+        public Dictionary<Event, List<Actions.Action>> AddedRemovedAbnormalities { get; private set; }
         public Dictionary<Event, List<Actions.Action>> Events { get; private set; }
-      
+
+        public Dictionary<Event, List<Actions.Action>> Cooldown { get; private set; }
+        public Tuple<Event, List<Actions.Action>> AFK { get; private set; }
+
+
 
         public void Load(PlayerClass playerClass)
         {
@@ -35,24 +41,13 @@ namespace Data
             FileStream filestreamClass;
             try
             {
-                var attrs = File.GetAttributes(windowFile);
-                File.SetAttributes(windowFile, attrs & ~FileAttributes.ReadOnly);
-            }
-            catch
-            {
-                //ignore
-            }
-
-            try
-            {
-                filestreamClass = new FileStream(windowFile, FileMode.Open, FileAccess.ReadWrite);
+                filestreamClass = new FileStream(windowFile, FileMode.Open, FileAccess.Read);
                 xml = XDocument.Load(filestreamClass);
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 BasicTeraData.LogError(ex.Message, true, true);
                 Save();
-                filestreamClass = new FileStream(windowFile, FileMode.Open, FileAccess.ReadWrite);
                 return;
             }
             catch (Exception ex)
@@ -61,28 +56,53 @@ namespace Data
                 return;
             }
             EventsClass = new Dictionary<Event, List<Actions.Action>>();
+            MissingAbnormalities = new Dictionary<Event, List<Actions.Action>>();
+            AddedRemovedAbnormalities = new Dictionary<Event, List<Actions.Action>>();
+            Cooldown = new Dictionary<Event, List<Actions.Action>>();
             Events = new Dictionary<Event, List<Actions.Action>>();
+            AFK = null;
             ParseAbnormalities(EventsClass, xml);
             ParseCooldown(EventsClass, xml);
-
-            foreach (var e in EventsCommon)
-            {
-                Events.Add(e.Key, e.Value);
-            }
-            foreach(var e in EventsClass)
-            {
-                Events.Add(e.Key, e.Value);
-            }
-
+            AssociateEvent(EventsCommon);
+            AssociateEvent(EventsClass);
         }
 
-        BasicTeraData _basicData;
+        readonly BasicTeraData _basicData;
 
+        private void AssociateEvent(Dictionary<Event, List<Actions.Action>> rootEvents){
+            foreach (var e in rootEvents)
+            {
+                Events.Add(e.Key, e.Value);
+                var evAbnormalities = e.Key as AbnormalityEvent;
+                if (evAbnormalities != null)
+                {
+                    if (evAbnormalities.Trigger == AbnormalityTriggerType.MissingDuringFight)
+                    {
+                        MissingAbnormalities.Add(e.Key, e.Value);
+                    }
+                    else
+                    {
+                        AddedRemovedAbnormalities.Add(e.Key, e.Value);
+                    }
+                }
+
+                var evCooldown = e.Key as CooldownEvent;
+                if (evCooldown != null)
+                {
+                    Cooldown.Add(e.Key, e.Value);
+                }
+
+                var evAFK = e.Key as CommonAFKEvent;
+                if (evAFK != null)
+                {
+                    AFK = new Tuple<Event, List<Actions.Action>>(e.Key, e.Value);
+                }
+            }
+        }
 
         public EventsData(BasicTeraData basicData)
         {
             _basicData = basicData;
-            Events = new Dictionary<Event, List<Actions.Action>>();
             EventsCommon = new Dictionary<Event, List<Actions.Action>>();
             var eventsdir = Path.Combine(_basicData.ResourceDirectory, "config/events");
             try
@@ -102,26 +122,16 @@ namespace Data
             var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-common.xml");
             XDocument xml;
             FileStream filestreamCommon;
+            
             try
             {
-                var attrs = File.GetAttributes(windowFile);
-                File.SetAttributes(windowFile, attrs & ~FileAttributes.ReadOnly);
-            }
-            catch
-            {
-                //ignore
-            }
-
-            try
-            {
-                filestreamCommon = new FileStream(windowFile, FileMode.Open, FileAccess.ReadWrite);
+                filestreamCommon = new FileStream(windowFile, FileMode.Open, FileAccess.Read);
                 xml = XDocument.Load(filestreamCommon);
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 BasicTeraData.LogError(ex.Message, true, true);
                 Save();
-                filestreamCommon = new FileStream(windowFile, FileMode.Open, FileAccess.ReadWrite);
                 return;
             }
             catch (Exception ex)
@@ -213,6 +223,27 @@ namespace Data
             }
         }
 
+        private Dictionary<int,int> ParseAreaBossBlackList(XElement root)
+        {
+            var areaBossBlacklist = new Dictionary<int, int>();
+            if(root.Element("area_boss_blacklist") == null)
+            {
+                return areaBossBlacklist;
+            }
+            foreach (var blacklist in root.Element("area_boss_blacklist").Elements("blacklist"))
+            {
+                var areaId = int.Parse(blacklist.Attribute("area_id").Value);
+                int bossId = -1;
+                if(blacklist.Attribute("boss_id") != null)
+                {
+                    bossId = int.Parse(blacklist.Attribute("boss_id").Value);
+                }
+                areaBossBlacklist.Add(areaId, bossId);
+
+            }
+            return areaBossBlacklist;
+        }
+
         private void ParseCooldown(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
         {
             var root = xml.Root;
@@ -223,7 +254,8 @@ namespace Data
                 var onlyResetted = bool.Parse(abnormality.Attribute("only_resetted")?.Value??"True");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
-                var cooldownEvent = new CooldownEvent(ingame, active, skillId, onlyResetted);
+                var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? "5");
+                var cooldownEvent = new CooldownEvent(ingame, active, priority, ParseAreaBossBlackList(abnormality), skillId, onlyResetted);
                 events.Add(cooldownEvent, new List<Actions.Action>());
                 ParseActions(abnormality, events, cooldownEvent);
             }
@@ -257,6 +289,7 @@ namespace Data
                 }
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
+                var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? "5");
                 AbnormalityTargetType target;
                 AbnormalityTriggerType trigger;
                 Enum.TryParse(abnormality.Attribute("target").Value, true, out target);
@@ -268,7 +301,7 @@ namespace Data
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                     rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value??"0");
                 }
-                var abnormalityEvent = new AbnormalityEvent(ingame,active, ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
+                var abnormalityEvent = new AbnormalityEvent(ingame,active, priority, ParseAreaBossBlackList(abnormality), ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Actions.Action>());
                 ParseActions(abnormality, events, abnormalityEvent);
             }

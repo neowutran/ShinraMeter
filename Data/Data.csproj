@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Actions\Action.cs" />
     <Compile Include="Actions\Notify\Balloon.cs" />
+    <Compile Include="Actions\Notify\NotifyFlashMessage.cs" />
     <Compile Include="Actions\Notify\NotifyAction.cs" />
     <Compile Include="Actions\Notify\SoundElements\Beeps.cs" />
     <Compile Include="Actions\Notify\SoundElements\SoundInterface.cs" />

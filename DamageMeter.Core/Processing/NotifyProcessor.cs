@@ -17,7 +17,7 @@ using Data.Actions.Notify.SoundElements;
 
 namespace DamageMeter.Processing
 {
-    class NotifyProcessor
+    static class NotifyProcessor
     {
         internal static void InstanceMatchingSuccess(Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH message)
         {
@@ -29,34 +29,34 @@ namespace DamageMeter.Processing
             Process();
         }
 
-        internal static NotifyAction DefaultNotifyAction(string titleText, string bodyText)
+        internal static NotifyFlashMessage DefaultNotifyAction(string titleText, string bodyText)
         {
-            foreach(var ev in BasicTeraData.Instance.EventsData.Events)
+            var ev = BasicTeraData.Instance.EventsData.AFK;
+            
+            if(ev.Item1 is CommonAFKEvent)
             {
-                if(ev.Key is CommonAFKEvent)
+                if (!ev.Item1.Active) return null;
+                foreach (var action in ev.Item2)
                 {
-                    if (!ev.Key.Active) continue;
-                    foreach (var action in ev.Value)
+                    if(action is NotifyAction)
                     {
-                        if(action is NotifyAction)
+                        var notifyAction = ((NotifyAction)action).Clone();
+                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{afk_body}", bodyText);
+                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{afk_title}", titleText);
+
+
+                        if(notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
                         {
-                            var notifyAction = ((NotifyAction)action).Clone();
-                            notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{afk_body}", bodyText);
-                            notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{afk_title}", titleText);
-
-
-                            if(notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
-                            {
-                                var tts = (TextToSpeech)notifyAction.Sound;
-                                tts.Text = tts.Text.Replace("{afk_body}", bodyText);
-                                tts.Text = tts.Text.Replace("{afk_title}", titleText);
-                            }
-
-                            return notifyAction;
+                            var tts = (TextToSpeech)notifyAction.Sound;
+                            tts.Text = tts.Text.Replace("{afk_body}", bodyText);
+                            tts.Text = tts.Text.Replace("{afk_title}", titleText);
                         }
+
+                        return new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, ev.Item1.Priority);
                     }
                 }
             }
+            
             return null;     
         }
         private static void Process()
@@ -158,14 +158,18 @@ namespace DamageMeter.Processing
             if (NetworkController.Instance.AbnormalityStorage.DeadOrJustResurrected(NetworkController.Instance.PlayerTracker.Me())) return;
             var teraActive = TeraWindow.IsTeraActive();
             var time = DateTime.Now;
-            foreach (var e in BasicTeraData.Instance.EventsData.Events)
+            var boss = (NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(_lastBoss.Value);
+
+            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities)
             {
                 if (!e.Key.Active) continue;
                 EntityId entityIdToCheck = meterUser.Id;
                 UserEntity player = meterUser;
+                if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
                 if (e.Key.GetType() != typeof(AbnormalityEvent)) continue;
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
                 if (abnormalityEvent.InGame != teraActive) continue;
+                if (boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId))) { continue; }
                 if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) continue; 
                 if (abnormalityEvent.Target == AbnormalityTargetType.Self && ( meterUser.Id != source)) continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss) entityIdToCheck = _lastBoss.Value;
@@ -282,7 +286,7 @@ namespace DamageMeter.Processing
                         }
 
                     }
-                    NetworkController.Instance.FlashMessage = notifyAction;
+                    NetworkController.Instance.FlashMessage = new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, e.Key.Priority) ;
                 }
             }
         }
@@ -305,13 +309,15 @@ namespace DamageMeter.Processing
             if (meterUser == null || _lastBoss == null) return;
             if (_lastBossHP == 0) return;
             var teraActive = TeraWindow.IsTeraActive();
+            var boss = (NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(_lastBoss.Value);
 
-            foreach (var e in BasicTeraData.Instance.EventsData.Events)
+            foreach (var e in BasicTeraData.Instance.EventsData.Cooldown)
             {
                 if (!e.Key.Active) continue;
-                UserEntity player = meterUser;
+                if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
                 if (e.Key.InGame != teraActive) continue;
                 if (e.Key.GetType() != typeof(CooldownEvent)) { continue; }
+                if (boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId))) { continue; }
                 var cooldownEvent = (CooldownEvent)e.Key;
                 if(cooldownEvent.SkillId != skillId) { continue; }
 
@@ -330,7 +336,7 @@ namespace DamageMeter.Processing
                         var textToSpeech = (TextToSpeech)notifyAction.Sound;
                         textToSpeech.Text = textToSpeech.Text.Replace("{skill_name}", skill?.Name ?? skillId.ToString());
                     }
-                    NetworkController.Instance.FlashMessage = notifyAction;
+                    NetworkController.Instance.FlashMessage = new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, e.Key.Priority);
                 }
             }
         }
@@ -343,17 +349,21 @@ namespace DamageMeter.Processing
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
             if (meterUser == null || _lastBoss == null) return;
             if (_lastBossHP==0) return;
+            var boss = (NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(_lastBoss.Value);
+            
             var teraActive = TeraWindow.IsTeraActive();
 
-            foreach (var e in BasicTeraData.Instance.EventsData.Events)
+            foreach (var e in BasicTeraData.Instance.EventsData.AddedRemovedAbnormalities)
             {
                 if (!e.Key.Active) continue;
                 UserEntity player = meterUser;
+                if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
                 if (e.Key.GetType() != typeof(AbnormalityEvent)){ continue; }
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
                 if (abnormalityEvent.InGame != teraActive) continue;
                 if (!abnormalityEvent.Ids.Contains(abnormalityId)) { continue; }
                 if (abnormalityEvent.Trigger != trigger) { continue; }
+                if(boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId))){continue;}
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target)  continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) continue;
                 if ((abnormalityEvent.Target == AbnormalityTargetType.Party || abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded) && BasicTeraData.Instance.WindowData.DisablePartyEvent) continue;
@@ -394,7 +404,7 @@ namespace DamageMeter.Processing
                         }
                         textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", abnormality.Name);
                     }
-                    NetworkController.Instance.FlashMessage = notifyAction;
+                    NetworkController.Instance.FlashMessage = new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, e.Key.Priority);
                 }
             }
         }

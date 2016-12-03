@@ -81,7 +81,7 @@ namespace DamageMeter.UI
 
      
 
-        public void ShowBallon(NotifyAction flash)
+        public void ShowBallon(NotifyFlashMessage flash)
         {
             if (flash == null) return;
 
@@ -451,12 +451,12 @@ namespace DamageMeter.UI
 
         private void DisablePartyEvent(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.DisablePartyEvent = false;
+            BasicTeraData.Instance.WindowData.DisablePartyEvent = true;
         }
 
         private void EnablePartyEvent(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.DisablePartyEvent = true;
+            BasicTeraData.Instance.WindowData.DisablePartyEvent = false;
         }
 
     }
