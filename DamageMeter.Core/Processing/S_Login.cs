@@ -47,8 +47,8 @@ namespace DamageMeter.Processing
             NetworkController.Instance.AbnormalityStorage.EndAll(message.Time.Ticks);
             NetworkController.Instance.AbnormalityTracker = new AbnormalityTracker(NetworkController.Instance.EntityTracker, NetworkController.Instance.PlayerTracker,
                 BasicTeraData.Instance.HotDotDatabase, NetworkController.Instance.AbnormalityStorage, DamageTracker.Instance.Update);
-            NetworkController.Instance.AbnormalityTracker.AbnormalityAdded += NotifyProcessor.AbnormalityNotifierAdded;
-            NetworkController.Instance.AbnormalityTracker.AbnormalityRemoved += NotifyProcessor.AbnormalityNotifierRemoved;
+            NetworkController.Instance.AbnormalityTracker.AbnormalityAdded += NotifyProcessor.Instance.AbnormalityNotifierAdded;
+            NetworkController.Instance.AbnormalityTracker.AbnormalityRemoved += NotifyProcessor.Instance.AbnormalityNotifierRemoved;
 
             NetworkController.Instance.OnGuildIconAction(NetworkController.Instance.UserLogoTracker.GetLogo(message.PlayerId));
             NetworkController.Instance.EntityTracker.Update(message);

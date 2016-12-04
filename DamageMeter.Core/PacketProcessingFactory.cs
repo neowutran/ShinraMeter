@@ -21,19 +21,19 @@ namespace DamageMeter
         };
         private static readonly Dictionary<Type, Delegate> MessageToProcessingOptionnal = new Dictionary<Type, Delegate>
         {
-            {typeof(Tera.Game.Messages.S_BOSS_GAGE_INFO) , new Action<Tera.Game.Messages.S_BOSS_GAGE_INFO>((x)=>NotifyProcessor.S_BOSS_GAGE_INFO(x)) },//override with optional processing
-            {typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>NotifyProcessor.SpawnMe(x)) },//override with optional processing
+            {typeof(Tera.Game.Messages.S_BOSS_GAGE_INFO) , new Action<Tera.Game.Messages.S_BOSS_GAGE_INFO>((x)=>NotifyProcessor.Instance.S_BOSS_GAGE_INFO(x)) },//override with optional processing
+            {typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>NotifyProcessor.Instance.SpawnMe(x)) },//override with optional processing
             {typeof(Tera.Game.Messages.S_CHAT), new Action<Tera.Game.Messages.S_CHAT>(x=> DamageMeter.Chat.Instance.Add(x))},
             {typeof(Tera.Game.Messages.S_WHISPER), new Action<Tera.Game.Messages.S_WHISPER>(x=>DamageMeter.Chat.Instance.Add(x))},
-            {typeof(Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED), new Action<Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED> (x=>NotifyProcessor.S_TRADE_BROKER_DEAL_SUGGESTED(x)) },
-            {typeof(Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY) , new Action<Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY>(x=> NotifyProcessor.S_OTHER_USER_APPLY_PARTY(x)) },
+            {typeof(Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED), new Action<Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED> (x=>NotifyProcessor.Instance.S_TRADE_BROKER_DEAL_SUGGESTED(x)) },
+            {typeof(Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY) , new Action<Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY>(x=> NotifyProcessor.Instance.S_OTHER_USER_APPLY_PARTY(x)) },
             {typeof(Tera.Game.Messages.S_PRIVATE_CHAT) , new Action<Tera.Game.Messages.S_PRIVATE_CHAT>(x=>DamageMeter.Chat.Instance.Add(x))},
-            {typeof(Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH), new Action<Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH>(x=> NotifyProcessor.InstanceMatchingSuccess(x)) },
-            {typeof(Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO), new Action<Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO>(x=>NotifyProcessor.InstanceMatchingSuccess(x)) },
-            {typeof(Tera.Game.Messages.S_REQUEST_CONTRACT), new Action<Tera.Game.Messages.S_REQUEST_CONTRACT>(x=>NotifyProcessor.S_REQUEST_CONTRACT(x)) },
-            {typeof(Tera.Game.Messages.S_CHECK_TO_READY_PARTY), new Action<Tera.Game.Messages.S_CHECK_TO_READY_PARTY>(x=>NotifyProcessor.S_CHECK_TO_READY_PARTY(x)) },
+            {typeof(Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH), new Action<Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH>(x=> NotifyProcessor.Instance.InstanceMatchingSuccess(x)) },
+            {typeof(Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO), new Action<Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO>(x=>NotifyProcessor.Instance.InstanceMatchingSuccess(x)) },
+            {typeof(Tera.Game.Messages.S_REQUEST_CONTRACT), new Action<Tera.Game.Messages.S_REQUEST_CONTRACT>(x=>NotifyProcessor.Instance.S_REQUEST_CONTRACT(x)) },
+            {typeof(Tera.Game.Messages.S_CHECK_TO_READY_PARTY), new Action<Tera.Game.Messages.S_CHECK_TO_READY_PARTY>(x=>NotifyProcessor.Instance.S_CHECK_TO_READY_PARTY(x)) },
             {typeof(Tera.Game.Messages.S_GUILD_QUEST_LIST), Helpers.Contructor<Func<Tera.Game.Messages.S_GUILD_QUEST_LIST , DamageMeter.Processing.S_GUILD_QUEST_LIST>>() },
-            {typeof(Tera.Game.Messages.S_CREST_MESSAGE), new Action<Tera.Game.Messages.S_CREST_MESSAGE>((x)=>NotifyProcessor.SkillReset(x.SkillId, x.Type)) },
+            {typeof(Tera.Game.Messages.S_CREST_MESSAGE), new Action<Tera.Game.Messages.S_CREST_MESSAGE>((x)=>NotifyProcessor.Instance.SkillReset(x.SkillId, x.Type)) },
 
         };
         private static readonly Dictionary<Type, Delegate> MessageToProcessing = new Dictionary<Type, Delegate>

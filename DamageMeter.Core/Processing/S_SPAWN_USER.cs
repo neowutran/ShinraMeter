@@ -12,7 +12,7 @@ namespace DamageMeter.Processing
         {
             NetworkController.Instance.EntityTracker.Update(message);
             NetworkController.Instance.AbnormalityTracker.Update(message);
-            NotifyProcessor.SpawnUser(message);
+            NotifyProcessor.Instance.SpawnUser(message);
         }
     }
 }

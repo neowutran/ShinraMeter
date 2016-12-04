@@ -11,7 +11,6 @@ namespace DamageMeter.Processing
         public static void Process(Tera.Game.Messages.SpawnMeServerMessage message)
         {
             NetworkController.Instance.AbnormalityTracker.Update(message);
-            NetworkController.Instance.PlayerTracker.ResetOutOfRange();
         }
     }
 }

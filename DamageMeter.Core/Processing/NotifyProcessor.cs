@@ -17,19 +17,28 @@ using Data.Actions.Notify.SoundElements;
 
 namespace DamageMeter.Processing
 {
-    static class NotifyProcessor
+    internal class NotifyProcessor
     {
-        internal static void InstanceMatchingSuccess(Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH message)
+
+        private NotifyProcessor()
         {
-            Process();
+
+        }
+        private static NotifyProcessor _instance;
+
+        public static NotifyProcessor Instance => _instance ?? (_instance = new NotifyProcessor());
+
+        internal void InstanceMatchingSuccess(Tera.Game.Messages.S_FIN_INTER_PARTY_MATCH message)
+        {
+            MatchingSuccess();
         }
 
-        internal static void InstanceMatchingSuccess(Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO message)
+        internal void InstanceMatchingSuccess(Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO message)
         {
-            Process();
+            MatchingSuccess();
         }
 
-        internal static NotifyFlashMessage DefaultNotifyAction(string titleText, string bodyText)
+        internal NotifyFlashMessage DefaultNotifyAction(string titleText, string bodyText)
         {
             var ev = BasicTeraData.Instance.EventsData.AFK;
             
@@ -58,7 +67,7 @@ namespace DamageMeter.Processing
             
             return null;     
         }
-        private static void Process()
+        private void MatchingSuccess()
         {
             if (!TeraWindow.IsTeraActive())
             {
@@ -69,21 +78,18 @@ namespace DamageMeter.Processing
             }
         }
 
-        internal static void S_CHECK_TO_READY_PARTY(Tera.Game.Messages.S_CHECK_TO_READY_PARTY message)
+        internal void S_CHECK_TO_READY_PARTY(Tera.Game.Messages.S_CHECK_TO_READY_PARTY message)
         {
-            if (message.Count == 1)
-            {
-                if (!TeraWindow.IsTeraActive())
-                {
-                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(
-                        LP.CombatReadyCheck,
-                        LP.CombatReadyCheck
-                        );
-                }
+            if (message.Count == 1 && !TeraWindow.IsTeraActive())
+            {    
+                NetworkController.Instance.FlashMessage = DefaultNotifyAction(
+                    LP.CombatReadyCheck,
+                    LP.CombatReadyCheck
+                    );
             }
         }
 
-        internal static void S_OTHER_USER_APPLY_PARTY(Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY message)
+        internal void S_OTHER_USER_APPLY_PARTY(Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY message)
         {
             if (!TeraWindow.IsTeraActive())
             {
@@ -105,7 +111,7 @@ namespace DamageMeter.Processing
             }
         }
 
-        internal static void S_TRADE_BROKER_DEAL_SUGGESTED(Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED message)
+        internal void S_TRADE_BROKER_DEAL_SUGGESTED(Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED message)
         {
             if (!TeraWindow.IsTeraActive())
             {
@@ -118,7 +124,7 @@ namespace DamageMeter.Processing
             }
         }
 
-        internal static void S_REQUEST_CONTRACT(Tera.Game.Messages.S_REQUEST_CONTRACT message)
+        internal void S_REQUEST_CONTRACT(Tera.Game.Messages.S_REQUEST_CONTRACT message)
         {
             if (!TeraWindow.IsTeraActive())
             {
@@ -146,8 +152,7 @@ namespace DamageMeter.Processing
             }
         }
 
-
-        internal static void AbnormalityNotifierMissing()
+        private void CheckAnormalityNotifierMissing()
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
             if (NetworkController.Instance.NeedInit) return;
@@ -168,8 +173,9 @@ namespace DamageMeter.Processing
                 if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Self) { entitiesIdToCheck.Add(meterUser.Id); }
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss) { entitiesIdToCheck.Add(_lastBoss.Value); }
-                if(abnormalityEvent.Target == AbnormalityTargetType.MyBoss) {
-                    if(_lastBossMeterUser == null || _lastBossHPMeterUser == 0){continue;}
+                if (abnormalityEvent.Target == AbnormalityTargetType.MyBoss)
+                {
+                    if (_lastBossMeterUser == null || _lastBossHPMeterUser == 0) { continue; }
                     entitiesIdToCheck.Add(_lastBossMeterUser.Value);
                 }
                 if ((abnormalityEvent.Target == AbnormalityTargetType.Party || abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded) && BasicTeraData.Instance.WindowData.DisablePartyEvent) continue;
@@ -300,30 +306,43 @@ namespace DamageMeter.Processing
                 }
             }
         }
+        internal void AbnormalityNotifierMissing()
+        {
+            CheckAnormalityNotifierMissing();
+            CheckableEntities = new List<EntityId>();
+        }
 
-        internal static void UpdateMeterBoss(Tera.Game.Messages.EachSkillResultServerMessage message)
+        public List<EntityId> CheckableEntities = new List<EntityId>();
+
+        internal void UpdateMeterBoss(Tera.Game.Messages.EachSkillResultServerMessage message)
         {
             var source = NetworkController.Instance.EntityTracker.GetOrNull(message.Source) as UserEntity;
-            if(NetworkController.Instance.EntityTracker.MeterUser != source) { return; }
+            if(source == null) { return; }
+            if (!CheckableEntities.Contains(source.Id))
+            {
+                CheckableEntities.Add(source.Id);
+            }
+            if (NetworkController.Instance.EntityTracker.MeterUser != source) { return; }
             var target = NetworkController.Instance.EntityTracker.GetOrNull(message.Target) as NpcEntity;
             if(target == null) { return; }
+            CheckableEntities.Add(target.Id);
             if (target.Info.Boss)
             {
                 _lastBossMeterUser = target.Id;
             }
         }
 
-        internal static void AbnormalityNotifierAdded(EntityId target, int abnormalityId)
+        internal void AbnormalityNotifierAdded(EntityId target, int abnormalityId)
         {
             AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Added);
         }
 
-        internal static void AbnormalityNotifierRemoved(EntityId target, int abnormalityId)
+        internal void AbnormalityNotifierRemoved(EntityId target, int abnormalityId)
         {
             AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Removed);
         }
 
-        internal static void SkillReset(int skillId, CrestType type)
+        internal void SkillReset(int skillId, CrestType type)
         {
             if (type != CrestType.Reset) return;
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
@@ -362,7 +381,7 @@ namespace DamageMeter.Processing
         }
         
 
-        private static void AbnormalityNotifierCommon(EntityId target, int abnormalityId, AbnormalityTriggerType trigger)
+        private void AbnormalityNotifierCommon(EntityId target, int abnormalityId, AbnormalityTriggerType trigger)
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
 
@@ -431,11 +450,11 @@ namespace DamageMeter.Processing
                 }
             }
         }
-        private static EntityId? _lastBoss;
-        private static EntityId? _lastBossMeterUser;
-        private static long _lastBossHP;
-        private static long _lastBossHPMeterUser;
-        internal static void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
+        private EntityId? _lastBoss;
+        private EntityId? _lastBossMeterUser;
+        private long _lastBossHP;
+        private long _lastBossHPMeterUser;
+        internal void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
             _lastBoss = message.EntityId;
@@ -449,7 +468,7 @@ namespace DamageMeter.Processing
             }      
         }
 
-        internal static void SpawnMe(Tera.Game.Messages.SpawnMeServerMessage message)
+        internal void SpawnMe(Tera.Game.Messages.SpawnMeServerMessage message)
         {
             S_SPAWN_ME.Process(message);
             _lastBoss = null;
@@ -462,7 +481,7 @@ namespace DamageMeter.Processing
             }
         }
 
-        internal static void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)
+        internal void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)
         {
             foreach (var e in BasicTeraData.Instance.EventsData.Events.Keys)
             {
@@ -470,7 +489,7 @@ namespace DamageMeter.Processing
             }
         }
 
-        internal static void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
+        internal void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
             if (message.Npc == _lastBoss)
             {
@@ -484,7 +503,7 @@ namespace DamageMeter.Processing
             }
         }
 
-        internal static void S_BEGIN_THROUGH_ARBITER_CONTRACT(S_BEGIN_THROUGH_ARBITER_CONTRACT message)
+        internal void S_BEGIN_THROUGH_ARBITER_CONTRACT(S_BEGIN_THROUGH_ARBITER_CONTRACT message)
         {
             if (message.PlayerName.StartsWith("Error")) BasicTeraData.LogError(message.PlayerName);
         }
