@@ -152,7 +152,7 @@ namespace DamageMeter.Processing
             }
         }
 
-        private void CheckAnormalityNotifierMissing()
+        internal void AbnormalityNotifierMissing()
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
             if (NetworkController.Instance.NeedInit) return;
@@ -306,26 +306,13 @@ namespace DamageMeter.Processing
                 }
             }
         }
-        internal void AbnormalityNotifierMissing()
-        {
-            CheckAnormalityNotifierMissing();
-            CheckableEntities = new List<EntityId>();
-        }
-
-        public List<EntityId> CheckableEntities = new List<EntityId>();
 
         internal void UpdateMeterBoss(Tera.Game.Messages.EachSkillResultServerMessage message)
         {
             var source = NetworkController.Instance.EntityTracker.GetOrNull(message.Source) as UserEntity;
-            if(source == null) { return; }
-            if (!CheckableEntities.Contains(source.Id))
-            {
-                CheckableEntities.Add(source.Id);
-            }
             if (NetworkController.Instance.EntityTracker.MeterUser != source) { return; }
             var target = NetworkController.Instance.EntityTracker.GetOrNull(message.Target) as NpcEntity;
             if(target == null) { return; }
-            CheckableEntities.Add(target.Id);
             if (target.Info.Boss)
             {
                 _lastBossMeterUser = target.Id;
