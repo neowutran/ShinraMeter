@@ -9,8 +9,8 @@ namespace DamageMeter.Processing
     public static class S_SPAWN_ME
     {
         public static void Process(Tera.Game.Messages.SpawnMeServerMessage message)
-        { 
-            NotifyProcessor.SpawnMe(message);
+        {
+            NetworkController.Instance.AbnormalityTracker.Update(message);
             NetworkController.Instance.PlayerTracker.ResetOutOfRange();
         }
     }
