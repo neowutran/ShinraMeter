@@ -124,6 +124,8 @@ namespace DamageMeter
 
         private void UpdateUi(int packetsWaiting = 0)
         {
+            NotifyProcessor.AbnormalityNotifierMissing();
+
             if (BasicTeraData.Instance.WindowData.EnableChat != MessageFactory.ChatEnabled)
             {
                 MessageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;

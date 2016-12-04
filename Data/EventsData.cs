@@ -72,6 +72,7 @@ namespace Data
         private void AssociateEvent(Dictionary<Event, List<Actions.Action>> rootEvents){
             foreach (var e in rootEvents)
             {
+                if (!e.Key.Active) { continue; }
                 Events.Add(e.Key, e.Value);
                 var evAbnormalities = e.Key as AbnormalityEvent;
                 if (evAbnormalities != null)
@@ -284,7 +285,6 @@ namespace Data
                     types.Add(type);
                 }
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
-                var attackedBySelf = bool.Parse(abnormality.Attribute("only_boss_attacked_by_self")?.Value ?? "false");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? "5");
                 AbnormalityTargetType target;
@@ -298,7 +298,7 @@ namespace Data
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                     rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value??"0");
                 }
-                var abnormalityEvent = new AbnormalityEvent(ingame,active, priority, ParseAreaBossBlackList(abnormality), ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds, attackedBySelf);
+                var abnormalityEvent = new AbnormalityEvent(ingame,active, priority, ParseAreaBossBlackList(abnormality), ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Actions.Action>());
                 ParseActions(abnormality, events, abnormalityEvent);
             }
