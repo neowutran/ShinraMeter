@@ -150,7 +150,7 @@ namespace DamageMeter.Processing
         internal static void AbnormalityNotifierMissing()
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
-
+            if (NetworkController.Instance.NeedInit) return;
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
             if (meterUser == null || _lastBoss == null || _lastBossHP == 0) return;
             if (NetworkController.Instance.AbnormalityStorage.DeadOrJustResurrected(NetworkController.Instance.PlayerTracker.Me())) return;
@@ -383,6 +383,11 @@ namespace DamageMeter.Processing
                 if (abnormalityEvent.Trigger != trigger) { continue; }
                 if(boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId))){continue;}
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target)  continue;
+                if(abnormalityEvent.Target == AbnormalityTargetType.MyBoss)
+                {
+                    if(_lastBossMeterUser == null) { continue; }
+                    if(_lastBossMeterUser.Value != target) { continue; }
+                }
                 if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) continue;
                 if ((abnormalityEvent.Target == AbnormalityTargetType.Party || abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded) && BasicTeraData.Instance.WindowData.DisablePartyEvent) continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.Party)

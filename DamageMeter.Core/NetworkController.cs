@@ -46,7 +46,7 @@ namespace DamageMeter
         private bool _clickThrou;
         private static object pasteLock=new object();
         private bool _forceUiUpdate;
-        internal bool NeedInit;
+        internal bool NeedInit = true;
         private long _lastTick;
         internal MessageFactory MessageFactory = new MessageFactory();
         internal UserLogoTracker UserLogoTracker = new UserLogoTracker();
