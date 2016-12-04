@@ -124,11 +124,14 @@ namespace DamageMeter
 
         private void UpdateUi(int packetsWaiting = 0)
         {
-            NotifyProcessor.Instance.AbnormalityNotifierMissing();
-            if (BasicTeraData.Instance.WindowData.EnableChat != MessageFactory.ChatEnabled)
+            if (!NeedInit)
             {
-                MessageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;
-                PacketProcessing.Update();
+                NotifyProcessor.Instance.AbnormalityNotifierMissing();
+                if (BasicTeraData.Instance.WindowData.EnableChat != MessageFactory.ChatEnabled)
+                {
+                    MessageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;
+                    PacketProcessing.Update();
+                }
             }
             _lastTick = DateTime.UtcNow.Ticks;
             var handler = TickUpdated;

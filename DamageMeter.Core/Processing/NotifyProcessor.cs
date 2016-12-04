@@ -155,7 +155,6 @@ namespace DamageMeter.Processing
         internal void AbnormalityNotifierMissing()
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
-            if (NetworkController.Instance.NeedInit) return;
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
             if (meterUser == null || _lastBoss == null || _lastBossHP == 0) return;
             if (NetworkController.Instance.AbnormalityStorage.DeadOrJustResurrected(NetworkController.Instance.PlayerTracker.Me())) return;
