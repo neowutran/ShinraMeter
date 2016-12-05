@@ -217,7 +217,7 @@ namespace DamageMeter.Processing
                     foreach (var id in abnormalityEvent.Ids)
                     {
 
-                        var timeLeft = NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(entityIdToCheck, id);
+                        var timeLeft = NetworkController.Instance.AbnormalityTracker.AbnormalityTimeLeft(entityIdToCheck, id.Key, id.Value);
                         if (timeLeft >= abnormalityEvent.RemainingSecondBeforeTrigger * TimeSpan.TicksPerSecond)
                         {
                             noAbnormalitiesMissing = true;
@@ -261,7 +261,7 @@ namespace DamageMeter.Processing
 
                             if (abnormalityEvent.Ids.Count > 0)
                             {
-                                var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids[0]).Name;
+                                var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key).Name;
                                 textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", abName);
                             }
                             else
@@ -275,7 +275,7 @@ namespace DamageMeter.Processing
                         {
                             if (abnormalityEvent.Ids.Count > 0)
                             {
-                                var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids[0]).Name;
+                                var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key).Name;
                                 notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", abName);
                                 notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abName);
                             }
@@ -318,14 +318,14 @@ namespace DamageMeter.Processing
             }
         }
 
-        internal void AbnormalityNotifierAdded(EntityId target, int abnormalityId)
+        internal void AbnormalityNotifierAdded(EntityId target, int abnormalityId, int stack)
         {
-            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Added);
+            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Added, stack);
         }
 
-        internal void AbnormalityNotifierRemoved(EntityId target, int abnormalityId)
+        internal void AbnormalityNotifierRemoved(EntityId target, int abnormalityId, int stack)
         {
-            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Removed);
+            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Removed, stack);
         }
 
         internal void SkillReset(int skillId, CrestType type)
@@ -367,7 +367,7 @@ namespace DamageMeter.Processing
         }
         
 
-        private void AbnormalityNotifierCommon(EntityId target, int abnormalityId, AbnormalityTriggerType trigger)
+        private void AbnormalityNotifierCommon(EntityId target, int abnormalityId, AbnormalityTriggerType trigger,int stack)
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
 
@@ -384,9 +384,10 @@ namespace DamageMeter.Processing
                 if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
                 if (abnormalityEvent.InGame != teraActive) continue;
-                if (!abnormalityEvent.Ids.Contains(abnormalityId)) { continue; }
-                if (abnormalityEvent.Trigger != trigger) { continue; }
-                if(boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId))){continue;}
+                if (abnormalityEvent.Trigger != trigger) continue;
+                if (!abnormalityEvent.Ids.ContainsKey(abnormalityId)) continue;
+                if (abnormalityEvent.Ids[abnormalityId] > stack) continue;
+                if (boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId)))continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target)  continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.MyBoss)
                 {
@@ -416,14 +417,16 @@ namespace DamageMeter.Processing
                     if(notifyAction.Balloon != null)
                     {
                         notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", abnormality.Name);
+                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{stack}", stack.ToString());
                         if (player != null)
                         {
                             notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{player_name}", player.Name);
                             notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{player_name}", player.Name);
                         }
                         notifyAction.Balloon.TitleText=  notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abnormality.Name);
+                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{stack}", stack.ToString());
                     }
-                    if(notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
+                    if (notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
                     {
                         var textToSpeech = (TextToSpeech)notifyAction.Sound;
                         if (player != null)
@@ -431,6 +434,7 @@ namespace DamageMeter.Processing
                             textToSpeech.Text = textToSpeech.Text.Replace("{player_name}", player.Name);
                         }
                         textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", abnormality.Name);
+                        textToSpeech.Text = textToSpeech.Text.Replace("{stack}", stack.ToString());
                     }
                     NetworkController.Instance.FlashMessage = new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, e.Key.Priority);
                 }

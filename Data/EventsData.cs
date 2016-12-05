@@ -264,7 +264,7 @@ namespace Data
             var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
             foreach (var abnormality in root.Elements("abnormality"))
             {
-                List<int> ids = new List<int>();
+                Dictionary<int,int> ids = new Dictionary<int, int>();
                 List<HotDot.Types> types = new List<HotDot.Types>();
                 var abnormalities = abnormality.Element("abnormalities");
                 foreach (var abnormalityId in abnormalities.Elements("abnormality"))
@@ -274,7 +274,8 @@ namespace Data
 
                     if(int.TryParse(idElement, out id))
                     {
-                        ids.Add(id);
+                        var stack = int.Parse(abnormalityId.Attribute("stack")?.Value ?? "0");
+                        ids[id]=stack;
                         continue;
                     }
                     HotDot.Types type;
