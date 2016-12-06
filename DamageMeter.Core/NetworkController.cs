@@ -130,6 +130,16 @@ namespace DamageMeter
                 if (BasicTeraData.Instance.WindowData.EnableChat != MessageFactory.ChatEnabled)
                 {
                     MessageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;
+                    if (BasicTeraData.Instance.WindowData.EnableChat)
+                    {
+                        AbnormalityTracker.AbnormalityAdded += NotifyProcessor.Instance.AbnormalityNotifierAdded;
+                        AbnormalityTracker.AbnormalityRemoved += NotifyProcessor.Instance.AbnormalityNotifierRemoved;
+                    }
+                    else
+                    {
+                        AbnormalityTracker.AbnormalityAdded -= NotifyProcessor.Instance.AbnormalityNotifierAdded;
+                        AbnormalityTracker.AbnormalityRemoved -= NotifyProcessor.Instance.AbnormalityNotifierRemoved;
+                    }
                     PacketProcessing.Update();
                 }
             }

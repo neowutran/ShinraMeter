@@ -156,11 +156,12 @@ namespace DamageMeter.Processing
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) return;
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
-            if (meterUser == null || _lastBoss == null || _lastBossHP == 0) return;
+            var bossIds = _lastBosses.Where(x => x.Value > 0).Select(x => x.Key).ToList();
+            if (meterUser == null || !bossIds.Any()) return;
             if (NetworkController.Instance.AbnormalityStorage.DeadOrJustResurrected(NetworkController.Instance.PlayerTracker.Me())) return;
             var teraActive = TeraWindow.IsTeraActive();
             var time = DateTime.Now;
-            var boss = (NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(_lastBoss.Value);
+            var bossList = bossIds.Select(x=>(NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(x)).ToList();
 
             foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities)
             {
@@ -168,13 +169,15 @@ namespace DamageMeter.Processing
                 if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
                 if (abnormalityEvent.InGame != teraActive) continue;
-                if (boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId))) { continue; }
+                if (bossList.Any(x=>
+                    x!=null && e.Key.AreaBossBlackList.ContainsKey(x.Info.HuntingZoneId)&&(e.Key.AreaBossBlackList[x.Info.HuntingZoneId]==-1 || e.Key.AreaBossBlackList[x.Info.HuntingZoneId]==x.Info.TemplateId)
+                    )) continue;
                 if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Self) { entitiesIdToCheck.Add(meterUser.Id); }
-                if (abnormalityEvent.Target == AbnormalityTargetType.Boss) { entitiesIdToCheck.Add(_lastBoss.Value); }
+                if (abnormalityEvent.Target == AbnormalityTargetType.Boss) { entitiesIdToCheck.AddRange(bossIds); }
                 if (abnormalityEvent.Target == AbnormalityTargetType.MyBoss)
                 {
-                    if (_lastBossMeterUser == null || _lastBossHPMeterUser == 0) { continue; }
+                    if (_lastBossMeterUser == null || _lastBossHpMeterUser == 0) { continue; }
                     entitiesIdToCheck.Add(_lastBossMeterUser.Value);
                 }
                 if ((abnormalityEvent.Target == AbnormalityTargetType.Party || abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded) && BasicTeraData.Instance.WindowData.DisablePartyEvent) continue;
@@ -201,15 +204,7 @@ namespace DamageMeter.Processing
 
                 foreach (var entityIdToCheck in entitiesIdToCheck)
                 {
-                    if (!e.Key.NextChecks.ContainsKey(entityIdToCheck))
-                    {
-                        e.Key.NextChecks.Add(entityIdToCheck, time.AddMilliseconds(1000));
-                    }
-                    else
-                    {
-                        if (time < e.Key.NextChecks[entityIdToCheck]) { continue; }
-                        e.Key.NextChecks[entityIdToCheck] = time.AddMilliseconds(1000);
-                    }
+                    if (e.Key.NextChecks.ContainsKey(entityIdToCheck) && time < e.Key.NextChecks[entityIdToCheck]) continue;
 
                     TimeSpan? abnormalityTimeLeft = null;
                     var noAbnormalitiesMissing = false;
@@ -247,7 +242,7 @@ namespace DamageMeter.Processing
                     }
 
                     if (noAbnormalitiesMissing) continue;
-                    abnormalityEvent.NextChecks[entityIdToCheck] += TimeSpan.FromSeconds(abnormalityEvent.RewarnTimeoutSeconds);
+                    abnormalityEvent.NextChecks[entityIdToCheck] = time.AddSeconds(abnormalityEvent.RewarnTimeoutSeconds);
 
                     foreach (var a in e.Value)
                     {
@@ -331,18 +326,19 @@ namespace DamageMeter.Processing
         internal void SkillReset(int skillId, CrestType type)
         {
             if (type != CrestType.Reset) return;
-            if (!BasicTeraData.Instance.WindowData.EnableChat) return;
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
-            if (meterUser == null || _lastBoss == null) return;
-            if (_lastBossHP == 0) return;
+            var bossIds = _lastBosses.Where(x => x.Value > 0).Select(x => x.Key).ToList();
+            if (meterUser == null || !bossIds.Any()) return;
             var teraActive = TeraWindow.IsTeraActive();
-            var boss = (NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(_lastBoss.Value);
+            var bossList = bossIds.Select(x => (NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(x)).ToList();
 
             foreach (var e in BasicTeraData.Instance.EventsData.Cooldown)
             {
                 if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
                 if (e.Key.InGame != teraActive) continue;
-                if (boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId))) { continue; }
+                if (bossList.Any(x =>
+                    x != null && e.Key.AreaBossBlackList.ContainsKey(x.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[x.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[x.Info.HuntingZoneId] == x.Info.TemplateId)
+                    )) continue; //not sure, whether blacklist check is needed for skillreset event at all
                 var cooldownEvent = (CooldownEvent)e.Key;
                 if(cooldownEvent.SkillId != skillId) { continue; }
 
@@ -369,14 +365,11 @@ namespace DamageMeter.Processing
 
         private void AbnormalityNotifierCommon(EntityId target, int abnormalityId, AbnormalityTriggerType trigger,int stack)
         {
-            if (!BasicTeraData.Instance.WindowData.EnableChat) return;
-
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
-            if (meterUser == null || _lastBoss == null) return;
-            if (_lastBossHP==0) return;
-            var boss = (NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(_lastBoss.Value);
-            
+            var bossIds = _lastBosses.Where(x => x.Value > 0).Select(x => x.Key).ToList();
+            if (meterUser == null || !bossIds.Any()) return;
             var teraActive = TeraWindow.IsTeraActive();
+            var bossList = bossIds.Select(x => (NpcEntity)NetworkController.Instance.EntityTracker.GetOrNull(x)).ToList();
 
             foreach (var e in BasicTeraData.Instance.EventsData.AddedRemovedAbnormalities)
             {
@@ -387,13 +380,11 @@ namespace DamageMeter.Processing
                 if (abnormalityEvent.Trigger != trigger) continue;
                 if (!abnormalityEvent.Ids.ContainsKey(abnormalityId)) continue;
                 if (abnormalityEvent.Ids[abnormalityId] > stack) continue;
-                if (boss != null && (e.Key.AreaBossBlackList.ContainsKey(boss.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[boss.Info.HuntingZoneId] == boss.Info.TemplateId)))continue;
-                if (abnormalityEvent.Target == AbnormalityTargetType.Boss && _lastBoss.Value != target)  continue;
-                if(abnormalityEvent.Target == AbnormalityTargetType.MyBoss)
-                {
-                    if(_lastBossMeterUser == null) { continue; }
-                    if(_lastBossMeterUser.Value != target) { continue; }
-                }
+                if (bossList.Any(x =>
+                    x != null && e.Key.AreaBossBlackList.ContainsKey(x.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[x.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[x.Info.HuntingZoneId] == x.Info.TemplateId)
+                    )) continue; 
+                if (abnormalityEvent.Target == AbnormalityTargetType.Boss && !bossIds.Contains(target))  continue;
+                if(abnormalityEvent.Target == AbnormalityTargetType.MyBoss && _lastBossMeterUser != target) continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) continue;
                 if ((abnormalityEvent.Target == AbnormalityTargetType.Party || abnormalityEvent.Target == AbnormalityTargetType.PartySelfExcluded) && BasicTeraData.Instance.WindowData.DisablePartyEvent) continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.Party)
@@ -440,32 +431,31 @@ namespace DamageMeter.Processing
                 }
             }
         }
-        private EntityId? _lastBoss;
+        private Dictionary<EntityId,long> _lastBosses = new Dictionary<EntityId, long>();
         private EntityId? _lastBossMeterUser;
-        private long _lastBossHP;
-        private long _lastBossHPMeterUser;
+        private long _lastBossHpMeterUser;
         internal void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
-            _lastBoss = message.EntityId;
+            long newHp = 0;
             if (message.TotalHp != message.HpRemaining)
             {
-                _lastBossHP = (long)message.HpRemaining;
+                newHp = (long)message.HpRemaining;
                 if(message.EntityId == _lastBossMeterUser)
                 {
-                    _lastBossHPMeterUser = (long)message.HpRemaining;
+                    _lastBossHpMeterUser = newHp;
                 }
-            }      
+            }
+            _lastBosses[message.EntityId] = newHp;
         }
 
         internal void SpawnMe(Tera.Game.Messages.SpawnMeServerMessage message)
         {
             S_SPAWN_ME.Process(message);
-            _lastBoss = null;
-            _lastBossHP = 0;
+            _lastBosses=new Dictionary<EntityId, long>();
             _lastBossMeterUser = null;
-            _lastBossHPMeterUser = 0;
-            foreach (var e in BasicTeraData.Instance.EventsData.Events.Keys)
+            _lastBossHpMeterUser = 0;
+            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys)
             {
                 e.NextChecks=new Dictionary<EntityId, DateTime>();
             }
@@ -473,7 +463,7 @@ namespace DamageMeter.Processing
 
         internal void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)
         {
-            foreach (var e in BasicTeraData.Instance.EventsData.Events.Keys)
+            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys)
             {
                 e.NextChecks[message.Id] = DateTime.UtcNow.AddSeconds(5);
             }
@@ -481,15 +471,11 @@ namespace DamageMeter.Processing
 
         internal void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
-            if (message.Npc == _lastBoss)
-            {
-                _lastBoss = null;
-                _lastBossHP = 0;
-            }
+            if (_lastBosses.ContainsKey(message.Npc)) _lastBosses.Remove(message.Npc);
             if(message.Npc == _lastBossMeterUser)
             {
                 _lastBossMeterUser = null;
-                _lastBossHPMeterUser = 0;
+                _lastBossHpMeterUser = 0;
             }
         }
 
