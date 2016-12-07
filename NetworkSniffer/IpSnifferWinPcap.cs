@@ -25,6 +25,7 @@ namespace NetworkSniffer
         private WinPcapDeviceList _devices;
         private volatile uint _droppedPackets;
         private volatile uint _interfaceDroppedPackets;
+        private DateTime _nextCheck;
 
         public IpSnifferWinPcap(string filter)
         {
@@ -146,6 +147,9 @@ namespace NetworkSniffer
 
             OnPacketReceived(ipPacket);
 
+            var now = DateTime.UtcNow;
+            if (now <= _nextCheck) return;
+            _nextCheck = now + TimeSpan.FromSeconds(20);
             var device = (WinPcapDevice) sender;
             if (device.Statistics.DroppedPackets == _droppedPackets &&
                 device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets)
@@ -155,7 +159,7 @@ namespace NetworkSniffer
             _droppedPackets = device.Statistics.DroppedPackets;
             _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
             OnWarning(
-                $"DroppedPackets {device.Statistics.DroppedPackets}, InterfaceDroppedPackets {device.Statistics.InterfaceDroppedPackets}");
+                $"DroppedPackets {device.Statistics.DroppedPackets}, InterfaceDroppedPackets {device.Statistics.InterfaceDroppedPackets}, ReceivedPackets {device.Statistics.ReceivedPackets}");
         }
     }
 }
