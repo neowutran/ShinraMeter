@@ -132,6 +132,7 @@ namespace DamageMeter.Sniffing
 
                         _messageSplitter = new MessageSplitter();
                         _messageSplitter.MessageReceived += HandleMessageReceived;
+                        _messageSplitter.Resync += OnResync;
                         OnNewConnection(server);
                     }
                     if (_serverToClient != null && _clientToServer == null &&
@@ -161,6 +162,11 @@ namespace DamageMeter.Sniffing
                 else
                     _decrypter.ServerToClient(data, needToSkip);
             }
+        }
+
+        private void OnResync(MessageDirection direction, int skipped)
+        {
+            BasicTeraData.LogError("Resync occured "+direction+", skipped:"+skipped, false, true);
         }
 
         // called indirectly from HandleTcpDataReceived, so the current thread already holds the lock
