@@ -17,7 +17,7 @@ namespace Data
         private static BasicTeraData _instance;
         private readonly Func<string, TeraData> _dataForRegion;
         private static readonly ILog _log = LogManager.GetLogger("ShinraMeter");
-        private static int _errorCount = 5; //limit number of debug messages in one session
+        private static int _errorCount = 10; //limit number of debug messages in one session
 
         private BasicTeraData() : this(FindResourceDirectory())
         {
