@@ -156,6 +156,11 @@ namespace DamageMeter
                     ? entityInfo.TotalDamage/(lastHit - firstHit)
                     : 0) + LP.PerSecond);
             dpsString.Replace("{enrage}", FormatHelpers.Instance.FormatPercent(enrageperc));
+            dpsString.Replace("{debuff_list}", String.Join(" | ",
+                bossDebuff.Where(x => x.Value.Duration(firstTick, lastTick) > 0).ToList().Select(
+                    x => x.Key.Name + " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick, lastTick) / (lastTick - firstTick)) +
+                        " (" + TimeSpan.FromTicks(x.Value.Duration(firstTick, lastTick)).ToString(@"mm\:ss") + ") ")
+            ));
 
             var placeholders = new List<KeyValuePair<PlayerDamageDealt, Dictionary<string, string>>>();
             foreach (var playerStats in playerInfosOrdered)
