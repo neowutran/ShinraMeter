@@ -245,14 +245,17 @@ namespace Data
         {
             var root = xml.Root;
             var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
+            var default_priority = root.Element("events")?.Attribute("priority")?.Value ?? "5";
+            var default_blacklist = ParseAreaBossBlackList(root.Element("events"));
             foreach (var abnormality in root.Elements("cooldown"))
             {
                 var skillId = int.Parse(abnormality.Attribute("skill_id").Value);
                 var onlyResetted = bool.Parse(abnormality.Attribute("only_resetted")?.Value??"True");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
-                var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? "5");
-                var cooldownEvent = new CooldownEvent(ingame, active, priority, ParseAreaBossBlackList(abnormality), skillId, onlyResetted);
+                var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? default_priority);
+                var blacklist = ParseAreaBossBlackList(abnormality);
+                var cooldownEvent = new CooldownEvent(ingame, active, priority, blacklist.Any()?blacklist:default_blacklist, skillId, onlyResetted);
                 events.Add(cooldownEvent, new List<Actions.Action>());
                 ParseActions(abnormality, events, cooldownEvent);
             }
@@ -262,6 +265,8 @@ namespace Data
         {
             var root = xml.Root;
             var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
+            var default_priority = root.Element("events")?.Attribute("priority")?.Value ?? "5";
+            var default_blacklist = ParseAreaBossBlackList(root.Element("events"));
             foreach (var abnormality in root.Elements("abnormality"))
             {
                 Dictionary<int,int> ids = new Dictionary<int, int>();
@@ -287,7 +292,7 @@ namespace Data
                 }
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
-                var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? "5");
+                var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? default_priority);
                 AbnormalityTargetType target;
                 AbnormalityTriggerType trigger;
                 Enum.TryParse(abnormality.Attribute("target").Value, true, out target);
@@ -299,7 +304,8 @@ namespace Data
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                     rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value??"0");
                 }
-                var abnormalityEvent = new AbnormalityEvent(ingame,active, priority, ParseAreaBossBlackList(abnormality), ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
+                var blacklist = ParseAreaBossBlackList(abnormality);
+                var abnormalityEvent = new AbnormalityEvent(ingame,active, priority, blacklist.Any() ? blacklist : default_blacklist, ids, types, target, trigger, remainingSecondsBeforeTrigger,rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Actions.Action>());
                 ParseActions(abnormality, events, abnormalityEvent);
             }
