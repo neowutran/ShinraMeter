@@ -113,7 +113,17 @@ namespace DamageMeter.Sniffing
         {
             {
                 if (data.Length == 0)
+                {
+                    if (needToSkip==0 || !(connection == _clientToServer || connection == _serverToClient))
+                        return;
+                    if (_decrypter == null)
+                        return;
+                    if (connection == _clientToServer)
+                        _decrypter.Skip(MessageDirection.ClientToServer, needToSkip);
+                    else
+                        _decrypter.Skip(MessageDirection.ServerToClient, needToSkip);
                     return;
+                }
                 if (_isNew.ContainsKey(connection))
                 {
                     if (_serversByIp.ContainsKey(connection.Source.Address.ToString()) &&
