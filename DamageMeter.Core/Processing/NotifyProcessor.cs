@@ -42,7 +42,7 @@ namespace DamageMeter.Processing
         {
             var ev = BasicTeraData.Instance.EventsData.AFK;
             
-            if(ev.Item1 is CommonAFKEvent)
+            if(ev?.Item1 is CommonAFKEvent)
             {
                 foreach (var action in ev.Item2)
                 {
