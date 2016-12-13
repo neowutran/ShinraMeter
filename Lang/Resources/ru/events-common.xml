@@ -67,7 +67,7 @@
 	<abnormality ingame="false" trigger="Added" target="Self">
 		<abnormalities>
 			<abnormality>950068</abnormality>
-			<abnormality>950165</abnormality>
+			<abnormality>950179</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
