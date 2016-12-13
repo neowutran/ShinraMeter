@@ -153,7 +153,7 @@ namespace Data
         private void ParseCommonAFK(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
         {
             var root = xml.Root;
-            var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
+            var default_active = root.Attribute("active")?.Value ?? "True";
             var commonAfk = root.Element("common_afk");
             if (commonAfk == null) { return; }
 
@@ -244,9 +244,9 @@ namespace Data
         private void ParseCooldown(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
         {
             var root = xml.Root;
-            var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
-            var default_priority = root.Element("events")?.Attribute("priority")?.Value ?? "5";
-            var default_blacklist = ParseAreaBossBlackList(root.Element("events"));
+            var default_active = root.Attribute("active")?.Value ?? "True";
+            var default_priority = root.Attribute("priority")?.Value ?? "5";
+            var default_blacklist = ParseAreaBossBlackList(root);
             foreach (var abnormality in root.Elements("cooldown"))
             {
                 var skillId = int.Parse(abnormality.Attribute("skill_id").Value);
@@ -264,9 +264,9 @@ namespace Data
         private void ParseAbnormalities(Dictionary<Event, List<Actions.Action>> events, XDocument xml)
         {
             var root = xml.Root;
-            var default_active = root.Element("events")?.Attribute("active")?.Value ?? "True";
-            var default_priority = root.Element("events")?.Attribute("priority")?.Value ?? "5";
-            var default_blacklist = ParseAreaBossBlackList(root.Element("events"));
+            var default_active = root.Attribute("active")?.Value ?? "True";
+            var default_priority = root.Attribute("priority")?.Value ?? "5";
+            var default_blacklist = ParseAreaBossBlackList(root);
             foreach (var abnormality in root.Elements("abnormality"))
             {
                 Dictionary<int,int> ids = new Dictionary<int, int>();
