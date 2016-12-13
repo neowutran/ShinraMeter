@@ -629,4 +629,7 @@
   <data name="DisablePartyEvents" xml:space="preserve">
     <value>Disable party events</value>
   </data>
+  <data name="ShowAfkEventsIngame" xml:space="preserve">
+    <value>Show common_afk events ingame</value>
+  </data>
 </root>

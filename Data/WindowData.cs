@@ -49,6 +49,7 @@ namespace Data
         public bool LowPriority { get; set; }
         public bool EnableChat { get; set; }
         public bool CopyInspect { get; set; }
+        public bool ShowAfkEventsIngame { get; set; }
 
      
         public string DiscordLogin { get; set; }
@@ -120,6 +121,7 @@ namespace Data
             RemoveTeraAltEnterHotkey = false;
             EnableChat = true;
             CopyInspect = true;
+            ShowAfkEventsIngame = false;
             DiscordInfoByGuild = new Dictionary<string, Data.DiscordInfoByGuild>();
             DiscordLogin = "";
             DiscordPassword = "";
@@ -191,6 +193,7 @@ namespace Data
             Parse("copy_inspect", "CopyInspect");
             Parse("excel_cma_dps_seconds", "ExcelCMADPSSeconds");
             Parse("disable_party_event", "DisablePartyEvent");
+            Parse("show_afk_events_ingame", "ShowAfkEventsIngame");
             ParseColor("say_color","SayColor");
             ParseColor("alliance_color", "AllianceColor");
             ParseColor("area_color", "AreaColor");
@@ -494,6 +497,7 @@ namespace Data
             xml.Root.Add(new XElement("emotes_color", EmotesColor.ToString()));
             xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
             xml.Root.Add(new XElement("disable_party_event", DisablePartyEvent));
+            xml.Root.Add(new XElement("show_afk_events_ingame", ShowAfkEventsIngame));
 
             xml.Root.Add(new XElement("teradps.io"));
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));

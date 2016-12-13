@@ -623,4 +623,7 @@
   <data name="DisablePartyEvents" xml:space="preserve">
     <value>Отключить оповещения про группу</value>
   </data>
+  <data name="ShowAfkEventsIngame" xml:space="preserve">
+    <value>Показывать общие оповещения при активной игре</value>
+  </data>
 </root>

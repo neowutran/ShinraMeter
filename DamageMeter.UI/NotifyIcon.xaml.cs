@@ -75,7 +75,7 @@ namespace DamageMeter.UI
             PartyEvent.IsChecked = BasicTeraData.Instance.WindowData.DisablePartyEvent;
             DiscordLoginTextBox.Text = BasicTeraData.Instance.WindowData.DiscordLogin;
             DiscordPasswordTextBox.Password = BasicTeraData.Instance.WindowData.DiscordPassword;
-
+            ShowAfkIventsIngame.IsChecked = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
         }
 
@@ -360,6 +360,7 @@ namespace DamageMeter.UI
         {
             CopyInspect.Height = show ? Double.NaN : 0;
             PartyEvent.Height = show ? Double.NaN : 0;
+            ShowAfkIventsIngame.Height = show ? Double.NaN : 0;
             WhisperColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             AllianceColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             AreaColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
@@ -459,5 +460,14 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.DisablePartyEvent = false;
         }
 
+        private void EnableAfkIventsIngame(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.ShowAfkEventsIngame = true;
+        }
+
+        private void DisableAfkIventsIngame(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.ShowAfkEventsIngame = false;
+        }
     }
 }

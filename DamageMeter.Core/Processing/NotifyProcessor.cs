@@ -69,7 +69,7 @@ namespace DamageMeter.Processing
         }
         private void MatchingSuccess()
         {
-            if (!TeraWindow.IsTeraActive())
+            if (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive())
             {
                 NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                     LP.PartyMatchingSuccess,
@@ -80,7 +80,7 @@ namespace DamageMeter.Processing
 
         internal void S_CHECK_TO_READY_PARTY(Tera.Game.Messages.S_CHECK_TO_READY_PARTY message)
         {
-            if (message.Count == 1 && !TeraWindow.IsTeraActive())
+            if (message.Count == 1 && (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()))
             {    
                 NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                     LP.CombatReadyCheck,
@@ -91,7 +91,7 @@ namespace DamageMeter.Processing
 
         internal void S_OTHER_USER_APPLY_PARTY(Tera.Game.Messages.S_OTHER_USER_APPLY_PARTY message)
         {
-            if (!TeraWindow.IsTeraActive())
+            if (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive())
             {
 
                 NetworkController.Instance.FlashMessage = DefaultNotifyAction(
@@ -113,7 +113,7 @@ namespace DamageMeter.Processing
 
         internal void S_TRADE_BROKER_DEAL_SUGGESTED(Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED message)
         {
-            if (!TeraWindow.IsTeraActive())
+            if (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive())
             {
                 NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                     LP.Trading + ": " + message.PlayerName,
@@ -126,7 +126,7 @@ namespace DamageMeter.Processing
 
         internal void S_REQUEST_CONTRACT(Tera.Game.Messages.S_REQUEST_CONTRACT message)
         {
-            if (!TeraWindow.IsTeraActive())
+            if (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive())
             {
                 if (message.Type == Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.PartyInvite)
                 {
