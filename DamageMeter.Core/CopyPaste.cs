@@ -157,12 +157,12 @@ namespace DamageMeter
                     : 0) + LP.PerSecond);
             dpsString.Replace("{enrage}", FormatHelpers.Instance.FormatPercent(enrageperc));
             dpsString.Replace("{debuff_list}", String.Join(" | ",
-                bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).ToList().Select(
+                bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).OrderByDescending(x => x.Value.Duration(firstTick, lastTick)).ToList().Select(
                     x => x.Key.ShortName + " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick, lastTick) / (lastTick - firstTick)) +
                         " (" + TimeSpan.FromTicks(x.Value.Duration(firstTick, lastTick)).ToString(@"mm\:ss") + ") ")
             ));
             dpsString.Replace("{debuff_list_p}", String.Join(" | ",
-                bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).ToList().Select(
+                bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).OrderByDescending(x => x.Value.Duration(firstTick, lastTick)).ToList().Select(
                     x => x.Key.ShortName + " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick, lastTick) / (lastTick - firstTick)))
             ));
 
@@ -202,12 +202,12 @@ namespace DamageMeter
                 playerHolder["{damage_received}"] = FormatHelpers.Instance.FormatValue(skills.DamageReceived(playerStats.Source.User, entityInfo.Entity, timedEncounter));
                 playerHolder["{hits_received}"] = FormatHelpers.Instance.FormatValue(skills.HitsReceived(playerStats.Source.User, entityInfo.Entity, timedEncounter));
                 playerHolder["{debuff_list}"] = String.Join(" | ",
-                    bossDebuff.Where(x=>x.Key.Id!=8888888 && x.Value.InitialPlayerClass==playerStats.Source.Class && x.Value.Duration(firstTick,lastTick)>0).ToList().Select(
+                    bossDebuff.Where(x=>x.Key.Id!=8888888 && x.Value.InitialPlayerClass==playerStats.Source.Class && x.Value.Duration(firstTick,lastTick)>0).OrderByDescending(x => x.Value.Duration(firstTick, lastTick)).ToList().Select(
                         x=>x.Key.ShortName + " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick,lastTick) / (lastTick - firstTick)) +
                             " ("+ TimeSpan.FromTicks(x.Value.Duration(firstTick, lastTick)).ToString(@"mm\:ss")+") ")
                 );
                 playerHolder["{debuff_list_p}"] = String.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.InitialPlayerClass == playerStats.Source.Class && x.Value.Duration(firstTick, lastTick) > 0).ToList().Select(
+                    bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.InitialPlayerClass == playerStats.Source.Class && x.Value.Duration(firstTick, lastTick) > 0).OrderByDescending(x => x.Value.Duration(firstTick, lastTick)).ToList().Select(
                         x => x.Key.ShortName + " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick, lastTick) / (lastTick - firstTick)))
                 );
             }
@@ -234,11 +234,11 @@ namespace DamageMeter
                 dpsmono = dpsString;
                 }
             var footerstr=footer.Replace("{debuff_list}", String.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).ToList().Select(
+                    bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).OrderByDescending(x => x.Value.Duration(firstTick, lastTick)).ToList().Select(
                         x => x.Key.ShortName + " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick, lastTick) / (lastTick - firstTick)) +
                         " (" + TimeSpan.FromTicks(x.Value.Duration(firstTick, lastTick)).ToString(@"mm\:ss") + ") ")
                 )).Replace("{debuff_list_p}", String.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).ToList().Select(
+                    bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).OrderByDescending(x => x.Value.Duration(firstTick, lastTick)).ToList().Select(
                         x => x.Key.ShortName + " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick, lastTick) / (lastTick - firstTick)))
                 ));
             dpsString.Append(footerstr);
