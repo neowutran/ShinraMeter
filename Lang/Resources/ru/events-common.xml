@@ -50,10 +50,9 @@
 	</abnormality>
 		
 	<!-- Raid 30, phase 3, black debuff (Dust) -->
-	<abnormality ingame="false" trigger="Added" target="Self">
+	<abnormality ingame="true" priority="11" trigger="Added" target="Self">
 		<abnormalities>
 			<abnormality>950069</abnormality>
-			<abnormality>950180</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
@@ -64,10 +63,9 @@
 	</abnormality>
 	
 	<!-- Raid 30, phase 3, red debuff (Flame) -->
-	<abnormality ingame="false" trigger="Added" target="Self">
+	<abnormality ingame="true" priority="10" trigger="Added" target="Self">
 		<abnormalities>
 			<abnormality>950068</abnormality>
-			<abnormality>950179</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>

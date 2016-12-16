@@ -290,7 +290,7 @@ namespace DamageMeter
                  areaId != 916 &&
                  areaId != 969 &&
                  areaId != 970 &&
-                 areaId != 950
+                 !(areaId == 950 && int.Parse(teradpsData.bossId)/100!=11)
                 )
             {
                 return;

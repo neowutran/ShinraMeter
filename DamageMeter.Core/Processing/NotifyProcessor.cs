@@ -374,7 +374,7 @@ namespace DamageMeter.Processing
             foreach (var e in BasicTeraData.Instance.EventsData.AddedRemovedAbnormalities)
             {
                 UserEntity player = meterUser;
-                if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
+                if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority > e.Key.Priority) { continue; }
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
                 if (abnormalityEvent.InGame != teraActive) continue;
                 if (abnormalityEvent.Trigger != trigger) continue;
