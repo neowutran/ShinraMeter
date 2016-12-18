@@ -483,5 +483,27 @@ namespace DamageMeter.Processing
         {
             if (message.PlayerName.StartsWith("Error")) BasicTeraData.LogError(message.PlayerName);
         }
+
+        internal void UpdateCredits(S_UPDATE_NPCGUILD.NpcGuildType type, int credits)
+        {
+            if (type == S_UPDATE_NPCGUILD.NpcGuildType.Vanguard && credits >= 8500)
+            {
+                NetworkController.Instance.FlashMessage = DefaultNotifyAction(
+                    LP.VanguardCredits,
+                    LP.VanguardCredits
+                    );
+            }
+        }
+
+        internal void UpdateCredits(Tera.Game.Messages.S_AVAILABLE_EVENT_MATCHING_LIST message)
+        {
+            UpdateCredits(S_UPDATE_NPCGUILD.NpcGuildType.Vanguard, message.Credits);
+        }
+
+        internal void UpdateCredits(Tera.Game.Messages.S_UPDATE_NPCGUILD message)
+        {
+            UpdateCredits(message.Type, message.Credits);
+        }
+
     }
 }

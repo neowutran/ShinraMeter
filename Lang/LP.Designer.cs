@@ -1720,6 +1720,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vanguard credits are close to cap..
+        /// </summary>
+        public static string VanguardCredits {
+            get {
+                return ResourceManager.GetString("VanguardCredits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warrior.
         /// </summary>
         public static string Warrior {

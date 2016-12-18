@@ -21,6 +21,8 @@ namespace DamageMeter
         };
         private static readonly Dictionary<Type, Delegate> MessageToProcessingOptionnal = new Dictionary<Type, Delegate>
         {
+            {typeof(Tera.Game.Messages.S_AVAILABLE_EVENT_MATCHING_LIST), new Action<Tera.Game.Messages.S_AVAILABLE_EVENT_MATCHING_LIST> (x=>NotifyProcessor.Instance.UpdateCredits(x)) },
+            {typeof(Tera.Game.Messages.S_UPDATE_NPCGUILD), new Action<Tera.Game.Messages.S_UPDATE_NPCGUILD> (x=>NotifyProcessor.Instance.UpdateCredits(x)) },
             {typeof(Tera.Game.Messages.S_BOSS_GAGE_INFO) , new Action<Tera.Game.Messages.S_BOSS_GAGE_INFO>((x)=>NotifyProcessor.Instance.S_BOSS_GAGE_INFO(x)) },//override with optional processing
             {typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>NotifyProcessor.Instance.SpawnMe(x)) },//override with optional processing
             {typeof(Tera.Game.Messages.S_CHAT), new Action<Tera.Game.Messages.S_CHAT>(x=> DamageMeter.Chat.Instance.Add(x))},

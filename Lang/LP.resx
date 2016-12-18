@@ -632,4 +632,7 @@
   <data name="ShowAfkEventsIngame" xml:space="preserve">
     <value>Show common_afk events ingame</value>
   </data>
+  <data name="VanguardCredits" xml:space="preserve">
+    <value>Vanguard credits are close to cap.</value>
+  </data>
 </root>
