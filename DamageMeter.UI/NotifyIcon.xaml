@@ -95,6 +95,25 @@
                             </Setter>
                         </Style>
                     </TabControl.Resources>
+                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Action}" x:Name="Actions" Background="Transparent" Foreground="White">
+                        <TabItem.Content>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Content="{x:Static l:LP.Reset}" Name="Reset"  Click="ResetAction" />
+                                <Button Grid.Row="1" Content="{x:Static l:LP.Close}" Name="Close"  Click="CloseAction" />
+                                <Button Grid.Row="2" Content="{x:Static l:LP.SystemTray_Export_current_to_Excel}" Name="ExcelExport"  Click="ExcelExportAction"  />
+                                <Button Grid.Row="3" Content="{x:Static l:LP.SystemTray_Export_current_to_Site}" Name="SiteExport"  Click="SiteExportAction"  />
+                                <Button Grid.Row="4" Content="{x:Static l:LP.UploadGlyphBuild}" Name="UploadGlyphAction"  Click="ClickUploadGlyphAction"  />
+                            </Grid>
+                        </TabItem.Content>
+                    </TabItem>
                     <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Links}" x:Name="Links" Background="Transparent" Foreground="White">
                         <TabItem.Content>
                             <Grid>
@@ -303,25 +322,6 @@
 
                                     </Grid>
                                 </ScrollViewer>
-                            </Grid>
-                        </TabItem.Content>
-                    </TabItem>
-                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Action}" x:Name="Actions" Background="Transparent" Foreground="White">
-                        <TabItem.Content>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="{x:Static l:LP.Reset}" Name="Reset"  Click="ResetAction" />
-                                <Button Grid.Row="1" Content="{x:Static l:LP.Close}" Name="Close"  Click="CloseAction" />
-                                <Button Grid.Row="2" Content="{x:Static l:LP.SystemTray_Export_current_to_Excel}" Name="ExcelExport"  Click="ExcelExportAction"  />
-                                <Button Grid.Row="3" Content="{x:Static l:LP.SystemTray_Export_current_to_Site}" Name="SiteExport"  Click="SiteExportAction"  />
-                                <Button Grid.Row="4" Content="{x:Static l:LP.UploadGlyphBuild}" Name="UploadGlyphAction"  Click="ClickUploadGlyphAction"  />
                             </Grid>
                         </TabItem.Content>
                     </TabItem>
