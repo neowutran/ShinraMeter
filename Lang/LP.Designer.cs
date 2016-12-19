@@ -1720,7 +1720,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vanguard credits are close to cap..
+        ///   Looks up a localized string similar to Vanguard credits are close to cap:.
         /// </summary>
         public static string VanguardCredits {
             get {

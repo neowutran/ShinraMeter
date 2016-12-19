@@ -627,6 +627,6 @@
     <value>Показывать общие оповещения при активной игре</value>
   </data>
   <data name="VanguardCredits" xml:space="preserve">
-    <value>Репутация Авангарда близка к максимуму.</value>
+    <value>Репутация Авангарда близка к максимуму:</value>
   </data>
 </root>

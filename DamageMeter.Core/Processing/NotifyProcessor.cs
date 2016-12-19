@@ -489,10 +489,10 @@ namespace DamageMeter.Processing
             if (type == S_UPDATE_NPCGUILD.NpcGuildType.Vanguard && credits >= 8500)
             {
                 NetworkController.Instance.FlashMessage = DefaultNotifyAction(
-                    LP.VanguardCredits,
-                    LP.VanguardCredits
+                    LP.VanguardCredits+credits,
+                    LP.VanguardCredits+credits
                     );
-            }
+            } //todo: not sure, may be it worth adding StrSheet_NPCGuild.xml parser and use region-specific names instead of langpack
         }
 
         internal void UpdateCredits(Tera.Game.Messages.S_AVAILABLE_EVENT_MATCHING_LIST message)
