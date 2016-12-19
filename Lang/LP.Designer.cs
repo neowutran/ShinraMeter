@@ -1149,6 +1149,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open chat box.
+        /// </summary>
+        public static string OpenChatBox {
+            get {
+                return ResourceManager.GetString("OpenChatBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Party invite.
         /// </summary>
         public static string PartyInvite {

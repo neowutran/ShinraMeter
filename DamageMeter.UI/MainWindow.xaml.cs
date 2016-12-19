@@ -38,7 +38,7 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class MainWindow
     {
-        private Chatbox _chatbox;
+        internal Chatbox _chatbox;
         private readonly EntityStatsMain _entityStats;
 
         private readonly TeradpsHistory _windowHistory;

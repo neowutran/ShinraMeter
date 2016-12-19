@@ -629,4 +629,7 @@
   <data name="VanguardCredits" xml:space="preserve">
     <value>Репутация Авангарда близка к максимуму:</value>
   </data>
+  <data name="OpenChatBox" xml:space="preserve">
+    <value>Открыть окно чата</value>
+  </data>
 </root>

@@ -635,4 +635,7 @@
   <data name="VanguardCredits" xml:space="preserve">
     <value>Vanguard credits are close to cap:</value>
   </data>
+  <data name="OpenChatBox" xml:space="preserve">
+    <value>Open chat box</value>
+  </data>
 </root>

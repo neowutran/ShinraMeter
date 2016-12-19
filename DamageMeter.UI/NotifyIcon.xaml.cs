@@ -469,5 +469,11 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.ShowAfkEventsIngame = false;
         }
+
+        private void ClickOpenChatBox(object sender, RoutedEventArgs e)
+        {
+            _mainWindow._chatbox = new Chatbox();
+            _mainWindow._chatbox.Show();
+        }
     }
 }
