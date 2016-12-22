@@ -174,9 +174,9 @@ namespace DamageMeter.Sniffing
             }
         }
 
-        private void OnResync(MessageDirection direction, int skipped)
+        private void OnResync(MessageDirection direction, int skipped, int size)
         {
-            BasicTeraData.LogError("Resync occured "+direction+", skipped:"+skipped, false, true);
+            BasicTeraData.LogError("Resync occured "+direction+", skipped:"+skipped+ ", block size:"+size, false, true);
         }
 
         // called indirectly from HandleTcpDataReceived, so the current thread already holds the lock
