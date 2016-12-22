@@ -14,7 +14,7 @@ namespace NetworkSniffer
         private readonly ConcurrentDictionary<ConnectionId, TcpConnection> _connections =
             new ConcurrentDictionary<ConnectionId, TcpConnection>();
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
         private string SnifferType;
         //internal struct QPacket
         //{
