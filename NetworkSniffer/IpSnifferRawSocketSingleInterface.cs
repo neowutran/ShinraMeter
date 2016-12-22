@@ -37,7 +37,7 @@ namespace NetworkSniffer
             _socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
             var receiveAllIp = BitConverter.GetBytes(3);
             _socket.IOControl(IOControlCode.ReceiveAll, receiveAllIp, null);
-            _socket.ReceiveBufferSize = 1 << 23;
+            _socket.ReceiveBufferSize = 1 << 24;
             Task.Run(()=>ReadAsync(_socket));
         }
 

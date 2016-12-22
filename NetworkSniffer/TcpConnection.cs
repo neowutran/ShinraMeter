@@ -73,11 +73,11 @@ namespace NetworkSniffer
             }
             else
             {
-                if (!_bufferedPackets.ContainsKey(dataPosition) ||
-                    _bufferedPackets[dataPosition].Length < data.Length)
-                {
+                //if (!_bufferedPackets.ContainsKey(dataPosition) ||
+                //    _bufferedPackets[dataPosition].Length < data.Length)
+                //{
                     _bufferedPackets[dataPosition] = data;
-                }
+                //}
             }
 
             if (_bufferedPackets.Count > 500)

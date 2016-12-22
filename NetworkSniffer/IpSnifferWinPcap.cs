@@ -30,7 +30,7 @@ namespace NetworkSniffer
         public IpSnifferWinPcap(string filter)
         {
             _filter = filter;
-            BufferSize = 8192*1024;
+            BufferSize = 1<<24;
             _devices = WinPcapDeviceList.New();
             //BasicTeraData.LogError(string.Join("\r\n",_devices.Select(x=>x.Description)),true,true);
             //check for winpcap installed if not - exception to fallback to rawsockets
@@ -69,7 +69,7 @@ namespace NetworkSniffer
                
                 try
                 {
-                    device.Open(DeviceMode.Normal, 1000);
+                    device.Open(DeviceMode.Normal, 100);
                 }
                 catch (Exception e)
                 {
