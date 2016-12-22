@@ -638,4 +638,7 @@
   <data name="OpenChatBox" xml:space="preserve">
     <value>Open chat box</value>
   </data>
+  <data name="Glaiver" xml:space="preserve">
+    <value>Glaiver</value>
+  </data>
 </root>

@@ -879,6 +879,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Glaiver.
+        /// </summary>
+        public static string Glaiver {
+            get {
+                return ResourceManager.GetString("Glaiver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group color.
         /// </summary>
         public static string GroupColor {
