@@ -505,5 +505,15 @@ namespace DamageMeter.Processing
             UpdateCredits(message.Type, message.Credits);
         }
 
+        internal void SNpcStatus(Tera.Game.Messages.SNpcStatus message)
+        {
+            NetworkController.Instance.AbnormalityTracker.Update(message);
+            if (message.Defeated)
+            {
+                var boss = NetworkController.Instance.EntityTracker.GetOrPlaceholder(message.Npc) as NpcEntity;
+                if (boss?.Info.Boss==true && boss.Info.HuntingZoneId==950)
+                    BasicTeraData.LogError("Retreat test: "+ boss.Info.HuntingZoneId+":"+ boss.Info.TemplateId + (_lastBossMeterUser==message.Npc?" actual boss": " other boss"), false, true);
+            }
+        }
     }
 }

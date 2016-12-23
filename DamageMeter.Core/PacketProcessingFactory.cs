@@ -110,7 +110,8 @@ namespace DamageMeter
             { typeof(Tera.Game.Messages.SPlayerChangeMp) , new Action<Tera.Game.Messages.SPlayerChangeMp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPartyMemberChangeHp) , new Action<Tera.Game.Messages.SPartyMemberChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SDespawnUser) , Helpers.Contructor<Func<Tera.Game.Messages.SDespawnUser , S_DESPAWN_USER>>()},
-            { typeof(Tera.Game.Messages.SNpcStatus) , new Action<Tera.Game.Messages.SNpcStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
+            { typeof(Tera.Game.Messages.SNpcStatus) , new Action<Tera.Game.Messages.SNpcStatus>((x)=>NotifyProcessor.Instance.SNpcStatus(x)) },
+//            { typeof(Tera.Game.Messages.SNpcStatus) , new Action<Tera.Game.Messages.SNpcStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE) , new Action<Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_PLAYER_STAT_UPDATE) , new Action<Tera.Game.Messages.S_PLAYER_STAT_UPDATE>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             };
