@@ -8,6 +8,8 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 using DamageMeter.AutoUpdate;
 using Data;
 using log4net;
@@ -55,6 +57,7 @@ namespace DamageMeter.UI
                     LP.Culture = CultureInfo.GetCultureInfo(BasicTeraData.Instance.WindowData.UILanguage);
                     FormatHelpers.Instance.CultureInfo = LP.Culture;
                 }
+                if (!BasicTeraData.Instance.WindowData.AllowTransparency) RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
                 {
                     return;
