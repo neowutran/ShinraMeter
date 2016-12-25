@@ -258,6 +258,10 @@ namespace DamageMeter
             dpsmono.Append(footerstr);
             var paste = dpsString.ToString();
             var monoPaste = dpsmono.ToString();
+            while (paste.Contains(" )")) paste = paste.Replace(" )", ") ");
+            while (monoPaste.Contains(" )")) monoPaste = monoPaste.Replace(" )", ") ");
+            while (paste.Contains(" ]")) paste = paste.Replace(" ]", "] ");
+            while (monoPaste.Contains(" ]")) monoPaste = monoPaste.Replace(" ]", "] ");
             while (paste.Contains(" \\")) paste = paste.Replace(" \\", "\\");
             while (monoPaste.Contains(" \\")) monoPaste = monoPaste.Replace(" \\", "\\");
             monoPaste = monoPaste.Replace("\\", Environment.NewLine);
