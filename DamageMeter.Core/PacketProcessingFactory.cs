@@ -24,7 +24,7 @@ namespace DamageMeter
             {typeof(Tera.Game.Messages.S_AVAILABLE_EVENT_MATCHING_LIST), new Action<Tera.Game.Messages.S_AVAILABLE_EVENT_MATCHING_LIST> (x=>NotifyProcessor.Instance.UpdateCredits(x)) },
             {typeof(Tera.Game.Messages.S_UPDATE_NPCGUILD), new Action<Tera.Game.Messages.S_UPDATE_NPCGUILD> (x=>NotifyProcessor.Instance.UpdateCredits(x)) },
             {typeof(Tera.Game.Messages.S_BOSS_GAGE_INFO) , new Action<Tera.Game.Messages.S_BOSS_GAGE_INFO>((x)=>NotifyProcessor.Instance.S_BOSS_GAGE_INFO(x)) },//override with optional processing
-            {typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>NotifyProcessor.Instance.SpawnMe(x)) },//override with optional processing
+            {typeof(Tera.Game.Messages.S_LOAD_TOPO) , new Action<Tera.Game.Messages.S_LOAD_TOPO>((x)=>NotifyProcessor.Instance.S_LOAD_TOPO(x)) },
             {typeof(Tera.Game.Messages.S_CHAT), new Action<Tera.Game.Messages.S_CHAT>(x=> DamageMeter.Chat.Instance.Add(x))},
             {typeof(Tera.Game.Messages.S_WHISPER), new Action<Tera.Game.Messages.S_WHISPER>(x=>DamageMeter.Chat.Instance.Add(x))},
             {typeof(Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED), new Action<Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED> (x=>NotifyProcessor.Instance.S_TRADE_BROKER_DEAL_SUGGESTED(x)) },
@@ -105,13 +105,12 @@ namespace DamageMeter
             { typeof(Tera.Game.Messages.SAbnormalityBegin) , new Action<Tera.Game.Messages.SAbnormalityBegin>((x)=> Abnormalities.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityEnd) , new Action<Tera.Game.Messages.SAbnormalityEnd>((x)=>Abnormalities.Update(x)) },
             { typeof(Tera.Game.Messages.SAbnormalityRefresh) , new Action<Tera.Game.Messages.SAbnormalityRefresh>((x)=>Abnormalities.Update(x)) },
-            { typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>S_SPAWN_ME.Process(x)) },
+            { typeof(Tera.Game.Messages.SpawnMeServerMessage) , new Action<Tera.Game.Messages.SpawnMeServerMessage>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SCreatureChangeHp) , new Action<Tera.Game.Messages.SCreatureChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPlayerChangeMp) , new Action<Tera.Game.Messages.SPlayerChangeMp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SPartyMemberChangeHp) , new Action<Tera.Game.Messages.SPartyMemberChangeHp>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SDespawnUser) , Helpers.Contructor<Func<Tera.Game.Messages.SDespawnUser , S_DESPAWN_USER>>()},
-            { typeof(Tera.Game.Messages.SNpcStatus) , new Action<Tera.Game.Messages.SNpcStatus>((x)=>NotifyProcessor.Instance.SNpcStatus(x)) },
-//            { typeof(Tera.Game.Messages.SNpcStatus) , new Action<Tera.Game.Messages.SNpcStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
+            { typeof(Tera.Game.Messages.SNpcStatus) , new Action<Tera.Game.Messages.SNpcStatus>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE) , new Action<Tera.Game.Messages.S_PARTY_MEMBER_STAT_UPDATE>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_PLAYER_STAT_UPDATE) , new Action<Tera.Game.Messages.S_PLAYER_STAT_UPDATE>((x)=>NetworkController.Instance.AbnormalityTracker.Update(x)) },
             };
