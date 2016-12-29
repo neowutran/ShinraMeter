@@ -295,7 +295,7 @@ namespace DamageMeter
                     NeedToResetCurrent = false;
                 }
 
-                if (NeedToExport!=DataExporter.Dest.None)
+                if (!NeedToExport.HasFlag(DataExporter.Dest.None))
                 {
                     DataExporter.Export(Encounter, AbnormalityStorage, NeedToExport);
                     NeedToExport = DataExporter.Dest.None;

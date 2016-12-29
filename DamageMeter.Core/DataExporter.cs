@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
+using System.Diagnostics;
 
 namespace DamageMeter
 {
@@ -19,9 +20,10 @@ namespace DamageMeter
         [Flags]
         public enum Dest
         {
-            None=0,
-            Excel =1,
-            Site=2
+            None=1,
+            Excel=2,
+            Site=4,
+            Manual=8
         }
 
         private static void SendAnonymousStatistics(string json, int numberTry)
@@ -44,13 +46,13 @@ namespace DamageMeter
                     var responseString = response.Result.Content.ReadAsStringAsync();
 
                   
-                    Console.WriteLine(responseString.Result);
+                    Debug.WriteLine(responseString.Result);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.StackTrace);
                 Thread.Sleep(2000);
                 SendAnonymousStatistics(json, numberTry - 1);
             }
@@ -221,10 +223,10 @@ namespace DamageMeter
             }
             var sendThread = new Thread(() =>
             {
-                if ((type&Dest.Site)!=0 && NetworkController.Instance.BossLink.Any(x=>x.Value==entity&&x.Key.StartsWith("!")))
+                if (type.HasFlag(Dest.Site) && NetworkController.Instance.BossLink.Any(x=>x.Value==entity&&x.Key.StartsWith("!")))
                     ToTeraDpsApi(stats.BaseStats, entity);
-                if ((type&Dest.Excel)!=0)
-                    ExcelExport.ExcelSave(stats);
+                if (type.HasFlag(Dest.Excel))
+                    ExcelExport.ExcelSave(stats,"", type.HasFlag(Dest.Manual));
             });
             sendThread.Start();
         }
@@ -308,7 +310,7 @@ namespace DamageMeter
             }
             catch
             {
-                Console.WriteLine("Get server time error");
+                Debug.WriteLine("Get server time error");
                 NetworkController.Instance.BossLink.TryAdd(
                     "!" + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.Now.Ticks, entity);
                 return;
@@ -326,7 +328,7 @@ namespace DamageMeter
         private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry)
         {
 
-            Console.WriteLine(json);
+            Debug.WriteLine(json);
 
             if (numberTry == 0)
             {
@@ -350,7 +352,7 @@ namespace DamageMeter
                                           );
 
                     var responseString = response.Result.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseString.Result);
+                    Debug.WriteLine(responseString.Result);
                     var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseString.Result);
                     if (responseObject.ContainsKey("id") && ((string) responseObject["id"]).StartsWith("http://"))
                     {
@@ -366,8 +368,8 @@ namespace DamageMeter
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
+                Debug.WriteLine(e.Message);
+                Debug.WriteLine(e.StackTrace);
                 Thread.Sleep(10000);
                 SendTeraDpsIo(boss, json, numberTry - 1);
             }

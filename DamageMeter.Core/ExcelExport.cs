@@ -136,11 +136,11 @@ namespace DamageMeter
         private static readonly object savelock = new object();
         private static double scale;
 
-        public static void ExcelSave(ExtendedStats exdata, string userName="")
+        public static void ExcelSave(ExtendedStats exdata, string userName="", bool manual=false)
         {
             lock (savelock) //can't save 2 excel files at one time
             {
-                if (!BTD.WindowData.Excel) return;
+                if (!BTD.WindowData.Excel && !manual) return;
                 var data = exdata.BaseStats;
                 var Boss = exdata.Entity.Info;
                 scale= 96/Graphics.FromImage(new Bitmap(1, 1)).DpiX;//needed if user have not standart DPI setting in control panel, workaround EPPlus autofit bug

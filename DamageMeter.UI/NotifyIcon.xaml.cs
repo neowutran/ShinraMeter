@@ -151,7 +151,7 @@ namespace DamageMeter.UI
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
         {
-            NetworkController.Instance.NeedToExport = DataExporter.Dest.Excel;
+            NetworkController.Instance.NeedToExport = DataExporter.Dest.Excel | DataExporter.Dest.Manual;
         }
 
         private void SiteExportAction(object sender, RoutedEventArgs e)
