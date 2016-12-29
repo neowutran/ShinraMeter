@@ -461,6 +461,17 @@ namespace DamageMeter.Processing
             }
         }
 
+        internal void S_LOAD_TOPO(Tera.Game.Messages.S_LOAD_TOPO message)
+        {
+            _lastBosses = new Dictionary<EntityId, long>();
+            _lastBossMeterUser = null;
+            _lastBossHpMeterUser = 0;
+            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys)
+            {
+                e.NextChecks = new Dictionary<EntityId, DateTime>();
+            }
+        }
+
         internal void SpawnUser(Tera.Game.Messages.SpawnUserServerMessage message)
         {
             foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys)
@@ -471,6 +482,12 @@ namespace DamageMeter.Processing
 
         internal void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
+            if (message.Dead)
+            {
+                var boss = NetworkController.Instance.EntityTracker.GetOrPlaceholder(message.Npc) as NpcEntity;
+                if (boss?.Info.Boss == true && boss.Info.HuntingZoneId == 950)
+                    BasicTeraData.LogError("Retreat test: " + boss.Info.HuntingZoneId + ":" + boss.Info.TemplateId + (_lastBosses.ContainsKey(message.Npc) ? " actual boss" : " other boss"), false, true);
+            }
             if (_lastBosses.ContainsKey(message.Npc)) _lastBosses.Remove(message.Npc);
             if(message.Npc == _lastBossMeterUser)
             {
@@ -503,17 +520,6 @@ namespace DamageMeter.Processing
         internal void UpdateCredits(Tera.Game.Messages.S_UPDATE_NPCGUILD message)
         {
             UpdateCredits(message.Type, message.Credits);
-        }
-
-        internal void SNpcStatus(Tera.Game.Messages.SNpcStatus message)
-        {
-            NetworkController.Instance.AbnormalityTracker.Update(message);
-            if (message.Defeated)
-            {
-                var boss = NetworkController.Instance.EntityTracker.GetOrPlaceholder(message.Npc) as NpcEntity;
-                if (boss?.Info.Boss==true && boss.Info.HuntingZoneId==950)
-                    BasicTeraData.LogError("Retreat test: "+ boss.Info.HuntingZoneId+":"+ boss.Info.TemplateId + (_lastBossMeterUser==message.Npc?" actual boss": " other boss"), false, true);
-            }
         }
     }
 }
