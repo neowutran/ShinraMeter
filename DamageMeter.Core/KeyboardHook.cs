@@ -76,7 +76,7 @@ namespace DamageMeter
                      e.Modifier == BasicTeraData.Instance.HotkeysData.ExcelSave.Value)
             {
                 //Can't call directly Export => threading problem
-                NetworkController.Instance.NeedToExport = DataExporter.Dest.Excel;
+                NetworkController.Instance.NeedToExport = DataExporter.Dest.Excel | DataExporter.Dest.Manual;
             }
             else if (e.Key == BasicTeraData.Instance.HotkeysData.ClickThrou.Key &&
                      e.Modifier == BasicTeraData.Instance.HotkeysData.ClickThrou.Value)
