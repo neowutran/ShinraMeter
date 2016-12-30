@@ -21,9 +21,9 @@ namespace DamageMeter.Processing
             if (npc.Info.HuntingZoneId == 950 && npc.Info.TemplateId == 9501)
             {
                 BasicTeraData.LogError("#Raid30 ; Phase 2 ; Reward box spawned.");
-                var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x));
-                var vergosPhase2Part1 = bosses.OfType<NpcEntity>().First(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 1000);
-                var vergosPhase2Part2 = bosses.OfType<NpcEntity>().First(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 2000);
+                var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x)).OfType<NpcEntity>();
+                var vergosPhase2Part1 = bosses.First(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 1000);
+                var vergosPhase2Part2 = bosses.First(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 2000);
 
 
                 if (vergosPhase2Part1 == null)
@@ -49,8 +49,8 @@ namespace DamageMeter.Processing
             if (npc.Info.HuntingZoneId == 950 && npc.Info.TemplateId == 9502)
             {
                 BasicTeraData.LogError("#Raid30 ; Phase 3; Reward box spawned.");
-                var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x));
-                var vergosPhase3 = bosses.OfType<NpcEntity>().First(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 3000);
+                var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x)).OfType<NpcEntity>();
+                var vergosPhase3 = bosses.First(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 3000);
 
                 if (vergosPhase3 == null)
                 {
