@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -19,17 +20,49 @@ namespace DamageMeter.Processing
             var npc = NetworkController.Instance.EntityTracker.GetOrNull(message.Id) as NpcEntity;
             if (npc.Info.HuntingZoneId == 950 && npc.Info.TemplateId == 9501)
             {
-                var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x)as NpcEntity).ToList();
+                BasicTeraData.LogError("#Raid30 ; Phase 2 ; Reward box spawned.");
+               var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x)as NpcEntity).ToList();
                 var vergosPhase2Part1 = bosses.Find(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 1000);
                 var vergosPhase2Part2 = bosses.Find(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 2000);
-                DataExporter.Export(vergosPhase2Part1, NetworkController.Instance.AbnormalityStorage, DataExporter.Dest.Excel | DataExporter.Dest.Site);
-                DataExporter.Export(vergosPhase2Part2, NetworkController.Instance.AbnormalityStorage, DataExporter.Dest.Excel | DataExporter.Dest.Site);
+
+
+                if(vergosPhase2Part1 == null)
+                {
+                    BasicTeraData.LogError("#Raid30 ; Phase 2 ; Part 1 boss is NULL.");
+                }
+                else
+                {
+                    BasicTeraData.LogError("#Raid30 ; Phase 2 ; Part 1 boss is NOT null.");
+                }
+                if (vergosPhase2Part2 == null)
+                {
+                    BasicTeraData.LogError("#Raid30 ; Phase 2 ; Part 2 boss is NULL.");
+                }else
+                {
+                    BasicTeraData.LogError("#Raid30 ; Phase 2 ; Part 2 boss is NOT null.");
+                }
+
+
+                DataExporter.AutomatedExport(vergosPhase2Part1, NetworkController.Instance.AbnormalityStorage, true);
+                DataExporter.AutomatedExport(vergosPhase2Part2, NetworkController.Instance.AbnormalityStorage, true);
             }
             if (npc.Info.HuntingZoneId == 950 && npc.Info.TemplateId == 9502)
             {
+                BasicTeraData.LogError("#Raid30 ; Phase 3; Reward box spawned.");
                 var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x) as NpcEntity).ToList();
                 var vergosPhase3 = bosses.Find(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 3000);
-                DataExporter.Export(vergosPhase3, NetworkController.Instance.AbnormalityStorage, DataExporter.Dest.Excel | DataExporter.Dest.Site);
+
+                if(vergosPhase3 == null)
+                {
+                    BasicTeraData.LogError("#Raid30 ; Phase 3 ; boss is NULL.");
+
+                }
+                else
+                {
+                    BasicTeraData.LogError("#Raid30 ; Phase 3 ; boss is NOT null.");
+
+                }
+                DataExporter.AutomatedExport(vergosPhase3, NetworkController.Instance.AbnormalityStorage, true);
             }
         }
     }

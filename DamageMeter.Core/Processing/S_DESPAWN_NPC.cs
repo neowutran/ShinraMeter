@@ -14,7 +14,7 @@ namespace DamageMeter.Processing
         {
             NetworkController.Instance.AbnormalityTracker.Update(message);
             NotifyProcessor.Instance.DespawnNpc(message);
-            DataExporter.Export(message, NetworkController.Instance.AbnormalityStorage);
+            DataExporter.AutomatedExport(message, NetworkController.Instance.AbnormalityStorage);
         }
     }
 }

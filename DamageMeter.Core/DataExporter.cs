@@ -59,9 +59,9 @@ namespace DamageMeter
         }
 
 
-        private static ExtendedStats GenerateStats(NpcEntity entity, AbnormalityStorage abnormals)
+        private static ExtendedStats GenerateStats(NpcEntity entity, AbnormalityStorage abnormals, bool noBossChecks = false)
         {
-            if (!entity.Info.Boss) return null;
+            if (!entity.Info.Boss && !noBossChecks) return null;
 
             var timedEncounter = false;
 
@@ -193,34 +193,19 @@ namespace DamageMeter
             return extendedStats;
         }
 
-        public static void Export(SDespawnNpc despawnNpc, AbnormalityStorage abnormality)
+        public static void AutomatedExport(SDespawnNpc despawnNpc, AbnormalityStorage abnormality)
         {
             if (!despawnNpc.Dead) return;
 
             var entity = (NpcEntity)DamageTracker.Instance.GetEntity(despawnNpc.Npc);
-            if (entity==null) return;// killing mob spawned by missed packet
-            var stats = GenerateStats(entity, abnormality);
-            if (stats == null)
-            {
-                return;
-            }
-            var sendThread = new Thread(() =>
-            {
-                ToTeraDpsApi(stats.BaseStats, entity);
-                ExcelExport.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
-                ToAnonymousStatistics(stats.BaseStats);
-            });
-            sendThread.Start();
+            AutomatedExport(entity, abnormality, false);
         }
 
-        public static void Export(NpcEntity entity, AbnormalityStorage abnormality, Dest type)
+        public static void ManualExport(NpcEntity entity, AbnormalityStorage abnormality, Dest type)
         {
-            if (entity==null) return;
+            if (entity == null) { return; }
             var stats = GenerateStats(entity, abnormality);
-            if (stats == null)
-            {
-                return;
-            }
+            if (stats == null) { return; }
             var sendThread = new Thread(() =>
             {
                 if (type.HasFlag(Dest.Site) && NetworkController.Instance.BossLink.Any(x=>x.Value==entity&&x.Key.StartsWith("!")))
@@ -231,11 +216,32 @@ namespace DamageMeter
             sendThread.Start();
         }
 
-        /**
-            The datastorage cost almost nothing, so I will use it to provide statistics about most played class, average dps for each class etc. 
-            Mostly to expose overpowered class 
-            Playername are wiped out client side & server side. No IP address are stored, so it s anonymous. 
-        */
+        public static void AutomatedExport(NpcEntity entity, AbnormalityStorage abnormality, bool noBossCheck)
+        {
+            if (entity == null) { return; }
+            var stats = GenerateStats(entity, abnormality, noBossCheck);
+            if (stats == null)
+            {
+                if (entity.Info.HuntingZoneId == 950 && noBossCheck)
+                {
+                    BasicTeraData.LogError("No stats exportable for boss: " + entity.Info.HuntingZoneId + ";" + entity.Info.TemplateId);
+                }
+                return;
+            }
+
+            if(entity.Info.HuntingZoneId == 950 && noBossCheck)
+            {
+                BasicTeraData.LogError("#Raid30 ; start exporting boss: " + entity.Info.HuntingZoneId + ";" + entity.Info.TemplateId);
+            }
+
+            var sendThread = new Thread(() =>
+            {
+                ToTeraDpsApi(stats.BaseStats, entity);
+                ExcelExport.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
+                ToAnonymousStatistics(stats.BaseStats);
+            });
+            sendThread.Start();
+        }
 
         private static void ToAnonymousStatistics(EncounterBase teradpsData)
         {
