@@ -59,9 +59,9 @@ namespace DamageMeter
         }
 
 
-        private static ExtendedStats GenerateStats(NpcEntity entity, AbnormalityStorage abnormals, bool noBossChecks = false)
+        private static ExtendedStats GenerateStats(NpcEntity entity, AbnormalityStorage abnormals)
         {
-            if (!entity.Info.Boss && !noBossChecks) return null;
+            if (!entity.Info.Boss) return null;
 
             var timedEncounter = false;
 
@@ -216,20 +216,20 @@ namespace DamageMeter
             sendThread.Start();
         }
 
-        public static void AutomatedExport(NpcEntity entity, AbnormalityStorage abnormality, bool noBossCheck)
+        public static void AutomatedExport(NpcEntity entity, AbnormalityStorage abnormality)
         {
             if (entity == null) { return; }
-            var stats = GenerateStats(entity, abnormality, noBossCheck);
+            var stats = GenerateStats(entity, abnormality);
             if (stats == null)
             {
-                if (entity.Info.HuntingZoneId == 950 && noBossCheck)
+                if (entity.Info.HuntingZoneId == 950)
                 {
                     BasicTeraData.LogError("No stats exportable for boss: " + entity.Info.HuntingZoneId + ";" + entity.Info.TemplateId);
                 }
                 return;
             }
 
-            if(entity.Info.HuntingZoneId == 950 && noBossCheck)
+            if(entity.Info.HuntingZoneId == 950)
             {
                 BasicTeraData.LogError("#Raid30 ; start exporting boss: " + entity.Info.HuntingZoneId + ";" + entity.Info.TemplateId);
             }
