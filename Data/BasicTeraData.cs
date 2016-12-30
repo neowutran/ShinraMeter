@@ -87,7 +87,7 @@ namespace Data
             throw new InvalidOperationException("Could not find the resource directory");
         }
 
-        public static void LogError(string error, bool local = false, bool debug = false)
+            public static void LogError(string error, bool local = false, bool debug = false)
         {
             if (debug && _errorCount-- <= 0) return;
             Task.Run(() =>

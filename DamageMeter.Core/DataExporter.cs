@@ -222,16 +222,7 @@ namespace DamageMeter
             var stats = GenerateStats(entity, abnormality);
             if (stats == null)
             {
-                if (entity.Info.HuntingZoneId == 950)
-                {
-                    BasicTeraData.LogError("No stats exportable for boss: " + entity.Info.HuntingZoneId + ";" + entity.Info.TemplateId);
-                }
                 return;
-            }
-
-            if(entity.Info.HuntingZoneId == 950)
-            {
-                BasicTeraData.LogError("#Raid30 ; start exporting boss: " + entity.Info.HuntingZoneId + ";" + entity.Info.TemplateId);
             }
 
             var sendThread = new Thread(() =>
