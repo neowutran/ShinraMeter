@@ -198,7 +198,7 @@ namespace DamageMeter
             if (!despawnNpc.Dead) return;
 
             var entity = (NpcEntity)DamageTracker.Instance.GetEntity(despawnNpc.Npc);
-            AutomatedExport(entity, abnormality, false);
+            AutomatedExport(entity, abnormality);
         }
 
         public static void ManualExport(NpcEntity entity, AbnormalityStorage abnormality, Dest type)
