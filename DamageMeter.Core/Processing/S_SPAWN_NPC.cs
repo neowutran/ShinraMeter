@@ -19,14 +19,16 @@ namespace DamageMeter.Processing
             var npc = NetworkController.Instance.EntityTracker.GetOrNull(message.Id) as NpcEntity;
             if (npc.Info.HuntingZoneId == 950 && npc.Info.TemplateId == 9501)
             {
-                var vergosPhase2Part1 = NetworkController.Instance.EntityTracker.FindLastestNpcEntityByAreaAndTemplate(950, 1000);
-                var vergosPhase2Part2 = NetworkController.Instance.EntityTracker.FindLastestNpcEntityByAreaAndTemplate(950, 2000);
+                var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x)as NpcEntity).ToList();
+                var vergosPhase2Part1 = bosses.Find(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 1000);
+                var vergosPhase2Part2 = bosses.Find(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 2000);
                 DataExporter.Export(vergosPhase2Part1, NetworkController.Instance.AbnormalityStorage, DataExporter.Dest.Excel | DataExporter.Dest.Site);
                 DataExporter.Export(vergosPhase2Part2, NetworkController.Instance.AbnormalityStorage, DataExporter.Dest.Excel | DataExporter.Dest.Site);
             }
             if (npc.Info.HuntingZoneId == 950 && npc.Info.TemplateId == 9502)
             {
-                var vergosPhase3 = NetworkController.Instance.EntityTracker.FindLastestNpcEntityByAreaAndTemplate(950, 3000);
+                var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x) as NpcEntity).ToList();
+                var vergosPhase3 = bosses.Find(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 3000);
                 DataExporter.Export(vergosPhase3, NetworkController.Instance.AbnormalityStorage, DataExporter.Dest.Excel | DataExporter.Dest.Site);
             }
         }
