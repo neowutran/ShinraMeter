@@ -109,7 +109,7 @@ namespace DamageMeter
             if (skillResult.SourcePlayer == null && skillResult.TargetPlayer == null) return;
             if (BasicTeraData.Instance.WindowData.PartyOnly &&
                 (skillResult.SourcePlayer == null ||
-                 !NetworkController.Instance.PlayerTracker.MyParty(skillResult.SourcePlayer)) &&
+                 !(NetworkController.Instance.PlayerTracker.MyParty(skillResult.SourcePlayer) || ((entityTarget as NpcEntity)?.Info.HuntingZoneId==950))) &&
                 (skillResult.TargetPlayer == null ||
                  !NetworkController.Instance.PlayerTracker.MyParty(skillResult.TargetPlayer))) return;
             if (BasicTeraData.Instance.WindowData.OnlyBoss && !(((entityTarget as NpcEntity)?.Info.Boss ?? false) ||
