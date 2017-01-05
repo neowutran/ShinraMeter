@@ -208,8 +208,10 @@ namespace DamageMeter
             if (stats == null) { return; }
             var sendThread = new Thread(() =>
             {
-                if (type.HasFlag(Dest.Site) && NetworkController.Instance.BossLink.Any(x=>x.Value==entity&&x.Key.StartsWith("!")))
+                if (type.HasFlag(Dest.Site) && NetworkController.Instance.BossLink.Any(x=>x.Value==entity&&x.Key.StartsWith("!0")))
                     ToTeraDpsApi(stats.BaseStats, entity);
+                if (type.HasFlag(Dest.Site) && NetworkController.Instance.BossLink.Any(x => x.Value == entity && x.Key.StartsWith("!") && !x.Key.StartsWith("!0")))
+                    ToPrivateServer(stats.BaseStats, entity, NetworkController.Instance.BossLink.Where(x => x.Value == entity && x.Key.StartsWith("!") && !x.Key.StartsWith("!0")).Select(x=>int.Parse(x.Key.Substring(1, x.Key.IndexOf(" ")-1))).ToList());
                 if (type.HasFlag(Dest.Excel))
                     ExcelExport.ExcelSave(stats,"", type.HasFlag(Dest.Manual));
             });
@@ -228,6 +230,7 @@ namespace DamageMeter
             var sendThread = new Thread(() =>
             {
                 ToTeraDpsApi(stats.BaseStats, entity);
+                ToPrivateServer(stats.BaseStats, entity);
                 ExcelExport.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
                 ToAnonymousStatistics(stats.BaseStats);
             });
@@ -249,6 +252,7 @@ namespace DamageMeter
                 areaId != 916 &&
                 areaId != 969 && 
                 areaId != 970 &&
+                areaId != 710 &&
                 areaId != 950 
                 )
             {
@@ -262,21 +266,68 @@ namespace DamageMeter
                     new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}), 3);
         }
 
-
-        private static void ToTeraDpsApi(EncounterBase teradpsData, NpcEntity entity)
+        private static void ToPrivateServer(EncounterBase teradpsData, NpcEntity entity, List<int> serverlist=null )
         {
+            if (!BasicTeraData.Instance.WindowData.PrivateServerExport) return;
+
+            var areaId = int.Parse(teradpsData.areaId);
             if (
-                //string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsToken)
-                //|| string.IsNullOrEmpty(BasicTeraData.Instance.WindowData.TeraDpsUser)
-                //|| 
-                !BasicTeraData.Instance.WindowData.SiteExport)
+                areaId != 886 &&
+                areaId != 467 &&
+                areaId != 767 &&
+                areaId != 768 &&
+                areaId != 470 &&
+                areaId != 468 &&
+                areaId != 770 &&
+                areaId != 769 &&
+                areaId != 916 &&
+                areaId != 969 &&
+                areaId != 970 &&
+                areaId != 710 &&
+                areaId != 950
+                )
             {
                 return;
             }
 
-            /*
-              Validation, without that, the server cpu will be burning \o 
-            */
+            var j = BasicTeraData.Instance.WindowData.PrivateDpsServers.Count;
+            for (int i=0; i<j; i++)
+            {
+                if (serverlist != null && !serverlist.Contains(i + 1)) continue;
+                long timediff;
+                try
+                {
+                    var url =
+                        new Uri(BasicTeraData.Instance.WindowData.PrivateDpsServers[i]).GetLeftPart(UriPartial.Authority);
+                    using (var client = new HttpClient())
+                    {
+                        client.Timeout = TimeSpan.FromSeconds(40);
+                        var response = client.GetAsync(url + "/shared/servertime");
+                        timediff = (response.Result.Headers.Date.Value.UtcDateTime.Ticks - DateTime.UtcNow.Ticks)/
+                                   TimeSpan.TicksPerSecond;
+                        teradpsData.encounterUnixEpoch += timediff;
+                    }
+                }
+                catch
+                {
+                    Debug.WriteLine("Get server time error");
+                    NetworkController.Instance.BossLink.TryAdd(
+                        "!"+ (i + 1)+ " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.Now.Ticks,
+                        entity);
+                    continue;
+                }
+
+                var json = JsonConvert.SerializeObject(teradpsData,
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+                teradpsData.encounterUnixEpoch -= timediff;
+                SendTeraDpsIo(entity, json, 3, i + 1);
+            }
+        }
+
+        private static void ToTeraDpsApi(EncounterBase teradpsData, NpcEntity entity)
+        {
+            if (!BasicTeraData.Instance.WindowData.SiteExport) return; 
+
             var areaId = int.Parse(teradpsData.areaId);
             if (
                  //areaId != 886 &&
@@ -295,13 +346,14 @@ namespace DamageMeter
                 return;
             }
 
+            long timediff;
             try
             {
                 using (var client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(40);
                     var response = client.GetAsync("http://moongourd.com/shared/servertime");
-                    var timediff = (response.Result.Headers.Date.Value.UtcDateTime.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerSecond;
+                    timediff = (response.Result.Headers.Date.Value.UtcDateTime.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerSecond;
                     teradpsData.encounterUnixEpoch += timediff;
                 }
             }
@@ -309,29 +361,28 @@ namespace DamageMeter
             {
                 Debug.WriteLine("Get server time error");
                 NetworkController.Instance.BossLink.TryAdd(
-                    "!" + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.Now.Ticks, entity);
+                    "!0 " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.Now.Ticks, entity);
                 return;
             }
-            //if (int.Parse(teradpsData.partyDps) < 2000000 && areaId != 468)
-            //{
-            //    return;
-            //}
 
             var json = JsonConvert.SerializeObject(teradpsData,
                 new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+            teradpsData.encounterUnixEpoch -= timediff;
             SendTeraDpsIo(entity, json, 3);
         }
 
-        private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry)
+        private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry, int server=0)
         {
-
+            var url = server == 0
+                ? "http://moongourd.com/dpsmeter_data.php"
+                : BasicTeraData.Instance.WindowData.PrivateDpsServers[server - 1];
             Debug.WriteLine(json);
 
             if (numberTry == 0)
             {
                 Console.WriteLine("API ERROR");
                 NetworkController.Instance.BossLink.TryAdd(
-                    "!"+LP.TeraDpsIoApiError + " " + boss.Info.Name + " " + boss.Id + " " + DateTime.Now.Ticks, boss);
+                    "!" + server + " " +LP.TeraDpsIoApiError + " " + boss.Info.Name + " " + boss.Id + " " + DateTime.Now.Ticks, boss);
                 return;
             }
             try
@@ -342,7 +393,7 @@ namespace DamageMeter
                     //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
                     client.DefaultRequestHeaders.Add("X-Local-Time",DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString());
                     client.Timeout = TimeSpan.FromSeconds(40);
-                    var response = client.PostAsync("http://moongourd.com/dpsmeter_data.php", new StringContent(
+                    var response = client.PostAsync(url, new StringContent(
                                           json,
                                           Encoding.UTF8,
                                           "application/json")
@@ -358,7 +409,7 @@ namespace DamageMeter
                     else
                     {
                         NetworkController.Instance.BossLink.TryAdd(
-                            "!" + (string) responseObject["message"] + " " + boss.Info.Name + " " + boss.Id + " " +
+                            "!"+ server + " " + (string) responseObject["message"] + " " + boss.Info.Name + " " + boss.Id + " " +
                             DateTime.Now.Ticks, boss);
                     }
                 }
@@ -368,7 +419,7 @@ namespace DamageMeter
                 Debug.WriteLine(e.Message);
                 Debug.WriteLine(e.StackTrace);
                 Thread.Sleep(10000);
-                SendTeraDpsIo(boss, json, numberTry - 1);
+                SendTeraDpsIo(boss, json, numberTry - 1, server);
             }
         }
     }

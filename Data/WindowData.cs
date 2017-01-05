@@ -73,7 +73,8 @@ namespace Data
         public Color PrivateChannelColor { get; set; }
         public bool RemoveTeraAltEnterHotkey { get; set; }
         public bool FormatPasteString { get; set; }
-        
+        public bool PrivateServerExport { get; set; }
+        public List<string> PrivateDpsServers { get; set; }
       
         private void DefaultValue()
         {
@@ -126,7 +127,9 @@ namespace Data
             DiscordLogin = "";
             DiscordPassword = "";
             DisablePartyEvent = false;
-    }
+            PrivateServerExport = false;
+            PrivateDpsServers=new List<string>() {""};
+        }
 
 
         public WindowData(BasicTeraData basicData)
@@ -246,6 +249,19 @@ namespace Data
             if (parseSuccess)
             {
                 SiteExport = val;
+            }
+            var privateS = teradps.Element("private_servers");
+            if (privateS == null) return;
+            var exp1 = privateS.Attribute("enabled");
+            parseSuccess = bool.TryParse(exp1?.Value??"false", out val);
+            if (parseSuccess)
+            {
+                PrivateServerExport = val;
+            }
+            if (privateS.HasElements) PrivateDpsServers=new List<string>();else return;
+            foreach (var server in privateS.Elements())
+            {
+                PrivateDpsServers.Add(server.Value);
             }
         }
 
@@ -503,6 +519,12 @@ namespace Data
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
             xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
             xml.Root.Element("teradps.io").Add(new XElement("enabled", SiteExport));
+            xml.Root.Element("teradps.io").Add(new XElement("private_servers", new XAttribute("enabled", PrivateServerExport)));
+            PrivateDpsServers.ForEach(x=>
+                xml.Root.Element("teradps.io").Element("private_servers").Add(new XElement("server",x))
+                );
+            
+
 
             xml.Root.Add(new XElement("discord"));
             xml.Root.Element("discord").Add(new XElement("login", DiscordLogin));

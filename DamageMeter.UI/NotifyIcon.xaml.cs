@@ -76,10 +76,13 @@ namespace DamageMeter.UI
             DiscordLoginTextBox.Text = BasicTeraData.Instance.WindowData.DiscordLogin;
             DiscordPasswordTextBox.Password = BasicTeraData.Instance.WindowData.DiscordPassword;
             ShowAfkIventsIngame.IsChecked = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
+            PrivateServerExport.IsChecked = BasicTeraData.Instance.WindowData.PrivateServerExport;
+            ServerURLTextbox.Text = BasicTeraData.Instance.WindowData.PrivateDpsServers[0];
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
+            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
         }
 
-     
+
 
         public void ShowBallon(NotifyFlashMessage flash)
         {
@@ -474,6 +477,23 @@ namespace DamageMeter.UI
         {
             _mainWindow._chatbox = new Chatbox();
             _mainWindow._chatbox.Show();
+        }
+
+        private void EnablePServerExp(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.PrivateServerExport = true;
+            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
+        }
+
+        private void DisablePServerExp(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.PrivateServerExport = false;
+            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
+        }
+
+        private void ServerURLChanged(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.PrivateDpsServers[0] = ServerURLTextbox.Text;
         }
     }
 }
