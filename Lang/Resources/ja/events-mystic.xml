@@ -1,20 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
+  <!-- Adrenaline Rush -->
+  <abnormality active="true" ingame="true" trigger="Added" target="Self">
+    <abnormalities>
+      <abnormality>200701</abnormality>
+      <abnormality>200700</abnormality>
+    </abnormalities>
+    <actions>
+      <notify>
+        <balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+        <beeps>
+          <beep frequency="110" duration="500"/>
+        </beeps>
+      </notify>
+    </actions>
+  </abnormality>
 
-	<!-- United Thrall of Protection (endurance buff) -->
-	<abnormality active="false" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="Party">
-		<abnormalities>
-			<abnormality>27120</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<beeps>
-					<beep frequency="196" duration="500"/>
-				</beeps>
-			</notify>
-		</actions>
-	</abnormality>
+  <!-- United Thrall of Protection (endurance buff) -->
+  <abnormality active="false" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="PartySelfExcluded">
+    <abnormalities>
+      <abnormality>27120</abnormality>
+    </abnormalities>
+    <actions>
+      <notify>
+        <balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+        <beeps>
+          <beep frequency="196" duration="500"/>
+        </beeps>
+      </notify>
+    </actions>
+  </abnormality>
+
+  <!-- United Thrall of Protection (endurance buff) -->
+  <abnormality active="false" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="Self">
+    <abnormalities>
+      <abnormality>27120</abnormality>
+    </abnormalities>
+    <actions>
+      <notify>
+        <balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+        <beeps>
+          <beep frequency="196" duration="500"/>
+        </beeps>
+      </notify>
+    </actions>
+  </abnormality>
 	
 	<!-- Mana aura -->
 	<abnormality ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">

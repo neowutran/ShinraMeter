@@ -50,6 +50,38 @@
 			</notify>
 		</actions>
 	</abnormality>
+  
+  <!-- Mystic contagion -->
+  <abnormality active="true" ingame="true" trigger="Added" target="Boss">
+    <abnormalities>
+      <abnormality>701700</abnormality>
+      <abnormality>701701</abnormality>
+    </abnormalities>
+    <actions>
+      <notify>
+        <balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+        <beeps>
+          <beep frequency="110" duration="500"/>
+        </beeps>
+      </notify>
+    </actions>
+  </abnormality>
+  <!-- Adrenaline Rush -->
+  <abnormality active="true" ingame="true" trigger="Added" target="Self">
+    <abnormalities>
+      <abnormality>200701</abnormality>
+      <abnormality>200700</abnormality>
+    </abnormalities>
+    <actions>
+      <notify>
+        <balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+        <beeps>
+          <beep frequency="110" duration="500"/>
+        </beeps>
+      </notify>
+    </actions>
+  </abnormality>
+  
 	
 	<!-- Bravery pot -->
 	<abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="30" trigger="MissingDuringFight" target="Self">
