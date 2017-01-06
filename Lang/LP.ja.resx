@@ -631,4 +631,19 @@
   <data name="DisablePartyEvents" xml:space="preserve">
     <value>パーティーについての通知を無効</value>
  </data>
+  <data name="ShowAfkEventsIngame" xml:space="preserve">
+    <value>common-afkイベントをゲーム中に表示する</value>
+  </data>
+  <data name="VanguardCredits" xml:space="preserve">
+    <value>ヴァルキオン偵察隊信用ポイントが上限に近いです:</value>
+  </data>
+  <data name="OpenChatBox" xml:space="preserve">
+    <value>チャットボックスを開く</value>
+  </data>
+  <data name="PrivateServerExport" xml:space="preserve">
+    <value>プライベートDPSサーバーに出力</value>
+  </data>
+  <data name="PrivateServerURL" xml:space="preserve">
+    <value>プライベートサーバーURL</value>
+  </data>
 </root>
