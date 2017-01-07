@@ -15,7 +15,7 @@ namespace Data
             BasicTeraData.Instance.MonsterDatabase =
                 new NpcDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language, BasicTeraData.Instance.WindowData.DetectBosses);
             BasicTeraData.Instance.PetSkillDatabase =
-                new PetSkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
+                new PetSkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language, BasicTeraData.Instance.MonsterDatabase);
             BasicTeraData.Instance.SkillDatabase =
                 new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
             BasicTeraData.Instance.HotDotDatabase =
