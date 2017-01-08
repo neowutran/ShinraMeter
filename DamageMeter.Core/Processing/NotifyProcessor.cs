@@ -482,12 +482,6 @@ namespace DamageMeter.Processing
 
         internal void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
-            if (message.Dead)
-            {
-                var boss = NetworkController.Instance.EntityTracker.GetOrPlaceholder(message.Npc) as NpcEntity;
-                if (boss?.Info.Boss == true && boss.Info.HuntingZoneId == 950)
-                    BasicTeraData.LogError("Retreat test: " + boss.Info.HuntingZoneId + ":" + boss.Info.TemplateId + (_lastBosses.ContainsKey(message.Npc) ? " actual boss" : " other boss"), false, true);
-            }
             if (_lastBosses.ContainsKey(message.Npc)) _lastBosses.Remove(message.Npc);
             if(message.Npc == _lastBossMeterUser)
             {

@@ -638,4 +638,7 @@
   <data name="PrivateServerURL" xml:space="preserve">
     <value>URL приватного сайта</value>
   </data>
+  <data name="MuteSound" xml:space="preserve">
+    <value>Выключить звук</value>
+  </data>
 </root>

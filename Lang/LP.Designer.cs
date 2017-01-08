@@ -1110,6 +1110,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mute sound.
+        /// </summary>
+        public static string MuteSound {
+            get {
+                return ResourceManager.GetString("MuteSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mystic.
         /// </summary>
         public static string Mystic {

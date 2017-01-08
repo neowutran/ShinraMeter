@@ -10,12 +10,6 @@ namespace DamageMeter.Database
 {
     public class Database
     {
-
-        /*
-         *  The enum value NEED to be set manually
-         *  without that, converting the enum to int will cause massive weird bug, like:
-         *  https://github.com/neowutran/ShinraMeter/issues/184
-         * */
         public enum Type
         {
             Damage = 1,
@@ -477,7 +471,7 @@ namespace DamageMeter.Database
             }
 
             sql =
-                "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, sourceServerIdPlayerId, target " +
+                "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, sourceServerIdPlayerId " +
                 "FROM skills " +
                 "WHERE target = $target AND type = $type AND sourceServerIdPlayerId IS NOT NULL " +
                 "GROUP BY sourceServerIdPlayerId " +

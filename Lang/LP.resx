@@ -650,4 +650,7 @@
   <data name="PrivateServerURL" xml:space="preserve">
     <value>Private server URL</value>
   </data>
+  <data name="MuteSound" xml:space="preserve">
+    <value>Mute sound</value>
+  </data>
 </root>

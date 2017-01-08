@@ -78,6 +78,7 @@ namespace DamageMeter.UI
             ShowAfkIventsIngame.IsChecked = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
             PrivateServerExport.IsChecked = BasicTeraData.Instance.WindowData.PrivateServerExport;
             ServerURLTextbox.Text = BasicTeraData.Instance.WindowData.PrivateDpsServers[0];
+            MuteSound.IsChecked = BasicTeraData.Instance.WindowData.MuteSound;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
         }
@@ -96,7 +97,7 @@ namespace DamageMeter.UI
                 Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, flash.Balloon.DisplayTime);
             }
 
-            if (flash.Sound!=null) Task.Run(()=>flash.Sound.Play());
+            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound!=null) Task.Run(()=>flash.Sound.Play());
             
         }
 
@@ -362,6 +363,7 @@ namespace DamageMeter.UI
         private void ChatSettingsVisible(bool show)
         {
             CopyInspect.Height = show ? Double.NaN : 0;
+            MuteSound.Height = show ? Double.NaN : 0;
             PartyEvent.Height = show ? Double.NaN : 0;
             ShowAfkIventsIngame.Height = show ? Double.NaN : 0;
             WhisperColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
@@ -494,6 +496,16 @@ namespace DamageMeter.UI
         private void ServerURLChanged(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PrivateDpsServers[0] = ServerURLTextbox.Text;
+        }
+
+        private void EnableMuteSound(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.MuteSound = true;
+        }
+
+        private void DisableMuteSound(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.MuteSound = false;
         }
     }
 }

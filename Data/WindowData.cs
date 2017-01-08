@@ -42,8 +42,6 @@ namespace Data
 
         public bool DateInExcelPath { get; set; }
 
-        public string NotifySound { get; set; }
-
         public int NumberOfPlayersDisplayed { get; set; }
      
         public bool LowPriority { get; set; }
@@ -75,7 +73,7 @@ namespace Data
         public bool FormatPasteString { get; set; }
         public bool PrivateServerExport { get; set; }
         public List<string> PrivateDpsServers { get; set; }
-      
+        public bool MuteSound { get; set; }
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -105,7 +103,6 @@ namespace Data
             DetectBosses = false;
             DateInExcelPath = false;
             NumberOfPlayersDisplayed = 5;
-            NotifySound = "ElinuDance.mp3";
             FormatPasteString = true;
             WhisperColor = Brushes.Pink.Color;
             AllianceColor = Brushes.Green.Color;
@@ -129,6 +126,7 @@ namespace Data
             DisablePartyEvent = false;
             PrivateServerExport = false;
             PrivateDpsServers=new List<string>() {""};
+            MuteSound = false;
         }
 
 
@@ -197,6 +195,7 @@ namespace Data
             Parse("excel_cma_dps_seconds", "ExcelCMADPSSeconds");
             Parse("disable_party_event", "DisablePartyEvent");
             Parse("show_afk_events_ingame", "ShowAfkEventsIngame");
+            Parse("mute_sound", "MuteSound");
             ParseColor("say_color","SayColor");
             ParseColor("alliance_color", "AllianceColor");
             ParseColor("area_color", "AreaColor");
@@ -499,9 +498,9 @@ namespace Data
             xml.Root.Add(new XElement("number_of_players_displayed", NumberOfPlayersDisplayed));
             xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", RemoveTeraAltEnterHotkey));
             xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
+            xml.Root.Add(new XElement("mute_sound", MuteSound));
             xml.Root.Add(new XElement("copy_inspect", CopyInspect));
             xml.Root.Add(new XElement("format_paste_string", FormatPasteString));
-            xml.Root.Add(new XElement("notify_sound", NotifySound));
             xml.Root.Add(new XElement("say_color", SayColor.ToString()));
             xml.Root.Add(new XElement("alliance_color", AllianceColor.ToString()));
             xml.Root.Add(new XElement("area_color", AreaColor.ToString()));
