@@ -589,7 +589,6 @@
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
     <value>你的hotkeys.xml文件无效</value>
   </data>
-  </data>
   <data name="PrivateServerExport" xml:space="preserve">
     <value>导出到私有DPS服务器</value>
   </data>
