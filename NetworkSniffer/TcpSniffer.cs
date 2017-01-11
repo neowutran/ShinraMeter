@@ -102,8 +102,10 @@ namespace NetworkSniffer
                 try { payload = tcpPacket.PayloadData; } catch { return; }
                 //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
                 lock (_lock)
-                    if (tcpPacket.Fin || tcpPacket.Rst) { OnEndConnection(connection); return; }
+                {
+                    if (tcpPacket.Fin || tcpPacket.Rst) {OnEndConnection(connection); return;}
                     connection.HandleTcpReceived(tcpPacket.SequenceNumber, payload);
+                }
                 //if (!string.IsNullOrEmpty(TcpLogFile))
                 //    File.AppendAllText(TcpLogFile,
                 //        string.Format("{0} {1}+{4} | {2} {3}+{4} ACK {5} ({6})\r\n",
