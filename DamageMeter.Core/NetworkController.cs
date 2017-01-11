@@ -64,6 +64,7 @@ namespace DamageMeter
         private NetworkController()
         {
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
+            TeraSniffer.Instance.EndConnection += HandleEndConnection;
             AbnormalityStorage = new AbnormalityStorage();
             var packetAnalysis = new Thread(PacketAnalysisLoop);
             packetAnalysis.Start();
@@ -100,6 +101,14 @@ namespace DamageMeter
 
         public event ConnectedHandler Connected;
         public event UpdateUiHandler TickUpdated;
+
+        protected virtual void HandleEndConnection()
+        {
+            MessageFactory = new MessageFactory();
+            NeedInit = true;
+            Connected?.Invoke(LP.SystemTray_No_server);
+            OnGuildIconAction(null);
+        }
 
         protected virtual void HandleNewConnection(Server server)
         {

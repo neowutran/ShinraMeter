@@ -42,10 +42,16 @@ namespace NetworkSniffer
         public string TcpLogFile { get; set; }
 
         public event Action<TcpConnection> NewConnection;
+        public event Action<TcpConnection> EndConnection;
 
         protected void OnNewConnection(TcpConnection connection)
         {
             var handler = NewConnection;
+            handler?.Invoke(connection);
+        }
+        protected void OnEndConnection(TcpConnection connection)
+        {
+            var handler = EndConnection;
             handler?.Invoke(connection);
         }
 
@@ -96,6 +102,7 @@ namespace NetworkSniffer
                 try { payload = tcpPacket.PayloadData; } catch { return; }
                 //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
                 lock (_lock)
+                    if (tcpPacket.Fin || tcpPacket.Rst) { OnEndConnection(connection); return; }
                     connection.HandleTcpReceived(tcpPacket.SequenceNumber, payload);
                 //if (!string.IsNullOrEmpty(TcpLogFile))
                 //    File.AppendAllText(TcpLogFile,

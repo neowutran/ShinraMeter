@@ -21,7 +21,7 @@ namespace DamageMeter.Sniffing
         //private readonly object _eventLock = new object();
         private readonly IpSniffer _ipSniffer;
         private readonly ConcurrentDictionary<TcpConnection,byte> _isNew = new ConcurrentDictionary<TcpConnection, byte>();
-
+        public bool Connected;
         private readonly Dictionary<string, Server> _serversByIp;
         private TcpConnection _clientToServer;
         private ConnectionDecrypter _decrypter;
@@ -61,6 +61,7 @@ namespace DamageMeter.Sniffing
 
             var tcpSniffer = new TcpSniffer(_ipSniffer);
             tcpSniffer.NewConnection += HandleNewConnection;
+            tcpSniffer.EndConnection += HandleEndConnection;
         }
 
 
@@ -74,6 +75,7 @@ namespace DamageMeter.Sniffing
         }
 
         public event Action<Server> NewConnection;
+        public event Action EndConnection;
         public event Action<Message> MessageReceived;
         public event Action<string> Warning;
 
@@ -83,6 +85,11 @@ namespace DamageMeter.Sniffing
             handler?.Invoke(server);
         }
 
+        protected virtual void OnEndConnection()
+        {
+            var handler = EndConnection;
+            handler?.Invoke();
+        }
 
         protected virtual void OnMessageReceived(Message message)
         {
@@ -96,12 +103,23 @@ namespace DamageMeter.Sniffing
         }
 
 
+        private void HandleEndConnection(TcpConnection connection)
+        {
+            if (connection == _clientToServer || connection == _serverToClient)
+            {
+                _clientToServer?.RemoveCallback();
+                _serverToClient?.RemoveCallback();
+                Connected = false;
+                OnEndConnection();
+            }
+        }
         // called from the tcp sniffer, so it needs to lock
         private void HandleNewConnection(TcpConnection connection)
         {
             {
-                if (!_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
-                    !_serversByIp.ContainsKey(connection.Source.Address.ToString()))
+                if (Connected ||
+                    (!_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
+                    !_serversByIp.ContainsKey(connection.Source.Address.ToString())))
                     return;
                 _isNew.TryAdd(connection,1);
                 connection.DataReceived += HandleTcpDataReceived;
@@ -143,7 +161,6 @@ namespace DamageMeter.Sniffing
                         _messageSplitter = new MessageSplitter();
                         _messageSplitter.MessageReceived += HandleMessageReceived;
                         _messageSplitter.Resync += OnResync;
-                        OnNewConnection(server);
                     }
                     if (_serverToClient != null && _clientToServer == null &&
                         _serverToClient.Destination.Equals(connection.Source) &&
@@ -153,6 +170,8 @@ namespace DamageMeter.Sniffing
                         byte q;
                         _isNew.TryRemove(connection, out q);
                         _clientToServer = connection;
+                        var server = _serversByIp[connection.Destination.Address.ToString()];
+                        OnNewConnection(server);
                     }
                     if (connection.BytesReceived > 0x10000) //if received more bytes but still not recognized - not interesting.
                     {
