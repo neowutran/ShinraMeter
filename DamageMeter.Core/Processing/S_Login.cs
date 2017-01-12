@@ -30,7 +30,7 @@ namespace DamageMeter.Processing
                     }
                 }
                 NetworkController.Instance.Server = BasicTeraData.Instance.Servers.GetServer(message.ServerId, NetworkController.Instance.Server);
-                NetworkController.Instance.MessageFactory.Version = NetworkController.Instance.Server.Region;
+                NetworkController.Instance.MessageFactory.Region = NetworkController.Instance.Server.Region;
                 if (trackerreset)
                 {
                     NetworkController.Instance.TeraData = BasicTeraData.Instance.DataForRegion(NetworkController.Instance.Server.Region);

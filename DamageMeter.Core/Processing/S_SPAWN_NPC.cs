@@ -16,9 +16,7 @@ namespace DamageMeter.Processing
         {
             NetworkController.Instance.EntityTracker.Update(message);
             DamageTracker.Instance.UpdateEntities(message);
-
-            var npc = NetworkController.Instance.EntityTracker.GetOrNull(message.Id) as NpcEntity;
-            if (npc.Info.HuntingZoneId == 950 && npc.Info.TemplateId == 9501)
+            if (message.NpcArea == 950 && message.NpcId == 9501)
             {
                 var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x)).OfType<NpcEntity>().ToList();
                 var vergosPhase2Part1 = bosses.FirstOrDefault(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 1000);
@@ -26,7 +24,7 @@ namespace DamageMeter.Processing
                 DataExporter.AutomatedExport(vergosPhase2Part1, NetworkController.Instance.AbnormalityStorage);
                 DataExporter.AutomatedExport(vergosPhase2Part2, NetworkController.Instance.AbnormalityStorage);
             }
-            if (npc.Info.HuntingZoneId == 950 && npc.Info.TemplateId == 9502)
+            if (message.NpcArea == 950 && message.NpcId == 9502)
             {
                 var bosses = Database.Database.Instance.AllEntity().Select(x => NetworkController.Instance.EntityTracker.GetOrNull(x)).OfType<NpcEntity>();
                 var vergosPhase3 = bosses.FirstOrDefault(x => x.Info.HuntingZoneId == 950 && x.Info.TemplateId == 3000);
