@@ -312,7 +312,7 @@ namespace DamageMeter
                 {
                     Debug.WriteLine("Get server time error");
                     NetworkController.Instance.BossLink.TryAdd(
-                        "!"+ (i + 1)+ " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.Now.Ticks,
+                        "!"+ (i + 1)+ " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.UtcNow.Ticks,
                         entity);
                     continue;
                 }
@@ -362,7 +362,7 @@ namespace DamageMeter
             {
                 Debug.WriteLine("Get server time error");
                 NetworkController.Instance.BossLink.TryAdd(
-                    "!0 " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.Now.Ticks, entity);
+                    "!0 " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + entity.Id + " " + DateTime.UtcNow.Ticks, entity);
                 return;
             }
 
@@ -383,7 +383,7 @@ namespace DamageMeter
             {
                 Console.WriteLine("API ERROR");
                 NetworkController.Instance.BossLink.TryAdd(
-                    "!" + server + " " +LP.TeraDpsIoApiError + " " + boss.Info.Name + " " + boss.Id + " " + DateTime.Now.Ticks, boss);
+                    "!" + server + " " +LP.TeraDpsIoApiError + " " + boss.Info.Name + " " + boss.Id + " " + DateTime.UtcNow.Ticks, boss);
                 return;
             }
             try
@@ -411,7 +411,7 @@ namespace DamageMeter
                     {
                         NetworkController.Instance.BossLink.TryAdd(
                             "!"+ server + " " + (string) responseObject["message"] + " " + boss.Info.Name + " " + boss.Id + " " +
-                            DateTime.Now.Ticks, boss);
+                            DateTime.UtcNow.Ticks, boss);
                     }
                 }
             }
