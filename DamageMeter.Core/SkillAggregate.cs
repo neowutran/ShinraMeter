@@ -86,7 +86,9 @@ namespace DamageMeter
         {
             var result = from skill in Skills
                          from source in skill.Value
-                         select SkillsData.LowestCrit(source, _target, skill.Key.Id, _timed, Type);
+                         let res = SkillsData.LowestCrit(source, _target, skill.Key.Id, _timed, Type)
+                         where res !=0
+                         select res;
             var enumerable = result as long[] ?? result.ToArray();
             return !enumerable.Any() ? 0 : enumerable.Min();
         }
