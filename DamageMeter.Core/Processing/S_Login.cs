@@ -25,7 +25,7 @@ namespace DamageMeter.Processing
                     }
                     catch
                     {
-                        BasicTeraData.LogError("New server:" + NetworkController.Instance.Server + ";Old server Id:" + NetworkController.Instance.EntityTracker.MeterUser.ServerId, false, true);
+                        BasicTeraData.LogError("New server:" + NetworkController.Instance.Server + ";Old server Id:" + NetworkController.Instance.EntityTracker.MeterUser?.ServerId, false, true);
                         throw;
                     }
                 }

@@ -104,8 +104,8 @@ namespace DamageMeter
 
         protected virtual void HandleEndConnection()
         {
-            MessageFactory = new MessageFactory();
             NeedInit = true;
+            MessageFactory = new MessageFactory();
             Connected?.Invoke(LP.SystemTray_No_server);
             OnGuildIconAction(null);
         }
@@ -113,8 +113,8 @@ namespace DamageMeter
         protected virtual void HandleNewConnection(Server server)
         {
             Server = server;
-            MessageFactory = new MessageFactory();
             NeedInit = true;
+            MessageFactory = new MessageFactory();
             Connected?.Invoke(server.Name);
         }
 
@@ -135,7 +135,6 @@ namespace DamageMeter
         {
             if (!NeedInit)
             {
-                NotifyProcessor.Instance.AbnormalityNotifierMissing();
                 if (BasicTeraData.Instance.WindowData.EnableChat != MessageFactory.ChatEnabled)
                 {
                     MessageFactory.ChatEnabled = BasicTeraData.Instance.WindowData.EnableChat;
@@ -151,6 +150,7 @@ namespace DamageMeter
                     }
                     PacketProcessing.Update();
                 }
+                NotifyProcessor.Instance.AbnormalityNotifierMissing();
             }
             _lastTick = DateTime.UtcNow.Ticks;
             var handler = TickUpdated;
