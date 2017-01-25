@@ -14,6 +14,8 @@ namespace DamageMeter
 
         private List<Entity> _toDelete = new List<Entity>();
 
+        public long LastIdleStartTime = 0;
+
         private DamageTracker()
         {
         }
@@ -71,6 +73,7 @@ namespace DamageMeter
         {
             Database.Database.Instance.DeleteAll();
             NetworkController.Instance.NewEncounter = null;
+            LastIdleStartTime = 0;
         }
 
         public Entity GetActorEntity(EntityId entityId)
@@ -155,6 +158,8 @@ namespace DamageMeter
                  * Remove data from resetted boss when hitting a new boss
                  * (we don't remove the data directly when the boss reset, to let the time for a review of the encounter.)
                  */
+                if (LastIdleStartTime>0 && message.Time.AddSeconds(-BasicTeraData.Instance.WindowData.IdleResetTimeout).Ticks>=LastIdleStartTime) Reset();
+                else LastIdleStartTime=0;
                 if (skillType == Database.Database.Type.Damage && entity.Info.Boss)
                 {
                     foreach (var delete in _toDelete)

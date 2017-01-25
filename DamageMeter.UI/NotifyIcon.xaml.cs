@@ -79,6 +79,8 @@ namespace DamageMeter.UI
             PrivateServerExport.IsChecked = BasicTeraData.Instance.WindowData.PrivateServerExport;
             ServerURLTextbox.Text = BasicTeraData.Instance.WindowData.PrivateDpsServers[0];
             MuteSound.IsChecked = BasicTeraData.Instance.WindowData.MuteSound;
+            ShowSelfOnTop.IsChecked = BasicTeraData.Instance.WindowData.MeterUserOnTop;
+            IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
         }
@@ -506,6 +508,22 @@ namespace DamageMeter.UI
         private void DisableMuteSound(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.MuteSound = false;
+        }
+
+        private void EnableShowSelfOnTop(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.MeterUserOnTop = true;
+        }
+
+        private void DisableShowSelfOnTop(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.MeterUserOnTop = false;
+        }
+
+        private void IdleRtoChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.IdleResetTimeout = (int?)IdleRTOSpinner?.Value??0;
+            if (BasicTeraData.Instance.WindowData.IdleResetTimeout == 0) DamageTracker.Instance.LastIdleStartTime = 0;
         }
     }
 }

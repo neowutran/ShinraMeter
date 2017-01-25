@@ -43,7 +43,7 @@ namespace Data
         public bool DateInExcelPath { get; set; }
 
         public int NumberOfPlayersDisplayed { get; set; }
-     
+        public bool MeterUserOnTop { get; set; }
         public bool LowPriority { get; set; }
         public bool EnableChat { get; set; }
         public bool CopyInspect { get; set; }
@@ -74,6 +74,7 @@ namespace Data
         public bool PrivateServerExport { get; set; }
         public List<string> PrivateDpsServers { get; set; }
         public bool MuteSound { get; set; }
+        public int IdleResetTimeout { get; set; }
         private void DefaultValue()
         {
             Location = new Point(0, 0);
@@ -102,6 +103,7 @@ namespace Data
             OnlyBoss = false;
             DetectBosses = false;
             DateInExcelPath = false;
+            MeterUserOnTop = false;
             NumberOfPlayersDisplayed = 5;
             FormatPasteString = true;
             WhisperColor = Brushes.Pink.Color;
@@ -127,6 +129,7 @@ namespace Data
             PrivateServerExport = false;
             PrivateDpsServers=new List<string>() {""};
             MuteSound = false;
+            IdleResetTimeout = 0;
         }
 
 
@@ -163,7 +166,8 @@ namespace Data
             }
 
             Parse("lf_delay", "LFDelay");
-            Parse("number_of_players_displayed", "NumberOfPlayersDisplayed");
+            Parse("number_of_players_displayed", "NumberOfPlayersDisplayed"); 
+            Parse("meter_user_on_top", "MeterUserOnTop");
             Parse("excel_save_directory", "ExcelSaveDirectory");
 
             if (ExcelSaveDirectory == "")
@@ -196,6 +200,7 @@ namespace Data
             Parse("disable_party_event", "DisablePartyEvent");
             Parse("show_afk_events_ingame", "ShowAfkEventsIngame");
             Parse("mute_sound", "MuteSound");
+            Parse("idle_reset_timeout", "IdleResetTimeout");
             ParseColor("say_color","SayColor");
             ParseColor("alliance_color", "AllianceColor");
             ParseColor("area_color", "AreaColor");
@@ -496,6 +501,7 @@ namespace Data
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));
             xml.Root.Add(new XElement("low_priority", LowPriority));
             xml.Root.Add(new XElement("number_of_players_displayed", NumberOfPlayersDisplayed));
+            xml.Root.Add(new XElement("meter_user_on_top", MeterUserOnTop));
             xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", RemoveTeraAltEnterHotkey));
             xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
             xml.Root.Add(new XElement("mute_sound", MuteSound));
@@ -513,6 +519,7 @@ namespace Data
             xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
             xml.Root.Add(new XElement("disable_party_event", DisablePartyEvent));
             xml.Root.Add(new XElement("show_afk_events_ingame", ShowAfkEventsIngame));
+            xml.Root.Add(new XElement("idle_reset_timeout", IdleResetTimeout));
 
             xml.Root.Add(new XElement("teradps.io"));
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));

@@ -39,6 +39,7 @@ namespace DamageMeter.Processing
                     BasicTeraData.Instance.HotDotDatabase.Slaying.Tooltip = LP.SlayingTooltip;
                     NetworkController.Instance.EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
                     NetworkController.Instance.PlayerTracker = new PlayerTracker(NetworkController.Instance.EntityTracker, BasicTeraData.Instance.Servers);
+                    NetworkController.Instance.MeterPlayers.Clear();
                     Database.Database.Instance.DeleteAll();
                     SelectFont(NetworkController.Instance.Server.Region);
                 }
@@ -56,6 +57,8 @@ namespace DamageMeter.Processing
             NetworkController.Instance.EntityTracker.Update(message);
             BasicTeraData.Instance.EventsData.Load(NetworkController.Instance.EntityTracker.MeterUser.RaceGenderClass.Class);
             NetworkController.Instance.PacketProcessing.Update();
+            var me = NetworkController.Instance.PlayerTracker.Me();
+            if (!NetworkController.Instance.MeterPlayers.Contains(me)) NetworkController.Instance.MeterPlayers.Add(me);
         }
         internal static void SelectFont(string region)
         {

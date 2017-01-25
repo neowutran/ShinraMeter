@@ -653,4 +653,10 @@
   <data name="MuteSound" xml:space="preserve">
     <value>Mute sound</value>
   </data>
+  <data name="ShowSelfOnTop" xml:space="preserve">
+    <value>Show self on top position in UI</value>
+  </data>
+  <data name="IdleResetTimeout" xml:space="preserve">
+    <value>Idle reset timeout in sec (0=disable)</value>
+  </data>
 </root>

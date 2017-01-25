@@ -46,6 +46,7 @@ namespace DamageMeter
             {typeof(Tera.Game.Messages.SDespawnNpc), Helpers.Contructor<Func<Tera.Game.Messages.SDespawnNpc , S_DESPAWN_NPC>>()},
             {typeof(Tera.Game.Messages.SCreatureLife), Helpers.Contructor<Func<Tera.Game.Messages.SCreatureLife , S_CREATURE_LIFE>>()},
             {typeof(Tera.Game.Messages.S_CREST_INFO), Helpers.Contructor<Func<Tera.Game.Messages.S_CREST_INFO , S_CREST_INFO>>() },
+            {typeof(Tera.Game.Messages.SUserStatus), new Action<Tera.Game.Messages.SUserStatus>(x=>S_USER_STATUS.Process(x))}
 //            {typeof(Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT), new Action<Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT>(x=>NotifyProcessor.S_BEGIN_THROUGH_ARBITER_CONTRACT(x))}
         };
         private static Dictionary<Type, Delegate> MainProcessor = new Dictionary<Type, Delegate>();

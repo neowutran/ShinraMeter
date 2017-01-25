@@ -51,6 +51,7 @@ namespace DamageMeter
         internal MessageFactory MessageFactory = new MessageFactory();
         internal UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
+        internal readonly List<Player> MeterPlayers=new List<Player>();
         public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
         public CopyKey NeedToCopy;
 
@@ -176,6 +177,8 @@ namespace DamageMeter
             var playersInfo = timedEncounter
                 ? Database.Database.Instance.PlayerDamageInformation(entityInfo.BeginTime, entityInfo.EndTime)
                 : Database.Database.Instance.PlayerDamageInformation(currentBoss);
+            if (BasicTeraData.Instance.WindowData.MeterUserOnTop)
+                playersInfo = playersInfo.OrderBy(x => MeterPlayers.Contains(x.Source) ? 0 : 1).ThenByDescending(x => x.Amount).ToList();
 
             var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
 

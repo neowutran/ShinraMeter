@@ -641,4 +641,10 @@
   <data name="MuteSound" xml:space="preserve">
     <value>Выключить звук</value>
   </data>
+  <data name="ShowSelfOnTop" xml:space="preserve">
+    <value>Показывать себя в верхней строчке</value>
+  </data>
+  <data name="IdleResetTimeout" xml:space="preserve">
+    <value>Сброс если вне боя больше X сек (0=не сбрасывать)</value>
+  </data>
 </root>

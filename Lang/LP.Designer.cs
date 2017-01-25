@@ -984,6 +984,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Idle reset timeout in sec (0=disable).
+        /// </summary>
+        public static string IdleResetTimeout {
+            get {
+                return ResourceManager.GetString("IdleResetTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Individual dps.
         /// </summary>
         public static string Individual_dps {
@@ -1389,6 +1398,15 @@ namespace Lang {
         public static string ShowAfkEventsIngame {
             get {
                 return ResourceManager.GetString("ShowAfkEventsIngame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show self on top position in UI.
+        /// </summary>
+        public static string ShowSelfOnTop {
+            get {
+                return ResourceManager.GetString("ShowSelfOnTop", resourceCulture);
             }
         }
         
