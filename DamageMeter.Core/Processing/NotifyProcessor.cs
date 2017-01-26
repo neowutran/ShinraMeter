@@ -142,7 +142,8 @@ namespace DamageMeter.Processing
                         message.Sender
                         );
                 }
-                else if (message.Type != Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.Craft)
+                else if (!Enum.IsDefined(typeof(Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType),(int)message.Type))
+                
                 {
                     NetworkController.Instance.FlashMessage = DefaultNotifyAction(
                         LP.ContactTry,
