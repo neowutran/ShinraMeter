@@ -1,5 +1,8 @@
 Shinra Meter
 ==============
+
+[<img src="https://img.shields.io/badge/rating-4%2B%20stars-brightgreen.svg">](https://recordnotfound.com/ShinraMeter-neowutran-9937)
+
 ShinraMeter is a DPS Meter for TERA based off https://github.com/gothos-folly/TeraDamageMeter . 
 
 Wiki: https://github.com/neowutran/TeraDamageMeter/wiki
