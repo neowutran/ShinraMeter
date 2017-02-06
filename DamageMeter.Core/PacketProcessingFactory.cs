@@ -76,6 +76,7 @@ namespace DamageMeter
             { typeof(Tera.Game.Messages.SNpcLocation) , new Action<Tera.Game.Messages.SNpcLocation>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_CREATURE_ROTATE) , new Action<Tera.Game.Messages.S_CREATURE_ROTATE>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_INSTANT_MOVE) , new Action<Tera.Game.Messages.S_INSTANT_MOVE>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
+            { typeof(Tera.Game.Messages.S_INSTANT_DASH) , new Action<Tera.Game.Messages.S_INSTANT_DASH>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_ACTION_END) , new Action<Tera.Game.Messages.S_ACTION_END>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_ACTION_STAGE) , new Action<Tera.Game.Messages.S_ACTION_STAGE>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_CHANGE_DESTPOS_PROJECTILE) , new Action<Tera.Game.Messages.S_CHANGE_DESTPOS_PROJECTILE>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
