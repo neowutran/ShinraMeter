@@ -1,5 +1,5 @@
 @echo off
-msbuild Tera.sln /p:Configuration=Debug /p:Platform="Any CPU"
+msbuild Tera.sln /t:rebuild /p:Configuration=Debug /p:Platform="Any CPU" /fl /flp:logfile=ShinraMeter.log;verbosity=diagnostic
 set output=.\ShinraMeterV
 set source=.
 set variant=Debug
@@ -21,3 +21,4 @@ del "%output%\error.log"
 del "%output%\*.vshost*"
 del "%output%\resources\data\hotdot\glyph*.tsv"
 del "%output%\resources\data\hotdot\abnormal.tsv"
+"%source%\Publisher\bin\%variant%\Publisher.exe"

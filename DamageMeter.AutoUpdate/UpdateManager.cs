@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -17,6 +18,7 @@ namespace DamageMeter.AutoUpdate
     public class UpdateManager
     {
 
+        private static Dictionary<string, string> _hashes;
         public static readonly string Version = "1.77";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -150,6 +152,27 @@ namespace DamageMeter.AutoUpdate
             version = Regex.Replace(version, @"\r\n?|\n", "");
 
             return version;
+        }
+
+        public static string FileHash(string file)
+        {
+            string hashString;
+            using (var stream = File.OpenRead(file))
+            {
+                var sha = SHA1.Create();
+                var hash = sha.ComputeHash(stream);
+                hashString = BitConverter.ToString(hash);
+                hashString = hashString.Replace("-", "");
+            }
+            return hashString.ToLowerInvariant();
+        }
+
+        public static void CurrentHash()
+        {
+            _hashes=new Dictionary<string,string>();
+            Array.ForEach(Directory.GetFiles(ExecutableDirectory,"*",SearchOption.AllDirectories).Where(t => 
+                !t.EndsWith("ShinraLauncher.exe") && !t.Contains("tmp") && !t.Contains("config") && !t.Contains("sound") && !t.EndsWith("error.log")
+                    ).ToArray(),x => _hashes.Add(x.Replace(ExecutableDirectory+"\\",""),FileHash(x)));
         }
 
         private static async Task<bool> Checksum(string version, string file)

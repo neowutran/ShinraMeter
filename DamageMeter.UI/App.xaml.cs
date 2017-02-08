@@ -52,6 +52,7 @@ namespace DamageMeter.UI
             if (aIsNewInstance)
             {
                 DeleteTmp();
+                //UpdateManager.CurrentHash();
                 if (BasicTeraData.Instance.WindowData.UILanguage != "Auto")
                 {
                     LP.Culture = CultureInfo.GetCultureInfo(BasicTeraData.Instance.WindowData.UILanguage);
