@@ -43,12 +43,65 @@ namespace DamageMeter.AutoUpdate
         {
             var isUpToDate = await IsUpToDate().ConfigureAwait(false);
             if (isUpToDate) return false;
-            Download();
+            //Download();
+            return HashedUpdate();
+        }
+
+        private static bool GetDiff(KeyValuePair<string, string> file)
+        {
+            using (var client = new WebClient())
+            {
+                var compressed = client.OpenRead(new Uri("https://neowutran.ovh/updates/ShinraMeterV/"+file.Key+".zip"));
+                if (compressed == null) return true;
+                new ZipArchive(compressed).Entries[0].ExtractToFile(ExecutableDirectory + @"\tmp\release\"+file.Key);
+            }
+            return FileHash(ExecutableDirectory + @"\tmp\release\" + file.Key) != file.Value;
+        }
+
+        internal static Dictionary<string, string> ReadHashFile(string file, string addPath="")
+        {
+            return File.ReadAllLines(file)
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(s => s.Split(new[] { " *" }, StringSplitOptions.None))
+                .Select(parts => new KeyValuePair<string, string>(addPath + parts[1], parts[0])).ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        private static bool HashedUpdate()
+        {
+            DestroyDownloadDirectory();
+            Directory.CreateDirectory(ExecutableDirectory + @"\tmp\release\");
+            var latestVersion = "ShinraMeterV" + LatestVersion().Result;
+            using (var client = new WebClient())
+            {
+                client.DownloadFile(
+                    " http://diclah.com/~yukikoo/" + latestVersion +
+                    ".sha1", ExecutableDirectory + @"\tmp\" + latestVersion + ".sha1");
+            }
+            var latestHashes = ReadHashFile(ExecutableDirectory + @"\tmp\" + latestVersion + ".sha1");
+            var fileList = latestHashes.Except(_hashes).ToList();
+            if (!fileList.Any())
+            {
+                return false;
+            }
+            fileList.Where(x=>x.Key.Contains('\\')).Select(x=>Path.GetDirectoryName(ExecutableDirectory + @"\tmp\release\" + x.Key)).Distinct().ToList().ForEach(x=> Directory.CreateDirectory(x));
+            bool badhash = false;
+            fileList.ForEach(x=> badhash=badhash||GetDiff(x));
+            if (badhash)
+            {
+                MessageBox.Show("Invalid checksum, abording upgrade");
+                return false;
+            }
+            if (File.Exists(ExecutableDirectory + @"\tmp\release\Autoupdate.exe"))
+                File.Copy(ExecutableDirectory + @"\tmp\release\Autoupdate.exe", ExecutableDirectory + @"\tmp\Autoupdate.exe");
+            else
+                File.Copy(ExecutableDirectory + @"\Autoupdate.exe", ExecutableDirectory + @"\tmp\Autoupdate.exe");
+            Process.Start(ExecutableDirectory + @"\tmp\Autoupdate.exe", "pass");
             return true;
         }
 
         public static async Task<bool> IsUpToDate()
         {
+            CurrentHash();
             var latestVersion = await LatestVersion().ConfigureAwait(false);
             Console.WriteLine("Current version = " + Version);
             Console.WriteLine("Latest version = " + latestVersion);
@@ -142,6 +195,22 @@ namespace DamageMeter.AutoUpdate
             Console.WriteLine("Resources directory destroyed");
         }
 
+        public static void DeleteEmptySubdirectories(string parentDirectory)
+        {
+            Parallel.ForEach(Directory.GetDirectories(parentDirectory), directory => {
+                DeleteEmptySubdirectories(directory);
+                if (!Directory.EnumerateFileSystemEntries(directory).Any()) Directory.Delete(directory, false);
+            });
+        }
+
+        public static void CleanupRelease(Dictionary<string,string> hashes)
+        {
+            Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\", "*", SearchOption.AllDirectories)
+                .Where(t => !(t.Contains(@"\config\")||t.Contains(@"\..\tmp\")||t.Contains(@"\sound\")||t.EndsWith("ShinraLauncher.exe")||hashes.ContainsKey(t))).ToArray()
+                ,x=> { File.Delete(x);Console.WriteLine(x); });
+            DeleteEmptySubdirectories(ExecutableDirectory + @"\..\");
+            Console.WriteLine("Resources directory destroyed");
+        }
 
         private static async Task<string> LatestVersion()
         {

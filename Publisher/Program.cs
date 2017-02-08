@@ -34,6 +34,7 @@ namespace Publisher
             compressor.CompressionMode = CompressionMode.Create;
             compressor.TempFolderPath = Path.GetTempPath();
             compressor.PreserveDirectoryRoot = true;
+            Console.WriteLine("Compressing main archive");
             compressor.CompressDirectory(target, target+".zip", true);
             compressor.PreserveDirectoryRoot = false;
             string hashString;
@@ -44,13 +45,14 @@ namespace Publisher
                 hashString = BitConverter.ToString(hash);
                 hashString = hashString.Replace("-", "");
             }
+            Console.WriteLine("Hashing...");
             File.WriteAllText(target+".txt", hashString);
             var _hashes = new Dictionary<string, string>();
             Array.ForEach(Directory.GetFiles(target, "*", SearchOption.AllDirectories).Where(t =>
-                  !t.EndsWith("ShinraLauncher.exe") && !t.Contains("tmp") && !t.Contains("config") && !t.Contains("sound") && !t.EndsWith("error.log")
+                  !t.EndsWith("ShinraLauncher.exe") && !t.Contains(@"\tmp\") && !t.Contains(@"\config\") && !t.Contains(@"\sound\") && !t.EndsWith("error.log")
                     ).ToArray(), x => _hashes.Add(x, UpdateManager.FileHash(x)));
             File.WriteAllLines(target+".sha1",_hashes.Select(x=>x.Value+" *"+x.Key.Replace(target + "\\", "")));
-            _hashes.Keys.ToList().ForEach(x=> { compressor.CompressFiles(x + ".zip", x); File.Delete(x); });
+            _hashes.Keys.ToList().ForEach(x=> { compressor.CompressFiles(x + ".zip", x); File.Delete(x); Console.WriteLine("Compressing "+x);});
             Array.ForEach(Directory.GetFiles(target, "*", SearchOption.AllDirectories).Where(t => !t.EndsWith("zip")).ToArray(), File.Delete);
             new DirectoryInfo(target).MoveTo(source);
         }

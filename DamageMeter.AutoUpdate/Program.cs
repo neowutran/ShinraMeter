@@ -29,14 +29,27 @@ namespace DamageMeter.AutoUpdate
             }
             Thread.Sleep(1000);
             var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
-
-            UpdateManager.DestroyRelease();
-            CountError(0);
-            var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];
-            UpdateManager.Copy(source, UpdateManager.ExecutableDirectory + @"\..\..\");
-            Console.WriteLine("New version installed");
-            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
-            Process.Start(UpdateManager.ExecutableDirectory + @"\..\..\ShinraMeter.exe");
+            var hashfile = UpdateManager.ExecutableDirectory + @"\ShinraMeterV" + UpdateManager.Version + ".sha1";
+            if (File.Exists(hashfile))
+            {
+                var hashes = UpdateManager.ReadHashFile(hashfile, UpdateManager.ExecutableDirectory+@"\..\");
+                UpdateManager.CleanupRelease(hashes);
+                UpdateManager.Copy(UpdateManager.ExecutableDirectory + @"\release\", UpdateManager.ExecutableDirectory + @"\..\");
+                CountError(0);
+                Console.WriteLine("New version installed");
+                Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
+                Process.Start(UpdateManager.ExecutableDirectory + @"\..\ShinraMeter.exe");
+            }
+            else
+            {
+                UpdateManager.DestroyRelease();
+                CountError(0);
+                var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];
+                UpdateManager.Copy(source, UpdateManager.ExecutableDirectory + @"\..\..\");
+                Console.WriteLine("New version installed");
+                Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
+                Process.Start(UpdateManager.ExecutableDirectory + @"\..\..\ShinraMeter.exe");
+            }
             Environment.Exit(0);
         }
 
