@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using DamageMeter.AutoUpdate;
 using SevenZip;
-using CompressionLevel = System.IO.Compression.CompressionLevel;
+using System.IO.Compression;
 
 namespace Publisher
 {
@@ -27,13 +25,25 @@ namespace Publisher
             else
                 libpath = Path.Combine(Path.GetDirectoryName(source), "lib/7z.dll");
             SevenZipBase.SetLibraryPath(libpath);
-            new DirectoryInfo(source).MoveTo(target);
             var compressor = new SevenZipCompressor();
             compressor.ArchiveFormat=OutArchiveFormat.Zip;
+            compressor.CustomParameters["tc"]="off";
             compressor.CompressionLevel=SevenZip.CompressionLevel.High;
-            compressor.CompressionMode = CompressionMode.Create;
+            compressor.CompressionMode = SevenZip.CompressionMode.Create;
             compressor.TempFolderPath = Path.GetTempPath();
             compressor.PreserveDirectoryRoot = true;
+            if (args.Length == 1)
+            {
+                Console.WriteLine("Unpacking old release");
+                Directory.Delete(source+@"\resources",true);
+                Array.ForEach(
+                    Directory.GetFiles(source, "*", SearchOption.AllDirectories).Where(t => t.EndsWith("zip")).ToArray(),
+                    x =>ZipFile.ExtractToDirectory(x, Path.GetDirectoryName(x))
+                    );
+                Array.ForEach(Directory.GetFiles(source, "*", SearchOption.AllDirectories).Where(t => t.EndsWith("zip")).ToArray(), File.Delete);
+                return;
+            }
+            new DirectoryInfo(source).MoveTo(target);
             Console.WriteLine("Compressing main archive");
             compressor.CompressDirectory(target, target+".zip", true);
             compressor.PreserveDirectoryRoot = false;
