@@ -1,5 +1,6 @@
 @echo off
-msbuild Tera.sln /t:rebuild /p:Configuration=Debug /p:Platform="Any CPU" /fl /flp:logfile=ShinraMeter.log;verbosity=diagnostic
+rem msbuild Tera.sln /t:rebuild /p:Configuration=Debug /p:Platform="Any CPU" /fl /flp:logfile=ShinraMeter.log;verbosity=diagnostic
+msbuild Tera.sln /p:Configuration=Debug /p:Platform="Any CPU" /fl /flp:logfile=ShinraMeter.log
 set output=.\ShinraMeterV
 set source=.
 set variant=Debug

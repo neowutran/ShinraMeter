@@ -19,7 +19,8 @@ namespace DamageMeter.AutoUpdate
     {
 
         private static Dictionary<string, string> _hashes;
-        public static readonly string Version = "1.77";
+        private static Dictionary<string, string> _latest;
+        public static readonly string Version = "1.78";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -39,11 +40,9 @@ namespace DamageMeter.AutoUpdate
             }
         }
 
-        public static async Task<bool> Update()
+        public static bool Update()
         {
-            var isUpToDate = await IsUpToDate().ConfigureAwait(false);
-            if (isUpToDate) return false;
-            //Download();
+            //Download(); return true;
             return HashedUpdate();
         }
 
@@ -70,19 +69,12 @@ namespace DamageMeter.AutoUpdate
         {
             DestroyDownloadDirectory();
             Directory.CreateDirectory(ExecutableDirectory + @"\tmp\release\");
-            var latestVersion = "ShinraMeterV" + LatestVersion().Result;
-            using (var client = new WebClient())
-            {
-                client.DownloadFile(
-                    " http://diclah.com/~yukikoo/" + latestVersion +
-                    ".sha1", ExecutableDirectory + @"\tmp\" + latestVersion + ".sha1");
-            }
-            var latestHashes = ReadHashFile(ExecutableDirectory + @"\tmp\" + latestVersion + ".sha1");
-            var fileList = latestHashes.Except(_hashes).ToList();
+            var fileList = _latest.Except(_hashes).ToList();
             if (!fileList.Any())
             {
                 return false;
             }
+            File.WriteAllLines(ExecutableDirectory + @"\tmp\ShinraMeterV.sha1", _latest.Select(x => x.Value + " *" + x.Key));
             fileList.Where(x=>x.Key.Contains('\\')).Select(x=>Path.GetDirectoryName(ExecutableDirectory + @"\tmp\release\" + x.Key)).Distinct().ToList().ForEach(x=> Directory.CreateDirectory(x));
             bool badhash = false;
             fileList.ForEach(x=> badhash=badhash||GetDiff(x));
@@ -99,13 +91,15 @@ namespace DamageMeter.AutoUpdate
             return true;
         }
 
+
         public static async Task<bool> IsUpToDate()
         {
             CurrentHash();
-            var latestVersion = await LatestVersion().ConfigureAwait(false);
-            Console.WriteLine("Current version = " + Version);
-            Console.WriteLine("Latest version = " + latestVersion);
-            return latestVersion == Version;
+            return await NoNewHashes().ConfigureAwait(false);
+            //var latestVersion = await LatestVersion().ConfigureAwait(false);
+            //Console.WriteLine("Current version = " + Version);
+            //Console.WriteLine("Latest version = " + latestVersion);
+            //return latestVersion == Version;
         }
 
         private static void Decompress(string latestVersion)
@@ -223,6 +217,24 @@ namespace DamageMeter.AutoUpdate
             return version;
         }
 
+        private static async Task<bool> NoNewHashes()
+        {
+            using (var client = new WebClient())
+            {
+                var compressed = await client.OpenReadTaskAsync(new Uri("http://diclah.com/~yukikoo/ShinraMeterV.sha1.zip")).ConfigureAwait(false);
+                if (compressed == null) return true;
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    new ZipArchive(compressed).Entries[0].Open().CopyTo(stream);
+                    _latest=Encoding.UTF8.GetString(stream.ToArray()).Split(new string[] { "\r\n","\r","\n" }, StringSplitOptions.None)
+                        .Where(s => !string.IsNullOrWhiteSpace(s))
+                        .Select(s => s.Split(new[] { " *" }, StringSplitOptions.None))
+                        .Select(parts => new KeyValuePair<string, string>(parts[1], parts[0])).ToDictionary(x => x.Key, x => x.Value);
+                }
+            }
+            return _latest.Except(_hashes).Any()!=true;
+        }
+
         public static string FileHash(string file)
         {
             string hashString;
@@ -240,7 +252,7 @@ namespace DamageMeter.AutoUpdate
         {
             _hashes=new Dictionary<string,string>();
             Array.ForEach(Directory.GetFiles(ExecutableDirectory,"*",SearchOption.AllDirectories).Where(t => 
-                !t.EndsWith("ShinraLauncher.exe") && !t.Contains("tmp") && !t.Contains("config") && !t.Contains("sound") && !t.EndsWith("error.log")
+                !t.EndsWith("ShinraLauncher.exe") && !t.Contains(@"\tmp\") && !t.Contains(@"\config\") && !t.Contains(@"\sound\") && !t.EndsWith("error.log")
                     ).ToArray(),x => _hashes.Add(x.Replace(ExecutableDirectory+"\\",""),FileHash(x)));
         }
 

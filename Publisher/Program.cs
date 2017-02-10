@@ -51,7 +51,9 @@ namespace Publisher
             Array.ForEach(Directory.GetFiles(target, "*", SearchOption.AllDirectories).Where(t =>
                   !t.EndsWith("ShinraLauncher.exe") && !t.Contains(@"\tmp\") && !t.Contains(@"\config\") && !t.Contains(@"\sound\") && !t.EndsWith("error.log")
                     ).ToArray(), x => _hashes.Add(x, UpdateManager.FileHash(x)));
-            File.WriteAllLines(target+".sha1",_hashes.Select(x=>x.Value+" *"+x.Key.Replace(target + "\\", "")));
+            File.WriteAllLines(source+".sha1",_hashes.Select(x=>x.Value+" *"+x.Key.Replace(target + "\\", "")));
+            compressor.CompressFiles(source + ".sha1.zip",source+".sha1");
+            File.Delete(source+".sha1");
             _hashes.Keys.ToList().ForEach(x=> { compressor.CompressFiles(x + ".zip", x); File.Delete(x); Console.WriteLine("Compressing "+x);});
             Array.ForEach(Directory.GetFiles(target, "*", SearchOption.AllDirectories).Where(t => !t.EndsWith("zip")).ToArray(), File.Delete);
             new DirectoryInfo(target).MoveTo(source);

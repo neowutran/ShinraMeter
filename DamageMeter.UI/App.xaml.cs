@@ -141,7 +141,7 @@ namespace DamageMeter.UI
 
             if (MessageBox.Show(LP.App_Do_you_want_to_update, LP.App_Update_Available, MessageBoxButton.YesNo,
                 MessageBoxImage.Question) != MessageBoxResult.Yes) return false;
-            return await UpdateManager.Update();
+            return UpdateManager.Update();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace DamageMeter.AutoUpdate
             }
             Thread.Sleep(1000);
             var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
-            var hashfile = UpdateManager.ExecutableDirectory + @"\ShinraMeterV" + UpdateManager.Version + ".sha1";
+            var hashfile = UpdateManager.ExecutableDirectory + @"\ShinraMeterV.sha1";
             if (File.Exists(hashfile))
             {
                 var hashes = UpdateManager.ReadHashFile(hashfile, UpdateManager.ExecutableDirectory+@"\..\");
