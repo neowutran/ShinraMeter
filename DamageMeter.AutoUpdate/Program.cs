@@ -35,6 +35,7 @@ namespace DamageMeter.AutoUpdate
                 var hashes = UpdateManager.ReadHashFile(hashfile, UpdateManager.ExecutableDirectory+@"\..\");
                 UpdateManager.CleanupRelease(hashes);
                 UpdateManager.Copy(UpdateManager.ExecutableDirectory + @"\release\", UpdateManager.ExecutableDirectory + @"\..\");
+                UpdateManager.ReadDbVersion();
                 CountError(0);
                 Console.WriteLine("New version installed");
                 Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
