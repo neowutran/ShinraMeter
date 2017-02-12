@@ -20,9 +20,17 @@ namespace DamageMeter.AutoUpdate
 
         private static Dictionary<string, string> _hashes;
         private static Dictionary<string, string> _latest;
-        public static readonly string Version = "1.78";
+        public static string Version = "1.78";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        public static void ReadDbVersion()
+        {
+            var version = Path.Combine(ResourcesDirectory, "head");
+            try { if (File.Exists(version))
+                Version=Version + "." + File.ReadLines(version).FirstOrDefault()?.Remove(7)??"";}
+            catch { }// ignore bad head
+        }
 
         public static string ResourcesDirectory
         {
@@ -203,7 +211,7 @@ namespace DamageMeter.AutoUpdate
                 .Where(t => !(t.Contains(@"\config\")||t.Contains(@"\..\tmp\")||t.Contains(@"\sound\")||t.EndsWith("ShinraLauncher.exe")||hashes.ContainsKey(t))).ToArray()
                 ,x=> { File.Delete(x);Console.WriteLine(x); });
             DeleteEmptySubdirectories(ExecutableDirectory + @"\..\");
-            Console.WriteLine("Resources directory destroyed");
+            Console.WriteLine("Obsolette files destroyed");
         }
 
         private static async Task<string> LatestVersion()

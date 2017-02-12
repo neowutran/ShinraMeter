@@ -16,6 +16,7 @@ copy "%source%\Randomizer\bin\%variant%\Randomizer.exe.config" "%output%\"
 copy "%source%\ReadmeUser.txt" "%output%\readme.txt"
 copy "%source%\add_firewall_exception.bat" "%output%\add_firewall_exception.bat"
 xcopy "%source%\resources" "%output%\resources\" /E /EXCLUDE:.\exclude.txt
+copy "%source%\.git\modules\resources\data\refs\heads\master" "%output%\resources\head"
 del "%output%\*.xml"
 del "%output%\error.log"
 del "%output%\*.vshost*"

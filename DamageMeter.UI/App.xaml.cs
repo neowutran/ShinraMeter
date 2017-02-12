@@ -52,6 +52,7 @@ namespace DamageMeter.UI
             if (aIsNewInstance)
             {
                 DeleteTmp();
+                UpdateManager.ReadDbVersion();
                 //UpdateManager.CurrentHash();
                 if (BasicTeraData.Instance.WindowData.UILanguage != "Auto")
                 {
