@@ -213,7 +213,7 @@ namespace DamageMeter
                 if (type.HasFlag(Dest.Site) && NetworkController.Instance.BossLink.Any(x => x.Value == entity && x.Key.StartsWith("!") && !x.Key.StartsWith("!0")))
                     ToPrivateServer(stats.BaseStats, entity, NetworkController.Instance.BossLink.Where(x => x.Value == entity && x.Key.StartsWith("!") && !x.Key.StartsWith("!0")).Select(x=>int.Parse(x.Key.Substring(1, x.Key.IndexOf(" ")-1))).ToList());
                 if (type.HasFlag(Dest.Excel))
-                    ExcelExport.ExcelSave(stats,"", type.HasFlag(Dest.Manual));
+                    ExcelExport.ExcelSave(stats, stats.BaseStats.members.Select(x=>x.playerName).FirstOrDefault(x => NetworkController.Instance.MeterPlayers.Select(z=>z.Name).Contains(x)), type.HasFlag(Dest.Manual));
             });
             sendThread.Start();
         }

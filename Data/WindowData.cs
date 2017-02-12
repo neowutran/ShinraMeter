@@ -40,7 +40,7 @@ namespace Data
         public bool OnlyBoss { get; set; }
         public bool DetectBosses { get; set; }
 
-        public bool DateInExcelPath { get; set; }
+        public string ExcelPathTemplate { get; set; }
 
         public int NumberOfPlayersDisplayed { get; set; }
         public bool MeterUserOnTop { get; set; }
@@ -102,7 +102,7 @@ namespace Data
             LFDelay = 150;
             OnlyBoss = false;
             DetectBosses = false;
-            DateInExcelPath = false;
+            ExcelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
             MeterUserOnTop = false;
             NumberOfPlayersDisplayed = 5;
             FormatPasteString = true;
@@ -190,7 +190,7 @@ namespace Data
             Parse("autoupdate", "AutoUpdate");
             Parse("only_bosses", "OnlyBoss");
             Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
-            Parse("date_in_excel_path", "DateInExcelPath");
+            Parse("excel_path_template", "ExcelPathTemplate");
             Parse("low_priority", "LowPriority");
             Parse("format_paste_string", "FormatPasteString");                    
             Parse("remove_tera_alt_enter_hotkey", "RemoveTeraAltEnterHotkey");
@@ -489,7 +489,7 @@ namespace Data
             xml.Root.Add(new XElement("topmost", Topmost));
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
-            xml.Root.Add(new XElement("date_in_excel_path", DateInExcelPath));
+            xml.Root.Add(new XElement("excel_path_template", ExcelPathTemplate));
             xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
             xml.Root.Add(new XElement("excel_cma_dps_seconds", ExcelCMADPSSeconds));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));

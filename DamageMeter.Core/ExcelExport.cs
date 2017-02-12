@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms.VisualStyles;
 using System.Xml;
 using DamageMeter.AutoUpdate;
 using DamageMeter.TeraDpsApi;
@@ -144,20 +145,17 @@ namespace DamageMeter
                 var data = exdata.BaseStats;
                 var Boss = exdata.Entity.Info;
                 scale= 96/Graphics.FromImage(new Bitmap(1, 1)).DpiX;//needed if user have not standart DPI setting in control panel, workaround EPPlus autofit bug
-
                 /*
                 Select save directory
                 */
-                string dir;
-                                   
-                if (BTD.WindowData.DateInExcelPath)
-                {
-                    dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}";
-                }
-                else
-                {
-                    dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}";
-                }
+                string fileName = BTD.WindowData.ExcelPathTemplate.Replace("{Area}", Boss.Area.Replace(":", "-"))
+                                    .Replace("{Boss}", Boss.Name.Replace(":", "-"))
+                                    .Replace("{Date}", DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
+                                    .Replace("{Time}", DateTime.Now.ToString("HH-mm-ss", CultureInfo.InvariantCulture))
+                                    .Replace("{User}", string.IsNullOrEmpty(userName)?"_____":userName)
+                                    +".xlsx";
+
+                var fname = Path.Combine(BTD.WindowData.ExcelSaveDirectory, fileName);
                 
 
                 /*
@@ -165,34 +163,14 @@ namespace DamageMeter
                 */
                 try
                 {
-                    Directory.CreateDirectory(dir);
+                    Directory.CreateDirectory(Path.GetDirectoryName(fname));
                 }
                 catch
                 {
-                    if (BTD.WindowData.DateInExcelPath)
-                    {
-                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                        $"ShinraMeter/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}");
-                    }
-                    else
-                    {
-                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                        $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
-                    }
-                    Directory.CreateDirectory(dir);
+                    fname = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(fname));
                 }
 
-                var fname = "";
-                if (BTD.WindowData.DateInExcelPath)
-                {
-                    fname = Path.Combine(dir,
-                    $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("HH-mm-ss", CultureInfo.InvariantCulture)} {userName}.xlsx");
-                }
-                else
-                {
-                    fname = Path.Combine(dir,
-                    $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)} {userName}.xlsx");
-                }
                 var file = new FileInfo(fname);
                 if (file.Exists)
                     return;
