@@ -4,6 +4,7 @@ namespace DamageMeter.TeraDpsApi
 {
     public class Members
     {
+        public string guild;
         public string aggro;
         public string healCrit;
         public string playerAverageCritRate;

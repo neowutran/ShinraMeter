@@ -127,6 +127,7 @@ namespace DamageMeter
                 }
 
                 var buffs = _abnormals.Get(user.Source);
+                teradpsUser.guild = string.IsNullOrWhiteSpace(user.Source.GuildName) ? null : user.Source.GuildName;
                 teradpsUser.playerClass = user.Source.Class.ToString();
                 teradpsUser.playerName = user.Source.Name;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Source.ServerId);
@@ -259,7 +260,7 @@ namespace DamageMeter
                 return;
             }
 
-            foreach( var members in teradpsData.members){members.playerName = "Anonymous";}
+            foreach( var members in teradpsData.members) {members.playerName = "Anonymous"; members.guild = null;}
 
             SendAnonymousStatistics(
                 JsonConvert.SerializeObject(teradpsData,
