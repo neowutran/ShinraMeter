@@ -75,8 +75,10 @@ namespace Data
         public List<string> PrivateDpsServers { get; set; }
         public bool MuteSound { get; set; }
         public int IdleResetTimeout { get; set; }
+        public bool DateInExcelPath { get; set; }
         private void DefaultValue()
         {
+            DateInExcelPath = false;
             Location = new Point(0, 0);
             Language = "Auto";
             UILanguage = "Auto";
@@ -218,6 +220,9 @@ namespace Data
             ParseDiscord();
             ParseLanguage();
             ParseUILanguage();
+            Parse("date_in_excel_path", "DateInExcelPath");
+            if (DateInExcelPath)
+                ExcelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}";
         }
 
         private void ParseColor(string xmlName, string settingName)
