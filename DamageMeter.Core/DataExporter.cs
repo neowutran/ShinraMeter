@@ -400,6 +400,19 @@ namespace DamageMeter
                                           "application/json")
                                           );
 
+
+                    /*
+                     * todo: delete
+                     * 
+                     */
+
+                    client.PostAsync("http://teralogs.com/api/logs", new StringContent(
+                                         json,
+                                         Encoding.UTF8,
+                                         "application/json")
+                                         );
+                    //
+
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Debug.WriteLine(responseString.Result);
                     var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseString.Result);
