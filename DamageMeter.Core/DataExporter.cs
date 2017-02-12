@@ -371,6 +371,29 @@ namespace DamageMeter
                 new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
             teradpsData.encounterUnixEpoch -= timediff;
             SendTeraDpsIo(entity, json, 3);
+            DELETEME(entity, json);
+        }
+
+        private static void DELETEME(NpcEntity boss, string json)
+        {
+            
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
+                    //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
+                    client.DefaultRequestHeaders.Add("X-Local-Time", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString());
+                    client.Timeout = TimeSpan.FromSeconds(40);
+                    client.PostAsync("http://teralogs.com/api/logs", new StringContent(
+                        json,
+                        Encoding.UTF8,
+                        "application/json")
+                                          );
+
+                }
+            }
+            catch (Exception e){}
         }
 
         private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry, int server=0)
@@ -402,17 +425,6 @@ namespace DamageMeter
                                           );
 
 
-                    /*
-                     * todo: delete
-                     * 
-                     */
-
-                    client.PostAsync("http://teralogs.com/api/logs", new StringContent(
-                                         json,
-                                         Encoding.UTF8,
-                                         "application/json")
-                                         );
-                    //
 
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Debug.WriteLine(responseString.Result);
