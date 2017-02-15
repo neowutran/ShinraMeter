@@ -24,6 +24,12 @@ namespace DamageMeter.AutoUpdate
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+        public static void ClearHash()
+        {
+            _hashes = null;
+            _latest = null;
+        }
+
         public static void ReadDbVersion()
         {
             var version = Path.Combine(ResourcesDirectory, "head");
@@ -102,7 +108,6 @@ namespace DamageMeter.AutoUpdate
 
         public static async Task<bool> IsUpToDate()
         {
-            CurrentHash();
             return await NoNewHashes().ConfigureAwait(false);
             //var latestVersion = await LatestVersion().ConfigureAwait(false);
             //Console.WriteLine("Current version = " + Version);
@@ -152,7 +157,7 @@ namespace DamageMeter.AutoUpdate
             Directory.Delete(ExecutableDirectory + @"\tmp\", true);
         }
 
-        public static void Copy(string sourceDir, string targetDir)
+        internal static void Copy(string sourceDir, string targetDir)
         {
             Directory.CreateDirectory(targetDir);
             foreach (var file in Directory.GetFiles(sourceDir))
@@ -175,7 +180,7 @@ namespace DamageMeter.AutoUpdate
             }
         }
 
-        public static void DestroyRelease()
+        internal static void DestroyRelease()
         {
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\").Where(t=>!t.EndsWith("ShinraLauncher.exe")).ToArray(), File.Delete);
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\resources\"), File.Delete);
@@ -197,7 +202,7 @@ namespace DamageMeter.AutoUpdate
             Console.WriteLine("Resources directory destroyed");
         }
 
-        public static void DeleteEmptySubdirectories(string parentDirectory)
+        private static void DeleteEmptySubdirectories(string parentDirectory)
         {
             Parallel.ForEach(Directory.GetDirectories(parentDirectory), directory => {
                 DeleteEmptySubdirectories(directory);
@@ -205,7 +210,7 @@ namespace DamageMeter.AutoUpdate
             });
         }
 
-        public static void CleanupRelease(Dictionary<string,string> hashes)
+        internal static void CleanupRelease(Dictionary<string,string> hashes)
         {
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\", "*", SearchOption.AllDirectories)
                 .Where(t => !(t.Contains(@"\config\")||t.Contains(@"\..\tmp\")||t.Contains(@"\sound\")||t.EndsWith("ShinraLauncher.exe")||hashes.ContainsKey(t))).ToArray()
@@ -240,6 +245,7 @@ namespace DamageMeter.AutoUpdate
                         .Select(parts => new KeyValuePair<string, string>(parts[1], parts[0])).ToDictionary(x => x.Key, x => x.Value);
                 }
             }
+            CurrentHash();
             return _latest.Except(_hashes).Any()!=true;
         }
 
@@ -256,7 +262,7 @@ namespace DamageMeter.AutoUpdate
             return hashString.ToLowerInvariant();
         }
 
-        public static void CurrentHash()
+        private static void CurrentHash()
         {
             _hashes=new Dictionary<string,string>();
             Array.ForEach(Directory.GetFiles(ExecutableDirectory,"*",SearchOption.AllDirectories).Where(t => 
