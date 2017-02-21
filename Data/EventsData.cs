@@ -77,7 +77,7 @@ namespace Data
                 var evAbnormalities = e.Key as AbnormalityEvent;
                 if (evAbnormalities != null)
                 {
-                    if (evAbnormalities.Trigger == AbnormalityTriggerType.MissingDuringFight)
+                    if (evAbnormalities.Trigger == AbnormalityTriggerType.MissingDuringFight || evAbnormalities.Trigger == AbnormalityTriggerType.Ending)
                     {
                         MissingAbnormalities.Add(e.Key, e.Value);
                     }
@@ -299,7 +299,7 @@ namespace Data
                 Enum.TryParse(abnormality.Attribute("trigger").Value, true, out trigger);
                 var remainingSecondsBeforeTrigger = 0;
                 var rewarnTimeoutSeconds = 0;
-                if (trigger == AbnormalityTriggerType.MissingDuringFight)
+                if (trigger == AbnormalityTriggerType.MissingDuringFight || trigger == AbnormalityTriggerType.Ending)
                 {
                     remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                     rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value??"0");

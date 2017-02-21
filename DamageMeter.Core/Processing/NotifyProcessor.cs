@@ -239,10 +239,11 @@ namespace DamageMeter.Processing
                         {
                             abnormalityTimeLeft = TimeSpan.FromTicks(timeLeft);
                         }
-
                     }
 
                     if (noAbnormalitiesMissing) continue;
+                    if (abnormalityEvent.Trigger == AbnormalityTriggerType.Ending && abnormalityTimeLeft.HasValue == false) continue;
+                        
                     abnormalityEvent.NextChecks[entityIdToCheck] = time.AddSeconds(abnormalityEvent.RewarnTimeoutSeconds);
 
                     foreach (var a in e.Value)
@@ -265,6 +266,10 @@ namespace DamageMeter.Processing
                                 textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", LP.NoCrystalBind);
                             }
 
+                            if (abnormalityTimeLeft.HasValue) 
+                                textToSpeech.Text = textToSpeech.Text.Replace("{time_left}", abnormalityTimeLeft.Value.Seconds.ToString());
+                            else
+                                textToSpeech.Text = textToSpeech.Text.Replace("{time_left}", "");
                         }
 
                         if (notifyAction.Balloon != null)
