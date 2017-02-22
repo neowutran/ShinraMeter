@@ -242,7 +242,7 @@ namespace DamageMeter.Processing
                     }
 
                     if (noAbnormalitiesMissing) continue;
-                    if (abnormalityEvent.Trigger == AbnormalityTriggerType.Ending && abnormalityTimeLeft.HasValue == false) continue;
+                    if (abnormalityEvent.Trigger == AbnormalityTriggerType.Ending && (abnormalityTimeLeft == null || abnormalityTimeLeft.Value.Ticks <= 0)) continue;
                         
                     abnormalityEvent.NextChecks[entityIdToCheck] = time.AddSeconds(abnormalityEvent.RewarnTimeoutSeconds);
 
