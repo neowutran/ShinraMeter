@@ -173,7 +173,6 @@ namespace DamageMeter.Processing
                 if (bossList.Any(x=>
                     x!=null && e.Key.AreaBossBlackList.ContainsKey(x.Info.HuntingZoneId)&&(e.Key.AreaBossBlackList[x.Info.HuntingZoneId]==-1 || e.Key.AreaBossBlackList[x.Info.HuntingZoneId]==x.Info.TemplateId)
                     )) continue;
-                if (abnormalityEvent.Trigger != AbnormalityTriggerType.MissingDuringFight) continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Self) { entitiesIdToCheck.Add(meterUser.Id); }
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss) { entitiesIdToCheck.AddRange(bossIds); }
                 if (abnormalityEvent.Target == AbnormalityTargetType.MyBoss)
