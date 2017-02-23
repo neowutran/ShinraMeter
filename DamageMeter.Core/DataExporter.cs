@@ -354,7 +354,7 @@ namespace DamageMeter
                 using (var client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(40);
-                    var response = client.GetAsync("http://moongourd.com/shared/servertime");
+                    var response = client.GetAsync("https://moongourd.com/shared/servertime");
                     timediff = (response.Result.Headers.Date.Value.UtcDateTime.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerSecond;
                     teradpsData.encounterUnixEpoch += timediff;
                 }
@@ -399,7 +399,7 @@ namespace DamageMeter
         private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry, int server=0)
         {
             var url = server == 0
-                ? "http://moongourd.com/dpsmeter_data.php"
+                ? "https://moongourd.com/dpsmeter_data.php"
                 : BasicTeraData.Instance.WindowData.PrivateDpsServers[server - 1];
             Debug.WriteLine(json);
 
@@ -429,7 +429,7 @@ namespace DamageMeter
                     var responseString = response.Result.Content.ReadAsStringAsync();
                     Debug.WriteLine(responseString.Result);
                     var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseString.Result);
-                    if (responseObject.ContainsKey("id") && ((string) responseObject["id"]).StartsWith("http://"))
+                    if (responseObject.ContainsKey("id") && ((string) responseObject["id"]).StartsWith("http"))
                     {
                         NetworkController.Instance.BossLink.TryAdd((string) responseObject["id"], boss);
                     }
