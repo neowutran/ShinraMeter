@@ -192,6 +192,7 @@ namespace DamageMeter
                 playerHolder["{interval}"] = playerStats.Interval/TimeSpan.TicksPerSecond + LP.Seconds;
                 playerHolder["{damage_dealt}"] = FormatHelpers.Instance.FormatValue(playerStats.Amount);
                 playerHolder["{class}"] = LP.ResourceManager.GetString(playerStats.Source.Class.ToString(), LP.Culture) + "";
+                playerHolder["{classId}"] = ((int)playerStats.Source.Class) + "";
                 playerHolder["{fullname}"] = playerStats.Source.FullName;
                 playerHolder["{name}"] = playerStats.Source.Name;
                 playerHolder["{deaths}"] = buffs.Death.Count(firstTick, lastTick) + "";
