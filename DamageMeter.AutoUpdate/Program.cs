@@ -22,10 +22,14 @@ namespace DamageMeter.AutoUpdate
             var _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             if (!aIsNewInstance)
             {
-                while (!_unique.WaitOne(1000))
+                try
                 {
-                    Console.WriteLine("Sleep");
+                    while (!_unique.WaitOne(1000))
+                    {
+                        Console.WriteLine("Sleep");
+                    }
                 }
+                catch (AbandonedMutexException e) {} //ignore terminated meter
             }
             Thread.Sleep(1000);
             var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);

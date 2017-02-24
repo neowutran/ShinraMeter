@@ -24,7 +24,7 @@
 	</abnormality>
 	
 	<!-- Enrage is ending -->
-	<abnormality active="true" ingame="true" rewarn_timeout_seconds="6" remaining_seconds_before_trigger="11" trigger="Ending" target="Boss">
+	<abnormality active="true" ingame="true" rewarn_timeout_seconds="6" remaining_seconds_before_trigger="12" trigger="Ending" target="Boss">
 		<abnormalities>
 			<abnormality>8888888</abnormality>
 		</abnormalities>
