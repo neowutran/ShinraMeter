@@ -22,7 +22,7 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class App
     {
-        private Mutex _unique;
+        private static Mutex _unique;
 
 
         [DllImport("user32.dll")]
@@ -143,6 +143,11 @@ namespace DamageMeter.UI
             if (MessageBox.Show(LP.App_Do_you_want_to_update, LP.App_Update_Available, MessageBoxButton.YesNo,
                 MessageBoxImage.Question) != MessageBoxResult.Yes) return false;
             return UpdateManager.Update();
+        }
+
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            _unique.ReleaseMutex();
         }
     }
 }

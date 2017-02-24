@@ -55,6 +55,8 @@ namespace DamageMeter.AutoUpdate
                 Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
                 Process.Start(UpdateManager.ExecutableDirectory + @"\..\..\ShinraMeter.exe");
             }
+            uniqueUpdating.ReleaseMutex();
+            _unique.ReleaseMutex();
             Environment.Exit(0);
         }
 
