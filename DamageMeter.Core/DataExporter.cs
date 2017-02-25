@@ -394,7 +394,7 @@ namespace DamageMeter
                     Debug.WriteLine(responseString.Result);
                 }
             }
-            catch (Exception e){}
+            catch {}
         }
 
         private static void SendTeraDpsIo(NpcEntity boss, string json, int numberTry, int server=0)

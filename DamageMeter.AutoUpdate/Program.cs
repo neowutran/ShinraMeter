@@ -29,7 +29,7 @@ namespace DamageMeter.AutoUpdate
                         Console.WriteLine("Sleep");
                     }
                 }
-                catch (AbandonedMutexException e) {} //ignore terminated meter
+                catch (AbandonedMutexException) {} //ignore terminated meter
             }
             Thread.Sleep(1000);
             var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);

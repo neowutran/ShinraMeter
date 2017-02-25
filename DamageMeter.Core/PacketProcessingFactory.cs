@@ -71,6 +71,7 @@ namespace DamageMeter
         {
             var entityTrackerProcessing = new Dictionary<Type, Delegate>
             {
+            { typeof(Tera.Game.Messages.S_GUILD_INFO) , new Action<Tera.Game.Messages.S_GUILD_INFO>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_BOSS_GAGE_INFO) , new Action<Tera.Game.Messages.S_BOSS_GAGE_INFO>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.S_USER_LOCATION) , new Action<Tera.Game.Messages.S_USER_LOCATION>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },
             { typeof(Tera.Game.Messages.SNpcLocation) , new Action<Tera.Game.Messages.SNpcLocation>((x)=>NetworkController.Instance.EntityTracker.Update(x)) },

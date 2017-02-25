@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tera.Game;
-
-namespace DamageMeter.Processing
+﻿namespace DamageMeter.Processing
 {
     internal class S_DESPAWN_NPC
     {

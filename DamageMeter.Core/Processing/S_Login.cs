@@ -1,9 +1,7 @@
 ﻿using Data;
 using Lang;
-using System;
 using System.Drawing;
 using System.Drawing.Text;
-
 using Tera.Game;
 
 namespace DamageMeter.Processing
