@@ -12,7 +12,7 @@ Download: https://neowutran.ovh/updates/
 TERADATA: https://github.com/neowutran/TeraDpsMeterData
 
 ShinraMeter is dev by Gl0 and Yukikoo/Neowutran
-
+ 
 
 Shinra launcher
 --------------
