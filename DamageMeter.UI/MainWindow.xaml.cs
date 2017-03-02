@@ -159,6 +159,11 @@ namespace DamageMeter.UI
         public void Exit()
         {
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
+            NotifyIcon.Tray.Visibility = Visibility.Collapsed;
+            NotifyIcon.Tray.Icon = null;
+            NotifyIcon.Tray.IconSource = null;
+            NotifyIcon.Tray.Dispose();
+            NotifyIcon.Tray = null;
             NetworkController.Instance.Exit();
         }
 

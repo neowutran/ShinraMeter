@@ -4,6 +4,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Startup="App_OnStartup"
              Exit="App_OnExit"
+             ShutdownMode="OnMainWindowClose"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <sys:Double x:Key="Scale">1</sys:Double>

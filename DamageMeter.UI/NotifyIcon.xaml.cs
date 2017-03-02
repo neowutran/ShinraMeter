@@ -83,6 +83,8 @@ namespace DamageMeter.UI
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
+
+            App.TrayTaskbarIcon = Tray;
         }
 
 

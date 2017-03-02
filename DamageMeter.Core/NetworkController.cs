@@ -84,15 +84,15 @@ namespace DamageMeter
         public event SetClickThrouEvent SetClickThrouAction;
         public event GuildIconEvent GuildIconAction;
         public event UnsetClickThrouEvent UnsetClickThrouAction;
-
+        private bool KeepAlive = true;
         public bool SendFullDetails { get; set; }
         public void Exit()
         {
             BasicTeraData.Instance.WindowData.Save();
             BasicTeraData.Instance.HotkeysData.Save();
             TeraSniffer.Instance.Enabled = false;
+            KeepAlive = false;
             Application.Exit();
-            Environment.Exit(0);
         }
 
         internal void RaiseConnected(string message)
@@ -265,7 +265,7 @@ namespace DamageMeter
                 Exit();
             }
 
-            while (true)
+            while (KeepAlive)
             {
                 if (NeedToCopy != null)
                 {

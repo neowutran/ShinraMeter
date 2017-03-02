@@ -14,6 +14,7 @@ using DamageMeter.AutoUpdate;
 using Data;
 using log4net;
 using Lang;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace DamageMeter.UI
 {
@@ -28,7 +29,7 @@ namespace DamageMeter.UI
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
-
+        public static TaskbarIcon TrayTaskbarIcon;
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
