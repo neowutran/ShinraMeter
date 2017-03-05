@@ -138,8 +138,7 @@ namespace DamageMeter
                 }
             }
 
-            var dpsString = new StringBuilder(header);
-
+            var dpsString = new StringBuilder(header+"{body}"+footer);
             var name = entityInfo.Entity?.Info.Name ?? "";
             AbnormalityDuration enrage;
             var bossDebuff = abnormals.Get(entityInfo.Entity);
@@ -222,43 +221,30 @@ namespace DamageMeter
                 ));
             }
             var placeholderLength = placeholders.SelectMany(x => x.Value).GroupBy(x=>x.Key).ToDictionary(x=>x.Key,x=>x.Max(z=> graphics.MeasureString(z.Value, Font, default(PointF), StringFormat.GenericTypographic).Width));
-            var dpsmono = new StringBuilder(dpsString.ToString());
+            var dpsLine = new StringBuilder();
+            var dpsMono = new StringBuilder();
             var placeholderMono = placeholders.SelectMany(x => x.Value).GroupBy(x => x.Key).ToDictionary(x => x.Key, x => x.Max(z => z.Value.Length));
             if ((content.Contains('\\')||lowDpsContent.Contains('\\')) && BasicTeraData.Instance.WindowData.FormatPasteString)
                 placeholders.ForEach(x =>
                 {
                     var currentContent = x.Key.Amount*100/entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content): new StringBuilder(lowDpsContent);
                     x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, PadRight(z.Value,placeholderLength[z.Key])));
-                    dpsString.Append(currentContent);
+                    dpsLine.Append(currentContent);
                     currentContent = x.Key.Amount * 100 / entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content) : new StringBuilder(lowDpsContent);
                     x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, z.Value.PadRight(placeholderMono[z.Key])));
-                    dpsmono.Append(currentContent);
+                    dpsMono.Append(currentContent);
                 });
             else
                 { placeholders.ForEach(x =>
                     {
                         var currentContent = x.Key.Amount * 100 / entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content) : new StringBuilder(lowDpsContent);
                         x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, z.Value));
-                        dpsString.Append(currentContent);
+                        dpsLine.Append(currentContent);
                     });
-                dpsmono = dpsString;
+                dpsMono = dpsLine;
                 }
-            var footerstr=footer.Replace("{debuff_list}", String.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).OrderByDescending(x => x.Value.Duration(firstTick, lastTick,-1)).ToList().Select(
-                        x => x.Key.ShortName + 
-                        (x.Value.MaxStack(firstTick, lastTick) > 1 ? "(" + x.Value.MaxStack(firstTick, lastTick) + ")" : "") +
-                        " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick, lastTick,-1) / (lastTick - firstTick)) +
-                        " (" + TimeSpan.FromTicks(x.Value.Duration(firstTick, lastTick,-1)).ToString(@"mm\:ss") + ") ")
-                )).Replace("{debuff_list_p}", String.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != 8888888 && x.Value.Duration(firstTick, lastTick) > 0).OrderByDescending(x => x.Value.Duration(firstTick, lastTick,-1)).ToList().Select(
-                        x => x.Key.ShortName +
-                        (x.Value.MaxStack(firstTick, lastTick) > 1 ? "(" + x.Value.MaxStack(firstTick, lastTick) + ")" : "") +
-                        " " + FormatHelpers.Instance.FormatPercent((double)x.Value.Duration(firstTick, lastTick-1) / (lastTick - firstTick)))
-                ));
-            dpsString.Append(footerstr);
-            dpsmono.Append(footerstr);
-            var paste = dpsString.ToString();
-            var monoPaste = dpsmono.ToString();
+            var paste = dpsString.ToString().Replace("{body}", dpsLine.ToString());
+            var monoPaste = dpsString.ToString().Replace("{body}", dpsMono.ToString());
             while (paste.Contains(" )")) paste = paste.Replace(" )", ") ");
             while (monoPaste.Contains(" )")) monoPaste = monoPaste.Replace(" )", ") ");
             while (paste.Contains(" ]")) paste = paste.Replace(" ]", "] ");

@@ -209,11 +209,11 @@ namespace Data
                     bool.TryParse(copy.Element("window").Value, out window);
                     bool.TryParse(copy.Element("ctrl").Value, out ctrl);
 
-                    var header = copy.Element("string").Element("header").Value;
-                    var footer = copy.Element("string").Element("footer").Value;
-                    var content = copy.Element("string").Element("content").Value;
-                    var lowDpsContent = copy.Element("string").Element("low_dps_content")?.Value??content;
-                    var lowDpsTreshold = int.Parse(copy.Element("string").Element("low_dps_threshold")?.Value ?? "6");
+                    var header = copy.Element("string").Element("header").Value.Replace("{body}", "");
+                    var footer = copy.Element("string").Element("footer").Value.Replace("{body}", "");
+                    var content = copy.Element("string").Element("content").Value.Replace("{body}", "");
+                    var lowDpsContent = copy.Element("string").Element("low_dps_content")?.Value.Replace("{body}", "") ?? content;
+                    var lowDpsTreshold = int.Parse(copy.Element("string").Element("low_dps_threshold")?.Value ?? "4");
                     Keys key;
                     var keyValue = copy.Element("key").Value;
                     if (!Enum.TryParse(keyValue, out key))
