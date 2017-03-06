@@ -22,7 +22,7 @@ namespace DamageMeter.Database.Structures
         public long Hit { get; }
         public Player Source { get; }
 
-        public double CritRate => Critic*100/Hit;
+        public double CritRate => Hit == 0 ? 0 : Critic*100/Hit;
         public long Interval => EndTime - BeginTime;
     }
 }
