@@ -659,4 +659,7 @@
   <data name="IdleResetTimeout" xml:space="preserve">
     <value>Idle reset timeout in sec (0=disable)</value>
   </data>
+  <data name="CritDamagePercent" xml:space="preserve">
+    <value>% Crit Dmg</value>
+  </data>
 </root>

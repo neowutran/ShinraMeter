@@ -340,6 +340,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to % Crit Dmg.
+        /// </summary>
+        public static string CritDamagePercent {
+            get {
+                return ResourceManager.GetString("CritDamagePercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Critical.
         /// </summary>
         public static string Critical {

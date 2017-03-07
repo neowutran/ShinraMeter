@@ -647,4 +647,7 @@
   <data name="IdleResetTimeout" xml:space="preserve">
     <value>Сброс если вне боя больше X сек (0=не сбрасывать)</value>
   </data>
+  <data name="CritDamagePercent" xml:space="preserve">
+    <value>% Урона критами</value>
+  </data>
 </root>
