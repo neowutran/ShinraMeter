@@ -37,6 +37,7 @@ namespace Data
         public int ExcelCMADPSSeconds { get; set; }
         public bool SiteExport { get; set; }
         public bool ShowHealCrit { get; set; }
+        public bool ShowCritDamageRate { get; set; }
         public bool OnlyBoss { get; set; }
         public bool DetectBosses { get; set; }
 
@@ -100,6 +101,7 @@ namespace Data
             PartyOnly = false;
             SiteExport = false;
             ShowHealCrit = true;
+            ShowCritDamageRate = false;
             ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
             LFDelay = 150;
             OnlyBoss = false;
@@ -178,6 +180,7 @@ namespace Data
             }
 
 
+            Parse("show_crit_damage_rate", "ShowCritDamageRate");
             Parse("showhealcrit", "ShowHealCrit");
             Parse("partyonly", "PartyOnly");
             Parse("excel", "Excel");
@@ -502,6 +505,7 @@ namespace Data
             xml.Root.Add(new XElement("lf_delay", LFDelay));
             xml.Root.Add(new XElement("partyonly", PartyOnly));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
+            xml.Root.Add(new XElement("show_crit_damage_rate", ShowCritDamageRate));
             xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", DetectBosses));
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));
             xml.Root.Add(new XElement("low_priority", LowPriority));

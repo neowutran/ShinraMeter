@@ -200,6 +200,7 @@ namespace DamageMeter
                 playerHolder["{aggro_duration}"] = TimeSpan.FromTicks(buffs.Aggro(entityInfo.Entity).Duration(firstTick, lastTick)).ToString(@"mm\:ss");
                 playerHolder["{damage_percentage}"] = playerStats.Amount * 100 / entityInfo.TotalDamage + "%";
                 playerHolder["{crit_rate}"] = playerStats.CritRate + "%";
+                playerHolder["{crit_damage_rate}"] = playerStats.CritDamageRate + "%";
                 playerHolder["{crit_rate_heal}"] = healCritrate + "%";
                 playerHolder["{biggest_crit}"] = FormatHelpers.Instance.FormatValue(skills.BiggestCrit(playerStats.Source.User, entityInfo.Entity, timedEncounter));
                 playerHolder["{damage_received}"] = FormatHelpers.Instance.FormatValue(skills.DamageReceived(playerStats.Source.User, entityInfo.Entity, timedEncounter));
