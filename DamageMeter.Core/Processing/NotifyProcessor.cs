@@ -433,7 +433,7 @@ namespace DamageMeter.Processing
                 }
             }
         }
-        private Dictionary<EntityId,long> _lastBosses = new Dictionary<EntityId, long>();
+        internal Dictionary<EntityId,long> _lastBosses = new Dictionary<EntityId, long>();
         private EntityId? _lastBossMeterUser;
         private long _lastBossHpMeterUser;
         internal void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)

@@ -273,9 +273,18 @@ namespace DamageMeter.UI
                     }
 
                     TotalDamage.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.TotalDamage);
-                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval/TimeSpan.TicksPerSecond);
-                    Timer.Content = interval.ToString(@"mm\:ss");
-
+                    if (BasicTeraData.Instance.WindowData.ShowTimeLeft && statsSummary.EntityInformation.TimeLeft>0)
+                    {
+                        var interval =TimeSpan.FromSeconds(statsSummary.EntityInformation.TimeLeft/TimeSpan.TicksPerSecond);
+                        Timer.Content = interval.ToString(@"mm\:ss");
+                        Timer.Foreground = System.Windows.Media.Brushes.LightCoral;
+                    }
+                    else
+                    {
+                        var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval / TimeSpan.TicksPerSecond);
+                        Timer.Content = interval.ToString(@"mm\:ss");
+                        Timer.Foreground = System.Windows.Media.Brushes.White;
+                    }
                     Players.Items.Clear();
 
                     foreach (var item in statsDamage)
@@ -522,5 +531,11 @@ namespace DamageMeter.UI
         }
 
         private delegate void ChangeTitle(string servername);
+
+        private void ChangeTimeLeft(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount != 2) return;
+            BasicTeraData.Instance.WindowData.ShowTimeLeft = !BasicTeraData.Instance.WindowData.ShowTimeLeft;
+        }
     }
 }

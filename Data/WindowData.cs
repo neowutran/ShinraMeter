@@ -77,8 +77,10 @@ namespace Data
         public bool MuteSound { get; set; }
         public int IdleResetTimeout { get; set; }
         public bool DateInExcelPath { get; set; }
+        public bool ShowTimeLeft { get; set; }
         private void DefaultValue()
         {
+            ShowTimeLeft = false;
             DateInExcelPath = false;
             Location = new Point(0, 0);
             Language = "Auto";
@@ -182,6 +184,7 @@ namespace Data
 
             Parse("show_crit_damage_rate", "ShowCritDamageRate");
             Parse("showhealcrit", "ShowHealCrit");
+            Parse("showtimeleft", "ShowTimeLeft");
             Parse("partyonly", "PartyOnly");
             Parse("excel", "Excel");
             Parse("scale", "Scale");
@@ -505,6 +508,7 @@ namespace Data
             xml.Root.Add(new XElement("lf_delay", LFDelay));
             xml.Root.Add(new XElement("partyonly", PartyOnly));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
+            xml.Root.Add(new XElement("showtimeleft", ShowTimeLeft));
             xml.Root.Add(new XElement("show_crit_damage_rate", ShowCritDamageRate));
             xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", DetectBosses));
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));

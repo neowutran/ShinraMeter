@@ -168,6 +168,13 @@ namespace DamageMeter
             }
 
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
+            if (currentBoss != null)
+            {
+                long entityHP = 0;
+                NotifyProcessor.Instance._lastBosses.TryGetValue(currentBoss.Id, out entityHP);
+                var entityDamaged = currentBoss.Info.HP - entityHP;
+                entityInfo.TimeLeft = entityDamaged == 0 ? 0 : entityInfo.Interval * entityHP / entityDamaged;
+            }
             Skills skills = null; 
             if (SendFullDetails)
             {
