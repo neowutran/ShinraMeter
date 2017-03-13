@@ -283,7 +283,9 @@ namespace DamageMeter.UI
                     {
                         var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval / TimeSpan.TicksPerSecond);
                         Timer.Content = interval.ToString(@"mm\:ss");
-                        Timer.Foreground = System.Windows.Media.Brushes.White;
+                        if (statsSummary.EntityInformation.Interval == 0 && BasicTeraData.Instance.WindowData.ShowTimeLeft)
+                            Timer.Foreground = System.Windows.Media.Brushes.LightCoral;
+                        else Timer.Foreground = System.Windows.Media.Brushes.White;
                     }
                     Players.Items.Clear();
 
