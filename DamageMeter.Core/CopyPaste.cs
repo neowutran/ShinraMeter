@@ -57,8 +57,7 @@ namespace DamageMeter
 
 
         public static Tuple<string,string> Copy(StatsSummary statsSummary, Skills skills, AbnormalityStorage abnormals,
-            bool timedEncounter, string header, string content,
-            string footer, string orderby, string order, string lowDpsContent, int lowDpsThreshold)
+            bool timedEncounter, CopyKey copy)
         {
             //stop if nothing to paste
             var entityInfo = statsSummary.EntityInformation;
@@ -69,11 +68,10 @@ namespace DamageMeter
             var lastHit = lastTick/TimeSpan.TicksPerSecond;
             var heals = statsSummary.PlayerHealDealt;
             playersInfos.RemoveAll(x => x.Amount == 0);
-            
             IEnumerable<PlayerDamageDealt> playerInfosOrdered;
-            if (order == "ascending")
+            if (copy.Order == "ascending")
             {
-                switch (orderby)
+                switch (copy.OrderBy)
                 {
                     case "damage_received":
                         playerInfosOrdered =
@@ -106,7 +104,7 @@ namespace DamageMeter
             }
             else
             {
-                switch (orderby)
+                switch (copy.OrderBy)
                 {
                     case "damage_received":
                         playerInfosOrdered =
@@ -138,7 +136,7 @@ namespace DamageMeter
                 }
             }
 
-            var dpsString = new StringBuilder(header+"{body}"+footer);
+            var dpsString = new StringBuilder(copy.Header+"{body}"+copy.Footer);
             var name = entityInfo.Entity?.Info.Name ?? "";
             AbnormalityDuration enrage;
             var bossDebuff = abnormals.Get(entityInfo.Entity);
@@ -192,8 +190,8 @@ namespace DamageMeter
                 playerHolder["{damage_dealt}"] = FormatHelpers.Instance.FormatValue(playerStats.Amount);
                 playerHolder["{class}"] = LP.ResourceManager.GetString(playerStats.Source.Class.ToString(), LP.Culture) + "";
                 playerHolder["{classId}"] = ((int)playerStats.Source.Class) + "";
-                playerHolder["{fullname}"] = playerStats.Source.FullName;
-                playerHolder["{name}"] = playerStats.Source.Name;
+                playerHolder["{fullname}"] = copy.LimitNameLength > 0 && playerStats.Source.FullName.Length > copy.LimitNameLength ? playerStats.Source.FullName.Substring(0, copy.LimitNameLength) : playerStats.Source.FullName;
+                playerHolder["{name}"] = copy.LimitNameLength>0 && playerStats.Source.Name.Length>copy.LimitNameLength ? playerStats.Source.Name.Substring(0, copy.LimitNameLength) : playerStats.Source.Name;
                 playerHolder["{deaths}"] = buffs.Death.Count(firstTick, lastTick) + "";
                 playerHolder["{death_duration}"] = TimeSpan.FromTicks(buffs.Death.Duration(firstTick, lastTick)).ToString(@"mm\:ss");
                 playerHolder["{aggro}"] = buffs.Aggro(entityInfo.Entity).Count(firstTick, lastTick) + "";
@@ -225,20 +223,20 @@ namespace DamageMeter
             var dpsLine = new StringBuilder();
             var dpsMono = new StringBuilder();
             var placeholderMono = placeholders.SelectMany(x => x.Value).GroupBy(x => x.Key).ToDictionary(x => x.Key, x => x.Max(z => z.Value.Length));
-            if ((content.Contains('\\')||lowDpsContent.Contains('\\')) && BasicTeraData.Instance.WindowData.FormatPasteString)
+            if ((copy.Content.Contains('\\')||copy.LowDpsContent.Contains('\\')) && BasicTeraData.Instance.WindowData.FormatPasteString)
                 placeholders.ForEach(x =>
                 {
-                    var currentContent = x.Key.Amount*100/entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content): new StringBuilder(lowDpsContent);
+                    var currentContent = x.Key.Amount*100/entityInfo.TotalDamage >= copy.LowDpsThreshold ? new StringBuilder(copy.Content): new StringBuilder(copy.LowDpsContent);
                     x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, PadRight(z.Value,placeholderLength[z.Key])));
                     dpsLine.Append(currentContent);
-                    currentContent = x.Key.Amount * 100 / entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content) : new StringBuilder(lowDpsContent);
+                    currentContent = x.Key.Amount * 100 / entityInfo.TotalDamage >= copy.LowDpsThreshold ? new StringBuilder(copy.Content) : new StringBuilder(copy.LowDpsContent);
                     x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, z.Value.PadRight(placeholderMono[z.Key])));
                     dpsMono.Append(currentContent);
                 });
             else
                 { placeholders.ForEach(x =>
                     {
-                        var currentContent = x.Key.Amount * 100 / entityInfo.TotalDamage >= lowDpsThreshold ? new StringBuilder(content) : new StringBuilder(lowDpsContent);
+                        var currentContent = x.Key.Amount * 100 / entityInfo.TotalDamage >= copy.LowDpsThreshold ? new StringBuilder(copy.Content) : new StringBuilder(copy.LowDpsContent);
                         x.Value.ToList().ForEach(z => currentContent.Replace(z.Key, z.Value));
                         dpsLine.Append(currentContent);
                     });

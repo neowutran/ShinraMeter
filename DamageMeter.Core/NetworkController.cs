@@ -240,9 +240,7 @@ namespace DamageMeter
             if (BasicTeraData.Instance.HotDotDatabase == null) return;//no database loaded yet => no need to do anything
             lock (pasteLock)
             {
-                var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content,
-                    copy.Footer,
-                    copy.OrderBy, copy.Order,copy.LowDpsContent,copy.LowDpsThreshold);
+                var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy);
                 for (var i = 0; i < 3; i++)
                 {
                     try
