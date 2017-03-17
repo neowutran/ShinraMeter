@@ -20,7 +20,7 @@ namespace DamageMeter.AutoUpdate
 
         private static Dictionary<string, string> _hashes;
         private static Dictionary<string, string> _latest;
-        public static string Version = "1.82";
+        public static string Version = "1.83";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
