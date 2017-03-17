@@ -461,9 +461,11 @@ namespace DamageMeter
                 }
             }
             long dealtDamage = 0;
+            var hp = exdata.Entity.Info.HP;
             var totalDamage = exdata.PlayerSkills.Sum(
             x => x.Value.Where(time => time.Time >= exdata.FirstTick && time.Time <= exdata.LastTick)
              .Sum(y => y.Amount));
+            if (totalDamage < hp) totalDamage = hp;
             j = 0;
             var xCMA = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds<=0 ? 1: BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             var last=new Queue<long>();
