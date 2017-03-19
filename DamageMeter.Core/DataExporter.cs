@@ -190,6 +190,8 @@ namespace DamageMeter
                     }
                     teradpsUser.skillLog.Add(skillLog);
                 }
+                if (NetworkController.Instance.MeterPlayers.Contains(user.Source))
+                    teradpsData.uploader = teradpsData.members.Count.ToString();
                 teradpsData.members.Add(teradpsUser);
             }
             return extendedStats;

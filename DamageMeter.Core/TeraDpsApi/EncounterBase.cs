@@ -12,6 +12,7 @@ namespace DamageMeter.TeraDpsApi
         public string meterName = "ShinraMeter";
         public string meterVersion = UpdateManager.Version;
         public string partyDps;
+        public string uploader; //zero-based index of uploader in members list
         public List<KeyValuePair<string, string>> debuffUptime = new List<KeyValuePair<string, string>>();
         public List<Members> members = new List<Members>();
     }
