@@ -650,4 +650,7 @@
   <data name="CritDamagePercent" xml:space="preserve">
     <value>% Урона критами</value>
   </data>
+  <data name="Valkyrie" xml:space="preserve">
+    <value>Валькирия</value>
+  </data>
 </root>
