@@ -53,12 +53,8 @@ namespace DamageMeter.UI
             {
                 DeleteTmp();
                 UpdateManager.ReadDbVersion();
-                if (BasicTeraData.Instance.WindowData.UILanguage != "Auto")
-                {
-                    LP.Culture = CultureInfo.GetCultureInfo(BasicTeraData.Instance.WindowData.UILanguage);
-                    FormatHelpers.Instance.CultureInfo = LP.Culture;
-                }
                 if (!BasicTeraData.Instance.WindowData.AllowTransparency) RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+                FormatHelpers.Instance.CultureInfo = LP.Culture;
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
                 {
                     return;

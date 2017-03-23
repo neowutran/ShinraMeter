@@ -9,6 +9,7 @@ using log4net.Config;
 using Tera.Game;
 using DamageMeter.AutoUpdate;
 using Lang;
+using System.Globalization;
 
 namespace Data
 {
@@ -30,6 +31,7 @@ namespace Data
             XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
+            LP.Culture = WindowData.UILanguage != "Auto" ? CultureInfo.GetCultureInfo(WindowData.UILanguage) : CultureInfo.CurrentUICulture;
             EventsData = new EventsData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
             Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));

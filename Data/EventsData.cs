@@ -212,7 +212,7 @@ namespace Data
                     var voiceGender = (VoiceGender)Enum.Parse(typeof(VoiceGender), tts.Attribute("voice_gender")?.Value ?? "Female", true);
                     var voiceAge = (VoiceAge)Enum.Parse(typeof(VoiceAge), tts.Attribute("voice_age")?.Value ?? "Adult", true);
                     
-                    var culture = tts.Attribute("culture")?.Value ?? CultureInfo.CurrentUICulture.ToString();
+                    var culture = tts.Attribute("culture")?.Value ?? LP.Culture.ToString();
                     var voicePosition = int.Parse(tts.Attribute("voice_position")?.Value ?? "0");
                     var volume = int.Parse(tts.Attribute("volume")?.Value ?? "30");
                     var rate = int.Parse(tts.Attribute("rate")?.Value ?? "0");
