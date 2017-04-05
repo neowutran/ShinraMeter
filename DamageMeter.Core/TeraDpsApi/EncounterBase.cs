@@ -14,6 +14,7 @@ namespace DamageMeter.TeraDpsApi
         public string partyDps;
         public string uploader; //zero-based index of uploader in members list
         public List<KeyValuePair<string, string>> debuffUptime = new List<KeyValuePair<string, string>>();
+        public List<List<int>> debuffDetail = new List<List<int>>();
         public List<Members> members = new List<Members>();
     }
 }

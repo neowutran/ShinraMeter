@@ -106,13 +106,16 @@ namespace DamageMeter
             foreach (var debuff in extendedStats.Debuffs.OrderByDescending(x => x.Value.Duration(firstTick, lastTick)))
             {
                 var percentage = debuff.Value.Duration(firstTick, lastTick)*100/interTick;
-                if (percentage == 0)
-                {
-                    continue;
-                }
+                if (percentage == 0) continue;
                 teradpsData.debuffUptime.Add(new KeyValuePair<string, string>(
                     debuff.Key.Id + "", percentage + ""
                     ));
+                foreach (var stack in debuff.Value.Stacks(firstTick, lastTick).OrderByDescending(x => x))
+                {
+                    percentage = debuff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
+                    if (percentage == 0) continue;
+                    teradpsData.debuffDetail.Add(new List<int>() { debuff.Key.Id, stack, (int)percentage });
+                }
             }
 
             foreach (var user in playersInfo.OrderByDescending(x=>x.Amount))
@@ -158,6 +161,12 @@ namespace DamageMeter
                     teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(
                         buff.Key.Id + "", percentage + ""
                         ));
+                    foreach (var stack in buff.Value.Stacks(firstTick, lastTick).OrderByDescending(x => x))
+                    {
+                        percentage = buff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
+                        if (percentage == 0) continue;
+                        teradpsUser.buffDetail.Add(new List<int>() { buff.Key.Id, stack, (int)percentage });
+                    }
                 }
                 var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
                 extendedStats.PlayerSkills.Add(serverPlayerName,
@@ -267,7 +276,7 @@ namespace DamageMeter
 
             SendAnonymousStatistics(
                 JsonConvert.SerializeObject(teradpsData,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}), 3);
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None }), 3);
         }
 
         private static void ToPrivateServer(EncounterBase teradpsData, NpcEntity entity, List<int> serverlist=null )
@@ -322,7 +331,7 @@ namespace DamageMeter
                 }
 
                 var json = JsonConvert.SerializeObject(teradpsData,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None});
                 teradpsData.encounterUnixEpoch -= timediff;
                 SendTeraDpsIo(entity, json, 3, i + 1);
             }
@@ -371,7 +380,7 @@ namespace DamageMeter
             }
 
             var json = JsonConvert.SerializeObject(teradpsData,
-                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
             teradpsData.encounterUnixEpoch -= timediff;
             SendTeraDpsIo(entity, json, 3);
             DELETEME(entity, json);
