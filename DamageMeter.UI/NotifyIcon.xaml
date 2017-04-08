@@ -210,7 +210,7 @@
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="ServerLabel" Content="{x:Static l:LP.PrivateServerURL}" />
-                                            <TextBox LostFocus="ServerURLChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="ServerURLTextbox" />
+                                            <TextBox LostFocus="ServerURLChanged" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="ServerURLTextbox" />
                                         </Grid>
 
                                         <Grid Grid.Row="19">
@@ -334,7 +334,7 @@
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="DiscordLogin" Content="Discord login" />
-                                            <TextBox LostFocus="DiscordLoginChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordLoginTextBox"/>
+                                            <TextBox LostFocus="DiscordLoginChanged" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="DiscordLoginTextBox"/>
                                         </Grid>
 
                                         <Grid Grid.Row="35">
@@ -343,7 +343,7 @@
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="DiscordPassword" Content="Discord password" />
-                                            <PasswordBox LostFocus="DiscordPasswordChanged" HorizontalAlignment="Right" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0"  Width="200" Name="DiscordPasswordTextBox"/>
+                                            <PasswordBox LostFocus="DiscordPasswordChanged" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="DiscordPasswordTextBox"/>
                                         </Grid>
 
                                     </Grid>
