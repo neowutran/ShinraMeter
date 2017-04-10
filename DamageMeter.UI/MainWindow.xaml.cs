@@ -164,6 +164,7 @@ namespace DamageMeter.UI
             NotifyIcon.Tray.IconSource = null;
             NotifyIcon.Tray.Dispose();
             NotifyIcon.Tray = null;
+            _topMost = false;
             NetworkController.Instance.Exit();
         }
 
@@ -362,7 +363,7 @@ namespace DamageMeter.UI
 
         internal void StayTopMost()
         {
-            if (!Topmost || !_topMost) return;
+            if (!_topMost || !Topmost) return;
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
                 window.Topmost = false;

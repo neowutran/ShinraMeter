@@ -47,7 +47,7 @@ namespace NetworkSniffer
             var args = new SocketAsyncEventArgs();
             args.SetBuffer(new byte[0x100000], 0, 0x100000);
             var awaitable = new SocketAwaitable(args);
-            while (true)
+            while (_isInit)
             {
                 await s.ReceiveAsync(awaitable);
                 int bytesRead = args.BytesTransferred;
@@ -57,6 +57,8 @@ namespace NetworkSniffer
                     continue;
                 OnPacketReceived(ipPacket);
             }
+            _socket.Close();
+            _socket = null;
         }
 
         private void Finish()
@@ -66,8 +68,7 @@ namespace NetworkSniffer
                 return;
             }
             Debug.Assert(_socket != null);
-            _socket.Close();
-            _socket = null;
+            _isInit = false;
         }
         
         protected override void SetEnabled(bool value)
