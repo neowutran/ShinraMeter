@@ -64,7 +64,7 @@ namespace NetworkSniffer
                 {
                     ipPacket = new IPv4Packet(new ByteArraySegment(args.Buffer, 0, bytesRead));
                 }
-                catch (InvalidOperationException e)
+                catch (InvalidOperationException)
                 {
                     continue;
                 }
