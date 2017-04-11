@@ -66,7 +66,6 @@ namespace NetworkSniffer
                 }
                 catch (InvalidOperationException e)
                 {
-                    BasicTeraData.LogError(e.Message, false, true);
                     continue;
                 }
                 
