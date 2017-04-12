@@ -92,7 +92,7 @@ namespace DamageMeter.UI
             Clipboard.SetDataObject(Message.Text);
         }
 
-        private void Sender_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void DragWindow(object sender, MouseButtonEventArgs e)
         {
             var w = Window.GetWindow(this);
             try
@@ -103,6 +103,11 @@ namespace DamageMeter.UI
             {
                 Console.WriteLine(@"Exception move");
             }
+        }
+
+        private void Sender_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Clipboard.SetDataObject(Sender.Content.ToString());
         }
     }
 }

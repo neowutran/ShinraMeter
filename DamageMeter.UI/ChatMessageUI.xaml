@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             MouseLeftButtonDown="Sender_MouseLeftButtonDown">
-    <Grid MouseLeftButtonDown="Sender_MouseLeftButtonDown">
+             MouseLeftButtonDown="DragWindow">
+    <Grid MouseLeftButtonDown="DragWindow">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="90" />
             <ColumnDefinition Width="90" />
@@ -13,18 +13,18 @@
             <ColumnDefinition Width="500" />
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
-        <Label Focusable="False" Grid.Column="0" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
+        <Label Focusable="False" Grid.Column="0" MouseLeftButtonDown="DragWindow" FontSize="14"
                x:Name="Time" HorizontalContentAlignment="Left"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
                MinHeight="29" />
 
-        <Label Focusable="False" Grid.Column="1" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
+        <Label Focusable="False" Grid.Column="1" MouseLeftButtonDown="DragWindow" FontSize="14"
                x:Name="Channel" HorizontalContentAlignment="Left"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
                MinHeight="29" />
 
      
-        <Label Focusable="False" Grid.Column="2" MouseLeftButtonDown="Sender_MouseLeftButtonDown" FontSize="14"
+        <Label Focusable="False" Grid.Column="2" MouseLeftButtonDown="Sender_OnMouseLeftButtonDown" FontSize="14"
                x:Name="Sender" HorizontalContentAlignment="Left"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
                MinHeight="29" />
