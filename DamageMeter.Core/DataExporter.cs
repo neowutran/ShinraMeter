@@ -12,6 +12,7 @@ using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using System.Diagnostics;
+using System.Windows;
 
 namespace DamageMeter
 {
@@ -110,12 +111,14 @@ namespace DamageMeter
                 teradpsData.debuffUptime.Add(new KeyValuePair<string, string>(
                     debuff.Key.Id + "", percentage + ""
                     ));
-                foreach (var stack in debuff.Value.Stacks(firstTick, lastTick).OrderByDescending(x => x))
+                var stacks = new List<List<int>>();
+                foreach (var stack in debuff.Value.Stacks(firstTick, lastTick).OrderBy(x => x))
                 {
                     percentage = debuff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
                     if (percentage == 0) continue;
-                    teradpsData.debuffDetail.Add(new List<int>() { debuff.Key.Id, stack, (int)percentage });
+                    stacks.Add(new List<int>() { stack, (int)percentage });
                 }
+                teradpsData.debuffDetail.Add(new List<object>() { debuff.Key.Id, stacks });
             }
 
             foreach (var user in playersInfo.OrderByDescending(x=>x.Amount))
@@ -161,12 +164,14 @@ namespace DamageMeter
                     teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(
                         buff.Key.Id + "", percentage + ""
                         ));
-                    foreach (var stack in buff.Value.Stacks(firstTick, lastTick).OrderByDescending(x => x))
+                    var stacks = new List<List<int>>();
+                    foreach (var stack in buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x))
                     {
                         percentage = buff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
                         if (percentage == 0) continue;
-                        teradpsUser.buffDetail.Add(new List<int>() { buff.Key.Id, stack, (int)percentage });
+                        stacks.Add(new List<int>() { stack, (int)percentage });
                     }
+                    teradpsUser.buffDetail.Add(new List<object>() { buff.Key.Id, stacks });
                 }
                 var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
                 extendedStats.PlayerSkills.Add(serverPlayerName,
