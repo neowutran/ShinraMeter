@@ -114,7 +114,7 @@ namespace DamageMeter
                 var stacks = new List<List<int>> {new List<int> {0, (int) percentage}};
                 var stackList = debuff.Value.Stacks(firstTick, lastTick).OrderBy(x => x);
                 teradpsData.debuffDetail.Add(new List<object> {debuff.Key.Id, stacks});
-                if (stackList.Max()==1) continue;
+                if (stackList.Any() && stackList.Max()==1) continue;
                 foreach (var stack in stackList)
                 {
                     percentage = debuff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
@@ -170,7 +170,7 @@ namespace DamageMeter
                     var stacks = new List<List<int>> {new List<int> {0, (int) percentage}};
                     var stackList = buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x);
                     teradpsUser.buffDetail.Add(new List<object> {buff.Key.Id, stacks});
-                    if (stackList.Max() == 1) continue;
+                    if (stackList.Any() && stackList.Max() == 1) continue;
                     foreach (var stack in buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x))
                     {
                         percentage = buff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
