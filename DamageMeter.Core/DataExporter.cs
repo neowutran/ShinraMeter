@@ -111,14 +111,16 @@ namespace DamageMeter
                 teradpsData.debuffUptime.Add(new KeyValuePair<string, string>(
                     debuff.Key.Id + "", percentage + ""
                     ));
-                var stacks = new List<List<int>>();
-                foreach (var stack in debuff.Value.Stacks(firstTick, lastTick).OrderBy(x => x))
+                var stacks = new List<List<int>> {new List<int> {0, (int) percentage}};
+                var stackList = debuff.Value.Stacks(firstTick, lastTick).OrderBy(x => x);
+                teradpsData.debuffDetail.Add(new List<object> {debuff.Key.Id, stacks});
+                if (stackList.Max()==1) continue;
+                foreach (var stack in stackList)
                 {
                     percentage = debuff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
                     if (percentage == 0) continue;
-                    stacks.Add(new List<int>() { stack, (int)percentage });
+                    stacks.Add(new List<int> {stack, (int)percentage});
                 }
-                teradpsData.debuffDetail.Add(new List<object>() { debuff.Key.Id, stacks });
             }
 
             foreach (var user in playersInfo.OrderByDescending(x=>x.Amount))
@@ -136,6 +138,7 @@ namespace DamageMeter
                 teradpsUser.guild = string.IsNullOrWhiteSpace(user.Source.GuildName) ? null : user.Source.GuildName;
                 teradpsUser.playerClass = user.Source.Class.ToString();
                 teradpsUser.playerName = user.Source.Name;
+                teradpsUser.playerId = user.Source.PlayerId;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Source.ServerId);
                 teradpsUser.playerAverageCritRate = Math.Round(user.CritRate, 1) + "";
                 teradpsUser.healCrit = user.Source.IsHealer
@@ -164,14 +167,16 @@ namespace DamageMeter
                     teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(
                         buff.Key.Id + "", percentage + ""
                         ));
-                    var stacks = new List<List<int>>();
+                    var stacks = new List<List<int>> {new List<int> {0, (int) percentage}};
+                    var stackList = buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x);
+                    teradpsUser.buffDetail.Add(new List<object> {buff.Key.Id, stacks});
+                    if (stackList.Max() == 1) continue;
                     foreach (var stack in buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x))
                     {
                         percentage = buff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
                         if (percentage == 0) continue;
-                        stacks.Add(new List<int>() { stack, (int)percentage });
+                        stacks.Add(new List<int> {stack, (int)percentage});
                     }
-                    teradpsUser.buffDetail.Add(new List<object>() { buff.Key.Id, stacks });
                 }
                 var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
                 extendedStats.PlayerSkills.Add(serverPlayerName,
@@ -277,11 +282,11 @@ namespace DamageMeter
                 return;
             }
 
-            foreach( var members in teradpsData.members) {members.playerName = "Anonymous"; members.guild = null;}
+            foreach( var members in teradpsData.members) {members.playerName = "Anonymous"; members.playerId = 0; members.guild = null;}
 
             SendAnonymousStatistics(
                 JsonConvert.SerializeObject(teradpsData,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None }), 3);
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None}), 3);
         }
 
         private static void ToPrivateServer(EncounterBase teradpsData, NpcEntity entity, List<int> serverlist=null )
@@ -385,7 +390,7 @@ namespace DamageMeter
             }
 
             var json = JsonConvert.SerializeObject(teradpsData,
-                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None});
             teradpsData.encounterUnixEpoch -= timediff;
             SendTeraDpsIo(entity, json, 3);
             DELETEME(entity, json);

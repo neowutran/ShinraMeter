@@ -400,7 +400,7 @@ namespace DamageMeter.UI
             if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) return;
             if (NetworkController.Instance.EntityTracker.MeterUser.Level<65) return;
             _lastSend = DateTime.Now.Ticks;
-            var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None});
             Debug.WriteLine(json);
             Task.Run(() =>
                 {

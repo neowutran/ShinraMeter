@@ -8,6 +8,7 @@ namespace DamageMeter.Processing
         {
             NetworkController.Instance.Glyphs.playerServer = BasicTeraData.Instance.Servers.GetServerName(NetworkController.Instance.EntityTracker.MeterUser.ServerId);
             NetworkController.Instance.Glyphs.playerName = NetworkController.Instance.EntityTracker.MeterUser.Name;
+            NetworkController.Instance.Glyphs.playerId = NetworkController.Instance.EntityTracker.MeterUser.PlayerId;
             NetworkController.Instance.Glyphs.playerClass = NetworkController.Instance.EntityTracker.MeterUser.RaceGenderClass.Class.ToString();
             NetworkController.Instance.Glyphs.glyphs = message.Glyphs;
         }

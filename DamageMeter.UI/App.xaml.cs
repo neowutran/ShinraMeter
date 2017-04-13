@@ -24,7 +24,7 @@ namespace DamageMeter.UI
     public partial class App
     {
         private static Mutex _unique;
-
+        private static bool _isNewInstance;
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -40,16 +40,15 @@ namespace DamageMeter.UI
 
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
-            bool aIsNewInstance;
             bool notUpdating;
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
             currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
             var updating = new Mutex(true, "ShinraMeterUpdating", out notUpdating);
-            _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
+            _unique = new Mutex(true, "ShinraMeter", out _isNewInstance);
 
 
-            if (aIsNewInstance)
+            if (_isNewInstance)
             {
                 DeleteTmp();
                 UpdateManager.ReadDbVersion();
@@ -143,7 +142,8 @@ namespace DamageMeter.UI
 
         private void App_OnExit(object sender, ExitEventArgs e)
         {
-            _unique.ReleaseMutex();
+            if (_isNewInstance)
+                _unique.ReleaseMutex();
         }
     }
 }
