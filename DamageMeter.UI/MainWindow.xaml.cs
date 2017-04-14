@@ -160,6 +160,7 @@ namespace DamageMeter.UI
         public void Exit()
         {
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
+            NetworkController.Instance.TickUpdated -= Update;
             _dispatcherTimer.Stop();
             NotifyIcon.Tray.Visibility = Visibility.Collapsed;
             NotifyIcon.Tray.Icon = null;
