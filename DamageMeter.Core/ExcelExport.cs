@@ -19,6 +19,53 @@ namespace DamageMeter
 {
     internal static class EPPExstension
     {
+        private static readonly List<string> Tol2 = new List<string> {"4477AA", "CC6677"};
+        private static readonly List<string> Tol7 = new List<string> {"332288", "88CCEE", "44AA99", "117733", "DDCC77", "CC6677", "AA4499"};
+        private static readonly List<string> Tol9 = new List<string> {"332288", "88CCEE", "44AA99", "117733", "999933", "DDCC77", "CC6677", "882255", "AA4499"};
+        private static readonly List<string> Tol21 = new List<string> {"771155", "AA4488", "CC99BB", "114477", "4477AA", "77AADD", "117777", "44AAAA"
+            , "77CCCC", "117744", "44AA77", "88CCAA", "777711", "AAAA44", "DDDD77", "774411", "AA7744", "DDAA77", "771122", "AA4455", "DD7788"};
+
+        public static void SetLineChartColors(this ExcelChart chart)
+        {
+            var i = 0;
+            var nsa = chart.WorkSheet.Drawings.NameSpaceManager.LookupNamespace("a");
+            var chartXml = chart.ChartXml;
+            var nsuri = chartXml.DocumentElement.NamespaceURI;
+            var nsm = new XmlNamespaceManager(chartXml.NameTable);
+            nsm.AddNamespace("a", nsa);
+            nsm.AddNamespace("c", nsuri);
+            var series = chart.ChartXml.SelectNodes($@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser", nsm);
+            var numLines = series.Count;
+            foreach (XmlNode serieNode in series)
+            {
+                string color;
+                if (numLines <= 2) color = Tol2[i]; //personal
+                else if (numLines <= 7) color = Tol7[i]; //5-party + boss
+                else if (numLines <= 9) color = Tol9[i]; //7-raid  + boss
+                else color = Tol21[i % 21]; //if more than 21 lines - reuse old colors, anyway no one can see anithing at the bottom of the chart.
+
+                //var serieNode = chart.ChartXml.SelectSingleNode($@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser[c:idx[@val='{i}']]", nsm);
+
+                //Add reference to the color for the legend
+                var srgbClr = chartXml.CreateNode(XmlNodeType.Element, "srgbClr", nsa);
+                var att = chartXml.CreateAttribute("val");
+                att.Value = color;
+                srgbClr.Attributes.Append(att);
+
+                var solidFill = chartXml.CreateNode(XmlNodeType.Element, "solidFill", nsa);
+                solidFill.AppendChild(srgbClr);
+
+                var ln = chartXml.CreateNode(XmlNodeType.Element, "ln", nsa);
+                ln.AppendChild(solidFill);
+
+                var spPr = chartXml.CreateNode(XmlNodeType.Element, "spPr", nsuri);
+                spPr.AppendChild(ln);
+
+                serieNode.AppendChild(spPr);
+                ++i;
+            };
+        }
+
         public static void InvisibleSerie(this ExcelBarChart chart, ExcelChartSerie series)
         {
             var i = 0;
@@ -369,6 +416,7 @@ namespace DamageMeter
                 }
             }
             //dps.FixEppPlusBug();// needed only if adding users dmg to main boss chart
+            dps.SetLineChartColors();
 
             var numInt = bossSheet
                 ? exdata.Debuffs.Sum(x => x.Value.Count()) - 1
