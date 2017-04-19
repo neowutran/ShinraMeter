@@ -167,8 +167,8 @@ namespace DamageMeter.Processing
                 if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
                 var abnormalityEvent = (AbnormalityEvent)e.Key;
                 if (abnormalityEvent.InGame != teraActive) continue;
-                if (bossList.Any(x=>
-                    x!=null && e.Key.AreaBossBlackList.ContainsKey(x.Info.HuntingZoneId)&&(e.Key.AreaBossBlackList[x.Info.HuntingZoneId]==-1 || e.Key.AreaBossBlackList[x.Info.HuntingZoneId]==x.Info.TemplateId)
+                if (bossList.Any(x =>
+                    x != null && e.Key.AreaBossBlackList.Any(y => y.AreaId == x.Info.HuntingZoneId && (y.BossId == -1 || y.BossId == x.Info.TemplateId))
                     )) continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Self) { entitiesIdToCheck.Add(meterUser.Id); }
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss) { entitiesIdToCheck.AddRange(bossIds); }
@@ -338,9 +338,6 @@ namespace DamageMeter.Processing
             {
                 if (NetworkController.Instance.FlashMessage != null && NetworkController.Instance.FlashMessage.Priority >= e.Key.Priority) { continue; }
                 if (e.Key.InGame != teraActive) continue;
-                if (bossList.Any(x =>
-                    x != null && e.Key.AreaBossBlackList.ContainsKey(x.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[x.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[x.Info.HuntingZoneId] == x.Info.TemplateId)
-                    )) continue; //not sure, whether blacklist check is needed for skillreset event at all
                 var cooldownEvent = (CooldownEvent)e.Key;
                 if(cooldownEvent.SkillId != skillId) { continue; }
 
@@ -383,8 +380,8 @@ namespace DamageMeter.Processing
                 if (!abnormalityEvent.Ids.ContainsKey(abnormalityId)) continue;
                 if (abnormalityEvent.Ids[abnormalityId] > stack) continue;
                 if (bossList.Any(x =>
-                    x != null && e.Key.AreaBossBlackList.ContainsKey(x.Info.HuntingZoneId) && (e.Key.AreaBossBlackList[x.Info.HuntingZoneId] == -1 || e.Key.AreaBossBlackList[x.Info.HuntingZoneId] == x.Info.TemplateId)
-                    )) continue; 
+                    x != null && e.Key.AreaBossBlackList.Any(y => y.AreaId == x.Info.HuntingZoneId && (y.BossId == -1 || y.BossId == x.Info.TemplateId))
+                    )) continue;
                 if (abnormalityEvent.Target == AbnormalityTargetType.Boss && !bossIds.Contains(target))  continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.MyBoss && _lastBossMeterUser != target) continue;
                 if(abnormalityEvent.Target == AbnormalityTargetType.Self && meterUser.Id != target) continue;

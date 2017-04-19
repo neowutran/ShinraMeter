@@ -12,7 +12,7 @@ namespace Data.Events
         public int SkillId { get; set; }
         public bool OnlyResetted { get; set; }
 
-        public CooldownEvent(bool inGame, bool active, int priority, Dictionary<int,int> areaBossBlackList, int skillId, bool onlyResetted) : base(inGame, active, priority, areaBossBlackList)
+        public CooldownEvent(bool inGame, bool active, int priority, int skillId, bool onlyResetted) : base(inGame, active, priority, new List<BlackListItem>())
         {
             SkillId = skillId;
             OnlyResetted = onlyResetted;
