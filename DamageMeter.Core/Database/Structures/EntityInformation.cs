@@ -10,13 +10,14 @@ namespace DamageMeter.Database.Structures
             TotalDamage = totalDamage;
             BeginTime = beginTime;
             EndTime = endTime;
+            TimeLeft = 0;
         }
 
         public NpcEntity Entity { get; }
         public long TotalDamage { get; }
         public long BeginTime { get; }
         public long EndTime { get; }
-
+        public long TimeLeft { get; internal set; }
         public long Interval => EndTime - BeginTime;
     }
 }

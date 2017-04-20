@@ -9,6 +9,8 @@ using log4net.Config;
 using Tera.Game;
 using DamageMeter.AutoUpdate;
 using Lang;
+using System.Globalization;
+using System.Management;
 
 namespace Data
 {
@@ -30,6 +32,7 @@ namespace Data
             XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
+            LP.Culture = WindowData.UILanguage != "Auto" ? CultureInfo.GetCultureInfo(WindowData.UILanguage) : CultureInfo.CurrentUICulture;
             EventsData = new EventsData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
             Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));
@@ -94,8 +97,14 @@ namespace Data
             {
                 try
                 {
-                    error = $"##### (version={UpdateManager.Version}):\r\n" + (debug?"##### Debug: ":"") + error;
-                    _log.Error(error);
+                    var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
+                                select x.GetPropertyValue("Version") + " Memory Total:" + x.GetPropertyValue("TotalVisibleMemorySize")
+                                           + " Virtual:" + x.GetPropertyValue("TotalVirtualMemorySize") + " PhFree:" + x.GetPropertyValue("FreePhysicalMemory")
+                                           + " VFree:" + x.GetPropertyValue("FreeVirtualMemory")
+                                ).FirstOrDefault() ?? "unknown";
+                    name = name + " CPU:" + ((from x in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().Cast<ManagementObject>()
+                                              select x.GetPropertyValue("Name") + " load:" + x.GetPropertyValue("LoadPercentage") + "%").FirstOrDefault() ?? "processor unknown"); _log.Error(error);
+                    error = $"##### (version={UpdateManager.Version}) running on {name}:\r\n" + (debug?"##### Debug: ":"") + error;
                     if (!Instance.WindowData.Debug || local)
                     {
                         return;

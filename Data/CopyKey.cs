@@ -5,7 +5,7 @@ namespace Data
     public class CopyKey
     {
         public CopyKey(string header, string footer, string content, HotkeysData.ModifierKeys modifier, Keys key,
-            string orderBy, string order, string lowDpsContent, int lowDpsThreshold)
+            string orderBy, string order, string lowDpsContent, int lowDpsThreshold, int limitNameLength)
         {
             Content = content;
             Header = header;
@@ -16,6 +16,7 @@ namespace Data
             Order = order;
             LowDpsContent = lowDpsContent;
             LowDpsThreshold = lowDpsThreshold;
+            LimitNameLength = limitNameLength;
         }
 
         public string Order { get; }
@@ -28,6 +29,7 @@ namespace Data
         public string Content { get; }
         public string LowDpsContent { get; }
         public int LowDpsThreshold { get; }
+        public int LimitNameLength { get; }
         public HotkeysData.ModifierKeys Modifier { get; }
     }
 }

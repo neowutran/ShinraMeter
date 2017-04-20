@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms.VisualStyles;
 using System.Xml;
 using DamageMeter.AutoUpdate;
 using DamageMeter.TeraDpsApi;
@@ -18,6 +19,53 @@ namespace DamageMeter
 {
     internal static class EPPExstension
     {
+        private static readonly List<string> Tol2 = new List<string> {"4477AA", "CC6677"};
+        private static readonly List<string> Tol7 = new List<string> {"332288", "88CCEE", "44AA99", "117733", "DDCC77", "CC6677", "AA4499"};
+        private static readonly List<string> Tol9 = new List<string> {"332288", "88CCEE", "44AA99", "117733", "999933", "DDCC77", "CC6677", "882255", "AA4499"};
+        private static readonly List<string> Tol21 = new List<string> {"771155", "AA4488", "CC99BB", "114477", "4477AA", "77AADD", "117777", "44AAAA"
+            , "77CCCC", "117744", "44AA77", "88CCAA", "777711", "AAAA44", "DDDD77", "774411", "AA7744", "DDAA77", "771122", "AA4455", "DD7788"};
+
+        public static void SetLineChartColors(this ExcelChart chart)
+        {
+            var i = 0;
+            var nsa = chart.WorkSheet.Drawings.NameSpaceManager.LookupNamespace("a");
+            var chartXml = chart.ChartXml;
+            var nsuri = chartXml.DocumentElement.NamespaceURI;
+            var nsm = new XmlNamespaceManager(chartXml.NameTable);
+            nsm.AddNamespace("a", nsa);
+            nsm.AddNamespace("c", nsuri);
+            var series = chart.ChartXml.SelectNodes($@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser", nsm);
+            var numLines = series.Count;
+            foreach (XmlNode serieNode in series)
+            {
+                string color;
+                if (numLines <= 2) color = Tol2[i]; //personal
+                else if (numLines <= 7) color = Tol7[i]; //5-party + boss
+                else if (numLines <= 9) color = Tol9[i]; //7-raid  + boss
+                else color = Tol21[i % 21]; //if more than 21 lines - reuse old colors, anyway no one can see anithing at the bottom of the chart.
+
+                //var serieNode = chart.ChartXml.SelectSingleNode($@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser[c:idx[@val='{i}']]", nsm);
+
+                //Add reference to the color for the legend
+                var srgbClr = chartXml.CreateNode(XmlNodeType.Element, "srgbClr", nsa);
+                var att = chartXml.CreateAttribute("val");
+                att.Value = color;
+                srgbClr.Attributes.Append(att);
+
+                var solidFill = chartXml.CreateNode(XmlNodeType.Element, "solidFill", nsa);
+                solidFill.AppendChild(srgbClr);
+
+                var ln = chartXml.CreateNode(XmlNodeType.Element, "ln", nsa);
+                ln.AppendChild(solidFill);
+
+                var spPr = chartXml.CreateNode(XmlNodeType.Element, "spPr", nsuri);
+                spPr.AppendChild(ln);
+
+                serieNode.AppendChild(spPr);
+                ++i;
+            };
+        }
+
         public static void InvisibleSerie(this ExcelBarChart chart, ExcelChartSerie series)
         {
             var i = 0;
@@ -144,20 +192,17 @@ namespace DamageMeter
                 var data = exdata.BaseStats;
                 var Boss = exdata.Entity.Info;
                 scale= 96/Graphics.FromImage(new Bitmap(1, 1)).DpiX;//needed if user have not standart DPI setting in control panel, workaround EPPlus autofit bug
-
                 /*
                 Select save directory
                 */
-                string dir;
-                                   
-                if (BTD.WindowData.DateInExcelPath)
-                {
-                    dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}";
-                }
-                else
-                {
-                    dir = $"{BTD.WindowData.ExcelSaveDirectory}/{Boss.Area.Replace(":", "-")}";
-                }
+                string fileName = BTD.WindowData.ExcelPathTemplate.Replace("{Area}", Boss.Area.Replace(":", "-"))
+                                    .Replace("{Boss}", Boss.Name.Replace(":", "-"))
+                                    .Replace("{Date}", DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
+                                    .Replace("{Time}", DateTime.Now.ToString("HH-mm-ss", CultureInfo.InvariantCulture))
+                                    .Replace("{User}", string.IsNullOrEmpty(userName)?"_____":userName)
+                                    +".xlsx";
+
+                var fname = Path.Combine(BTD.WindowData.ExcelSaveDirectory, fileName);
                 
 
                 /*
@@ -165,34 +210,14 @@ namespace DamageMeter
                 */
                 try
                 {
-                    Directory.CreateDirectory(dir);
+                    Directory.CreateDirectory(Path.GetDirectoryName(fname));
                 }
                 catch
                 {
-                    if (BTD.WindowData.DateInExcelPath)
-                    {
-                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                        $"ShinraMeter/{Boss.Area.Replace(":", "-")}/{DateTime.Now.ToString("yyyy-MM-dd")}");
-                    }
-                    else
-                    {
-                        dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                        $"ShinraMeter/{Boss.Area.Replace(":", "-")}");
-                    }
-                    Directory.CreateDirectory(dir);
+                    fname = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
+                    Directory.CreateDirectory(Path.GetDirectoryName(fname));
                 }
 
-                var fname = "";
-                if (BTD.WindowData.DateInExcelPath)
-                {
-                    fname = Path.Combine(dir,
-                    $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("HH-mm-ss", CultureInfo.InvariantCulture)} {userName}.xlsx");
-                }
-                else
-                {
-                    fname = Path.Combine(dir,
-                    $"{Boss.Name.Replace(":", "-")} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)} {userName}.xlsx");
-                }
                 var file = new FileInfo(fname);
                 if (file.Exists)
                     return;
@@ -206,14 +231,14 @@ namespace DamageMeter
                     linkStyle.Style.Font.UnderLine = true;
                     linkStyle.Style.Font.Color.SetColor(Color.Blue);
                     ws.DefaultRowHeight = 30;
-                    ws.Cells.Style.Font.Size = 14;
+                    ws.Cells.Style.Font.Size = 12;
                     ws.Cells.Style.Font.Name = "Arial";
                     ws.Cells[1, 1].Value =
                         $"{Boss.Area}: {Boss.Name} {TimeSpan.FromSeconds(double.Parse(data.fightDuration)).ToString(@"mm\:ss")}";
-                    ws.Cells[1, 1, 1, 9].Merge = true;
-                    ws.Cells[1, 1, 1, 11].Style.Font.Bold = true;
-                    ws.Cells[1, 10].Value = long.Parse(data.partyDps);
-                    ws.Cells[1, 10].Style.Numberformat.Format = @"#,#00,\k\/\s";
+                    ws.Cells[1, 1, 1, 10].Merge = true;
+                    ws.Cells[1, 1, 1, 12].Style.Font.Bold = true;
+                    ws.Cells[1, 11].Value = long.Parse(data.partyDps);
+                    ws.Cells[1, 11].Style.Numberformat.Format = @"#,#00,\k\/\s";
                     ws.Cells[2, 1].Value = "Ic";
                     ws.Cells[2, 1].Style.Font.Color.SetColor(Color.Transparent);
                     ws.Cells[2, 2].Value = LP.Name;
@@ -221,11 +246,12 @@ namespace DamageMeter
                     ws.Cells[2, 4].Value = LP.Death_Time;
                     ws.Cells[2, 5].Value = LP.DamagePercent;
                     ws.Cells[2, 6].Value = LP.CritPercent;
-                    ws.Cells[2, 7].Value = LP.HealCritPercent;
-                    ws.Cells[2, 8].Value = LP.HitsTaken;
-                    ws.Cells[2, 9].Value = LP.DamgeTaken;
-                    ws.Cells[2, 10].Value = LP.Dps;
-                    ws.Cells[2, 11].Value = LP.Damage;
+                    ws.Cells[2, 7].Value = LP.CritDamagePercent;
+                    ws.Cells[2, 8].Value = LP.HealCritPercent;
+                    ws.Cells[2, 9].Value = LP.HitsTaken;
+                    ws.Cells[2, 10].Value = LP.DamgeTaken;
+                    ws.Cells[2, 11].Value = LP.Dps;
+                    ws.Cells[2, 12].Value = LP.Damage;
                     var i = 2;
                     foreach (var user in data.members.OrderByDescending(x => long.Parse(x.playerTotalDamage)))
                     {
@@ -243,30 +269,31 @@ namespace DamageMeter
                         ws.Cells[i, 5].Style.Numberformat.Format = "0.0%";
                         ws.Cells[i, 6].Value = double.Parse(user.playerAverageCritRate) / 100;
                         ws.Cells[i, 6].Style.Numberformat.Format = "0.0%";
-                        ws.Cells[i, 7].Value = string.IsNullOrEmpty(user.healCrit) ? 0 : double.Parse(user.healCrit) / 100;
+                        ws.Cells[i, 7].Value = exdata.PlayerCritDamageRate[user.playerName] / 100;
                         ws.Cells[i, 7].Style.Numberformat.Format = "0.0%";
-                        ws.Cells[i, 8].Value = exdata.PlayerReceived[user.playerName].Item1;
-                        ws.Cells[i, 9].Value = exdata.PlayerReceived[user.playerName].Item2;
-                        ws.Cells[i, 9].Style.Numberformat.Format = @"#,#0,\k";
-                        ws.Cells[i, 10].Value = long.Parse(user.playerDps);
-                        ws.Cells[i, 10].Style.Numberformat.Format = @"#,#0,\k\/\s";
-                        ws.Cells[i, 11].Value = long.Parse(user.playerTotalDamage);
-                        ws.Cells[i, 11].Style.Numberformat.Format = @"#,#0,\k";
+                        ws.Cells[i, 8].Value = string.IsNullOrEmpty(user.healCrit) ? 0 : double.Parse(user.healCrit) / 100;
+                        ws.Cells[i, 8].Style.Numberformat.Format = "0.0%"; ws.Cells[i, 9].Value = exdata.PlayerReceived[user.playerName].Item1;
+                        ws.Cells[i, 10].Value = exdata.PlayerReceived[user.playerName].Item2;
+                        ws.Cells[i, 10].Style.Numberformat.Format = @"#,#0,\k";
+                        ws.Cells[i, 11].Value = long.Parse(user.playerDps);
+                        ws.Cells[i, 11].Style.Numberformat.Format = @"#,#0,\k\/\s";
+                        ws.Cells[i, 12].Value = long.Parse(user.playerTotalDamage);
+                        ws.Cells[i, 12].Style.Numberformat.Format = @"#,#0,\k";
                     }
-                    ws.Cells[1, 11].Formula = $"SUM(K3:K{i})";
-                    ws.Cells[1, 11].Style.Numberformat.Format = @"#,#0,\k";
-                    var border = ws.Cells[1, 1, i, 11].Style.Border;
+                    ws.Cells[1, 12].Formula = $"SUM(L3:L{i})";
+                    ws.Cells[1, 12].Style.Numberformat.Format = @"#,#0,\k";
+                    var border = ws.Cells[1, 1, i, 12].Style.Border;
                     border.Bottom.Style =
                         border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thick;
-                    ws.Cells[2, 1, i, 11].AutoFilter = true;
+                    ws.Cells[2, 1, i, 12].AutoFilter = true;
 
                     var j = i + 3;
                     ws.Cells[j, 1].Value = "Ic";
                     ws.Cells[j, 1].Style.Font.Color.SetColor(Color.Transparent);
                     ws.Cells[j, 2].Value = LP.Name;
-                    ws.Cells[j, 2, j, 10].Merge = true;
-                    ws.Cells[j, 11].Value = "%";
-                    ws.Cells[j, 2, j, 11].Style.Font.Bold = true;
+                    ws.Cells[j, 2, j, 11].Merge = true;
+                    ws.Cells[j, 12].Value = "%";
+                    ws.Cells[j, 2, j, 12].Style.Font.Bold = true;
                     foreach (var buf in data.debuffUptime)
                     {
                         j++;
@@ -276,15 +303,13 @@ namespace DamageMeter
                         ws.Cells[j, 2].Value = hotdot.Name;
                         if (!string.IsNullOrEmpty(hotdot.Tooltip))
                             ws.Cells[j, 2].AddComment("" + hotdot.Tooltip, "info");
-                        ws.Cells[j, 2, j, 10].Merge = true;
-                        ws.Cells[j, 11].Value = double.Parse(buf.Value) / 100;
-                        ws.Cells[j, 11].Style.Numberformat.Format = "0%";
+                        ws.Cells[j, 2, j, 11].Merge = true;
+                        ws.Cells[j, 12].Value = double.Parse(buf.Value) / 100;
+                        ws.Cells[j, 12].Style.Numberformat.Format = "0%";
                     }
-                    border = ws.Cells[i + 3, 1, j, 11].Style.Border;
+                    border = ws.Cells[i + 3, 1, j, 12].Style.Border;
                     border.Bottom.Style =
                         border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thick;
-
-                    AddCharts(ws, exdata, details, j);
 
                     ws.Column(1).Width = 5.6;
                     ws.Column(2).AutoFit();
@@ -296,7 +321,8 @@ namespace DamageMeter
                     ws.Column(8).AutoFit();
                     ws.Column(9).AutoFit();
                     ws.Column(10).AutoFit();
-                    ws.Column(11).Width = 20;
+                    ws.Column(11).AutoFit();
+                    ws.Column(12).Width = 20;
                     ws.Column(2).Width = GetTrueColumnWidth(ws.Column(2).Width * scale);
                     ws.Column(3).Width = GetTrueColumnWidth(ws.Column(3).Width * scale);
                     ws.Column(4).Width = GetTrueColumnWidth(ws.Column(4).Width * scale);
@@ -306,9 +332,12 @@ namespace DamageMeter
                     ws.Column(8).Width = GetTrueColumnWidth(ws.Column(8).Width * scale);
                     ws.Column(9).Width = GetTrueColumnWidth(ws.Column(9).Width * scale);
                     ws.Column(10).Width = GetTrueColumnWidth(ws.Column(10).Width * scale);
-                    ws.Cells[1, 1, j, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                    ws.Cells[1, 1, j, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Column(11).Width = GetTrueColumnWidth(ws.Column(11).Width * scale);
+                    ws.Cells[1, 1, j, 12].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    ws.Cells[1, 1, j, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     ws.PrinterSettings.FitToPage = true;
+
+                    AddCharts(ws, exdata, details, j);
 
                     // I don't know why, but sometimes column height setting is lost.
                     for (var x = 1; x <= j; ++x)
@@ -387,6 +416,7 @@ namespace DamageMeter
                 }
             }
             //dps.FixEppPlusBug();// needed only if adding users dmg to main boss chart
+            dps.SetLineChartColors();
 
             var numInt = bossSheet
                 ? exdata.Debuffs.Sum(x => x.Value.Count()) - 1
@@ -479,9 +509,11 @@ namespace DamageMeter
                 }
             }
             long dealtDamage = 0;
+            var hp = exdata.Entity.Info.HP;
             var totalDamage = exdata.PlayerSkills.Sum(
             x => x.Value.Where(time => time.Time >= exdata.FirstTick && time.Time <= exdata.LastTick)
              .Sum(y => y.Amount));
+            if (totalDamage < hp) totalDamage = hp;
             j = 0;
             var xCMA = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds<=0 ? 1: BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             var last=new Queue<long>();
@@ -649,7 +681,7 @@ namespace DamageMeter
             var ws = wb.Worksheets.Add($"{user.playerServer}_{user.playerName}");
             var rgc = new RaceGenderClass("Common", "Common", user.playerClass);
             ws.DefaultRowHeight = 30;
-            ws.Cells.Style.Font.Size = 14;
+            ws.Cells.Style.Font.Size = 12;
             ws.Cells.Style.Font.Name = "Arial";
             AddImage(ws, 1, 1,
                 ClassIcons.Instance.GetBitmap((PlayerClass) Enum.Parse(typeof(PlayerClass), user.playerClass)));
@@ -722,8 +754,6 @@ namespace DamageMeter
             border = ws.Cells[i + 3, 1, j, 11].Style.Border;
             border.Bottom.Style = border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thick;
 
-            AddCharts(ws, exdata, details, j);
-
             ws.Column(1).Width = 5.6;
             ws.Column(2).AutoFit();
             ws.Column(3).AutoFit();
@@ -748,6 +778,8 @@ namespace DamageMeter
             ws.Cells[1, 1, j, 11].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
             ws.Cells[1, 1, j, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ws.PrinterSettings.FitToPage = true;
+
+            AddCharts(ws, exdata, details, j);
 
             // I don't know why, but sometimes column height setting is lost.
             for (var x = 1; x <= j; ++x)

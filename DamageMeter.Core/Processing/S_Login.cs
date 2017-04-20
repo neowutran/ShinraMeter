@@ -1,9 +1,7 @@
 ﻿using Data;
 using Lang;
-using System;
 using System.Drawing;
 using System.Drawing.Text;
-
 using Tera.Game;
 
 namespace DamageMeter.Processing
@@ -37,7 +35,7 @@ namespace DamageMeter.Processing
                     BasicTeraData.Instance.HotDotDatabase.Enraged.Name = LP.Enrage;
                     BasicTeraData.Instance.HotDotDatabase.Slaying.Name = LP.Slaying;
                     BasicTeraData.Instance.HotDotDatabase.Slaying.Tooltip = LP.SlayingTooltip;
-                    NetworkController.Instance.EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase);
+                    NetworkController.Instance.EntityTracker = new EntityTracker(BasicTeraData.Instance.MonsterDatabase, NetworkController.Instance.UserLogoTracker);
                     NetworkController.Instance.PlayerTracker = new PlayerTracker(NetworkController.Instance.EntityTracker, BasicTeraData.Instance.Servers);
                     NetworkController.Instance.MeterPlayers.Clear();
                     Database.Database.Instance.DeleteAll();

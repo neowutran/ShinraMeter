@@ -60,6 +60,7 @@ namespace DamageMeter.UI
                     : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/EntityInformation.Interval) + LP.PerSecond;
 
         public string CritRate => Math.Round(PlayerDamageDealt.CritRate) + "%";
+        public string CritDamageRate => Math.Round(PlayerDamageDealt.CritDamageRate) + "%";
         public string CritRateHeal => Math.Round(PlayerHealDealt?.CritRate ?? 0) + "%";
 
 
@@ -82,12 +83,12 @@ namespace DamageMeter.UI
             LabelDps.ToolTip = $"{LP.Individual_dps}: {Dps}";
             LabelCritRate.Content = PlayerDamageDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
                 ? CritRateHeal
-                : CritRate;
+                : BasicTeraData.Instance.WindowData.ShowCritDamageRate ? CritDamageRate : CritRate;
             var intervalTimespan = TimeSpan.FromSeconds(PlayerDamageDealt.Interval/TimeSpan.TicksPerSecond);
             LabelCritRate.ToolTip = $"{LP.Fight_Duration}: {intervalTimespan.ToString(@"mm\:ss")}";
             LabelCritRate.Foreground = PlayerDamageDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
                 ? Brushes.LawnGreen
-                : Brushes.LightCoral;
+                : BasicTeraData.Instance.WindowData.ShowCritDamageRate?Brushes.Orange:Brushes.LightCoral;
             LabelDamagePart.Content = DamagePart;
             LabelDamagePart.ToolTip = $"{LP.Damage_done}: {Damage}";
 
@@ -175,8 +176,11 @@ namespace DamageMeter.UI
 
         private void ChangeHeal(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
+            if (e.ClickCount != 2) return;
+            if (PlayerDamageDealt.Source.IsHealer)
                 BasicTeraData.Instance.WindowData.ShowHealCrit = !BasicTeraData.Instance.WindowData.ShowHealCrit;
+            else
+                BasicTeraData.Instance.WindowData.ShowCritDamageRate = !BasicTeraData.Instance.WindowData.ShowCritDamageRate;
         }
 
         public void CloseSkills()

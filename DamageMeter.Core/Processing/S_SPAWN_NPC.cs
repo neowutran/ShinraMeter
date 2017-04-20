@@ -1,18 +1,11 @@
-﻿using Data;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Linq;
 using Tera.Game;
 
 namespace DamageMeter.Processing
 {
-    public static class S_SPAWN_NPC
+    internal static class S_SPAWN_NPC
     {
-        public static void Process(Tera.Game.Messages.SpawnNpcServerMessage message)
+        internal static void Process(Tera.Game.Messages.SpawnNpcServerMessage message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
             DamageTracker.Instance.UpdateEntities(message);

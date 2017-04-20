@@ -27,6 +27,21 @@
 			</notify>
 		</actions>
 	</abnormality>
+
+	<!-- Enrage is ending -->
+	<abnormality active="true" ingame="true" rewarn_timeout_seconds="6" remaining_seconds_before_trigger="10" trigger="Ending" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name} is ending" body_text="{abnormality_name} {time_left} left" display_time="3000" />
+				<beeps>
+					<beep frequency="185" duration="500"/>
+				</beeps>
+			</notify>
+		</actions>
+	</abnormality>	
 	
 	<!-- Hurricane -->
 	<abnormality ingame="true" trigger="Added" target="Boss">

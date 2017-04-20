@@ -37,10 +37,11 @@ namespace Data
         public int ExcelCMADPSSeconds { get; set; }
         public bool SiteExport { get; set; }
         public bool ShowHealCrit { get; set; }
+        public bool ShowCritDamageRate { get; set; }
         public bool OnlyBoss { get; set; }
         public bool DetectBosses { get; set; }
 
-        public bool DateInExcelPath { get; set; }
+        public string ExcelPathTemplate { get; set; }
 
         public int NumberOfPlayersDisplayed { get; set; }
         public bool MeterUserOnTop { get; set; }
@@ -75,8 +76,12 @@ namespace Data
         public List<string> PrivateDpsServers { get; set; }
         public bool MuteSound { get; set; }
         public int IdleResetTimeout { get; set; }
+        public bool DateInExcelPath { get; set; }
+        public bool ShowTimeLeft { get; set; }
         private void DefaultValue()
         {
+            ShowTimeLeft = false;
+            DateInExcelPath = false;
             Location = new Point(0, 0);
             Language = "Auto";
             UILanguage = "Auto";
@@ -98,11 +103,12 @@ namespace Data
             PartyOnly = false;
             SiteExport = false;
             ShowHealCrit = true;
+            ShowCritDamageRate = false;
             ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
             LFDelay = 150;
             OnlyBoss = false;
             DetectBosses = false;
-            DateInExcelPath = false;
+            ExcelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
             MeterUserOnTop = false;
             NumberOfPlayersDisplayed = 5;
             FormatPasteString = true;
@@ -176,7 +182,9 @@ namespace Data
             }
 
 
+            Parse("show_crit_damage_rate", "ShowCritDamageRate");
             Parse("showhealcrit", "ShowHealCrit");
+            Parse("showtimeleft", "ShowTimeLeft");
             Parse("partyonly", "PartyOnly");
             Parse("excel", "Excel");
             Parse("scale", "Scale");
@@ -190,7 +198,7 @@ namespace Data
             Parse("autoupdate", "AutoUpdate");
             Parse("only_bosses", "OnlyBoss");
             Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
-            Parse("date_in_excel_path", "DateInExcelPath");
+            Parse("excel_path_template", "ExcelPathTemplate");
             Parse("low_priority", "LowPriority");
             Parse("format_paste_string", "FormatPasteString");                    
             Parse("remove_tera_alt_enter_hotkey", "RemoveTeraAltEnterHotkey");
@@ -218,6 +226,9 @@ namespace Data
             ParseDiscord();
             ParseLanguage();
             ParseUILanguage();
+            Parse("date_in_excel_path", "DateInExcelPath");
+            if (DateInExcelPath)
+                ExcelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}";
         }
 
         private void ParseColor(string xmlName, string settingName)
@@ -489,7 +500,7 @@ namespace Data
             xml.Root.Add(new XElement("topmost", Topmost));
             xml.Root.Add(new XElement("debug", Debug));
             xml.Root.Add(new XElement("excel", Excel));
-            xml.Root.Add(new XElement("date_in_excel_path", DateInExcelPath));
+            xml.Root.Add(new XElement("excel_path_template", ExcelPathTemplate));
             xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
             xml.Root.Add(new XElement("excel_cma_dps_seconds", ExcelCMADPSSeconds));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
@@ -497,6 +508,8 @@ namespace Data
             xml.Root.Add(new XElement("lf_delay", LFDelay));
             xml.Root.Add(new XElement("partyonly", PartyOnly));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
+            xml.Root.Add(new XElement("showtimeleft", ShowTimeLeft));
+            xml.Root.Add(new XElement("show_crit_damage_rate", ShowCritDamageRate));
             xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", DetectBosses));
             xml.Root.Add(new XElement("only_bosses", OnlyBoss));
             xml.Root.Add(new XElement("low_priority", LowPriority));

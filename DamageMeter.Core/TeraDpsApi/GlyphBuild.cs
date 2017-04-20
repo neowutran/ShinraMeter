@@ -7,6 +7,7 @@ namespace DamageMeter.TeraDpsApi
         public string playerName;
         public string playerServer;
         public string playerClass;
+        public uint playerId;
         public Dictionary<uint, bool> glyphs;
     }
 }

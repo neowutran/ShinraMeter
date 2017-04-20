@@ -365,13 +365,14 @@ namespace DamageMeter.Database
             var sql =
                 "SELECT SUM(critic) as number_critics, COUNT(*) AS number_hits, sourceServerIdPlayerId " +
                 "FROM skills " +
-                "WHERE time BETWEEN $begin AND $end AND type = $type AND sourceServerIdPlayerId IS NOT NULL " +
+                "WHERE time BETWEEN $begin AND $end AND type = $type AND hotdot = $hotdot AND sourceServerIdPlayerId IS NOT NULL " +
                 "GROUP BY sourceServerIdPlayerId ";
 
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
             command.Parameters.AddWithValue("$end", endTime);
             command.Parameters.AddWithValue("$type", Type.Heal);
+            command.Parameters.AddWithValue("$hotdot", 0);
             var result = new List<PlayerHealDealt>();
 
             var rdr = command.ExecuteReader();
@@ -403,7 +404,7 @@ namespace DamageMeter.Database
         public List<PlayerDamageDealt> PlayerDamageInformation(long beginTime, long endTime)
         {
             var sql =
-                "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, sourceServerIdPlayerId " +
+                "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
                 "FROM skills " +
                 "WHERE time BETWEEN $begin AND $end AND type = $type AND sourceServerIdPlayerId IS NOT NULL " +
                 "GROUP BY type, sourceServerIdPlayerId " +
@@ -431,6 +432,9 @@ namespace DamageMeter.Database
                 var amount = rdr.IsDBNull(rdr.GetOrdinal("total_amount"))
                     ? 0
                     : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
+                var critAmount = rdr.IsDBNull(rdr.GetOrdinal("crit_amount"))
+                    ? 0
+                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("crit_amount"));
                 var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time"))
                     ? 0
                     : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));
@@ -446,6 +450,7 @@ namespace DamageMeter.Database
 
                 result.Add(new PlayerDamageDealt(
                     amount,
+                    critAmount,
                     beginTime,
                     endTime,
                     critic,
@@ -463,7 +468,7 @@ namespace DamageMeter.Database
             if (target == null)
             {
                 sql =
-                    "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, sourceServerIdPlayerId " +
+                    "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
                     "FROM skills WHERE type = $type AND sourceServerIdPlayerId IS NOT NULL GROUP BY sourceServerIdPlayerId ORDER BY `total_amount` DESC;";
                 command = new SQLiteCommand(sql, Connexion);
                 command.Parameters.AddWithValue("$type", Type.Damage);
@@ -471,7 +476,7 @@ namespace DamageMeter.Database
             }
 
             sql =
-                "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(*) AS number_hits, sourceServerIdPlayerId " +
+                "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
                 "FROM skills " +
                 "WHERE target = $target AND type = $type AND sourceServerIdPlayerId IS NOT NULL " +
                 "GROUP BY sourceServerIdPlayerId " +

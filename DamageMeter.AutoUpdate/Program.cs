@@ -22,21 +22,41 @@ namespace DamageMeter.AutoUpdate
             var _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             if (!aIsNewInstance)
             {
-                while (!_unique.WaitOne(1000))
+                try
                 {
-                    Console.WriteLine("Sleep");
+                    while (!_unique.WaitOne(1000))
+                    {
+                        Console.WriteLine("Sleep");
+                    }
                 }
+                catch (AbandonedMutexException) {} //ignore terminated meter
             }
             Thread.Sleep(1000);
             var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
-
-            UpdateManager.DestroyRelease();
-            CountError(0);
-            var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];
-            UpdateManager.Copy(source, UpdateManager.ExecutableDirectory + @"\..\..\");
-            Console.WriteLine("New version installed");
-            Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
-            Process.Start(UpdateManager.ExecutableDirectory + @"\..\..\ShinraMeter.exe");
+            var hashfile = UpdateManager.ExecutableDirectory + @"\ShinraMeterV.sha1";
+            if (File.Exists(hashfile))
+            {
+                var hashes = UpdateManager.ReadHashFile(hashfile, UpdateManager.ExecutableDirectory+@"\..\");
+                UpdateManager.CleanupRelease(hashes);
+                UpdateManager.Copy(UpdateManager.ExecutableDirectory + @"\release\", UpdateManager.ExecutableDirectory + @"\..\");
+                UpdateManager.ReadDbVersion();
+                CountError(0);
+                Console.WriteLine("New version installed");
+                Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
+                Process.Start(UpdateManager.ExecutableDirectory + @"\..\ShinraMeter.exe");
+            }
+            else
+            {
+                UpdateManager.DestroyRelease();
+                CountError(0);
+                var source = Directory.GetDirectories(UpdateManager.ExecutableDirectory + @"\..\release\")[0];
+                UpdateManager.Copy(source, UpdateManager.ExecutableDirectory + @"\..\..\");
+                Console.WriteLine("New version installed");
+                Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
+                Process.Start(UpdateManager.ExecutableDirectory + @"\..\..\ShinraMeter.exe");
+            }
+            uniqueUpdating.ReleaseMutex();
+            _unique.ReleaseMutex();
             Environment.Exit(0);
         }
 

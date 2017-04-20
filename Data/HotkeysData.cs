@@ -177,7 +177,8 @@ namespace Data
                     "hits_received",
                     "descending",
                     @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\",
-                    4
+                    4,
+                    15
                     ),
                 new CopyKey(
                     @"Damage Done @ {encounter} {timer} {partyDps} {enrage}:\",
@@ -188,7 +189,8 @@ namespace Data
                     "damage_percentage",
                     "descending",
                     @"[{class}] {name}: {debuff_list}\",
-                    4
+                    4,
+                    15
                     )
             };
             ExcelSave = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
@@ -209,11 +211,12 @@ namespace Data
                     bool.TryParse(copy.Element("window").Value, out window);
                     bool.TryParse(copy.Element("ctrl").Value, out ctrl);
 
-                    var header = copy.Element("string").Element("header").Value;
-                    var footer = copy.Element("string").Element("footer").Value;
-                    var content = copy.Element("string").Element("content").Value;
-                    var lowDpsContent = copy.Element("string").Element("low_dps_content")?.Value??content;
-                    var lowDpsTreshold = int.Parse(copy.Element("string").Element("low_dps_threshold")?.Value ?? "6");
+                    var header = copy.Element("string").Element("header").Value.Replace("{body}", "");
+                    var footer = copy.Element("string").Element("footer").Value.Replace("{body}", "");
+                    var content = copy.Element("string").Element("content").Value.Replace("{body}", "");
+                    var lowDpsContent = copy.Element("string").Element("low_dps_content")?.Value.Replace("{body}", "") ?? content;
+                    var lowDpsTreshold = int.Parse(copy.Element("string").Element("low_dps_threshold")?.Value ?? "4");
+                    var limitNameLength = int.Parse(copy.Element("string").Element("limit_name_length")?.Value ?? "0");
                     Keys key;
                     var keyValue = copy.Element("key").Value;
                     if (!Enum.TryParse(keyValue, out key))
@@ -225,7 +228,7 @@ namespace Data
                     var order = copy.Element("string").Element("order").Value;
                     var orderBy = copy.Element("string").Element("order_by").Value;
                     var modifier = ConvertToModifierKey(ctrl, false, shift, window);
-                    Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order, lowDpsContent,lowDpsTreshold));
+                    Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order, lowDpsContent, lowDpsTreshold, limitNameLength));
                 }
             }
             catch
@@ -303,6 +306,7 @@ namespace Data
                 stringElement.Add(new XElement("content", copy.Content));
                 stringElement.Add(new XElement("low_dps_content", copy.LowDpsContent));
                 stringElement.Add(new XElement("low_dps_threshold", copy.LowDpsThreshold));
+                stringElement.Add(new XElement("limit_name_length", copy.LimitNameLength));
                 stringElement.Add(new XElement("footer", copy.Footer));
                 stringElement.Add(new XElement("order_by", copy.OrderBy));
                 stringElement.Add(new XElement("order", copy.Order));

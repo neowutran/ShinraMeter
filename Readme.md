@@ -1,5 +1,8 @@
 Shinra Meter
 ==============
+
+[<img src="https://img.shields.io/badge/rating-4%2B%20stars-brightgreen.svg">](https://recordnotfound.com/ShinraMeter-neowutran-9937)
+
 ShinraMeter is a DPS Meter for TERA based off https://github.com/gothos-folly/TeraDamageMeter . 
 
 Wiki: https://github.com/neowutran/TeraDamageMeter/wiki
@@ -9,7 +12,7 @@ Download: https://neowutran.ovh/updates/
 TERADATA: https://github.com/neowutran/TeraDpsMeterData
 
 ShinraMeter is dev by Gl0 and Yukikoo/Neowutran
-
+ 
 
 Shinra launcher
 --------------
@@ -20,7 +23,7 @@ https://bitbucket.org/Vysse/shinra-launcher/wiki/Home
 
 Logo
 ---------
-
+ 
 Thanks to Se7en-Hellas for the new Shinra logo =) 
 
 Se7en-Hellas website: http://se7enhellas.wixsite.com/mylogogr 

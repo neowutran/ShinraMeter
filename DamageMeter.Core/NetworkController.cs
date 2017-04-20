@@ -44,7 +44,7 @@ namespace DamageMeter
         public NotifyFlashMessage FlashMessage { get; set; }
 
         private bool _clickThrou;
-        private static object pasteLock=new object();
+        private static object _pasteLock=new object();
         private bool _forceUiUpdate;
         internal bool NeedInit = true;
         private long _lastTick;
@@ -84,15 +84,19 @@ namespace DamageMeter
         public event SetClickThrouEvent SetClickThrouAction;
         public event GuildIconEvent GuildIconAction;
         public event UnsetClickThrouEvent UnsetClickThrouAction;
-
+        private bool _keepAlive = true;
         public bool SendFullDetails { get; set; }
         public void Exit()
         {
-            BasicTeraData.Instance.WindowData.Save();
-            BasicTeraData.Instance.HotkeysData.Save();
+            if (_keepAlive)
+            {
+                BasicTeraData.Instance.WindowData.Save();
+                BasicTeraData.Instance.HotkeysData.Save();
+            }
             TeraSniffer.Instance.Enabled = false;
+            _keepAlive = false;
+            Thread.Sleep(500);
             Application.Exit();
-            Environment.Exit(0);
         }
 
         internal void RaiseConnected(string message)
@@ -168,6 +172,13 @@ namespace DamageMeter
             }
 
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
+            if (currentBoss != null)
+            {
+                long entityHP = 0;
+                NotifyProcessor.Instance._lastBosses.TryGetValue(currentBoss.Id, out entityHP);
+                var entityDamaged = currentBoss.Info.HP - entityHP;
+                entityInfo.TimeLeft = entityDamaged == 0 ? 0 : entityInfo.Interval * entityHP / entityDamaged;
+            }
             Skills skills = null; 
             if (SendFullDetails)
             {
@@ -231,11 +242,9 @@ namespace DamageMeter
             bool timedEncounter, CopyKey copy)
         {
             if (BasicTeraData.Instance.HotDotDatabase == null) return;//no database loaded yet => no need to do anything
-            lock (pasteLock)
+            lock (_pasteLock)
             {
-                var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy.Header, copy.Content,
-                    copy.Footer,
-                    copy.OrderBy, copy.Order,copy.LowDpsContent,copy.LowDpsThreshold);
+                var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy);
                 for (var i = 0; i < 3; i++)
                 {
                     try
@@ -265,7 +274,7 @@ namespace DamageMeter
                 Exit();
             }
 
-            while (true)
+            while (_keepAlive)
             {
                 if (NeedToCopy != null)
                 {

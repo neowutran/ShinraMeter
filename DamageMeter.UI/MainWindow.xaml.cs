@@ -46,6 +46,7 @@ namespace DamageMeter.UI
         private bool _keyboardInitialized;
         private bool _topMost = true;
         private double _oldWidth = 0;
+        private DispatcherTimer _dispatcherTimer;
         //private readonly SystemTray _systemTray;
 
         public MainWindow()
@@ -68,10 +69,10 @@ namespace DamageMeter.UI
             NetworkController.Instance.SetClickThrouAction += SetClickThrou;
             NetworkController.Instance.UnsetClickThrouAction += UnsetClickThrou;
             NetworkController.Instance.GuildIconAction += InstanceOnGuildIconAction;
-            var dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += UpdateKeyboard;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Start();
+            _dispatcherTimer = new DispatcherTimer();
+            _dispatcherTimer.Tick += UpdateKeyboard;
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            _dispatcherTimer.Start();
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
             Chrono.ToolTip = LP.MainWindow_Only_boss;
@@ -159,6 +160,14 @@ namespace DamageMeter.UI
         public void Exit()
         {
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
+            NetworkController.Instance.TickUpdated -= Update;
+            _dispatcherTimer.Stop();
+            NotifyIcon.Tray.Visibility = Visibility.Collapsed;
+            NotifyIcon.Tray.Icon = null;
+            NotifyIcon.Tray.IconSource = null;
+            NotifyIcon.Tray.Dispose();
+            NotifyIcon.Tray = null;
+            _topMost = false;
             NetworkController.Instance.Exit();
         }
 
@@ -268,9 +277,20 @@ namespace DamageMeter.UI
                     }
 
                     TotalDamage.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.TotalDamage);
-                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval/TimeSpan.TicksPerSecond);
-                    Timer.Content = interval.ToString(@"mm\:ss");
-
+                    if (BasicTeraData.Instance.WindowData.ShowTimeLeft && statsSummary.EntityInformation.TimeLeft>0)
+                    {
+                        var interval =TimeSpan.FromSeconds(statsSummary.EntityInformation.TimeLeft/TimeSpan.TicksPerSecond);
+                        Timer.Content = interval.ToString(@"mm\:ss");
+                        Timer.Foreground = System.Windows.Media.Brushes.LightCoral;
+                    }
+                    else
+                    {
+                        var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval / TimeSpan.TicksPerSecond);
+                        Timer.Content = interval.ToString(@"mm\:ss");
+                        if (statsSummary.EntityInformation.Interval == 0 && BasicTeraData.Instance.WindowData.ShowTimeLeft)
+                            Timer.Foreground = System.Windows.Media.Brushes.LightCoral;
+                        else Timer.Foreground = System.Windows.Media.Brushes.White;
+                    }
                     Players.Items.Clear();
 
                     foreach (var item in statsDamage)
@@ -346,7 +366,7 @@ namespace DamageMeter.UI
 
         internal void StayTopMost()
         {
-            if (!Topmost || !_topMost) return;
+            if (!_topMost || !Topmost) return;
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
                 window.Topmost = false;
@@ -517,5 +537,11 @@ namespace DamageMeter.UI
         }
 
         private delegate void ChangeTitle(string servername);
+
+        private void ChangeTimeLeft(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount != 2) return;
+            BasicTeraData.Instance.WindowData.ShowTimeLeft = !BasicTeraData.Instance.WindowData.ShowTimeLeft;
+        }
     }
 }

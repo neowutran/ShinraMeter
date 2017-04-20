@@ -340,6 +340,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to % Crit Dmg.
+        /// </summary>
+        public static string CritDamagePercent {
+            get {
+                return ResourceManager.GetString("CritDamagePercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Critical.
         /// </summary>
         public static string Critical {
@@ -626,30 +635,6 @@ namespace Lang {
         ///			&lt;/notify&gt;
         ///		&lt;/actions [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string events_glaiver {
-            get {
-                return ResourceManager.GetString("events_glaiver", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
-        ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///		&lt;/abnormalities&gt;
-        ///		&lt;actions&gt;
-        ///			&lt;notify&gt;
-        ///				&lt;balloon title_text=&quot;{abnormality_name} : on&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;3000&quot; /&gt;
-        ///				&lt;beeps&gt;
-        ///					&lt;beep frequency=&quot;110&quot; duration=&quot;500&quot;/&gt;
-        ///				&lt;/beeps&gt;
-        ///			&lt;/notify&gt;
-        ///		&lt;/actions [rest of string was truncated]&quot;;.
-        /// </summary>
         public static string events_gunner {
             get {
                 return ResourceManager.GetString("events_gunner", resourceCulture);
@@ -825,6 +810,30 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
+        ///	&lt;!-- Mystic contagion --&gt;
+        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
+        ///		&lt;abnormalities&gt;
+        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
+        ///		&lt;/abnormalities&gt;
+        ///		&lt;actions&gt;
+        ///			&lt;notify&gt;
+        ///				&lt;balloon title_text=&quot;{abnormality_name} : on&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;3000&quot; /&gt;
+        ///				&lt;beeps&gt;
+        ///					&lt;beep frequency=&quot;110&quot; duration=&quot;500&quot;/&gt;
+        ///				&lt;/beeps&gt;
+        ///			&lt;/notify&gt;
+        ///		&lt;/actions [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string events_valkyrie {
+            get {
+                return ResourceManager.GetString("events_valkyrie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+        ///&lt;events&gt;
         ///	&lt;!-- The boss is not enraged anymore  --&gt;
         ///	&lt;abnormality ingame=&quot;true&quot; trigger=&quot;Removed&quot; target=&quot;Boss&quot;&gt;
         ///		&lt;abnormalities&gt;
@@ -899,15 +908,6 @@ namespace Lang {
         public static string GeneralColor {
             get {
                 return ResourceManager.GetString("GeneralColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Glaiver.
-        /// </summary>
-        public static string Glaiver {
-            get {
-                return ResourceManager.GetString("Glaiver", resourceCulture);
             }
         }
         
@@ -1803,6 +1803,15 @@ namespace Lang {
         public static string UploadGlyphBuild {
             get {
                 return ResourceManager.GetString("UploadGlyphBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valkyrie.
+        /// </summary>
+        public static string Valkyrie {
+            get {
+                return ResourceManager.GetString("Valkyrie", resourceCulture);
             }
         }
         

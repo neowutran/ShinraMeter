@@ -314,7 +314,7 @@
                Foreground="White"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
             <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Grid.Column="5" FontSize="14"
-               Foreground="White"
+               Foreground="White" PreviewMouseLeftButtonDown="ChangeTimeLeft"
                VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
             <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Grid.Column="2" FontSize="14"
                Foreground="White"

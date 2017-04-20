@@ -2,12 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Management;
 using System.Net;
-using System.Windows.Forms;
 using Data;
-using Lang;
-using PacketDotNet;
 
 namespace NetworkSniffer
 {
@@ -82,14 +78,7 @@ namespace NetworkSniffer
 
             if (_bufferedPackets.Count > 500)
             {
-                var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
-                            select x.GetPropertyValue("Version")+ " Memory Total:" + x.GetPropertyValue("TotalVisibleMemorySize")
-                                       + " Virtual:" + x.GetPropertyValue("TotalVirtualMemorySize") + " PhFree:" + x.GetPropertyValue("FreePhysicalMemory")
-                                       + " VFree:" + x.GetPropertyValue("FreeVirtualMemory")
-                            ).FirstOrDefault() ?? "unknown";
-                name = name + " CPU:" + ((from x in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().Cast<ManagementObject>()
-                           select x.GetPropertyValue("Name")+" load:"+ x.GetPropertyValue("LoadPercentage")+"%").FirstOrDefault() ?? "processor unknown");
-                string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority " : "Normal priority ") + SnifferType + " running on win "+name+
+                string debug = (BasicTeraData.Instance.WindowData.LowPriority ? "Low priority " : "Normal priority ") + SnifferType +
                     " Received: " + BytesReceived + "\r\n" + _bufferedPackets.First().Key + ": " + _bufferedPackets.First().Value.Length + "\r\nQueue length:" + _bufferedPackets.Count;
                 while (_bufferedPackets.Values.First().Length >= 500)
                 {

@@ -14,6 +14,7 @@ using DamageMeter.AutoUpdate;
 using Data;
 using log4net;
 using Lang;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace DamageMeter.UI
 {
@@ -22,13 +23,12 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class App
     {
-        private Mutex _unique;
-
+        private static Mutex _unique;
+        private static bool _isNewInstance;
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
-
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
@@ -40,24 +40,20 @@ namespace DamageMeter.UI
 
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
-            bool aIsNewInstance;
             bool notUpdating;
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
             currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
             var updating = new Mutex(true, "ShinraMeterUpdating", out notUpdating);
-            _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
+            _unique = new Mutex(true, "ShinraMeter", out _isNewInstance);
 
 
-            if (aIsNewInstance)
+            if (_isNewInstance)
             {
                 DeleteTmp();
-                if (BasicTeraData.Instance.WindowData.UILanguage != "Auto")
-                {
-                    LP.Culture = CultureInfo.GetCultureInfo(BasicTeraData.Instance.WindowData.UILanguage);
-                    FormatHelpers.Instance.CultureInfo = LP.Culture;
-                }
+                UpdateManager.ReadDbVersion();
                 if (!BasicTeraData.Instance.WindowData.AllowTransparency) RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+                FormatHelpers.Instance.CultureInfo = LP.Culture;
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
                 {
                     return;
@@ -78,6 +74,7 @@ namespace DamageMeter.UI
                               ex.InnerException +
                               "\r\n" + ex.TargetSite);
                 }
+                UpdateManager.ClearHash();
                 if (!shutdown) return;
                 Current.Shutdown();
                 Process.GetCurrentProcess().Kill();
@@ -140,7 +137,13 @@ namespace DamageMeter.UI
 
             if (MessageBox.Show(LP.App_Do_you_want_to_update, LP.App_Update_Available, MessageBoxButton.YesNo,
                 MessageBoxImage.Question) != MessageBoxResult.Yes) return false;
-            return await UpdateManager.Update();
+            return UpdateManager.Update();
+        }
+
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            if (_isNewInstance)
+                _unique.ReleaseMutex();
         }
     }
 }

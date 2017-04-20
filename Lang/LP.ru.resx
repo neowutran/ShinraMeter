@@ -199,7 +199,7 @@
     <value>Очередь сообщений</value>
   </data>
   <data name="App_Unable_to_contact_update_server" xml:space="preserve">
-    <value>Ощибка доступа к серверу обновлений, попробуйте позже, подробная информация в error.log</value>
+    <value>Ошибка доступа к серверу обновлений, попробуйте позже, подробная информация в error.log</value>
   </data>
   <data name="App_Update_Available" xml:space="preserve">
     <value>Доступно обновление</value>
@@ -646,5 +646,11 @@
   </data>
   <data name="IdleResetTimeout" xml:space="preserve">
     <value>Сброс если вне боя больше X сек (0=не сбрасывать)</value>
+  </data>
+  <data name="CritDamagePercent" xml:space="preserve">
+    <value>% Урона критами</value>
+  </data>
+  <data name="Valkyrie" xml:space="preserve">
+    <value>Валькирия</value>
   </data>
 </root>

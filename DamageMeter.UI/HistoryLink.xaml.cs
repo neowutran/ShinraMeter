@@ -29,7 +29,7 @@ namespace DamageMeter.UI
 
         private void Click_Link(object sender, MouseButtonEventArgs e)
         {
-            if (Boss.Tag.ToString().StartsWith("http://"))
+            if (Boss.Tag.ToString().StartsWith("http://") || Boss.Tag.ToString().StartsWith("https://"))
                 Process.Start("explorer.exe", "\""+Boss.Tag+"\"");
         }
 

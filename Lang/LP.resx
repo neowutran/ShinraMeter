@@ -638,11 +638,11 @@
   <data name="OpenChatBox" xml:space="preserve">
     <value>Open chat box</value>
   </data>
-  <data name="Glaiver" xml:space="preserve">
-    <value>Glaiver</value>
+  <data name="Valkyrie" xml:space="preserve">
+    <value>Valkyrie</value>
   </data>
-  <data name="events_glaiver" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\en\events-glaiver.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="events_valkyrie" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\en\events-valkyrie.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="PrivateServerExport" xml:space="preserve">
     <value>Export to private dps servers</value>
@@ -658,5 +658,8 @@
   </data>
   <data name="IdleResetTimeout" xml:space="preserve">
     <value>Idle reset timeout in sec (0=disable)</value>
+  </data>
+  <data name="CritDamagePercent" xml:space="preserve">
+    <value>% Crit Dmg</value>
   </data>
 </root>
