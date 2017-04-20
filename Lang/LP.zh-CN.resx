@@ -598,4 +598,16 @@
   <data name="MuteSound" xml:space="preserve">
     <value>静音</value>
   </data>
+  <data name="ShowAfkEventsIngame" xml:space="preserve">
+    <value>在游戏中显示AFK事件</value>
+  </data>
+  <data name="VanguardCredits" xml:space="preserve">
+    <value>Vanguard credits are close to cap:</value>
+  </data>
+  <data name="OpenChatBox" xml:space="preserve">
+    <value>打开聊天窗口</value>
+  </data>
+  <data name="Valkyrie" xml:space="preserve">
+    <value>月光武士</value>
+  </data>
 </root>
