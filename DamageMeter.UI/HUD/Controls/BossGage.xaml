@@ -1,0 +1,207 @@
+﻿<UserControl x:Class="DamageMeter.UI.HUD.Controls.BossGage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:DamageMeter.UI.HUD.Controls" 
+             xmlns:hud="clr-namespace:DamageMeter.UI.HUD"
+             d:DataContext="{d:DesignInstance d:Type=damageMeter:Boss}"
+             xmlns:damageMeter="clr-namespace:DamageMeter;assembly=DamageMeter"
+             mc:Ignorable="d" 
+             Loaded="UserControl_Loaded"
+             Unloaded="UserControl_UnLoaded"
+             >
+    <UserControl.Resources>
+        <DataTemplate x:Key="BossBuffDataTemplate">
+            <controls:AbnormalityIndicator Size="25"/>
+        </DataTemplate>
+        <Style x:Key="border" TargetType="Border">
+            <Setter Property="Background" Value="#ff202020"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="BorderThickness" Value=".5"/>
+            <Setter Property="BorderBrush" Value="#ffffffff"/>
+            <Setter Property="Height" Value="Auto" />
+            <Setter Property="Width" Value="Auto"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid Visibility="{Binding Visible}"  Width="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid Width="Auto" Height="Auto" Margin="0,0,0,2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Margin="0,0,0,0" Style="{StaticResource border}"  Grid.RowSpan="3" Grid.Row="0" HorizontalAlignment="Stretch"/>
+
+            <Grid Margin="6,2">
+                <TextBlock Name="BossNameTB" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" FontStretch="Condensed" FontSize="12" Foreground="White" Text="{Binding Name}" >
+                    <!--<TextBlock.CacheMode>
+                        <BitmapCache RenderAtScale="1.5"></BitmapCache>
+                    </TextBlock.CacheMode>--></TextBlock>
+                <TextBlock Name="Perc2" HorizontalAlignment="Right" Foreground="#90ffffff" VerticalAlignment="Center" FontSize="11">
+                        <Run Text="{Binding CurrentHP, StringFormat={}{0:N0}}"/>  
+                        <Run Text=" / "/>  
+                        <Run Text="{Binding MaxHP, StringFormat={}{0:N0}}"/>  
+                    <!--<TextBlock.CacheMode>
+                        <BitmapCache RenderAtScale="1.5"></BitmapCache>
+                    </TextBlock.CacheMode>--></TextBlock>
+                <TextBlock Name="Perc" HorizontalAlignment="Center" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="White" Margin="0" FontSize="14" 
+                           Text="{Binding CurrentPercentage, StringFormat=##0.##%}"/>
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="10,0,10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Rectangle Name="BaseRect"  Fill="#90000000" Height="5" Width="400" HorizontalAlignment="Stretch"/>
+                <Rectangle Name="HPrect" Fill="#4a82bd" Width="400" Height="{Binding ElementName=BaseRect, Path=Height}" HorizontalAlignment="Left" >
+                    <Rectangle.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="20" Color="Red" Opacity="0"/>
+                    </Rectangle.Effect>
+                </Rectangle>
+                <!--<Path Fill="{StaticResource bgColor}" Data="M 0,0 H 4 C 0,0 0,5 4,5 H 0" VerticalAlignment="Center" Margin="0,0,-1,0" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+                <Path Fill="{StaticResource bgColor}" Data="M 0,0 H 4 C 0,0 0,5 4,5 H 0" Margin="-1,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>-->
+
+                <Grid Height="{Binding ElementName=BaseRect, Path=Height}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border BorderThickness=".8,0,.8,0" BorderBrush="#90ffffff" Grid.Column="1"></Border>
+                    <Border BorderThickness=".8,0,.8,0" BorderBrush="#90ffffff" Grid.Column="3"></Border>
+                    <Border BorderThickness=".8,0,.8,0" BorderBrush="#90ffffff" Grid.Column="5"></Border>
+                    <Border BorderThickness=".8,0,.8,0" BorderBrush="#90ffffff" Grid.Column="7"></Border>
+                    <Border BorderThickness=".8,0,0,0" BorderBrush="#90ffffff" Grid.Column="9"></Border>
+                </Grid>
+                <StackPanel Width="Auto" Height="Auto" Name="NextEnrage" Margin="-15,0,0,3" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" Grid.Row="2">
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                    <Polygon Points="0,7 5,0 10,7"  Margin="0,0,0,0"  Fill="Orange" VerticalAlignment="Center" Height="Auto"  HorizontalAlignment="Center" Grid.Column="1" >
+                    </Polygon>
+                    <TextBlock Width="30" Text="100" Name="NextEnrageTB" FontSize="10" Foreground="White" TextAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Padding="0">
+                                <!--<TextBlock.CacheMode>
+                                    <BitmapCache RenderAtScale="2"/>
+                                </TextBlock.CacheMode>-->
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+
+            <Grid Name="EnrageGrid" Grid.Column="1" Grid.RowSpan="3" Width="{Binding ElementName=EnrageGrid, Path=ActualHeight}" Height="Auto" Margin="1,0" RenderTransformOrigin="0,0.5">
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="0"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+
+                <Border Margin="0,0,0,0" Style="{StaticResource border}" Grid.Column="1" Grid.RowSpan="3" Grid.Row="0" >
+                    <!--<Border.Effect>
+                        <DropShadowEffect Opacity="0.6" ShadowDepth="3"/>
+                    </Border.Effect>-->
+                </Border>
+                <Ellipse Margin="8" Width="Auto" Height="Auto">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="EnrageImage">
+                            <ImageBrush.RelativeTransform>
+                                <TransformGroup>
+                                    <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                                    <SkewTransform CenterY="0.5" CenterX="0.5"/>
+                                    <RotateTransform CenterY="0.5" CenterX="0.5"/>
+                                    <TranslateTransform X="0.01"/>
+                                </TransformGroup>
+                            </ImageBrush.RelativeTransform>
+                            <ImageBrush.Transform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </ImageBrush.Transform>
+                        </ImageBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <hud:Arc x:Name="EnrageArc" Margin="5" Width="Auto" Height="Auto" Stroke="White" StrokeThickness="3"></hud:Arc>
+                <Grid Width="18" Height="18" x:Name="g" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4,4">
+
+                    <Ellipse x:Name="fill" Fill="White"  Opacity="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stroke="#40000000"/>
+                    <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
+                        <TextBlock Foreground="#d9000000" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   TextAlignment="Center"
+                   FontWeight="Normal" 
+                   FontSize="16" 
+                   x:Name="number" 
+                   FontFamily="Roboto Mono" 
+                   FontStyle="Normal"
+                   Opacity="1" 
+                   Margin="3"
+                   Text="35">
+            <!--<TextBlock.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="0" Color="White"></DropShadowEffect>
+            </TextBlock.Effect>-->
+                        </TextBlock>
+                    </Viewbox>
+
+                </Grid>
+
+            </Grid>
+        </Grid>
+            <Grid Grid.Row="4" Height="Auto" Margin="0,0,0,0" HorizontalAlignment="Left">
+                <!--<Border Margin="0,0,0,0" Style="{StaticResource border}"  Grid.RowSpan="3" Grid.Row="0" />-->
+
+                <ItemsControl Name="Abnormalities" ItemTemplate="{StaticResource BossBuffDataTemplate}" ItemsSource="{Binding Buffs}" >
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0" Width="500"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+    </Grid>
+</UserControl>

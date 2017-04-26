@@ -105,6 +105,7 @@
     <Compile Include="DataExporter.cs" />
     <Compile Include="ExcelExport.cs" />
     <Compile Include="FormatHelpers.cs" />
+    <Compile Include="HudManager.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="PacketProcessingFactory.cs" />
     <Compile Include="NpcOccupierResult.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="TeraDpsApi\SkillLog.cs" />
     <Compile Include="TeraWindow.cs" />
     <Compile Include="NetworkController.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj">

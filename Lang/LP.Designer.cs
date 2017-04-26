@@ -1411,6 +1411,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Boss HP Bar.
+        /// </summary>
+        public static string ShowBossGage {
+            get {
+                return ResourceManager.GetString("ShowBossGage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show self on top position in UI.
         /// </summary>
         public static string ShowSelfOnTop {

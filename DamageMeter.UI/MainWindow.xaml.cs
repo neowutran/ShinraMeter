@@ -26,10 +26,8 @@ using Application = System.Windows.Forms.Application;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
-using System.Text;
 using Data.Actions.Notify;
-using System.Speech.Synthesis;
-using System.Globalization;
+using DamageMeter.UI.HUD.Windows;
 
 namespace DamageMeter.UI
 {
@@ -39,6 +37,7 @@ namespace DamageMeter.UI
     public partial class MainWindow
     {
         internal Chatbox _chatbox;
+        private readonly BossGageWindow _bossGageBar;
         private readonly EntityStatsMain _entityStats;
 
         private readonly TeradpsHistory _windowHistory;
@@ -84,18 +83,17 @@ namespace DamageMeter.UI
             UpdateComboboxEncounter(new List<NpcEntity>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.MainWindowOpacity;
-            Closing -= ClickThrouWindow_Closing;
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
             Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
-            _entityStats = new EntityStatsMain(this);
+            _entityStats = new EntityStatsMain();
+            _bossGageBar = new BossGageWindow();
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
            
             Console.WriteLine(
                 "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             NotifyIcon.Initialize(this);
             KeyboardHook.Instance.SwitchTopMost += delegate { NotifyIcon.SwitchStayTop(); };
-            
         }
 
         private void InstanceOnGuildIconAction(Bitmap icon)
@@ -119,7 +117,7 @@ namespace DamageMeter.UI
             Exit();
         }
 
-        public void SetClickThrou()
+        public new void SetClickThrou()
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExTransparent(hwnd);
@@ -128,11 +126,12 @@ namespace DamageMeter.UI
                 players.Value.SetClickThrou();
             }
             _entityStats.SetClickThrou();
+            _bossGageBar.SetClickThrou();
             NotifyIcon.ClickThrou.IsChecked = true;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStatsClickThrou.Source;
         }
 
-        public void UnsetClickThrou()
+        public new void UnsetClickThrou()
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExVisible(hwnd);
@@ -141,6 +140,7 @@ namespace DamageMeter.UI
                 players.Value.UnsetClickThrou();
             }
             _entityStats.UnsetClickThrou();
+            _bossGageBar.UnsetClickThrou();
             NotifyIcon.ClickThrou.IsChecked = false;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
@@ -153,6 +153,9 @@ namespace DamageMeter.UI
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
+                BasicTeraData.Instance.WindowData.BossGageStatus = new WindowStatus(new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visibility==Visibility.Visible);
+                BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(new Point(_windowHistory.Left, _windowHistory.Top), _windowHistory.Visibility == Visibility.Visible);
+                BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(new Point(_entityStats.Left, _entityStats.Top), _entityStats.Visibility == Visibility.Visible);
                 Close();
             }
         }
@@ -160,6 +163,7 @@ namespace DamageMeter.UI
         public void Exit()
         {
             BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
+            ForceWindowVisibilityHidden = true;
             NetworkController.Instance.TickUpdated -= Update;
             _dispatcherTimer.Stop();
             NotifyIcon.Tray.Visibility = Visibility.Collapsed;
@@ -344,14 +348,14 @@ namespace DamageMeter.UI
         private void ShowHistory(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            _windowHistory.Show();
+            _windowHistory.ShowWindow();
         }
 
         private void ShowChat(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            _chatbox = new Chatbox();
-            _chatbox.Show();
+            _chatbox = new Chatbox() { Owner = this };
+            _chatbox.ShowWindow();
         }
 
         public void HandleConnected(string serverName)
@@ -450,10 +454,31 @@ namespace DamageMeter.UI
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            _entityStats.Owner = this;
+            _bossGageBar.Owner = this;
+            _windowHistory.Owner = this;
             if (BasicTeraData.Instance.WindowData.RememberPosition)
             {
                 Top = BasicTeraData.Instance.WindowData.Location.Y;
                 Left = BasicTeraData.Instance.WindowData.Location.X;
+                if (BasicTeraData.Instance.WindowData.DebuffsStatus.Location != new Point(0, 0))
+                {
+                    _entityStats.Top = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.Y;
+                    _entityStats.Left = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.X;
+                }
+                if(BasicTeraData.Instance.WindowData.DebuffsStatus.Visible) _entityStats.ShowWindow();
+                if (BasicTeraData.Instance.WindowData.BossGageStatus.Location != new Point(0, 0))
+                {
+                    _bossGageBar.Top = BasicTeraData.Instance.WindowData.BossGageStatus.Location.Y;
+                    _bossGageBar.Left = BasicTeraData.Instance.WindowData.BossGageStatus.Location.X;
+                }
+                if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible) _bossGageBar.ShowWindow();
+                if (BasicTeraData.Instance.WindowData.HistoryStatus.Location != new Point(0, 0))
+                {
+                    _windowHistory.Top = BasicTeraData.Instance.WindowData.HistoryStatus.Location.Y;
+                    _windowHistory.Left = BasicTeraData.Instance.WindowData.HistoryStatus.Location.X;
+                }
+                if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible) _windowHistory.ShowWindow();
                 return;
             }
             Top = 0;
@@ -476,14 +501,10 @@ namespace DamageMeter.UI
             }
         }
 
-        public void CloseEntityStats()
-        {
-            _entityStats.Hide();
-        }
-
         private void EntityStatsImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _entityStats.Show();
+            e.Handled = true;
+            _entityStats.ShowWindow();
         }
 
         private void Chrono_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -542,6 +563,12 @@ namespace DamageMeter.UI
         {
             if (e.ClickCount != 2) return;
             BasicTeraData.Instance.WindowData.ShowTimeLeft = !BasicTeraData.Instance.WindowData.ShowTimeLeft;
+        }
+
+        private void ShowBossGage(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            _bossGageBar.ShowWindow();
         }
     }
 }

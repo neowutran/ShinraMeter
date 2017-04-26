@@ -19,6 +19,7 @@ namespace Data
             Config = new Image {Source = new BitmapImage(new Uri(folder + "config.png"))};
             Chat = new Image {Source = new BitmapImage(new Uri(folder + "chat.png"))};
             Link = new Image {Source = new BitmapImage(new Uri(folder + "link.png"))};
+            Enraged = new Image { Source = new BitmapImage(new Uri(folder + "enraged.png")) };
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
             Tray = new Icon(folder + "shinra.ico");
@@ -38,7 +39,7 @@ namespace Data
         public Image Chronobar { get; private set; }
 
         public Image EntityStats { get; private set; }
-
+        public Image Enraged { get; private set; }
         public Image EntityStatsClickThrou { get; private set; }
 
         public Icon Tray { get; private set; }

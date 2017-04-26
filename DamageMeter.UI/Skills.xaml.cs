@@ -25,23 +25,12 @@ namespace DamageMeter.UI
         public Skills(PlayerStats parent, PlayerDamageDealt playerDamageDealt, EntityInformation entityInformation,
             Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
         {
+            Owner = GetWindow(parent);
             InitializeComponent();
             _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
-            BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.SkillWindowOpacity;
+            BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Update(playerDamageDealt, entityInformation, skills, buffs, timedEncounter);
-        }
-
-        public void SetClickThrou()
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            WindowsServices.SetWindowExTransparent(hwnd);
-        }
-
-        public void UnsetClickThrou()
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            WindowsServices.SetWindowExVisible(hwnd);
         }
 
         private Database.Structures.Skills _skills;

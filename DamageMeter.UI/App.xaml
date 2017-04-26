@@ -180,6 +180,20 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <!--HUD-->
+        <DropShadowEffect x:Key="dropShadow" BlurRadius="5" ShadowDepth="3" Opacity=".6" />
+        <SolidColorBrush x:Key="bgColor" Color="#202026" />
+
+        <Style x:Key="border" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource bgColor}"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#303036"/>
+            <Setter Property="Height" Value="Auto" />
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Effect" Value="{StaticResource dropShadow}" />
+        </Style>
 
     </Application.Resources>
 </Application>

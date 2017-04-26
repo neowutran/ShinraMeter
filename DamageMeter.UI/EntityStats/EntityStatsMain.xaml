@@ -57,7 +57,7 @@
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
                 <Button Grid.Row="0" x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black" Opacity="0.5"
-                        Foreground="White" Click="CloseMeter_OnClick" HorizontalContentAlignment="Stretch"
+                        Foreground="White" Click="CloseStats_OnClick" HorizontalContentAlignment="Stretch"
                         VerticalAlignment="Top" Margin="0">
                     <Image x:Name="CloseWindow"
                            Stretch="Fill"

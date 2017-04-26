@@ -1,9 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using Data;
 
 namespace DamageMeter.UI
@@ -31,6 +35,18 @@ namespace DamageMeter.UI
             ResizeMode = ResizeMode.NoResize;
         }
 
+        public void SetClickThrou()
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            WindowsServices.SetWindowExTransparent(hwnd);
+        }
+
+        public void UnsetClickThrou()
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            WindowsServices.SetWindowExVisible(hwnd);
+        }
+
         protected void Move(object sender, MouseButtonEventArgs e)
         {
             try
@@ -45,8 +61,44 @@ namespace DamageMeter.UI
 
         protected void ClickThrouWindow_Closing(object sender, CancelEventArgs e)
         {
-            e.Cancel = true;
-            Visibility = Visibility.Hidden;
+            Closing -= ClickThrouWindow_Closing;
+            foreach (ClickThrouWindow window in ((ClickThrouWindow)sender).OwnedWindows)
+            {
+                window.Close();
+            }
+            if (BasicTeraData.Instance.WindowData.AllowTransparency)
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var a = OpacityAnimation(0);
+                    a.Completed += (o, args) => { Close(); };
+                    BeginAnimation(OpacityProperty, a);
+                }));
+            else Close();
+        }
+
+        public void HideWindow()
+        {
+            if (BasicTeraData.Instance.WindowData.AllowTransparency)
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var a = OpacityAnimation(0);
+                    a.Completed += (o, args) => { Visibility = Visibility.Hidden; };
+                    BeginAnimation(OpacityProperty, a);
+                }));
+            else Visibility = Visibility.Hidden;
+        }
+
+        public void ShowWindow()
+        {
+            if (BasicTeraData.Instance.WindowData.AllowTransparency)
+            {
+                Opacity = 0;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    BeginAnimation(OpacityProperty, OpacityAnimation(BasicTeraData.Instance.WindowData.OtherWindowOpacity));
+                }));
+            }
+            Visibility = Visibility.Visible;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -64,6 +116,11 @@ namespace DamageMeter.UI
             var helper = new WindowInteropHelper(this);
             SetWindowLong(helper.Handle, GWL_EXSTYLE,
                 GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_NOACTIVATE);
+        }
+
+        private static DoubleAnimation OpacityAnimation(double to)
+        {
+            return new DoubleAnimation(to, TimeSpan.FromMilliseconds(300)) { EasingFunction = new QuadraticEase()};
         }
 
         [DllImport("user32.dll")]

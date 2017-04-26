@@ -171,7 +171,7 @@ namespace DamageMeter.UI
                 }
             }
             NetworkController.Instance.SendFullDetails = true;
-            _windowSkill.Show();
+            _windowSkill.ShowWindow();
         }
 
         private void ChangeHeal(object sender, MouseButtonEventArgs e)

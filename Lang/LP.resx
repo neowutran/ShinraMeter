@@ -665,4 +665,7 @@
   <data name="AuthToken" xml:space="preserve">
     <value>Moongourd auth token</value>
   </data>
+  <data name="ShowBossGage" xml:space="preserve">
+    <value>Show Boss HP Bar</value>
+  </data>
 </root>

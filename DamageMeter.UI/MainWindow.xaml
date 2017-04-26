@@ -300,6 +300,17 @@
                            Height="29" VerticalAlignment="Top" Width="29" />
                             <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowChat" Content="{Binding Source={x:Static l:LP.Chat}}" Foreground="White" FontSize="14" />
                         </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!--<Image Grid.Column="0" x:Name="History" PreviewMouseLeftButtonDown="ShowHistory"
+                           Stretch="Fill"
+                           HorizontalAlignment="Left"
+                           Height="29" VerticalAlignment="Top" Width="29" />-->
+                            <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowBossGage" Content="{Binding Source={x:Static l:LP.ShowBossGage}}" Foreground="White" FontSize="14" />
+                        </Grid>
                     </ContextMenu>
                 </Image.ContextMenu>
 

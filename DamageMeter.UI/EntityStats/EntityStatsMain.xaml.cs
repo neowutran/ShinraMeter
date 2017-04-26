@@ -15,26 +15,12 @@ namespace DamageMeter.UI.EntityStats
         private readonly List<EnduranceDebuff> _enduranceDebuffsList = new List<EnduranceDebuff>();
 
         private readonly EnduranceDebuffHeader _header;
-        private readonly MainWindow _parent;
 
-        public EntityStatsMain(MainWindow parent)
+        public EntityStatsMain()
         {
             InitializeComponent();
-            _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             _header = new EnduranceDebuffHeader();
-        }
-
-        public void SetClickThrou()
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            WindowsServices.SetWindowExTransparent(hwnd);
-        }
-
-        public void UnsetClickThrou()
-        {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            WindowsServices.SetWindowExVisible(hwnd);
         }
 
         public void Update(EntityInformation entityInformation, AbnormalityStorage abnormals)
@@ -73,9 +59,9 @@ namespace DamageMeter.UI.EntityStats
             }
         }
 
-        private void CloseMeter_OnClick(object sender, RoutedEventArgs e)
+        private void CloseStats_OnClick(object sender, RoutedEventArgs e)
         {
-            _parent.CloseEntityStats();
+            HideWindow();
         }
     }
 }

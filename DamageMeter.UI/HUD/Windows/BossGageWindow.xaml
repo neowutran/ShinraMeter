@@ -1,0 +1,38 @@
+﻿<ui:ClickThrouWindow x:Class="DamageMeter.UI.HUD.Windows.BossGageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="clr-namespace:DamageMeter.UI" 
+        xmlns:controls="clr-namespace:DamageMeter.UI.HUD.Controls"
+        mc:Ignorable="d"
+        Title="BossGageWindow" Height="Auto" Width="Auto"
+        SizeToContent="WidthAndHeight"
+        Topmost="True"
+        AllowsTransparency="True"
+        ShowInTaskbar="False"
+        WindowStyle="None"
+        Background="#00000000"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        MouseRightButtonDown="Window_MouseRightButtonDown"
+        Loaded="Window_Loaded"
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <DataTemplate x:Key="BossGageDataTemplate">
+            <controls:BossGage/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <!--<Grid.CacheMode>
+            <BitmapCache RenderAtScale="1"/>
+        </Grid.CacheMode>-->
+        <ItemsControl Name="Bosses" ItemTemplate="{StaticResource BossGageDataTemplate}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Background="Transparent" Orientation="Vertical" ItemHeight="Auto" Height="270"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Grid>
+</ui:ClickThrouWindow>
+

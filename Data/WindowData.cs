@@ -10,17 +10,30 @@ using System.Xml.Linq;
 
 namespace Data
 {
+    public struct WindowStatus
+    {
+        public Point Location;
+        public bool Visible;
+        public WindowStatus(Point p, bool v)
+        {
+            Location = p;
+            Visible = v;
+        }
+    }
     public class WindowData
     {
         private readonly FileStream _filestream;
         private readonly XDocument _xml;
         public int LFDelay { get; set; }
         public Point Location { get; set; }
+        public WindowStatus BossGageStatus { get; set; }
+        public WindowStatus DebuffsStatus { get; set; }
+        public WindowStatus HistoryStatus { get; set; }
         public string ExcelSaveDirectory { get; set; }
         public double Scale { get; set; }
         public bool PartyOnly { get; set; }
         public double MainWindowOpacity { get; private set; }
-        public double SkillWindowOpacity { get; private set; }
+        public double OtherWindowOpacity { get; private set; }
         public bool RememberPosition { get; private set; }
         public string Language { get; private set; }
         public string UILanguage { get; private set; }
@@ -80,7 +93,7 @@ namespace Data
             Language = "Auto";
             UILanguage = "Auto";
             MainWindowOpacity = 0.5;
-            SkillWindowOpacity = 0.7;
+            OtherWindowOpacity = 0.9;
             AutoUpdate = true;
             RememberPosition = true;
             InvisibleUi = false;
@@ -211,7 +224,10 @@ namespace Data
             ParseColor("emotes_color", "EmotesColor");
             ParseColor("private_channel_color", "PrivateChannelColor");
 
-            ParseLocation();
+            Location = ParseLocation(_xml.Root);
+            ParseWindowStatus("boss_gage_window", "BossGageStatus");
+            ParseWindowStatus("debuff_uptime_window", "DebuffsStatus");
+            ParseWindowStatus("upload_history_window", "HistoryStatus");
             ParseOpacity();
             ParseTeraDps();
             ParseLanguage();
@@ -219,6 +235,20 @@ namespace Data
             Parse("date_in_excel_path", "DateInExcelPath");
             if (DateInExcelPath)
                 ExcelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}";
+        }
+
+        private void ParseWindowStatus(string xmlName, string settingName)
+        {
+            var root = _xml.Root;
+            var xml = root?.Element(xmlName);
+            if (xml == null) return;
+            var setting = this.GetType().GetProperty(settingName);
+            var currentSetting = ((WindowStatus) setting.GetValue(this));
+            var location = ParseLocation(xml);
+            bool value;
+            var xmlVisible = xml.Attribute("visible");
+            var parseSuccess = bool.TryParse(xmlVisible?.Value??"false", out value);
+            setting.SetValue(this, new WindowStatus (location, parseSuccess ? value : currentSetting.Visible));
         }
 
         private void ParseColor(string xmlName, string settingName)
@@ -270,23 +300,18 @@ namespace Data
             }
         }
 
-        private void ParseLocation()
+        private Point ParseLocation(XElement root)
         {
             double x, y;
-            var root = _xml.Root;
-
             var location = root?.Element("location");
-            if (location == null) return;
+            if (location == null) return new Point();
             var xElement = location.Element("x");
             var yElement = location.Element("y");
-            if (xElement == null || yElement == null) return;
+            if (xElement == null || yElement == null) return new Point();
 
             var xParsed = double.TryParse(xElement.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out x);
             var yParsed = double.TryParse(yElement.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out y);
-            if (xParsed && yParsed)
-            {
-                Location = new Point(x, y);
-            }
+            return xParsed && yParsed ? new Point(x, y) : new Point();
         }
 
         private void ParseLanguage()
@@ -329,12 +354,12 @@ namespace Data
                     MainWindowOpacity = (double) mainWindowOpacity/100;
                 }
             }
-            var skillWindowElement = opacity?.Element("skillWindow");
-            if (skillWindowElement == null) return;
-            int skillWindowOpacity;
-            if (int.TryParse(skillWindowElement.Value, out skillWindowOpacity))
+            var otherWindowElement = opacity?.Element("otherWindow");
+            if (otherWindowElement == null) return;
+            int otherWindowOpacity;
+            if (int.TryParse(otherWindowElement.Value, out otherWindowOpacity))
             {
-                SkillWindowOpacity = (double)skillWindowOpacity / 100;
+                OtherWindowOpacity = (double)otherWindowOpacity / 100;
             }
         }
 
@@ -350,11 +375,23 @@ namespace Data
             xml.Root.Add(new XElement("location"));
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("boss_gage_window", new XAttribute("visible", BossGageStatus.Visible)));
+            xml.Root.Element("boss_gage_window").Add(new XElement("location"));
+            xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("x", BossGageStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("y", BossGageStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("debuff_uptime_window", new XAttribute("visible", DebuffsStatus.Visible)));
+            xml.Root.Element("debuff_uptime_window").Add(new XElement("location"));
+            xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("x", DebuffsStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("y", DebuffsStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("upload_history_window", new XAttribute("visible", HistoryStatus.Visible)));
+            xml.Root.Element("upload_history_window").Add(new XElement("location"));
+            xml.Root.Element("upload_history_window").Element("location").Add(new XElement("x", HistoryStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("upload_history_window").Element("location").Add(new XElement("y", HistoryStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("language", Language));
             xml.Root.Add(new XElement("ui_language", UILanguage));
             xml.Root.Add(new XElement("opacity"));
             xml.Root.Element("opacity").Add(new XElement("mainWindow", MainWindowOpacity*100));
-            xml.Root.Element("opacity").Add(new XElement("skillWindow", SkillWindowOpacity*100));
+            xml.Root.Element("opacity").Add(new XElement("otherWindow", OtherWindowOpacity*100));
             xml.Root.Add(new XElement("autoupdate", AutoUpdate));
             xml.Root.Add(new XElement("remember_position", RememberPosition));
             xml.Root.Add(new XElement("winpcap", Winpcap));

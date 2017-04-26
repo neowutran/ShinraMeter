@@ -2,16 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
 using DamageMeter.Sniffing;
 using DamageMeter.TeraDpsApi;
 using Data;
-using log4net;
 using Lang;
 using Tera.Game;
 using Tera.Game.Abnormality;

@@ -19,7 +19,7 @@ namespace DamageMeter.UI
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            Close();
+            HideWindow();
         }
 
         public void Update(ConcurrentDictionary<string, NpcEntity> bossHistory)

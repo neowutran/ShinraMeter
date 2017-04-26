@@ -653,4 +653,7 @@
   <data name="Valkyrie" xml:space="preserve">
     <value>Валькирия</value>
   </data>
+  <data name="ShowBossGage" xml:space="preserve">
+    <value>Показать HP босса</value>
+  </data>
 </root>

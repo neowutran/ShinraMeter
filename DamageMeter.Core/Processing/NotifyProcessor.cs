@@ -315,14 +315,18 @@ namespace DamageMeter.Processing
             }
         }
 
-        internal void AbnormalityNotifierAdded(EntityId target, int abnormalityId, int stack)
+        internal void AbnormalityNotifierAdded(Tera.Game.Abnormality.Abnormality ab, bool newStack)
         {
-            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Added, stack);
+            if (newStack) AbnormalityNotifierCommon(ab.Target, ab.HotDot.Id, AbnormalityTriggerType.Added, ab.Stack);
+            var boss = HudManager.Instance.CurrentBosses.FirstOrDefault(x => x.EntityId == ab.Target);
+            boss?.AddOrRefresh(ab);
         }
 
-        internal void AbnormalityNotifierRemoved(EntityId target, int abnormalityId, int stack)
+        internal void AbnormalityNotifierRemoved(EntityId target, int abnormalityId)
         {
-            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Removed, stack);
+            AbnormalityNotifierCommon(target, abnormalityId, AbnormalityTriggerType.Removed, 0);
+            var boss = HudManager.Instance.CurrentBosses.FirstOrDefault(x => x.EntityId == target);
+            boss?.EndBuff(abnormalityId);
         }
 
         internal void SkillReset(int skillId, CrestType type)
@@ -436,6 +440,7 @@ namespace DamageMeter.Processing
         internal void S_BOSS_GAGE_INFO(Tera.Game.Messages.S_BOSS_GAGE_INFO message)
         {
             NetworkController.Instance.EntityTracker.Update(message);
+            HudManager.Instance.AddOrUpdateBoss(message);
             long newHp = 0;
             if (message.TotalHp != message.HpRemaining)
             {
@@ -462,6 +467,7 @@ namespace DamageMeter.Processing
 
         internal void S_LOAD_TOPO(Tera.Game.Messages.S_LOAD_TOPO message)
         {
+            HudManager.Instance.CurrentBosses.Clear();
             _lastBosses = new Dictionary<EntityId, long>();
             _lastBossMeterUser = null;
             _lastBossHpMeterUser = 0;
@@ -481,6 +487,7 @@ namespace DamageMeter.Processing
 
         internal void DespawnNpc(Tera.Game.Messages.SDespawnNpc message)
         {
+            HudManager.Instance.RemoveBoss(message);
             if (_lastBosses.ContainsKey(message.Npc)) _lastBosses.Remove(message.Npc);
             if(message.Npc == _lastBossMeterUser)
             {

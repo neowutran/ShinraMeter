@@ -468,8 +468,8 @@ namespace DamageMeter.UI
 
         private void ClickOpenChatBox(object sender, RoutedEventArgs e)
         {
-            _mainWindow._chatbox = new Chatbox();
-            _mainWindow._chatbox.Show();
+            _mainWindow._chatbox = new Chatbox() { Owner = _mainWindow };
+            _mainWindow._chatbox.ShowWindow();
         }
 
         private void EnablePServerExp(object sender, RoutedEventArgs e)
