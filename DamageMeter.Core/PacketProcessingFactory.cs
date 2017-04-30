@@ -34,7 +34,6 @@ namespace DamageMeter
             {typeof(Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO), new Action<Tera.Game.Messages.S_BATTLE_FIELD_ENTRANCE_INFO>(x=>NotifyProcessor.Instance.InstanceMatchingSuccess(x)) },
             {typeof(Tera.Game.Messages.S_REQUEST_CONTRACT), new Action<Tera.Game.Messages.S_REQUEST_CONTRACT>(x=>NotifyProcessor.Instance.S_REQUEST_CONTRACT(x)) },
             {typeof(Tera.Game.Messages.S_CHECK_TO_READY_PARTY), new Action<Tera.Game.Messages.S_CHECK_TO_READY_PARTY>(x=>NotifyProcessor.Instance.S_CHECK_TO_READY_PARTY(x)) },
-            {typeof(Tera.Game.Messages.S_GUILD_QUEST_LIST), Helpers.Contructor<Func<Tera.Game.Messages.S_GUILD_QUEST_LIST , DamageMeter.Processing.S_GUILD_QUEST_LIST>>() },
             {typeof(Tera.Game.Messages.S_CREST_MESSAGE), new Action<Tera.Game.Messages.S_CREST_MESSAGE>((x)=>NotifyProcessor.Instance.SkillReset(x.SkillId, x.Type)) },
 
         };

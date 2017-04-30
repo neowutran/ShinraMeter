@@ -73,8 +73,6 @@ namespace DamageMeter.UI
             GeneralColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GeneralColor;
             RaidColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.RaidColor;
             PartyEvent.IsChecked = BasicTeraData.Instance.WindowData.DisablePartyEvent;
-            DiscordLoginTextBox.Text = BasicTeraData.Instance.WindowData.DiscordLogin;
-            DiscordPasswordTextBox.Password = BasicTeraData.Instance.WindowData.DiscordPassword;
             ShowAfkIventsIngame.IsChecked = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
             PrivateServerExport.IsChecked = BasicTeraData.Instance.WindowData.PrivateServerExport;
             ServerURLTextbox.Text = BasicTeraData.Instance.WindowData.PrivateDpsServers[0];
@@ -379,9 +377,6 @@ namespace DamageMeter.UI
             TradingColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             EmotesColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
             PrivateChannelColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            DiscordLogin.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            DiscordPassword.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            //for (int i = 14; i <= 28; i++) GridS.RowDefinitions[i].Height = show ? new GridLength(0, GridUnitType.Auto) : new GridLength(0);
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)
@@ -429,16 +424,6 @@ namespace DamageMeter.UI
                     }
                 }
             );
-        }
-
-        private void DiscordPasswordChanged(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.DiscordPassword = DiscordPasswordTextBox.Password;
-        }
-
-        private void DiscordLoginChanged(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.DiscordLogin = DiscordLoginTextBox.Text;
         }
 
         private void EnableFormatPasteString(object sender, RoutedEventArgs e)

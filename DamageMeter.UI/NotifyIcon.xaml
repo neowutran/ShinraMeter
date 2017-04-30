@@ -176,8 +176,6 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <CheckBox Grid.Row="0" Foreground="White" Content="{x:Static l:LP.SystemTray_Site_export}" Name="DpsWebsiteExport"  Checked="EnableDpsWebsiteExportAction"  Unchecked="DisableDpsWebsiteExportAction" />
                                         <CheckBox Grid.Row="1" Foreground="White" Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" Name="AutoExcelExport"  Checked="EnableAutoExcelExportAction"  Unchecked="DisableExcelExportAction" />
@@ -327,25 +325,6 @@
                                             <Label Grid.Column="0" Foreground="White" Name="PrivateChannelColor" Content="{x:Static l:LP.PrivateChannelColor}" />
                                             <xctk:ColorPicker HorizontalAlignment="Right" Width="150" DisplayColorAndName ="True" Name="PrivateChannelColorSelecter" Margin="5" Grid.Column="1" Foreground="Black" BorderBrush="Transparent" BorderThickness="0" Background="DarkGray"  SelectedColorChanged="PrivateChannelColorChanged" />
                                         </Grid>
-
-                                        <Grid Grid.Row="34">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="DiscordLogin" Content="Discord login" />
-                                            <TextBox LostFocus="DiscordLoginChanged" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="DiscordLoginTextBox"/>
-                                        </Grid>
-
-                                        <Grid Grid.Row="35">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="DiscordPassword" Content="Discord password" />
-                                            <PasswordBox LostFocus="DiscordPasswordChanged" HorizontalAlignment="Stretch" Margin="5" Grid.Column="1" Foreground="Black" Background="DarkGray"  BorderBrush="Transparent" BorderThickness="0" Name="DiscordPasswordTextBox"/>
-                                        </Grid>
-
                                     </Grid>
                                 </ScrollViewer>
                             </Grid>
