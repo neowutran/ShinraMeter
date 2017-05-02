@@ -32,10 +32,10 @@ namespace DamageMeter.UI
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
             var ex = (Exception)e.ExceptionObject;
-            MessageBox.Show(LP.MainWindow_Fatal_error);
             BasicTeraData.LogError("##### CRASH #####\r\n" + ex.Message + "\r\n" +
                      ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException +
                      "\r\n" + ex.TargetSite);
+            MessageBox.Show(LP.MainWindow_Fatal_error);
         }
 
         private async void App_OnStartup(object sender, StartupEventArgs e)
@@ -65,14 +65,14 @@ namespace DamageMeter.UI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(
-                        LP.App_Unable_to_contact_update_server);
                     var log = LogManager.GetLogger(typeof(Program)); //Log4NET
                     log.Error("##### UPDATE EXCEPTION (version=" + UpdateManager.Version + "): #####\r\n" + ex.Message +
                               "\r\n" +
                               ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" +
                               ex.InnerException +
                               "\r\n" + ex.TargetSite);
+                    MessageBox.Show(
+                        LP.App_Unable_to_contact_update_server);
                 }
                 UpdateManager.ClearHash();
                 if (!shutdown) return;

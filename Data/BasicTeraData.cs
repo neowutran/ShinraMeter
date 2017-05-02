@@ -18,7 +18,7 @@ namespace Data
     {
         private static BasicTeraData _instance;
         private readonly Func<string, TeraData> _dataForRegion;
-        private static readonly ILog _log = LogManager.GetLogger("ShinraMeter");
+        private static readonly ILog Log = LogManager.GetLogger("ShinraMeter");
         private static int _errorCount = 10; //limit number of debug messages in one session
 
         private BasicTeraData() : this(FindResourceDirectory())
@@ -97,13 +97,14 @@ namespace Data
             {
                 try
                 {
+                    Log.Error(error);
                     var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
                                 select x.GetPropertyValue("Version") + " Memory Total:" + x.GetPropertyValue("TotalVisibleMemorySize")
                                            + " Virtual:" + x.GetPropertyValue("TotalVirtualMemorySize") + " PhFree:" + x.GetPropertyValue("FreePhysicalMemory")
                                            + " VFree:" + x.GetPropertyValue("FreeVirtualMemory")
                                 ).FirstOrDefault() ?? "unknown";
                     name = name + " CPU:" + ((from x in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().Cast<ManagementObject>()
-                                              select x.GetPropertyValue("Name") + " load:" + x.GetPropertyValue("LoadPercentage") + "%").FirstOrDefault() ?? "processor unknown"); _log.Error(error);
+                                              select x.GetPropertyValue("Name") + " load:" + x.GetPropertyValue("LoadPercentage") + "%").FirstOrDefault() ?? "processor unknown");
                     error = $"##### (version={UpdateManager.Version}) running on {name}:\r\n" + (debug?"##### Debug: ":"") + error;
                     if (!Instance.WindowData.Debug || local)
                     {

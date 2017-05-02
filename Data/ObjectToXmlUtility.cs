@@ -55,7 +55,7 @@ namespace Data
             var serialized = JsonConvert.SerializeObject(source, Newtonsoft.Json.Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
             return JsonConvert.DeserializeObject<T>(serialized, deserializeSettings);
         }
