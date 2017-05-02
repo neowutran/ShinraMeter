@@ -276,6 +276,10 @@ namespace DamageMeter
                 areaId != 969 && 
                 areaId != 970 &&
                 areaId != 710 &&
+                areaId != 780 &&
+                areaId != 980 &&
+                areaId != 781 &&
+                areaId != 981 &&
                 areaId != 950 
                 )
             {
@@ -307,6 +311,10 @@ namespace DamageMeter
                 areaId != 969 &&
                 areaId != 970 &&
                 areaId != 710 &&
+                areaId != 780 &&
+                areaId != 980 &&
+                areaId != 781 &&
+                areaId != 981 &&
                 areaId != 950
                 )
             {
@@ -364,6 +372,10 @@ namespace DamageMeter
                  areaId != 969 &&
                  areaId != 970 &&
                  areaId != 710 &&
+                 areaId != 780 &&
+                 areaId != 980 &&
+                 areaId != 781 &&
+                 areaId != 981 &&
                  !(areaId == 950 && int.Parse(teradpsData.bossId)/100!=11)
                 )
             {
