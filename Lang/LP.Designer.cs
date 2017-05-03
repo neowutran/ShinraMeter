@@ -169,6 +169,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Moongourd auth token.
+        /// </summary>
+        public static string AuthToken {
+            get {
+                return ResourceManager.GetString("AuthToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Avg.
         /// </summary>
         public static string Average {

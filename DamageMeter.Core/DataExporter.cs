@@ -449,9 +449,9 @@ namespace DamageMeter
             {
                 using (var client = new HttpClient())
                 {
-                    //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
+                    if (server==0) client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
                     //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
-                    client.DefaultRequestHeaders.Add("X-Local-Time",DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString());
+                    client.DefaultRequestHeaders.Add("X-Local-Time", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString());
                     client.Timeout = TimeSpan.FromSeconds(40);
                     var response = client.PostAsync(url, new StringContent(
                                           json,

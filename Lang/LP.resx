@@ -662,4 +662,7 @@
   <data name="CritDamagePercent" xml:space="preserve">
     <value>% Crit Dmg</value>
   </data>
+  <data name="AuthToken" xml:space="preserve">
+    <value>Moongourd auth token</value>
+  </data>
 </root>

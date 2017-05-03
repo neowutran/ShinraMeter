@@ -29,7 +29,7 @@ namespace Data
         public bool InvisibleUi { get; set; }
         public bool AllowTransparency { get; set; }
         public string TeraDpsUser { get; private set; }
-        public string TeraDpsToken { get; private set; }
+        public string TeraDpsToken { get; set; }
         public bool AlwaysVisible { get; set; }
         public bool Topmost { get; set; }
         public bool Debug { get; set; }

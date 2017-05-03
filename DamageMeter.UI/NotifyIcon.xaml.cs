@@ -47,6 +47,8 @@ namespace DamageMeter.UI
         {
             _mainWindow = mainWindow;
             DpsWebsiteExport.IsChecked = BasicTeraData.Instance.WindowData.SiteExport;
+            AuthTokenTextbox.Text = BasicTeraData.Instance.WindowData.TeraDpsToken;
+            AuthTokenTextbox.Parent.SetValue(HeightProperty,BasicTeraData.Instance.WindowData.SiteExport ? Double.NaN : 0);
             AutoExcelExport.IsChecked = BasicTeraData.Instance.WindowData.Excel;
             ExcelCMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             CountOnlyBoss.IsChecked = BasicTeraData.Instance.WindowData.OnlyBoss;
@@ -146,11 +148,13 @@ namespace DamageMeter.UI
         private void EnableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SiteExport = true;
+            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? Double.NaN : 0);
         }
 
         private void DisableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SiteExport = false;
+            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? Double.NaN : 0);
         }
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
@@ -509,6 +513,11 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.IdleResetTimeout = (int?)IdleRTOSpinner?.Value??0;
             if (BasicTeraData.Instance.WindowData.IdleResetTimeout == 0) DamageTracker.Instance.LastIdleStartTime = 0;
+        }
+
+        private void TokenChanged(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.TeraDpsToken = AuthTokenTextbox.Text;
         }
     }
 }
