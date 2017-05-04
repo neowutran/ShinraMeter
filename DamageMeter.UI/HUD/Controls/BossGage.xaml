@@ -156,7 +156,7 @@
                         <Ellipse Fill="#fa0" Width="6" Height="{Binding ElementName=enrageEll, Path=Width}" Name="enrageEll" Stroke="#fb0"/>
                         <TextBlock Width="Auto" FontSize="12" Style="{StaticResource tcc_text}"
                                    TextAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Padding="0"
-                                   Text="{Binding EnrageTBtext, RelativeSource={RelativeSource AncestorType=tcc_controls:BossGage}}"></TextBlock>
+                                   Text="{Binding EnrageTBtext, RelativeSource={RelativeSource AncestorType=controls:BossGage}}"></TextBlock>
                     </StackPanel>
                 </Grid>
             </Grid>
