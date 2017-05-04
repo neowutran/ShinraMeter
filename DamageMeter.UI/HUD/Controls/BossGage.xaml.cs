@@ -33,7 +33,7 @@ namespace DamageMeter.UI.HUD.Controls
         float nextEnragePerc = 90;
         public float NextEnragePercentage
         {
-            get => nextEnragePerc;
+            get { return nextEnragePerc; }
             set
             {
                 if (nextEnragePerc != value)
@@ -52,11 +52,10 @@ namespace DamageMeter.UI.HUD.Controls
         }
 
         int AnimationTime = 350;
-        int EnrageDuration = 36000;
         int curEnrageTime = 36;
         public int CurrentEnrageTime
         {
-            get => curEnrageTime;
+            get { return curEnrageTime; }
             set
             {
                 if (curEnrageTime != value)
@@ -147,54 +146,6 @@ namespace DamageMeter.UI.HUD.Controls
             }
         }
 
-        private void EnrageChanged(object sender, EventArgs e)
-        {
-            if (!_enraged)
-            {
-                NextEnragePercentage = CurrentPercentage * 100 - 10;
-                NotifyPropertyChanged("Enraged");
-
-                if (NumberTimer != null)
-                {
-                    NumberTimer.Stop();
-                }
-
-                SlideEnrageIndicator(NextEnragePercentage);
-
-                NotifyPropertyChanged("EnrageTBtext");
-                CurrentEnrageTime = 36;
-
-            }
-            else
-            {
-                SlideEnrageIndicator(CurrentPercentage * 100);
-                NumberTimer = new Timer(1000);
-                NumberTimer.Elapsed += (s, ev) =>
-                {
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        CurrentEnrageTime--;
-                    }));
-                };
-                NumberTimer.Enabled = true;
-                NotifyPropertyChanged("Enraged");
-                NotifyPropertyChanged("EnrageTBtext");
-            }
-        }
-
-        private void HPchanged(object sender, EventArgs e)
-        {
-            NotifyPropertyChanged("CurrentPercentage");
-            if (_currentHp > _maxHp)
-            {
-                _maxHp = _currentHp;
-            }
-            if (_enraged)
-            {
-                SlideEnrageIndicator(CurrentPercentage);
-            }
-        }
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             _boss = (Boss)DataContext;
@@ -204,7 +155,8 @@ namespace DamageMeter.UI.HUD.Controls
             _maxHp = _boss.MaxHP;
             _enraged = _boss.Enraged;
             DoubleAnimation.To = ValueToLength(_currentHp, _maxHp);
-
+            NextEnragePercentage = CurrentPercentage - 10;
+            SlideEnrageIndicator(NextEnragePercentage);
             NextEnrage.RenderTransform = new TranslateTransform(HPgauge.Width * .9, 0);
         }
 

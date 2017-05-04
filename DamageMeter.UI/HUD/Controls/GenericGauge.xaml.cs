@@ -1,19 +1,9 @@
-﻿using DamageMeter.UI;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DamageMeter.UI.HUD.Controls
 {
@@ -22,13 +12,15 @@ namespace DamageMeter.UI.HUD.Controls
 
         private int animTime = 200;
         private DoubleAnimation a;
-        private DependencyPropertyWatcher<float> curValwatcher; //https://blogs.msdn.microsoft.com/flaviencharlon/2012/12/07/getting-change-notifications-from-any-dependency-property-in-windows-store-apps/
+        private readonly DependencyPropertyWatcher<float> _curValwatcher; //https://blogs.msdn.microsoft.com/flaviencharlon/2012/12/07/getting-change-notifications-from-any-dependency-property-in-windows-store-apps/
         public GenericGauge()
         {
             InitializeComponent();
 
-            curValwatcher = new DependencyPropertyWatcher<float>(this, "CurrentVal");
-            curValwatcher.PropertyChanged += CurValWatcher_PropertyChanged;
+            _curValwatcher = new DependencyPropertyWatcher<float>(this, "CurrentVal");
+            _curValwatcher.PropertyChanged += CurValWatcher_PropertyChanged;
+            var maxValwatcher = new DependencyPropertyWatcher<float>(this, "MaxVal");
+            maxValwatcher.PropertyChanged += CurValWatcher_PropertyChanged;
             a = new DoubleAnimation(0, TimeSpan.FromMilliseconds(animTime)) { EasingFunction = new QuadraticEase() };
             bar.RenderTransform = new ScaleTransform(1, 1, 0, .5);
 
@@ -38,7 +30,7 @@ namespace DamageMeter.UI.HUD.Controls
         {
             if (MaxVal > 0)
             {
-                Factor = curValwatcher.Value / MaxVal;
+                Factor = _curValwatcher.Value / MaxVal;
             }
             else
             {
@@ -47,18 +39,19 @@ namespace DamageMeter.UI.HUD.Controls
 
 
         }
-        double factor;
+
+        private double _factor;
         public double Factor
         {
             get
             {
-                return factor;
+                return _factor;
             }
             set
             {
-                if(factor != value)
+                if(_factor != value)
                 {
-                    factor = value;               
+                    _factor = value;               
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Factor"));
                     AnimateBar(value);
                 }

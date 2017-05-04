@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DamageMeter.UI.HUD.Controls"
              xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
-             
              mc:Ignorable="d" 
              Loaded="UserControl_Loaded" >
     <UserControl.Resources>

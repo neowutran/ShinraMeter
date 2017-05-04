@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:DamageMeter.UI.HUD.Controls" 
              xmlns:conv="clr-namespace:DamageMeter.UI.HUD.Converters"
-             xmlns:hud="clr-namespace:DamageMeter.UI.HUD"                          
              mc:Ignorable="d" 
              Loaded="UserControl_Loaded"
              Unloaded="UserControl_Unloaded"
@@ -160,66 +159,6 @@
                     </StackPanel>
                 </Grid>
             </Grid>
-            <!--<Grid Name="EnrageGrid" Grid.Column="1" Grid.RowSpan="3" Width="{Binding ElementName=EnrageGrid, Path=ActualHeight}" Height="Auto" Margin="1,0" RenderTransformOrigin="0,0.5">
-                <Grid.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="0"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </Grid.RenderTransform>
-
-                <Border Margin="0,0,0,0" Style="{StaticResource border}" Grid.Column="1" Grid.RowSpan="3" Grid.Row="0" >
-                </Border>
-                <Ellipse Margin="8" Width="Auto" Height="Auto">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="/resources/images/enraged.png">
-                            <ImageBrush.RelativeTransform>
-                                <TransformGroup>
-                                    <ScaleTransform CenterY="0.5" CenterX="0.5"/>
-                                    <SkewTransform CenterY="0.5" CenterX="0.5"/>
-                                    <RotateTransform CenterY="0.5" CenterX="0.5"/>
-                                    <TranslateTransform X="0.01"/>
-                                </TransformGroup>
-                            </ImageBrush.RelativeTransform>
-                            <ImageBrush.Transform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </ImageBrush.Transform>
-                        </ImageBrush>
-                    </Ellipse.Fill>
-                </Ellipse>
-                <local:Arc x:Name="EnrageArc" Margin="5" Width="0" Height="0" Stroke="White" StrokeThickness="3"></local:Arc>
-                <Grid Width="18" Height="18" x:Name="g" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4,4">
-
-                    <Ellipse x:Name="fill" Fill="White"  Opacity="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Stroke="#40000000"/>
-                    <Viewbox StretchDirection="DownOnly" Stretch="Uniform">
-                        <TextBlock Foreground="#d9000000" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" 
-                   TextAlignment="Center"
-                   FontWeight="Normal" 
-                   FontSize="16" 
-                   x:Name="number" 
-                   FontFamily="Roboto Mono" 
-                   FontStyle="Normal"
-                   Opacity="1" 
-                   Margin="3"
-                   Text="35">
-            --><!--<TextBlock.Effect>
-                <DropShadowEffect ShadowDepth="0" BlurRadius="0" Color="White"></DropShadowEffect>
-            </TextBlock.Effect>--><!--
-                        </TextBlock>
-                    </Viewbox>
-
-                </Grid>
-
-            </Grid>-->
         </Grid>
         <Grid Grid.Row="1" Height="Auto" Margin="0,0,0,0" HorizontalAlignment="Left" Name="abnormalitiesGrid">
                 <ItemsControl Name="Abnormalities" ItemTemplate="{StaticResource BossBuffDataTemplate}" ItemsSource="{Binding Buffs}">
