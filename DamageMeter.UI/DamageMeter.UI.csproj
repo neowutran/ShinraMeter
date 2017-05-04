@@ -162,6 +162,7 @@
       <DependentUpon>ChatMessageUI.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClickThrouWindow.cs" />
+    <Compile Include="DependencyPropertyWatcher.cs" />
     <Compile Include="EntityStats\EnduranceDebuffDetail.xaml.cs">
       <DependentUpon>EnduranceDebuffDetail.xaml</DependentUpon>
     </Compile>
@@ -177,6 +178,9 @@
     <Compile Include="HistoryLink.xaml.cs">
       <DependentUpon>HistoryLink.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HUD\Controls\BossGage.xaml.cs">
+      <DependentUpon>BossGage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HUD\Controls\AbnormalityIndicator.xaml.cs">
       <DependentUpon>AbnormalityIndicator.xaml</DependentUpon>
     </Compile>
@@ -184,9 +188,11 @@
       <DependentUpon>AbnormalityTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="HUD\Controls\Arc.cs" />
-    <Compile Include="HUD\Controls\BossGage.xaml.cs">
-      <DependentUpon>BossGage.xaml</DependentUpon>
+    <Compile Include="HUD\Converters\BossHPbarColorConverter.cs" />
+    <Compile Include="HUD\Controls\GenericGauge.xaml.cs">
+      <DependentUpon>GenericGauge.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HUD\Converters\PercentageVisibiltyConverter.cs" />
     <Compile Include="HUD\Windows\BossGageWindow.xaml.cs">
       <DependentUpon>BossGageWindow.xaml</DependentUpon>
     </Compile>
@@ -273,6 +279,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="HUD\Controls\BossGage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="HUD\Controls\AbnormalityIndicator.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -281,9 +291,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="HUD\Controls\BossGage.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="HUD\Controls\GenericGauge.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="HUD\Windows\BossGageWindow.xaml">
       <SubType>Designer</SubType>
