@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DamageMeter;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -8,26 +9,79 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
-using Data;
-using Tera.Game;
-using Tera.Game.Messages;
+
 
 namespace DamageMeter.UI.HUD.Controls
 {
-    public partial class BossGage : UserControl
+
+    /// <summary>
+    /// Logica di interazione per BossGage.xaml
+    /// </summary>
+    public partial class BossGage : UserControl, INotifyPropertyChanged
     {
         NumberFormatInfo nfi = new NumberFormatInfo { NumberGroupSeparator = ".", NumberDecimalDigits = 0 };
 
+
+        Color BaseHpColor = Color.FromRgb(0x00, 0x97, 0xce);
         private Boss _boss;
         private float _maxHp;
         private float _currentHp;
         private bool _enraged;
-        public float CurrentPercentage => _maxHp==0? 0 : (_currentHp / _maxHp) * 100;
+        public float CurrentPercentage => _maxHp == 0 ? 0 : (_currentHp / _maxHp) * 100;
 
-        int AnimationTime = 150;
-        float LastEnragePercent = 100;
+
+        float nextEnragePerc = 90;
+        public float NextEnragePercentage
+        {
+            get => nextEnragePerc;
+            set
+            {
+                if (nextEnragePerc != value)
+                {
+                    nextEnragePerc = value;
+                    if (value < 0) nextEnragePerc = 0;
+                    NotifyPropertyChanged("NextEnragePercentage");
+                    NotifyPropertyChanged("EnrageTBtext");
+                }
+            }
+        }
+
+        void NotifyPropertyChanged(string pr)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(pr));
+        }
+
+        int AnimationTime = 350;
         int EnrageDuration = 36000;
-        int CurrentEnrageTime = 36;
+        int curEnrageTime = 36;
+        public int CurrentEnrageTime
+        {
+            get => curEnrageTime;
+            set
+            {
+                if (curEnrageTime != value)
+                {
+                    curEnrageTime = value;
+                    NotifyPropertyChanged("CurrentEnrageTime");
+                    NotifyPropertyChanged("EnrageTBtext");
+                }
+            }
+        }
+        public string EnrageTBtext
+        {
+            get
+            {
+                if (_enraged)
+                {
+                    return CurrentEnrageTime.ToString() + "s";
+                }
+                else
+                {
+                    return NextEnragePercentage.ToString();
+                }
+            }
+        }
+
 
         Timer NumberTimer = new Timer(1000);
 
@@ -35,32 +89,12 @@ namespace DamageMeter.UI.HUD.Controls
         {
             InitializeComponent();
 
-            EnrageImage.ImageSource = BasicTeraData.Instance.ImageDatabase.Enraged.Source;
-
-            NextEnrageTB.DataContext = this;
-
-            EnrageGrid.RenderTransform = new ScaleTransform(0, 1, 0, .5);
-
             SlideAnimation.EasingFunction = new QuadraticEase();
             ColorChangeAnimation.EasingFunction = new QuadraticEase();
             DoubleAnimation.EasingFunction = new QuadraticEase();
             SlideAnimation.Duration = TimeSpan.FromMilliseconds(250);
             ColorChangeAnimation.Duration = TimeSpan.FromMilliseconds(AnimationTime);
             DoubleAnimation.Duration = TimeSpan.FromMilliseconds(AnimationTime);
-            NextEnrage.RenderTransform = new TranslateTransform(BaseRect.Width * 0.9, 0);
-        }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            _boss = (Boss) DataContext;
-            _boss.PropertyChanged += boss_PropertyChanged;
-            HPrect.Fill = new SolidColorBrush(Color.FromArgb(0xff, 0x4a, 0x82, 0xbd));
-            _currentHp = _boss.CurrentHP;
-            _maxHp = _boss.MaxHP;
-            _enraged = _boss.Enraged;
-            DoubleAnimation.To = ValueToLength(_currentHp, _maxHp);
-            HPrect.BeginAnimation(WidthProperty, DoubleAnimation);
-            SetEnragePercTB(CurrentPercentage - 10);
-            SlideNextEnrage(CurrentPercentage - 10);
         }
         private void boss_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -69,12 +103,10 @@ namespace DamageMeter.UI.HUD.Controls
                 _currentHp = ((Boss)sender).CurrentHP;
                 if (_currentHp > _maxHp) _maxHp = _currentHp;
                 DoubleAnimation.To = ValueToLength(_currentHp, _maxHp);
-                HPrect.BeginAnimation(WidthProperty, DoubleAnimation);
 
                 if (_enraged)
                 {
-                    SlideNextEnrage(CurrentPercentage);
-                    SetEnragePercTB(CurrentPercentage);
+                    SlideEnrageIndicator(CurrentPercentage);
                 }
             }
             if (e.PropertyName == "MaxHP")
@@ -88,25 +120,23 @@ namespace DamageMeter.UI.HUD.Controls
                 _enraged = value;
                 if (_enraged)
                 {
-                    number.Text = CurrentEnrageTime.ToString();
-
-                    SlideNextEnrage(CurrentPercentage);
-                    SetEnragePercTB(CurrentPercentage);
-
-                    GlowOn();
-                    DeployEnrageGrid();
+                    SlideEnrageIndicator(CurrentPercentage);
+                    NumberTimer = new Timer(1000);
+                    NumberTimer.Elapsed += (s, ev) =>
+                    {
+                        Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            CurrentEnrageTime--;
+                        }));
+                    };
+                    NumberTimer.Enabled = true;
                 }
                 else
                 {
-                    LastEnragePercent = CurrentPercentage;
-                    //Console.WriteLine("Last enrage percentage = {0} ({1}/{2})", LastEnragePercent, CurrentHP, MaxHP);
                     NumberTimer?.Stop();
 
-                    GlowOff();
-                    CloseEnrageGrid();
-
-                    SlideNextEnrage(CurrentPercentage - 10);
-                    SetEnragePercTB(CurrentPercentage - 10);
+                    NextEnragePercentage = CurrentPercentage - 10;
+                    SlideEnrageIndicator(NextEnragePercentage);
 
                     CurrentEnrageTime = 36;
                 }
@@ -117,79 +147,93 @@ namespace DamageMeter.UI.HUD.Controls
             }
         }
 
-        void SetEnragePercTB(double v)
+        private void EnrageChanged(object sender, EventArgs e)
         {
-                if (v < 0) v = 0;
-                NextEnrageTB.Text = String.Format("{0:0.#}", v);
-        }
-        void SlideNextEnrage(double val)
-        {
-                if(val < 0)
+            if (!_enraged)
+            {
+                NextEnragePercentage = CurrentPercentage * 100 - 10;
+                NotifyPropertyChanged("Enraged");
+
+                if (NumberTimer != null)
                 {
-                    SlideAnimation.To = 0;
-                }
-                else
-                {
-                    SlideAnimation.To = BaseRect.ActualWidth * (val/100);
+                    NumberTimer.Stop();
                 }
 
-                NextEnrage.RenderTransform.BeginAnimation(TranslateTransform.XProperty, SlideAnimation);
-        }
-        void SlideNextEnrageDirect()
-        {
-                SlideAnimation.To = HPrect.ActualWidth;
-                NextEnrage.RenderTransform.BeginAnimation(TranslateTransform.XProperty, SlideAnimation);
-        }
-        void GlowOn()
-        {
-                DoubleAnimation.To = 1;
-                HPrect.Effect.BeginAnimation(DropShadowEffect.OpacityProperty, DoubleAnimation);
+                SlideEnrageIndicator(NextEnragePercentage);
 
-                ColorChangeAnimation.To = Colors.Red;
-                HPrect.Fill.BeginAnimation(SolidColorBrush.ColorProperty, ColorChangeAnimation);
-        }
-        void GlowOff()
-        {
-                DoubleAnimation.To = 0;
-                HPrect.Effect.BeginAnimation(DropShadowEffect.OpacityProperty, DoubleAnimation);
+                NotifyPropertyChanged("EnrageTBtext");
+                CurrentEnrageTime = 36;
 
-                ColorChangeAnimation.To = Color.FromArgb(0xff, 0x4a, 0x82, 0xbd);
-                HPrect.Fill.BeginAnimation(SolidColorBrush.ColorProperty, ColorChangeAnimation);
-        }
-        void DeployEnrageGrid()
-        {
-                DoubleAnimation.To = 1;
-                EnrageGrid.RenderTransform.BeginAnimation(ScaleTransform.ScaleXProperty, DoubleAnimation);
-
-                EnrageArc.BeginAnimation(Arc.EndAngleProperty, new DoubleAnimation(359.9, 0, TimeSpan.FromMilliseconds(EnrageDuration)));
-
+            }
+            else
+            {
+                SlideEnrageIndicator(CurrentPercentage * 100);
                 NumberTimer = new Timer(1000);
                 NumberTimer.Elapsed += (s, ev) =>
                 {
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        number.Text = CurrentEnrageTime.ToString();
                         CurrentEnrageTime--;
                     }));
                 };
                 NumberTimer.Enabled = true;
+                NotifyPropertyChanged("Enraged");
+                NotifyPropertyChanged("EnrageTBtext");
+            }
         }
-        void CloseEnrageGrid()
-        {
-                DoubleAnimation.To = 0;
-                EnrageGrid.RenderTransform.BeginAnimation(ScaleTransform.ScaleXProperty, DoubleAnimation);
 
+        private void HPchanged(object sender, EventArgs e)
+        {
+            NotifyPropertyChanged("CurrentPercentage");
+            if (_currentHp > _maxHp)
+            {
+                _maxHp = _currentHp;
+            }
+            if (_enraged)
+            {
+                SlideEnrageIndicator(CurrentPercentage);
+            }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            _boss = (Boss)DataContext;
+            _boss.PropertyChanged += boss_PropertyChanged;
+
+            _currentHp = _boss.CurrentHP;
+            _maxHp = _boss.MaxHP;
+            _enraged = _boss.Enraged;
+            DoubleAnimation.To = ValueToLength(_currentHp, _maxHp);
+
+            NextEnrage.RenderTransform = new TranslateTransform(HPgauge.Width * .9, 0);
+        }
+
+        void SlideEnrageIndicator(double val)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (val < 0)
+                {
+                    SlideAnimation.To = 0;
+                }
+                else
+                {
+                    SlideAnimation.To = HPgauge.ActualWidth * (val / 100);
+                }
+
+                NextEnrage.RenderTransform.BeginAnimation(TranslateTransform.XProperty, SlideAnimation);
+            }));
         }
 
         double ValueToLength(double value, double maxValue)
         {
             if (maxValue == 0)
             {
-                return 0;
+                return 1;
             }
             else
             {
-                double n = BaseRect.ActualWidth * ((double)value / (double)maxValue);
+                double n = ((double)value / (double)maxValue);
                 return n;
             }
 
@@ -198,11 +242,15 @@ namespace DamageMeter.UI.HUD.Controls
         static DoubleAnimation SlideAnimation = new DoubleAnimation();
         static ColorAnimation ColorChangeAnimation = new ColorAnimation();
         static DoubleAnimation DoubleAnimation = new DoubleAnimation();
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private void UserControl_UnLoaded(object sender, RoutedEventArgs e)
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             _boss.PropertyChanged -= boss_PropertyChanged;
             _boss = null;
+
         }
     }
+
 }
+

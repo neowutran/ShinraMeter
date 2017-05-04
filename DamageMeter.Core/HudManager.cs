@@ -48,6 +48,7 @@ namespace DamageMeter
                 boss = new Boss(bossEntity, Visibility.Visible);
                 _bosses.Add(boss);
             }
+            boss.MaxHP = message.TotalHp;
             boss.CurrentHP = message.HpRemaining;
         }
 

@@ -194,6 +194,12 @@
             <Setter Property="Width" Value="Auto"/>
             <Setter Property="Effect" Value="{StaticResource dropShadow}" />
         </Style>
+        <Style x:Key="tcc_text" TargetType="TextBlock">
+            <Setter Property="UseLayoutRounding" Value="True"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Foreground" Value="#bbffffff"/>
+        </Style>
+
 
     </Application.Resources>
 </Application>
