@@ -24,17 +24,26 @@ namespace DamageMeter.UI.HUD.Controls
 
         public double Size
         {
+<<<<<<< HEAD
             get => (double) GetValue(SizeProperty);
             set => SetValue(SizeProperty, value);
+=======
+            if (e.PropertyName == "Refresh")
+            {
+                var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)sender).Duration));
+                int fps = ((BuffDuration)sender).Duration > 80000 ? 1 : 30;
+                DoubleAnimation.SetDesiredFrameRate(an, fps);
+                arc.BeginAnimation(Arc.EndAngleProperty, an);
+
+            }
+>>>>>>> 531040b1a5d4869c359b956997f84fa80a23cb18
         }
 
         private void buff_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "Refresh") return;
-            var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)sender).Duration));
-            var fps = ((BuffDuration)sender).Duration > 80000 ? 1 : 30;
-            Timeline.SetDesiredFrameRate(an, fps);
-            arc.BeginAnimation(Arc.EndAngleProperty, an);
+            if (e.PropertyName == "Refresh")
+                arc.BeginAnimation(Arc.EndAngleProperty,
+                    new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration) sender).Duration)));
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -53,11 +62,18 @@ namespace DamageMeter.UI.HUD.Controls
             arc.Width = Size * .9;
             arc.Height = Size * .9;
 
-            if (((BuffDuration) DataContext).Duration <= 0) return;
-            var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)DataContext).Duration));
-            var fps = ((BuffDuration)DataContext).Duration > 80000 ? 1 : 30;
-            Timeline.SetDesiredFrameRate(an, fps);
-            arc.BeginAnimation(Arc.EndAngleProperty, an);
+            if (((BuffDuration) DataContext).Duration > 0)
+            {
+<<<<<<< HEAD
+                var an = new DoubleAnimation(0, 359.9,
+                    TimeSpan.FromMilliseconds(((BuffDuration) DataContext).Duration));
+=======
+                var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)DataContext).Duration));
+                int fps = ((BuffDuration)DataContext).Duration > 80000 ? 1 : 30;
+                DoubleAnimation.SetDesiredFrameRate(an, fps);
+>>>>>>> 531040b1a5d4869c359b956997f84fa80a23cb18
+                arc.BeginAnimation(Arc.EndAngleProperty, an);
+            }
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
