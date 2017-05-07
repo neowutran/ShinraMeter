@@ -66,12 +66,23 @@ namespace DamageMeter
             foreach (XmlNode serieNode in series)
             {
                 string color;
-                if (numLines <= 2) color = Tol2[i]; //personal
-                else if (numLines <= 7) color = Tol7[i]; //5-party + boss
-                else if (numLines <= 9) color = Tol9[i]; //7-raid  + boss
+                if (numLines <= 2)
+                {
+                    color = Tol2[i]; //personal
+                }
+                else if (numLines <= 7)
+                {
+                    color = Tol7[i]; //5-party + boss
+                }
+                else if (numLines <= 9)
+                {
+                    color = Tol9[i]; //7-raid  + boss
+                }
                 else
+                {
                     color = Tol21[
                         i % 21]; //if more than 21 lines - reuse old colors, anyway no one can see anithing at the bottom of the chart.
+                }
 
                 //var serieNode = chart.ChartXml.SelectSingleNode($@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser[c:idx[@val='{i}']]", nsm);
 
@@ -93,7 +104,6 @@ namespace DamageMeter
                 serieNode.AppendChild(spPr);
                 ++i;
             }
-            
         }
 
         public static void InvisibleSerie(this ExcelBarChart chart, ExcelChartSerie series)
@@ -109,7 +119,10 @@ namespace DamageMeter
                 }
                 ++i;
             }
-            if (!found) throw new InvalidOperationException("series not found.");
+            if (!found)
+            {
+                throw new InvalidOperationException("series not found.");
+            }
 
             var nsm = chart.WorkSheet.Drawings.NameSpaceManager;
             var nschart = nsm.LookupNamespace("c");
@@ -174,9 +187,13 @@ namespace DamageMeter
                 var newElement =
                     node.OwnerDocument.CreateElement(qualifiedName, namespaceUri);
                 while (oldElement.HasAttributes)
+                {
                     newElement.SetAttributeNode(oldElement.RemoveAttributeNode(oldElement.Attributes[0]));
+                }
                 while (oldElement.HasChildNodes)
+                {
                     newElement.AppendChild(oldElement.FirstChild);
+                }
                 oldElement.ParentNode?.ReplaceChild(newElement, oldElement);
                 return newElement;
             }
@@ -215,7 +232,10 @@ namespace DamageMeter
         {
             lock (savelock) //can't save 2 excel files at one time
             {
-                if (!BTD.WindowData.Excel && !manual) return;
+                if (!BTD.WindowData.Excel && !manual)
+                {
+                    return;
+                }
                 var data = exdata.BaseStats;
                 var Boss = exdata.Entity.Info;
                 scale = 96 / Graphics.FromImage(new Bitmap(1, 1))
@@ -248,7 +268,9 @@ namespace DamageMeter
 
                 var file = new FileInfo(fname);
                 if (file.Exists)
+                {
                     return;
+                }
                 //the only case this can happen is BAM mobtraining, that's not so interesting statistic to deal with more complex file names.
                 using (var package = new ExcelPackage(file))
                 {
@@ -333,7 +355,9 @@ namespace DamageMeter
                         AddImage(ws, j, 1, BTD.Icons.GetBitmap(hotdot.IconName));
                         ws.Cells[j, 2].Value = hotdot.Name;
                         if (!string.IsNullOrEmpty(hotdot.Tooltip))
+                        {
                             ws.Cells[j, 2].AddComment("" + hotdot.Tooltip, "info");
+                        }
                         ws.Cells[j, 2, j, 11].Merge = true;
                         ws.Cells[j, 12].Value = double.Parse(buf.Value) / 100;
                         ws.Cells[j, 12].Style.Numberformat.Format = "0%";
@@ -392,13 +416,19 @@ namespace DamageMeter
             var time = (int) (exdata.LastTick / TimeSpan.TicksPerSecond - exdata.FirstTick / TimeSpan.TicksPerSecond);
             var offset = exdata.PlayerBuffs.Keys.ToList().IndexOf(ws.Name) + 1;
             var bossSheet = ws.Name == LP.Boss;
-            if (!bossSheet && offset <= 0) return; //no buff data for user -> no graphs.
+            if (!bossSheet && offset <= 0)
+            {
+                return; //no buff data for user -> no graphs.
+            }
             offset = bossSheet ? 3 : 4 + offset * 7;
             var dps = ws.Drawings.AddChart(ws.Name + LP.Dps, eChartType.Line);
             dps.SetPosition(startrow + 1, 5, 0, 5);
             dps.SetSize(1200, 300);
             dps.Legend.Position = eLegendPosition.Top;
-            if (time > 40) dps.XAxis.MajorUnit = time / 20;
+            if (time > 40)
+            {
+                dps.XAxis.MajorUnit = time / 20;
+            }
             ExcelChart typeDmg;
             ExcelChartSerie serieDmg;
             if (!bossSheet)
@@ -529,7 +559,10 @@ namespace DamageMeter
             var j = 0;
             foreach (var buffPair in exdata.Debuffs)
             {
-                if (buffPair.Value.Count() == 0) continue;
+                if (buffPair.Value.Count() == 0)
+                {
+                    continue;
+                }
                 buffnum++;
                 details.Cells[2 + buffnum, 6].Value = buffPair.Key.Name;
                 details.Cells[2 + buffnum, 7].Value = 0;
@@ -546,7 +579,10 @@ namespace DamageMeter
             var totalDamage = exdata.PlayerSkills.Sum(
                 x => x.Value.Where(time => time.Time >= exdata.FirstTick && time.Time <= exdata.LastTick)
                     .Sum(y => y.Amount));
-            if (totalDamage < hp) totalDamage = hp;
+            if (totalDamage < hp)
+            {
+                totalDamage = hp;
+            }
             j = 0;
             var xCMA = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds <= 0
                 ? 1
@@ -564,22 +600,32 @@ namespace DamageMeter
                             .Sum(skill => skill.Amount));
                 dealtDamage += damage;
                 last.Enqueue(damage);
-                if (last.Count > xCMA) last.Dequeue();
+                if (last.Count > xCMA)
+                {
+                    last.Dequeue();
+                }
                 if (curTick >= exdata.LastTick - TimeSpan.TicksPerSecond)
                 {
                     if (j > xCMA)
+                    {
                         details.Cells[j + 2 - xCMA / 2, 8].Value =
                             last.ToArray().Sum(x => x) / (xCMA > 1
                                 ? xCMA - 1 + TimeSpan.TicksPerSecond / (exdata.LastTick - curTick)
                                 : 1) / 1000;
+                    }
                     details.Cells[j + 2, 9].Value = dealtDamage * TimeSpan.TicksPerSecond /
                                                     (exdata.LastTick - exdata.FirstTick) / 1000;
                 }
                 else
                 {
                     if (j >= xCMA)
+                    {
                         details.Cells[j + 2 - xCMA / 2, 8].Value = last.ToArray().Sum(x => x) / xCMA / 1000;
-                    if (j != 1) details.Cells[j + 2, 9].Value = dealtDamage / (j - 1) / 1000;
+                    }
+                    if (j != 1)
+                    {
+                        details.Cells[j + 2, 9].Value = dealtDamage / (j - 1) / 1000;
+                    }
                 }
                 details.Cells[j + 2, 10].Value = totalDamage == 0
                     ? 0
@@ -606,7 +652,10 @@ namespace DamageMeter
                 j = 0;
                 foreach (var buffPair in user.Value.Times)
                 {
-                    if (buffPair.Value.Count() == 0) continue;
+                    if (buffPair.Value.Count() == 0)
+                    {
+                        continue;
+                    }
                     buffnum++;
                     details.Cells[2 + buffnum, i + 3].Value = buffPair.Key.Name;
                     details.Cells[2 + buffnum, i + 4].Value = 0;
@@ -662,22 +711,32 @@ namespace DamageMeter
                                 .Sum(skill => skill.Amount));
                     dealtDamage += damage;
                     last.Enqueue(damage);
-                    if (last.Count > xCMA) last.Dequeue();
+                    if (last.Count > xCMA)
+                    {
+                        last.Dequeue();
+                    }
                     if (curTick >= exdata.LastTick - TimeSpan.TicksPerSecond)
                     {
                         if (j > xCMA)
+                        {
                             details.Cells[j + 2 - xCMA / 2, i + 5].Value =
                                 last.ToArray().Sum(x => x) /
                                 (xCMA > 1 ? xCMA - 1 + TimeSpan.TicksPerSecond / (exdata.LastTick - curTick) : 1) /
                                 1000;
+                        }
                         details.Cells[j + 2, i + 6].Value =
                             dealtDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick) / 1000;
                     }
                     else
                     {
                         if (j >= xCMA)
+                        {
                             details.Cells[j + 2 - xCMA / 2, i + 5].Value = last.ToArray().Sum(x => x) / xCMA / 1000;
-                        if (j != 1) details.Cells[j + 2, i + 6].Value = dealtDamage / (j - 1) / 1000;
+                        }
+                        if (j != 1)
+                        {
+                            details.Cells[j + 2, i + 6].Value = dealtDamage / (j - 1) / 1000;
+                        }
                     }
                 }
             }
@@ -698,13 +757,19 @@ namespace DamageMeter
             //CALCULATE WHAT AMOUNT TO TACK ONTO THE ORIGINAL AMOUNT TO RESULT IN THE CLOSEST POSSIBLE SETTING 
             double adj;
             if (width >= 1 + 2 / 3)
+            {
                 adj = Math.Round(7 * errorAmt - 7F / 256, 0) / 7;
+            }
             else
+            {
                 adj = Math.Round(12 * errorAmt - 12F / 256, 0) / 12 + 2F / 12;
+            }
 
             //RETURN A SCALED-VALUE THAT SHOULD RESULT IN THE NEAREST POSSIBLE VALUE TO THE TRUE DESIRED SETTING
             if (z > 0)
+            {
                 return width + adj;
+            }
 
             return 0d;
         }
@@ -712,7 +777,10 @@ namespace DamageMeter
         private static void AddImage(ExcelWorksheet ws, int rowIndex, int columnIndex, Bitmap image)
         {
             //How to Add a Image using EP Plus
-            if (image == null) return;
+            if (image == null)
+            {
+                return;
+            }
             var picture = ws.Drawings.AddPicture("pic" + rowIndex + columnIndex, image);
             picture.From.Column = columnIndex - 1;
             picture.From.Row = rowIndex - 1;
@@ -752,7 +820,10 @@ namespace DamageMeter
                 ws.Cells[i, 1].Value = i - 2;
                 foreach (var skillInfo in stat.Skills)
                 {
-                    if (string.IsNullOrEmpty(skillInfo.Key.IconName)) continue;
+                    if (string.IsNullOrEmpty(skillInfo.Key.IconName))
+                    {
+                        continue;
+                    }
                     AddImage(ws, i, 1, BTD.Icons.GetBitmap(skillInfo.Key.IconName));
                     break;
                 }
@@ -791,11 +862,17 @@ namespace DamageMeter
                 ws.Cells[j, 1].Value = j - i - 3;
                 AddImage(ws, j, 1, BTD.Icons.GetBitmap(hotdot.IconName));
                 ws.Cells[j, 2].Value = hotdot.Name;
-                if (!string.IsNullOrEmpty(hotdot.Tooltip)) ws.Cells[j, 2].AddComment("" + hotdot.Tooltip, "info");
+                if (!string.IsNullOrEmpty(hotdot.Tooltip))
+                {
+                    ws.Cells[j, 2].AddComment("" + hotdot.Tooltip, "info");
+                }
                 ws.Cells[j, 2, j, 10].Merge = true;
                 ws.Cells[j, 11].Value = double.Parse(buf.Value) / 100;
                 ws.Cells[j, 11].Style.Numberformat.Format = "0%";
-                if (!string.IsNullOrEmpty(hotdot.ItemName)) ws.Cells[j, 10].AddComment("" + hotdot.ItemName, "info");
+                if (!string.IsNullOrEmpty(hotdot.ItemName))
+                {
+                    ws.Cells[j, 10].AddComment("" + hotdot.ItemName, "info");
+                }
             }
             border = ws.Cells[i + 3, 1, j, 11].Style.Border;
             border.Bottom.Style = border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thick;

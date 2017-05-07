@@ -32,16 +32,22 @@ namespace DamageMeter.Database.Structures
         {
             var sourceString = source?.Id.ToString() ?? "";
             var key = "damage_received/" + target + "/" + sourceString + "/" + timed;
-            if (_caching.ContainsKey(key)) return (long) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (long) _caching[key];
+            }
             IEnumerable<long> result = new List<long>();
 
             if (TargetSourceSkill.ContainsKey(target))
+            {
                 if (!timed && source != null)
                 {
                     if (TargetSourceSkill[target].ContainsKey(source))
+                    {
                         result = from skills in TargetSourceSkill[target][source]
                             where skills.Type == Database.Type.Damage
                             select skills.Amount;
+                    }
                 }
                 else
                 {
@@ -50,6 +56,7 @@ namespace DamageMeter.Database.Structures
                         where skill.Type == Database.Type.Damage
                         select skill.Amount;
                 }
+            }
 
             var sum = result.Sum();
             _caching.Add(key, sum);
@@ -60,16 +67,22 @@ namespace DamageMeter.Database.Structures
         {
             var sourceString = source?.Id.ToString() ?? "";
             var key = "hits_received/" + target + "/" + sourceString + "/" + timed;
-            if (_caching.ContainsKey(key)) return (int) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (int) _caching[key];
+            }
 
             IEnumerable<Skill> result = new List<Skill>();
             if (TargetSourceSkill.ContainsKey(target))
+            {
                 if (!timed && source != null)
                 {
                     if (TargetSourceSkill[target].ContainsKey(source))
+                    {
                         result = from skills in TargetSourceSkill[target][source]
                             where skills.Type == Database.Type.Damage
                             select skills;
+                    }
                 }
                 else
                 {
@@ -78,6 +91,7 @@ namespace DamageMeter.Database.Structures
                         where skill.Type == Database.Type.Damage
                         select skill;
                 }
+            }
 
             var count = result.Count();
             _caching.Add(key, count);
@@ -88,21 +102,28 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_crit/" + source + "/" + targetString + "/" + timed;
-            if (_caching.ContainsKey(key)) return (long) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (long) _caching[key];
+            }
 
             IEnumerable<long> result;
 
             if (timed || target == null)
+            {
                 result = from skills in SourceTargetSkill[source].Values
                     from skill in skills
                     where skill.Type == Database.Type.Damage
                     where skill.Critic
                     select skill.Amount;
+            }
             else
+            {
                 result = from skills in SourceTargetSkill[source][target]
                     where skills.Type == Database.Type.Damage
                     where skills.Critic
                     select skills.Amount;
+            }
             var max = result.Concat(new[] {(long) 0}).Max();
             _caching.Add(key, max);
             return max;
@@ -138,7 +159,9 @@ namespace DamageMeter.Database.Structures
         public IEnumerable<KeyValuePair<Entity, Tera.Game.Skill>> SkillsIdByTarget(Entity target)
         {
             if (!TargetSourceSkill.ContainsKey(target))
+            {
                 return new List<KeyValuePair<Entity, Tera.Game.Skill>>();
+            }
 
             var result = from skills in TargetSourceSkill[target].Values
                 from skill in skills
@@ -155,23 +178,32 @@ namespace DamageMeter.Database.Structures
             var targetString = target?.Id.ToString() ?? "";
             var name = "";
             if (pet != null)
+            {
                 name = pet.Name;
+            }
             var key = "type/" + source + "/" + targetString + "/" + name + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (bool) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (bool) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             IEnumerable<Database.Type> result;
             if (pet == null)
+            {
                 result = from skills in dataSource
                     where
                     skills.Pet == null && skills.Type == type
                     select skills.Type;
+            }
             else
+            {
                 result = from skills in dataSource
                     where
                     skills.Pet != null &&
                     skills.Pet.Name == pet.Name && skills.Type == type
                     select skills.Type;
+            }
 
             var typeExist = result.Count();
 
@@ -184,7 +216,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "amount/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (long) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (long) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -208,7 +243,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "amount_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (long) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (long) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -217,7 +255,10 @@ namespace DamageMeter.Database.Structures
 
             long sum = 0;
             var enumerable = result as long[] ?? result.ToArray();
-            if (enumerable.Length != 0) sum = enumerable.Sum();
+            if (enumerable.Length != 0)
+            {
+                sum = enumerable.Sum();
+            }
             _caching[key] = sum;
             return sum;
         }
@@ -226,7 +267,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "amount_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (long) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (long) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -234,7 +278,10 @@ namespace DamageMeter.Database.Structures
                 select skills.Amount;
             long sum = 0;
             var enumerable = result as long[] ?? result.ToArray();
-            if (enumerable.Length != 0) sum = enumerable.Sum();
+            if (enumerable.Length != 0)
+            {
+                sum = enumerable.Sum();
+            }
             _caching[key] = sum;
             return sum;
         }
@@ -243,7 +290,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "average_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (double) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (double) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -252,7 +302,10 @@ namespace DamageMeter.Database.Structures
 
             double sum = 0;
             var enumerable = result as long[] ?? result.ToArray();
-            if (enumerable.Length != 0) sum = enumerable.Average();
+            if (enumerable.Length != 0)
+            {
+                sum = enumerable.Average();
+            }
             _caching[key] = sum;
             return sum;
         }
@@ -261,7 +314,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "average_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (double) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (double) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -269,7 +325,10 @@ namespace DamageMeter.Database.Structures
                 select skills.Amount;
             double sum = 0;
             var enumerable = result as long[] ?? result.ToArray();
-            if (enumerable.Length != 0) sum = enumerable.Average();
+            if (enumerable.Length != 0)
+            {
+                sum = enumerable.Average();
+            }
             _caching[key] = sum;
             return sum;
         }
@@ -279,7 +338,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "average/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (double) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (double) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -295,7 +357,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "critrate/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (int) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (int) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -312,7 +377,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_crit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (long) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (long) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -321,7 +389,10 @@ namespace DamageMeter.Database.Structures
 
             long max = 0;
             var enumerable = result as long[] ?? result.ToArray();
-            if (enumerable.Length != 0) max = enumerable.Max();
+            if (enumerable.Length != 0)
+            {
+                max = enumerable.Max();
+            }
             _caching[key] = max;
             return max;
         }
@@ -330,7 +401,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (long) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (long) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -339,7 +413,10 @@ namespace DamageMeter.Database.Structures
 
             long max = 0;
             var enumerable = result as long[] ?? result.ToArray();
-            if (enumerable.Length != 0) max = enumerable.Max();
+            if (enumerable.Length != 0)
+            {
+                max = enumerable.Max();
+            }
             _caching[key] = max;
             return max;
         }
@@ -348,7 +425,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "biggest_hit/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (long) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (long) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -365,7 +445,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "crits/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (int) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (int) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -397,7 +480,9 @@ namespace DamageMeter.Database.Structures
         public List<Skill> GetSkillsReceived(Entity target, bool timed)
         {
             if (!TargetSourceSkill.ContainsKey(target))
+            {
                 return new List<Skill>();
+            }
 
             var result = from skills in TargetSourceSkill[target].Values
                 from skill in skills
@@ -409,7 +494,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "white/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (int) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (int) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource
@@ -436,7 +524,10 @@ namespace DamageMeter.Database.Structures
         {
             var targetString = target?.Id.ToString() ?? "";
             var key = "hits/" + source + "/" + targetString + "/" + skillid + "/" + type + "/" + timed;
-            if (_caching.ContainsKey(key)) return (int) _caching[key];
+            if (_caching.ContainsKey(key))
+            {
+                return (int) _caching[key];
+            }
 
             var dataSource = DataSource(source, target, skillid, timed);
             var result = from skills in dataSource

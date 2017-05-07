@@ -166,7 +166,10 @@ namespace DamageMeter.Database
             command.Dispose();
             while (rdr.Read())
             {
-                if (rdr.IsDBNull(0)) return entities;
+                if (rdr.IsDBNull(0))
+                {
+                    return entities;
+                }
                 entities.Add(new EntityId((ulong) rdr.GetInt64(0)));
             }
             return entities;
@@ -240,7 +243,10 @@ namespace DamageMeter.Database
             {
                 var source = rdr.GetFieldValue<long>(rdr.GetOrdinal("source"));
                 var entitySource = NetworkController.Instance.EntityTracker.GetOrNull(new EntityId((ulong) source));
-                if (!(entitySource is UserEntity)) continue;
+                if (!(entitySource is UserEntity))
+                {
+                    continue;
+                }
                 var totalDamage = rdr.IsDBNull(rdr.GetOrdinal("total_amount"))
                     ? 0
                     : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
@@ -254,9 +260,13 @@ namespace DamageMeter.Database
                 sumTotalDamage += totalDamage;
 
                 if (minBeginTime == 0 || beginTime < minBeginTime)
+                {
                     minBeginTime = beginTime;
+                }
                 if (endTime > maxEndTime)
+                {
                     maxEndTime = endTime;
+                }
             }
             return new EntityInformation(entity, sumTotalDamage, minBeginTime, maxEndTime);
         }
@@ -305,22 +315,30 @@ namespace DamageMeter.Database
 
                 Player sourcePlayer = null;
                 if (sourceServerIdPlayerId != 0)
+                {
                     sourcePlayer = NetworkController.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32),
                         (uint) ((sourceServerIdPlayerId << 32) >> 32));
+                }
                 Player targetPlayer = null;
                 if (targetServerIdPlayerId != 0)
+                {
                     targetPlayer = NetworkController.Instance.PlayerTracker.Get((uint) (targetServerIdPlayerId >> 32),
                         (uint) ((targetServerIdPlayerId << 32) >> 32));
+                }
                 var entityTarget = NetworkController.Instance.EntityTracker.GetOrNull(target);
                 var entitySource = NetworkController.Instance.EntityTracker.GetOrNull(source);
                 var skill = new Skill(amount, type, entityTarget, targetPlayer, entitySource, sourcePlayer,
                     (int) skillid, hotdot, critic, time, pet, direction);
 
                 if (!targetSourceSkills.ContainsKey(skill.Target))
+                {
                     targetSourceSkills.Add(skill.Target, new Dictionary<Entity, List<Skill>>());
+                }
 
                 if (!targetSourceSkills[skill.Target].ContainsKey(skill.Source))
+                {
                     targetSourceSkills[skill.Target].Add(skill.Source, new List<Skill>());
+                }
 
                 if (!sourceTargetSkills.ContainsKey(skill.Source))
                 {
@@ -336,10 +354,14 @@ namespace DamageMeter.Database
                 }
 
                 if (!sourceTargetIdSkill[skill.Source][skill.Target].ContainsKey(skill.SkillId))
+                {
                     sourceTargetIdSkill[skill.Source][skill.Target].Add(skill.SkillId, new List<Skill>());
+                }
 
                 if (!sourceIdSkill[skill.Source].ContainsKey(skill.SkillId))
+                {
                     sourceIdSkill[skill.Source].Add(skill.SkillId, new List<Skill>());
+                }
 
                 targetSourceSkills[skill.Target][skill.Source].Add(skill);
                 sourceTargetSkills[skill.Source][skill.Target].Add(skill);

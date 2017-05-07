@@ -41,45 +41,44 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
 
-                        </Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>
 
-                        <TextBlock Name="BossNameTB" Style="{StaticResource tcc_text}"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   FontSize="15"
-                                   FontWeight="SemiBold"
-                                   Text="{Binding Name}"
-                                   Grid.Row="0" 
-                                   Grid.Column="0"
-                                   />
-                    <TextBlock  Style="{StaticResource tcc_text}"
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Center" 
-                                FontSize="15"
-                                Grid.Row="0"
-                                Grid.Column="1">
-                        <Run Text=" "/>
-                        <Run Text="{Binding CurrentHP, StringFormat={}{0:N0}}"/>
-                        <Run Text=" / "/>
-                        <Run Text="{Binding MaxHP, StringFormat={}{0:N0}}"/>
-                        <Run Text="  "/>
+                    <TextBlock Name="BossNameTB" Style="{StaticResource tcc_text}"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               Text="{Binding Name}"
+                               Grid.Row="0"
+                               Grid.Column="0" />
+                    <TextBlock Style="{StaticResource tcc_text}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="15"
+                               Grid.Row="0"
+                               Grid.Column="1">
+                        <Run Text=" " />
+                        <Run Text="{Binding CurrentHP, StringFormat={}{0:N0}}" />
+                        <Run Text=" / " />
+                        <Run Text="{Binding MaxHP, StringFormat={}{0:N0}}" />
+                        <Run Text="  " />
                     </TextBlock>
 
 
-                    <TextBlock Style="{StaticResource tcc_text}" HorizontalAlignment="Center" 
-                               VerticalAlignment="Center" 
-                               Margin="0" 
+                    <TextBlock Style="{StaticResource tcc_text}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0"
                                FontSize="15"
                                Text="{Binding CurrentPercentage, StringFormat=##0.##%}"
                                Grid.Row="0"
-                               Grid.Column="2"/>
-                        <!--<Polygon Points="0,10 5,0 10,10"  Margin="10,0"  Fill="{Binding CurrentAggroType, Converter={StaticResource aggroTypeToFill}}" Name="aggroArrow"
+                               Grid.Column="2" />
+                    <!--<Polygon Points="0,10 5,0 10,10"  Margin="10,0"  Fill="{Binding CurrentAggroType, Converter={StaticResource aggroTypeToFill}}" Name="aggroArrow"
                                  VerticalAlignment="Center" Height="Auto"  HorizontalAlignment="Center"
                                  Grid.Column="1" RenderTransformOrigin=".5,.5">
                             <Polygon.RenderTransform>
@@ -87,7 +86,7 @@
                             </Polygon.RenderTransform>
                         </Polygon>-->
 
-                        <!--<TextBlock Name="AggroHolderNameTB" Style="{StaticResource text1}"
+                    <!--<TextBlock Name="AggroHolderNameTB" Style="{StaticResource text1}"
                                HorizontalAlignment="Left" 
                                VerticalAlignment="Center" 
                                FontWeight="Normal" 
@@ -96,14 +95,14 @@
                                Text="{Binding Target, Converter={StaticResource userIdToName}}" 
                                Grid.Row="0" Grid.Column="2" TextTrimming="WordEllipsis" MaxWidth="200"/>-->
 
-                    </Grid>
                 </Grid>
-                <Grid Grid.Row="1" Margin="10,0.5,10,0.5" Name="hpBarGrid">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <!--<Rectangle Name="BaseRect"  Fill="#90000000" Height="4" Width="400" 
+            </Grid>
+            <Grid Grid.Row="1" Margin="10,0.5,10,0.5" Name="hpBarGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--<Rectangle Name="BaseRect"  Fill="#90000000" Height="4" Width="400" 
                                HorizontalAlignment="Stretch" SnapsToDevicePixels="True"/>
                     <Rectangle Name="HPrect" Fill="#0097ce"
                                Width="{Binding ElementName=BaseRect, Path=Width}" 
@@ -113,55 +112,55 @@
                             <DropShadowEffect ShadowDepth="0" BlurRadius="20" Color="Red" Opacity="0"/>
                         </Rectangle.Effect>
                     </Rectangle>-->
-                    <controls:GenericGauge Height="4" Width="400"
-                                           BarColor="{Binding Enraged, Converter={StaticResource barColorConv}}"
-                                           GaugeName=""
-                                           ShowPercentage="False"
-                                           ShowName="False"
-                                           ShowValues="False"
-                                           CurrentVal="{Binding CurrentHP}"
-                                           MaxVal="{Binding MaxHP}"
-                                           x:Name="HPgauge" />
+                <controls:GenericGauge Height="4" Width="400"
+                                       BarColor="{Binding Enraged, Converter={StaticResource barColorConv}}"
+                                       GaugeName=""
+                                       ShowPercentage="False"
+                                       ShowName="False"
+                                       ShowValues="False"
+                                       CurrentVal="{Binding CurrentHP}"
+                                       MaxVal="{Binding MaxHP}"
+                                       x:Name="HPgauge" />
 
-                    <Grid Height="{Binding ElementName=HPgauge, Path=Height}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Border BorderThickness=".8,0,.8,0" BorderBrush="#90000000" Grid.Column="1" />
-                        <Border BorderThickness=".8,0,.8,0" BorderBrush="#90000000" Grid.Column="3" />
-                        <Border BorderThickness=".8,0,.8,0" BorderBrush="#90000000" Grid.Column="5" />
-                        <Border BorderThickness=".8,0,.8,0" BorderBrush="#90000000" Grid.Column="7" />
-                        <Border BorderThickness=".8,0,0,0" BorderBrush="#90000000" Grid.Column="9" />
-                    </Grid>
-                    <StackPanel Width="28" Height="Auto" Orientation="Vertical" Opacity="1" Name="NextEnrage"
-                                Margin="-14,-5,0,0" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5"
-                                VerticalAlignment="Top" Grid.Row="2">
-                        <StackPanel.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform />
-                                <TranslateTransform X="0" />
-                            </TransformGroup>
-                        </StackPanel.RenderTransform>
-                        <!--<Polygon Points="0,7 5,0 10,7"  Margin="0,0,0,0"  Fill="Orange" VerticalAlignment="Center" Height="Auto"  HorizontalAlignment="Center" Grid.Column="1" >
-                        </Polygon>-->
-                        <Ellipse Fill="#fa0" Width="6" Height="{Binding ElementName=enrageEll, Path=Width}"
-                                 Name="enrageEll" Stroke="#fb0" />
-                        <TextBlock Width="Auto" FontSize="12" Style="{StaticResource tcc_text}"
-                                   TextAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Padding="0"
-                                   Text="{Binding EnrageTBtext, RelativeSource={RelativeSource AncestorType=controls:BossGage}}" />
-                    </StackPanel>
+                <Grid Height="{Binding ElementName=HPgauge, Path=Height}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border BorderThickness=".8,0,.8,0" BorderBrush="#90000000" Grid.Column="1" />
+                    <Border BorderThickness=".8,0,.8,0" BorderBrush="#90000000" Grid.Column="3" />
+                    <Border BorderThickness=".8,0,.8,0" BorderBrush="#90000000" Grid.Column="5" />
+                    <Border BorderThickness=".8,0,.8,0" BorderBrush="#90000000" Grid.Column="7" />
+                    <Border BorderThickness=".8,0,0,0" BorderBrush="#90000000" Grid.Column="9" />
                 </Grid>
+                <StackPanel Width="28" Height="Auto" Orientation="Vertical" Opacity="1" Name="NextEnrage"
+                            Margin="-14,-5,0,0" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5"
+                            VerticalAlignment="Top" Grid.Row="2">
+                    <StackPanel.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform X="0" />
+                        </TransformGroup>
+                    </StackPanel.RenderTransform>
+                    <!--<Polygon Points="0,7 5,0 10,7"  Margin="0,0,0,0"  Fill="Orange" VerticalAlignment="Center" Height="Auto"  HorizontalAlignment="Center" Grid.Column="1" >
+                        </Polygon>-->
+                    <Ellipse Fill="#fa0" Width="6" Height="{Binding ElementName=enrageEll, Path=Width}"
+                             Name="enrageEll" Stroke="#fb0" />
+                    <TextBlock Width="Auto" FontSize="12" Style="{StaticResource tcc_text}"
+                               TextAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Padding="0"
+                               Text="{Binding EnrageTBtext, RelativeSource={RelativeSource AncestorType=controls:BossGage}}" />
+                </StackPanel>
+            </Grid>
         </Grid>
         <Grid Grid.Row="1" Height="Auto" Margin="0,0,0,0" HorizontalAlignment="Left" Name="abnormalitiesGrid">
             <ItemsControl Name="Abnormalities" ItemTemplate="{StaticResource BossBuffDataTemplate}"

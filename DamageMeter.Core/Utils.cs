@@ -12,9 +12,13 @@ namespace DamageMeter
         public static void InvokeIfRequired(this Dispatcher disp, Action dotIt, DispatcherPriority priority)
         {
             if (disp.Thread != Thread.CurrentThread)
+            {
                 disp.Invoke(priority, dotIt);
+            }
             else
+            {
                 dotIt();
+            }
         }
     }
 
@@ -61,7 +65,9 @@ namespace DamageMeter
             _dispatcher.InvokeIfRequired(() =>
             {
                 if (index > Count)
+                {
                     return;
+                }
                 _lock.EnterWriteLock();
                 try
                 {
@@ -82,7 +88,9 @@ namespace DamageMeter
                 var count = Count;
                 _lock.ExitReadLock();
                 if ((oldIndex >= count) | (newIndex >= count) | (oldIndex == newIndex))
+                {
                     return;
+                }
                 _lock.EnterWriteLock();
                 try
                 {
@@ -100,7 +108,9 @@ namespace DamageMeter
             _dispatcher.InvokeIfRequired(() =>
             {
                 if (index >= Count)
+                {
                     return;
+                }
                 _lock.EnterWriteLock();
                 try
                 {

@@ -87,11 +87,16 @@ namespace NetworkSniffer
                 while (_bufferedPackets.Values.First().Length >= 500)
                 {
                     _bufferedPackets.Remove(_bufferedPackets.Keys.First());
-                    if (_bufferedPackets.Count == 0) return;
+                    if (_bufferedPackets.Count == 0)
+                    {
+                        return;
+                    }
                 }
                 //we don't know, whether large packet is continuation of previous message or not - so skip until new short message.
                 if (BytesReceived + 500 <= _bufferedPackets.Keys.First())
+                {
                     _bufferedPackets.Remove(_bufferedPackets.Keys.First());
+                }
                 //and even after skipping long fragments we don't know, whether small fragment after big is a new short message or a big message tail - skip small one too.
                 needToSkip = _bufferedPackets.Keys.First() - BytesReceived;
                 BytesReceived = _bufferedPackets.Keys.First();
@@ -108,7 +113,10 @@ namespace NetworkSniffer
                 var alreadyReceivedBytes = BytesReceived - firstBufferedPosition;
                 Debug.Assert(alreadyReceivedBytes >= 0);
 
-                if (alreadyReceivedBytes > dataArray.Length) continue;
+                if (alreadyReceivedBytes > dataArray.Length)
+                {
+                    continue;
+                }
                 var count = dataArray.Length - alreadyReceivedBytes;
                 OnDataReceived(dataArray.Skip((int) alreadyReceivedBytes).Take((int) count).ToArray(),
                     (int) needToSkip);

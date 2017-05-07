@@ -41,7 +41,9 @@ namespace Data
             //handle overrides
             var serversOverridePath = Path.Combine(ResourceDirectory, "config/server-overrides.txt");
             if (!File.Exists(serversOverridePath)) //create the default file if it doesn't exist
+            {
                 File.WriteAllText(serversOverridePath, LP.ServerOverrides);
+            }
             var overriddenServers = GetServers(serversOverridePath).ToList();
             Servers.AddOverrides(overriddenServers);
 
@@ -85,7 +87,9 @@ namespace Data
             {
                 var resourceDirectory = Path.Combine(directory, @"resources\");
                 if (Directory.Exists(resourceDirectory))
+                {
                     return resourceDirectory;
+                }
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the resource directory");
@@ -93,7 +97,10 @@ namespace Data
 
         public static void LogError(string error, bool local = false, bool debug = false)
         {
-            if (debug && _errorCount-- <= 0) return;
+            if (debug && _errorCount-- <= 0)
+            {
+                return;
+            }
             Task.Run(() =>
             {
                 try
@@ -115,7 +122,9 @@ namespace Data
                     error = $"##### (version={UpdateManager.Version}) running on {name}:\r\n" +
                             (debug ? "##### Debug: " : "") + error;
                     if (!Instance.WindowData.Debug || local)
+                    {
                         return;
+                    }
 
                     using (var client = new HttpClient())
                     {

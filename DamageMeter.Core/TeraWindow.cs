@@ -42,7 +42,9 @@ namespace DamageMeter
         {
             var teraWindow = FindTeraWindow();
             if (teraWindow == IntPtr.Zero)
+            {
                 return false;
+            }
 
             SendString(teraWindow, s);
 
@@ -54,22 +56,31 @@ namespace DamageMeter
             var lfDelay = BasicTeraData.Instance.WindowData.LFDelay;
             Thread.Sleep(lfDelay);
             if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
+            {
                 throw new Win32Exception();
+            }
             Thread.Sleep(1);
             if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
+            {
                 throw new Win32Exception();
+            }
             Thread.Sleep(50);
             if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
+            {
                 throw new Win32Exception();
+            }
             Thread.Sleep(1);
             if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
+            {
                 throw new Win32Exception();
+            }
             Thread.Sleep(lfDelay);
         }
 
         private static void SendString(IntPtr hWnd, string s)
         {
             foreach (var character in s)
+            {
                 if (character == '\\')
                 {
                     NewLine(hWnd);
@@ -77,9 +88,12 @@ namespace DamageMeter
                 else
                 {
                     if (!PostMessage(hWnd, WM_CHAR, character, 0))
+                    {
                         throw new Win32Exception();
+                    }
                     Thread.Sleep(1);
                 }
+            }
         }
 
         public static bool IsTeraActive()

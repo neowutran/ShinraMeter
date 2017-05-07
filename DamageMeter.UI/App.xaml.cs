@@ -53,10 +53,14 @@ namespace DamageMeter.UI
                 DeleteTmp();
                 UpdateManager.ReadDbVersion();
                 if (!BasicTeraData.Instance.WindowData.AllowTransparency)
+                {
                     RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+                }
                 FormatHelpers.Instance.CultureInfo = LP.Culture;
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate)
+                {
                     return;
+                }
                 var shutdown = false;
                 try
                 {
@@ -74,18 +78,25 @@ namespace DamageMeter.UI
                         LP.App_Unable_to_contact_update_server);
                 }
                 UpdateManager.ClearHash();
-                if (!shutdown) return;
+                if (!shutdown)
+                {
+                    return;
+                }
                 Current.Shutdown();
                 Process.GetCurrentProcess().Kill();
                 Environment.Exit(0);
             }
 
             if (!notUpdating)
+            {
                 SetForeground();
+            }
             bool isWaitingUpdateEnd;
             var waitUpdateEnd = new Mutex(true, "ShinraMeterWaitUpdateEnd", out isWaitingUpdateEnd);
             if (!isWaitingUpdateEnd)
+            {
                 SetForeground();
+            }
             updating.WaitOne();
             DeleteTmp();
             updating.Close();
@@ -97,7 +108,9 @@ namespace DamageMeter.UI
             try
             {
                 if (Directory.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\"))
+                {
                     Directory.Delete(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\", true);
+                }
             }
             catch
             {
@@ -124,17 +137,24 @@ namespace DamageMeter.UI
         {
             var isUpToDate = await UpdateManager.IsUpToDate().ConfigureAwait(false);
             if (isUpToDate)
+            {
                 return false;
+            }
 
             if (MessageBox.Show(LP.App_Do_you_want_to_update, LP.App_Update_Available, MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) != MessageBoxResult.Yes) return false;
+                    MessageBoxImage.Question) != MessageBoxResult.Yes)
+            {
+                return false;
+            }
             return UpdateManager.Update();
         }
 
         private void App_OnExit(object sender, ExitEventArgs e)
         {
             if (_isNewInstance)
+            {
                 _unique.ReleaseMutex();
+            }
         }
     }
 }

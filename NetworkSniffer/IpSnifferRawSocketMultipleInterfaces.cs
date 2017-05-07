@@ -51,12 +51,16 @@ namespace NetworkSniffer
                     _individualSniffers.Add(individualSniffer);
                 }
                 foreach (var individualSniffer in _individualSniffers)
+                {
                     individualSniffer.Enabled = true;
+                }
             }
             else
             {
                 foreach (var individualSniffer in _individualSniffers)
+                {
                     individualSniffer.Enabled = false;
+                }
                 _individualSniffers.Clear();
             }
         }

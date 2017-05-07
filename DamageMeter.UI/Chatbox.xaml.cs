@@ -28,13 +28,22 @@ namespace DamageMeter.UI
 
         public void Update(List<ChatMessage> chatbox)
         {
-            if (_updated) return;
+            if (_updated)
+            {
+                return;
+            }
             _updated = true;
             for (var i = 0; i < chatbox.Count; i++)
+            {
                 if (ChatboxList.Items.Count > i)
+                {
                     ((ChatMessageUi) ChatboxList.Items.GetItemAt(i)).Update(chatbox[i]);
+                }
                 else
+                {
                     ChatboxList.Items.Add(new ChatMessageUi(chatbox[i]));
+                }
+            }
         }
 
         private void ChatboxList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -45,13 +54,18 @@ namespace DamageMeter.UI
 
         private void ChatboxList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (((ListBox) sender).SelectedItems.Count <= 1) return;
+            if (((ListBox) sender).SelectedItems.Count <= 1)
+            {
+                return;
+            }
             var messages = "";
             foreach (var messageUi in ((ListBox) sender).SelectedItems.Cast<ChatMessageUi>()
                 .OrderBy(x => x.Time.Content))
+            {
                 messages = messages +
                            $"{messageUi.Time.Content} {messageUi.Channel.Content} {messageUi.Sender.Content}: {messageUi.Message.Text}" +
                            Environment.NewLine;
+            }
             Clipboard.SetDataObject(messages);
         }
     }

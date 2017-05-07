@@ -30,9 +30,12 @@ namespace DamageMeter.UI.HUD.Controls
 
         private void buff_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "Refresh") return;
-            var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)sender).Duration));
-            var fps = ((BuffDuration)sender).Duration > 80000 ? 1 : 30;
+            if (e.PropertyName != "Refresh")
+            {
+                return;
+            }
+            var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration) sender).Duration));
+            var fps = ((BuffDuration) sender).Duration > 80000 ? 1 : 30;
             Timeline.SetDesiredFrameRate(an, fps);
             arc.BeginAnimation(Arc.EndAngleProperty, an);
         }
@@ -53,9 +56,12 @@ namespace DamageMeter.UI.HUD.Controls
             arc.Width = Size * .9;
             arc.Height = Size * .9;
 
-            if (((BuffDuration) DataContext).Duration <= 0) return;
-            var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)DataContext).Duration));
-            var fps = ((BuffDuration)DataContext).Duration > 80000 ? 1 : 30;
+            if (((BuffDuration) DataContext).Duration <= 0)
+            {
+                return;
+            }
+            var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration) DataContext).Duration));
+            var fps = ((BuffDuration) DataContext).Duration > 80000 ? 1 : 30;
             Timeline.SetDesiredFrameRate(an, fps);
             arc.BeginAnimation(Arc.EndAngleProperty, an);
         }
@@ -93,11 +99,17 @@ namespace DamageMeter.UI.HUD.Converters
             var days = hours / 24;
 
             if (minutes < 3)
+            {
                 return seconds.ToString();
+            }
             if (hours < 3)
+            {
                 return minutes + "m";
+            }
             if (days < 1)
+            {
                 return hours + "h";
+            }
             return days + "d";
         }
 
@@ -139,7 +151,9 @@ namespace DamageMeter.UI.HUD.Converters
         {
             var stacks = (int) value;
             if (stacks > 1)
+            {
                 return Visibility.Visible;
+            }
             return Visibility.Hidden;
         }
 
@@ -155,7 +169,9 @@ namespace DamageMeter.UI.HUD.Converters
         {
             var duration = (int) value;
             if (duration < 0)
+            {
                 return Visibility.Hidden;
+            }
             return Visibility.Visible;
         }
 

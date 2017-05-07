@@ -62,31 +62,46 @@ namespace Data
             }
             // Get Keys
             var root = xml.Root;
-            if (root == null) return;
+            if (root == null)
+            {
+                return;
+            }
 
             var topmostKey = ReadElement(root, "topmost", false);
             if (topmostKey != null)
+            {
                 Topmost = (KeyValuePair<Keys, ModifierKeys>) topmostKey;
+            }
 
             var pasteKey = ReadElement(root, "paste", false);
             if (pasteKey != null)
+            {
                 Paste = (KeyValuePair<Keys, ModifierKeys>) pasteKey;
+            }
 
             var resetKey = ReadElement(root, "reset", true);
             if (resetKey != null)
+            {
                 Reset = (KeyValuePair<Keys, ModifierKeys>) resetKey;
+            }
 
             var activateKey = ReadElement(root, "click_throu", true);
             if (activateKey != null)
+            {
                 ClickThrou = (KeyValuePair<Keys, ModifierKeys>) activateKey;
+            }
 
             var resetCurrentKey = ReadElement(root, "reset_current", true);
             if (resetCurrentKey != null)
+            {
                 ResetCurrent = (KeyValuePair<Keys, ModifierKeys>) resetCurrentKey;
+            }
 
             var excelSaveKey = ReadElement(root, "excel_save", true);
             if (excelSaveKey != null)
+            {
                 ExcelSave = (KeyValuePair<Keys, ModifierKeys>) excelSaveKey;
+            }
 
             Copy = new List<CopyKey>();
             CopyData(xml);
@@ -231,13 +246,21 @@ namespace Data
         {
             var modifier = ModifierKeys.None;
             if (ctrl)
+            {
                 modifier |= ModifierKeys.Control;
+            }
             if (alt)
+            {
                 modifier |= ModifierKeys.Alt;
+            }
             if (shift)
+            {
                 modifier |= ModifierKeys.Shift;
+            }
             if (window)
+            {
                 modifier |= ModifierKeys.Win;
+            }
             return modifier;
         }
 
@@ -254,7 +277,10 @@ namespace Data
             xml.Root.Element(keyName).Add(new XElement("ctrl", xmlCtrl.ToString()));
             xml.Root.Element(keyName).Add(new XElement("shift", xmlShift.ToString()));
             xml.Root.Element(keyName).Add(new XElement("window", xmlWindow.ToString()));
-            if (saveAlt) xml.Root.Element(keyName).Add(new XElement("alt", xmlAlt.ToString()));
+            if (saveAlt)
+            {
+                xml.Root.Element(keyName).Add(new XElement("alt", xmlAlt.ToString()));
+            }
             xml.Root.Element(keyName).Add(new XElement("key", xmlKey.ToString()));
         }
 

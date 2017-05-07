@@ -12,7 +12,9 @@ namespace Data
         public static string Serialize<T>(this T value)
         {
             if (value == null)
+            {
                 return string.Empty;
+            }
             try
             {
                 var xmlserializer = new XmlSerializer(typeof(T));
@@ -33,7 +35,9 @@ namespace Data
         {
             // Don't serialize a null object, simply return the default for that object
             if (ReferenceEquals(source, null))
+            {
                 return default(T);
+            }
 
             // initialize inner objects individually
             // for example in default constructor some list property initialized with some values,

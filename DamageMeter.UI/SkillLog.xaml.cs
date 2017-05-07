@@ -28,7 +28,9 @@ namespace DamageMeter.UI
             Brush color = null;
             var fontWeight = FontWeights.Normal;
             if (skill.Critic)
+            {
                 fontWeight = FontWeights.Bold;
+            }
             switch (skill.Type)
             {
                 case Database.Database.Type.Damage:
@@ -61,8 +63,14 @@ namespace DamageMeter.UI
                     SkillDirection.Foreground = Brushes.Red;
                     break;
                 case HitDirection.Dot:
-                    if (skill.Type == Database.Database.Type.Heal) SkillDirection.Content = LP.Hot;
-                    if (skill.Type == Database.Database.Type.Mana) SkillDirection.Content = LP.Mot;
+                    if (skill.Type == Database.Database.Type.Heal)
+                    {
+                        SkillDirection.Content = LP.Hot;
+                    }
+                    if (skill.Type == Database.Database.Type.Mana)
+                    {
+                        SkillDirection.Content = LP.Mot;
+                    }
                     break;
                 case HitDirection.Front:
                     SkillDirection.Foreground = Brushes.BlueViolet;

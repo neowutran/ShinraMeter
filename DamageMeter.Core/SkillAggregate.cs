@@ -38,10 +38,15 @@ namespace DamageMeter
 
         public bool Add(Skill skill, Entity source)
         {
-            if (skill.ShortName != Name) return false;
+            if (skill.ShortName != Name)
+            {
+                return false;
+            }
             if (Skills.Any(
                 sk => skill.Id == sk.Key.Id && skill.IsHotDot == sk.Key.IsHotDot && sk.Value.Contains(source)))
+            {
                 return false;
+            }
 
             if (Skills.ContainsKey(skill))
             {
@@ -105,14 +110,18 @@ namespace DamageMeter
         public double DamagePercent()
         {
             if (_playerDealtUnrelieable)
+            {
                 throw new Exception("Player Dealt unrelieable");
+            }
             return Amount() * 100 / _playerDamageDealt.Amount;
         }
 
         public long DamagePercent(int skillId)
         {
             if (_playerDealtUnrelieable)
+            {
                 throw new Exception("Player Dealt unrelieable");
+            }
             return SkillsData.Amount(_playerDamageDealt.Source.User, _target, skillId, _timed, Type) * 100 / Amount();
         }
 
@@ -251,28 +260,40 @@ namespace DamageMeter
         public double AvgCrit()
         {
             var crits = Crits();
-            if (crits == 0) return 0;
+            if (crits == 0)
+            {
+                return 0;
+            }
             return AmountCrit() / crits;
         }
 
         public double AvgCrit(int skillId)
         {
             var crits = Crits(skillId);
-            if (crits == 0) return 0;
+            if (crits == 0)
+            {
+                return 0;
+            }
             return AmountCrit(skillId) / crits;
         }
 
         public double AvgWhite(int skillId)
         {
             var white = White(skillId);
-            if (white == 0) return 0;
+            if (white == 0)
+            {
+                return 0;
+            }
             return AmountWhite(skillId) / white;
         }
 
         public double AvgWhite()
         {
             var white = White();
-            if (white == 0) return 0;
+            if (white == 0)
+            {
+                return 0;
+            }
             return AmountWhite() / white;
         }
 
@@ -284,7 +305,9 @@ namespace DamageMeter
             {
                 result += Skills.ElementAt(i).Key.Id;
                 if (i < Skills.Count - 1)
+                {
                     result += ",";
+                }
             }
             return result;
         }
@@ -293,9 +316,14 @@ namespace DamageMeter
         public static IEnumerable<SkillAggregate> GetAggregate(PlayerDamageDealt playerDamageDealt, Entity entity,
             Skills skillsData, bool timedEncounter, Database.Database.Type type)
         {
-            if (skillsData == null) return new List<SkillAggregate>();
+            if (skillsData == null)
+            {
+                return new List<SkillAggregate>();
+            }
             if (type != Database.Database.Type.Damage)
+            {
                 timedEncounter = false;
+            }
 
             if (!playerDamageDealt.Source.IsHealer && type != Database.Database.Type.Damage)
             {
@@ -303,10 +331,15 @@ namespace DamageMeter
                 var skillsAggregate = new Dictionary<string, SkillAggregate>();
                 foreach (var skill in skills)
                 {
-                    if (skill.Value == null) continue;
+                    if (skill.Value == null)
+                    {
+                        continue;
+                    }
                     if (!skillsData.Type(skill.Key, playerDamageDealt.Source.User, skill.Value.Id, skill.Value.NpcInfo,
                         false, type))
+                    {
                         continue;
+                    }
 
                     if (!skillsAggregate.ContainsKey(skill.Value.ShortName))
                     {
@@ -325,9 +358,14 @@ namespace DamageMeter
                 var skillsAggregate = new Dictionary<string, SkillAggregate>();
                 foreach (var skill in skills)
                 {
-                    if (skill == null) continue;
-                    if (!skillsData.Type(playerDamageDealt.Source.User, null, skill.Id, skill.NpcInfo, true, type))
+                    if (skill == null)
+                    {
                         continue;
+                    }
+                    if (!skillsData.Type(playerDamageDealt.Source.User, null, skill.Id, skill.NpcInfo, true, type))
+                    {
+                        continue;
+                    }
 
                     if (!skillsAggregate.ContainsKey(skill.ShortName))
                     {
@@ -347,10 +385,15 @@ namespace DamageMeter
                 var skillsAggregate = new Dictionary<string, SkillAggregate>();
                 foreach (var skill in skills)
                 {
-                    if (skill == null) continue;
+                    if (skill == null)
+                    {
+                        continue;
+                    }
                     if (!skillsData.Type(playerDamageDealt.Source.User, entity, skill.Id, skill.NpcInfo, timedEncounter,
                         type))
+                    {
                         continue;
+                    }
                     if (!skillsAggregate.ContainsKey(skill.ShortName))
                     {
                         skillsAggregate.Add(skill.ShortName,

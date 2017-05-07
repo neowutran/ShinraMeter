@@ -23,7 +23,10 @@ namespace DamageMeter
 
         public static void Paste(string text)
         {
-            if (!Monitor.TryEnter(Lock)) return;
+            if (!Monitor.TryEnter(Lock))
+            {
+                return;
+            }
             TeraWindow.SendString(text);
             Monitor.Exit(Lock);
         }
@@ -48,6 +51,7 @@ namespace DamageMeter
             }
 
             for (var i = 0; i < 3; i++)
+            {
                 try
                 {
                     Clipboard.SetText(clip + name);
@@ -58,6 +62,7 @@ namespace DamageMeter
                     Thread.Sleep(100);
                     //Ignore
                 }
+            }
         }
 
 
@@ -75,6 +80,7 @@ namespace DamageMeter
             playersInfos.RemoveAll(x => x.Amount == 0);
             IEnumerable<PlayerDamageDealt> playerInfosOrdered;
             if (copy.Order == "ascending")
+            {
                 switch (copy.OrderBy)
                 {
                     case "damage_received":
@@ -105,7 +111,9 @@ namespace DamageMeter
                         Console.WriteLine("wrong value for orderby");
                         throw new Exception("wrong value for orderby");
                 }
+            }
             else
+            {
                 switch (copy.OrderBy)
                 {
                     case "damage_received":
@@ -136,6 +144,7 @@ namespace DamageMeter
                         Console.WriteLine("wrong value for orderby");
                         throw new Exception("wrong value for orderby");
                 }
+            }
 
             var dpsString = new StringBuilder(copy.Header + "{body}" + copy.Footer);
             var name = entityInfo.Entity?.Info.Name ?? "";
@@ -187,7 +196,9 @@ namespace DamageMeter
                 var firstOrDefault = heals.FirstOrDefault(x => x.Source == playerStats.Source);
                 double healCritrate = 0;
                 if (firstOrDefault != null)
+                {
                     healCritrate = firstOrDefault.CritRate;
+                }
                 buffs.Times.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Slaying, out slaying);
                 var slayingperc = lastTick - firstTick == 0
                     ? 0
@@ -300,12 +311,30 @@ namespace DamageMeter
             }
             var paste = dpsString.ToString().Replace("{body}", dpsLine.ToString());
             var monoPaste = dpsString.ToString().Replace("{body}", dpsMono.ToString());
-            while (paste.Contains(" )")) paste = paste.Replace(" )", ") ");
-            while (monoPaste.Contains(" )")) monoPaste = monoPaste.Replace(" )", ") ");
-            while (paste.Contains(" ]")) paste = paste.Replace(" ]", "] ");
-            while (monoPaste.Contains(" ]")) monoPaste = monoPaste.Replace(" ]", "] ");
-            while (paste.Contains(" \\")) paste = paste.Replace(" \\", "\\");
-            while (monoPaste.Contains(" \\")) monoPaste = monoPaste.Replace(" \\", "\\");
+            while (paste.Contains(" )"))
+            {
+                paste = paste.Replace(" )", ") ");
+            }
+            while (monoPaste.Contains(" )"))
+            {
+                monoPaste = monoPaste.Replace(" )", ") ");
+            }
+            while (paste.Contains(" ]"))
+            {
+                paste = paste.Replace(" ]", "] ");
+            }
+            while (monoPaste.Contains(" ]"))
+            {
+                monoPaste = monoPaste.Replace(" ]", "] ");
+            }
+            while (paste.Contains(" \\"))
+            {
+                paste = paste.Replace(" \\", "\\");
+            }
+            while (monoPaste.Contains(" \\"))
+            {
+                monoPaste = monoPaste.Replace(" \\", "\\");
+            }
             monoPaste = monoPaste.Replace("\\", Environment.NewLine);
             return new Tuple<string, string>(paste, monoPaste);
         }

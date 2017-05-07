@@ -38,7 +38,9 @@ namespace DamageMeter
         public string FormatTimeSpan(TimeSpan timeSpan)
         {
             if (timeSpan.Hours != 0 || timeSpan.Days != 0)
+            {
                 return timeSpan.ToString("g", CultureInfo);
+            }
             return timeSpan.ToString(@"mm\:ss");
         }
 

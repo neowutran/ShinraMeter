@@ -23,9 +23,13 @@ namespace DamageMeter.Database.Structures
             Source = source;
             Target = target;
             if (PlayerSource != null)
+            {
                 Source = PlayerSource.User;
+            }
             if (PlayerTarget != null)
+            {
                 Target = PlayerTarget.User;
+            }
         }
 
         public HitDirection Direction { get; }

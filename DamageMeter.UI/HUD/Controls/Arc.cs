@@ -95,9 +95,13 @@ namespace DamageMeter.UI.HUD
             var y = yr * Math.Sin(radAngle);
 
             if (sweep == SweepDirection.Counterclockwise)
+            {
                 y = yr - y;
+            }
             else
+            {
                 y = yr + y;
+            }
 
             return new Point(x, y);
         }

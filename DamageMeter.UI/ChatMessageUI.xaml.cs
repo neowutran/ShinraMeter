@@ -24,9 +24,13 @@ namespace DamageMeter.UI
             Sender.Content = message.Sender;
             Message.Text = message.Text;
             if (message.ChatType == Chat.ChatType.Normal)
+            {
                 Channel.Content = message.Channel;
+            }
             else
+            {
                 Channel.Content = message.ChatType;
+            }
 
             Time.Content = message.Time;
 

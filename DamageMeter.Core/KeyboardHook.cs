@@ -36,7 +36,9 @@ namespace DamageMeter
                 return true;
             }
             if (!value && _isRegistered)
+            {
                 ClearHotkeys();
+            }
             return false;
         }
 
@@ -82,7 +84,9 @@ namespace DamageMeter
                     BasicTeraData.Instance.HotkeysData.Copy.Where(
                         copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
                 //Can't copy directly, => threading problem
+            {
                 NetworkController.Instance.NeedToCopy = copy;
+            }
         }
 
 
@@ -98,7 +102,9 @@ namespace DamageMeter
             Instance.KeyPressed += hook_KeyPressed;
 
             if (!_isRegistered)
+            {
                 Register();
+            }
         }
 
         private void Register()
@@ -123,7 +129,9 @@ namespace DamageMeter
                 RegisterHotKey(HotkeysData.ModifierKeys.Alt | HotkeysData.ModifierKeys.Control, Keys.Enter);
             }
             foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy)
+            {
                 RegisterHotKey(copy.Modifier, copy.Key);
+            }
             _isRegistered = true;
         }
 
@@ -142,13 +150,18 @@ namespace DamageMeter
         /// <param name="key">The key itself that is associated with the hot key.</param>
         public void RegisterHotKey(HotkeysData.ModifierKeys modifier, Keys key)
         {
-            if (key == Keys.None) return; //allow disable hotkeys using "None" key
+            if (key == Keys.None)
+            {
+                return; //allow disable hotkeys using "None" key
+            }
             // increment the counter.
             _currentId++;
 
             // register the hot key.
             if (!RegisterHotKey(_window.Handle, _currentId, (uint) modifier, (uint) key))
+            {
                 MessageBox.Show(LP.RegisterHotKeyError + " " + key + LP.AlreadyInUse);
+            }
         }
 
         /// <summary>
@@ -215,7 +228,9 @@ namespace DamageMeter
         private void ClearHotkeys()
         {
             for (var i = _currentId; i > 0; i--)
+            {
                 UnregisterHotKey(_window.Handle, i);
+            }
             _currentId = 0;
             _isRegistered = false;
         }

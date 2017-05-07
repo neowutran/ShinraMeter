@@ -269,9 +269,13 @@ namespace DamageMeter.UI
             }
 
             if (_sortOrder == SortOrder.Ascending)
+            {
                 sender.Content = labelstring + "↑";
+            }
             else
+            {
                 sender.Content = labelstring + "↓";
+            }
             Repaint();
         }
 
@@ -323,7 +327,9 @@ namespace DamageMeter.UI
             var skills = new List<ISkill>();
             var header = SkillsList.Items[0];
             for (var i = 1; i < SkillsList.Items.Count; i++)
+            {
                 skills.Add((ISkill) SkillsList.Items[i]);
+            }
             SkillsList.Items.Clear();
             SkillsList.Items.Add(header);
             return skills;
@@ -338,7 +344,10 @@ namespace DamageMeter.UI
                 var updated = -1;
                 for (var i = 0; i < oldSkills.Count; i++)
                 {
-                    if (skill.Name != oldSkills[i].SkillNameIdent()) continue;
+                    if (skill.Name != oldSkills[i].SkillNameIdent())
+                    {
+                        continue;
+                    }
                     oldSkills[i].Update(skill);
                     SkillsList.Items.Add(oldSkills[i]);
                     updated = i;

@@ -17,6 +17,7 @@ namespace DamageMeter.Processing
                     BasicTeraData.Instance.Servers.GetServerName(message.ServerId, NetworkController.Instance.Server));
                 var trackerreset = true;
                 if (NetworkController.Instance.EntityTracker != null)
+                {
                     try
                     {
                         var oldregion = BasicTeraData.Instance.Servers
@@ -30,6 +31,7 @@ namespace DamageMeter.Processing
                                 .Instance.EntityTracker.MeterUser?.ServerId, false, true);
                         throw;
                     }
+                }
                 NetworkController.Instance.Server =
                     BasicTeraData.Instance.Servers.GetServer(message.ServerId, NetworkController.Instance.Server);
                 NetworkController.Instance.MessageFactory.Region = NetworkController.Instance.Server.Region;
@@ -69,25 +71,38 @@ namespace DamageMeter.Processing
                 .Class);
             NetworkController.Instance.PacketProcessing.Update();
             var me = NetworkController.Instance.PlayerTracker.Me();
-            if (!NetworkController.Instance.MeterPlayers.Contains(me)) NetworkController.Instance.MeterPlayers.Add(me);
+            if (!NetworkController.Instance.MeterPlayers.Contains(me))
+            {
+                NetworkController.Instance.MeterPlayers.Add(me);
+            }
         }
 
         internal static void SelectFont(string region)
         {
             CopyPaste.PFC = new PrivateFontCollection();
             if (region == "RU")
+            {
                 CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Fira Sans.ttf");
+            }
             else if (region == "KR")
+            {
                 CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\2002L_chat.ttf");
+            }
             else if (region == "TW")
+            {
                 CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory +
                                           "data\\fonts\\DFPHeiMedium-B5.ttf");
+            }
             else if (region == "JP")
+            {
                 CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory +
                                           "data\\fonts\\TT-UDShinGo-Medium.ttf");
+            }
             else
+            {
                 CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory +
                                           "data\\fonts\\Frutiger LT Pro 55 Roman.ttf");
+            }
             CopyPaste.Font = new Font(CopyPaste.PFC.Families[0], 12, FontStyle.Regular, GraphicsUnit.Pixel);
         }
     }

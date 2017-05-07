@@ -66,8 +66,10 @@ namespace Data
             Parse("excel_save_directory", "ExcelSaveDirectory");
 
             if (ExcelSaveDirectory == "")
+            {
                 ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                     "ShinraMeter/");
+            }
 
 
             Parse("show_crit_damage_rate", "ShowCritDamageRate");
@@ -118,7 +120,9 @@ namespace Data
             ParseUILanguage();
             Parse("date_in_excel_path", "DateInExcelPath");
             if (DateInExcelPath)
+            {
                 ExcelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}";
+            }
         }
 
         public int LFDelay { get; set; }
@@ -245,13 +249,22 @@ namespace Data
         {
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
-            if (xml == null) return;
+            if (xml == null)
+            {
+                return;
+            }
             var setting = GetType().GetProperty(settingName);
             var currentSetting = (WindowStatus) setting.GetValue(this);
             var location = ParseLocation(xml);
             bool value;
             var xmlVisible = xml.Attribute("visible");
             var parseSuccess = bool.TryParse(xmlVisible?.Value ?? "false", out value);
+
+            //activate by default the gage window
+            if (xmlName == "boss_gage_window")
+            {
+                parseSuccess = bool.TryParse(xmlVisible?.Value ?? "true", out value);
+            }
             setting.SetValue(this, new WindowStatus(location, parseSuccess ? value : currentSetting.Visible));
         }
 
@@ -259,7 +272,10 @@ namespace Data
         {
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
-            if (xml == null) return;
+            if (xml == null)
+            {
+                return;
+            }
             var setting = GetType().GetProperty(settingName);
             setting.SetValue(this, (Color) ColorConverter.ConvertFromString(xml.Value), null);
         }
@@ -269,9 +285,15 @@ namespace Data
             var root = _xml.Root;
             var teradps = root?.Element("teradps.io");
             var user = teradps?.Element("user");
-            if (user == null) return;
+            if (user == null)
+            {
+                return;
+            }
             var token = teradps.Element("token");
-            if (token == null) return;
+            if (token == null)
+            {
+                return;
+            }
 
             TeraDpsToken = token.Value;
             TeraDpsUser = user.Value;
@@ -282,31 +304,55 @@ namespace Data
                 TeraDpsUser = "";
             }
             var exp = teradps.Element("enabled");
-            if (exp == null) return;
+            if (exp == null)
+            {
+                return;
+            }
             bool val;
             var parseSuccess = bool.TryParse(exp.Value, out val);
             if (parseSuccess)
+            {
                 SiteExport = val;
+            }
             var privateS = teradps.Element("private_servers");
-            if (privateS == null) return;
+            if (privateS == null)
+            {
+                return;
+            }
             var exp1 = privateS.Attribute("enabled");
             parseSuccess = bool.TryParse(exp1?.Value ?? "false", out val);
             if (parseSuccess)
+            {
                 PrivateServerExport = val;
-            if (privateS.HasElements) PrivateDpsServers = new List<string>();
-            else return;
+            }
+            if (privateS.HasElements)
+            {
+                PrivateDpsServers = new List<string>();
+            }
+            else
+            {
+                return;
+            }
             foreach (var server in privateS.Elements())
+            {
                 PrivateDpsServers.Add(server.Value);
+            }
         }
 
         private Point ParseLocation(XElement root)
         {
             double x, y;
             var location = root?.Element("location");
-            if (location == null) return new Point();
+            if (location == null)
+            {
+                return new Point();
+            }
             var xElement = location.Element("x");
             var yElement = location.Element("y");
-            if (xElement == null || yElement == null) return new Point();
+            if (xElement == null || yElement == null)
+            {
+                return new Point();
+            }
 
             var xParsed = double.TryParse(xElement.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out x);
             var yParsed = double.TryParse(yElement.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out y);
@@ -317,18 +363,27 @@ namespace Data
         {
             var root = _xml.Root;
             var languageElement = root?.Element("language");
-            if (languageElement == null) return;
+            if (languageElement == null)
+            {
+                return;
+            }
             Language = languageElement.Value;
             if (
                 !Array.Exists(new[] {"Auto", "EU-EN", "EU-FR", "EU-GER", "NA", "RU", "JP", "TW", "KR"},
-                    s => s.Equals(Language))) Language = "Auto";
+                    s => s.Equals(Language)))
+            {
+                Language = "Auto";
+            }
         }
 
         private void ParseUILanguage()
         {
             var root = _xml.Root;
             var languageElement = root?.Element("ui_language");
-            if (languageElement == null) return;
+            if (languageElement == null)
+            {
+                return;
+            }
             UILanguage = languageElement.Value;
             try
             {
@@ -349,19 +404,28 @@ namespace Data
             {
                 int mainWindowOpacity;
                 if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity))
+                {
                     MainWindowOpacity = (double) mainWindowOpacity / 100;
+                }
             }
             var otherWindowElement = opacity?.Element("otherWindow");
-            if (otherWindowElement == null) return;
+            if (otherWindowElement == null)
+            {
+                return;
+            }
             int otherWindowOpacity;
             if (int.TryParse(otherWindowElement.Value, out otherWindowOpacity))
+            {
                 OtherWindowOpacity = (double) otherWindowOpacity / 100;
+            }
         }
 
         public void Save()
         {
             if (_filestream == null)
+            {
                 return;
+            }
 
 
             var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
@@ -455,14 +519,19 @@ namespace Data
         {
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
-            if (xml == null) return;
+            if (xml == null)
+            {
+                return;
+            }
             var setting = GetType().GetProperty(settingName);
             if (setting.PropertyType == typeof(int))
             {
                 int value;
                 var parseSuccess = int.TryParse(xml.Value, out value);
                 if (parseSuccess)
+                {
                     setting.SetValue(this, value, null);
+                }
             }
             if (setting.PropertyType == typeof(double))
             {
@@ -470,7 +539,9 @@ namespace Data
                 var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture,
                     out value);
                 if (parseSuccess)
+                {
                     setting.SetValue(this, value, null);
+                }
             }
             if (setting.PropertyType == typeof(float))
             {
@@ -478,17 +549,23 @@ namespace Data
                 var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture,
                     out value);
                 if (parseSuccess)
+                {
                     setting.SetValue(this, value, null);
+                }
             }
             if (setting.PropertyType == typeof(bool))
             {
                 bool value;
                 var parseSuccess = bool.TryParse(xml.Value, out value);
                 if (parseSuccess)
+                {
                     setting.SetValue(this, value, null);
+                }
             }
             if (setting.PropertyType == typeof(string))
+            {
                 setting.SetValue(this, xml.Value, null);
+            }
         }
     }
 }

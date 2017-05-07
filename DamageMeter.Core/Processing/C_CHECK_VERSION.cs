@@ -22,8 +22,10 @@ namespace DamageMeter.Processing
             NetworkController.Instance.MessageFactory = new MessageFactory(opCodeNamer,
                 NetworkController.Instance.Server.Region, message.Versions[0], false, sysMsgNamer);
             if (TeraSniffer.Instance.ClientProxyOverhead + TeraSniffer.Instance.ServerProxyOverhead > 0x1000)
+            {
                 BasicTeraData.LogError("Client Proxy overhead: " + TeraSniffer.Instance.ClientProxyOverhead +
                                        "\r\nServer Proxy overhead: " + TeraSniffer.Instance.ServerProxyOverhead);
+            }
         }
     }
 }

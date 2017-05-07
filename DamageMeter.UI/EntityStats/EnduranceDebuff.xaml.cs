@@ -31,10 +31,14 @@ namespace DamageMeter.UI.EntityStats
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
             if (intervalEntity == 0)
+            {
                 LabelAbnormalityDurationPercentage.Content = "0%";
+            }
             else
+            {
                 LabelAbnormalityDurationPercentage.Content = abnormalityDuration.Duration(firstHit, lastHit) * 100 /
                                                              intervalEntity + "%";
+            }
             interval = TimeSpan.FromTicks(intervalEntity);
             LabelInterval.Content = interval.ToString(@"mm\:ss");
 
@@ -43,8 +47,10 @@ namespace DamageMeter.UI.EntityStats
             LabelAbnormalityDurationPercentage.ToolTip = hotdot.Id;
             StacksDetailList.Items.Clear();
             foreach (var stack in abnormalityDuration.Stacks(firstHit, lastHit))
+            {
                 StacksDetailList.Items.Add(
                     new EnduranceDebuffDetail(hotdot, stack, abnormalityDuration, firstHit, lastHit));
+            }
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

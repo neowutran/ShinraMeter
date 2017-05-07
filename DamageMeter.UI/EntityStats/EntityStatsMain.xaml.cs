@@ -26,9 +26,13 @@ namespace DamageMeter.UI.EntityStats
         {
             EnduranceAbnormality.Items.Clear();
             if (entityInformation == null)
+            {
                 return;
+            }
             if (entityInformation.Interval == 0)
+            {
                 return;
+            }
 
             EnduranceAbnormality.Items.Add(_header);
 

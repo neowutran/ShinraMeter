@@ -18,7 +18,9 @@ namespace Publisher
             var source = SourceDirectory();
             var target = source + UpdateManager.Version;
             if (Directory.Exists(target))
+            {
                 Directory.Delete(target, true);
+            }
             var libpath = Path.Combine(Path.GetDirectoryName(source),
                 Environment.Is64BitProcess ? "lib/7z_x64.dll" : "lib/7z.dll");
             SevenZipBase.SetLibraryPath(libpath);
@@ -84,7 +86,9 @@ namespace Publisher
             {
                 var sourceDirectory = Path.Combine(directory, @"ShinraMeterV");
                 if (Directory.Exists(sourceDirectory))
+                {
                     return sourceDirectory;
+                }
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the release directory");

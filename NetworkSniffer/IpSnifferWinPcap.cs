@@ -47,9 +47,13 @@ namespace NetworkSniffer
         protected override void SetEnabled(bool value)
         {
             if (value)
+            {
                 Start();
+            }
             else
+            {
                 Finish();
+            }
         }
 
         private static bool IsInteresting(WinPcapDevice device)
@@ -77,6 +81,7 @@ namespace NetworkSniffer
                 }
                 device.Filter = _filter;
                 if (BufferSize != null)
+                {
                     try
                     {
                         device.KernelBufferSize = (uint) BufferSize.Value;
@@ -86,6 +91,7 @@ namespace NetworkSniffer
                         Logger.Warn(
                             $"Failed to set KernelBufferSize to {BufferSize.Value} on {device.Name}. {e.Message}");
                     }
+                }
                 device.StartCapture();
                 Console.WriteLine("winpcap capture");
             }
@@ -134,7 +140,9 @@ namespace NetworkSniffer
                     ipPacket = new IPv4Packet(new ByteArraySegment(e.Packet.Data, 4, e.Packet.Data.Length - 4));
                 }
                 if (ipPacket == null)
+                {
                     return;
+                }
             }
             catch
             {
@@ -145,12 +153,17 @@ namespace NetworkSniffer
             OnPacketReceived(ipPacket);
 
             var now = DateTime.UtcNow;
-            if (now <= _nextCheck) return;
+            if (now <= _nextCheck)
+            {
+                return;
+            }
             _nextCheck = now + TimeSpan.FromSeconds(20);
             var device = (WinPcapDevice) sender;
             if (device.Statistics.DroppedPackets == _droppedPackets &&
                 device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets)
+            {
                 return;
+            }
             _droppedPackets = device.Statistics.DroppedPackets;
             _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
             OnWarning(

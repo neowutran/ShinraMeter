@@ -110,7 +110,9 @@ namespace DamageMeter
             UpdatePlayerTracker();
             UpdateAbnormalityTracker();
             if (BasicTeraData.Instance.WindowData.EnableChat)
+            {
                 MessageToProcessingOptionnal.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
+            }
         }
 
         public static void UpdateEntityTracker()
@@ -247,7 +249,10 @@ namespace DamageMeter
         {
             Delegate type;
             MainProcessor.TryGetValue(message.GetType(), out type);
-            if (type == null) return false;
+            if (type == null)
+            {
+                return false;
+            }
             type.DynamicInvoke(message);
             return true;
         }

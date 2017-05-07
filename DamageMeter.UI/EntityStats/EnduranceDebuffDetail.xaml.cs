@@ -33,11 +33,15 @@ namespace DamageMeter.UI.EntityStats
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
             if (intervalEntity == 0)
+            {
                 LabelAbnormalityDurationPercentage.Content = "0%";
+            }
             else
+            {
                 LabelAbnormalityDurationPercentage.Content =
                     abnormalityDuration.Duration(firstHit, lastHit, stack) * 100 /
                     intervalEntity + "%";
+            }
             interval = TimeSpan.FromTicks(intervalEntity);
             LabelInterval.Content = interval.ToString(@"mm\:ss");
 

@@ -83,7 +83,10 @@ namespace DamageMeter.UI
 
         public void ShowBallon(NotifyFlashMessage flash)
         {
-            if (flash == null) return;
+            if (flash == null)
+            {
+                return;
+            }
 
             Tray.HideBalloonTip();
             if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
@@ -93,7 +96,10 @@ namespace DamageMeter.UI
                 Tray.ShowCustomBalloon(balloon, PopupAnimation.Fade, flash.Balloon.DisplayTime);
             }
 
-            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null) Task.Run(() => flash.Sound.Play());
+            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null)
+            {
+                Task.Run(() => flash.Sound.Play());
+            }
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -159,7 +165,10 @@ namespace DamageMeter.UI
 
         private void SiteExportAction(object sender, RoutedEventArgs e)
         {
-            if (_lastSend + TimeSpan.TicksPerSecond * 60 >= DateTime.Now.Ticks) return;
+            if (_lastSend + TimeSpan.TicksPerSecond * 60 >= DateTime.Now.Ticks)
+            {
+                return;
+            }
             NetworkController.Instance.NeedToExport = DataExporter.Dest.Site;
             _lastSend = DateTime.Now.Ticks;
         }
@@ -208,14 +217,20 @@ namespace DamageMeter.UI
         private void EnableInvisibleWhenNoStats(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.InvisibleUi = true;
-            if (_mainWindow.ForceWindowVisibilityHidden) return;
+            if (_mainWindow.ForceWindowVisibilityHidden)
+            {
+                return;
+            }
             _mainWindow.Visibility = Visibility.Visible;
         }
 
         private void DisableInvisibleWhenNoStats(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.InvisibleUi = false;
-            if (_mainWindow.ForceWindowVisibilityHidden) return;
+            if (_mainWindow.ForceWindowVisibilityHidden)
+            {
+                return;
+            }
             _mainWindow.Visibility = _mainWindow.Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
         }
 
@@ -243,14 +258,18 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.DetectBosses = true;
             if (BasicTeraData.Instance.MonsterDatabase != null)
+            {
                 BasicTeraData.Instance.MonsterDatabase.DetectBosses = true;
+            }
         }
 
         private void DisableBossByHpBar(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.DetectBosses = false;
             if (BasicTeraData.Instance.MonsterDatabase != null)
+            {
                 BasicTeraData.Instance.MonsterDatabase.DetectBosses = false;
+            }
         }
 
         private void EnableCountOnlyBoss(object sender, RoutedEventArgs e)
@@ -389,9 +408,18 @@ namespace DamageMeter.UI
 
         private void ClickUploadGlyphAction(object sender, RoutedEventArgs e)
         {
-            if (_lastSend + TimeSpan.TicksPerSecond * 30 >= DateTime.Now.Ticks) return;
-            if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) return;
-            if (NetworkController.Instance.EntityTracker.MeterUser.Level < 65) return;
+            if (_lastSend + TimeSpan.TicksPerSecond * 30 >= DateTime.Now.Ticks)
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName))
+            {
+                return;
+            }
+            if (NetworkController.Instance.EntityTracker.MeterUser.Level < 65)
+            {
+                return;
+            }
             _lastSend = DateTime.Now.Ticks;
             var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs,
                 new JsonSerializerSettings
@@ -514,7 +542,10 @@ namespace DamageMeter.UI
         private void IdleRtoChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             BasicTeraData.Instance.WindowData.IdleResetTimeout = IdleRTOSpinner?.Value ?? 0;
-            if (BasicTeraData.Instance.WindowData.IdleResetTimeout == 0) DamageTracker.Instance.LastIdleStartTime = 0;
+            if (BasicTeraData.Instance.WindowData.IdleResetTimeout == 0)
+            {
+                DamageTracker.Instance.LastIdleStartTime = 0;
+            }
         }
 
         private void TokenChanged(object sender, RoutedEventArgs e)

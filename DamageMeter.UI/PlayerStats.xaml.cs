@@ -169,17 +169,23 @@ namespace DamageMeter.UI
                                    BasicTeraData.Instance.WindowData.Scale;
                     Point locationFromScreen;
                     if (screen.WorkingArea.X + screen.WorkingArea.Width > (main.Left + main.Width + maxWidth) * dx)
+                    {
                         locationFromScreen = new Point(
                             (main.Left + main.Width) * dx,
                             main.Top * dy);
+                    }
                     else if (screen.WorkingArea.X + maxWidth * dx < main.Left * dx)
+                    {
                         locationFromScreen = new Point(
                             (main.Left - maxWidth) * dx,
                             main.Top * dy);
+                    }
                     else
+                    {
                         locationFromScreen = new Point(
                             screen.WorkingArea.X + (screen.WorkingArea.Width - maxWidth * dx) / 2,
                             screen.WorkingArea.Y + (screen.WorkingArea.Height - 600 * dy) / 2);
+                    }
                     var targetPoints = source.CompositionTarget.TransformFromDevice.Transform(locationFromScreen);
                     _windowSkill.Left = targetPoints.X;
                     _windowSkill.Top = targetPoints.Y;
@@ -191,12 +197,19 @@ namespace DamageMeter.UI
 
         private void ChangeHeal(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount != 2) return;
+            if (e.ClickCount != 2)
+            {
+                return;
+            }
             if (PlayerDamageDealt.Source.IsHealer)
+            {
                 BasicTeraData.Instance.WindowData.ShowHealCrit = !BasicTeraData.Instance.WindowData.ShowHealCrit;
+            }
             else
+            {
                 BasicTeraData.Instance.WindowData.ShowCritDamageRate =
                     !BasicTeraData.Instance.WindowData.ShowCritDamageRate;
+            }
         }
 
         public void CloseSkills()

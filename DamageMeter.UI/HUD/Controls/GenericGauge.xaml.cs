@@ -55,7 +55,10 @@ namespace DamageMeter.UI.HUD.Controls
             get => _factor;
             set
             {
-                if (Math.Abs(_factor - value) < 0.0001) return;
+                if (Math.Abs(_factor - value) < 0.0001)
+                {
+                    return;
+                }
                 _factor = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Factor"));
                 AnimateBar(value);
@@ -109,9 +112,13 @@ namespace DamageMeter.UI.HUD.Controls
         private void CurValWatcher_PropertyChanged(object sender, EventArgs e)
         {
             if (MaxVal > 0)
+            {
                 Factor = _curValwatcher.Value / MaxVal;
+            }
             else
+            {
                 Factor = 0;
+            }
         }
 
         private void AnimateBar(double factor)

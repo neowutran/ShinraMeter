@@ -192,8 +192,10 @@ namespace DamageMeter
                 ? Database.Database.Instance.PlayerDamageInformation(entityInfo.BeginTime, entityInfo.EndTime)
                 : Database.Database.Instance.PlayerDamageInformation(currentBoss);
             if (BasicTeraData.Instance.WindowData.MeterUserOnTop)
+            {
                 playersInfo = playersInfo.OrderBy(x => MeterPlayers.Contains(x.Source) ? 0 : 1)
                     .ThenByDescending(x => x.Amount).ToList();
+            }
 
             var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
 
@@ -246,11 +248,14 @@ namespace DamageMeter
             bool timedEncounter, CopyKey copy)
         {
             if (BasicTeraData.Instance.HotDotDatabase == null)
+            {
                 return; //no database loaded yet => no need to do anything
+            }
             lock (_pasteLock)
             {
                 var text = CopyPaste.Copy(stats, skills, abnormals, timedEncounter, copy);
                 for (var i = 0; i < 3; i++)
+                {
                     try
                     {
                         Clipboard.SetText(text.Item2);
@@ -261,6 +266,7 @@ namespace DamageMeter
                         Thread.Sleep(100);
                         //Ignore
                     }
+                }
                 CopyPaste.Paste(text.Item1);
             }
         }
@@ -354,7 +360,10 @@ namespace DamageMeter
                 }
 
                 var message = MessageFactory.Create(obj);
-                if (message.GetType() == typeof(UnknownMessage)) continue;
+                if (message.GetType() == typeof(UnknownMessage))
+                {
+                    continue;
+                }
 
                 if (!PacketProcessing.Process(message))
                 {
@@ -366,7 +375,10 @@ namespace DamageMeter
         public void CheckUpdateUi(int packetsWaiting)
         {
             var second = DateTime.UtcNow.Ticks;
-            if (second - _lastTick < TimeSpan.TicksPerSecond) return;
+            if (second - _lastTick < TimeSpan.TicksPerSecond)
+            {
+                return;
+            }
             UpdateUi(packetsWaiting);
         }
 

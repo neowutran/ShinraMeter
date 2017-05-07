@@ -54,10 +54,14 @@ namespace DamageMeter.UI
             // Handler for exceptions in threads behind forms.
             Application.ThreadException += GlobalThreadExceptionHandler;
             if (BasicTeraData.Instance.WindowData.InvisibleUi)
+            {
                 Visibility = Visibility.Hidden;
+            }
             System.Windows.Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
             if (BasicTeraData.Instance.WindowData.LowPriority)
+            {
                 Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
+            }
 
 
             TeraSniffer.Instance.Enabled = true;
@@ -118,7 +122,9 @@ namespace DamageMeter.UI
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExTransparent(hwnd);
             foreach (var players in Controls)
+            {
                 players.Value.SetClickThrou();
+            }
             _entityStats.SetClickThrou();
             _bossGageBar.SetClickThrou();
             NotifyIcon.ClickThrou.IsChecked = true;
@@ -130,7 +136,9 @@ namespace DamageMeter.UI
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExVisible(hwnd);
             foreach (var players in Controls)
+            {
                 players.Value.UnsetClickThrou();
+            }
             _entityStats.UnsetClickThrou();
             _bossGageBar.UnsetClickThrou();
             NotifyIcon.ClickThrou.IsChecked = false;
@@ -201,7 +209,9 @@ namespace DamageMeter.UI
             else
             {
                 if (KeyboardHook.Instance.SetHotkeys(teraWindowActive))
+                {
                     StayTopMost();
+                }
             }
 
             if (!BasicTeraData.Instance.WindowData.AlwaysVisible)
@@ -256,10 +266,15 @@ namespace DamageMeter.UI
                     PlayerStats playerStatsControl;
                     Controls.TryGetValue(playerStats.Source, out playerStatsControl);
                     if (playerStats.Amount == 0)
+                    {
                         continue;
+                    }
 
                     visiblePlayerStats.Add(playerStats.Source);
-                    if (playerStatsControl != null) continue;
+                    if (playerStatsControl != null)
+                    {
+                        continue;
+                    }
                     playerStatsControl = new PlayerStats(playerStats,
                         statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), statsSummary.EntityInformation,
                         skills, abnormals.Get(playerStats.Source));
@@ -287,14 +302,22 @@ namespace DamageMeter.UI
                         TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval / TimeSpan.TicksPerSecond);
                     Timer.Content = interval.ToString(@"mm\:ss");
                     if (statsSummary.EntityInformation.Interval == 0 && BasicTeraData.Instance.WindowData.ShowTimeLeft)
+                    {
                         Timer.Foreground = Brushes.LightCoral;
-                    else Timer.Foreground = Brushes.White;
+                    }
+                    else
+                    {
+                        Timer.Foreground = Brushes.White;
+                    }
                 }
                 Players.Items.Clear();
 
                 foreach (var item in statsDamage)
                 {
-                    if (!Controls.ContainsKey(item.Source)) continue;
+                    if (!Controls.ContainsKey(item.Source))
+                    {
+                        continue;
+                    }
                     if (Players.Items.Contains(Controls[item.Source]))
                     {
                         BasicTeraData.LogError(
@@ -311,25 +334,36 @@ namespace DamageMeter.UI
                 if (BasicTeraData.Instance.WindowData.InvisibleUi)
                 {
                     if (Controls.Count > 0 && !ForceWindowVisibilityHidden)
+                    {
                         Visibility = Visibility.Visible;
+                    }
                     if (Controls.Count == 0)
+                    {
                         Visibility = Visibility.Hidden;
+                    }
                 }
                 else
                 {
                     if (!ForceWindowVisibilityHidden)
+                    {
                         Visibility = Visibility.Visible;
+                    }
                 }
                 if (ActualWidth != _oldWidth) // auto snap to right screen border on width change
                 {
                     var screen = Screen.FromHandle(new WindowInteropHelper(GetWindow(this)).Handle);
                     // Transform screen point to WPF device independent point
                     var source = PresentationSource.FromVisual(this);
-                    if (source?.CompositionTarget == null) return;
+                    if (source?.CompositionTarget == null)
+                    {
+                        return;
+                    }
                     var dx = source.CompositionTarget.TransformToDevice.M11;
                     if (Math.Abs(screen.WorkingArea.X + screen.WorkingArea.Width - (Left + _oldWidth) * dx) <
                         50) //snap at 50 px
+                    {
                         Left = Left + _oldWidth - ActualWidth;
+                    }
                     _oldWidth = ActualWidth;
                 }
             }
@@ -365,7 +399,10 @@ namespace DamageMeter.UI
 
         internal void StayTopMost()
         {
-            if (!_topMost || !Topmost) return;
+            if (!_topMost || !Topmost)
+            {
+                return;
+            }
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
                 window.Topmost = false;
@@ -376,21 +413,32 @@ namespace DamageMeter.UI
         private bool NeedUpdateEncounter(IReadOnlyList<NpcEntity> entities)
         {
             if (entities.Count != ListEncounter.Items.Count - 1)
+            {
                 return true;
+            }
             for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
+            {
                 if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entities[i - 1])
+                {
                     return true;
+                }
+            }
             return false;
         }
 
         private bool ChangeEncounterSelection(NpcEntity entity)
         {
             if (entity == null)
+            {
                 return false;
+            }
 
             for (var i = 1; i < ListEncounter.Items.Count; i++)
             {
-                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entity) continue;
+                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entity)
+                {
+                    continue;
+                }
                 ListEncounter.SelectedItem = ListEncounter.Items[i];
                 return true;
             }
@@ -402,7 +450,9 @@ namespace DamageMeter.UI
         {
             //http://stackoverflow.com/questions/12164488/system-reflection-targetinvocationexception-occurred-in-presentationframework
             if (ListEncounter == null || !ListEncounter.IsLoaded)
+            {
                 return;
+            }
 
             if (!NeedUpdateEncounter(entities))
             {
@@ -413,7 +463,9 @@ namespace DamageMeter.UI
             NpcEntity selectedEntity = null;
             if ((ComboBoxItem) ListEncounter.SelectedItem != null &&
                 !(((ComboBoxItem) ListEncounter.SelectedItem).Content is string))
+            {
                 selectedEntity = (NpcEntity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
+            }
 
             ListEncounter.Items.Clear();
             ListEncounter.Items.Add(new ComboBoxItem {Content = LP.TotalEncounter});
@@ -422,14 +474,22 @@ namespace DamageMeter.UI
             {
                 var item = new ComboBoxItem {Content = entity};
                 ListEncounter.Items.Add(item);
-                if (entity != selectedEntity) continue;
+                if (entity != selectedEntity)
+                {
+                    continue;
+                }
                 ListEncounter.SelectedItem = item;
                 selected = true;
             }
             if (ChangeEncounterSelection(currentBoss))
+            {
                 return;
+            }
 
-            if (selected) return;
+            if (selected)
+            {
+                return;
+            }
             ListEncounter.SelectedItem = ListEncounter.Items[0];
         }
 
@@ -447,19 +507,28 @@ namespace DamageMeter.UI
                     _entityStats.Top = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.Y;
                     _entityStats.Left = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.X;
                 }
-                if (BasicTeraData.Instance.WindowData.DebuffsStatus.Visible) _entityStats.ShowWindow();
+                if (BasicTeraData.Instance.WindowData.DebuffsStatus.Visible)
+                {
+                    _entityStats.ShowWindow();
+                }
                 if (BasicTeraData.Instance.WindowData.BossGageStatus.Location != new Point(0, 0))
                 {
                     _bossGageBar.Top = BasicTeraData.Instance.WindowData.BossGageStatus.Location.Y;
                     _bossGageBar.Left = BasicTeraData.Instance.WindowData.BossGageStatus.Location.X;
                 }
-                if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible) _bossGageBar.ShowWindow();
+                if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible)
+                {
+                    _bossGageBar.ShowWindow();
+                }
                 if (BasicTeraData.Instance.WindowData.HistoryStatus.Location != new Point(0, 0))
                 {
                     _windowHistory.Top = BasicTeraData.Instance.WindowData.HistoryStatus.Location.Y;
                     _windowHistory.Left = BasicTeraData.Instance.WindowData.HistoryStatus.Location.X;
                 }
-                if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible) _windowHistory.ShowWindow();
+                if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible)
+                {
+                    _windowHistory.ShowWindow();
+                }
                 return;
             }
             Top = 0;
@@ -468,14 +537,21 @@ namespace DamageMeter.UI
 
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count != 1) return;
+            if (e.AddedItems.Count != 1)
+            {
+                return;
+            }
 
             NpcEntity encounter = null;
             if (((ComboBoxItem) e.AddedItems[0]).Content is NpcEntity)
+            {
                 encounter = (NpcEntity) ((ComboBoxItem) e.AddedItems[0]).Content;
+            }
 
             if (encounter != NetworkController.Instance.Encounter)
+            {
                 NetworkController.Instance.NewEncounter = encounter;
+            }
         }
 
         private void EntityStatsImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -509,9 +585,11 @@ namespace DamageMeter.UI
         {
             //.NET 4.6 bug: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
             if (Environment.OSVersion.Version.Major >= 10)
+            {
                 ListEncounter.GetType()
                     .GetField("_highlightedInfo", BindingFlags.NonPublic | BindingFlags.Instance)
                     .SetValue(ListEncounter, null);
+            }
             _topMost = true;
         }
 
@@ -534,7 +612,10 @@ namespace DamageMeter.UI
 
         private void ChangeTimeLeft(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount != 2) return;
+            if (e.ClickCount != 2)
+            {
+                return;
+            }
             BasicTeraData.Instance.WindowData.ShowTimeLeft = !BasicTeraData.Instance.WindowData.ShowTimeLeft;
         }
 

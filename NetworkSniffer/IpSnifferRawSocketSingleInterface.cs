@@ -28,13 +28,18 @@ namespace NetworkSniffer
         private void Init()
         {
             Debug.Assert(_socket == null);
-            if (_isInit) return;
+            if (_isInit)
+            {
+                return;
+            }
             try
             {
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
 
                 if (_localIp != null)
+                {
                     _socket.Bind(new IPEndPoint(_localIp, 0));
+                }
                 _socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
                 var receiveAllIp = BitConverter.GetBytes(3);
                 _socket.IOControl(IOControlCode.ReceiveAll, receiveAllIp, null);
@@ -58,7 +63,10 @@ namespace NetworkSniffer
             {
                 await s.ReceiveAsync(awaitable);
                 var bytesRead = args.BytesTransferred;
-                if (bytesRead <= 0) throw new Exception("Raw socket is disconnected");
+                if (bytesRead <= 0)
+                {
+                    throw new Exception("Raw socket is disconnected");
+                }
                 IPv4Packet ipPacket;
                 try
                 {
@@ -70,7 +78,9 @@ namespace NetworkSniffer
                 }
 
                 if (ipPacket.Version != IpVersion.IPv4 || ipPacket.Protocol != IPProtocolType.TCP)
+                {
                     continue;
+                }
                 OnPacketReceived(ipPacket);
             }
             _socket.Close();
@@ -85,8 +95,14 @@ namespace NetworkSniffer
 
         protected override void SetEnabled(bool value)
         {
-            if (value) Init();
-            else Finish();
+            if (value)
+            {
+                Init();
+            }
+            else
+            {
+                Finish();
+            }
         }
 
 
@@ -122,7 +138,9 @@ namespace NetworkSniffer
             if (m_continuation == SENTINEL ||
                 Interlocked.CompareExchange(
                     ref m_continuation, continuation, null) == SENTINEL)
+            {
                 Task.Run(continuation);
+            }
         }
 
         internal void Reset()
@@ -139,7 +157,9 @@ namespace NetworkSniffer
         public void GetResult()
         {
             if (m_eventArgs.SocketError != SocketError.Success)
+            {
                 throw new SocketException((int) m_eventArgs.SocketError);
+            }
         }
     }
 
@@ -150,7 +170,9 @@ namespace NetworkSniffer
         {
             awaitable.Reset();
             if (!socket.ReceiveAsync(awaitable.m_eventArgs))
+            {
                 awaitable.m_wasCompleted = true;
+            }
             return awaitable;
         }
     }

@@ -21,14 +21,18 @@ namespace DamageMeter.AutoUpdate
             bool aIsNewInstance, isUpdating;
             var _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             if (!aIsNewInstance)
+            {
                 try
                 {
                     while (!_unique.WaitOne(1000))
+                    {
                         Console.WriteLine("Sleep");
+                    }
                 }
                 catch (AbandonedMutexException)
                 {
                 } //ignore terminated meter
+            }
             Thread.Sleep(1000);
             var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
             var hashfile = UpdateManager.ExecutableDirectory + @"\ShinraMeterV.sha1";
@@ -68,7 +72,10 @@ namespace DamageMeter.AutoUpdate
             }
             try
             {
-                if (Count()) return;
+                if (Count())
+                {
+                    return;
+                }
                 numberTry++;
                 CountError(numberTry);
             }

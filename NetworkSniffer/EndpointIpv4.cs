@@ -30,7 +30,9 @@ namespace NetworkSniffer
         public override bool Equals(object obj)
         {
             if (obj is EndpointIpv4)
+            {
                 return Equals((EndpointIpv4) obj);
+            }
             return false;
         }
 

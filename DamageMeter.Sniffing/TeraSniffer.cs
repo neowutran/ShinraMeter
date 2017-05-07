@@ -126,7 +126,9 @@ namespace DamageMeter.Sniffing
                 if (Connected ||
                     !_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
                     !_serversByIp.ContainsKey(connection.Source.Address.ToString()))
+                {
                     return;
+                }
                 _isNew.TryAdd(connection, 1);
                 connection.DataReceived += HandleTcpDataReceived;
             }
@@ -139,7 +141,9 @@ namespace DamageMeter.Sniffing
                 if (data.Length == 0)
                 {
                     if (needToSkip == 0 || !(connection == _clientToServer || connection == _serverToClient))
+                    {
                         return;
+                    }
                     _decrypter?.Skip(
                         connection == _clientToServer
                             ? MessageDirection.ClientToServer
@@ -188,13 +192,21 @@ namespace DamageMeter.Sniffing
                 }
 
                 if (!(connection == _clientToServer || connection == _serverToClient))
+                {
                     return;
+                }
                 if (_decrypter == null)
+                {
                     return;
+                }
                 if (connection == _clientToServer)
+                {
                     _decrypter.ClientToServer(data, needToSkip);
+                }
                 else
+                {
                     _decrypter.ServerToClient(data, needToSkip);
+                }
             }
         }
 

@@ -60,27 +60,39 @@ namespace DamageMeter.UI
         {
             Closing -= ClickThrouWindow_Closing;
             foreach (ClickThrouWindow window in ((ClickThrouWindow) sender).OwnedWindows)
+            {
                 window.Close();
+            }
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
+            {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     var a = OpacityAnimation(0);
                     a.Completed += (o, args) => { Close(); };
                     BeginAnimation(OpacityProperty, a);
                 }));
-            else Close();
+            }
+            else
+            {
+                Close();
+            }
         }
 
         public void HideWindow()
         {
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
+            {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     var a = OpacityAnimation(0);
                     a.Completed += (o, args) => { Visibility = Visibility.Hidden; };
                     BeginAnimation(OpacityProperty, a);
                 }));
-            else Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                Visibility = Visibility.Hidden;
+            }
         }
 
         public void ShowWindow()

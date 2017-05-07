@@ -30,7 +30,9 @@ namespace DamageMeter.AutoUpdate
                 {
                     var resourceDirectory = Path.Combine(directory, @"resources\");
                     if (Directory.Exists(resourceDirectory))
+                    {
                         return resourceDirectory;
+                    }
                     directory = Path.GetDirectoryName(directory);
                 }
                 throw new InvalidOperationException("Could not find the resource directory");
@@ -49,7 +51,9 @@ namespace DamageMeter.AutoUpdate
             try
             {
                 if (File.Exists(version))
+                {
                     Version = Version + "." + File.ReadLines(version).FirstOrDefault()?.Remove(7);
+                }
             }
             catch
             {
@@ -68,7 +72,10 @@ namespace DamageMeter.AutoUpdate
             {
                 var compressed =
                     client.OpenRead(new Uri("https://neowutran.ovh/updates/ShinraMeterV/" + file.Key + ".zip"));
-                if (compressed == null) return true;
+                if (compressed == null)
+                {
+                    return true;
+                }
                 new ZipArchive(compressed).Entries[0].ExtractToFile(ExecutableDirectory + @"\tmp\release\" + file.Key);
             }
             return FileHash(ExecutableDirectory + @"\tmp\release\" + file.Key) != file.Value;
@@ -89,7 +96,9 @@ namespace DamageMeter.AutoUpdate
             Directory.CreateDirectory(ExecutableDirectory + @"\tmp\release\");
             var fileList = _latest.Except(_hashes).ToList();
             if (!fileList.Any())
+            {
                 return false;
+            }
             File.WriteAllLines(ExecutableDirectory + @"\tmp\ShinraMeterV.sha1",
                 _latest.Select(x => x.Value + " *" + x.Key));
             fileList.Where(x => x.Key.Contains('\\'))
@@ -103,10 +112,14 @@ namespace DamageMeter.AutoUpdate
                 return false;
             }
             if (File.Exists(ExecutableDirectory + @"\tmp\release\Autoupdate.exe"))
+            {
                 File.Copy(ExecutableDirectory + @"\tmp\release\Autoupdate.exe",
                     ExecutableDirectory + @"\tmp\Autoupdate.exe");
+            }
             else
+            {
                 File.Copy(ExecutableDirectory + @"\Autoupdate.exe", ExecutableDirectory + @"\tmp\Autoupdate.exe");
+            }
             Process.Start(ExecutableDirectory + @"\tmp\Autoupdate.exe", "pass");
             return true;
         }
@@ -123,7 +136,10 @@ namespace DamageMeter.AutoUpdate
 
         private static void DestroyDownloadDirectory()
         {
-            if (!Directory.Exists(ExecutableDirectory + @"\tmp\")) return;
+            if (!Directory.Exists(ExecutableDirectory + @"\tmp\"))
+            {
+                return;
+            }
             Directory.Delete(ExecutableDirectory + @"\tmp\", true);
         }
 
@@ -133,7 +149,12 @@ namespace DamageMeter.AutoUpdate
             foreach (var file in Directory.GetFiles(sourceDir))
             {
                 if (Path.GetFileName(file) == "ShinraLauncher.exe")
-                    if (File.Exists(Path.Combine(targetDir, Path.GetFileName(file)))) continue;
+                {
+                    if (File.Exists(Path.Combine(targetDir, Path.GetFileName(file))))
+                    {
+                        continue;
+                    }
+                }
                 File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), true);
             }
 
@@ -156,13 +177,24 @@ namespace DamageMeter.AutoUpdate
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\resources\"), File.Delete);
             foreach (var s in Directory.GetDirectories(ExecutableDirectory + @"\..\..\")
                 .Where(t => !(t.EndsWith("resources") || t.EndsWith("tmp"))))
+            {
                 if (Directory.Exists(s))
+                {
                     Directory.Delete(s, true);
-            if (!Directory.Exists(ExecutableDirectory + @"\..\..\resources\")) return;
+                }
+            }
+            if (!Directory.Exists(ExecutableDirectory + @"\..\..\resources\"))
+            {
+                return;
+            }
             foreach (var s in Directory.GetDirectories(ExecutableDirectory + @"\..\..\resources\")
                 .Where(t => !t.EndsWith("config") && !t.EndsWith("sound")))
+            {
                 if (Directory.Exists(s))
+                {
                     Directory.Delete(s, true);
+                }
+            }
             Console.WriteLine("Resources directory destroyed");
         }
 
@@ -171,7 +203,10 @@ namespace DamageMeter.AutoUpdate
             Parallel.ForEach(Directory.GetDirectories(parentDirectory), directory =>
             {
                 DeleteEmptySubdirectories(directory);
-                if (!Directory.EnumerateFileSystemEntries(directory).Any()) Directory.Delete(directory, false);
+                if (!Directory.EnumerateFileSystemEntries(directory).Any())
+                {
+                    Directory.Delete(directory, false);
+                }
             });
         }
 
@@ -196,7 +231,10 @@ namespace DamageMeter.AutoUpdate
                 var compressed = await client
                     .OpenReadTaskAsync(new Uri("http://diclah.com/~yukikoo/ShinraMeterV.sha1.zip"))
                     .ConfigureAwait(false);
-                if (compressed == null) return true;
+                if (compressed == null)
+                {
+                    return true;
+                }
                 using (var stream = new MemoryStream())
                 {
                     new ZipArchive(compressed).Entries[0].Open().CopyTo(stream);

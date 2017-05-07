@@ -19,7 +19,10 @@ namespace DamageMeter.UI.Skill
 
             foreach (var skillInfo in skill.Skills)
             {
-                if (string.IsNullOrEmpty(skillInfo.Key.IconName)) continue;
+                if (string.IsNullOrEmpty(skillInfo.Key.IconName))
+                {
+                    continue;
+                }
                 SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.Key.IconName);
                 break;
             }
@@ -50,7 +53,9 @@ namespace DamageMeter.UI.Skill
             SkillsDetailList.Items.Clear();
 
             foreach (var skillInfo in skill.Skills)
+            {
                 SkillsDetailList.Items.Add(new SkillDetailHeal(skillInfo.Key, skill));
+            }
         }
 
         public string SkillNameIdent()

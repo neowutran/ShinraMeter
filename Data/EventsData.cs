@@ -33,7 +33,9 @@ namespace Data
                     var fname = Path.Combine(_basicData.ResourceDirectory,
                         "config/events/events-" + pclass.ToLowerInvariant() + ".xml");
                     if (!File.Exists(fname))
+                    {
                         File.WriteAllText(fname, LP.ResourceManager.GetString("events_" + pclass.ToLowerInvariant()));
+                    }
                 }
             }
             catch (Exception ex)
@@ -71,7 +73,7 @@ namespace Data
         public Dictionary<Event, List<Action>> Events { get; private set; }
 
         public Dictionary<Event, List<Action>> Cooldown { get; private set; }
-        public Tuple<Event, List<Action>> AFK { get; private set; }
+        public System.Tuple<Event, List<Action>> AFK { get; private set; }
 
 
         public void Load(PlayerClass playerClass)
@@ -111,23 +113,36 @@ namespace Data
         {
             foreach (var e in rootEvents)
             {
-                if (!e.Key.Active) continue;
+                if (!e.Key.Active)
+                {
+                    continue;
+                }
                 Events.Add(e.Key, e.Value);
                 var evAbnormalities = e.Key as AbnormalityEvent;
                 if (evAbnormalities != null)
+                {
                     if (evAbnormalities.Trigger == AbnormalityTriggerType.MissingDuringFight ||
                         evAbnormalities.Trigger == AbnormalityTriggerType.Ending)
+                    {
                         MissingAbnormalities.Add(e.Key, e.Value);
+                    }
                     else
+                    {
                         AddedRemovedAbnormalities.Add(e.Key, e.Value);
+                    }
+                }
 
                 var evCooldown = e.Key as CooldownEvent;
                 if (evCooldown != null)
+                {
                     Cooldown.Add(e.Key, e.Value);
+                }
 
                 var evAFK = e.Key as CommonAFKEvent;
                 if (evAFK != null)
+                {
                     AFK = new Tuple<Event, List<Action>>(e.Key, e.Value);
+                }
             }
         }
 
@@ -141,7 +156,10 @@ namespace Data
             var root = xml.Root;
             var default_active = root.Attribute("active")?.Value ?? "True";
             var commonAfk = root.Element("common_afk");
-            if (commonAfk == null) return;
+            if (commonAfk == null)
+            {
+                return;
+            }
 
             var active = bool.Parse(commonAfk.Attribute("active")?.Value ?? default_active);
             var ev = new CommonAFKEvent(active);
@@ -170,7 +188,9 @@ namespace Data
                 var textToSpeech = notify.Descendants("text_to_speech");
                 if (music.Any() && beeps.Any() || music.Any() && textToSpeech.Any() ||
                     textToSpeech.Any() && beeps.Any())
+                {
                     throw new Exception("Only 1 type of sound allowed by notifyAction");
+                }
                 if (music.Any())
                 {
                     var musicFile = music.First().Attribute("file").Value;
@@ -217,7 +237,9 @@ namespace Data
         {
             var areaBossBlacklist = new List<BlackListItem>();
             if (root.Element("area_boss_blacklist") == null)
+            {
                 return areaBossBlacklist;
+            }
             foreach (var blacklist in root.Element("area_boss_blacklist").Elements("blacklist"))
             {
                 var areaId = int.Parse(blacklist.Attribute("area_id").Value);
@@ -270,7 +292,9 @@ namespace Data
                     }
                     HotDot.Types type;
                     if (!Enum.TryParse(idElement, true, out type))
+                    {
                         throw new Exception(idElement + " is not an acceptable value.");
+                    }
                     types.Add(type);
                 }
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
