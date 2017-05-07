@@ -13,7 +13,7 @@
              >
     <UserControl.Resources>
         <DataTemplate x:Key="BossBuffDataTemplate">
-            <controls:AbnormalityIndicator Size="25"/>
+            <controls:AbnormalityIndicator Size="40"/>
         </DataTemplate>
         <!--<converters:EntityIdToNameConverter x:Key="userIdToName"/>-->
         <!--<converters:AggroTypeToFill x:Key="aggroTypeToFill"/>-->

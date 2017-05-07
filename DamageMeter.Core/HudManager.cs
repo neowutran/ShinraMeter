@@ -63,7 +63,7 @@ namespace DamageMeter
     public class BuffDuration : TSPropertyChanged, IDisposable
     {
         public HotDot Buff { get; }
-        private readonly Timer _timer=new Timer(1000);
+        private readonly Timer _timer = new Timer(1000);
         private int _durationLeft;
 
         public void Refresh()

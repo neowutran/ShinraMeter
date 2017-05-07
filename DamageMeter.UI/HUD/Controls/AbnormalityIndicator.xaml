@@ -45,7 +45,7 @@
         <!--<TextBlock Name="abnormalityId" Grid.Row="1" Text="{Binding AbnormalityId}"/>-->
         <Ellipse Name="bgEll" Fill="{Binding Buff.AbType, Converter={StaticResource strokeConv}}" >
         </Ellipse>
-        <Ellipse Name="abnormalityIcon" Margin="0,0" Width="32" Height="32">
+        <Ellipse Name="abnormalityIcon" Margin="0,0" Width="64" Height="64">
             <Ellipse.Fill>
                 <ImageBrush ImageSource="{Binding Buff.IconName, Converter={StaticResource iconConv}}"/>
             </Ellipse.Fill>
