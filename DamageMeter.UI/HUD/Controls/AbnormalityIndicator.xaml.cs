@@ -27,7 +27,11 @@ namespace DamageMeter.UI.HUD.Controls
         {
             if (e.PropertyName == "Refresh")
             {
-                arc.BeginAnimation(Arc.EndAngleProperty, new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)sender).Duration)));
+                var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)sender).Duration));
+                int fps = ((BuffDuration)sender).Duration > 80000 ? 1 : 30;
+                DoubleAnimation.SetDesiredFrameRate(an, fps);
+                arc.BeginAnimation(Arc.EndAngleProperty, an);
+
             }
         }
 
@@ -55,6 +59,8 @@ namespace DamageMeter.UI.HUD.Controls
             if (((BuffDuration)DataContext).Duration > 0)
             {
                 var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration)DataContext).Duration));
+                int fps = ((BuffDuration)DataContext).Duration > 80000 ? 1 : 30;
+                DoubleAnimation.SetDesiredFrameRate(an, fps);
                 arc.BeginAnimation(Arc.EndAngleProperty, an);
             }
             else
