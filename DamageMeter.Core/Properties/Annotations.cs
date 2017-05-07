@@ -114,7 +114,7 @@ namespace DamageMeter.Properties
         ///     Gets format parameter name
         /// </summary>
         [UsedImplicitly]
-        public string FormatParameterName { get; private set; }
+        public string FormatParameterName { get; }
     }
 
     /// <summary>
@@ -212,7 +212,7 @@ namespace DamageMeter.Properties
         }
 
         [UsedImplicitly]
-        public string ParameterName { get; private set; }
+        public string ParameterName { get; }
     }
 
     /// <summary>
@@ -327,8 +327,8 @@ namespace DamageMeter.Properties
             ForceFullStates = forceFullStates;
         }
 
-        public string Fdt { get; private set; }
-        public bool ForceFullStates { get; private set; }
+        public string Fdt { get; }
+        public bool ForceFullStates { get; }
     }
 
     /// <summary>
@@ -394,7 +394,7 @@ namespace DamageMeter.Properties
         /// <summary>
         ///     Gets enumerations of specified base types
         /// </summary>
-        public Type[] BaseTypes { get; private set; }
+        public Type[] BaseTypes { get; }
     }
 
     /// <summary>
@@ -430,13 +430,13 @@ namespace DamageMeter.Properties
         }
 
         [UsedImplicitly]
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
 
         /// <summary>
         ///     Gets value indicating what is meant to be used
         /// </summary>
         [UsedImplicitly]
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     /// <summary>
@@ -472,13 +472,13 @@ namespace DamageMeter.Properties
         }
 
         [UsedImplicitly]
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
 
         /// <summary>
         ///     Gets value indicating what is meant to be used
         /// </summary>
         [UsedImplicitly]
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     [Flags]
@@ -583,7 +583,7 @@ namespace DamageMeter.Properties
         }
 
         [UsedImplicitly]
-        public string BasePath { get; private set; }
+        public string BasePath { get; }
     }
 
     // ASP.NET MVC attributes
@@ -609,7 +609,7 @@ namespace DamageMeter.Properties
         }
 
         [UsedImplicitly]
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -633,7 +633,7 @@ namespace DamageMeter.Properties
         }
 
         [UsedImplicitly]
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -657,7 +657,7 @@ namespace DamageMeter.Properties
         }
 
         [UsedImplicitly]
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>

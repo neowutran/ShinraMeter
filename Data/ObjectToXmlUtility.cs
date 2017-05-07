@@ -1,14 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Data
 {
@@ -17,9 +12,7 @@ namespace Data
         public static string Serialize<T>(this T value)
         {
             if (value == null)
-            {
                 return string.Empty;
-            }
             try
             {
                 var xmlserializer = new XmlSerializer(typeof(T));
@@ -39,26 +32,24 @@ namespace Data
         public static T Clone<T>(this T source)
         {
             // Don't serialize a null object, simply return the default for that object
-            if (Object.ReferenceEquals(source, null))
-            {
+            if (ReferenceEquals(source, null))
                 return default(T);
-            }
 
             // initialize inner objects individually
             // for example in default constructor some list property initialized with some values,
             // but in 'source' these items are cleaned -
             // without ObjectCreationHandling.Replace default constructor values will be added to result
-            var deserializeSettings = new JsonSerializerSettings {
+            var deserializeSettings = new JsonSerializerSettings
+            {
                 ObjectCreationHandling = ObjectCreationHandling.Replace,
                 TypeNameHandling = TypeNameHandling.Objects
             };
-            var serialized = JsonConvert.SerializeObject(source, Newtonsoft.Json.Formatting.Indented, new JsonSerializerSettings
+            var serialized = JsonConvert.SerializeObject(source, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects,
                 TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
             });
             return JsonConvert.DeserializeObject<T>(serialized, deserializeSettings);
         }
-
     }
 }

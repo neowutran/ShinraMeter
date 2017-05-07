@@ -30,9 +30,9 @@ namespace DamageMeter
 
         private static IntPtr FindTeraWindow()
         {
-            var error0 = Marshal.GetLastWin32Error();
+            Marshal.GetLastWin32Error();
             var result = FindWindow("LaunchUnrealUWindowsClient", "TERA");
-            var error = Marshal.GetLastWin32Error();
+            Marshal.GetLastWin32Error();
             //if (result == IntPtr.Zero && (error != 0))
             //    throw new Win32Exception();
             return result;
@@ -54,31 +54,22 @@ namespace DamageMeter
             var lfDelay = BasicTeraData.Instance.WindowData.LFDelay;
             Thread.Sleep(lfDelay);
             if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
-            {
                 throw new Win32Exception();
-            }
             Thread.Sleep(1);
             if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
-            {
                 throw new Win32Exception();
-            }
             Thread.Sleep(50);
             if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
-            {
                 throw new Win32Exception();
-            }
             Thread.Sleep(1);
             if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
-            {
                 throw new Win32Exception();
-            }
             Thread.Sleep(lfDelay);
         }
 
         private static void SendString(IntPtr hWnd, string s)
         {
             foreach (var character in s)
-            {
                 if (character == '\\')
                 {
                     NewLine(hWnd);
@@ -86,27 +77,25 @@ namespace DamageMeter
                 else
                 {
                     if (!PostMessage(hWnd, WM_CHAR, character, 0))
-                    {
                         throw new Win32Exception();
-                    }
                     Thread.Sleep(1);
                 }
-            }
         }
 
         public static bool IsTeraActive()
         {
             var teraWindow = FindTeraWindow();
             var activeWindow = GetForegroundWindow();
-            return (teraWindow != IntPtr.Zero) && (teraWindow == activeWindow);
+            return teraWindow != IntPtr.Zero && teraWindow == activeWindow;
         }
 
         public static bool IsMeterActive()
         {
             var activeWindow = GetForegroundWindow();
             return (from Window window in Application.Current.Windows
-                    select new WindowInteropHelper(window) 
-                    into wih select wih.Handle).Any(hWnd => hWnd == activeWindow);
+                select new WindowInteropHelper(window)
+                into wih
+                select wih.Handle).Any(hWnd => hWnd == activeWindow);
         }
     }
 }

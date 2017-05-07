@@ -5,9 +5,9 @@ using System.Windows.Input;
 namespace DamageMeter.UI.HUD.Windows
 {
     /// <summary>
-    /// Logica di interazione per BossGageWindow.xaml
+    ///     Logica di interazione per BossGageWindow.xaml
     /// </summary>
-    public partial class BossGageWindow : ClickThrouWindow
+    public partial class BossGageWindow
     {
         public BossGageWindow()
         {
@@ -20,15 +20,12 @@ namespace DamageMeter.UI.HUD.Windows
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ContextMenu = new ContextMenu();
-            var HideButton = new MenuItem() { Header = "Hide" };
-            HideButton.Click += (s, ev) =>
-            {
-                HideWindow();
-            };
+            var HideButton = new MenuItem {Header = "Hide"};
+            HideButton.Click += (s, ev) => { HideWindow(); };
             ContextMenu.Items.Add(HideButton);
         }
 
-        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Move(sender, e);
         }
@@ -39,4 +36,3 @@ namespace DamageMeter.UI.HUD.Windows
         }
     }
 }
-

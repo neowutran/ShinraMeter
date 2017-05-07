@@ -1,33 +1,28 @@
-﻿using DamageMeter.AutoUpdate;
-using Data;
-using Lang;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Windows;
-using NAudio.Wave;
-using System.IO;
-using System.Windows.Input;
-using System.Windows.Media;
-using DamageMeter.TeraDpsApi;
-using NAudio.Vorbis;
-using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Threading;
+using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Input;
+using System.Windows.Media;
+using DamageMeter.AutoUpdate;
+using Data;
 using Data.Actions.Notify;
-using System.Collections.Generic;
-using Data.Actions.Notify.SoundElements;
-using System.Windows.Interop;
+using Lang;
+using Newtonsoft.Json;
 
 namespace DamageMeter.UI
 {
     /// <summary>
-    /// Logique d'interaction pour NotifyIcon.xaml
+    ///     Logique d'interaction pour NotifyIcon.xaml
     /// </summary>
     public partial class NotifyIcon
     {
+        private long _lastSend;
+
+        private MainWindow _mainWindow;
 
         public NotifyIcon()
         {
@@ -41,14 +36,13 @@ namespace DamageMeter.UI
             PacketWaitingProgressBar.Value = packetWaiting;
         }
 
-        private MainWindow _mainWindow;
-        private long _lastSend = 0;
         public void Initialize(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
             DpsWebsiteExport.IsChecked = BasicTeraData.Instance.WindowData.SiteExport;
             AuthTokenTextbox.Text = BasicTeraData.Instance.WindowData.TeraDpsToken;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty,BasicTeraData.Instance.WindowData.SiteExport ? Double.NaN : 0);
+            AuthTokenTextbox.Parent.SetValue(HeightProperty,
+                BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
             AutoExcelExport.IsChecked = BasicTeraData.Instance.WindowData.Excel;
             ExcelCMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             CountOnlyBoss.IsChecked = BasicTeraData.Instance.WindowData.OnlyBoss;
@@ -82,9 +76,9 @@ namespace DamageMeter.UI
             ShowSelfOnTop.IsChecked = BasicTeraData.Instance.WindowData.MeterUserOnTop;
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
+            ServerURLTextbox.Parent.SetValue(HeightProperty,
+                BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
-
 
 
         public void ShowBallon(NotifyFlashMessage flash)
@@ -96,11 +90,10 @@ namespace DamageMeter.UI
             {
                 var balloon = new Balloon();
                 balloon.Value(flash.Balloon.TitleText, flash.Balloon.BodyText);
-                Tray.ShowCustomBalloon(balloon, System.Windows.Controls.Primitives.PopupAnimation.Fade, flash.Balloon.DisplayTime);
+                Tray.ShowCustomBalloon(balloon, PopupAnimation.Fade, flash.Balloon.DisplayTime);
             }
 
-            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound!=null) Task.Run(()=>flash.Sound.Play());
-            
+            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null) Task.Run(() => flash.Sound.Play());
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -148,13 +141,15 @@ namespace DamageMeter.UI
         private void EnableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SiteExport = true;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? Double.NaN : 0);
+            AuthTokenTextbox.Parent.SetValue(HeightProperty,
+                BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
         }
 
         private void DisableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SiteExport = false;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? Double.NaN : 0);
+            AuthTokenTextbox.Parent.SetValue(HeightProperty,
+                BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
         }
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
@@ -199,6 +194,7 @@ namespace DamageMeter.UI
                 window.ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
             }
         }
+
         private void EnableShowAlways(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.AlwaysVisible = true;
@@ -214,7 +210,6 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.InvisibleUi = true;
             if (_mainWindow.ForceWindowVisibilityHidden) return;
             _mainWindow.Visibility = Visibility.Visible;
-           
         }
 
         private void DisableInvisibleWhenNoStats(object sender, RoutedEventArgs e)
@@ -247,13 +242,15 @@ namespace DamageMeter.UI
         private void EnableBossByHpBar(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.DetectBosses = true;
-            if (BasicTeraData.Instance.MonsterDatabase != null) BasicTeraData.Instance.MonsterDatabase.DetectBosses = true;
+            if (BasicTeraData.Instance.MonsterDatabase != null)
+                BasicTeraData.Instance.MonsterDatabase.DetectBosses = true;
         }
 
         private void DisableBossByHpBar(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.DetectBosses = false;
-            if (BasicTeraData.Instance.MonsterDatabase != null) BasicTeraData.Instance.MonsterDatabase.DetectBosses = false;
+            if (BasicTeraData.Instance.MonsterDatabase != null)
+                BasicTeraData.Instance.MonsterDatabase.DetectBosses = false;
         }
 
         private void EnableCountOnlyBoss(object sender, RoutedEventArgs e)
@@ -268,15 +265,15 @@ namespace DamageMeter.UI
 
         private void NumberPlayersChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed = (int?)NumberPlayersSpinner?.Value??5;
+            BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed = NumberPlayersSpinner?.Value ?? 5;
         }
 
         private void LFDelayChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.LFDelay = (int?)LFDelaySpinner?.Value??150;
+            BasicTeraData.Instance.WindowData.LFDelay = LFDelaySpinner?.Value ?? 150;
         }
-        
-        private void Grid_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+
+        private void Grid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             ConfigScrollViewer.ScrollToVerticalOffset(ConfigScrollViewer.VerticalOffset - e.Delta);
             e.Handled = true;
@@ -284,61 +281,57 @@ namespace DamageMeter.UI
 
         private void PrivateChannelColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.PrivateChannelColor = (Color)e.NewValue;
+            BasicTeraData.Instance.WindowData.PrivateChannelColor = (Color) e.NewValue;
         }
 
         private void EmotesColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.EmotesColor = (Color)e.NewValue;
+            BasicTeraData.Instance.WindowData.EmotesColor = (Color) e.NewValue;
         }
 
         private void TradingColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.TradingColor = (Color)e.NewValue;
+            BasicTeraData.Instance.WindowData.TradingColor = (Color) e.NewValue;
         }
 
         private void SayColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.SayColor = (Color)e.NewValue;
+            BasicTeraData.Instance.WindowData.SayColor = (Color) e.NewValue;
         }
 
         private void RaidColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.RaidColor = (Color)e.NewValue;
-
+            BasicTeraData.Instance.WindowData.RaidColor = (Color) e.NewValue;
         }
 
         private void GuildColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.GuildColor = (Color)e.NewValue;
-
+            BasicTeraData.Instance.WindowData.GuildColor = (Color) e.NewValue;
         }
 
         private void GroupColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.GroupColor = (Color)e.NewValue;
-
+            BasicTeraData.Instance.WindowData.GroupColor = (Color) e.NewValue;
         }
 
         private void GeneralColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.GeneralColor = (Color)e.NewValue;
-
+            BasicTeraData.Instance.WindowData.GeneralColor = (Color) e.NewValue;
         }
 
         private void AreaColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.AreaColor = (Color)e.NewValue;
+            BasicTeraData.Instance.WindowData.AreaColor = (Color) e.NewValue;
         }
 
         private void AllianceColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.AllianceColor = (Color)e.NewValue;
+            BasicTeraData.Instance.WindowData.AllianceColor = (Color) e.NewValue;
         }
 
         private void WhisperColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.WhisperColor = (Color)e.NewValue;
+            BasicTeraData.Instance.WindowData.WhisperColor = (Color) e.NewValue;
         }
 
         private void EnableRemoveTeraAltEnterHotkey(object sender, RoutedEventArgs e)
@@ -364,23 +357,24 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.EnableChat = false;
             ChatSettingsVisible(false);
         }
+
         private void ChatSettingsVisible(bool show)
         {
-            CopyInspect.Height = show ? Double.NaN : 0;
-            MuteSound.Height = show ? Double.NaN : 0;
-            PartyEvent.Height = show ? Double.NaN : 0;
-            ShowAfkIventsIngame.Height = show ? Double.NaN : 0;
-            WhisperColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            AllianceColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            AreaColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            GeneralColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            GroupColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            GuildColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            RaidColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            SayColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            TradingColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            EmotesColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
-            PrivateChannelColor.Parent.SetValue(HeightProperty, show ? Double.NaN : 0);
+            CopyInspect.Height = show ? double.NaN : 0;
+            MuteSound.Height = show ? double.NaN : 0;
+            PartyEvent.Height = show ? double.NaN : 0;
+            ShowAfkIventsIngame.Height = show ? double.NaN : 0;
+            WhisperColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            AllianceColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            AreaColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            GeneralColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            GroupColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            GuildColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            RaidColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            SayColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            TradingColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            EmotesColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            PrivateChannelColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)
@@ -395,11 +389,16 @@ namespace DamageMeter.UI
 
         private void ClickUploadGlyphAction(object sender, RoutedEventArgs e)
         {
-            if (_lastSend+TimeSpan.TicksPerSecond*30 >= DateTime.Now.Ticks) return;
+            if (_lastSend + TimeSpan.TicksPerSecond * 30 >= DateTime.Now.Ticks) return;
             if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) return;
-            if (NetworkController.Instance.EntityTracker.MeterUser.Level<65) return;
+            if (NetworkController.Instance.EntityTracker.MeterUser.Level < 65) return;
             _lastSend = DateTime.Now.Ticks;
-            var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None});
+            var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs,
+                new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    TypeNameHandling = TypeNameHandling.None
+                });
             Debug.WriteLine(json);
             Task.Run(() =>
                 {
@@ -411,11 +410,12 @@ namespace DamageMeter.UI
                             //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
 
                             client.Timeout = TimeSpan.FromSeconds(40);
-                            var response = client.PostAsync("https://moongourd.com/shared/glyph_data.php", new StringContent(
-                                json,
-                                Encoding.UTF8,
-                                "application/json")
-                                );
+                            var response = client.PostAsync("https://moongourd.com/shared/glyph_data.php",
+                                new StringContent(
+                                    json,
+                                    Encoding.UTF8,
+                                    "application/json")
+                            );
 
                             var responseString = response.Result.Content.ReadAsStringAsync();
                             Debug.WriteLine(responseString.Result);
@@ -443,7 +443,7 @@ namespace DamageMeter.UI
 
         private void ExcelCMADPSChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds = (int?)ExcelCMADPSSpinner?.Value??1;
+            BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds = ExcelCMADPSSpinner?.Value ?? 1;
         }
 
         private void DisablePartyEvent(object sender, RoutedEventArgs e)
@@ -468,20 +468,22 @@ namespace DamageMeter.UI
 
         private void ClickOpenChatBox(object sender, RoutedEventArgs e)
         {
-            _mainWindow._chatbox = new Chatbox() { Owner = _mainWindow };
+            _mainWindow._chatbox = new Chatbox {Owner = _mainWindow};
             _mainWindow._chatbox.ShowWindow();
         }
 
         private void EnablePServerExp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PrivateServerExport = true;
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
+            ServerURLTextbox.Parent.SetValue(HeightProperty,
+                BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
         private void DisablePServerExp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PrivateServerExport = false;
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? Double.NaN : 0);
+            ServerURLTextbox.Parent.SetValue(HeightProperty,
+                BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
         private void ServerURLChanged(object sender, RoutedEventArgs e)
@@ -511,7 +513,7 @@ namespace DamageMeter.UI
 
         private void IdleRtoChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            BasicTeraData.Instance.WindowData.IdleResetTimeout = (int?)IdleRTOSpinner?.Value??0;
+            BasicTeraData.Instance.WindowData.IdleResetTimeout = IdleRTOSpinner?.Value ?? 0;
             if (BasicTeraData.Instance.WindowData.IdleResetTimeout == 0) DamageTracker.Instance.LastIdleStartTime = 0;
         }
 

@@ -50,9 +50,7 @@ namespace DamageMeter.UI.Skill
             SkillsDetailList.Items.Clear();
 
             foreach (var skillInfo in skill.Skills)
-            {
                 SkillsDetailList.Items.Add(new SkillDetailHeal(skillInfo.Key, skill));
-            }
         }
 
         public string SkillNameIdent()

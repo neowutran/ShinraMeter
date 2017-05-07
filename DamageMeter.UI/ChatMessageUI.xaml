@@ -23,16 +23,16 @@
                VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
                MinHeight="29" />
 
-     
+
         <Label Focusable="False" Grid.Column="2" MouseLeftButtonDown="Sender_OnMouseLeftButtonDown" FontSize="14"
                x:Name="Sender" HorizontalContentAlignment="Left"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"
                MinHeight="29" />
-         
+
         <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True"
                  FontSize="14" HorizontalContentAlignment="Left" SelectionBrush="Black"
-               VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" MinHeight="29"
-         TextWrapping="Wrap" Grid.Column="3" x:Name="Message"  />
+                 VerticalAlignment="Center" VerticalContentAlignment="Center" Foreground="White" MinHeight="29"
+                 TextWrapping="Wrap" Grid.Column="3" x:Name="Message" />
         <Image Grid.Column="4" MouseLeftButtonDown="Copy_MouseLeftButtonDown" x:Name="Copy" Focusable="False"
                Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
                Height="25" VerticalAlignment="Top" Width="25" Margin="0,0,0,0" />

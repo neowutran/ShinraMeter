@@ -10,7 +10,7 @@ namespace DamageMeter
     {
         public const string Thinspace = "\u2009";
 
-        public static readonly FormatHelpers Pretty = new FormatHelpers { UnitSeparator = Thinspace };
+        public static readonly FormatHelpers Pretty = new FormatHelpers {UnitSeparator = Thinspace};
 
         public static readonly FormatHelpers Invariant = new FormatHelpers
         {
@@ -55,7 +55,7 @@ namespace DamageMeter
             string suffix;
             if (CultureInfo.Name.StartsWith("ko"))
             {
-                while (Math.Abs(rounded = (long)decimal.Round(decimalValue)) >= 10000)
+                while (Math.Abs(rounded = (long) decimal.Round(decimalValue)) >= 10000)
                 {
                     decimalValue /= 10;
                     exponent++;
@@ -84,7 +84,7 @@ namespace DamageMeter
             }
             else
             {
-                while (Math.Abs(rounded = (long)decimal.Round(decimalValue)) >= 1000)
+                while (Math.Abs(rounded = (long) decimal.Round(decimalValue)) >= 1000)
                 {
                     decimalValue /= 10;
                     exponent++;

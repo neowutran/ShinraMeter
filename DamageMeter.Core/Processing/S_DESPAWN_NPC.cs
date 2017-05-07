@@ -1,8 +1,10 @@
-﻿namespace DamageMeter.Processing
+﻿using Tera.Game.Messages;
+
+namespace DamageMeter.Processing
 {
     internal class S_DESPAWN_NPC
     {
-        internal S_DESPAWN_NPC(Tera.Game.Messages.SDespawnNpc message)
+        internal S_DESPAWN_NPC(SDespawnNpc message)
         {
             NetworkController.Instance.AbnormalityTracker.Update(message);
             NotifyProcessor.Instance.DespawnNpc(message);

@@ -36,7 +36,7 @@ namespace NetworkSniffer.Packets
         public uint SourceIp => ParserHelpers.GetUInt32BigEndian(Packet.Array, Packet.Offset + 12);
         public uint DestinationIp => ParserHelpers.GetUInt32BigEndian(Packet.Array, Packet.Offset + 16);
 
-        public int HeaderLength => (VersionAndHeaderLength & 0x0F)*4;
+        public int HeaderLength => (VersionAndHeaderLength & 0x0F) * 4;
 
 
         public ArraySegment<byte> Payload
@@ -45,10 +45,8 @@ namespace NetworkSniffer.Packets
             {
                 var headerLength = HeaderLength;
                 if (Packet.Offset + TotalLength > Packet.Array.Length || TotalLength <= headerLength)
-                {
                     throw new Exception(
                         $"Wrong packet TotalLength:{TotalLength} headerLength:{headerLength} Packet.Array.Length:{Packet.Array.Length} SourceIp:{SourceIp} DestinationIp:{DestinationIp}");
-                }
                 return new ArraySegment<byte>(Packet.Array, Packet.Offset + headerLength, TotalLength - headerLength);
             }
         }
@@ -58,4 +56,4 @@ namespace NetworkSniffer.Packets
             Packet = packet;
         }
     }
-}   
+}

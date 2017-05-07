@@ -10,16 +10,16 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="d0" Width="25" />
                 <ColumnDefinition SharedSizeGroup="d1" Width="40" />
-                <ColumnDefinition SharedSizeGroup="d2" Width="200" MaxWidth="200"/>
-                <ColumnDefinition SharedSizeGroup="d3" MinWidth="65" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="d4" MinWidth="65" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="d5" MinWidth="65" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="d6" MinWidth="65" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="d7" MinWidth="65" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="d8" MinWidth="65" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="d9" MinWidth="65" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="d10" MinWidth="65" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="d11" MinWidth="65" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="d2" Width="200" MaxWidth="200" />
+                <ColumnDefinition SharedSizeGroup="d3" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d4" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d5" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d6" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d7" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d8" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d9" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d10" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d11" MinWidth="65" Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
                    BorderThickness="1" BorderBrush="Gray" FontSize="14" VerticalAlignment="Center"

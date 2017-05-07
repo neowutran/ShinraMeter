@@ -1,40 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DamageMeter.UI
 {
     /// <summary>
-    /// Logique d'interaction pour SkillsLog.xaml
+    ///     Logique d'interaction pour SkillsLog.xaml
     /// </summary>
     public partial class SkillsLog
     {
+        private readonly bool _initialized;
+        private readonly bool _received;
 
-        private IEnumerable<Database.Structures.Skill> _skills;
-        private bool _received;
-        private bool _initialized;
+        private readonly IEnumerable<Database.Structures.Skill> _skills;
+
         public SkillsLog(IEnumerable<Database.Structures.Skill> skills, bool received)
         {
             InitializeComponent();
             //ContentWidth = 900;
-            if (skills==null)return;
-            if (skills.Count() == 0) return;
+            if (skills == null) return;
+            var enumerable = skills as Database.Structures.Skill[] ?? skills.ToArray();
+            if (!enumerable.Any()) return;
             _received = received;
-            _skills = skills;
+            _skills = enumerable;
             _initialized = true;
             Display();
         }
+
+        public double ContentWidth { get; private set; }
 
         private void Display()
         {
@@ -43,17 +37,17 @@ namespace DamageMeter.UI
             Database.Database.Type? typeMana = null;
             Database.Database.Type? lastType = null;
 
-            if ((bool)Damage.IsChecked)
+            if ((bool) Damage.IsChecked)
             {
                 typeDamage = Database.Database.Type.Damage;
                 lastType = typeDamage;
             }
-            if ((bool)Heal.IsChecked)
+            if ((bool) Heal.IsChecked)
             {
                 typeHeal = Database.Database.Type.Heal;
                 lastType = typeHeal;
             }
-            if ((bool)Mana.IsChecked)
+            if ((bool) Mana.IsChecked)
             {
                 typeMana = Database.Database.Type.Mana;
                 lastType = typeMana;
@@ -67,32 +61,24 @@ namespace DamageMeter.UI
             }
             else
             {
-
                 if (typeDamage == null)
-                {
                     typeDamage = lastType;
-                }
                 if (typeHeal == null)
-                {
                     typeHeal = lastType;
-                }
                 if (typeMana == null)
-                {
                     typeMana = lastType;
-                }
             }
 
             Skills.Items.Clear();
             var beginTime = _skills.Min(x => x.Time);
-            foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana ).OrderByDescending(x => x.Time))
+            foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana)
+                .OrderByDescending(x => x.Time))
             {
                 var log = new SkillLog();
                 log.Update(skill, _received, beginTime);
                 Skills.Items.Add(log);
             }
         }
-
-        public double ContentWidth { get; private set; }
 
         private void ValueChanged(object sender, RoutedEventArgs e)
         {

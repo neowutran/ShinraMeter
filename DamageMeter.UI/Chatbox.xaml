@@ -59,25 +59,26 @@
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
 
-            <Grid Grid.Row="0">
-                <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Transparent"
-                        Opacity="0.5"
-                        Foreground="White" Click="Close_OnClick" HorizontalContentAlignment="Stretch"
-                        VerticalAlignment="Top" Margin="0">
-                    <Image x:Name="CloseWindow"
-                           Stretch="Fill"
-                           HorizontalAlignment="Left"
-                           Height="29" VerticalAlignment="Top" Width="29" />
-                </Button>
+        <Grid Grid.Row="0">
+            <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Transparent"
+                    Opacity="0.5"
+                    Foreground="White" Click="Close_OnClick" HorizontalContentAlignment="Stretch"
+                    VerticalAlignment="Top" Margin="0">
+                <Image x:Name="CloseWindow"
+                       Stretch="Fill"
+                       HorizontalAlignment="Left"
+                       Height="29" VerticalAlignment="Top" Width="29" />
+            </Button>
         </Grid>
 
         <ScrollViewer Name="ScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
-                <ListBox Name="ChatboxList" Background="Transparent" BorderThickness="0" PreviewMouseWheel="ChatboxList_PreviewMouseWheel" 
-                              Focusable="False" SelectionMode="Extended" SelectionChanged="ChatboxList_OnSelectionChanged"
-                              HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False"
-                              HorizontalAlignment="Left" />
-            </ScrollViewer>
+            <ListBox Name="ChatboxList" Background="Transparent" BorderThickness="0"
+                     PreviewMouseWheel="ChatboxList_PreviewMouseWheel"
+                     Focusable="False" SelectionMode="Extended" SelectionChanged="ChatboxList_OnSelectionChanged"
+                     HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False"
+                     HorizontalAlignment="Left" />
+        </ScrollViewer>
 
 
     </Grid>

@@ -22,7 +22,8 @@ namespace DamageMeter.UI
         private Skills _windowSkill;
         public ImageSource Image;
 
-        public PlayerStats(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playeHealDealt, EntityInformation entityInformation,
+        public PlayerStats(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playeHealDealt,
+            EntityInformation entityInformation,
             Database.Structures.Skills skills, PlayerAbnormals buffs)
         {
             InitializeComponent();
@@ -49,7 +50,7 @@ namespace DamageMeter.UI
             =>
                 FormatHelpers.Instance.FormatValue(PlayerDamageDealt.Interval == 0
                     ? PlayerDamageDealt.Amount
-                    : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/PlayerDamageDealt.Interval) + LP.PerSecond;
+                    : PlayerDamageDealt.Amount * TimeSpan.TicksPerSecond / PlayerDamageDealt.Interval) + LP.PerSecond;
 
         public string Damage => FormatHelpers.Instance.FormatValue(PlayerDamageDealt.Amount);
 
@@ -57,7 +58,7 @@ namespace DamageMeter.UI
             =>
                 FormatHelpers.Instance.FormatValue(EntityInformation.Interval == 0
                     ? PlayerDamageDealt.Amount
-                    : PlayerDamageDealt.Amount*TimeSpan.TicksPerSecond/EntityInformation.Interval) + LP.PerSecond;
+                    : PlayerDamageDealt.Amount * TimeSpan.TicksPerSecond / EntityInformation.Interval) + LP.PerSecond;
 
         public string CritRate => Math.Round(PlayerDamageDealt.CritRate) + "%";
         public string CritDamageRate => Math.Round(PlayerDamageDealt.CritDamageRate) + "%";
@@ -67,9 +68,11 @@ namespace DamageMeter.UI
         public string PlayerName => PlayerDamageDealt.Source.Name;
 
 
-        public string DamagePart => Math.Round((double) PlayerDamageDealt.Amount*100/EntityInformation.TotalDamage) + "%";
+        public string DamagePart => Math.Round((double) PlayerDamageDealt.Amount * 100 /
+                                               EntityInformation.TotalDamage) + "%";
 
-        public void Repaint(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playerHealDealt, EntityInformation entityInformation,
+        public void Repaint(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playerHealDealt,
+            EntityInformation entityInformation,
             Database.Structures.Skills skills,
             PlayerAbnormals buffs, bool timedEncounter)
         {
@@ -83,12 +86,17 @@ namespace DamageMeter.UI
             LabelDps.ToolTip = $"{LP.Individual_dps}: {Dps}";
             LabelCritRate.Content = PlayerDamageDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
                 ? CritRateHeal
-                : BasicTeraData.Instance.WindowData.ShowCritDamageRate ? CritDamageRate : CritRate;
-            var intervalTimespan = TimeSpan.FromSeconds(PlayerDamageDealt.Interval/TimeSpan.TicksPerSecond);
+                : BasicTeraData.Instance.WindowData.ShowCritDamageRate
+                    ? CritDamageRate
+                    : CritRate;
+            var intervalTimespan = TimeSpan.FromSeconds(PlayerDamageDealt.Interval / TimeSpan.TicksPerSecond);
             LabelCritRate.ToolTip = $"{LP.Fight_Duration}: {intervalTimespan.ToString(@"mm\:ss")}";
-            LabelCritRate.Foreground = PlayerDamageDealt.Source.IsHealer && BasicTeraData.Instance.WindowData.ShowHealCrit
+            LabelCritRate.Foreground = PlayerDamageDealt.Source.IsHealer &&
+                                       BasicTeraData.Instance.WindowData.ShowHealCrit
                 ? Brushes.LawnGreen
-                : BasicTeraData.Instance.WindowData.ShowCritDamageRate?Brushes.Orange:Brushes.LightCoral;
+                : BasicTeraData.Instance.WindowData.ShowCritDamageRate
+                    ? Brushes.Orange
+                    : Brushes.LightCoral;
             LabelDamagePart.Content = DamagePart;
             LabelDamagePart.ToolTip = $"{LP.Damage_done}: {Damage}";
 
@@ -96,19 +104,19 @@ namespace DamageMeter.UI
             Spacer.Width = 0;
             GridStats.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var SGrid =
-                ((DamageMeter.UI.MainWindow)((System.Windows.FrameworkElement)
-                    ((System.Windows.FrameworkElement) ((System.Windows.FrameworkElement) this.Parent).Parent).Parent).Parent)
-                    .SGrid;
+                ((MainWindow) ((FrameworkElement)
+                    ((FrameworkElement) ((FrameworkElement) Parent).Parent).Parent).Parent)
+                .SGrid;
             var EGrid =
-                ((DamageMeter.UI.MainWindow)((System.Windows.FrameworkElement)
-                    ((System.Windows.FrameworkElement)((System.Windows.FrameworkElement)this.Parent).Parent).Parent).Parent)
-                    .EGrid;
+                ((MainWindow) ((FrameworkElement)
+                    ((FrameworkElement) ((FrameworkElement) Parent).Parent).Parent).Parent)
+                .EGrid;
             SGrid.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var mainWidth = SGrid.DesiredSize.Width;
             Spacer.Width = mainWidth > GridStats.DesiredSize.Width ? mainWidth - GridStats.DesiredSize.Width : 0;
             DpsIndicator.Width = EntityInformation.TotalDamage == 0
                 ? mainWidth
-                : mainWidth * PlayerDamageDealt.Amount/EntityInformation.TotalDamage;
+                : mainWidth * PlayerDamageDealt.Amount / EntityInformation.TotalDamage;
             EGrid.MaxWidth = Math.Max(mainWidth, GridStats.DesiredSize.Width);
         }
 
@@ -132,28 +140,35 @@ namespace DamageMeter.UI
                 _windowSkill = new Skills(this, PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter)
                 {
                     Title = PlayerName,
-                    CloseMeter = {Content = LP.ResourceManager.GetString(PlayerDamageDealt.Source.Class.ToString(), LP.Culture) + " " + PlayerName + ": "+LP.Close}
+                    CloseMeter =
+                    {
+                        Content = LP.ResourceManager.GetString(PlayerDamageDealt.Source.Class.ToString(), LP.Culture) +
+                                  " " + PlayerName + ": " + LP.Close
+                    }
                 };
-                Window main = Window.GetWindow(this);
-                Screen screen = Screen.FromHandle(new WindowInteropHelper(main).Handle);
+                var main = Window.GetWindow(this);
+                var screen = Screen.FromHandle(new WindowInteropHelper(main).Handle);
                 // Transform screen point to WPF device independent point
-                PresentationSource source = PresentationSource.FromVisual(this);
+                var source = PresentationSource.FromVisual(this);
 
                 if (source?.CompositionTarget == null)
-                {   //if this can't be determined, just use the center screen logic
+                {
+                    //if this can't be determined, just use the center screen logic
                     _windowSkill.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 }
                 else
                 {
                     // WindowStartupLocation.CenterScreen sometimes put window out of screen in multi monitor environment
                     _windowSkill.WindowStartupLocation = WindowStartupLocation.Manual;
-                    Matrix m = source.CompositionTarget.TransformToDevice;
-                    double dx = m.M11;
-                    double dy = m.M22;
-                    ((System.Windows.UIElement)_windowSkill.DpsPanel.Content).Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                    var maxWidth = (((System.Windows.UIElement)_windowSkill.DpsPanel.Content).DesiredSize.Width + 6) * BasicTeraData.Instance.WindowData.Scale;
+                    var m = source.CompositionTarget.TransformToDevice;
+                    var dx = m.M11;
+                    var dy = m.M22;
+                    ((UIElement) _windowSkill.DpsPanel.Content).Measure(new Size(double.PositiveInfinity,
+                        double.PositiveInfinity));
+                    var maxWidth = (((UIElement) _windowSkill.DpsPanel.Content).DesiredSize.Width + 6) *
+                                   BasicTeraData.Instance.WindowData.Scale;
                     Point locationFromScreen;
-                    if (screen.WorkingArea.X+screen.WorkingArea.Width > (main.Left + main.Width + maxWidth) * dx)
+                    if (screen.WorkingArea.X + screen.WorkingArea.Width > (main.Left + main.Width + maxWidth) * dx)
                         locationFromScreen = new Point(
                             (main.Left + main.Width) * dx,
                             main.Top * dy);
@@ -165,7 +180,7 @@ namespace DamageMeter.UI
                         locationFromScreen = new Point(
                             screen.WorkingArea.X + (screen.WorkingArea.Width - maxWidth * dx) / 2,
                             screen.WorkingArea.Y + (screen.WorkingArea.Height - 600 * dy) / 2);
-                    Point targetPoints = source.CompositionTarget.TransformFromDevice.Transform(locationFromScreen);
+                    var targetPoints = source.CompositionTarget.TransformFromDevice.Transform(locationFromScreen);
                     _windowSkill.Left = targetPoints.X;
                     _windowSkill.Top = targetPoints.Y;
                 }
@@ -180,7 +195,8 @@ namespace DamageMeter.UI
             if (PlayerDamageDealt.Source.IsHealer)
                 BasicTeraData.Instance.WindowData.ShowHealCrit = !BasicTeraData.Instance.WindowData.ShowHealCrit;
             else
-                BasicTeraData.Instance.WindowData.ShowCritDamageRate = !BasicTeraData.Instance.WindowData.ShowCritDamageRate;
+                BasicTeraData.Instance.WindowData.ShowCritDamageRate =
+                    !BasicTeraData.Instance.WindowData.ShowCritDamageRate;
         }
 
         public void CloseSkills()

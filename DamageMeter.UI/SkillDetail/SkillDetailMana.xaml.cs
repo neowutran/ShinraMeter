@@ -22,17 +22,11 @@ namespace DamageMeter.UI.SkillDetail
             var hit = skill.Detail;
 
             if (skill.IsHotDot)
-            {
                 hit = LP.Mot;
-            }
             if (hit != null)
-            {
                 LabelName.Content = hit;
-            }
             if (chained == true)
-            {
                 LabelName.Content += " " + LP.Chained;
-            }
 
             LabelName.ToolTip = skill.Id;
             LabelNumberHitMana.Content = skillAggregate.Hits(skill.Id);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Interop;
 using DamageMeter.Database.Structures;
 using Data;
 using Lang;
@@ -15,11 +14,13 @@ namespace DamageMeter.UI
     {
         private readonly PlayerStats _parent;
         private Buff _buff;
+        private SkillsLog _skillDealtLog;
         private SkillsDetail _skillDps;
         private SkillsDetail _skillHeal;
         private SkillsDetail _skillMana;
-        private SkillsLog _skillDealtLog;
         private SkillsLog _skillReceivedLog;
+
+        private Database.Structures.Skills _skills;
 
 
         public Skills(PlayerStats parent, PlayerDamageDealt playerDamageDealt, EntityInformation entityInformation,
@@ -32,8 +33,6 @@ namespace DamageMeter.UI
             BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Update(playerDamageDealt, entityInformation, skills, buffs, timedEncounter);
         }
-
-        private Database.Structures.Skills _skills;
 
         public void Update(PlayerDamageDealt playerDamageDealt, EntityInformation entityInformation,
             Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
@@ -114,7 +113,7 @@ namespace DamageMeter.UI
                 //case "BuffPanel":
                 //    if (_buff == null)
                 //    {
-                _buff = new Buff(playerDamageDealt, buffs, entityInformation);
+                _buff = new Buff(playerDamageDealt, buffs);
                 //    }
                 BuffPanel.Content = _buff;
                 //    return;

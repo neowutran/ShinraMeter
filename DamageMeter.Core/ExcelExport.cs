@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms.VisualStyles;
 using System.Xml;
 using DamageMeter.AutoUpdate;
 using DamageMeter.TeraDpsApi;
@@ -20,10 +19,38 @@ namespace DamageMeter
     internal static class EPPExstension
     {
         private static readonly List<string> Tol2 = new List<string> {"4477AA", "CC6677"};
-        private static readonly List<string> Tol7 = new List<string> {"332288", "88CCEE", "44AA99", "117733", "DDCC77", "CC6677", "AA4499"};
-        private static readonly List<string> Tol9 = new List<string> {"332288", "88CCEE", "44AA99", "117733", "999933", "DDCC77", "CC6677", "882255", "AA4499"};
-        private static readonly List<string> Tol21 = new List<string> {"771155", "AA4488", "CC99BB", "114477", "4477AA", "77AADD", "117777", "44AAAA"
-            , "77CCCC", "117744", "44AA77", "88CCAA", "777711", "AAAA44", "DDDD77", "774411", "AA7744", "DDAA77", "771122", "AA4455", "DD7788"};
+
+        private static readonly List<string> Tol7 =
+            new List<string> {"332288", "88CCEE", "44AA99", "117733", "DDCC77", "CC6677", "AA4499"};
+
+        private static readonly List<string> Tol9 =
+            new List<string> {"332288", "88CCEE", "44AA99", "117733", "999933", "DDCC77", "CC6677", "882255", "AA4499"};
+
+        private static readonly List<string> Tol21 =
+            new List<string>
+            {
+                "771155",
+                "AA4488",
+                "CC99BB",
+                "114477",
+                "4477AA",
+                "77AADD",
+                "117777",
+                "44AAAA",
+                "77CCCC",
+                "117744",
+                "44AA77",
+                "88CCAA",
+                "777711",
+                "AAAA44",
+                "DDDD77",
+                "774411",
+                "AA7744",
+                "DDAA77",
+                "771122",
+                "AA4455",
+                "DD7788"
+            };
 
         public static void SetLineChartColors(this ExcelChart chart)
         {
@@ -34,7 +61,7 @@ namespace DamageMeter
             var nsm = new XmlNamespaceManager(chartXml.NameTable);
             nsm.AddNamespace("a", nsa);
             nsm.AddNamespace("c", nsuri);
-            var series = chart.ChartXml.SelectNodes($@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser", nsm);
+            var series = chart.ChartXml.SelectNodes(@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser", nsm);
             var numLines = series.Count;
             foreach (XmlNode serieNode in series)
             {
@@ -42,7 +69,9 @@ namespace DamageMeter
                 if (numLines <= 2) color = Tol2[i]; //personal
                 else if (numLines <= 7) color = Tol7[i]; //5-party + boss
                 else if (numLines <= 9) color = Tol9[i]; //7-raid  + boss
-                else color = Tol21[i % 21]; //if more than 21 lines - reuse old colors, anyway no one can see anithing at the bottom of the chart.
+                else
+                    color = Tol21[
+                        i % 21]; //if more than 21 lines - reuse old colors, anyway no one can see anithing at the bottom of the chart.
 
                 //var serieNode = chart.ChartXml.SelectSingleNode($@"c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser[c:idx[@val='{i}']]", nsm);
 
@@ -63,7 +92,8 @@ namespace DamageMeter
 
                 serieNode.AppendChild(spPr);
                 ++i;
-            };
+            }
+            
         }
 
         public static void InvisibleSerie(this ExcelBarChart chart, ExcelChartSerie series)
@@ -103,7 +133,8 @@ namespace DamageMeter
         {
             var nsm = chart.WorkSheet.Drawings.NameSpaceManager;
             var nschart = nsm.LookupNamespace("c");
-            var node = chart.ChartXml.SelectSingleNode(@"c:chartSpace/c:chart/c:plotArea/c:catAx[c:axId[@val='1']]", nsm);
+            var node = chart.ChartXml.SelectSingleNode(@"c:chartSpace/c:chart/c:plotArea/c:catAx[c:axId[@val='1']]",
+                nsm);
             var doc = chart.ChartXml;
             node = RenameNode(node, nschart, "c:dateAx");
             node.SelectSingleNode("c:auto/@val", nsm).Value = "0";
@@ -129,7 +160,7 @@ namespace DamageMeter
             layout.AppendChild(child);
             child = doc.CreateElement("c:h", nschart);
             child.Attributes.Append(doc.CreateAttribute("val")).Value =
-                (1F - 1.6F/(maxVal + 2)).ToString(CultureInfo.InvariantCulture);
+                (1F - 1.6F / (maxVal + 2)).ToString(CultureInfo.InvariantCulture);
             layout.AppendChild(child);
             node = doc.SelectSingleNode(@"c:chartSpace/c:chart/c:plotArea/c:layout", nsm);
             node.AppendChild(layout);
@@ -143,13 +174,9 @@ namespace DamageMeter
                 var newElement =
                     node.OwnerDocument.CreateElement(qualifiedName, namespaceUri);
                 while (oldElement.HasAttributes)
-                {
                     newElement.SetAttributeNode(oldElement.RemoveAttributeNode(oldElement.Attributes[0]));
-                }
                 while (oldElement.HasChildNodes)
-                {
                     newElement.AppendChild(oldElement.FirstChild);
-                }
                 oldElement.ParentNode?.ReplaceChild(newElement, oldElement);
                 return newElement;
             }
@@ -184,26 +211,27 @@ namespace DamageMeter
         private static readonly object savelock = new object();
         private static double scale;
 
-        public static void ExcelSave(ExtendedStats exdata, string userName="", bool manual=false)
+        public static void ExcelSave(ExtendedStats exdata, string userName = "", bool manual = false)
         {
             lock (savelock) //can't save 2 excel files at one time
             {
                 if (!BTD.WindowData.Excel && !manual) return;
                 var data = exdata.BaseStats;
                 var Boss = exdata.Entity.Info;
-                scale= 96/Graphics.FromImage(new Bitmap(1, 1)).DpiX;//needed if user have not standart DPI setting in control panel, workaround EPPlus autofit bug
+                scale = 96 / Graphics.FromImage(new Bitmap(1, 1))
+                            .DpiX; //needed if user have not standart DPI setting in control panel, workaround EPPlus autofit bug
                 /*
                 Select save directory
                 */
-                string fileName = BTD.WindowData.ExcelPathTemplate.Replace("{Area}", Boss.Area.Replace(":", "-"))
-                                    .Replace("{Boss}", Boss.Name.Replace(":", "-"))
-                                    .Replace("{Date}", DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
-                                    .Replace("{Time}", DateTime.Now.ToString("HH-mm-ss", CultureInfo.InvariantCulture))
-                                    .Replace("{User}", string.IsNullOrEmpty(userName)?"_____":userName)
-                                    +".xlsx";
+                var fileName = BTD.WindowData.ExcelPathTemplate.Replace("{Area}", Boss.Area.Replace(":", "-"))
+                                   .Replace("{Boss}", Boss.Name.Replace(":", "-"))
+                                   .Replace("{Date}", DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture))
+                                   .Replace("{Time}", DateTime.Now.ToString("HH-mm-ss", CultureInfo.InvariantCulture))
+                                   .Replace("{User}", string.IsNullOrEmpty(userName) ? "_____" : userName)
+                               + ".xlsx";
 
                 var fname = Path.Combine(BTD.WindowData.ExcelSaveDirectory, fileName);
-                
+
 
                 /*
                 Test if you have access to the user choice directory, if not, switch back to the default save directory
@@ -271,8 +299,11 @@ namespace DamageMeter
                         ws.Cells[i, 6].Style.Numberformat.Format = "0.0%";
                         ws.Cells[i, 7].Value = exdata.PlayerCritDamageRate[user.playerName] / 100;
                         ws.Cells[i, 7].Style.Numberformat.Format = "0.0%";
-                        ws.Cells[i, 8].Value = string.IsNullOrEmpty(user.healCrit) ? 0 : double.Parse(user.healCrit) / 100;
-                        ws.Cells[i, 8].Style.Numberformat.Format = "0.0%"; ws.Cells[i, 9].Value = exdata.PlayerReceived[user.playerName].Item1;
+                        ws.Cells[i, 8].Value = string.IsNullOrEmpty(user.healCrit)
+                            ? 0
+                            : double.Parse(user.healCrit) / 100;
+                        ws.Cells[i, 8].Style.Numberformat.Format = "0.0%";
+                        ws.Cells[i, 9].Value = exdata.PlayerReceived[user.playerName].Item1;
                         ws.Cells[i, 10].Value = exdata.PlayerReceived[user.playerName].Item2;
                         ws.Cells[i, 10].Style.Numberformat.Format = @"#,#0,\k";
                         ws.Cells[i, 11].Value = long.Parse(user.playerDps);
@@ -358,16 +389,16 @@ namespace DamageMeter
 
         private static void AddCharts(ExcelWorksheet ws, ExtendedStats exdata, ExcelWorksheet details, int startrow)
         {
-            var time = (int) (exdata.LastTick/TimeSpan.TicksPerSecond - exdata.FirstTick/TimeSpan.TicksPerSecond);
+            var time = (int) (exdata.LastTick / TimeSpan.TicksPerSecond - exdata.FirstTick / TimeSpan.TicksPerSecond);
             var offset = exdata.PlayerBuffs.Keys.ToList().IndexOf(ws.Name) + 1;
             var bossSheet = ws.Name == LP.Boss;
             if (!bossSheet && offset <= 0) return; //no buff data for user -> no graphs.
-            offset = bossSheet ? 3 : 4 + offset*7;
+            offset = bossSheet ? 3 : 4 + offset * 7;
             var dps = ws.Drawings.AddChart(ws.Name + LP.Dps, eChartType.Line);
             dps.SetPosition(startrow + 1, 5, 0, 5);
             dps.SetSize(1200, 300);
             dps.Legend.Position = eLegendPosition.Top;
-            if (time > 40) dps.XAxis.MajorUnit = time/20;
+            if (time > 40) dps.XAxis.MajorUnit = time / 20;
             ExcelChart typeDmg;
             ExcelChartSerie serieDmg;
             if (!bossSheet)
@@ -378,17 +409,17 @@ namespace DamageMeter
 
                 serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 5, time + 3, offset + 5],
                     details.Cells[3, 2, time + 3, 2]);
-                serieDmg.Header = ws.Name + " "+ BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds + LP.CMADPS;
+                serieDmg.Header = ws.Name + " " + BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds + LP.CMADPS;
             }
-            else 
+            else
             {
-               
                 typeDmg = dps.PlotArea.ChartTypes[0];
                 typeDmg.YAxis.Title.Text = LP.BossHP;
                 typeDmg.YAxis.Title.Rotation = 90;
                 typeDmg.YAxis.MaxValue = 1;
-                serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 7, time + 3, offset + 7], details.Cells[3, 2, time + 3, 2]);
-                serieDmg.Header = LP.BossHP+" %";
+                serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 7, time + 3, offset + 7],
+                    details.Cells[3, 2, time + 3, 2]);
+                serieDmg.Header = LP.BossHP + " %";
             }
             typeDmg.YAxis.MinValue = 0;
             var typeDps = dps.PlotArea.ChartTypes.Add(eChartType.Line);
@@ -399,12 +430,12 @@ namespace DamageMeter
             typeDps.YAxis.Format = @"#,#0\k\/\s"; //not sure why, but it loss sourcelink itself if we show only dps.
             var serieDps = typeDps.Series.Add(details.Cells[3, offset + 6, time + 3, offset + 6],
                 details.Cells[3, 2, time + 3, 2]);
-            serieDps.Header = ws.Name + " "+LP.AvgDPS;
+            serieDps.Header = ws.Name + " " + LP.AvgDPS;
             if (bossSheet)
             {
-                typeDps.YAxis.MaxValue = details.Cells[3, offset + 6, time + 3, offset + 6].Max(x => (long)x.Value);
+                typeDps.YAxis.MaxValue = details.Cells[3, offset + 6, time + 3, offset + 6].Max(x => (long) x.Value);
                 typeDps.YAxis.MinValue = 0;
-                int col = 4;
+                var col = 4;
                 foreach (var user in exdata.PlayerBuffs)
                 {
                     col += 7;
@@ -412,7 +443,7 @@ namespace DamageMeter
                     //userDmg.Header = user.Key + " Dmg";
                     var userDps = typeDps.Series.Add(details.Cells[3, col + 6, time + 3, col + 6],
                         details.Cells[3, 2, time + 3, 2]);
-                    userDps.Header = user.Key + " "+LP.AvgDPS;
+                    userDps.Header = user.Key + " " + LP.AvgDPS;
                 }
             }
             //dps.FixEppPlusBug();// needed only if adding users dmg to main boss chart
@@ -434,7 +465,7 @@ namespace DamageMeter
                 var buff = ws.Drawings.AddChart(ws.Name + LP.Buff, eChartType.BarStacked);
                 var typeBuff = buff.PlotArea.ChartTypes[0];
                 buff.SetPosition(startrow + 9, 5, 0, 5);
-                buff.SetSize(1200, numBuff*25 + 38);
+                buff.SetSize(1200, numBuff * 25 + 38);
                 buff.Legend.Remove();
                 var serieStart = typeBuff.Series.Add(details.Cells[3, offset + 1, numInt + 3, offset + 1],
                     details.Cells[3, offset, numInt + 3, offset]);
@@ -443,9 +474,9 @@ namespace DamageMeter
                 var serieTime = typeBuff.Series.Add(details.Cells[3, offset + 2, numInt + 3, offset + 2],
                     details.Cells[3, offset, numInt + 3, offset]);
                 serieTime.Header = LP.Time;
-                typeBuff.YAxis.MajorUnit = time >= 40 ? (double) (time/20)/86400F : 1F/86400F;
+                typeBuff.YAxis.MajorUnit = time >= 40 ? (double) (time / 20) / 86400F : 1F / 86400F;
                 typeBuff.YAxis.MinValue = 0F;
-                typeBuff.YAxis.MaxValue = (double) time/86400F;
+                typeBuff.YAxis.MaxValue = (double) time / 86400F;
                 typeBuff.XAxis.Orientation = eAxisOrientation.MaxMin;
                 typeBuff.XAxis.MinorTickMark = eAxisTickMark.None;
                 typeBuff.YAxis.Crosses = eCrosses.Max;
@@ -466,7 +497,7 @@ namespace DamageMeter
 
         private static ExcelWorksheet CreateDetailsSheet(ExcelPackage package, ExtendedStats exdata)
         {
-            var timeFormat = (exdata.LastTick - exdata.FirstTick)/TimeSpan.TicksPerSecond < 40 ? "ss" : "mm:ss";
+            var timeFormat = (exdata.LastTick - exdata.FirstTick) / TimeSpan.TicksPerSecond < 40 ? "ss" : "mm:ss";
             var details = package.Workbook.Worksheets.Add("Details");
             details.Cells[1, 1].Value = "Boss";
             details.Cells[2, 1].Value = "Seconds";
@@ -487,10 +518,12 @@ namespace DamageMeter
             details.Column(10).Style.Numberformat.Format = "0%";
             details.Cells[1, 1, 1, 10].Merge = true;
 
-            for (int t = 0; t <= exdata.LastTick / TimeSpan.TicksPerSecond - exdata.FirstTick / TimeSpan.TicksPerSecond; t++)
+            for (var t = 0;
+                t <= exdata.LastTick / TimeSpan.TicksPerSecond - exdata.FirstTick / TimeSpan.TicksPerSecond;
+                t++)
             {
                 details.Cells[t + 3, 1].Value = t;
-                details.Cells[t + 3, 2].Value = (double) t/86400;
+                details.Cells[t + 3, 2].Value = (double) t / 86400;
             }
             var buffnum = 0;
             var j = 0;
@@ -504,19 +537,21 @@ namespace DamageMeter
                 {
                     j++;
                     details.Cells[2 + j, 3].Value = buffnum;
-                    details.Cells[2 + j, 4].Value = (double) (buff.Begin - exdata.FirstTick)/TimeSpan.TicksPerDay;
-                    details.Cells[2 + j, 5].Value = (double) (buff.End - buff.Begin)/TimeSpan.TicksPerDay;
+                    details.Cells[2 + j, 4].Value = (double) (buff.Begin - exdata.FirstTick) / TimeSpan.TicksPerDay;
+                    details.Cells[2 + j, 5].Value = (double) (buff.End - buff.Begin) / TimeSpan.TicksPerDay;
                 }
             }
             long dealtDamage = 0;
             var hp = exdata.Entity.Info.HP;
             var totalDamage = exdata.PlayerSkills.Sum(
-            x => x.Value.Where(time => time.Time >= exdata.FirstTick && time.Time <= exdata.LastTick)
-             .Sum(y => y.Amount));
+                x => x.Value.Where(time => time.Time >= exdata.FirstTick && time.Time <= exdata.LastTick)
+                    .Sum(y => y.Amount));
             if (totalDamage < hp) totalDamage = hp;
             j = 0;
-            var xCMA = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds<=0 ? 1: BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
-            var last=new Queue<long>();
+            var xCMA = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds <= 0
+                ? 1
+                : BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
+            var last = new Queue<long>();
             for (var curTick = exdata.FirstTick;
                 curTick <= exdata.LastTick;
                 curTick += TimeSpan.TicksPerSecond)
@@ -524,24 +559,31 @@ namespace DamageMeter
                 j++;
                 var damage =
                     exdata.PlayerSkills.Sum(
-                        x => x.Value.Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond)
+                        x => x.Value.Where(time => time.Time >= curTick &&
+                                                   time.Time <= curTick + TimeSpan.TicksPerSecond)
                             .Sum(skill => skill.Amount));
                 dealtDamage += damage;
                 last.Enqueue(damage);
-                if (last.Count> xCMA) last.Dequeue();
+                if (last.Count > xCMA) last.Dequeue();
                 if (curTick >= exdata.LastTick - TimeSpan.TicksPerSecond)
                 {
                     if (j > xCMA)
-                        details.Cells[j + 2 - xCMA / 2, 8].Value = last.ToArray().Sum(x => x)/(xCMA>1?xCMA-1+TimeSpan.TicksPerSecond/(exdata.LastTick-curTick):1)/1000;
-                    details.Cells[j + 2, 9].Value = dealtDamage*TimeSpan.TicksPerSecond/(exdata.LastTick - exdata.FirstTick)/1000;
+                        details.Cells[j + 2 - xCMA / 2, 8].Value =
+                            last.ToArray().Sum(x => x) / (xCMA > 1
+                                ? xCMA - 1 + TimeSpan.TicksPerSecond / (exdata.LastTick - curTick)
+                                : 1) / 1000;
+                    details.Cells[j + 2, 9].Value = dealtDamage * TimeSpan.TicksPerSecond /
+                                                    (exdata.LastTick - exdata.FirstTick) / 1000;
                 }
                 else
                 {
                     if (j >= xCMA)
                         details.Cells[j + 2 - xCMA / 2, 8].Value = last.ToArray().Sum(x => x) / xCMA / 1000;
-                    if (j != 1) details.Cells[j + 2, 9].Value = dealtDamage/(j - 1)/1000;
+                    if (j != 1) details.Cells[j + 2, 9].Value = dealtDamage / (j - 1) / 1000;
                 }
-                details.Cells[j + 2, 10].Value = totalDamage == 0 ? 0 : (double)(totalDamage - dealtDamage) / totalDamage;
+                details.Cells[j + 2, 10].Value = totalDamage == 0
+                    ? 0
+                    : (double) (totalDamage - dealtDamage) / totalDamage;
             }
             var i = 4;
             foreach (var user in exdata.PlayerBuffs)
@@ -572,9 +614,9 @@ namespace DamageMeter
                     {
                         j++;
                         details.Cells[2 + j, i].Value = buffnum;
-                        details.Cells[2 + j, i + 1].Value = (double) (buff.Begin - exdata.FirstTick)/
+                        details.Cells[2 + j, i + 1].Value = (double) (buff.Begin - exdata.FirstTick) /
                                                             TimeSpan.TicksPerDay;
-                        details.Cells[2 + j, i + 2].Value = (double) (buff.End - buff.Begin)/TimeSpan.TicksPerDay;
+                        details.Cells[2 + j, i + 2].Value = (double) (buff.End - buff.Begin) / TimeSpan.TicksPerDay;
                     }
                 }
                 if (user.Value.Death.Count() > 0)
@@ -586,9 +628,9 @@ namespace DamageMeter
                     {
                         j++;
                         details.Cells[2 + j, i].Value = buffnum;
-                        details.Cells[2 + j, i + 1].Value = (double) (buff.Begin - exdata.FirstTick)/
+                        details.Cells[2 + j, i + 1].Value = (double) (buff.Begin - exdata.FirstTick) /
                                                             TimeSpan.TicksPerDay;
-                        details.Cells[2 + j, i + 2].Value = (double) (buff.End - buff.Begin)/TimeSpan.TicksPerDay;
+                        details.Cells[2 + j, i + 2].Value = (double) (buff.End - buff.Begin) / TimeSpan.TicksPerDay;
                     }
                 }
                 if (user.Value.Aggro(exdata.Entity).Count() > 0)
@@ -600,9 +642,9 @@ namespace DamageMeter
                     {
                         j++;
                         details.Cells[2 + j, i].Value = buffnum;
-                        details.Cells[2 + j, i + 1].Value = (double) (buff.Begin - exdata.FirstTick)/
+                        details.Cells[2 + j, i + 1].Value = (double) (buff.Begin - exdata.FirstTick) /
                                                             TimeSpan.TicksPerDay;
-                        details.Cells[2 + j, i + 2].Value = (double) (buff.End - buff.Begin)/TimeSpan.TicksPerDay;
+                        details.Cells[2 + j, i + 2].Value = (double) (buff.End - buff.Begin) / TimeSpan.TicksPerDay;
                     }
                 }
                 dealtDamage = 0;
@@ -615,21 +657,27 @@ namespace DamageMeter
                     j++;
                     var damage =
                         exdata.PlayerSkills.Where(all => all.Key == user.Key).Sum(
-                            x => x.Value.Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond).Sum(skill => skill.Amount));
+                            x => x.Value
+                                .Where(time => time.Time >= curTick && time.Time <= curTick + TimeSpan.TicksPerSecond)
+                                .Sum(skill => skill.Amount));
                     dealtDamage += damage;
                     last.Enqueue(damage);
                     if (last.Count > xCMA) last.Dequeue();
                     if (curTick >= exdata.LastTick - TimeSpan.TicksPerSecond)
                     {
-                        if (j>xCMA)
-                            details.Cells[j + 2 - xCMA / 2, i + 5].Value = last.ToArray().Sum(x=>x)/(xCMA>1?xCMA-1+TimeSpan.TicksPerSecond/(exdata.LastTick-curTick):1)/1000;
-                        details.Cells[j + 2, i + 6].Value = dealtDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick) / 1000;
+                        if (j > xCMA)
+                            details.Cells[j + 2 - xCMA / 2, i + 5].Value =
+                                last.ToArray().Sum(x => x) /
+                                (xCMA > 1 ? xCMA - 1 + TimeSpan.TicksPerSecond / (exdata.LastTick - curTick) : 1) /
+                                1000;
+                        details.Cells[j + 2, i + 6].Value =
+                            dealtDamage * TimeSpan.TicksPerSecond / (exdata.LastTick - exdata.FirstTick) / 1000;
                     }
-                    else 
+                    else
                     {
                         if (j >= xCMA)
-                            details.Cells[j + 2 - xCMA /2, i + 5].Value = last.ToArray().Sum(x => x) / xCMA / 1000;
-                        if (j != 1) details.Cells[j + 2, i + 6].Value = dealtDamage/(j - 1) / 1000;
+                            details.Cells[j + 2 - xCMA / 2, i + 5].Value = last.ToArray().Sum(x => x) / xCMA / 1000;
+                        if (j != 1) details.Cells[j + 2, i + 6].Value = dealtDamage / (j - 1) / 1000;
                     }
                 }
             }
@@ -640,21 +688,19 @@ namespace DamageMeter
         private static double GetTrueColumnWidth(double width)
         {
             //DEDUCE WHAT THE COLUMN WIDTH WOULD REALLY GET SET TO
-            double z;
-            if (width >= 1 + 2F/3)
-                z = Math.Round((Math.Round(7*(width - 1F/256), 0) - 5)/7, 2);
-            else
-                z = Math.Round((Math.Round(12*(width - 1F/256), 0) - Math.Round(5*width, 0))/12, 2);
+            var z = width >= 1 + 2F / 3
+                ? Math.Round((Math.Round(7 * (width - 1F / 256), 0) - 5) / 7, 2)
+                : Math.Round((Math.Round(12 * (width - 1F / 256), 0) - Math.Round(5 * width, 0)) / 12, 2);
 
             //HOW FAR OFF? (WILL BE LESS THAN 1)
             var errorAmt = width - z;
 
             //CALCULATE WHAT AMOUNT TO TACK ONTO THE ORIGINAL AMOUNT TO RESULT IN THE CLOSEST POSSIBLE SETTING 
             double adj;
-            if (width >= 1 + 2/3)
-                adj = Math.Round(7*errorAmt - 7F/256, 0)/7;
+            if (width >= 1 + 2 / 3)
+                adj = Math.Round(7 * errorAmt - 7F / 256, 0) / 7;
             else
-                adj = Math.Round(12*errorAmt - 12F/256, 0)/12 + 2F/12;
+                adj = Math.Round(12 * errorAmt - 12F / 256, 0) / 12 + 2F / 12;
 
             //RETURN A SCALED-VALUE THAT SHOULD RESULT IN THE NEAREST POSSIBLE VALUE TO THE TRUE DESIRED SETTING
             if (z > 0)
@@ -679,7 +725,6 @@ namespace DamageMeter
             ExcelWorksheet details)
         {
             var ws = wb.Worksheets.Add($"{user.playerServer}_{user.playerName}");
-            var rgc = new RaceGenderClass("Common", "Common", user.playerClass);
             ws.DefaultRowHeight = 30;
             ws.Cells.Style.Font.Size = 12;
             ws.Cells.Style.Font.Name = "Arial";
@@ -699,8 +744,9 @@ namespace DamageMeter
             ws.Cells[2, 10].Value = LP.AverageCrit;
             ws.Cells[2, 11].Value = LP.AvgWhite;
             var i = 2;
-           
-            foreach (var stat in exdata.PlayerSkillsAggregated[user.playerServer+"/"+user.playerName].OrderByDescending(x => x.Amount()))
+
+            foreach (var stat in exdata.PlayerSkillsAggregated[user.playerServer + "/" + user.playerName]
+                .OrderByDescending(x => x.Amount()))
             {
                 i++;
                 ws.Cells[i, 1].Value = i - 2;

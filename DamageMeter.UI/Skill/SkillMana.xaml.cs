@@ -42,9 +42,7 @@ namespace DamageMeter.UI.Skill
             SkillsDetailList.Items.Clear();
 
             foreach (var skillInfo in skill.Skills)
-            {
                 SkillsDetailList.Items.Add(new SkillDetailMana(skillInfo.Key, skill));
-            }
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)

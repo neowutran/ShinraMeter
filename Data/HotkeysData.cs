@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -67,39 +66,27 @@ namespace Data
 
             var topmostKey = ReadElement(root, "topmost", false);
             if (topmostKey != null)
-            {
-                Topmost = (KeyValuePair<Keys, ModifierKeys>)topmostKey;
-            }
+                Topmost = (KeyValuePair<Keys, ModifierKeys>) topmostKey;
 
             var pasteKey = ReadElement(root, "paste", false);
             if (pasteKey != null)
-            {
                 Paste = (KeyValuePair<Keys, ModifierKeys>) pasteKey;
-            }
 
             var resetKey = ReadElement(root, "reset", true);
             if (resetKey != null)
-            {
                 Reset = (KeyValuePair<Keys, ModifierKeys>) resetKey;
-            }
 
             var activateKey = ReadElement(root, "click_throu", true);
             if (activateKey != null)
-            {
                 ClickThrou = (KeyValuePair<Keys, ModifierKeys>) activateKey;
-            }
 
             var resetCurrentKey = ReadElement(root, "reset_current", true);
             if (resetCurrentKey != null)
-            {
                 ResetCurrent = (KeyValuePair<Keys, ModifierKeys>) resetCurrentKey;
-            }
 
             var excelSaveKey = ReadElement(root, "excel_save", true);
             if (excelSaveKey != null)
-            {
                 ExcelSave = (KeyValuePair<Keys, ModifierKeys>) excelSaveKey;
-            }
 
             Copy = new List<CopyKey>();
             CopyData(xml);
@@ -129,7 +116,8 @@ namespace Data
                 keyValue = char.ToUpper(keyValue[0]) + keyValue.Substring(1);
                 if (!Enum.TryParse(keyValue, out key))
                 {
-                    var message = LP.Unable_to_get_key_from_string + " " + keyValue + ". "+LP.Your_hotkeys_xml_file_is_invalid;
+                    var message = LP.Unable_to_get_key_from_string + " " + keyValue + ". " +
+                                  LP.Your_hotkeys_xml_file_is_invalid;
                     MessageBox.Show(message);
                     return null;
                 }
@@ -179,7 +167,7 @@ namespace Data
                     @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\",
                     4,
                     15
-                    ),
+                ),
                 new CopyKey(
                     @"Damage Done @ {encounter} {timer} {partyDps} {enrage}:\",
                     "",
@@ -191,7 +179,7 @@ namespace Data
                     @"[{class}] {name}: {debuff_list}\",
                     4,
                     15
-                    )
+                )
             };
             ExcelSave = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
             ClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageUp, ModifierKeys.Control);
@@ -202,7 +190,6 @@ namespace Data
             try
             {
                 foreach (
-
                     var copy in xml.Root.Elements("copys").Elements("copy"))
                 {
                     bool ctrl, shift, window;
@@ -214,21 +201,24 @@ namespace Data
                     var header = copy.Element("string").Element("header").Value.Replace("{body}", "");
                     var footer = copy.Element("string").Element("footer").Value.Replace("{body}", "");
                     var content = copy.Element("string").Element("content").Value.Replace("{body}", "");
-                    var lowDpsContent = copy.Element("string").Element("low_dps_content")?.Value.Replace("{body}", "") ?? content;
+                    var lowDpsContent =
+                        copy.Element("string").Element("low_dps_content")?.Value.Replace("{body}", "") ?? content;
                     var lowDpsTreshold = int.Parse(copy.Element("string").Element("low_dps_threshold")?.Value ?? "4");
                     var limitNameLength = int.Parse(copy.Element("string").Element("limit_name_length")?.Value ?? "0");
                     Keys key;
                     var keyValue = copy.Element("key").Value;
                     if (!Enum.TryParse(keyValue, out key))
                     {
-                        var message = LP.Unable_to_get_key_from_string+ " " + keyValue + ". "+LP.Your_hotkeys_xml_file_is_invalid;
+                        var message = LP.Unable_to_get_key_from_string + " " + keyValue + ". " +
+                                      LP.Your_hotkeys_xml_file_is_invalid;
                         MessageBox.Show(message);
                         continue;
                     }
                     var order = copy.Element("string").Element("order").Value;
                     var orderBy = copy.Element("string").Element("order_by").Value;
                     var modifier = ConvertToModifierKey(ctrl, false, shift, window);
-                    Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order, lowDpsContent, lowDpsTreshold, limitNameLength));
+                    Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order, lowDpsContent,
+                        lowDpsTreshold, limitNameLength));
                 }
             }
             catch
@@ -241,25 +231,18 @@ namespace Data
         {
             var modifier = ModifierKeys.None;
             if (ctrl)
-            {
                 modifier |= ModifierKeys.Control;
-            }
             if (alt)
-            {
                 modifier |= ModifierKeys.Alt;
-            }
             if (shift)
-            {
                 modifier |= ModifierKeys.Shift;
-            }
             if (window)
-            {
                 modifier |= ModifierKeys.Win;
-            }
             return modifier;
         }
 
-        public void SaveKey(XDocument xml, string keyName, KeyValuePair<Keys, ModifierKeys> keyValue, bool saveAlt = true)
+        public void SaveKey(XDocument xml, string keyName, KeyValuePair<Keys, ModifierKeys> keyValue,
+            bool saveAlt = true)
         {
             xml.Root.Add(new XElement(keyName));
 
@@ -279,7 +262,7 @@ namespace Data
         {
             var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("hotkeys"));
             SaveKey(xml, "topmost", Topmost);
-            SaveKey(xml, "paste",Paste,false);
+            SaveKey(xml, "paste", Paste, false);
             SaveKey(xml, "reset", Reset);
             SaveKey(xml, "reset_current", ResetCurrent);
             SaveKey(xml, "excel_save", ExcelSave);

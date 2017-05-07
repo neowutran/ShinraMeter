@@ -23,14 +23,12 @@ namespace Data
                 _images.Add(playerClass, image);
                 var drawing = new Bitmap(filename);
                 for (var i = 0; i < drawing.Width; i++)
+                for (var j = 0; j < drawing.Height; j++)
                 {
-                    for (var j = 0; j < drawing.Height; j++)
-                    {
-                        var col = drawing.GetPixel(i, j);
-                        drawing.SetPixel(i, j,
-                            Color.FromArgb(col.A, 255 - (col.R + col.G + col.B)/3, 255 - (col.R + col.G + col.B)/3,
-                                255 - (col.R + col.G + col.B)/3));
-                    }
+                    var col = drawing.GetPixel(i, j);
+                    drawing.SetPixel(i, j,
+                        Color.FromArgb(col.A, 255 - (col.R + col.G + col.B) / 3, 255 - (col.R + col.G + col.B) / 3,
+                            255 - (col.R + col.G + col.B) / 3));
                 }
                 _drawings.Add(playerClass, drawing);
             }

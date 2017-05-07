@@ -29,7 +29,7 @@ using System.Windows;
 //l'attribut NeutralResourceLanguage ci-dessous. Mettez à jour "fr-FR" dans
 //la ligne ci-après pour qu'elle corresponde au paramètre UICulture du fichier projet.
 
-[assembly: NeutralResourcesLanguage("en-US",UltimateResourceFallbackLocation.MainAssembly)]
+[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 
 
 [assembly: ThemeInfo(
@@ -39,7 +39,7 @@ using System.Windows;
     ResourceDictionaryLocation.SourceAssembly //où se trouve le dictionnaire de ressources générique
     //(utilisé si une ressource est introuvable dans la page, 
     // dans l'application ou dans l'un des dictionnaires de ressources spécifiques à un thème)
-    )]
+)]
 
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :

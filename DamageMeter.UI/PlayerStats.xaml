@@ -17,9 +17,9 @@
                         <ControlTemplate TargetType="Label">
                             <Border>
                                 <ContentPresenter
-                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                  VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                  RecognizesAccessKey="False" />
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                    RecognizesAccessKey="False" />
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>
@@ -37,17 +37,17 @@
               x:Name="GridStats" HorizontalAlignment="Center" Width="Auto"
               VerticalAlignment="Top" Height="29" MinHeight="29" MaxHeight="29">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition SharedSizeGroup="p0" Width="25"/>
-                <ColumnDefinition SharedSizeGroup="p1" MinWidth="90" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="p2" Width="*"/>
-                <ColumnDefinition SharedSizeGroup="p3" MinWidth="45" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="p4" MinWidth="60" Width="Auto"/>
-                <ColumnDefinition SharedSizeGroup="p5" MinWidth="45" Width="Auto"/>
+                <ColumnDefinition SharedSizeGroup="p0" Width="25" />
+                <ColumnDefinition SharedSizeGroup="p1" MinWidth="90" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p2" Width="*" />
+                <ColumnDefinition SharedSizeGroup="p3" MinWidth="45" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p4" MinWidth="60" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p5" MinWidth="45" Width="Auto" />
             </Grid.ColumnDefinitions>
             <Image PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class"
-               Focusable="False" Grid.Column="0"
-               Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
-               Height="25" VerticalAlignment="Top" Width="25" Margin="0,2,0,0" />
+                   Focusable="False" Grid.Column="0"
+                   Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
+                   Height="25" VerticalAlignment="Top" Width="25" Margin="0,2,0,0" />
 
             <Label Focusable="False" Grid.Column="1" FontSize="14" VerticalAlignment="Center"
                    HorizontalContentAlignment="Left"
@@ -61,7 +61,8 @@
                    HorizontalContentAlignment="Center"
                    VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
-            <Label Focusable="False" Grid.Column="4" FontSize="14" x:Name="LabelDps" HorizontalContentAlignment="Center"
+            <Label Focusable="False" Grid.Column="4" FontSize="14" x:Name="LabelDps"
+                   HorizontalContentAlignment="Center"
                    VerticalAlignment="Center" Foreground="White"
                    MinHeight="29" />
 

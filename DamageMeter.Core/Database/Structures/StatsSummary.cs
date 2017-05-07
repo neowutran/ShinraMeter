@@ -4,7 +4,8 @@ namespace DamageMeter.Database.Structures
 {
     public class StatsSummary
     {
-        public StatsSummary(List<PlayerDamageDealt> playerDamageDealt, List<PlayerHealDealt> playerHealDealt, EntityInformation entityInformation)
+        public StatsSummary(List<PlayerDamageDealt> playerDamageDealt, List<PlayerHealDealt> playerHealDealt,
+            EntityInformation entityInformation)
         {
             PlayerDamageDealt = playerDamageDealt;
             PlayerHealDealt = playerHealDealt;

@@ -9,7 +9,7 @@ using Tera.Game;
 namespace DamageMeter.UI
 {
     /// <summary>
-    /// Logique d'interaction pour SkillLog.xaml
+    ///     Logique d'interaction pour SkillLog.xaml
     /// </summary>
     public partial class SkillLog
     {
@@ -22,15 +22,13 @@ namespace DamageMeter.UI
         public void Update(Database.Structures.Skill skill, bool received, long beginTime)
         {
             var skillInfo = SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot,
-                           NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
-                           BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
+                NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
+                BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
             var entity = received ? skill.Source : skill.Target;
             Brush color = null;
             var fontWeight = FontWeights.Normal;
             if (skill.Critic)
-            {
                 fontWeight = FontWeights.Bold;
-            }
             switch (skill.Type)
             {
                 case Database.Database.Type.Damage:
@@ -46,9 +44,9 @@ namespace DamageMeter.UI
 
             SkillAmount.Foreground = color;
             SkillAmount.FontWeight = fontWeight;
-            SkillAmount.ToolTip = skill.Critic ? LP.Critical :  LP.White;
+            SkillAmount.ToolTip = skill.Critic ? LP.Critical : LP.White;
             SkillName.Content = skill.SkillId;
-            Time.Content = (skill.Time - beginTime)/TimeSpan.TicksPerSecond + LP.Seconds;
+            Time.Content = (skill.Time - beginTime) / TimeSpan.TicksPerSecond + LP.Seconds;
             if (skillInfo != null)
             {
                 SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
@@ -59,33 +57,33 @@ namespace DamageMeter.UI
             SkillDirection.Content = LP.ResourceManager.GetString(skill.Direction.ToString());
             switch (skill.Direction)
             {
-                    case HitDirection.Back:
-                        SkillDirection.Foreground = Brushes.Red;
+                case HitDirection.Back:
+                    SkillDirection.Foreground = Brushes.Red;
                     break;
-                    case HitDirection.Dot:
-                        if (skill.Type == Database.Database.Type.Heal) SkillDirection.Content = LP.Hot;
-                        if (skill.Type == Database.Database.Type.Mana) SkillDirection.Content = LP.Mot;
+                case HitDirection.Dot:
+                    if (skill.Type == Database.Database.Type.Heal) SkillDirection.Content = LP.Hot;
+                    if (skill.Type == Database.Database.Type.Mana) SkillDirection.Content = LP.Mot;
                     break;
-                    case HitDirection.Front:
+                case HitDirection.Front:
                     SkillDirection.Foreground = Brushes.BlueViolet;
                     break;
-                    case HitDirection.Side:
+                case HitDirection.Side:
                     SkillDirection.Foreground = Brushes.SpringGreen;
                     break;
-
             }
 
             SkillName.ToolTip = skill.Time;
-            if (entity is NpcEntity)
+            var npcEntity = entity as NpcEntity;
+            if (npcEntity != null)
             {
-                var npc = (NpcEntity) entity;
+                var npc = npcEntity;
                 SkillTarget.Content = npc.Info.Name + " : " + npc.Info.Area;
-            }else if (entity is UserEntity)
+            }
+            else if (entity is UserEntity)
             {
-                SkillTarget.Content = ((UserEntity) entity).Name ;
+                SkillTarget.Content = ((UserEntity) entity).Name;
             }
             SkillPet.Content = skill.Pet == null ? "" : skill.Pet.Name;
-                
         }
 
         private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

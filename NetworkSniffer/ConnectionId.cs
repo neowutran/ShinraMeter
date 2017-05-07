@@ -38,7 +38,7 @@ namespace NetworkSniffer
 
         public override int GetHashCode()
         {
-            return Source.GetHashCode()*37 + Destination.GetHashCode();
+            return Source.GetHashCode() * 37 + Destination.GetHashCode();
         }
 
         public override string ToString()

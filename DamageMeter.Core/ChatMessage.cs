@@ -13,12 +13,12 @@ namespace DamageMeter
             Time = time;
         }
 
-        public Chat.ChatType ChatType { private set; get; }
+        public Chat.ChatType ChatType { get; }
         public string Time { get; set; }
 
-        public S_CHAT.ChannelEnum? Channel { private set; get; }
+        public S_CHAT.ChannelEnum? Channel { get; }
 
-        public string Sender { private set; get; }
-        public string Text { private set; get; }
+        public string Sender { get; }
+        public string Text { get; }
     }
 }

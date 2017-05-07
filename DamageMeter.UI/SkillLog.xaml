@@ -6,13 +6,13 @@
              mc:Ignorable="d">
     <Grid MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="40"/>
-            <ColumnDefinition SharedSizeGroup="s1" MinWidth="200" Width="Auto"/>
-            <ColumnDefinition SharedSizeGroup="s2" MinWidth="70" Width="Auto"/>
-            <ColumnDefinition SharedSizeGroup="s3" MinWidth="70" Width="Auto"/>
-            <ColumnDefinition SharedSizeGroup="s4" MinWidth="200" Width="Auto"/>
-            <ColumnDefinition SharedSizeGroup="s5" MinWidth="200" Width="Auto"/>
-            <ColumnDefinition SharedSizeGroup="s6" MinWidth="200" Width="Auto"/>
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition SharedSizeGroup="s1" MinWidth="200" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="s2" MinWidth="70" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="s3" MinWidth="70" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="s4" MinWidth="200" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="s5" MinWidth="200" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="s6" MinWidth="200" Width="Auto" />
         </Grid.ColumnDefinitions>
         <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
                Height="40" VerticalAlignment="Top" Width="40" />
@@ -27,7 +27,7 @@
                MinHeight="29"
                Foreground="White" />
 
-       
+
         <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
                HorizontalAlignment="Stretch" x:Name="SkillDirection" VerticalAlignment="Center"
                MinHeight="29"
@@ -44,6 +44,6 @@
                HorizontalAlignment="Stretch" x:Name="Time" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="White" />
-       
+
     </Grid>
 </UserControl>

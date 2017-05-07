@@ -1,29 +1,23 @@
-﻿using NAudio.Wave;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using NAudio.Wave;
 
 namespace Data.Actions.Notify.SoundElements
 {
     public class Music : SoundInterface
     {
-
-        public string File { get; set; }
-        public float Volume { get; set; }
-        public int Duration { get; set; }
-
         public Music(string soundFile, float volume, int duration)
         {
             File = soundFile;
             Volume = volume;
             Duration = duration;
-        
         }
+
+        public string File { get; set; }
+        public float Volume { get; set; }
+        public int Duration { get; set; }
 
         public void Play()
         {
@@ -31,15 +25,14 @@ namespace Data.Actions.Notify.SoundElements
             try
             {
                 var outputStream = new MediaFoundationReader(file);
-                var volumeStream = new WaveChannel32(outputStream);
-                volumeStream.Volume = Volume;
+                var volumeStream = new WaveChannel32(outputStream) {Volume = Volume};
                 //Create WaveOutEvent since it works in Background and UI Threads
                 var player = new DirectSoundOut();
                 //Init Player with Configured Volume Stream
                 player.Init(volumeStream);
                 player.Play();
 
-                var timer = new Timer((obj) =>
+                var timer = new Timer(obj =>
                 {
                     player.Stop();
                     player.Dispose();
@@ -58,7 +51,10 @@ namespace Data.Actions.Notify.SoundElements
                 var frame = st.GetFrame(0);
                 // Get the line number from the stack frame
                 var line = frame.GetFileLineNumber();
-                BasicTeraData.LogError("Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file + Environment.NewLine + "line:" + line, false, true);
+                BasicTeraData.LogError(
+                    "Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine +
+                    e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file +
+                    Environment.NewLine + "line:" + line, false, true);
             }
         }
     }

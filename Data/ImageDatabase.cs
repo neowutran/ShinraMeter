@@ -19,29 +19,29 @@ namespace Data
             Config = new Image {Source = new BitmapImage(new Uri(folder + "config.png"))};
             Chat = new Image {Source = new BitmapImage(new Uri(folder + "chat.png"))};
             Link = new Image {Source = new BitmapImage(new Uri(folder + "link.png"))};
-            Enraged = new Image { Source = new BitmapImage(new Uri(folder + "enraged.png")) };
+            Enraged = new Image {Source = new BitmapImage(new Uri(folder + "enraged.png"))};
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
             Tray = new Icon(folder + "shinra.ico");
         }
 
-        public BitmapImage Icon { get; private set; }
-        public Image Chrono { get; private set; }
-        public Image Link { get; private set; }
+        public BitmapImage Icon { get; }
+        public Image Chrono { get; }
+        public Image Link { get; }
 
-        public Image Copy { get; private set; }
-        public Image Config { get; private set; }
-        public Image Chat { get; private set; }
+        public Image Copy { get; }
+        public Image Config { get; }
+        public Image Chat { get; }
 
-        public Image History { get; private set; }
-        public Image Close { get; private set; }
+        public Image History { get; }
+        public Image Close { get; }
 
-        public Image Chronobar { get; private set; }
+        public Image Chronobar { get; }
 
-        public Image EntityStats { get; private set; }
-        public Image Enraged { get; private set; }
-        public Image EntityStatsClickThrou { get; private set; }
+        public Image EntityStats { get; }
+        public Image Enraged { get; }
+        public Image EntityStatsClickThrou { get; }
 
-        public Icon Tray { get; private set; }
+        public Icon Tray { get; }
     }
 }

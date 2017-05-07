@@ -16,20 +16,24 @@ namespace DamageMeter.Sniffing
     public class TeraSniffer : ITeraSniffer
     {
         private static TeraSniffer _instance;
+
         // Only take this lock in callbacks from tcp sniffing, not in code that can be called by the user.
         // Otherwise this could cause a deadlock if the user calls such a method from a callback that already holds a lock
         //private readonly object _eventLock = new object();
         private readonly IpSniffer _ipSniffer;
-        private readonly ConcurrentDictionary<TcpConnection,byte> _isNew = new ConcurrentDictionary<TcpConnection, byte>();
-        public bool Connected;
+
+        private readonly ConcurrentDictionary<TcpConnection, byte> _isNew =
+            new ConcurrentDictionary<TcpConnection, byte>();
+
         private readonly Dictionary<string, Server> _serversByIp;
         private TcpConnection _clientToServer;
         private ConnectionDecrypter _decrypter;
         private MessageSplitter _messageSplitter;
         private TcpConnection _serverToClient;
         public int ClientProxyOverhead;
-        public int ServerProxyOverhead;
+        public bool Connected;
         public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
+        public int ServerProxyOverhead;
 
         private TeraSniffer()
         {
@@ -39,7 +43,8 @@ namespace DamageMeter.Sniffing
             if (BasicTeraData.Instance.WindowData.Winpcap)
             {
                 var netmasks =
-                    _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct().ToArray();
+                    _serversByIp.Keys.Select(s => string.Join(".", s.Split('.').Take(3)) + ".0/24").Distinct()
+                        .ToArray();
 
                 var filter = string.Join(" or ", netmasks.Select(x => $"(net {x})"));
                 filter = "tcp and (" + filter + ")";
@@ -47,7 +52,7 @@ namespace DamageMeter.Sniffing
                 try //fallback to raw sockets if no winpcap available
                 {
                     _ipSniffer = new IpSnifferWinPcap(filter);
-                    (_ipSniffer as IpSnifferWinPcap).Warning += OnWarning;
+                    ((IpSnifferWinPcap) _ipSniffer).Warning += OnWarning;
                 }
                 catch
                 {
@@ -70,13 +75,13 @@ namespace DamageMeter.Sniffing
         // IpSniffer has its own locking, so we need no lock here.
         public bool Enabled
         {
-            get { return _ipSniffer.Enabled; }
-            set { _ipSniffer.Enabled = value; }
+            get => _ipSniffer.Enabled;
+            set => _ipSniffer.Enabled = value;
         }
 
         public event Action<Server> NewConnection;
-        public event Action EndConnection;
         public event Action<Message> MessageReceived;
+        public event Action EndConnection;
         public event Action<string> Warning;
 
         protected virtual void OnNewConnection(Server server)
@@ -113,15 +118,16 @@ namespace DamageMeter.Sniffing
                 OnEndConnection();
             }
         }
+
         // called from the tcp sniffer, so it needs to lock
         private void HandleNewConnection(TcpConnection connection)
         {
             {
                 if (Connected ||
-                    (!_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
-                    !_serversByIp.ContainsKey(connection.Source.Address.ToString())))
+                    !_serversByIp.ContainsKey(connection.Destination.Address.ToString()) &&
+                    !_serversByIp.ContainsKey(connection.Source.Address.ToString()))
                     return;
-                _isNew.TryAdd(connection,1);
+                _isNew.TryAdd(connection, 1);
                 connection.DataReceived += HandleTcpDataReceived;
             }
         }
@@ -132,14 +138,12 @@ namespace DamageMeter.Sniffing
             {
                 if (data.Length == 0)
                 {
-                    if (needToSkip==0 || !(connection == _clientToServer || connection == _serverToClient))
+                    if (needToSkip == 0 || !(connection == _clientToServer || connection == _serverToClient))
                         return;
-                    if (_decrypter == null)
-                        return;
-                    if (connection == _clientToServer)
-                        _decrypter.Skip(MessageDirection.ClientToServer, needToSkip);
-                    else
-                        _decrypter.Skip(MessageDirection.ServerToClient, needToSkip);
+                    _decrypter?.Skip(
+                        connection == _clientToServer
+                            ? MessageDirection.ClientToServer
+                            : MessageDirection.ServerToClient, needToSkip);
                     return;
                 }
                 if (_isNew.ContainsKey(connection))
@@ -166,14 +170,15 @@ namespace DamageMeter.Sniffing
                         _serverToClient.Destination.Equals(connection.Source) &&
                         _serverToClient.Source.Equals(connection.Destination))
                     {
-                        ClientProxyOverhead=(int)connection.BytesReceived;
+                        ClientProxyOverhead = (int) connection.BytesReceived;
                         byte q;
                         _isNew.TryRemove(connection, out q);
                         _clientToServer = connection;
                         var server = _serversByIp[connection.Destination.Address.ToString()];
                         OnNewConnection(server);
                     }
-                    if (connection.BytesReceived > 0x10000) //if received more bytes but still not recognized - not interesting.
+                    if (connection.BytesReceived > 0x10000
+                    ) //if received more bytes but still not recognized - not interesting.
                     {
                         byte q;
                         _isNew.TryRemove(connection, out q);
@@ -195,7 +200,8 @@ namespace DamageMeter.Sniffing
 
         private void OnResync(MessageDirection direction, int skipped, int size)
         {
-            BasicTeraData.LogError("Resync occured "+direction+", skipped:"+skipped+ ", block size:"+size, false, true);
+            BasicTeraData.LogError("Resync occured " + direction + ", skipped:" + skipped + ", block size:" + size,
+                false, true);
         }
 
         // called indirectly from HandleTcpDataReceived, so the current thread already holds the lock

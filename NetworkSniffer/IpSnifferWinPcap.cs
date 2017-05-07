@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Data;
 using log4net;
 using PacketDotNet;
 using PacketDotNet.Utils;
@@ -30,7 +29,7 @@ namespace NetworkSniffer
         public IpSnifferWinPcap(string filter)
         {
             _filter = filter;
-            BufferSize = 1<<24;
+            BufferSize = 1 << 24;
             _devices = WinPcapDeviceList.New();
             //BasicTeraData.LogError(string.Join("\r\n",_devices.Select(x=>x.Description)),true,true);
             //check for winpcap installed if not - exception to fallback to rawsockets
@@ -66,7 +65,7 @@ namespace NetworkSniffer
             foreach (var device in interestingDevices)
             {
                 device.OnPacketArrival += device_OnPacketArrival;
-               
+
                 try
                 {
                     device.Open(DeviceMode.Normal, 100);
@@ -78,7 +77,6 @@ namespace NetworkSniffer
                 }
                 device.Filter = _filter;
                 if (BufferSize != null)
-                {
                     try
                     {
                         device.KernelBufferSize = (uint) BufferSize.Value;
@@ -88,7 +86,6 @@ namespace NetworkSniffer
                         Logger.Warn(
                             $"Failed to set KernelBufferSize to {BufferSize.Value} on {device.Name}. {e.Message}");
                     }
-                }
                 device.StartCapture();
                 Console.WriteLine("winpcap capture");
             }
@@ -134,7 +131,7 @@ namespace NetworkSniffer
                 }
                 else
                 {
-                    ipPacket = new IPv4Packet(new ByteArraySegment(e.Packet.Data,4,e.Packet.Data.Length-4));
+                    ipPacket = new IPv4Packet(new ByteArraySegment(e.Packet.Data, 4, e.Packet.Data.Length - 4));
                 }
                 if (ipPacket == null)
                     return;
@@ -153,9 +150,7 @@ namespace NetworkSniffer
             var device = (WinPcapDevice) sender;
             if (device.Statistics.DroppedPackets == _droppedPackets &&
                 device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets)
-            {
                 return;
-            }
             _droppedPackets = device.Statistics.DroppedPackets;
             _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
             OnWarning(

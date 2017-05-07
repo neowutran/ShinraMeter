@@ -12,7 +12,7 @@ namespace NetworkSniffer
 
         public bool Enabled
         {
-            get { return _enabled; }
+            get => _enabled;
             set
             {
                 if (_enabled != value)

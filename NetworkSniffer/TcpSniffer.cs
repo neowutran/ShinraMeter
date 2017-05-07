@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using Data;
-using NetworkSniffer.Packets;
 using PacketDotNet;
-using TcpPacket = NetworkSniffer.Packets.TcpPacket;
 
 namespace NetworkSniffer
 {
@@ -15,7 +11,8 @@ namespace NetworkSniffer
             new ConcurrentDictionary<ConnectionId, TcpConnection>();
 
         private readonly object _lock = new object();
-        private string SnifferType;
+
+        private readonly string SnifferType;
         //internal struct QPacket
         //{
         //    internal TcpConnection Connection;
@@ -49,6 +46,7 @@ namespace NetworkSniffer
             var handler = NewConnection;
             handler?.Invoke(connection);
         }
+
         protected void OnEndConnection(TcpConnection connection)
         {
             var handler = EndConnection;
@@ -75,8 +73,8 @@ namespace NetworkSniffer
 
         private void Receive(IPv4Packet ipData)
         {
-            var tcpPacket = ipData.PayloadPacket as PacketDotNet.TcpPacket;
-            if (tcpPacket == null || tcpPacket.DataOffset*4 > ipData.PayloadLength) return;
+            var tcpPacket = ipData.PayloadPacket as TcpPacket;
+            if (tcpPacket == null || tcpPacket.DataOffset * 4 > ipData.PayloadLength) return;
             //if (tcpPacket.Checksum!=0 && !tcpPacket.ValidTCPChecksum) return;
             var isFirstPacket = tcpPacket.Syn;
             var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress,
@@ -99,11 +97,22 @@ namespace NetworkSniffer
                 isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
                 if (!isInterestingConnection) return;
                 byte[] payload;
-                try { payload = tcpPacket.PayloadData; } catch { return; }
+                try
+                {
+                    payload = tcpPacket.PayloadData;
+                }
+                catch
+                {
+                    return;
+                }
                 //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
                 lock (_lock)
                 {
-                    if (tcpPacket.Fin || tcpPacket.Rst) {OnEndConnection(connection); return;}
+                    if (tcpPacket.Fin || tcpPacket.Rst)
+                    {
+                        OnEndConnection(connection);
+                        return;
+                    }
                     connection.HandleTcpReceived(tcpPacket.SequenceNumber, payload);
                 }
                 //if (!string.IsNullOrEmpty(TcpLogFile))
@@ -116,5 +125,4 @@ namespace NetworkSniffer
             }
         }
     }
-
 }

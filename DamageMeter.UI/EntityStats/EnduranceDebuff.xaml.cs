@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -24,21 +23,18 @@ namespace DamageMeter.UI.EntityStats
         {
             SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(hotdot.IconName);
             SkillIcon.ToolTip = string.IsNullOrEmpty(hotdot.ItemName) ? null : hotdot.ItemName;
-            LabelClass.Content = LP.ResourceManager.GetString(abnormalityDuration.InitialPlayerClass.ToString(),LP.Culture);
+            LabelClass.Content =
+                LP.ResourceManager.GetString(abnormalityDuration.InitialPlayerClass.ToString(), LP.Culture);
             var intervalEntity = lastHit - firstHit;
             var ticks = abnormalityDuration.Duration(firstHit, lastHit);
             var interval = TimeSpan.FromTicks(ticks);
             LabelAbnormalityDuration.Content = interval.ToString(@"mm\:ss");
 
             if (intervalEntity == 0)
-            {
                 LabelAbnormalityDurationPercentage.Content = "0%";
-            }
             else
-            {
-                LabelAbnormalityDurationPercentage.Content = abnormalityDuration.Duration(firstHit, lastHit)*100/
+                LabelAbnormalityDurationPercentage.Content = abnormalityDuration.Duration(firstHit, lastHit) * 100 /
                                                              intervalEntity + "%";
-            }
             interval = TimeSpan.FromTicks(intervalEntity);
             LabelInterval.Content = interval.ToString(@"mm\:ss");
 
@@ -47,9 +43,8 @@ namespace DamageMeter.UI.EntityStats
             LabelAbnormalityDurationPercentage.ToolTip = hotdot.Id;
             StacksDetailList.Items.Clear();
             foreach (var stack in abnormalityDuration.Stacks(firstHit, lastHit))
-            {
-                StacksDetailList.Items.Add(new EnduranceDebuffDetail(hotdot, stack, abnormalityDuration, firstHit, lastHit));
-            }
+                StacksDetailList.Items.Add(
+                    new EnduranceDebuffDetail(hotdot, stack, abnormalityDuration, firstHit, lastHit));
         }
 
         private void MoveWindow(object sender, MouseButtonEventArgs e)
@@ -64,6 +59,7 @@ namespace DamageMeter.UI.EntityStats
                 Console.WriteLine(@"Exception move");
             }
         }
+
         private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
         {
             Background = Brushes.Transparent;

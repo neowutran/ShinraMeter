@@ -1,12 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Data;
 
@@ -62,10 +59,8 @@ namespace DamageMeter.UI
         protected void ClickThrouWindow_Closing(object sender, CancelEventArgs e)
         {
             Closing -= ClickThrouWindow_Closing;
-            foreach (ClickThrouWindow window in ((ClickThrouWindow)sender).OwnedWindows)
-            {
+            foreach (ClickThrouWindow window in ((ClickThrouWindow) sender).OwnedWindows)
                 window.Close();
-            }
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -95,7 +90,8 @@ namespace DamageMeter.UI
                 Opacity = 0;
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    BeginAnimation(OpacityProperty, OpacityAnimation(BasicTeraData.Instance.WindowData.OtherWindowOpacity));
+                    BeginAnimation(OpacityProperty,
+                        OpacityAnimation(BasicTeraData.Instance.WindowData.OtherWindowOpacity));
                 }));
             }
             Visibility = Visibility.Visible;
@@ -120,7 +116,7 @@ namespace DamageMeter.UI
 
         private static DoubleAnimation OpacityAnimation(double to)
         {
-            return new DoubleAnimation(to, TimeSpan.FromMilliseconds(300)) { EasingFunction = new QuadraticEase()};
+            return new DoubleAnimation(to, TimeSpan.FromMilliseconds(300)) {EasingFunction = new QuadraticEase()};
         }
 
         [DllImport("user32.dll")]

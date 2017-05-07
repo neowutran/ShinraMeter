@@ -47,7 +47,7 @@ namespace Randomizer
             rand.NextBytes(buf);
             var longRand = BitConverter.ToInt64(buf, 0);
 
-            return Math.Abs(longRand%(max - min)) + min;
+            return Math.Abs(longRand % (max - min)) + min;
         }
 
         public static void DetectReplace()
@@ -78,9 +78,7 @@ namespace Randomizer
 
             stream.Position = beginRandomize;
             if (stream.ReadByte() != 0)
-            {
                 stream.Position--;
-            }
             while (stream.Position < beginRandomize + sizeRandomize)
             {
                 stream.WriteByte(Convert.ToByte(RandomChar()));
@@ -95,22 +93,14 @@ namespace Randomizer
             while (stream.Position < stream.Length)
             {
                 if (byteCheckPosition == 0)
-                {
                     beginPosition = stream.Position;
-                }
 
                 if (stream.ReadByte() == RandomizeString[byteCheckPosition])
-                {
                     byteCheckPosition++;
-                }
                 else
-                {
                     byteCheckPosition = 0;
-                }
                 if (byteCheckPosition == RandomizeString.Length)
-                {
                     return new KeyValuePair<long, long>(beginPosition, stream.Position - 1);
-                }
             }
             return null;
         }

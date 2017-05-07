@@ -1,11 +1,11 @@
-﻿using DamageMeter.Processing;
-using Lang;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using DamageMeter.Processing;
 using Data;
+using Lang;
 using Tera.Game.Messages;
 using static Tera.Game.Messages.S_CHAT;
 
@@ -13,17 +13,17 @@ namespace DamageMeter
 {
     public class Chat
     {
-        private static Chat _instance;
-
-        private readonly LinkedList<ChatMessage> _chat = new LinkedList<ChatMessage>();
-        private readonly int _maxMessage = 200;
-
         public enum ChatType
         {
             Whisper = 0,
             Normal = 1,
             PrivateChannel = 2
         }
+
+        private static Chat _instance;
+
+        private readonly LinkedList<ChatMessage> _chat = new LinkedList<ChatMessage>();
+        private readonly int _maxMessage = 200;
 
 
         private Chat()
@@ -53,41 +53,37 @@ namespace DamageMeter
             var rgx = new Regex("<[^>]+>");
             message = rgx.Replace(message, "");
             message = WebUtility.HtmlDecode(message);
-            if (string.IsNullOrWhiteSpace(message)) { return; }
+            if (string.IsNullOrWhiteSpace(message)) return;
 
             if (_chat.Count == _maxMessage)
-            {
                 _chat.RemoveFirst();
-            }
             var chatMessage = new ChatMessage(sender, message, chatType, channel, time);
             _chat.AddLast(chatMessage);
 
             if (NetworkController.Instance.EntityTracker?.MeterUser == null) return;
 
-            if (chatType == ChatType.Whisper 
-                && NetworkController.Instance.EntityTracker.MeterUser.Name != sender 
+            if (chatType == ChatType.Whisper
+                && NetworkController.Instance.EntityTracker.MeterUser.Name != sender
                 && (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()))
-            {
-                NetworkController.Instance.FlashMessage = NotifyProcessor.Instance.DefaultNotifyAction(LP.Whisper +": "+sender, message);
-            }
+                NetworkController.Instance.FlashMessage =
+                    NotifyProcessor.Instance.DefaultNotifyAction(LP.Whisper + ": " + sender, message);
 
             if (chatType != ChatType.Whisper &&
                 NetworkController.Instance.EntityTracker.MeterUser.Name != sender &&
                 (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()) &&
-                message.Contains("@"+ NetworkController.Instance.EntityTracker.MeterUser.Name))
-            {
-                NetworkController.Instance.FlashMessage = NotifyProcessor.Instance.DefaultNotifyAction( LP.Chat +": " + sender, message);
-            }
+                message.Contains("@" + NetworkController.Instance.EntityTracker.MeterUser.Name))
+                NetworkController.Instance.FlashMessage =
+                    NotifyProcessor.Instance.DefaultNotifyAction(LP.Chat + ": " + sender, message);
 
             if ((chatType == ChatType.PrivateChannel ||
-                (chatType == ChatType.Normal &&
-                (channel == ChannelEnum.Group || channel == ChannelEnum.Guild || channel == ChannelEnum.Raid)))
+                 chatType == ChatType.Normal &&
+                 (channel == ChannelEnum.Group || channel == ChannelEnum.Guild || channel == ChannelEnum.Raid))
                 && (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive())
                 && message.Contains("@@"))
-            {
-                NetworkController.Instance.FlashMessage = NotifyProcessor.Instance.DefaultNotifyAction("Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name, "Wake up, "+ NetworkController.Instance.EntityTracker.MeterUser.Name);
-            }
-
+                NetworkController.Instance.FlashMessage =
+                    NotifyProcessor.Instance.DefaultNotifyAction(
+                        "Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name,
+                        "Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name);
         }
 
         public List<ChatMessage> Get()

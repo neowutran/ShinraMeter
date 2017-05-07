@@ -11,10 +11,10 @@ namespace DamageMeter.Database.Structures
             Source = source;
         }
 
-     
+
         public long Critic { get; }
         public long Hit { get; }
         public Player Source { get; }
-        public double CritRate => Hit==0?0:Critic*100/Hit;
+        public double CritRate => Hit == 0 ? 0 : Critic * 100 / Hit;
     }
 }

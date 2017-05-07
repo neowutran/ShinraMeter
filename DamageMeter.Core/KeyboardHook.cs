@@ -10,10 +10,9 @@ namespace DamageMeter
 {
     public sealed class KeyboardHook : IDisposable
     {
-        private static KeyboardHook _instance;
-
         public delegate void TopmostSwitch();
-        public event TopmostSwitch SwitchTopMost;
+
+        private static KeyboardHook _instance;
         private readonly Window _window = new Window();
         private int _currentId;
 
@@ -27,27 +26,22 @@ namespace DamageMeter
 
 
         public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
+        public event TopmostSwitch SwitchTopMost;
 
         public bool SetHotkeys(bool value)
         {
-          
             if (value && !_isRegistered)
             {
                 Register();
                 return true;
             }
             if (!value && _isRegistered)
-            {
                 ClearHotkeys();
-            }
             return false;
-            
         }
 
         private static void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-
-
             if (e.Key == BasicTeraData.Instance.HotkeysData.Topmost.Key &&
                 e.Modifier == BasicTeraData.Instance.HotkeysData.Topmost.Value)
             {
@@ -84,33 +78,27 @@ namespace DamageMeter
                 NetworkController.Instance.SwitchClickThrou();
             }
             foreach (
-                var copy in
+                    var copy in
                     BasicTeraData.Instance.HotkeysData.Copy.Where(
                         copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
-            {
                 //Can't copy directly, => threading problem
                 NetworkController.Instance.NeedToCopy = copy;
-            }
         }
 
 
         public void Update()
         {
             ClearHotkeys();
-            Register();       
+            Register();
         }
 
         public void RegisterKeyboardHook()
         {
-          
-                // register the event that is fired after the key press.
-                Instance.KeyPressed += hook_KeyPressed;
-          
-                if (!_isRegistered)
-                {
-                    Register();
-                }
-            
+            // register the event that is fired after the key press.
+            Instance.KeyPressed += hook_KeyPressed;
+
+            if (!_isRegistered)
+                Register();
         }
 
         private void Register()
@@ -133,12 +121,9 @@ namespace DamageMeter
             {
                 RegisterHotKey(HotkeysData.ModifierKeys.Alt, Keys.Enter);
                 RegisterHotKey(HotkeysData.ModifierKeys.Alt | HotkeysData.ModifierKeys.Control, Keys.Enter);
-
             }
             foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy)
-            {
                 RegisterHotKey(copy.Modifier, copy.Key);
-            }
             _isRegistered = true;
         }
 
@@ -230,9 +215,7 @@ namespace DamageMeter
         private void ClearHotkeys()
         {
             for (var i = _currentId; i > 0; i--)
-            {
                 UnregisterHotKey(_window.Handle, i);
-            }
             _currentId = 0;
             _isRegistered = false;
         }

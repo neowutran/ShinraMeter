@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Data;
 
 namespace DamageMeter.UI
@@ -11,8 +13,8 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class Chatbox
     {
-        private bool _updated = false;
-     
+        private bool _updated;
+
         public Chatbox()
         {
             InitializeComponent();
@@ -29,20 +31,13 @@ namespace DamageMeter.UI
             if (_updated) return;
             _updated = true;
             for (var i = 0; i < chatbox.Count; i++)
-            {
                 if (ChatboxList.Items.Count > i)
-                {
                     ((ChatMessageUi) ChatboxList.Items.GetItemAt(i)).Update(chatbox[i]);
-                }
                 else
-                {
                     ChatboxList.Items.Add(new ChatMessageUi(chatbox[i]));
-                }
-            }
-           
         }
 
-        private void ChatboxList_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        private void ChatboxList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta);
             e.Handled = true;
@@ -50,12 +45,13 @@ namespace DamageMeter.UI
 
         private void ChatboxList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (((ListBox)sender).SelectedItems.Count<=1)return;
-            string messages="";
-            foreach (ChatMessageUi messageUi in ((ListBox) sender).SelectedItems.Cast<ChatMessageUi>().OrderBy(x=>x.Time.Content))
-            {
-                messages = messages + $"{messageUi.Time.Content} {messageUi.Channel.Content} {messageUi.Sender.Content}: {messageUi.Message.Text}"+ System.Environment.NewLine;
-            }
+            if (((ListBox) sender).SelectedItems.Count <= 1) return;
+            var messages = "";
+            foreach (var messageUi in ((ListBox) sender).SelectedItems.Cast<ChatMessageUi>()
+                .OrderBy(x => x.Time.Content))
+                messages = messages +
+                           $"{messageUi.Time.Content} {messageUi.Channel.Content} {messageUi.Sender.Content}: {messageUi.Message.Text}" +
+                           Environment.NewLine;
             Clipboard.SetDataObject(messages);
         }
     }

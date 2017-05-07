@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Interop;
 using DamageMeter.Database.Structures;
 using Data;
 using Tera.Game.Abnormality;
@@ -27,13 +26,9 @@ namespace DamageMeter.UI.EntityStats
         {
             EnduranceAbnormality.Items.Clear();
             if (entityInformation == null)
-            {
                 return;
-            }
             if (entityInformation.Interval == 0)
-            {
                 return;
-            }
 
             EnduranceAbnormality.Items.Add(_header);
 

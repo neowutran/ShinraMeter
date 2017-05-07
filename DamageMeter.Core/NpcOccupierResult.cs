@@ -11,8 +11,8 @@ namespace DamageMeter
             Npc = message.NPC;
         }
 
-        public bool HasReset { get; private set; }
+        public bool HasReset { get; }
 
-        public EntityId Npc { get; private set; }
+        public EntityId Npc { get; }
     }
 }

@@ -7,11 +7,12 @@
     <Grid>
         <ScrollViewer Name="ScrollViewer" VerticalScrollBarVisibility="Auto" MaxHeight="500">
 
-            <ItemsControl PreviewMouseWheel="EnduranceAbnormality_PreviewMouseWheel" Name="EnduranceAbnormality" Background="Transparent" BorderThickness="0"
-                      Focusable="False" Grid.IsSharedSizeScope="True"
-                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                      ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                      HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left" />
+            <ItemsControl PreviewMouseWheel="EnduranceAbnormality_PreviewMouseWheel" Name="EnduranceAbnormality"
+                          Background="Transparent" BorderThickness="0"
+                          Focusable="False" Grid.IsSharedSizeScope="True"
+                          ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                          HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left" />
         </ScrollViewer>
 
     </Grid>
