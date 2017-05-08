@@ -12,15 +12,11 @@ namespace NetworkSniffer
 {
     public class IpSnifferRawSocketMultipleInterfaces : IpSniffer
     {
-        private readonly List<IpSnifferRawSocketSingleInterface> _individualSniffers =
-            new List<IpSnifferRawSocketSingleInterface>();
+        private readonly List<IpSnifferRawSocketSingleInterface> _individualSniffers = new List<IpSnifferRawSocketSingleInterface>();
 
         private readonly IEnumerable<IPAddress> _ipAddresses;
 
-        public IpSnifferRawSocketMultipleInterfaces()
-            : this(DefaultInterfaceIPs)
-        {
-        }
+        public IpSnifferRawSocketMultipleInterfaces() : this(DefaultInterfaceIPs) { }
 
         public IpSnifferRawSocketMultipleInterfaces(IEnumerable<IPAddress> ipAddresses)
         {
@@ -31,9 +27,7 @@ namespace NetworkSniffer
         {
             get
             {
-                return NetworkInterface.GetAllNetworkInterfaces()
-                    .SelectMany(x => x.GetIPProperties().UnicastAddresses)
-                    .Select(x => x.Address)
+                return NetworkInterface.GetAllNetworkInterfaces().SelectMany(x => x.GetIPProperties().UnicastAddresses).Select(x => x.Address)
                     .Where(x => x.AddressFamily == AddressFamily.InterNetwork);
             }
         }
@@ -50,17 +44,11 @@ namespace NetworkSniffer
                     individualSniffer.PacketReceived += OnPacketReceived;
                     _individualSniffers.Add(individualSniffer);
                 }
-                foreach (var individualSniffer in _individualSniffers)
-                {
-                    individualSniffer.Enabled = true;
-                }
+                foreach (var individualSniffer in _individualSniffers) { individualSniffer.Enabled = true; }
             }
             else
             {
-                foreach (var individualSniffer in _individualSniffers)
-                {
-                    individualSniffer.Enabled = false;
-                }
+                foreach (var individualSniffer in _individualSniffers) { individualSniffer.Enabled = false; }
                 _individualSniffers.Clear();
             }
         }

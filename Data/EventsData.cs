@@ -30,18 +30,11 @@ namespace Data
                 Directory.CreateDirectory(eventsdir);
                 foreach (var pclass in Enum.GetNames(typeof(PlayerClass)))
                 {
-                    var fname = Path.Combine(_basicData.ResourceDirectory,
-                        "config/events/events-" + pclass.ToLowerInvariant() + ".xml");
-                    if (!File.Exists(fname))
-                    {
-                        File.WriteAllText(fname, LP.ResourceManager.GetString("events_" + pclass.ToLowerInvariant()));
-                    }
+                    var fname = Path.Combine(_basicData.ResourceDirectory, "config/events/events-" + pclass.ToLowerInvariant() + ".xml");
+                    if (!File.Exists(fname)) { File.WriteAllText(fname, LP.ResourceManager.GetString("events_" + pclass.ToLowerInvariant())); }
                 }
             }
-            catch (Exception ex)
-            {
-                BasicTeraData.LogError(ex.Message, true);
-            }
+            catch (Exception ex) { BasicTeraData.LogError(ex.Message, true); }
             var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-common.xml");
             XDocument xml;
 
@@ -78,8 +71,7 @@ namespace Data
 
         public void Load(PlayerClass playerClass)
         {
-            var windowFile = Path.Combine(_basicData.ResourceDirectory,
-                "config/events/events-" + playerClass.ToString().ToLowerInvariant() + ".xml");
+            var windowFile = Path.Combine(_basicData.ResourceDirectory, "config/events/events-" + playerClass.ToString().ToLowerInvariant() + ".xml");
             XDocument xml;
             try
             {
@@ -113,36 +105,23 @@ namespace Data
         {
             foreach (var e in rootEvents)
             {
-                if (!e.Key.Active)
-                {
-                    continue;
-                }
+                if (!e.Key.Active) { continue; }
                 Events.Add(e.Key, e.Value);
                 var evAbnormalities = e.Key as AbnormalityEvent;
                 if (evAbnormalities != null)
                 {
-                    if (evAbnormalities.Trigger == AbnormalityTriggerType.MissingDuringFight ||
-                        evAbnormalities.Trigger == AbnormalityTriggerType.Ending)
+                    if (evAbnormalities.Trigger == AbnormalityTriggerType.MissingDuringFight || evAbnormalities.Trigger == AbnormalityTriggerType.Ending)
                     {
                         MissingAbnormalities.Add(e.Key, e.Value);
                     }
-                    else
-                    {
-                        AddedRemovedAbnormalities.Add(e.Key, e.Value);
-                    }
+                    else { AddedRemovedAbnormalities.Add(e.Key, e.Value); }
                 }
 
                 var evCooldown = e.Key as CooldownEvent;
-                if (evCooldown != null)
-                {
-                    Cooldown.Add(e.Key, e.Value);
-                }
+                if (evCooldown != null) { Cooldown.Add(e.Key, e.Value); }
 
                 var evAFK = e.Key as CommonAFKEvent;
-                if (evAFK != null)
-                {
-                    AFK = new Tuple<Event, List<Action>>(e.Key, e.Value);
-                }
+                if (evAFK != null) { AFK = new Tuple<Event, List<Action>>(e.Key, e.Value); }
             }
         }
 
@@ -156,10 +135,7 @@ namespace Data
             var root = xml.Root;
             var default_active = root.Attribute("active")?.Value ?? "True";
             var commonAfk = root.Element("common_afk");
-            if (commonAfk == null)
-            {
-                return;
-            }
+            if (commonAfk == null) { return; }
 
             var active = bool.Parse(commonAfk.Attribute("active")?.Value ?? default_active);
             var ev = new CommonAFKEvent(active);
@@ -186,16 +162,14 @@ namespace Data
                 var music = notify.Descendants("music");
                 var beeps = notify.Descendants("beeps");
                 var textToSpeech = notify.Descendants("text_to_speech");
-                if (music.Any() && beeps.Any() || music.Any() && textToSpeech.Any() ||
-                    textToSpeech.Any() && beeps.Any())
+                if (music.Any() && beeps.Any() || music.Any() && textToSpeech.Any() || textToSpeech.Any() && beeps.Any())
                 {
                     throw new Exception("Only 1 type of sound allowed by notifyAction");
                 }
                 if (music.Any())
                 {
                     var musicFile = music.First().Attribute("file").Value;
-                    var volume = float.Parse(music.First().Attribute("volume").Value, CultureInfo.InvariantCulture) /
-                                 100;
+                    var volume = float.Parse(music.First().Attribute("volume").Value, CultureInfo.InvariantCulture) / 100;
                     var duration = int.Parse(music.First().Attribute("duration").Value);
                     soundInterface = new Music(musicFile, volume, duration);
                 }
@@ -215,17 +189,14 @@ namespace Data
                 {
                     var tts = textToSpeech.First();
                     var text = tts.Attribute("text").Value;
-                    var voiceGender = (VoiceGender) Enum.Parse(typeof(VoiceGender),
-                        tts.Attribute("voice_gender")?.Value ?? "Female", true);
-                    var voiceAge = (VoiceAge) Enum.Parse(typeof(VoiceAge), tts.Attribute("voice_age")?.Value ?? "Adult",
-                        true);
+                    var voiceGender = (VoiceGender) Enum.Parse(typeof(VoiceGender), tts.Attribute("voice_gender")?.Value ?? "Female", true);
+                    var voiceAge = (VoiceAge) Enum.Parse(typeof(VoiceAge), tts.Attribute("voice_age")?.Value ?? "Adult", true);
 
                     var culture = tts.Attribute("culture")?.Value ?? LP.Culture.ToString();
                     var voicePosition = int.Parse(tts.Attribute("voice_position")?.Value ?? "0");
                     var volume = int.Parse(tts.Attribute("volume")?.Value ?? "30");
                     var rate = int.Parse(tts.Attribute("rate")?.Value ?? "0");
-                    soundInterface = new TextToSpeech(text, voiceGender, voiceAge, voicePosition, culture, volume,
-                        rate);
+                    soundInterface = new TextToSpeech(text, voiceGender, voiceAge, voicePosition, culture, volume, rate);
                 }
 
                 var notifyAction = new NotifyAction(soundInterface, ballonData);
@@ -236,10 +207,7 @@ namespace Data
         private List<BlackListItem> ParseAreaBossBlackList(XElement root)
         {
             var areaBossBlacklist = new List<BlackListItem>();
-            if (root.Element("area_boss_blacklist") == null)
-            {
-                return areaBossBlacklist;
-            }
+            if (root.Element("area_boss_blacklist") == null) { return areaBossBlacklist; }
             foreach (var blacklist in root.Element("area_boss_blacklist").Elements("blacklist"))
             {
                 var areaId = int.Parse(blacklist.Attribute("area_id").Value);
@@ -291,10 +259,7 @@ namespace Data
                         continue;
                     }
                     HotDot.Types type;
-                    if (!Enum.TryParse(idElement, true, out type))
-                    {
-                        throw new Exception(idElement + " is not an acceptable value.");
-                    }
+                    if (!Enum.TryParse(idElement, true, out type)) { throw new Exception(idElement + " is not an acceptable value."); }
                     types.Add(type);
                 }
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
@@ -308,13 +273,11 @@ namespace Data
                 var rewarnTimeoutSeconds = 0;
                 if (trigger == AbnormalityTriggerType.MissingDuringFight || trigger == AbnormalityTriggerType.Ending)
                 {
-                    remainingSecondsBeforeTrigger =
-                        int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
+                    remainingSecondsBeforeTrigger = int.Parse(abnormality.Attribute("remaining_seconds_before_trigger").Value);
                     rewarnTimeoutSeconds = int.Parse(abnormality.Attribute("rewarn_timeout_seconds")?.Value ?? "0");
                 }
                 var blacklist = ParseAreaBossBlackList(abnormality);
-                var abnormalityEvent = new AbnormalityEvent(ingame, active, priority,
-                    blacklist.Any() ? blacklist : default_blacklist, ids, types, target, trigger,
+                var abnormalityEvent = new AbnormalityEvent(ingame, active, priority, blacklist.Any() ? blacklist : default_blacklist, ids, types, target, trigger,
                     remainingSecondsBeforeTrigger, rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Action>());
                 ParseActions(abnormality, events, abnormalityEvent);

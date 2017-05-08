@@ -7,18 +7,9 @@ namespace DamageMeter.Processing
     {
         internal static void Process(SUserStatus message)
         {
-            if (BasicTeraData.Instance.WindowData.IdleResetTimeout <= 0)
-            {
-                return;
-            }
-            if (message.User != NetworkController.Instance.EntityTracker.MeterUser.Id)
-            {
-                return;
-            }
-            if (message.Status != 1)
-            {
-                DamageTracker.Instance.LastIdleStartTime = message.Time.Ticks;
-            }
+            if (BasicTeraData.Instance.WindowData.IdleResetTimeout <= 0) { return; }
+            if (message.User != NetworkController.Instance.EntityTracker.MeterUser.Id) { return; }
+            if (message.Status != 1) { DamageTracker.Instance.LastIdleStartTime = message.Time.Ticks; }
         }
     }
 }

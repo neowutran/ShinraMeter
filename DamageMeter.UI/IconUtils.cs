@@ -27,16 +27,9 @@ namespace DamageMeter.UI
         {
             var hBitmap = bitmap.GetHbitmap();
 
-            ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(
-                hBitmap,
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+            ImageSource wpfBitmap = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
-            if (!DeleteObject(hBitmap))
-            {
-                throw new Win32Exception();
-            }
+            if (!DeleteObject(hBitmap)) { throw new Win32Exception(); }
 
             return wpfBitmap;
         }

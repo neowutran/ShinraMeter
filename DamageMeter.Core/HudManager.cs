@@ -23,10 +23,7 @@ namespace DamageMeter
             get => _bosses;
             set
             {
-                if (_bosses == value)
-                {
-                    return;
-                }
+                if (_bosses == value) { return; }
                 _bosses = value;
             }
         }
@@ -37,10 +34,7 @@ namespace DamageMeter
             if (boss == null)
             {
                 var bossEntity = NetworkController.Instance.EntityTracker.GetOrNull(message.EntityId) as NpcEntity;
-                if (bossEntity == null)
-                {
-                    return;
-                }
+                if (bossEntity == null) { return; }
                 boss = new Boss(bossEntity, Visibility.Visible);
                 _bosses.Add(boss);
             }
@@ -51,10 +45,7 @@ namespace DamageMeter
         public void RemoveBoss(SDespawnNpc message)
         {
             var boss = _bosses.FirstOrDefault(x => x.EntityId == message.Npc);
-            if (boss == null)
-            {
-                return;
-            }
+            if (boss == null) { return; }
             _bosses.Remove(boss);
             boss.Dispose();
         }
@@ -78,15 +69,9 @@ namespace DamageMeter
             _timer.Elapsed += (se, ev) =>
             {
                 DurationLeft = DurationLeft - 1000;
-                if (DurationLeft <= 0)
-                {
-                    _timer.Stop();
-                }
+                if (DurationLeft <= 0) { _timer.Stop(); }
             };
-            if (b.Time != 0)
-            {
-                _timer.Start();
-            }
+            if (b.Time != 0) { _timer.Start(); }
         }
 
         public HotDot Buff { get; }
@@ -96,10 +81,7 @@ namespace DamageMeter
             get => _durationLeft;
             set
             {
-                if (value == _durationLeft)
-                {
-                    return;
-                }
+                if (value == _durationLeft) { return; }
                 _durationLeft = value;
                 NotifyPropertyChanged("DurationLeft");
             }
@@ -110,10 +92,7 @@ namespace DamageMeter
             get => _duration;
             set
             {
-                if (value == _duration)
-                {
-                    return;
-                }
+                if (value == _duration) { return; }
                 _duration = value;
                 NotifyPropertyChanged("Duration");
             }
@@ -124,10 +103,7 @@ namespace DamageMeter
             get => _stacks;
             set
             {
-                if (value == _stacks)
-                {
-                    return;
-                }
+                if (value == _stacks) { return; }
                 _stacks = value;
                 NotifyPropertyChanged("Stacks");
             }
@@ -142,10 +118,7 @@ namespace DamageMeter
         public void Refresh()
         {
             _timer.Stop();
-            if (Buff.Time != 0)
-            {
-                _timer.Start();
-            }
+            if (Buff.Time != 0) { _timer.Start(); }
             NotifyPropertyChanged("Refresh");
         }
     }
@@ -191,10 +164,7 @@ namespace DamageMeter
             get => _name;
             set
             {
-                if (_name == value)
-                {
-                    return;
-                }
+                if (_name == value) { return; }
                 _name = value;
                 NotifyPropertyChanged("Name");
             }
@@ -205,10 +175,7 @@ namespace DamageMeter
             get => _buffs;
             set
             {
-                if (_buffs == value)
-                {
-                    return;
-                }
+                if (_buffs == value) { return; }
                 _buffs = value;
                 NotifyPropertyChanged("Buffs");
             }
@@ -219,10 +186,7 @@ namespace DamageMeter
             get => _enraged;
             set
             {
-                if (_enraged == value)
-                {
-                    return;
-                }
+                if (_enraged == value) { return; }
                 _enraged = value;
                 NotifyPropertyChanged("Enraged");
             }
@@ -233,10 +197,7 @@ namespace DamageMeter
             get => _maxHp;
             set
             {
-                if (_maxHp == value)
-                {
-                    return;
-                }
+                if (_maxHp == value) { return; }
                 _maxHp = value;
                 NotifyPropertyChanged("MaxHP");
             }
@@ -247,10 +208,7 @@ namespace DamageMeter
             get => _currentHp;
             set
             {
-                if (_currentHp == value)
-                {
-                    return;
-                }
+                if (_currentHp == value) { return; }
                 _currentHp = value;
                 NotifyPropertyChanged("CurrentHP");
                 NotifyPropertyChanged("CurrentPercentage");
@@ -264,10 +222,7 @@ namespace DamageMeter
             get => visible;
             set
             {
-                if (visible == value)
-                {
-                    return;
-                }
+                if (visible == value) { return; }
                 visible = value;
                 NotifyPropertyChanged("Visible");
             }
@@ -275,10 +230,7 @@ namespace DamageMeter
 
         public void Dispose()
         {
-            foreach (var buff in _buffs)
-            {
-                buff.Dispose();
-            }
+            foreach (var buff in _buffs) { buff.Dispose(); }
         }
 
         public void AddOrRefresh(Abnormality abnormality)
@@ -310,17 +262,11 @@ namespace DamageMeter
             try
             {
                 var buff = Buffs.FirstOrDefault(x => x.Buff.Id == id);
-                if (buff == null)
-                {
-                    return;
-                }
+                if (buff == null) { return; }
                 Buffs.Remove(buff);
                 buff.Dispose();
             }
-            catch (Exception)
-            {
-                Debug.WriteLine("Cannot remove {0}", id);
-            }
+            catch (Exception) { Debug.WriteLine("Cannot remove {0}", id); }
         }
 
         public override string ToString()

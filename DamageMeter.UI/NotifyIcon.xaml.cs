@@ -41,8 +41,7 @@ namespace DamageMeter.UI
             _mainWindow = mainWindow;
             DpsWebsiteExport.IsChecked = BasicTeraData.Instance.WindowData.SiteExport;
             AuthTokenTextbox.Text = BasicTeraData.Instance.WindowData.TeraDpsToken;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty,
-                BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
+            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
             AutoExcelExport.IsChecked = BasicTeraData.Instance.WindowData.Excel;
             ExcelCMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             CountOnlyBoss.IsChecked = BasicTeraData.Instance.WindowData.OnlyBoss;
@@ -76,17 +75,13 @@ namespace DamageMeter.UI
             ShowSelfOnTop.IsChecked = BasicTeraData.Instance.WindowData.MeterUserOnTop;
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
-            ServerURLTextbox.Parent.SetValue(HeightProperty,
-                BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
+            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
 
         public void ShowBallon(NotifyFlashMessage flash)
         {
-            if (flash == null)
-            {
-                return;
-            }
+            if (flash == null) { return; }
 
             Tray.HideBalloonTip();
             if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
@@ -96,10 +91,7 @@ namespace DamageMeter.UI
                 Tray.ShowCustomBalloon(balloon, PopupAnimation.Fade, flash.Balloon.DisplayTime);
             }
 
-            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null)
-            {
-                Task.Run(() => flash.Sound.Play());
-            }
+            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null) { Task.Run(() => flash.Sound.Play()); }
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -147,15 +139,13 @@ namespace DamageMeter.UI
         private void EnableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SiteExport = true;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty,
-                BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
+            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
         }
 
         private void DisableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SiteExport = false;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty,
-                BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
+            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
         }
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
@@ -165,10 +155,7 @@ namespace DamageMeter.UI
 
         private void SiteExportAction(object sender, RoutedEventArgs e)
         {
-            if (_lastSend + TimeSpan.TicksPerSecond * 60 >= DateTime.Now.Ticks)
-            {
-                return;
-            }
+            if (_lastSend + TimeSpan.TicksPerSecond * 60 >= DateTime.Now.Ticks) { return; }
             NetworkController.Instance.NeedToExport = DataExporter.Dest.Site;
             _lastSend = DateTime.Now.Ticks;
         }
@@ -217,20 +204,14 @@ namespace DamageMeter.UI
         private void EnableInvisibleWhenNoStats(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.InvisibleUi = true;
-            if (_mainWindow.ForceWindowVisibilityHidden)
-            {
-                return;
-            }
+            if (_mainWindow.ForceWindowVisibilityHidden) { return; }
             _mainWindow.Visibility = Visibility.Visible;
         }
 
         private void DisableInvisibleWhenNoStats(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.InvisibleUi = false;
-            if (_mainWindow.ForceWindowVisibilityHidden)
-            {
-                return;
-            }
+            if (_mainWindow.ForceWindowVisibilityHidden) { return; }
             _mainWindow.Visibility = _mainWindow.Controls.Count > 0 ? Visibility.Visible : Visibility.Hidden;
         }
 
@@ -257,19 +238,13 @@ namespace DamageMeter.UI
         private void EnableBossByHpBar(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.DetectBosses = true;
-            if (BasicTeraData.Instance.MonsterDatabase != null)
-            {
-                BasicTeraData.Instance.MonsterDatabase.DetectBosses = true;
-            }
+            if (BasicTeraData.Instance.MonsterDatabase != null) { BasicTeraData.Instance.MonsterDatabase.DetectBosses = true; }
         }
 
         private void DisableBossByHpBar(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.DetectBosses = false;
-            if (BasicTeraData.Instance.MonsterDatabase != null)
-            {
-                BasicTeraData.Instance.MonsterDatabase.DetectBosses = false;
-            }
+            if (BasicTeraData.Instance.MonsterDatabase != null) { BasicTeraData.Instance.MonsterDatabase.DetectBosses = false; }
         }
 
         private void EnableCountOnlyBoss(object sender, RoutedEventArgs e)
@@ -408,54 +383,35 @@ namespace DamageMeter.UI
 
         private void ClickUploadGlyphAction(object sender, RoutedEventArgs e)
         {
-            if (_lastSend + TimeSpan.TicksPerSecond * 30 >= DateTime.Now.Ticks)
-            {
-                return;
-            }
-            if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName))
-            {
-                return;
-            }
-            if (NetworkController.Instance.EntityTracker.MeterUser.Level < 65)
-            {
-                return;
-            }
+            if (_lastSend + TimeSpan.TicksPerSecond * 30 >= DateTime.Now.Ticks) { return; }
+            if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) { return; }
+            if (NetworkController.Instance.EntityTracker.MeterUser.Level < 65) { return; }
             _lastSend = DateTime.Now.Ticks;
             var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs,
-                new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    TypeNameHandling = TypeNameHandling.None
-                });
+                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None});
             Debug.WriteLine(json);
             Task.Run(() =>
+            {
+                try
                 {
-                    try
+                    using (var client = new HttpClient())
                     {
-                        using (var client = new HttpClient())
-                        {
-                            //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
-                            //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
+                        //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
+                        //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
 
-                            client.Timeout = TimeSpan.FromSeconds(40);
-                            var response = client.PostAsync("https://moongourd.com/shared/glyph_data.php",
-                                new StringContent(
-                                    json,
-                                    Encoding.UTF8,
-                                    "application/json")
-                            );
+                        client.Timeout = TimeSpan.FromSeconds(40);
+                        var response = client.PostAsync("https://moongourd.com/shared/glyph_data.php", new StringContent(json, Encoding.UTF8, "application/json"));
 
-                            var responseString = response.Result.Content.ReadAsStringAsync();
-                            Debug.WriteLine(responseString.Result);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.Message);
-                        Debug.WriteLine(ex.StackTrace);
+                        var responseString = response.Result.Content.ReadAsStringAsync();
+                        Debug.WriteLine(responseString.Result);
                     }
                 }
-            );
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    Debug.WriteLine(ex.StackTrace);
+                }
+            });
         }
 
         private void EnableFormatPasteString(object sender, RoutedEventArgs e)
@@ -503,15 +459,13 @@ namespace DamageMeter.UI
         private void EnablePServerExp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PrivateServerExport = true;
-            ServerURLTextbox.Parent.SetValue(HeightProperty,
-                BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
+            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
         private void DisablePServerExp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PrivateServerExport = false;
-            ServerURLTextbox.Parent.SetValue(HeightProperty,
-                BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
+            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
         private void ServerURLChanged(object sender, RoutedEventArgs e)
@@ -542,10 +496,7 @@ namespace DamageMeter.UI
         private void IdleRtoChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             BasicTeraData.Instance.WindowData.IdleResetTimeout = IdleRTOSpinner?.Value ?? 0;
-            if (BasicTeraData.Instance.WindowData.IdleResetTimeout == 0)
-            {
-                DamageTracker.Instance.LastIdleStartTime = 0;
-            }
+            if (BasicTeraData.Instance.WindowData.IdleResetTimeout == 0) { DamageTracker.Instance.LastIdleStartTime = 0; }
         }
 
         private void TokenChanged(object sender, RoutedEventArgs e)

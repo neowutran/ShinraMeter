@@ -29,23 +29,14 @@ namespace DamageMeter.UI
 
         private void Click_Link(object sender, MouseButtonEventArgs e)
         {
-            if (Boss.Tag.ToString().StartsWith("http://") || Boss.Tag.ToString().StartsWith("https://"))
-            {
-                Process.Start("explorer.exe", "\"" + Boss.Tag + "\"");
-            }
+            if (Boss.Tag.ToString().StartsWith("http://") || Boss.Tag.ToString().StartsWith("https://")) { Process.Start("explorer.exe", "\"" + Boss.Tag + "\""); }
         }
 
         private void Sender_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var w = Window.GetWindow(this);
-            try
-            {
-                w?.DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
+            try { w?.DragMove(); }
+            catch { Console.WriteLine(@"Exception move"); }
         }
     }
 }

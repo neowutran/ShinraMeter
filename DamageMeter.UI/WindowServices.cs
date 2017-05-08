@@ -31,10 +31,7 @@ namespace DamageMeter.UI
             const int WM_MOUSEACTIVATE = 0x0021;
             const int MA_NOACTIVATE = 3;
 
-            if (msg != WM_MOUSEACTIVATE)
-            {
-                return IntPtr.Zero;
-            }
+            if (msg != WM_MOUSEACTIVATE) { return IntPtr.Zero; }
             handled = true;
             return new IntPtr(MA_NOACTIVATE);
         }

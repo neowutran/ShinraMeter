@@ -4,8 +4,8 @@ namespace Data
 {
     public class CopyKey
     {
-        public CopyKey(string header, string footer, string content, HotkeysData.ModifierKeys modifier, Keys key,
-            string orderBy, string order, string lowDpsContent, int lowDpsThreshold, int limitNameLength)
+        public CopyKey(string header, string footer, string content, HotkeysData.ModifierKeys modifier, Keys key, string orderBy, string order, string lowDpsContent,
+            int lowDpsThreshold, int limitNameLength)
         {
             Content = content;
             Header = header;

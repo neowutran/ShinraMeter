@@ -31,10 +31,7 @@ namespace NetworkSniffer
 
         public override bool Equals(object obj)
         {
-            if (obj is ConnectionId)
-            {
-                return Equals((ConnectionId) obj);
-            }
+            if (obj is ConnectionId) { return Equals((ConnectionId) obj); }
             return false;
         }
 

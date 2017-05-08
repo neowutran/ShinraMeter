@@ -7,17 +7,12 @@ namespace NetworkSniffer.Packets
     {
         public static uint GetUInt32BigEndian(byte[] array, int offset)
         {
-            return ((uint) array[offset + 0] << 24) |
-                   ((uint) array[offset + 1] << 16) |
-                   ((uint) array[offset + 2] << 8) |
-                   array[offset + 3];
+            return ((uint) array[offset + 0] << 24) | ((uint) array[offset + 1] << 16) | ((uint) array[offset + 2] << 8) | array[offset + 3];
         }
 
         public static ushort GetUInt16BigEndian(byte[] array, int offset)
         {
-            return (ushort) (
-                (array[offset + 0] << 8) |
-                array[offset + 1]);
+            return (ushort) ((array[offset + 0] << 8) | array[offset + 1]);
         }
     }
 }

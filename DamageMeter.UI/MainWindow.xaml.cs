@@ -53,15 +53,9 @@ namespace DamageMeter.UI
             InitializeComponent();
             // Handler for exceptions in threads behind forms.
             Application.ThreadException += GlobalThreadExceptionHandler;
-            if (BasicTeraData.Instance.WindowData.InvisibleUi)
-            {
-                Visibility = Visibility.Hidden;
-            }
+            if (BasicTeraData.Instance.WindowData.InvisibleUi) { Visibility = Visibility.Hidden; }
             System.Windows.Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
-            if (BasicTeraData.Instance.WindowData.LowPriority)
-            {
-                Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
-            }
+            if (BasicTeraData.Instance.WindowData.LowPriority) { Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle; }
 
 
             TeraSniffer.Instance.Enabled = true;
@@ -93,8 +87,7 @@ namespace DamageMeter.UI
             _bossGageBar = new BossGageWindow();
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
 
-            Console.WriteLine(
-                "SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
+            Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             NotifyIcon.Initialize(this);
             KeyboardHook.Instance.SwitchTopMost += delegate { NotifyIcon.SwitchStayTop(); };
         }
@@ -121,10 +114,7 @@ namespace DamageMeter.UI
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExTransparent(hwnd);
-            foreach (var players in Controls)
-            {
-                players.Value.SetClickThrou();
-            }
+            foreach (var players in Controls) { players.Value.SetClickThrou(); }
             _entityStats.SetClickThrou();
             _bossGageBar.SetClickThrou();
             NotifyIcon.ClickThrou.IsChecked = true;
@@ -135,10 +125,7 @@ namespace DamageMeter.UI
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExVisible(hwnd);
-            foreach (var players in Controls)
-            {
-                players.Value.UnsetClickThrou();
-            }
+            foreach (var players in Controls) { players.Value.UnsetClickThrou(); }
             _entityStats.UnsetClickThrou();
             _bossGageBar.UnsetClickThrou();
             NotifyIcon.ClickThrou.IsChecked = false;
@@ -149,20 +136,15 @@ namespace DamageMeter.UI
         public void VerifyClose()
         {
             SetForegroundWindow(new WindowInteropHelper(this).Handle);
-            if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application,
-                    LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application, LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 BasicTeraData.Instance.WindowData.BossGageStatus =
-                    new WindowStatus(new Point(_bossGageBar.Left, _bossGageBar.Top),
-                        _bossGageBar.Visibility == Visibility.Visible);
-                BasicTeraData.Instance.WindowData.HistoryStatus =
-                    new WindowStatus(new Point(_windowHistory.Left, _windowHistory.Top),
-                        _windowHistory.Visibility == Visibility.Visible);
-                BasicTeraData.Instance.WindowData.DebuffsStatus =
-                    new WindowStatus(new Point(_entityStats.Left, _entityStats.Top),
-                        _entityStats.Visibility == Visibility.Visible);
+                    new WindowStatus(new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visibility == Visibility.Visible);
+                BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(new Point(_windowHistory.Left, _windowHistory.Top),
+                    _windowHistory.Visibility == Visibility.Visible);
+                BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(new Point(_entityStats.Left, _entityStats.Top),
+                    _entityStats.Visibility == Visibility.Visible);
                 Close();
             }
         }
@@ -190,10 +172,8 @@ namespace DamageMeter.UI
         private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
         {
             var ex = e.Exception;
-            BasicTeraData.LogError("##### FORM EXCEPTION #####\r\n" + ex.Message + "\r\n" +
-                                   ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" +
-                                   ex.InnerException +
-                                   "\r\n" + ex.TargetSite);
+            BasicTeraData.LogError("##### FORM EXCEPTION #####\r\n" + ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data +
+                                   "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
             MessageBox.Show(LP.MainWindow_Fatal_error);
         }
 
@@ -206,13 +186,7 @@ namespace DamageMeter.UI
                 KeyboardHook.Instance.RegisterKeyboardHook();
                 _keyboardInitialized = true;
             }
-            else
-            {
-                if (KeyboardHook.Instance.SetHotkeys(teraWindowActive))
-                {
-                    StayTopMost();
-                }
-            }
+            else { if (KeyboardHook.Instance.SetHotkeys(teraWindowActive)) { StayTopMost(); } }
 
             if (!BasicTeraData.Instance.WindowData.AlwaysVisible)
             {
@@ -222,28 +196,22 @@ namespace DamageMeter.UI
                     ForceWindowVisibilityHidden = true;
                 }
 
-                if ((meterWindowActive || teraWindowActive) &&
-                    (BasicTeraData.Instance.WindowData.InvisibleUi && Controls.Count > 0 ||
-                     !BasicTeraData.Instance.WindowData.InvisibleUi))
+                if ((meterWindowActive || teraWindowActive) && (BasicTeraData.Instance.WindowData.InvisibleUi && Controls.Count > 0 ||
+                                                                !BasicTeraData.Instance.WindowData.InvisibleUi))
                 {
                     ForceWindowVisibilityHidden = false;
                     Visibility = Visibility.Visible;
                 }
             }
-            else
-            {
-                ForceWindowVisibilityHidden = false;
-            }
+            else { ForceWindowVisibilityHidden = false; }
         }
 
-        public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities,
-            bool ntimedEncounter, AbnormalityStorage nabnormals,
-            ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting,
+        public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities, bool ntimedEncounter,
+            AbnormalityStorage nabnormals, ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting,
             NotifyFlashMessage nflash)
         {
-            void ChangeUi(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities,
-                bool timedEncounter, AbnormalityStorage abnormals, ConcurrentDictionary<string, NpcEntity> bossHistory,
-                List<ChatMessage> chatbox, int packetWaiting, NotifyFlashMessage flash)
+            void ChangeUi(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
+                ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, NotifyFlashMessage flash)
             {
                 Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
                 UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
@@ -256,8 +224,8 @@ namespace DamageMeter.UI
 
                 PartyDps.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
                                        ? statsSummary.EntityInformation.TotalDamage
-                                       : statsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond /
-                                         statsSummary.EntityInformation.Interval) + LP.PerSecond;
+                                       : statsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond / statsSummary.EntityInformation.Interval) +
+                                   LP.PerSecond;
                 var visiblePlayerStats = new HashSet<Player>();
                 var statsDamage = statsSummary.PlayerDamageDealt;
                 var statsHeal = statsSummary.PlayerHealDealt;
@@ -265,18 +233,11 @@ namespace DamageMeter.UI
                 {
                     PlayerStats playerStatsControl;
                     Controls.TryGetValue(playerStats.Source, out playerStatsControl);
-                    if (playerStats.Amount == 0)
-                    {
-                        continue;
-                    }
+                    if (playerStats.Amount == 0) { continue; }
 
                     visiblePlayerStats.Add(playerStats.Source);
-                    if (playerStatsControl != null)
-                    {
-                        continue;
-                    }
-                    playerStatsControl = new PlayerStats(playerStats,
-                        statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), statsSummary.EntityInformation,
+                    if (playerStatsControl != null) { continue; }
+                    playerStatsControl = new PlayerStats(playerStats, statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), statsSummary.EntityInformation,
                         skills, abnormals.Get(playerStats.Source));
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
@@ -291,76 +252,47 @@ namespace DamageMeter.UI
                 TotalDamage.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.TotalDamage);
                 if (BasicTeraData.Instance.WindowData.ShowTimeLeft && statsSummary.EntityInformation.TimeLeft > 0)
                 {
-                    var interval =
-                        TimeSpan.FromSeconds(statsSummary.EntityInformation.TimeLeft / TimeSpan.TicksPerSecond);
+                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.TimeLeft / TimeSpan.TicksPerSecond);
                     Timer.Content = interval.ToString(@"mm\:ss");
                     Timer.Foreground = Brushes.LightCoral;
                 }
                 else
                 {
-                    var interval =
-                        TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval / TimeSpan.TicksPerSecond);
+                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval / TimeSpan.TicksPerSecond);
                     Timer.Content = interval.ToString(@"mm\:ss");
-                    if (statsSummary.EntityInformation.Interval == 0 && BasicTeraData.Instance.WindowData.ShowTimeLeft)
-                    {
-                        Timer.Foreground = Brushes.LightCoral;
-                    }
-                    else
-                    {
-                        Timer.Foreground = Brushes.White;
-                    }
+                    if (statsSummary.EntityInformation.Interval == 0 && BasicTeraData.Instance.WindowData.ShowTimeLeft) { Timer.Foreground = Brushes.LightCoral; }
+                    else { Timer.Foreground = Brushes.White; }
                 }
                 Players.Items.Clear();
 
                 foreach (var item in statsDamage)
                 {
-                    if (!Controls.ContainsKey(item.Source))
-                    {
-                        continue;
-                    }
+                    if (!Controls.ContainsKey(item.Source)) { continue; }
                     if (Players.Items.Contains(Controls[item.Source]))
                     {
                         BasicTeraData.LogError(
-                            "duplicate playerinfo: \r\n" +
-                            string.Join("\r\n ", statsDamage.Select(x => x.Source.ToString() + " ->  " + x.Amount)),
-                            false, true);
+                            "duplicate playerinfo: \r\n" + string.Join("\r\n ", statsDamage.Select(x => x.Source.ToString() + " ->  " + x.Amount)), false, true);
                         continue;
                     }
                     Players.Items.Add(Controls[item.Source]);
-                    Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source),
-                        statsSummary.EntityInformation, skills, abnormals.Get(item.Source), timedEncounter);
+                    Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), statsSummary.EntityInformation, skills,
+                        abnormals.Get(item.Source), timedEncounter);
                 }
 
                 if (BasicTeraData.Instance.WindowData.InvisibleUi)
                 {
-                    if (Controls.Count > 0 && !ForceWindowVisibilityHidden)
-                    {
-                        Visibility = Visibility.Visible;
-                    }
-                    if (Controls.Count == 0)
-                    {
-                        Visibility = Visibility.Hidden;
-                    }
+                    if (Controls.Count > 0 && !ForceWindowVisibilityHidden) { Visibility = Visibility.Visible; }
+                    if (Controls.Count == 0) { Visibility = Visibility.Hidden; }
                 }
-                else
-                {
-                    if (!ForceWindowVisibilityHidden)
-                    {
-                        Visibility = Visibility.Visible;
-                    }
-                }
+                else { if (!ForceWindowVisibilityHidden) { Visibility = Visibility.Visible; } }
                 if (ActualWidth != _oldWidth) // auto snap to right screen border on width change
                 {
                     var screen = Screen.FromHandle(new WindowInteropHelper(GetWindow(this)).Handle);
                     // Transform screen point to WPF device independent point
                     var source = PresentationSource.FromVisual(this);
-                    if (source?.CompositionTarget == null)
-                    {
-                        return;
-                    }
+                    if (source?.CompositionTarget == null) { return; }
                     var dx = source.CompositionTarget.TransformToDevice.M11;
-                    if (Math.Abs(screen.WorkingArea.X + screen.WorkingArea.Width - (Left + _oldWidth) * dx) <
-                        50) //snap at 50 px
+                    if (Math.Abs(screen.WorkingArea.X + screen.WorkingArea.Width - (Left + _oldWidth) * dx) < 50) //snap at 50 px
                     {
                         Left = Left + _oldWidth - ActualWidth;
                     }
@@ -368,9 +300,8 @@ namespace DamageMeter.UI
                 }
             }
 
-            Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nstatsSummary, nskills, nentities,
-                ntimedEncounter, nabnormals, nbossHistory,
-                nchatbox, npacketWaiting, nflash);
+            Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox,
+                npacketWaiting, nflash);
         }
 
         private void ShowHistory(object sender, MouseButtonEventArgs e)
@@ -399,10 +330,7 @@ namespace DamageMeter.UI
 
         internal void StayTopMost()
         {
-            if (!_topMost || !Topmost)
-            {
-                return;
-            }
+            if (!_topMost || !Topmost) { return; }
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
                 window.Topmost = false;
@@ -412,33 +340,21 @@ namespace DamageMeter.UI
 
         private bool NeedUpdateEncounter(IReadOnlyList<NpcEntity> entities)
         {
-            if (entities.Count != ListEncounter.Items.Count - 1)
-            {
-                return true;
-            }
+            if (entities.Count != ListEncounter.Items.Count - 1) { return true; }
             for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
             {
-                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entities[i - 1])
-                {
-                    return true;
-                }
+                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entities[i - 1]) { return true; }
             }
             return false;
         }
 
         private bool ChangeEncounterSelection(NpcEntity entity)
         {
-            if (entity == null)
-            {
-                return false;
-            }
+            if (entity == null) { return false; }
 
             for (var i = 1; i < ListEncounter.Items.Count; i++)
             {
-                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entity)
-                {
-                    continue;
-                }
+                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entity) { continue; }
                 ListEncounter.SelectedItem = ListEncounter.Items[i];
                 return true;
             }
@@ -449,10 +365,7 @@ namespace DamageMeter.UI
         private void UpdateComboboxEncounter(IReadOnlyList<NpcEntity> entities, NpcEntity currentBoss)
         {
             //http://stackoverflow.com/questions/12164488/system-reflection-targetinvocationexception-occurred-in-presentationframework
-            if (ListEncounter == null || !ListEncounter.IsLoaded)
-            {
-                return;
-            }
+            if (ListEncounter == null || !ListEncounter.IsLoaded) { return; }
 
             if (!NeedUpdateEncounter(entities))
             {
@@ -461,8 +374,7 @@ namespace DamageMeter.UI
             }
 
             NpcEntity selectedEntity = null;
-            if ((ComboBoxItem) ListEncounter.SelectedItem != null &&
-                !(((ComboBoxItem) ListEncounter.SelectedItem).Content is string))
+            if ((ComboBoxItem) ListEncounter.SelectedItem != null && !(((ComboBoxItem) ListEncounter.SelectedItem).Content is string))
             {
                 selectedEntity = (NpcEntity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
             }
@@ -474,22 +386,13 @@ namespace DamageMeter.UI
             {
                 var item = new ComboBoxItem {Content = entity};
                 ListEncounter.Items.Add(item);
-                if (entity != selectedEntity)
-                {
-                    continue;
-                }
+                if (entity != selectedEntity) { continue; }
                 ListEncounter.SelectedItem = item;
                 selected = true;
             }
-            if (ChangeEncounterSelection(currentBoss))
-            {
-                return;
-            }
+            if (ChangeEncounterSelection(currentBoss)) { return; }
 
-            if (selected)
-            {
-                return;
-            }
+            if (selected) { return; }
             ListEncounter.SelectedItem = ListEncounter.Items[0];
         }
 
@@ -507,28 +410,19 @@ namespace DamageMeter.UI
                     _entityStats.Top = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.Y;
                     _entityStats.Left = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.X;
                 }
-                if (BasicTeraData.Instance.WindowData.DebuffsStatus.Visible)
-                {
-                    _entityStats.ShowWindow();
-                }
+                if (BasicTeraData.Instance.WindowData.DebuffsStatus.Visible) { _entityStats.ShowWindow(); }
                 if (BasicTeraData.Instance.WindowData.BossGageStatus.Location != new Point(0, 0))
                 {
                     _bossGageBar.Top = BasicTeraData.Instance.WindowData.BossGageStatus.Location.Y;
                     _bossGageBar.Left = BasicTeraData.Instance.WindowData.BossGageStatus.Location.X;
                 }
-                if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible)
-                {
-                    _bossGageBar.ShowWindow();
-                }
+                if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible) { _bossGageBar.ShowWindow(); }
                 if (BasicTeraData.Instance.WindowData.HistoryStatus.Location != new Point(0, 0))
                 {
                     _windowHistory.Top = BasicTeraData.Instance.WindowData.HistoryStatus.Location.Y;
                     _windowHistory.Left = BasicTeraData.Instance.WindowData.HistoryStatus.Location.X;
                 }
-                if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible)
-                {
-                    _windowHistory.ShowWindow();
-                }
+                if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible) { _windowHistory.ShowWindow(); }
                 return;
             }
             Top = 0;
@@ -537,21 +431,12 @@ namespace DamageMeter.UI
 
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count != 1)
-            {
-                return;
-            }
+            if (e.AddedItems.Count != 1) { return; }
 
             NpcEntity encounter = null;
-            if (((ComboBoxItem) e.AddedItems[0]).Content is NpcEntity)
-            {
-                encounter = (NpcEntity) ((ComboBoxItem) e.AddedItems[0]).Content;
-            }
+            if (((ComboBoxItem) e.AddedItems[0]).Content is NpcEntity) { encounter = (NpcEntity) ((ComboBoxItem) e.AddedItems[0]).Content; }
 
-            if (encounter != NetworkController.Instance.Encounter)
-            {
-                NetworkController.Instance.NewEncounter = encounter;
-            }
+            if (encounter != NetworkController.Instance.Encounter) { NetworkController.Instance.NewEncounter = encounter; }
         }
 
         private void EntityStatsImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -586,9 +471,7 @@ namespace DamageMeter.UI
             //.NET 4.6 bug: https://connect.microsoft.com/VisualStudio/feedback/details/1660886/system-windows-controls-combobox-coerceisselectionboxhighlighted-bug
             if (Environment.OSVersion.Version.Major >= 10)
             {
-                ListEncounter.GetType()
-                    .GetField("_highlightedInfo", BindingFlags.NonPublic | BindingFlags.Instance)
-                    .SetValue(ListEncounter, null);
+                ListEncounter.GetType().GetField("_highlightedInfo", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(ListEncounter, null);
             }
             _topMost = true;
         }
@@ -612,10 +495,7 @@ namespace DamageMeter.UI
 
         private void ChangeTimeLeft(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount != 2)
-            {
-                return;
-            }
+            if (e.ClickCount != 2) { return; }
             BasicTeraData.Instance.WindowData.ShowTimeLeft = !BasicTeraData.Instance.WindowData.ShowTimeLeft;
         }
 

@@ -30,11 +30,8 @@ namespace DamageMeter
         public delegate void UnsetClickThrouEvent();
 
 
-        public delegate void UpdateUiHandler(
-            StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter,
-            AbnormalityStorage abnormals,
-            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting,
-            NotifyFlashMessage flash);
+        public delegate void UpdateUiHandler(StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
+            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, NotifyFlashMessage flash);
 
         private static NetworkController _instance;
         private static readonly object _pasteLock = new object();
@@ -165,14 +162,12 @@ namespace DamageMeter
             var timedEncounter = TimedEncounter;
 
             var entities = Database.Database.Instance.AllEntity();
-            var filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>()
-                .Where(npc => npc.Info.Boss).ToList();
+            var filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
             if (packetsWaiting > 1500 && filteredEntities.Count > 1)
             {
                 Database.Database.Instance.DeleteAllWhenTimeBelow(Encounter);
                 entities = Database.Database.Instance.AllEntity();
-                filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>()
-                    .Where(npc => npc.Info.Boss).ToList();
+                filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
             }
 
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
@@ -193,8 +188,7 @@ namespace DamageMeter
                 : Database.Database.Instance.PlayerDamageInformation(currentBoss);
             if (BasicTeraData.Instance.WindowData.MeterUserOnTop)
             {
-                playersInfo = playersInfo.OrderBy(x => MeterPlayers.Contains(x.Source) ? 0 : 1)
-                    .ThenByDescending(x => x.Amount).ToList();
+                playersInfo = playersInfo.OrderBy(x => MeterPlayers.Contains(x.Source) ? 0 : 1).ThenByDescending(x => x.Amount).ToList();
             }
 
             var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
@@ -206,8 +200,7 @@ namespace DamageMeter
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox,
-                packetsWaiting, flash);
+            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, packetsWaiting, flash);
         }
 
         public void SwitchClickThrou()
@@ -244,8 +237,7 @@ namespace DamageMeter
             UnsetClickThrouAction?.Invoke();
         }
 
-        public static void CopyThread(StatsSummary stats, Skills skills, AbnormalityStorage abnormals,
-            bool timedEncounter, CopyKey copy)
+        public static void CopyThread(StatsSummary stats, Skills skills, AbnormalityStorage abnormals, bool timedEncounter, CopyKey copy)
         {
             if (BasicTeraData.Instance.HotDotDatabase == null)
             {
@@ -273,15 +265,12 @@ namespace DamageMeter
 
         private void PacketAnalysisLoop()
         {
-            try
-            {
-                Database.Database.Instance.DeleteAll();
-            }
+            try { Database.Database.Instance.DeleteAll(); }
             catch (Exception ex)
             {
                 BasicTeraData.LogError(
-                    ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" +
-                    ex.InnerException + "\r\n" + ex.TargetSite, true);
+                    ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite,
+                    true);
                 MessageBox.Show(LP.MainWindow_Fatal_error);
                 Exit();
             }
@@ -298,17 +287,12 @@ namespace DamageMeter
                     var playersInfo = timedEncounter
                         ? Database.Database.Instance.PlayerDamageInformation(entityInfo.BeginTime, entityInfo.EndTime)
                         : Database.Database.Instance.PlayerDamageInformation(currentBoss);
-                    var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime,
-                        entityInfo.EndTime);
+                    var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
                     var statsSummary = new StatsSummary(playersInfo, heals, entityInfo);
 
                     var tmpcopy = NeedToCopy;
                     var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-                    var pasteThread =
-                        new Thread(() => CopyThread(statsSummary, skills, abnormals, timedEncounter, tmpcopy))
-                        {
-                            Priority = ThreadPriority.Highest
-                        };
+                    var pasteThread = new Thread(() => CopyThread(statsSummary, skills, abnormals, timedEncounter, tmpcopy)) {Priority = ThreadPriority.Highest};
                     pasteThread.SetApartmentState(ApartmentState.STA);
                     pasteThread.Start();
 
@@ -338,8 +322,7 @@ namespace DamageMeter
                 var packetsWaiting = TeraSniffer.Instance.Packets.Count;
                 if (packetsWaiting > 3000)
                 {
-                    MessageBox.Show(
-                        LP.Your_computer_is_too_slow);
+                    MessageBox.Show(LP.Your_computer_is_too_slow);
                     Exit();
                 }
 
@@ -360,10 +343,7 @@ namespace DamageMeter
                 }
 
                 var message = MessageFactory.Create(obj);
-                if (message.GetType() == typeof(UnknownMessage))
-                {
-                    continue;
-                }
+                if (message.GetType() == typeof(UnknownMessage)) { continue; }
 
                 if (!PacketProcessing.Process(message))
                 {
@@ -375,10 +355,7 @@ namespace DamageMeter
         public void CheckUpdateUi(int packetsWaiting)
         {
             var second = DateTime.UtcNow.Ticks;
-            if (second - _lastTick < TimeSpan.TicksPerSecond)
-            {
-                return;
-            }
+            if (second - _lastTick < TimeSpan.TicksPerSecond) { return; }
             UpdateUi(packetsWaiting);
         }
 

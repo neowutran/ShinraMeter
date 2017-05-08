@@ -27,8 +27,7 @@ namespace Data
                 {
                     var col = drawing.GetPixel(i, j);
                     drawing.SetPixel(i, j,
-                        Color.FromArgb(col.A, 255 - (col.R + col.G + col.B) / 3, 255 - (col.R + col.G + col.B) / 3,
-                            255 - (col.R + col.G + col.B) / 3));
+                        Color.FromArgb(col.A, 255 - (col.R + col.G + col.B) / 3, 255 - (col.R + col.G + col.B) / 3, 255 - (col.R + col.G + col.B) / 3));
                 }
                 _drawings.Add(playerClass, drawing);
             }

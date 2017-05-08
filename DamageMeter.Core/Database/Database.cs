@@ -30,22 +30,10 @@ namespace DamageMeter.Database
 
         private void Init()
         {
-            var sql = "create table skills (" +
-                      "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                      "amount INTEGER NOT NULL," +
-                      "type INTEGER NOT NULL," +
-                      "target INTEGER NOT NULL," +
-                      "targetServerIdPlayerId INTEGER," +
-                      "source INTEGER NOT NULL," +
-                      "sourceServerIdPlayerId INTEGER," +
-                      "pet_zone INTEGER DEFAULT NULL," +
-                      "pet_id INTEGER DEFAULT NULL," +
-                      "skill_id INTEGER NOT NULL," +
-                      "critic INTEGER NOT NULL," +
-                      "direction INTEGER NOT NULL," +
-                      "hotdot INTEGER NOT NULL," +
-                      "time INTEGER NOT NULL" +
-                      "); ";
+            var sql = "create table skills (" + "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," + "amount INTEGER NOT NULL," + "type INTEGER NOT NULL," +
+                      "target INTEGER NOT NULL," + "targetServerIdPlayerId INTEGER," + "source INTEGER NOT NULL," + "sourceServerIdPlayerId INTEGER," +
+                      "pet_zone INTEGER DEFAULT NULL," + "pet_id INTEGER DEFAULT NULL," + "skill_id INTEGER NOT NULL," + "critic INTEGER NOT NULL," +
+                      "direction INTEGER NOT NULL," + "hotdot INTEGER NOT NULL," + "time INTEGER NOT NULL" + "); ";
             var command = new SQLiteCommand(sql, Connexion);
             command.ExecuteNonQuery();
             command.Dispose();
@@ -102,8 +90,8 @@ namespace DamageMeter.Database
             command.Dispose();
         }
 
-        public void Insert(long amount, Type type, Entity target, Entity source, long skillId, bool hotdot, bool critic,
-            long time, Entity petSource, HitDirection direction)
+        public void Insert(long amount, Type type, Entity target, Entity source, long skillId, bool hotdot, bool critic, long time, Entity petSource,
+            HitDirection direction)
         {
             var sql =
                 "INSERT INTO skills (amount, type, target, source, skill_id, hotdot, critic, time, pet_zone, pet_id, direction, targetServerIdPlayerId, sourceServerIdPlayerId ) VALUES( $amount , $type , $target , $source , $skill_id, $hotdot , $critic , $time, $pet_zone, $pet_id, $direction, $targetServerIdPlayerId, $sourceServerIdPlayerId ) ;";
@@ -136,10 +124,7 @@ namespace DamageMeter.Database
                 var spid = ((ulong) playerSource.ServerId << 32) | playerSource.PlayerId;
                 command.Parameters.AddWithValue("$sourceServerIdPlayerId", spid);
             }
-            else
-            {
-                command.Parameters.AddWithValue("$sourceServerIdPlayerId", DBNull.Value);
-            }
+            else { command.Parameters.AddWithValue("$sourceServerIdPlayerId", DBNull.Value); }
 
 
             var playerTarget = target as UserEntity;
@@ -148,10 +133,7 @@ namespace DamageMeter.Database
                 var spid = ((ulong) playerTarget.ServerId << 32) | playerTarget.PlayerId;
                 command.Parameters.AddWithValue("$targetServerIdPlayerId", spid);
             }
-            else
-            {
-                command.Parameters.AddWithValue("$targetServerIdPlayerId", DBNull.Value);
-            }
+            else { command.Parameters.AddWithValue("$targetServerIdPlayerId", DBNull.Value); }
 
             command.ExecuteNonQuery();
             command.Dispose();
@@ -166,10 +148,7 @@ namespace DamageMeter.Database
             command.Dispose();
             while (rdr.Read())
             {
-                if (rdr.IsDBNull(0))
-                {
-                    return entities;
-                }
+                if (rdr.IsDBNull(0)) { return entities; }
                 entities.Add(new EntityId((ulong) rdr.GetInt64(0)));
             }
             return entities;
@@ -197,11 +176,8 @@ namespace DamageMeter.Database
 
             if (entity == null)
             {
-                var sql =
-                    "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
-                    "FROM skills " +
-                    "WHERE type = $type " +
-                    "GROUP BY source; ";
+                var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " + "WHERE type = $type " +
+                          "GROUP BY source; ";
 
                 command = new SQLiteCommand(sql, Connexion);
                 command.Parameters.AddWithValue("$type", (int) Type.Damage);
@@ -210,11 +186,8 @@ namespace DamageMeter.Database
             {
                 if (!timed)
                 {
-                    var sql =
-                        "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
-                        "FROM skills " +
-                        "WHERE target = $target AND type = $type " +
-                        "GROUP BY source; ";
+                    var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " +
+                              "WHERE target = $target AND type = $type " + "GROUP BY source; ";
 
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
@@ -222,11 +195,9 @@ namespace DamageMeter.Database
                 }
                 else
                 {
-                    var sql =
-                        "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " +
-                        "FROM skills " +
-                        "WHERE time BETWEEN (SELECT MIN(time) FROM skills WHERE target = $target) AND (SELECT MAX(time) FROM skills WHERE target = $target) AND type = $type " +
-                        "GROUP BY source; ";
+                    var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " +
+                              "WHERE time BETWEEN (SELECT MIN(time) FROM skills WHERE target = $target) AND (SELECT MAX(time) FROM skills WHERE target = $target) AND type = $type " +
+                              "GROUP BY source; ";
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
                     command.Parameters.AddWithValue("$target", entity.Id.Id);
@@ -243,30 +214,15 @@ namespace DamageMeter.Database
             {
                 var source = rdr.GetFieldValue<long>(rdr.GetOrdinal("source"));
                 var entitySource = NetworkController.Instance.EntityTracker.GetOrNull(new EntityId((ulong) source));
-                if (!(entitySource is UserEntity))
-                {
-                    continue;
-                }
-                var totalDamage = rdr.IsDBNull(rdr.GetOrdinal("total_amount"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
-                var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));
-                var endTime = rdr.IsDBNull(rdr.GetOrdinal("end_time"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("end_time"));
+                if (!(entitySource is UserEntity)) { continue; }
+                var totalDamage = rdr.IsDBNull(rdr.GetOrdinal("total_amount")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
+                var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));
+                var endTime = rdr.IsDBNull(rdr.GetOrdinal("end_time")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("end_time"));
 
                 sumTotalDamage += totalDamage;
 
-                if (minBeginTime == 0 || beginTime < minBeginTime)
-                {
-                    minBeginTime = beginTime;
-                }
-                if (endTime > maxEndTime)
-                {
-                    maxEndTime = endTime;
-                }
+                if (minBeginTime == 0 || beginTime < minBeginTime) { minBeginTime = beginTime; }
+                if (endTime > maxEndTime) { maxEndTime = endTime; }
             }
             return new EntityInformation(entity, sumTotalDamage, minBeginTime, maxEndTime);
         }
@@ -305,12 +261,8 @@ namespace DamageMeter.Database
                 var critic = rdr.GetFieldValue<long>(rdr.GetOrdinal("critic")) == 1;
                 var hotdot = rdr.GetFieldValue<long>(rdr.GetOrdinal("hotdot")) == 1;
                 var time = rdr.GetFieldValue<long>(rdr.GetOrdinal("time"));
-                var petZone = rdr.IsDBNull(rdr.GetOrdinal("pet_zone"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_zone"));
-                var petId = rdr.IsDBNull(rdr.GetOrdinal("pet_id"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_id"));
+                var petZone = rdr.IsDBNull(rdr.GetOrdinal("pet_zone")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_zone"));
+                var petId = rdr.IsDBNull(rdr.GetOrdinal("pet_id")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("pet_id"));
                 var pet = BasicTeraData.Instance.MonsterDatabase.GetOrNull((ushort) petZone, (uint) petId);
 
                 Player sourcePlayer = null;
@@ -327,18 +279,11 @@ namespace DamageMeter.Database
                 }
                 var entityTarget = NetworkController.Instance.EntityTracker.GetOrNull(target);
                 var entitySource = NetworkController.Instance.EntityTracker.GetOrNull(source);
-                var skill = new Skill(amount, type, entityTarget, targetPlayer, entitySource, sourcePlayer,
-                    (int) skillid, hotdot, critic, time, pet, direction);
+                var skill = new Skill(amount, type, entityTarget, targetPlayer, entitySource, sourcePlayer, (int) skillid, hotdot, critic, time, pet, direction);
 
-                if (!targetSourceSkills.ContainsKey(skill.Target))
-                {
-                    targetSourceSkills.Add(skill.Target, new Dictionary<Entity, List<Skill>>());
-                }
+                if (!targetSourceSkills.ContainsKey(skill.Target)) { targetSourceSkills.Add(skill.Target, new Dictionary<Entity, List<Skill>>()); }
 
-                if (!targetSourceSkills[skill.Target].ContainsKey(skill.Source))
-                {
-                    targetSourceSkills[skill.Target].Add(skill.Source, new List<Skill>());
-                }
+                if (!targetSourceSkills[skill.Target].ContainsKey(skill.Source)) { targetSourceSkills[skill.Target].Add(skill.Source, new List<Skill>()); }
 
                 if (!sourceTargetSkills.ContainsKey(skill.Source))
                 {
@@ -358,10 +303,7 @@ namespace DamageMeter.Database
                     sourceTargetIdSkill[skill.Source][skill.Target].Add(skill.SkillId, new List<Skill>());
                 }
 
-                if (!sourceIdSkill[skill.Source].ContainsKey(skill.SkillId))
-                {
-                    sourceIdSkill[skill.Source].Add(skill.SkillId, new List<Skill>());
-                }
+                if (!sourceIdSkill[skill.Source].ContainsKey(skill.SkillId)) { sourceIdSkill[skill.Source].Add(skill.SkillId, new List<Skill>()); }
 
                 targetSourceSkills[skill.Target][skill.Source].Add(skill);
                 sourceTargetSkills[skill.Source][skill.Target].Add(skill);
@@ -375,11 +317,9 @@ namespace DamageMeter.Database
 
         public List<PlayerHealDealt> PlayerHealInformation(long beginTime, long endTime)
         {
-            var sql =
-                "SELECT SUM(critic) as number_critics, COUNT(*) AS number_hits, sourceServerIdPlayerId " +
-                "FROM skills " +
-                "WHERE time BETWEEN $begin AND $end AND type = $type AND hotdot = $hotdot AND sourceServerIdPlayerId IS NOT NULL " +
-                "GROUP BY sourceServerIdPlayerId ";
+            var sql = "SELECT SUM(critic) as number_critics, COUNT(*) AS number_hits, sourceServerIdPlayerId " + "FROM skills " +
+                      "WHERE time BETWEEN $begin AND $end AND type = $type AND hotdot = $hotdot AND sourceServerIdPlayerId IS NOT NULL " +
+                      "GROUP BY sourceServerIdPlayerId ";
 
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
@@ -395,20 +335,11 @@ namespace DamageMeter.Database
             while (rdr.Read())
             {
                 var sourceServerIdPlayerId = (ulong) rdr.GetInt64(rdr.GetOrdinal("sourceServerIdPlayerId"));
-                var player = NetworkController.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32),
-                    (uint) ((sourceServerIdPlayerId << 32) >> 32));
-                var critic = rdr.IsDBNull(rdr.GetOrdinal("number_critics"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_critics"));
-                var hit = rdr.IsDBNull(rdr.GetOrdinal("number_hits"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_hits"));
+                var player = NetworkController.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32), (uint) ((sourceServerIdPlayerId << 32) >> 32));
+                var critic = rdr.IsDBNull(rdr.GetOrdinal("number_critics")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_critics"));
+                var hit = rdr.IsDBNull(rdr.GetOrdinal("number_hits")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_hits"));
 
-                result.Add(new PlayerHealDealt(
-                    critic,
-                    hit,
-                    player
-                ));
+                result.Add(new PlayerHealDealt(critic, hit, player));
             }
             return result;
         }
@@ -418,10 +349,8 @@ namespace DamageMeter.Database
         {
             var sql =
                 "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
-                "FROM skills " +
-                "WHERE time BETWEEN $begin AND $end AND type = $type AND sourceServerIdPlayerId IS NOT NULL " +
-                "GROUP BY type, sourceServerIdPlayerId " +
-                "ORDER BY `total_amount` DESC;";
+                "FROM skills " + "WHERE time BETWEEN $begin AND $end AND type = $type AND sourceServerIdPlayerId IS NOT NULL " +
+                "GROUP BY type, sourceServerIdPlayerId " + "ORDER BY `total_amount` DESC;";
 
             var command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$begin", beginTime);
@@ -441,36 +370,15 @@ namespace DamageMeter.Database
             while (rdr.Read())
             {
                 var sourceServerIdPlayerId = (ulong) rdr.GetInt64(rdr.GetOrdinal("sourceServerIdPlayerId"));
-                var player = NetworkController.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32),
-                    (uint) ((sourceServerIdPlayerId << 32) >> 32));
-                var amount = rdr.IsDBNull(rdr.GetOrdinal("total_amount"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
-                var critAmount = rdr.IsDBNull(rdr.GetOrdinal("crit_amount"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("crit_amount"));
-                var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));
-                var endTime = rdr.IsDBNull(rdr.GetOrdinal("end_time"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("end_time"));
-                var critic = rdr.IsDBNull(rdr.GetOrdinal("number_critics"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_critics"));
-                var hit = rdr.IsDBNull(rdr.GetOrdinal("number_hits"))
-                    ? 0
-                    : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_hits"));
+                var player = NetworkController.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32), (uint) ((sourceServerIdPlayerId << 32) >> 32));
+                var amount = rdr.IsDBNull(rdr.GetOrdinal("total_amount")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
+                var critAmount = rdr.IsDBNull(rdr.GetOrdinal("crit_amount")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("crit_amount"));
+                var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));
+                var endTime = rdr.IsDBNull(rdr.GetOrdinal("end_time")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("end_time"));
+                var critic = rdr.IsDBNull(rdr.GetOrdinal("number_critics")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_critics"));
+                var hit = rdr.IsDBNull(rdr.GetOrdinal("number_hits")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_hits"));
 
-                result.Add(new PlayerDamageDealt(
-                    amount,
-                    critAmount,
-                    beginTime,
-                    endTime,
-                    critic,
-                    hit,
-                    player
-                ));
+                result.Add(new PlayerDamageDealt(amount, critAmount, beginTime, endTime, critic, hit, player));
             }
             return result;
         }
@@ -491,9 +399,7 @@ namespace DamageMeter.Database
 
             sql =
                 "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
-                "FROM skills " +
-                "WHERE target = $target AND type = $type AND sourceServerIdPlayerId IS NOT NULL " +
-                "GROUP BY sourceServerIdPlayerId " +
+                "FROM skills " + "WHERE target = $target AND type = $type AND sourceServerIdPlayerId IS NOT NULL " + "GROUP BY sourceServerIdPlayerId " +
                 "ORDER BY `total_amount`  DESC;";
             command = new SQLiteCommand(sql, Connexion);
             command.Parameters.AddWithValue("$target", target.Id.Id);

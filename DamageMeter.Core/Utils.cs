@@ -11,14 +11,8 @@ namespace DamageMeter
     {
         public static void InvokeIfRequired(this Dispatcher disp, Action dotIt, DispatcherPriority priority)
         {
-            if (disp.Thread != Thread.CurrentThread)
-            {
-                disp.Invoke(priority, dotIt);
-            }
-            else
-            {
-                dotIt();
-            }
+            if (disp.Thread != Thread.CurrentThread) { disp.Invoke(priority, dotIt); }
+            else { dotIt(); }
         }
     }
 
@@ -28,8 +22,7 @@ namespace DamageMeter
 
         protected void NotifyPropertyChanged(string v)
         {
-            Application.Current.Dispatcher.InvokeIfRequired(() =>
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(v)), DispatcherPriority.DataBind);
+            Application.Current.Dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(v)), DispatcherPriority.DataBind);
         }
     }
 
@@ -49,14 +42,8 @@ namespace DamageMeter
             _dispatcher.InvokeIfRequired(() =>
             {
                 _lock.EnterWriteLock();
-                try
-                {
-                    base.ClearItems();
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+                try { base.ClearItems(); }
+                finally { _lock.ExitWriteLock(); }
             }, DispatcherPriority.DataBind);
         }
 
@@ -64,19 +51,10 @@ namespace DamageMeter
         {
             _dispatcher.InvokeIfRequired(() =>
             {
-                if (index > Count)
-                {
-                    return;
-                }
+                if (index > Count) { return; }
                 _lock.EnterWriteLock();
-                try
-                {
-                    base.InsertItem(index, item);
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+                try { base.InsertItem(index, item); }
+                finally { _lock.ExitWriteLock(); }
             }, DispatcherPriority.DataBind);
         }
 
@@ -87,19 +65,10 @@ namespace DamageMeter
                 _lock.EnterReadLock();
                 var count = Count;
                 _lock.ExitReadLock();
-                if ((oldIndex >= count) | (newIndex >= count) | (oldIndex == newIndex))
-                {
-                    return;
-                }
+                if ((oldIndex >= count) | (newIndex >= count) | (oldIndex == newIndex)) { return; }
                 _lock.EnterWriteLock();
-                try
-                {
-                    base.MoveItem(oldIndex, newIndex);
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+                try { base.MoveItem(oldIndex, newIndex); }
+                finally { _lock.ExitWriteLock(); }
             }, DispatcherPriority.DataBind);
         }
 
@@ -107,19 +76,10 @@ namespace DamageMeter
         {
             _dispatcher.InvokeIfRequired(() =>
             {
-                if (index >= Count)
-                {
-                    return;
-                }
+                if (index >= Count) { return; }
                 _lock.EnterWriteLock();
-                try
-                {
-                    base.RemoveItem(index);
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+                try { base.RemoveItem(index); }
+                finally { _lock.ExitWriteLock(); }
             }, DispatcherPriority.DataBind);
         }
 
@@ -128,14 +88,8 @@ namespace DamageMeter
             _dispatcher.InvokeIfRequired(() =>
             {
                 _lock.EnterWriteLock();
-                try
-                {
-                    base.SetItem(index, item);
-                }
-                finally
-                {
-                    _lock.ExitWriteLock();
-                }
+                try { base.SetItem(index, item); }
+                finally { _lock.ExitWriteLock(); }
             }, DispatcherPriority.DataBind);
         }
 
@@ -148,10 +102,7 @@ namespace DamageMeter
                 CopyTo(array, 0);
                 return array;
             }
-            finally
-            {
-                _lock.ExitReadLock();
-            }
+            finally { _lock.ExitReadLock(); }
         }
     }
 }

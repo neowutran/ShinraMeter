@@ -52,9 +52,8 @@ namespace Data.Actions.Notify.SoundElements
                 // Get the line number from the stack frame
                 var line = frame.GetFileLineNumber();
                 BasicTeraData.LogError(
-                    "Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine +
-                    e.InnerException + Environment.NewLine + e + Environment.NewLine + "filename:" + file +
-                    Environment.NewLine + "line:" + line, false, true);
+                    "Sound ERROR test" + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + e.InnerException + Environment.NewLine + e +
+                    Environment.NewLine + "filename:" + file + Environment.NewLine + "line:" + line, false, true);
             }
         }
     }

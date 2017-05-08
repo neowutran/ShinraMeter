@@ -17,12 +17,8 @@ namespace Publisher
         {
             var source = SourceDirectory();
             var target = source + UpdateManager.Version;
-            if (Directory.Exists(target))
-            {
-                Directory.Delete(target, true);
-            }
-            var libpath = Path.Combine(Path.GetDirectoryName(source),
-                Environment.Is64BitProcess ? "lib/7z_x64.dll" : "lib/7z.dll");
+            if (Directory.Exists(target)) { Directory.Delete(target, true); }
+            var libpath = Path.Combine(Path.GetDirectoryName(source), Environment.Is64BitProcess ? "lib/7z_x64.dll" : "lib/7z.dll");
             SevenZipBase.SetLibraryPath(libpath);
             var compressor = new SevenZipCompressor {ArchiveFormat = OutArchiveFormat.Zip};
             compressor.CustomParameters["tc"] = "off";
@@ -34,14 +30,9 @@ namespace Publisher
             {
                 Console.WriteLine("Unpacking old release");
                 Directory.Delete(source + @"\resources", true);
-                Array.ForEach(
-                    Directory.GetFiles(source, "*", SearchOption.AllDirectories).Where(t => t.EndsWith("zip"))
-                        .ToArray(),
-                    x => ZipFile.ExtractToDirectory(x, Path.GetDirectoryName(x))
-                );
-                Array.ForEach(
-                    Directory.GetFiles(source, "*", SearchOption.AllDirectories).Where(t => t.EndsWith("zip"))
-                        .ToArray(), File.Delete);
+                Array.ForEach(Directory.GetFiles(source, "*", SearchOption.AllDirectories).Where(t => t.EndsWith("zip")).ToArray(),
+                    x => ZipFile.ExtractToDirectory(x, Path.GetDirectoryName(x)));
+                Array.ForEach(Directory.GetFiles(source, "*", SearchOption.AllDirectories).Where(t => t.EndsWith("zip")).ToArray(), File.Delete);
                 return;
             }
             new DirectoryInfo(source).MoveTo(target);
@@ -59,12 +50,11 @@ namespace Publisher
             Console.WriteLine("Hashing...");
             File.WriteAllText(target + ".txt", hashString);
             var _hashes = new Dictionary<string, string>();
-            Array.ForEach(Directory.GetFiles(target, "*", SearchOption.AllDirectories).Where(t =>
-                !t.EndsWith("ShinraLauncher.exe") && !t.Contains(@"\tmp\") && !t.Contains(@"\config\") &&
-                !t.Contains(@"\sound\") && !t.EndsWith("error.log")
-            ).ToArray(), x => _hashes.Add(x, UpdateManager.FileHash(x)));
-            File.WriteAllLines(source + ".sha1",
-                _hashes.Select(x => x.Value + " *" + x.Key.Replace(target + "\\", "")));
+            Array.ForEach(
+                Directory.GetFiles(target, "*", SearchOption.AllDirectories)
+                    .Where(t => !t.EndsWith("ShinraLauncher.exe") && !t.Contains(@"\tmp\") && !t.Contains(@"\config\") && !t.Contains(@"\sound\") &&
+                                !t.EndsWith("error.log")).ToArray(), x => _hashes.Add(x, UpdateManager.FileHash(x)));
+            File.WriteAllLines(source + ".sha1", _hashes.Select(x => x.Value + " *" + x.Key.Replace(target + "\\", "")));
             compressor.CompressFiles(source + ".sha1.zip", source + ".sha1");
             File.Delete(source + ".sha1");
             _hashes.Keys.ToList().ForEach(x =>
@@ -73,9 +63,7 @@ namespace Publisher
                 File.Delete(x);
                 Console.WriteLine("Compressing " + x);
             });
-            Array.ForEach(
-                Directory.GetFiles(target, "*", SearchOption.AllDirectories).Where(t => !t.EndsWith("zip")).ToArray(),
-                File.Delete);
+            Array.ForEach(Directory.GetFiles(target, "*", SearchOption.AllDirectories).Where(t => !t.EndsWith("zip")).ToArray(), File.Delete);
             new DirectoryInfo(target).MoveTo(source);
         }
 
@@ -85,10 +73,7 @@ namespace Publisher
             while (directory != null)
             {
                 var sourceDirectory = Path.Combine(directory, @"ShinraMeterV");
-                if (Directory.Exists(sourceDirectory))
-                {
-                    return sourceDirectory;
-                }
+                if (Directory.Exists(sourceDirectory)) { return sourceDirectory; }
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the release directory");

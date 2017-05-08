@@ -1,6 +1,4 @@
 ﻿namespace Data.Actions
 {
-    public abstract class Action
-    {
-    }
+    public abstract class Action { }
 }

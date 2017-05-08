@@ -12,11 +12,7 @@ namespace DamageMeter
 
         public static readonly FormatHelpers Pretty = new FormatHelpers {UnitSeparator = Thinspace};
 
-        public static readonly FormatHelpers Invariant = new FormatHelpers
-        {
-            UnitSeparator = "",
-            CultureInfo = CultureInfo.InvariantCulture
-        };
+        public static readonly FormatHelpers Invariant = new FormatHelpers {UnitSeparator = "", CultureInfo = CultureInfo.InvariantCulture};
 
         private static FormatHelpers _instance;
 
@@ -37,10 +33,7 @@ namespace DamageMeter
 
         public string FormatTimeSpan(TimeSpan timeSpan)
         {
-            if (timeSpan.Hours != 0 || timeSpan.Days != 0)
-            {
-                return timeSpan.ToString("g", CultureInfo);
-            }
+            if (timeSpan.Hours != 0 || timeSpan.Days != 0) { return timeSpan.ToString("g", CultureInfo); }
             return timeSpan.ToString(@"mm\:ss");
         }
 

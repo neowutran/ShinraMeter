@@ -23,21 +23,16 @@ namespace DamageMeter.UI
             EnduranceAbnormality.Items.Clear();
             EnduranceAbnormality.Items.Add(header);
             var counter = 0;
-            foreach (var abnormality in buffs.Times.Where(
-                x => x.Value.Duration(playerDamageDealt.BeginTime, playerDamageDealt.EndTime) > 0))
+            foreach (var abnormality in buffs.Times.Where(x => x.Value.Duration(playerDamageDealt.BeginTime, playerDamageDealt.EndTime) > 0))
             {
                 EnduranceDebuff abnormalityUi;
-                if (_enduranceDebuffsList.Count > counter)
-                {
-                    abnormalityUi = _enduranceDebuffsList[counter];
-                }
+                if (_enduranceDebuffsList.Count > counter) { abnormalityUi = _enduranceDebuffsList[counter]; }
                 else
                 {
                     abnormalityUi = new EnduranceDebuff();
                     _enduranceDebuffsList.Add(abnormalityUi);
                 }
-                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerDamageDealt.BeginTime,
-                    playerDamageDealt.EndTime);
+                abnormalityUi.Update(abnormality.Key, abnormality.Value, playerDamageDealt.BeginTime, playerDamageDealt.EndTime);
                 EnduranceAbnormality.Items.Add(abnormalityUi);
 
                 counter++;

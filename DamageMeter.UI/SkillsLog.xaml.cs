@@ -19,15 +19,9 @@ namespace DamageMeter.UI
         {
             InitializeComponent();
             //ContentWidth = 900;
-            if (skills == null)
-            {
-                return;
-            }
+            if (skills == null) { return; }
             var enumerable = skills as Database.Structures.Skill[] ?? skills.ToArray();
-            if (!enumerable.Any())
-            {
-                return;
-            }
+            if (!enumerable.Any()) { return; }
             _received = received;
             _skills = enumerable;
             _initialized = true;
@@ -67,24 +61,14 @@ namespace DamageMeter.UI
             }
             else
             {
-                if (typeDamage == null)
-                {
-                    typeDamage = lastType;
-                }
-                if (typeHeal == null)
-                {
-                    typeHeal = lastType;
-                }
-                if (typeMana == null)
-                {
-                    typeMana = lastType;
-                }
+                if (typeDamage == null) { typeDamage = lastType; }
+                if (typeHeal == null) { typeHeal = lastType; }
+                if (typeMana == null) { typeMana = lastType; }
             }
 
             Skills.Items.Clear();
             var beginTime = _skills.Min(x => x.Time);
-            foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana)
-                .OrderByDescending(x => x.Time))
+            foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana).OrderByDescending(x => x.Time))
             {
                 var log = new SkillLog();
                 log.Update(skill, _received, beginTime);
@@ -94,10 +78,7 @@ namespace DamageMeter.UI
 
         private void ValueChanged(object sender, RoutedEventArgs e)
         {
-            if (!_initialized)
-            {
-                return;
-            }
+            if (!_initialized) { return; }
             Display();
         }
 

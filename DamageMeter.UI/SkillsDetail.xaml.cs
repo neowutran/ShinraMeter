@@ -78,8 +78,7 @@ namespace DamageMeter.UI
                     SkillsList.Items.Add(header);
                 }
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                default: throw new ArgumentOutOfRangeException();
             }
 
             Repaint();
@@ -204,8 +203,7 @@ namespace DamageMeter.UI
                         case SortBy.BigHit:
                             _skills = from skill in _skills orderby skill.BiggestHit() descending select skill;
                             break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        default: throw new ArgumentOutOfRangeException();
                     }
                     break;
                 case SortOrder.Ascending:
@@ -244,38 +242,26 @@ namespace DamageMeter.UI
                         case SortBy.BigHit:
                             _skills = from skill in _skills orderby skill.BiggestHit() select skill;
                             break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        default: throw new ArgumentOutOfRangeException();
                     }
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                default: throw new ArgumentOutOfRangeException();
             }
         }
 
         private void ChangeSort(SortBy sortby, Label sender, string labelstring)
         {
-            if (_sortBy == sortby)
-            {
-                _sortOrder = _sortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
-            }
+            if (_sortBy == sortby) { _sortOrder = _sortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending; }
             else
             {
-                _currentSortedLabel.Content =
-                    ((string) _currentSortedLabel.Content).Remove(((string) _currentSortedLabel.Content).Length - 1);
+                _currentSortedLabel.Content = ((string) _currentSortedLabel.Content).Remove(((string) _currentSortedLabel.Content).Length - 1);
                 _sortBy = sortby;
                 _sortOrder = SortOrder.Descending;
                 _currentSortedLabel = sender;
             }
 
-            if (_sortOrder == SortOrder.Ascending)
-            {
-                sender.Content = labelstring + "↑";
-            }
-            else
-            {
-                sender.Content = labelstring + "↓";
-            }
+            if (_sortOrder == SortOrder.Ascending) { sender.Content = labelstring + "↑"; }
+            else { sender.Content = labelstring + "↓"; }
             Repaint();
         }
 
@@ -312,24 +298,15 @@ namespace DamageMeter.UI
         private void Skills_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var w = Window.GetWindow(this);
-            try
-            {
-                w?.DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
+            try { w?.DragMove(); }
+            catch { Console.WriteLine(@"Exception move"); }
         }
 
         private List<ISkill> Clear()
         {
             var skills = new List<ISkill>();
             var header = SkillsList.Items[0];
-            for (var i = 1; i < SkillsList.Items.Count; i++)
-            {
-                skills.Add((ISkill) SkillsList.Items[i]);
-            }
+            for (var i = 1; i < SkillsList.Items.Count; i++) { skills.Add((ISkill) SkillsList.Items[i]); }
             SkillsList.Items.Clear();
             SkillsList.Items.Add(header);
             return skills;
@@ -344,10 +321,7 @@ namespace DamageMeter.UI
                 var updated = -1;
                 for (var i = 0; i < oldSkills.Count; i++)
                 {
-                    if (skill.Name != oldSkills[i].SkillNameIdent())
-                    {
-                        continue;
-                    }
+                    if (skill.Name != oldSkills[i].SkillNameIdent()) { continue; }
                     oldSkills[i].Update(skill);
                     SkillsList.Items.Add(oldSkills[i]);
                     updated = i;
@@ -370,8 +344,7 @@ namespace DamageMeter.UI
                     case Database.Database.Type.Mana:
                         SkillsList.Items.Add(new SkillMana(skill));
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    default: throw new ArgumentOutOfRangeException();
                 }
             }
         }

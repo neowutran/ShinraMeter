@@ -41,10 +41,7 @@ namespace DamageMeter
         public static bool SendString(string s)
         {
             var teraWindow = FindTeraWindow();
-            if (teraWindow == IntPtr.Zero)
-            {
-                return false;
-            }
+            if (teraWindow == IntPtr.Zero) { return false; }
 
             SendString(teraWindow, s);
 
@@ -55,25 +52,13 @@ namespace DamageMeter
         {
             var lfDelay = BasicTeraData.Instance.WindowData.LFDelay;
             Thread.Sleep(lfDelay);
-            if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
-            {
-                throw new Win32Exception();
-            }
+            if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0)) { throw new Win32Exception(); }
             Thread.Sleep(1);
-            if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
-            {
-                throw new Win32Exception();
-            }
+            if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0)) { throw new Win32Exception(); }
             Thread.Sleep(50);
-            if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0))
-            {
-                throw new Win32Exception();
-            }
+            if (!PostMessage(hWnd, WM_KEYDOWN, VK_RETURN, 0)) { throw new Win32Exception(); }
             Thread.Sleep(1);
-            if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0))
-            {
-                throw new Win32Exception();
-            }
+            if (!PostMessage(hWnd, WM_KEYUP, VK_RETURN, 0)) { throw new Win32Exception(); }
             Thread.Sleep(lfDelay);
         }
 
@@ -81,16 +66,10 @@ namespace DamageMeter
         {
             foreach (var character in s)
             {
-                if (character == '\\')
-                {
-                    NewLine(hWnd);
-                }
+                if (character == '\\') { NewLine(hWnd); }
                 else
                 {
-                    if (!PostMessage(hWnd, WM_CHAR, character, 0))
-                    {
-                        throw new Win32Exception();
-                    }
+                    if (!PostMessage(hWnd, WM_CHAR, character, 0)) { throw new Win32Exception(); }
                     Thread.Sleep(1);
                 }
             }
@@ -106,10 +85,8 @@ namespace DamageMeter
         public static bool IsMeterActive()
         {
             var activeWindow = GetForegroundWindow();
-            return (from Window window in Application.Current.Windows
-                select new WindowInteropHelper(window)
-                into wih
-                select wih.Handle).Any(hWnd => hWnd == activeWindow);
+            return (from Window window in Application.Current.Windows select new WindowInteropHelper(window) into wih select wih.Handle)
+                .Any(hWnd => hWnd == activeWindow);
         }
     }
 }

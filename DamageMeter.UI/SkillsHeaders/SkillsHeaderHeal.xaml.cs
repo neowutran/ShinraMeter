@@ -49,14 +49,8 @@ namespace DamageMeter.UI.SkillsHeaders
         private void MoveWindow(object sender, MouseButtonEventArgs e)
         {
             var w = Window.GetWindow(this);
-            try
-            {
-                w?.DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
+            try { w?.DragMove(); }
+            catch { Console.WriteLine(@"Exception move"); }
         }
     }
 }

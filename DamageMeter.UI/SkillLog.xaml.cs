@@ -21,16 +21,12 @@ namespace DamageMeter.UI
 
         public void Update(Database.Structures.Skill skill, bool received, long beginTime)
         {
-            var skillInfo = SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot,
-                NetworkController.Instance.EntityTracker, BasicTeraData.Instance.SkillDatabase,
-                BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
+            var skillInfo = SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot, NetworkController.Instance.EntityTracker,
+                BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
             var entity = received ? skill.Source : skill.Target;
             Brush color = null;
             var fontWeight = FontWeights.Normal;
-            if (skill.Critic)
-            {
-                fontWeight = FontWeights.Bold;
-            }
+            if (skill.Critic) { fontWeight = FontWeights.Bold; }
             switch (skill.Type)
             {
                 case Database.Database.Type.Damage:
@@ -63,14 +59,8 @@ namespace DamageMeter.UI
                     SkillDirection.Foreground = Brushes.Red;
                     break;
                 case HitDirection.Dot:
-                    if (skill.Type == Database.Database.Type.Heal)
-                    {
-                        SkillDirection.Content = LP.Hot;
-                    }
-                    if (skill.Type == Database.Database.Type.Mana)
-                    {
-                        SkillDirection.Content = LP.Mot;
-                    }
+                    if (skill.Type == Database.Database.Type.Heal) { SkillDirection.Content = LP.Hot; }
+                    if (skill.Type == Database.Database.Type.Mana) { SkillDirection.Content = LP.Mot; }
                     break;
                 case HitDirection.Front:
                     SkillDirection.Foreground = Brushes.BlueViolet;
@@ -87,10 +77,7 @@ namespace DamageMeter.UI
                 var npc = npcEntity;
                 SkillTarget.Content = npc.Info.Name + " : " + npc.Info.Area;
             }
-            else if (entity is UserEntity)
-            {
-                SkillTarget.Content = ((UserEntity) entity).Name;
-            }
+            else if (entity is UserEntity) { SkillTarget.Content = ((UserEntity) entity).Name; }
             SkillPet.Content = skill.Pet == null ? "" : skill.Pet.Name;
         }
 
@@ -101,10 +88,7 @@ namespace DamageMeter.UI
                 var w = Window.GetWindow(this);
                 w?.DragMove();
             }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
+            catch { Console.WriteLine(@"Exception move"); }
         }
     }
 }

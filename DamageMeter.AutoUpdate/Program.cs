@@ -22,16 +22,8 @@ namespace DamageMeter.AutoUpdate
             var _unique = new Mutex(true, "ShinraMeter", out aIsNewInstance);
             if (!aIsNewInstance)
             {
-                try
-                {
-                    while (!_unique.WaitOne(1000))
-                    {
-                        Console.WriteLine("Sleep");
-                    }
-                }
-                catch (AbandonedMutexException)
-                {
-                } //ignore terminated meter
+                try { while (!_unique.WaitOne(1000)) { Console.WriteLine("Sleep"); } }
+                catch (AbandonedMutexException) { } //ignore terminated meter
             }
             Thread.Sleep(1000);
             var uniqueUpdating = new Mutex(true, "ShinraMeterUpdating", out isUpdating);
@@ -40,8 +32,7 @@ namespace DamageMeter.AutoUpdate
             {
                 var hashes = UpdateManager.ReadHashFile(hashfile, UpdateManager.ExecutableDirectory + @"\..\");
                 UpdateManager.CleanupRelease(hashes);
-                UpdateManager.Copy(UpdateManager.ExecutableDirectory + @"\release\",
-                    UpdateManager.ExecutableDirectory + @"\..\");
+                UpdateManager.Copy(UpdateManager.ExecutableDirectory + @"\release\", UpdateManager.ExecutableDirectory + @"\..\");
                 UpdateManager.ReadDbVersion();
                 CountError(0);
                 Console.WriteLine("New version installed");
@@ -72,10 +63,7 @@ namespace DamageMeter.AutoUpdate
             }
             try
             {
-                if (Count())
-                {
-                    return;
-                }
+                if (Count()) { return; }
                 numberTry++;
                 CountError(numberTry);
             }
@@ -90,10 +78,7 @@ namespace DamageMeter.AutoUpdate
         {
             using (var client = new HttpClient())
             {
-                var response =
-                    client.GetAsync(
-                            new Uri("http://diclah.com/~yukikoo/counter/counter.php?version=" + UpdateManager.Version))
-                        .Result;
+                var response = client.GetAsync(new Uri("http://diclah.com/~yukikoo/counter/counter.php?version=" + UpdateManager.Version)).Result;
                 return response.IsSuccessStatusCode;
             }
         }

@@ -46,23 +46,14 @@ namespace DamageMeter.UI
 
         protected void Move(object sender, MouseButtonEventArgs e)
         {
-            try
-            {
-                DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception Move");
-            }
+            try { DragMove(); }
+            catch { Console.WriteLine(@"Exception Move"); }
         }
 
         protected void ClickThrouWindow_Closing(object sender, CancelEventArgs e)
         {
             Closing -= ClickThrouWindow_Closing;
-            foreach (ClickThrouWindow window in ((ClickThrouWindow) sender).OwnedWindows)
-            {
-                window.Close();
-            }
+            foreach (ClickThrouWindow window in ((ClickThrouWindow) sender).OwnedWindows) { window.Close(); }
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
                 Dispatcher.BeginInvoke(new Action(() =>
@@ -72,10 +63,7 @@ namespace DamageMeter.UI
                     BeginAnimation(OpacityProperty, a);
                 }));
             }
-            else
-            {
-                Close();
-            }
+            else { Close(); }
         }
 
         public void HideWindow()
@@ -89,10 +77,7 @@ namespace DamageMeter.UI
                     BeginAnimation(OpacityProperty, a);
                 }));
             }
-            else
-            {
-                Visibility = Visibility.Hidden;
-            }
+            else { Visibility = Visibility.Hidden; }
         }
 
         public void ShowWindow()
@@ -100,11 +85,8 @@ namespace DamageMeter.UI
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
                 Opacity = 0;
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    BeginAnimation(OpacityProperty,
-                        OpacityAnimation(BasicTeraData.Instance.WindowData.OtherWindowOpacity));
-                }));
+                Dispatcher.BeginInvoke(
+                    new Action(() => { BeginAnimation(OpacityProperty, OpacityAnimation(BasicTeraData.Instance.WindowData.OtherWindowOpacity)); }));
             }
             Visibility = Visibility.Visible;
         }
@@ -122,8 +104,7 @@ namespace DamageMeter.UI
 
             //Set the window style to noactivate.
             var helper = new WindowInteropHelper(this);
-            SetWindowLong(helper.Handle, GWL_EXSTYLE,
-                GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_NOACTIVATE);
+            SetWindowLong(helper.Handle, GWL_EXSTYLE, GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_NOACTIVATE);
         }
 
         private static DoubleAnimation OpacityAnimation(double to)

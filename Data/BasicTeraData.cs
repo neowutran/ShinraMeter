@@ -21,9 +21,7 @@ namespace Data
         private static int _errorCount = 10; //limit number of debug messages in one session
         private readonly Func<string, TeraData> _dataForRegion;
 
-        private BasicTeraData() : this(FindResourceDirectory())
-        {
-        }
+        private BasicTeraData() : this(FindResourceDirectory()) { }
 
         private BasicTeraData(string resourceDirectory)
         {
@@ -32,9 +30,7 @@ namespace Data
             XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
-            LP.Culture = WindowData.UILanguage != "Auto"
-                ? CultureInfo.GetCultureInfo(WindowData.UILanguage)
-                : CultureInfo.CurrentUICulture;
+            LP.Culture = WindowData.UILanguage != "Auto" ? CultureInfo.GetCultureInfo(WindowData.UILanguage) : CultureInfo.CurrentUICulture;
             EventsData = new EventsData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
             Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));
@@ -69,9 +65,7 @@ namespace Data
 
         private static IEnumerable<Server> GetServers(string filename)
         {
-            return File.ReadAllLines(filename)
-                .Where(s => !s.StartsWith("#") && !string.IsNullOrWhiteSpace(s))
-                .Select(s => s.Split(new[] {' '}, 3))
+            return File.ReadAllLines(filename).Where(s => !s.StartsWith("#") && !string.IsNullOrWhiteSpace(s)).Select(s => s.Split(new[] {' '}, 3))
                 .Select(parts => new Server(parts[2], parts[1], parts[0]));
         }
 
@@ -86,10 +80,7 @@ namespace Data
             while (directory != null)
             {
                 var resourceDirectory = Path.Combine(directory, @"resources\");
-                if (Directory.Exists(resourceDirectory))
-                {
-                    return resourceDirectory;
-                }
+                if (Directory.Exists(resourceDirectory)) { return resourceDirectory; }
                 directory = Path.GetDirectoryName(directory);
             }
             throw new InvalidOperationException("Could not find the resource directory");
@@ -97,41 +88,25 @@ namespace Data
 
         public static void LogError(string error, bool local = false, bool debug = false)
         {
-            if (debug && _errorCount-- <= 0)
-            {
-                return;
-            }
+            if (debug && _errorCount-- <= 0) { return; }
             Task.Run(() =>
             {
                 try
                 {
                     Log.Error(error);
-                    var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get()
-                                       .Cast<ManagementObject>()
-                                   select x.GetPropertyValue("Version") + " Memory Total:" +
-                                          x.GetPropertyValue("TotalVisibleMemorySize")
-                                          + " Virtual:" + x.GetPropertyValue("TotalVirtualMemorySize") + " PhFree:" +
-                                          x.GetPropertyValue("FreePhysicalMemory")
-                                          + " VFree:" + x.GetPropertyValue("FreeVirtualMemory")
-                               ).FirstOrDefault() ?? "unknown";
-                    name = name + " CPU:" + ((from x in new ManagementObjectSearcher("SELECT * FROM Win32_Processor")
-                                                     .Get().Cast<ManagementObject>()
-                                                 select x.GetPropertyValue("Name") + " load:" +
-                                                        x.GetPropertyValue("LoadPercentage") + "%").FirstOrDefault() ??
+                    var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
+                                   select x.GetPropertyValue("Version") + " Memory Total:" + x.GetPropertyValue("TotalVisibleMemorySize") + " Virtual:" +
+                                          x.GetPropertyValue("TotalVirtualMemorySize") + " PhFree:" + x.GetPropertyValue("FreePhysicalMemory") + " VFree:" +
+                                          x.GetPropertyValue("FreeVirtualMemory")).FirstOrDefault() ?? "unknown";
+                    name = name + " CPU:" + ((from x in new ManagementObjectSearcher("SELECT * FROM Win32_Processor").Get().Cast<ManagementObject>()
+                                                 select x.GetPropertyValue("Name") + " load:" + x.GetPropertyValue("LoadPercentage") + "%").FirstOrDefault() ??
                                              "processor unknown");
-                    error = $"##### (version={UpdateManager.Version}) running on {name}:\r\n" +
-                            (debug ? "##### Debug: " : "") + error;
-                    if (!Instance.WindowData.Debug || local)
-                    {
-                        return;
-                    }
+                    error = $"##### (version={UpdateManager.Version}) running on {name}:\r\n" + (debug ? "##### Debug: " : "") + error;
+                    if (!Instance.WindowData.Debug || local) { return; }
 
                     using (var client = new HttpClient())
                     {
-                        var formContent = new FormUrlEncodedContent(new[]
-                        {
-                            new KeyValuePair<string, string>("error", error)
-                        });
+                        var formContent = new FormUrlEncodedContent(new[] {new KeyValuePair<string, string>("error", error)});
 
                         var response = client.PostAsync("http://diclah.com/~yukikoo/debug/debug.php", formContent);
                         var responseString = response.Result.Content.ReadAsStringAsync();

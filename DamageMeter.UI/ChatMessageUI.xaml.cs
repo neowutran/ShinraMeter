@@ -23,14 +23,8 @@ namespace DamageMeter.UI
         {
             Sender.Content = message.Sender;
             Message.Text = message.Text;
-            if (message.ChatType == Chat.ChatType.Normal)
-            {
-                Channel.Content = message.Channel;
-            }
-            else
-            {
-                Channel.Content = message.ChatType;
-            }
+            if (message.ChatType == Chat.ChatType.Normal) { Channel.Content = message.Channel; }
+            else { Channel.Content = message.ChatType; }
 
             Time.Content = message.Time;
 
@@ -95,14 +89,8 @@ namespace DamageMeter.UI
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
             var w = Window.GetWindow(this);
-            try
-            {
-                w?.DragMove();
-            }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
+            try { w?.DragMove(); }
+            catch { Console.WriteLine(@"Exception move"); }
         }
 
         private void Sender_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

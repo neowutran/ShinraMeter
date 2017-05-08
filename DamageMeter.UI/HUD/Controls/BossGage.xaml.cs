@@ -56,10 +56,7 @@ namespace DamageMeter.UI.HUD.Controls
                 if (nextEnragePerc != value)
                 {
                     nextEnragePerc = value;
-                    if (value < 0)
-                    {
-                        nextEnragePerc = 0;
-                    }
+                    if (value < 0) { nextEnragePerc = 0; }
                     NotifyPropertyChanged("NextEnragePercentage");
                     NotifyPropertyChanged("EnrageTBtext");
                 }
@@ -84,10 +81,7 @@ namespace DamageMeter.UI.HUD.Controls
         {
             get
             {
-                if (_enraged)
-                {
-                    return CurrentEnrageTime + "s";
-                }
+                if (_enraged) { return CurrentEnrageTime + "s"; }
                 return NextEnragePercentage.ToString(CultureInfo.InvariantCulture);
             }
         }
@@ -104,28 +98,16 @@ namespace DamageMeter.UI.HUD.Controls
             if (e.PropertyName == "CurrentHP")
             {
                 _currentHp = ((Boss) sender).CurrentHP;
-                if (_currentHp > _maxHp)
-                {
-                    _maxHp = _currentHp;
-                }
+                if (_currentHp > _maxHp) { _maxHp = _currentHp; }
                 DoubleAnimation.To = ValueToLength(_currentHp, _maxHp);
 
-                if (_enraged)
-                {
-                    SlideEnrageIndicator(CurrentPercentage);
-                }
+                if (_enraged) { SlideEnrageIndicator(CurrentPercentage); }
             }
-            if (e.PropertyName == "MaxHP")
-            {
-                _maxHp = ((Boss) sender).MaxHP;
-            }
+            if (e.PropertyName == "MaxHP") { _maxHp = ((Boss) sender).MaxHP; }
             if (e.PropertyName == "Enraged")
             {
                 var value = ((Boss) sender).Enraged;
-                if (_enraged == value)
-                {
-                    return;
-                }
+                if (_enraged == value) { return; }
                 _enraged = value;
                 if (_enraged)
                 {
@@ -144,10 +126,7 @@ namespace DamageMeter.UI.HUD.Controls
                     CurrentEnrageTime = 36;
                 }
             }
-            if (e.PropertyName == "Visible")
-            {
-                Visibility = ((Boss) sender).Visible;
-            }
+            if (e.PropertyName == "Visible") { Visibility = ((Boss) sender).Visible; }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -168,14 +147,8 @@ namespace DamageMeter.UI.HUD.Controls
         {
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (val < 0)
-                {
-                    SlideAnimation.To = 0;
-                }
-                else
-                {
-                    SlideAnimation.To = HPgauge.ActualWidth * (val / 100);
-                }
+                if (val < 0) { SlideAnimation.To = 0; }
+                else { SlideAnimation.To = HPgauge.ActualWidth * (val / 100); }
 
                 NextEnrage.RenderTransform.BeginAnimation(TranslateTransform.XProperty, SlideAnimation);
             }));
@@ -183,10 +156,7 @@ namespace DamageMeter.UI.HUD.Controls
 
         private double ValueToLength(double value, double maxValue)
         {
-            if (maxValue == 0)
-            {
-                return 1;
-            }
+            if (maxValue == 0) { return 1; }
             var n = value / maxValue;
             return n;
         }

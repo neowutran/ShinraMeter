@@ -25,14 +25,8 @@ namespace DamageMeter.UI.EntityStats
         public void Update(EntityInformation entityInformation, AbnormalityStorage abnormals)
         {
             EnduranceAbnormality.Items.Clear();
-            if (entityInformation == null)
-            {
-                return;
-            }
-            if (entityInformation.Interval == 0)
-            {
-                return;
-            }
+            if (entityInformation == null) { return; }
+            if (entityInformation.Interval == 0) { return; }
 
             EnduranceAbnormality.Items.Add(_header);
 
@@ -40,19 +34,14 @@ namespace DamageMeter.UI.EntityStats
             foreach (var abnormality in abnormals.Get(entityInformation.Entity))
             {
                 EnduranceDebuff abnormalityUi;
-                if (_enduranceDebuffsList.Count > count)
-                {
-                    abnormalityUi = _enduranceDebuffsList[count];
-                }
+                if (_enduranceDebuffsList.Count > count) { abnormalityUi = _enduranceDebuffsList[count]; }
                 else
                 {
                     abnormalityUi = new EnduranceDebuff();
                     _enduranceDebuffsList.Add(abnormalityUi);
                 }
 
-                abnormalityUi.Update(abnormality.Key, abnormality.Value,
-                    entityInformation.BeginTime,
-                    entityInformation.EndTime);
+                abnormalityUi.Update(abnormality.Key, abnormality.Value, entityInformation.BeginTime, entityInformation.EndTime);
                 EnduranceAbnormality.Items.Add(abnormalityUi);
                 count++;
             }

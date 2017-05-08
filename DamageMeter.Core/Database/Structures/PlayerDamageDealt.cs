@@ -4,8 +4,7 @@ namespace DamageMeter.Database.Structures
 {
     public class PlayerDamageDealt
     {
-        public PlayerDamageDealt(long amount, long critAmount, long beginTime, long endTime, long critic, long hit,
-            Player source)
+        public PlayerDamageDealt(long amount, long critAmount, long beginTime, long endTime, long critic, long hit, Player source)
         {
             Amount = amount;
             CritAmount = critAmount;

@@ -7,8 +7,7 @@ namespace NetworkSniffer
 {
     public class TcpSniffer
     {
-        private readonly ConcurrentDictionary<ConnectionId, TcpConnection> _connections =
-            new ConcurrentDictionary<ConnectionId, TcpConnection>();
+        private readonly ConcurrentDictionary<ConnectionId, TcpConnection> _connections = new ConcurrentDictionary<ConnectionId, TcpConnection>();
 
         private readonly object _lock = new object();
 
@@ -55,11 +54,8 @@ namespace NetworkSniffer
 
         internal void RemoveConnection(TcpConnection connection)
         {
-            TcpConnection temp;
-            if (_connections.ContainsKey(connection.ConnectionId))
-            {
-                _connections.TryRemove(connection.ConnectionId, out temp);
-            }
+            if (!_connections.ContainsKey(connection.ConnectionId)) { return; }
+            _connections.TryRemove(connection.ConnectionId, out TcpConnection temp);
         }
 
         //private void ParsePacketsLoop()
@@ -76,14 +72,10 @@ namespace NetworkSniffer
         private void Receive(IPv4Packet ipData)
         {
             var tcpPacket = ipData.PayloadPacket as TcpPacket;
-            if (tcpPacket == null || tcpPacket.DataOffset * 4 > ipData.PayloadLength)
-            {
-                return;
-            }
+            if (tcpPacket == null || tcpPacket.DataOffset * 4 > ipData.PayloadLength) { return; }
             //if (tcpPacket.Checksum!=0 && !tcpPacket.ValidTCPChecksum) return;
             var isFirstPacket = tcpPacket.Syn;
-            var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress,
-                tcpPacket.DestinationPort);
+            var connectionId = new ConnectionId(ipData.SourceAddress, tcpPacket.SourcePort, ipData.DestinationAddress, tcpPacket.DestinationPort);
 
 
             TcpConnection connection;
@@ -93,29 +85,17 @@ namespace NetworkSniffer
                 connection = new TcpConnection(connectionId, tcpPacket.SequenceNumber, RemoveConnection, SnifferType);
                 OnNewConnection(connection);
                 isInterestingConnection = connection.HasSubscribers;
-                if (!isInterestingConnection)
-                {
-                    return;
-                }
+                if (!isInterestingConnection) { return; }
                 _connections[connectionId] = connection;
                 Debug.Assert(tcpPacket.PayloadData.Length == 0);
             }
             else
             {
                 isInterestingConnection = _connections.TryGetValue(connectionId, out connection);
-                if (!isInterestingConnection)
-                {
-                    return;
-                }
+                if (!isInterestingConnection) { return; }
                 byte[] payload;
-                try
-                {
-                    payload = tcpPacket.PayloadData;
-                }
-                catch
-                {
-                    return;
-                }
+                try { payload = tcpPacket.PayloadData; }
+                catch { return; }
                 //_buffer.Enqueue(new QPacket(connection, tcpPacket.SequenceNumber, tcpPacket.Payload));
                 lock (_lock)
                 {

@@ -26,9 +26,7 @@ namespace DamageMeter
         private readonly int _maxMessage = 200;
 
 
-        private Chat()
-        {
-        }
+        private Chat() { }
 
         public static Chat Instance => _instance ?? (_instance = new Chat());
 
@@ -53,49 +51,33 @@ namespace DamageMeter
             var rgx = new Regex("<[^>]+>");
             message = rgx.Replace(message, "");
             message = WebUtility.HtmlDecode(message);
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                return;
-            }
+            if (string.IsNullOrWhiteSpace(message)) { return; }
 
-            if (_chat.Count == _maxMessage)
-            {
-                _chat.RemoveFirst();
-            }
+            if (_chat.Count == _maxMessage) { _chat.RemoveFirst(); }
             var chatMessage = new ChatMessage(sender, message, chatType, channel, time);
             _chat.AddLast(chatMessage);
 
-            if (NetworkController.Instance.EntityTracker?.MeterUser == null)
+            if (NetworkController.Instance.EntityTracker?.MeterUser == null) { return; }
+
+            if (chatType == ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender &&
+                (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()))
             {
-                return;
+                NetworkController.Instance.FlashMessage = NotifyProcessor.Instance.DefaultNotifyAction(LP.Whisper + ": " + sender, message);
             }
 
-            if (chatType == ChatType.Whisper
-                && NetworkController.Instance.EntityTracker.MeterUser.Name != sender
-                && (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()))
-            {
-                NetworkController.Instance.FlashMessage =
-                    NotifyProcessor.Instance.DefaultNotifyAction(LP.Whisper + ": " + sender, message);
-            }
-
-            if (chatType != ChatType.Whisper &&
-                NetworkController.Instance.EntityTracker.MeterUser.Name != sender &&
+            if (chatType != ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender &&
                 (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()) &&
                 message.Contains("@" + NetworkController.Instance.EntityTracker.MeterUser.Name))
             {
-                NetworkController.Instance.FlashMessage =
-                    NotifyProcessor.Instance.DefaultNotifyAction(LP.Chat + ": " + sender, message);
+                NetworkController.Instance.FlashMessage = NotifyProcessor.Instance.DefaultNotifyAction(LP.Chat + ": " + sender, message);
             }
 
-            if ((chatType == ChatType.PrivateChannel ||
-                 chatType == ChatType.Normal &&
-                 (channel == ChannelEnum.Group || channel == ChannelEnum.Guild || channel == ChannelEnum.Raid))
-                && (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive())
-                && message.Contains("@@"))
+            if ((chatType == ChatType.PrivateChannel || chatType == ChatType.Normal &&
+                 (channel == ChannelEnum.Group || channel == ChannelEnum.Guild || channel == ChannelEnum.Raid)) &&
+                (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()) && message.Contains("@@"))
             {
                 NetworkController.Instance.FlashMessage =
-                    NotifyProcessor.Instance.DefaultNotifyAction(
-                        "Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name,
+                    NotifyProcessor.Instance.DefaultNotifyAction("Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name,
                         "Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name);
             }
         }

@@ -8,26 +8,19 @@ namespace DamageMeter.UI.HUD.Controls
 {
     public partial class GenericGauge : INotifyPropertyChanged
     {
-        public static readonly DependencyProperty BarColorProperty =
-            DependencyProperty.Register("BarColor", typeof(SolidColorBrush), typeof(GenericGauge));
+        public static readonly DependencyProperty BarColorProperty = DependencyProperty.Register("BarColor", typeof(SolidColorBrush), typeof(GenericGauge));
 
-        public static readonly DependencyProperty GaugeNameProperty =
-            DependencyProperty.Register("GaugeName", typeof(string), typeof(GenericGauge));
+        public static readonly DependencyProperty GaugeNameProperty = DependencyProperty.Register("GaugeName", typeof(string), typeof(GenericGauge));
 
-        public static readonly DependencyProperty MaxValProperty =
-            DependencyProperty.Register("MaxVal", typeof(int), typeof(GenericGauge));
+        public static readonly DependencyProperty MaxValProperty = DependencyProperty.Register("MaxVal", typeof(int), typeof(GenericGauge));
 
-        public static readonly DependencyProperty CurrentValProperty =
-            DependencyProperty.Register("CurrentVal", typeof(float), typeof(GenericGauge));
+        public static readonly DependencyProperty CurrentValProperty = DependencyProperty.Register("CurrentVal", typeof(float), typeof(GenericGauge));
 
-        public static readonly DependencyProperty ShowPercentageProperty =
-            DependencyProperty.Register("ShowPercentage", typeof(bool), typeof(GenericGauge));
+        public static readonly DependencyProperty ShowPercentageProperty = DependencyProperty.Register("ShowPercentage", typeof(bool), typeof(GenericGauge));
 
-        public static readonly DependencyProperty ShowValuesProperty =
-            DependencyProperty.Register("ShowValues", typeof(bool), typeof(GenericGauge));
+        public static readonly DependencyProperty ShowValuesProperty = DependencyProperty.Register("ShowValues", typeof(bool), typeof(GenericGauge));
 
-        public static readonly DependencyProperty ShowNameProperty =
-            DependencyProperty.Register("ShowName", typeof(bool), typeof(GenericGauge));
+        public static readonly DependencyProperty ShowNameProperty = DependencyProperty.Register("ShowName", typeof(bool), typeof(GenericGauge));
 
         private readonly DependencyPropertyWatcher<float> _curValwatcher
             ; //https://blogs.msdn.microsoft.com/flaviencharlon/2012/12/07/getting-change-notifications-from-any-dependency-property-in-windows-store-apps/
@@ -55,10 +48,7 @@ namespace DamageMeter.UI.HUD.Controls
             get => _factor;
             set
             {
-                if (Math.Abs(_factor - value) < 0.0001)
-                {
-                    return;
-                }
+                if (Math.Abs(_factor - value) < 0.0001) { return; }
                 _factor = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Factor"));
                 AnimateBar(value);
@@ -111,14 +101,8 @@ namespace DamageMeter.UI.HUD.Controls
 
         private void CurValWatcher_PropertyChanged(object sender, EventArgs e)
         {
-            if (MaxVal > 0)
-            {
-                Factor = _curValwatcher.Value / MaxVal;
-            }
-            else
-            {
-                Factor = 0;
-            }
+            if (MaxVal > 0) { Factor = _curValwatcher.Value / MaxVal; }
+            else { Factor = 0; }
         }
 
         private void AnimateBar(double factor)
@@ -128,8 +112,6 @@ namespace DamageMeter.UI.HUD.Controls
             bar.RenderTransform.BeginAnimation(ScaleTransform.ScaleXProperty, a);
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-        }
+        private void UserControl_Loaded(object sender, RoutedEventArgs e) { }
     }
 }

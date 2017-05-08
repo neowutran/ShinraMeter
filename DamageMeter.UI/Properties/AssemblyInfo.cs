@@ -32,8 +32,7 @@ using System.Windows;
 [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
 
 
-[assembly: ThemeInfo(
-    ResourceDictionaryLocation.None, //où se trouvent les dictionnaires de ressources spécifiques à un thème
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, //où se trouvent les dictionnaires de ressources spécifiques à un thème
     //(utilisé si une ressource est introuvable dans la page, 
     // ou dictionnaires de ressources de l'application)
     ResourceDictionaryLocation.SourceAssembly //où se trouve le dictionnaire de ressources générique

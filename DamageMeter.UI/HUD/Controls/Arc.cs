@@ -9,21 +9,17 @@ namespace DamageMeter.UI.HUD
     {
         // Using a DependencyProperty as the backing store for StartAngle.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StartAngleProperty =
-            DependencyProperty.Register("StartAngle", typeof(double), typeof(Arc),
-                new UIPropertyMetadata(0.0, UpdateArc));
+            DependencyProperty.Register("StartAngle", typeof(double), typeof(Arc), new UIPropertyMetadata(0.0, UpdateArc));
 
         // Using a DependencyProperty as the backing store for EndAngle.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty EndAngleProperty =
-            DependencyProperty.Register("EndAngle", typeof(double), typeof(Arc),
-                new UIPropertyMetadata(90.0, UpdateArc));
+            DependencyProperty.Register("EndAngle", typeof(double), typeof(Arc), new UIPropertyMetadata(90.0, UpdateArc));
 
         public static readonly DependencyProperty DirectionProperty =
-            DependencyProperty.Register("Direction", typeof(SweepDirection), typeof(Arc),
-                new UIPropertyMetadata(SweepDirection.Clockwise));
+            DependencyProperty.Register("Direction", typeof(SweepDirection), typeof(Arc), new UIPropertyMetadata(SweepDirection.Clockwise));
 
         public static readonly DependencyProperty OriginRotationDegreesProperty =
-            DependencyProperty.Register("OriginRotationDegrees", typeof(double), typeof(Arc),
-                new UIPropertyMetadata(270.0, UpdateArc));
+            DependencyProperty.Register("OriginRotationDegrees", typeof(double), typeof(Arc), new UIPropertyMetadata(270.0, UpdateArc));
 
         public double StartAngle
         {
@@ -70,8 +66,7 @@ namespace DamageMeter.UI.HUD
             var startPoint = PointAtAngle(Math.Min(StartAngle, EndAngle), Direction);
             var endPoint = PointAtAngle(Math.Max(StartAngle, EndAngle), Direction);
 
-            var arcSize = new Size(Math.Max(0, (RenderSize.Width - StrokeThickness) / 2),
-                Math.Max(0, (RenderSize.Height - StrokeThickness) / 2));
+            var arcSize = new Size(Math.Max(0, (RenderSize.Width - StrokeThickness) / 2), Math.Max(0, (RenderSize.Height - StrokeThickness) / 2));
             var isLargeArc = Math.Abs(EndAngle - StartAngle) > 180;
 
             var geom = new StreamGeometry();
@@ -94,14 +89,8 @@ namespace DamageMeter.UI.HUD
             var x = xr + xr * Math.Cos(radAngle);
             var y = yr * Math.Sin(radAngle);
 
-            if (sweep == SweepDirection.Counterclockwise)
-            {
-                y = yr - y;
-            }
-            else
-            {
-                y = yr + y;
-            }
+            if (sweep == SweepDirection.Counterclockwise) { y = yr - y; }
+            else { y = yr + y; }
 
             return new Point(x, y);
         }

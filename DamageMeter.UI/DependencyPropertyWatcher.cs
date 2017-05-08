@@ -7,19 +7,12 @@ namespace DamageMeter.UI
     public class DependencyPropertyWatcher<T> : DependencyObject, IDisposable
     {
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register(
-                "Value",
-                typeof(object),
-                typeof(DependencyPropertyWatcher<T>),
-                new PropertyMetadata(null, OnPropertyChanged));
+            DependencyProperty.Register("Value", typeof(object), typeof(DependencyPropertyWatcher<T>), new PropertyMetadata(null, OnPropertyChanged));
 
         public DependencyPropertyWatcher(DependencyObject target, string propertyPath)
         {
             Target = target;
-            BindingOperations.SetBinding(
-                this,
-                ValueProperty,
-                new Binding {Source = target, Path = new PropertyPath(propertyPath), Mode = BindingMode.OneWay});
+            BindingOperations.SetBinding(this, ValueProperty, new Binding {Source = target, Path = new PropertyPath(propertyPath), Mode = BindingMode.OneWay});
         }
 
         public DependencyObject Target { get; }

@@ -5,8 +5,7 @@ namespace Data.Actions.Notify.SoundElements
 {
     public class TextToSpeech : SoundInterface
     {
-        public TextToSpeech(string text, VoiceGender voiceGender, VoiceAge voiceAge, int voicePosition, string culture,
-            int volume, int rate)
+        public TextToSpeech(string text, VoiceGender voiceGender, VoiceAge voiceAge, int voicePosition, string culture, int volume, int rate)
         {
             Text = text;
             VoiceGender = voiceGender;

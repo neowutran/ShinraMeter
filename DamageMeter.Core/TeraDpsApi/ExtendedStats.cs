@@ -15,8 +15,7 @@ namespace DamageMeter.TeraDpsApi
         public Dictionary<string, Tuple<int, long>> PlayerReceived = new Dictionary<string, Tuple<int, long>>();
         public SortedDictionary<string, List<Skill>> PlayerSkills = new SortedDictionary<string, List<Skill>>();
 
-        public Dictionary<string, IEnumerable<SkillAggregate>> PlayerSkillsAggregated =
-            new Dictionary<string, IEnumerable<SkillAggregate>>();
+        public Dictionary<string, IEnumerable<SkillAggregate>> PlayerSkillsAggregated = new Dictionary<string, IEnumerable<SkillAggregate>>();
 
         public EncounterBase BaseStats { get; set; }
         public NpcEntity Entity { get; set; }

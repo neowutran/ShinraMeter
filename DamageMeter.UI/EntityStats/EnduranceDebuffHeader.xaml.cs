@@ -28,10 +28,7 @@ namespace DamageMeter.UI.EntityStats
                 var w = Window.GetWindow(this);
                 w?.DragMove();
             }
-            catch
-            {
-                Console.WriteLine(@"Exception move");
-            }
+            catch { Console.WriteLine(@"Exception move"); }
         }
     }
 }

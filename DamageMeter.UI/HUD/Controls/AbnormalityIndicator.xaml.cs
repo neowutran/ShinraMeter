@@ -12,8 +12,7 @@ namespace DamageMeter.UI.HUD.Controls
 {
     public partial class AbnormalityIndicator
     {
-        public static readonly DependencyProperty SizeProperty =
-            DependencyProperty.Register("Size", typeof(double), typeof(AbnormalityIndicator));
+        public static readonly DependencyProperty SizeProperty = DependencyProperty.Register("Size", typeof(double), typeof(AbnormalityIndicator));
 
         private BuffDuration _context;
 
@@ -30,10 +29,7 @@ namespace DamageMeter.UI.HUD.Controls
 
         private void buff_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "Refresh")
-            {
-                return;
-            }
+            if (e.PropertyName != "Refresh") { return; }
             var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration) sender).Duration));
             var fps = ((BuffDuration) sender).Duration > 80000 ? 1 : 30;
             Timeline.SetDesiredFrameRate(an, fps);
@@ -56,10 +52,7 @@ namespace DamageMeter.UI.HUD.Controls
             arc.Width = Size * .9;
             arc.Height = Size * .9;
 
-            if (((BuffDuration) DataContext).Duration <= 0)
-            {
-                return;
-            }
+            if (((BuffDuration) DataContext).Duration <= 0) { return; }
             var an = new DoubleAnimation(0, 359.9, TimeSpan.FromMilliseconds(((BuffDuration) DataContext).Duration));
             var fps = ((BuffDuration) DataContext).Duration > 80000 ? 1 : 30;
             Timeline.SetDesiredFrameRate(an, fps);
@@ -98,18 +91,9 @@ namespace DamageMeter.UI.HUD.Converters
             var hours = minutes / 60;
             var days = hours / 24;
 
-            if (minutes < 3)
-            {
-                return seconds.ToString();
-            }
-            if (hours < 3)
-            {
-                return minutes + "m";
-            }
-            if (days < 1)
-            {
-                return hours + "h";
-            }
+            if (minutes < 3) { return seconds.ToString(); }
+            if (hours < 3) { return minutes + "m"; }
+            if (days < 1) { return hours + "h"; }
             return days + "d";
         }
 
@@ -126,16 +110,11 @@ namespace DamageMeter.UI.HUD.Converters
             var val = (AbnormalityType) value;
             switch (val)
             {
-                case AbnormalityType.Stun:
-                    return new SolidColorBrush(Colors.Red);
-                case AbnormalityType.DOT:
-                    return new SolidColorBrush(Color.FromRgb(0x98, 0x42, 0xf4));
-                case AbnormalityType.Debuff:
-                    return new SolidColorBrush(Color.FromRgb(0x8f, 0xf4, 0x42));
-                case AbnormalityType.Buff:
-                    return new SolidColorBrush(Color.FromRgb(0x3f, 0x9f, 0xff));
-                default:
-                    return new SolidColorBrush(Colors.White);
+                case AbnormalityType.Stun: return new SolidColorBrush(Colors.Red);
+                case AbnormalityType.DOT: return new SolidColorBrush(Color.FromRgb(0x98, 0x42, 0xf4));
+                case AbnormalityType.Debuff: return new SolidColorBrush(Color.FromRgb(0x8f, 0xf4, 0x42));
+                case AbnormalityType.Buff: return new SolidColorBrush(Color.FromRgb(0x3f, 0x9f, 0xff));
+                default: return new SolidColorBrush(Colors.White);
             }
         }
 
@@ -150,10 +129,7 @@ namespace DamageMeter.UI.HUD.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var stacks = (int) value;
-            if (stacks > 1)
-            {
-                return Visibility.Visible;
-            }
+            if (stacks > 1) { return Visibility.Visible; }
             return Visibility.Hidden;
         }
 
@@ -168,10 +144,7 @@ namespace DamageMeter.UI.HUD.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var duration = (int) value;
-            if (duration < 0)
-            {
-                return Visibility.Hidden;
-            }
+            if (duration < 0) { return Visibility.Hidden; }
             return Visibility.Visible;
         }
 

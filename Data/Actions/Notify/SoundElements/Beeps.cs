@@ -17,14 +17,8 @@ namespace Data.Actions.Notify.SoundElements
         {
             foreach (var beep in BeepList)
             {
-                if (beep.Frequency == 0)
-                {
-                    Thread.Sleep(beep.Duration);
-                }
-                else
-                {
-                    Console.Beep(beep.Frequency, beep.Duration);
-                }
+                if (beep.Frequency == 0) { Thread.Sleep(beep.Duration); }
+                else { Console.Beep(beep.Frequency, beep.Duration); }
             }
         }
     }

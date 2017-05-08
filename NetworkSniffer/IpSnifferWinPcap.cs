@@ -17,8 +17,7 @@ namespace NetworkSniffer
     // Only works when WinPcap is installed
     public class IpSnifferWinPcap : IpSniffer
     {
-        private static readonly ILog Logger = LogManager.GetLogger
-            (MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string _filter;
         private WinPcapDeviceList _devices;
@@ -40,20 +39,13 @@ namespace NetworkSniffer
 
         public IEnumerable<string> Status()
         {
-            return _devices.Select(device =>
-                $"Device {device.LinkType} {(device.Opened ? "Open" : "Closed")} {device.LastError}\r\n{device}");
+            return _devices.Select(device => $"Device {device.LinkType} {(device.Opened ? "Open" : "Closed")} {device.LastError}\r\n{device}");
         }
 
         protected override void SetEnabled(bool value)
         {
-            if (value)
-            {
-                Start();
-            }
-            else
-            {
-                Finish();
-            }
+            if (value) { Start(); }
+            else { Finish(); }
         }
 
         private static bool IsInteresting(WinPcapDevice device)
@@ -70,10 +62,7 @@ namespace NetworkSniffer
             {
                 device.OnPacketArrival += device_OnPacketArrival;
 
-                try
-                {
-                    device.Open(DeviceMode.Normal, 100);
-                }
+                try { device.Open(DeviceMode.Normal, 100); }
                 catch (Exception e)
                 {
                     Logger.Warn($"Failed to open device {device.Name}. {e.Message}");
@@ -82,15 +71,8 @@ namespace NetworkSniffer
                 device.Filter = _filter;
                 if (BufferSize != null)
                 {
-                    try
-                    {
-                        device.KernelBufferSize = (uint) BufferSize.Value;
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Warn(
-                            $"Failed to set KernelBufferSize to {BufferSize.Value} on {device.Name}. {e.Message}");
-                    }
+                    try { device.KernelBufferSize = (uint) BufferSize.Value; }
+                    catch (Exception e) { Logger.Warn($"Failed to set KernelBufferSize to {BufferSize.Value} on {device.Name}. {e.Message}"); }
                 }
                 device.StartCapture();
                 Console.WriteLine("winpcap capture");
@@ -102,10 +84,7 @@ namespace NetworkSniffer
             Debug.Assert(_devices != null);
             foreach (var device in _devices.Where(device => device.Opened))
             {
-                try
-                {
-                    device.StopCapture();
-                }
+                try { device.StopCapture(); }
                 catch
                 {
                     // ignored
@@ -135,14 +114,8 @@ namespace NetworkSniffer
                     var linkPacket = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
                     ipPacket = linkPacket.PayloadPacket as IPv4Packet;
                 }
-                else
-                {
-                    ipPacket = new IPv4Packet(new ByteArraySegment(e.Packet.Data, 4, e.Packet.Data.Length - 4));
-                }
-                if (ipPacket == null)
-                {
-                    return;
-                }
+                else { ipPacket = new IPv4Packet(new ByteArraySegment(e.Packet.Data, 4, e.Packet.Data.Length - 4)); }
+                if (ipPacket == null) { return; }
             }
             catch
             {
@@ -153,17 +126,10 @@ namespace NetworkSniffer
             OnPacketReceived(ipPacket);
 
             var now = DateTime.UtcNow;
-            if (now <= _nextCheck)
-            {
-                return;
-            }
+            if (now <= _nextCheck) { return; }
             _nextCheck = now + TimeSpan.FromSeconds(20);
             var device = (WinPcapDevice) sender;
-            if (device.Statistics.DroppedPackets == _droppedPackets &&
-                device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets)
-            {
-                return;
-            }
+            if (device.Statistics.DroppedPackets == _droppedPackets && device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets) { return; }
             _droppedPackets = device.Statistics.DroppedPackets;
             _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
             OnWarning(

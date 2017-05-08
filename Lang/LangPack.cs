@@ -1,6 +1,4 @@
 ﻿namespace Lang
 {
-    public class LangPack
-    {
-    }
+    public class LangPack { }
 }
