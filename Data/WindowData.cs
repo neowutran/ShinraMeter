@@ -243,7 +243,10 @@ namespace Data
             PrivateDpsServers = new List<string> {""};
             MuteSound = false;
             IdleResetTimeout = 0;
-        }
+            BossGageStatus = new WindowStatus(new Point(0,0), true );
+            HistoryStatus = new WindowStatus(new Point(0, 0), false);
+            DebuffsStatus = new WindowStatus(new Point(0, 0), false);
+    }
 
         private void ParseWindowStatus(string xmlName, string settingName)
         {
@@ -259,12 +262,6 @@ namespace Data
             bool value;
             var xmlVisible = xml.Attribute("visible");
             var parseSuccess = bool.TryParse(xmlVisible?.Value ?? "false", out value);
-
-            //activate by default the gage window
-            if (xmlName == "boss_gage_window")
-            {
-                parseSuccess = bool.TryParse(xmlVisible?.Value ?? "true", out value);
-            }
             setting.SetValue(this, new WindowStatus(location, parseSuccess ? value : currentSetting.Visible));
         }
 
