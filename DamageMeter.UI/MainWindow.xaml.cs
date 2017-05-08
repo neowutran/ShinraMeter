@@ -76,6 +76,7 @@ namespace DamageMeter.UI
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
             Chatbox.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
+            BossGageImg.Source = BasicTeraData.Instance.ImageDatabase.BossGage.Source;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new List<NpcEntity>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;

@@ -20,6 +20,7 @@ namespace Data
             Chat = new Image {Source = new BitmapImage(new Uri(folder + "chat.png"))};
             Link = new Image {Source = new BitmapImage(new Uri(folder + "link.png"))};
             Enraged = new Image {Source = new BitmapImage(new Uri(folder + "enraged.png"))};
+            BossGage = new Image {Source = new BitmapImage(new Uri(folder + "eye.png"))};
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
             Tray = new Icon(folder + "shinra.ico");
@@ -32,6 +33,7 @@ namespace Data
         public Image Copy { get; }
         public Image Config { get; }
         public Image Chat { get; }
+        public Image BossGage { get; }
 
         public Image History { get; }
         public Image Close { get; }
