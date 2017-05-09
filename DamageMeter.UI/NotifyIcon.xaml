@@ -199,7 +199,7 @@
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="AuthLabel"
                                                    Content="{x:Static l:LP.AuthToken}" />
-                                            <TextBox LostFocus="TokenChanged" HorizontalAlignment="Stretch" Margin="5"
+                                            <TextBox LostFocus="TokenChanged" KeyDown ="AuthTokenTextbox_OnKeyDown" HorizontalAlignment="Stretch" Margin="5"
                                                      Grid.Column="1" Foreground="Black" Background="DarkGray"
                                                      BorderBrush="Transparent" BorderThickness="0"
                                                      Name="AuthTokenTextbox" />
@@ -282,7 +282,7 @@
                                             </Grid.ColumnDefinitions>
                                             <Label Grid.Column="0" Foreground="White" Name="ServerLabel"
                                                    Content="{x:Static l:LP.PrivateServerURL}" />
-                                            <TextBox LostFocus="ServerURLChanged" HorizontalAlignment="Stretch"
+                                            <TextBox LostFocus="ServerURLChanged" KeyDown="ServerURLTextbox_OnKeyDown" HorizontalAlignment="Stretch"
                                                      Margin="5" Grid.Column="1" Foreground="Black"
                                                      Background="DarkGray" BorderBrush="Transparent"
                                                      BorderThickness="0" Name="ServerURLTextbox" />

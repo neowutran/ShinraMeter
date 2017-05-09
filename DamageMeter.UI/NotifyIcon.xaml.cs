@@ -503,5 +503,15 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.TeraDpsToken = AuthTokenTextbox.Text;
         }
+
+        private void AuthTokenTextbox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) { TokenChanged(this, new RoutedEventArgs()); }
+        }
+
+        private void ServerURLTextbox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) { ServerURLChanged(this, new RoutedEventArgs()); }
+        }
     }
 }
