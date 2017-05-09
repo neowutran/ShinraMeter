@@ -55,12 +55,12 @@ namespace DamageMeter
     {
         private readonly Timer _timer = new Timer(1000);
 
-        private int _duration;
-        private int _durationLeft;
+        private long _duration;
+        private long _durationLeft;
 
         private int _stacks;
 
-        public BuffDuration(HotDot b, int d, int s)
+        public BuffDuration(HotDot b, uint d, int s)
         {
             Buff = b;
             Duration = d;
@@ -68,15 +68,19 @@ namespace DamageMeter
             DurationLeft = d;
             _timer.Elapsed += (se, ev) =>
             {
-                DurationLeft = DurationLeft - 1000;
-                if (DurationLeft <= 0) { _timer.Stop(); }
+                if (DurationLeft <= 1000)
+                {
+                    DurationLeft=0;
+                    _timer.Stop(); 
+                }
+                else {DurationLeft = DurationLeft - 1000;}
             };
             if (b.Time != 0) { _timer.Start(); }
         }
 
         public HotDot Buff { get; }
 
-        public int DurationLeft
+        public long DurationLeft
         {
             get => _durationLeft;
             set
@@ -87,7 +91,7 @@ namespace DamageMeter
             }
         }
 
-        public int Duration
+        public long Duration
         {
             get => _duration;
             set
