@@ -12,7 +12,7 @@
              UseLayoutRounding="True">
     <UserControl.Resources>
         <DataTemplate x:Key="BossBuffDataTemplate">
-            <controls:AbnormalityIndicator Size="32" />
+            <controls:AbnormalityIndicator Size="36" />
         </DataTemplate>
         <!--<converters:EntityIdToNameConverter x:Key="userIdToName"/>-->
         <!--<converters:AggroTypeToFill x:Key="aggroTypeToFill"/>-->
@@ -44,8 +44,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
 
                     </Grid.ColumnDefinitions>
 
@@ -53,31 +52,21 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                FontSize="15"
-                               FontWeight="SemiBold"
                                Text="{Binding Name}"
                                Grid.Row="0"
                                Grid.Column="0" />
+                  
+
                     <TextBlock Style="{StaticResource tcc_text}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
+                               Margin="20,0,0,0"
+                               FontWeight="SemiBold"
+                               Foreground="White"
                                FontSize="15"
+                               Text="{Binding CurrentPercentage, StringFormat=##0.## %}"
                                Grid.Row="0"
-                               Grid.Column="1">
-                        <Run Text=" " />
-                        <Run Text="{Binding CurrentHP, StringFormat={}{0:N0}}" />
-                        <Run Text=" / " />
-                        <Run Text="{Binding MaxHP, StringFormat={}{0:N0}}" />
-                        <Run Text="  " />
-                    </TextBlock>
-
-
-                    <TextBlock Style="{StaticResource tcc_text}" HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Margin="0"
-                               FontSize="15"
-                               Text="{Binding CurrentPercentage, StringFormat=##0.##%}"
-                               Grid.Row="0"
-                               Grid.Column="2" />
+                               Grid.Column="1" />
                     <!--<Polygon Points="0,10 5,0 10,10"  Margin="10,0"  Fill="{Binding CurrentAggroType, Converter={StaticResource aggroTypeToFill}}" Name="aggroArrow"
                                  VerticalAlignment="Center" Height="Auto"  HorizontalAlignment="Center"
                                  Grid.Column="1" RenderTransformOrigin=".5,.5">
