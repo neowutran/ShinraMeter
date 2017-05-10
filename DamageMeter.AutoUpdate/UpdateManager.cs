@@ -118,7 +118,6 @@ namespace DamageMeter.AutoUpdate
             Directory.CreateDirectory(targetDir);
             foreach (var file in Directory.GetFiles(sourceDir))
             {
-                if (Path.GetFileName(file) == "ShinraLauncher.exe") { if (File.Exists(Path.Combine(targetDir, Path.GetFileName(file)))) { continue; } }
                 File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), true);
             }
 
@@ -162,14 +161,14 @@ namespace DamageMeter.AutoUpdate
         {
             Array.ForEach(
                 Directory.GetFiles(ExecutableDirectory + @"\..\", "*", SearchOption.AllDirectories)
-                    .Where(t => !(t.Contains(@"\config\") || t.Contains(@"\..\tmp\") || t.Contains(@"\sound\") || t.EndsWith("ShinraLauncher.exe") ||
+                    .Where(t => !(t.Contains(@"\config\") || t.Contains(@"\..\tmp\") || t.Contains(@"\sound\") ||
                                   hashes.ContainsKey(t))).ToArray(), x =>
                 {
                     File.Delete(x);
                     Console.WriteLine(x);
                 });
             DeleteEmptySubdirectories(ExecutableDirectory + @"\..\");
-            Console.WriteLine("Obsolette files destroyed");
+            Console.WriteLine("Obsolete files destroyed");
         }
 
         private static async Task<bool> NoNewHashes()
