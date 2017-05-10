@@ -14,19 +14,18 @@ TERADATA: https://github.com/neowutran/TeraDpsMeterData
 ShinraMeter is dev by Gl0 and Yukikoo/Neowutran
  
 
-Shinra launcher
---------------
-
-- Shinra launcher, a program to launch the shinraMeter automatically when Tera is starting:
-
-https://bitbucket.org/Vysse/shinra-launcher/wiki/Home
-
 Logo
 ---------
  
 Thanks to Se7en-Hellas for the new Shinra logo =) 
 
 Se7en-Hellas website: http://se7enhellas.wixsite.com/mylogogr 
+
+
+Legacy deleted work
+--------------------
+By Vysse: Shinra launcher
+
 
 Original Readme
 ================
