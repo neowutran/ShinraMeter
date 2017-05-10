@@ -312,16 +312,16 @@ namespace DamageMeter
                     ws.Cells[j, 2, j, 11].Merge = true;
                     ws.Cells[j, 12].Value = "%";
                     ws.Cells[j, 2, j, 12].Style.Font.Bold = true;
-                    foreach (var buf in data.debuffUptime)
+                    foreach (var buf in data.debuffDetail)
                     {
                         j++;
-                        var hotdot = BTD.HotDotDatabase.Get(int.Parse(buf.Key));
+                        var hotdot = BTD.HotDotDatabase.Get((int)buf[0]);
                         ws.Cells[j, 1].Value = j - i - 3;
                         AddImage(ws, j, 1, BTD.Icons.GetBitmap(hotdot.IconName));
                         ws.Cells[j, 2].Value = hotdot.Name;
                         if (!string.IsNullOrEmpty(hotdot.Tooltip)) { ws.Cells[j, 2].AddComment("" + hotdot.Tooltip, "info"); }
                         ws.Cells[j, 2, j, 11].Merge = true;
-                        ws.Cells[j, 12].Value = double.Parse(buf.Value) / 100;
+                        ws.Cells[j, 12].Value = (double) ((List<List<int>>)buf[1])[0][1] / 100;
                         ws.Cells[j, 12].Style.Numberformat.Format = "0%";
                     }
                     border = ws.Cells[i + 3, 1, j, 12].Style.Border;
@@ -732,16 +732,16 @@ namespace DamageMeter
             ws.Cells[j, 2, j, 10].Merge = true;
             ws.Cells[j, 11].Value = "%";
             ws.Cells[j, 2, j, 11].Style.Font.Bold = true;
-            foreach (var buf in user.buffUptime)
+            foreach (var buf in user.buffDetail)
             {
                 j++;
-                var hotdot = BTD.HotDotDatabase.Get(int.Parse(buf.Key));
+                var hotdot = BTD.HotDotDatabase.Get((int)buf[0]);
                 ws.Cells[j, 1].Value = j - i - 3;
                 AddImage(ws, j, 1, BTD.Icons.GetBitmap(hotdot.IconName));
                 ws.Cells[j, 2].Value = hotdot.Name;
                 if (!string.IsNullOrEmpty(hotdot.Tooltip)) { ws.Cells[j, 2].AddComment("" + hotdot.Tooltip, "info"); }
                 ws.Cells[j, 2, j, 10].Merge = true;
-                ws.Cells[j, 11].Value = double.Parse(buf.Value) / 100;
+                ws.Cells[j, 11].Value = (double)((List<List<int>>)buf[1])[0][1] / 100;
                 ws.Cells[j, 11].Style.Numberformat.Format = "0%";
                 if (!string.IsNullOrEmpty(hotdot.ItemName)) { ws.Cells[j, 10].AddComment("" + hotdot.ItemName, "info"); }
             }
