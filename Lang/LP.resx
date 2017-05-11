@@ -668,4 +668,7 @@
   <data name="ShowBossGage" xml:space="preserve">
     <value>Show Boss HP Bar</value>
   </data>
+  <data name="Counter" xml:space="preserve">
+    <value>Skill Сasts</value>
+  </data>
 </root>

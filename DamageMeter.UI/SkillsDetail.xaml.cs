@@ -78,6 +78,17 @@ namespace DamageMeter.UI
                     SkillsList.Items.Add(header);
                 }
                     break;
+                case Database.Database.Type.Counter:
+                {
+                    var header = new SkillsHeaderCounter();
+                    ContentWidth = header.Width;
+
+                    header.LabelName.MouseRightButtonUp += LabelNameOnMouseRightButtonUp;
+                    header.LabelNumberHit.MouseRightButtonUp += LabelNumberHitCounterOnMouseRightButtonUp;
+                    _currentSortedLabel = header.LabelNumberHit;
+                    SkillsList.Items.Add(header);
+                }
+                    break;
                 default: throw new ArgumentOutOfRangeException();
             }
 
@@ -162,6 +173,10 @@ namespace DamageMeter.UI
             ChangeSort(SortBy.Amount, (Label) sender, SkillsHeaderMana.Mana);
         }
 
+        private void LabelNumberHitCounterOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            ChangeSort(SortBy.NumberHits, (Label)sender, SkillsHeaderCounter.Hits);
+        }
 
         private void Sort()
         {
@@ -343,6 +358,9 @@ namespace DamageMeter.UI
                         break;
                     case Database.Database.Type.Mana:
                         SkillsList.Items.Add(new SkillMana(skill));
+                        break;
+                    case Database.Database.Type.Counter:
+                        SkillsList.Items.Add(new SkillCounter(skill));
                         break;
                     default: throw new ArgumentOutOfRangeException();
                 }

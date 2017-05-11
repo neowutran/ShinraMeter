@@ -201,6 +201,9 @@
       <DependentUpon>NotifyIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="Skill.cs" />
+    <Compile Include="SkillDetail\SkillDetailCounter.xaml.cs">
+      <DependentUpon>SkillDetailCounter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SkillDetail\SkillDetailMana.xaml.cs">
       <DependentUpon>SkillDetailMana.xaml</DependentUpon>
     </Compile>
@@ -213,8 +216,14 @@
     <Compile Include="SkillLog.xaml.cs">
       <DependentUpon>SkillLog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SkillsHeaders\SkillsHeaderCounter.xaml.cs">
+      <DependentUpon>SkillsHeaderCounter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SkillsLog.xaml.cs">
       <DependentUpon>SkillsLog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Skill\SkillCounter.xaml.cs">
+      <DependentUpon>SkillCounter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Skill\SkillMana.xaml.cs">
       <DependentUpon>SkillMana.xaml</DependentUpon>
@@ -319,6 +328,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SkillDetail\SkillDetailCounter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SkillDetail\SkillDetailMana.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -335,9 +348,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SkillsHeaders\SkillsHeaderCounter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SkillsLog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skill\SkillCounter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Skill\SkillMana.xaml">
       <Generator>MSBuild:Compile</Generator>

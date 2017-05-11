@@ -271,6 +271,26 @@ namespace DamageMeter
             if (skillsData == null) { return new List<SkillAggregate>(); }
             if (type != Database.Database.Type.Damage) { timedEncounter = false; }
 
+            if (type == Database.Database.Type.Counter)
+            {
+                var skills = skillsData.SkillsIdBySource(playerDamageDealt.Source.User, null, true);
+                var skillsAggregate = new Dictionary<string, SkillAggregate>();
+                foreach (var skill in skills)
+                {
+                    if (skill == null) { continue; }
+                    if (!skillsData.Type(playerDamageDealt.Source.User, null, skill.Id, skill.NpcInfo, true, type)) { continue; }
+
+                    if (!skillsAggregate.ContainsKey(skill.ShortName))
+                    {
+                        skillsAggregate.Add(skill.ShortName,
+                            new SkillAggregate(skill, skillsData, playerDamageDealt.Source.User, null, playerDamageDealt, true, type));
+                        continue;
+                    }
+                    skillsAggregate[skill.ShortName].Add(skill, playerDamageDealt.Source.User);
+                }
+                return skillsAggregate.Values;
+            }
+
             if (!playerDamageDealt.Source.IsHealer && type != Database.Database.Type.Damage)
             {
                 var skills = skillsData.SkillsIdByTarget(playerDamageDealt.Source.User);

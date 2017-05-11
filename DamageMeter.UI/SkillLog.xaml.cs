@@ -27,20 +27,6 @@ namespace DamageMeter.UI
             Brush color = null;
             var fontWeight = FontWeights.Normal;
             if (skill.Critic) { fontWeight = FontWeights.Bold; }
-            switch (skill.Type)
-            {
-                case Database.Database.Type.Damage:
-                    color = Brushes.Red;
-                    break;
-                case Database.Database.Type.Heal:
-                    color = Brushes.LawnGreen;
-                    break;
-                case Database.Database.Type.Mana:
-                    color = Brushes.DeepSkyBlue;
-                    break;
-            }
-
-            SkillAmount.Foreground = color;
             SkillAmount.FontWeight = fontWeight;
             SkillAmount.ToolTip = skill.Critic ? LP.Critical : LP.White;
             SkillName.Content = skill.SkillId;
@@ -69,6 +55,25 @@ namespace DamageMeter.UI
                     SkillDirection.Foreground = Brushes.SpringGreen;
                     break;
             }
+
+            switch (skill.Type)
+            {
+                case Database.Database.Type.Damage:
+                    color = Brushes.Red;
+                    break;
+                case Database.Database.Type.Heal:
+                    color = Brushes.LawnGreen;
+                    break;
+                case Database.Database.Type.Mana:
+                    color = Brushes.DeepSkyBlue;
+                    break;
+                case Database.Database.Type.Counter:
+                    color = Brushes.Thistle;
+                    SkillDirection.Content = LP.Counter;
+                    SkillDirection.Foreground = Brushes.Thistle;
+                    break;
+            }
+            SkillAmount.Foreground = color;
 
             SkillName.ToolTip = skill.Time;
             var npcEntity = entity as NpcEntity;

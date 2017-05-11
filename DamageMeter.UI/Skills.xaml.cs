@@ -18,6 +18,7 @@ namespace DamageMeter.UI
         private SkillsDetail _skillDps;
         private SkillsDetail _skillHeal;
         private SkillsDetail _skillMana;
+        private SkillsDetail _skillCounter;
         private SkillsLog _skillReceivedLog;
 
         private Database.Structures.Skills _skills;
@@ -111,6 +112,12 @@ namespace DamageMeter.UI
                 //    }
                 BuffPanel.Content = _buff;
                 //    return;
+
+                _skillCounter = new SkillsDetail(
+                    SkillAggregate.GetAggregate(playerDamageDealt, entityInformation.Entity, _skills, timedEncounter, Database.Database.Type.Counter),
+                    Database.Database.Type.Counter);
+                CounterPanel.Content = _skillCounter;
+
                 //case "SkillsDealtPanel":
                 //    if (_skillDealtLog == null)
                 //    {

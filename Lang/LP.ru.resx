@@ -656,4 +656,7 @@
   <data name="ShowBossGage" xml:space="preserve">
     <value>Показать HP босса</value>
   </data>
+  <data name="Counter" xml:space="preserve">
+    <value>Использ. умения</value>
+  </data>
 </root>

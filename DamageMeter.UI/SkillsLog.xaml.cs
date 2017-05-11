@@ -35,6 +35,7 @@ namespace DamageMeter.UI
             Database.Database.Type? typeDamage = null;
             Database.Database.Type? typeHeal = null;
             Database.Database.Type? typeMana = null;
+            Database.Database.Type? typeCounter = null;
             Database.Database.Type? lastType = null;
 
             if ((bool) Damage.IsChecked)
@@ -53,22 +54,30 @@ namespace DamageMeter.UI
                 lastType = typeMana;
             }
 
+            if ((bool)Casts.IsChecked)
+            {
+                typeCounter = Database.Database.Type.Counter;
+                lastType = typeCounter;
+            }
+
             if (lastType == null)
             {
                 typeMana = Database.Database.Type.Mana;
                 typeHeal = Database.Database.Type.Heal;
                 typeDamage = Database.Database.Type.Damage;
+                typeCounter = Database.Database.Type.Counter;
             }
             else
             {
                 if (typeDamage == null) { typeDamage = lastType; }
                 if (typeHeal == null) { typeHeal = lastType; }
                 if (typeMana == null) { typeMana = lastType; }
+                if (typeCounter == null) { typeCounter = lastType; }
             }
 
             Skills.Items.Clear();
             var beginTime = _skills.Min(x => x.Time);
-            foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana).OrderByDescending(x => x.Time))
+            foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana || x.Type == typeCounter).OrderByDescending(x => x.Time))
             {
                 var log = new SkillLog();
                 log.Update(skill, _received, beginTime);

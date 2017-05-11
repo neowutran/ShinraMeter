@@ -169,6 +169,8 @@
                      Foreground="White" />
             <TabItem FontSize="14" Header="{x:Static l:LP.Buff}" x:Name="BuffPanel" Background="Transparent"
                      Foreground="White" />
+            <TabItem FontSize="14" Header="{x:Static l:LP.Counter}" x:Name="CounterPanel" Background="Transparent"
+                     Foreground="White" />
             <TabItem FontSize="14" Header="{x:Static l:LP.SkillDealt}" x:Name="SkillsDealtPanel"
                      Background="Transparent" Foreground="White" />
             <TabItem FontSize="14" Header="{x:Static l:LP.SkillReceived}" x:Name="SkillsReceivedPanel"

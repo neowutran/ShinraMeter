@@ -97,12 +97,6 @@ namespace DamageMeter
 
         private static bool IsValidSkill(SkillResult message)
         {
-            if (message.Amount == 0)
-                // to count buff skills/consumable usage - need additional hitstat for it (damage/heal/mana/uses)
-            {
-                return false;
-            }
-
             return UserEntity.ForEntity(message.Source)["root_source"] != UserEntity.ForEntity(message.Target)["root_source"] || message.Damage == 0;
         }
 
@@ -113,6 +107,7 @@ namespace DamageMeter
 
             var skillType = Database.Database.Type.Mana;
             if (message.IsHp) { skillType = message.IsHeal ? Database.Database.Type.Heal : Database.Database.Type.Damage; }
+            if (message.Amount == 0) { skillType = Database.Database.Type.Counter; }
 
             var entity = entityTarget as NpcEntity;
             if (entity != null)
