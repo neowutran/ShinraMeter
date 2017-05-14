@@ -163,6 +163,8 @@ namespace DamageMeter.UI.HUD.Controls
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
+            NumberTimer.Enabled = false;
+            NumberTimer.Dispose();
             _boss.PropertyChanged -= boss_PropertyChanged;
             _boss = null;
         }
