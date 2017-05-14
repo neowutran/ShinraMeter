@@ -10,6 +10,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32.TaskScheduler;
+using Task = System.Threading.Tasks.Task;
 
 namespace DamageMeter.AutoUpdate
 {
@@ -134,7 +136,7 @@ namespace DamageMeter.AutoUpdate
 
         internal static void DestroyRelease()
         {
-            Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\").Where(t => !t.EndsWith("ShinraLauncher.exe")).ToArray(), File.Delete);
+            Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\").ToArray(), File.Delete);
             Array.ForEach(Directory.GetFiles(ExecutableDirectory + @"\..\..\resources\"), File.Delete);
             foreach (var s in Directory.GetDirectories(ExecutableDirectory + @"\..\..\").Where(t => !(t.EndsWith("resources") || t.EndsWith("tmp"))))
             {
@@ -155,6 +157,19 @@ namespace DamageMeter.AutoUpdate
                 DeleteEmptySubdirectories(directory);
                 if (!Directory.EnumerateFileSystemEntries(directory).Any()) { Directory.Delete(directory, false); }
             });
+        }
+
+        internal static void RemoveShinraLauncher()
+        {
+            foreach (var process in Process.GetProcessesByName("ShinraLauncher")) { process.Kill(); }
+            using (TaskService taskService = new TaskService())
+            {
+                var task = taskService.GetTask("Shinra Launcher");
+                if (task == null)
+                    return;
+                task.Enabled=false;
+                taskService.RootFolder.DeleteTask("Shinra Launcher");
+            }
         }
 
         internal static void CleanupRelease(Dictionary<string, string> hashes)
