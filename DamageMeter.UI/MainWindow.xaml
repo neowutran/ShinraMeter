@@ -8,7 +8,7 @@
                      mc:Ignorable="d"
                      Title="Shinra Meter"
                      Loaded="MainWindow_OnLoaded"
-                     Closed="MainWindow_OnClosed">
+                     Closed="MainWindow_OnClosed" >
 
     <Window.Resources>
         <Style TargetType="{x:Type ToolTip}">
@@ -199,9 +199,9 @@
         </Style>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.5" />
+        <SolidColorBrush x:Name="BackgroundColor" Color="Transparent" Opacity="0" />
     </Window.Background>
-    <Grid HorizontalAlignment="Left" MinWidth="265">
+    <Grid HorizontalAlignment="Left" MinWidth="265" Margin="7">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
@@ -212,7 +212,11 @@
                             ScaleX="{DynamicResource Scale}"
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
-
+        <Border Background="#202026" Grid.RowSpan="3" BorderBrush="#303037" BorderThickness="1" Opacity=".85">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity=".6"></DropShadowEffect>
+            </Border.Effect>
+        </Border>
         <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -242,16 +246,16 @@
                 <ColumnDefinition Width="31" />
             </Grid.ColumnDefinitions>
             <Image x:Name="Chrono" PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown"
-                   Stretch="Fill"
+                   Stretch="Fill" Opacity=".8"
                    HorizontalAlignment="Left"
-                   Height="29" VerticalAlignment="Top" Width="29" Grid.Column="6" />
+                   Height="28" VerticalAlignment="Top" Width="28" Grid.Column="6" />
 
-            <Image x:Name="Config"
+            <Image x:Name="Config" Opacity=".8"
                    Stretch="Fill"
 
-                   HorizontalAlignment="Left"
+                   HorizontalAlignment="Left" 
                    PreviewMouseLeftButtonDown="Config_MouseLeftButtonDown"
-                   Height="29" VerticalAlignment="Top" Width="29" Grid.Column="4">
+                   Height="28" VerticalAlignment="Top" Width="28" Grid.Column="4">
                 <Image.ContextMenu>
 
                     <ContextMenu Style="{DynamicResource ShinraContext}" x:Name="PopupMenu">
@@ -299,12 +303,12 @@
             </Image>
 
             <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown"
-                   Stretch="Fill"
+                   Stretch="Fill" Opacity=".8"
                    HorizontalAlignment="Left"
                    Height="29" VerticalAlignment="Top" Width="29" Grid.Column="0" />
 
             <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
-                   Foreground="White"
+                   Foreground="White" 
                    VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
             <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Grid.Column="5" FontSize="14"
                    Foreground="White" PreviewMouseLeftButtonDown="ChangeTimeLeft"

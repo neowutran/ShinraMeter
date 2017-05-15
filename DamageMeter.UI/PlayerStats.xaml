@@ -8,7 +8,7 @@
              MinHeight="29"
              Focusable="False"
              MaxHeight="29"
-             Height="29">
+             Height="29" >
     <Grid Focusable="False" HorizontalAlignment="Stretch">
         <Grid.Resources>
             <Style x:Key="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}" TargetType="Label">
@@ -28,10 +28,14 @@
         </Grid.Resources>
         <Rectangle Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow"
                    x:Name="DpsIndicator"
-                   Fill="DodgerBlue"
-                   Opacity="0.5" HorizontalAlignment="Left" MinHeight="32" MaxHeight="32" Height="32"
-                   Stroke="Transparent" VerticalAlignment="Center"
-                   Width="Auto" />
+                   Fill="#2bf"
+                   Opacity="1" HorizontalAlignment="Left" Height="20" Margin="0,0,0,1"
+                   Stroke="Transparent" VerticalAlignment="Bottom"
+                   Width="0" >
+            <Rectangle.LayoutTransform>
+                <ScaleTransform ScaleY=".1"/>
+            </Rectangle.LayoutTransform>
+        </Rectangle>
 
         <Grid Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow"
               x:Name="GridStats" HorizontalAlignment="Center" Width="Auto"
@@ -45,12 +49,12 @@
                 <ColumnDefinition SharedSizeGroup="p5" MinWidth="45" Width="Auto" />
             </Grid.ColumnDefinitions>
             <Image PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class"
-                   Focusable="False" Grid.Column="0"
-                   Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left"
-                   Height="25" VerticalAlignment="Top" Width="25" Margin="0,2,0,0" />
+                   Focusable="False" Grid.Column="0" RenderOptions.BitmapScalingMode="HighQuality"
+                   Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left" 
+                   Height="25" VerticalAlignment="Top" Width="25" Margin="2,0,0,0" />
 
             <Label Focusable="False" Grid.Column="1" FontSize="14" VerticalAlignment="Center"
-                   HorizontalContentAlignment="Left"
+                   HorizontalContentAlignment="Left" Margin="2,0,0,0"
                    x:Name="LabelName" Foreground="GreenYellow"
                    MinHeight="29" />
             <Label Focusable="False" Grid.Column="2" FontSize="14" VerticalAlignment="Center"
@@ -67,7 +71,7 @@
                    MinHeight="29" />
 
             <Label Focusable="False" Grid.Column="5" FontSize="14" x:Name="LabelCritRate"
-                   HorizontalContentAlignment="Right"
+                   HorizontalContentAlignment="Right" Margin="0,0,3,0"
                    VerticalAlignment="Center" Foreground="LightCoral" PreviewMouseLeftButtonDown="ChangeHeal"
                    MinHeight="25" />
 
