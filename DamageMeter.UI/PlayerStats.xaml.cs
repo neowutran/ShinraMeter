@@ -8,6 +8,7 @@ using DamageMeter.Database.Structures;
 using Data;
 using Lang;
 using Tera.Game.Abnormality;
+using System.Windows.Media.Animation;
 
 namespace DamageMeter.UI
 {
@@ -99,7 +100,8 @@ namespace DamageMeter.UI
             SGrid.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var mainWidth = SGrid.DesiredSize.Width;
             Spacer.Width = mainWidth > GridStats.DesiredSize.Width ? mainWidth - GridStats.DesiredSize.Width : 0;
-            DpsIndicator.Width = EntityInformation.TotalDamage == 0 ? mainWidth : mainWidth * PlayerDamageDealt.Amount / EntityInformation.TotalDamage;
+            var an = new DoubleAnimation(DpsIndicator.ActualWidth, EntityInformation.TotalDamage == 0 ? mainWidth : mainWidth * PlayerDamageDealt.Amount / EntityInformation.TotalDamage,  TimeSpan.FromMilliseconds(400)) { EasingFunction = new QuadraticEase()};
+            DpsIndicator.BeginAnimation(WidthProperty, an);
             EGrid.MaxWidth = Math.Max(mainWidth, GridStats.DesiredSize.Width);
         }
 
