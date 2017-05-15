@@ -659,4 +659,7 @@
   <data name="Counter" xml:space="preserve">
     <value>Использ. умения</value>
   </data>
+  <data name="NoPaste" xml:space="preserve">
+    <value>Отключить вставку в игровой чат</value>
+  </data>
 </root>
