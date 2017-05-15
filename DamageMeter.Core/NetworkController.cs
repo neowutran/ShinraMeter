@@ -151,6 +151,7 @@ namespace DamageMeter
                     {
                         AbnormalityTracker.AbnormalityAdded -= NotifyProcessor.Instance.AbnormalityNotifierAdded;
                         AbnormalityTracker.AbnormalityRemoved -= NotifyProcessor.Instance.AbnormalityNotifierRemoved;
+                        HudManager.Instance.CurrentBosses.Clear();
                     }
                     PacketProcessing.Update();
                 }
