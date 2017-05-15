@@ -247,7 +247,7 @@ namespace DamageMeter
             var existing = Buffs.FirstOrDefault(x => x.Buff.Id == abnormality.HotDot.Id);
             if (existing == null)
             {
-                Buffs.Add(new BuffDuration(abnormality.HotDot, (uint)abnormality.Duration, abnormality.Stack));
+                Buffs.Add(new BuffDuration(abnormality.HotDot, abnormality.Duration, abnormality.Stack));
                 return;
             }
             existing.Duration = abnormality.Duration;

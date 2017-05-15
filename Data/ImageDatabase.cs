@@ -9,18 +9,18 @@ namespace Data
     {
         public ImageDatabase(string folder)
         {
-            EntityStats = new Image {Source = new BitmapImage(new Uri(folder + "stats2.png"))};
-            EntityStatsClickThrou = new Image {Source = new BitmapImage(new Uri(folder + "stats_click_throu2.png"))};
-            Chrono = new Image {Source = new BitmapImage(new Uri(folder + "chrono2.png"))};
-            Chronobar = new Image {Source = new BitmapImage(new Uri(folder + "chronobar2.png"))};
-            Close = new Image {Source = new BitmapImage(new Uri(folder + "close2.png"))};
-            History = new Image {Source = new BitmapImage(new Uri(folder + "historic2.png"))};
-            Copy = new Image {Source = new BitmapImage(new Uri(folder + "copy2.png"))};
-            Config = new Image {Source = new BitmapImage(new Uri(folder + "config2.png"))};
-            Chat = new Image {Source = new BitmapImage(new Uri(folder + "chat2.png"))};
-            Link = new Image {Source = new BitmapImage(new Uri(folder + "link2.png"))};
+            EntityStats = new Image {Source = new BitmapImage(new Uri(folder + "stats.png"))};
+            EntityStatsClickThrou = new Image {Source = new BitmapImage(new Uri(folder + "stats_click_throu.png"))};
+            Chrono = new Image {Source = new BitmapImage(new Uri(folder + "chrono.png"))};
+            Chronobar = new Image {Source = new BitmapImage(new Uri(folder + "chronobar.png"))};
+            Close = new Image {Source = new BitmapImage(new Uri(folder + "close.png"))};
+            History = new Image {Source = new BitmapImage(new Uri(folder + "historic.png"))};
+            Copy = new Image {Source = new BitmapImage(new Uri(folder + "copy.png"))};
+            Config = new Image {Source = new BitmapImage(new Uri(folder + "config.png"))};
+            Chat = new Image {Source = new BitmapImage(new Uri(folder + "chat.png"))};
+            Link = new Image {Source = new BitmapImage(new Uri(folder + "link.png"))};
             Enraged = new Image {Source = new BitmapImage(new Uri(folder + "enraged.png"))};
-            BossGage = new Image {Source = new BitmapImage(new Uri(folder + "eye2.png"))};
+            BossGage = new Image {Source = new BitmapImage(new Uri(folder + "eye.png"))};
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
             Tray = new Icon(folder + "shinra.ico");
