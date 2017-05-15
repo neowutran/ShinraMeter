@@ -74,6 +74,7 @@ namespace DamageMeter.UI
             MuteSound.IsChecked = BasicTeraData.Instance.WindowData.MuteSound;
             ShowSelfOnTop.IsChecked = BasicTeraData.Instance.WindowData.MeterUserOnTop;
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
+            NoPaste.IsChecked = BasicTeraData.Instance.WindowData.NoPaste;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
@@ -513,5 +514,9 @@ namespace DamageMeter.UI
         {
             if (e.Key == Key.Enter) { ServerURLChanged(this, new RoutedEventArgs()); }
         }
+
+        private void NoPaste_OnUnchecked(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoPaste=false; }
+
+        private void NoPaste_OnChecked(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoPaste = true; }
     }
 }

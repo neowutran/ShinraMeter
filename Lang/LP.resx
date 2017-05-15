@@ -671,4 +671,7 @@
   <data name="Counter" xml:space="preserve">
     <value>Skill Сasts</value>
   </data>
+  <data name="NoPaste" xml:space="preserve">
+    <value>Disable ingame chat paste</value>
+  </data>
 </root>

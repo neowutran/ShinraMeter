@@ -23,6 +23,7 @@ namespace DamageMeter
 
         public static void Paste(string text)
         {
+            if (BasicTeraData.Instance.WindowData.NoPaste) { return; }
             if (!Monitor.TryEnter(Lock)) { return; }
             TeraWindow.SendString(text);
             Monitor.Exit(Lock);

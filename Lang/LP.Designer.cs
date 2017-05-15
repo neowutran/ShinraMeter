@@ -1191,6 +1191,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable ingame chat paste.
+        /// </summary>
+        public static string NoPaste {
+            get {
+                return ResourceManager.GetString("NoPaste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notify about CrystalBinds..
         /// </summary>
         public static string NotifyCB {

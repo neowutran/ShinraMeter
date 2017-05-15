@@ -92,6 +92,7 @@ namespace Data
             Parse("show_afk_events_ingame", "ShowAfkEventsIngame");
             Parse("mute_sound", "MuteSound");
             Parse("idle_reset_timeout", "IdleResetTimeout");
+            Parse("no_paste", "NoPaste");
             ParseColor("say_color", "SayColor");
             ParseColor("alliance_color", "AllianceColor");
             ParseColor("area_color", "AreaColor");
@@ -131,6 +132,7 @@ namespace Data
         public bool AutoUpdate { get; private set; }
         public bool Winpcap { get; private set; }
         public bool InvisibleUi { get; set; }
+        public bool NoPaste { get; set; }
         public bool AllowTransparency { get; set; }
         public string TeraDpsUser { get; private set; }
         public string TeraDpsToken { get; set; }
@@ -232,6 +234,7 @@ namespace Data
             PrivateDpsServers = new List<string> {""};
             MuteSound = false;
             IdleResetTimeout = 0;
+            NoPaste = false;
             BossGageStatus = new WindowStatus(new Point(0, 0), true);
             HistoryStatus = new WindowStatus(new Point(0, 0), false);
             DebuffsStatus = new WindowStatus(new Point(0, 0), false);
@@ -408,6 +411,7 @@ namespace Data
             xml.Root.Add(new XElement("disable_party_event", DisablePartyEvent));
             xml.Root.Add(new XElement("show_afk_events_ingame", ShowAfkEventsIngame));
             xml.Root.Add(new XElement("idle_reset_timeout", IdleResetTimeout));
+            xml.Root.Add(new XElement("no_paste", NoPaste));
 
             xml.Root.Add(new XElement("teradps.io"));
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));

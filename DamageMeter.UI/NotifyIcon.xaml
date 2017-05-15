@@ -187,6 +187,7 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <CheckBox Grid.Row="0" Foreground="White"
                                                   Content="{x:Static l:LP.SystemTray_Site_export}"
@@ -256,26 +257,28 @@
                                                   Content="{x:Static l:LP.FormatPasteString}" Name="FormatPasteString"
                                                   Checked="EnableFormatPasteString"
                                                   Unchecked="DisableFormatPasteString" />
-                                        <CheckBox Grid.Row="13" Foreground="White" Content="{x:Static l:LP.EnableChat}"
+                                        <CheckBox Grid.Row="13" Foreground="White" Content="{x:Static l:LP.NoPaste}"
+                                                  Name="NoPaste" Checked="NoPaste_OnChecked" Unchecked="NoPaste_OnUnchecked" />
+                                        <CheckBox Grid.Row="14" Foreground="White" Content="{x:Static l:LP.EnableChat}"
                                                   Name="ChatEnabled" Checked="EnableChat" Unchecked="DisableChat" />
-                                        <CheckBox Grid.Row="14" Foreground="White" Content="{x:Static l:LP.MuteSound}"
+                                        <CheckBox Grid.Row="15" Foreground="White" Content="{x:Static l:LP.MuteSound}"
                                                   Name="MuteSound" Checked="EnableMuteSound"
                                                   Unchecked="DisableMuteSound" />
-                                        <CheckBox Grid.Row="15" Foreground="White"
+                                        <CheckBox Grid.Row="16" Foreground="White"
                                                   Content="{x:Static l:LP.CopyInspect}" Name="CopyInspect"
                                                   Checked="EnableCopyInspect" Unchecked="DisableCopyInspect" />
-                                        <CheckBox Grid.Row="16" Foreground="White"
+                                        <CheckBox Grid.Row="17" Foreground="White"
                                                   Content="{x:Static l:LP.DisablePartyEvents}" Name="PartyEvent"
                                                   Checked="DisablePartyEvent" Unchecked="EnablePartyEvent" />
-                                        <CheckBox Grid.Row="17" Foreground="White"
+                                        <CheckBox Grid.Row="18" Foreground="White"
                                                   Content="{x:Static l:LP.ShowAfkEventsIngame}"
                                                   Name="ShowAfkIventsIngame" Checked="EnableAfkIventsIngame"
                                                   Unchecked="DisableAfkIventsIngame" />
-                                        <CheckBox Grid.Row="18" Foreground="White"
+                                        <CheckBox Grid.Row="19" Foreground="White"
                                                   Content="{x:Static l:LP.PrivateServerExport}"
                                                   Name="PrivateServerExport" Checked="EnablePServerExp"
                                                   Unchecked="DisablePServerExp" />
-                                        <Grid Grid.Row="19">
+                                        <Grid Grid.Row="20">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -288,7 +291,7 @@
                                                      BorderThickness="0" Name="ServerURLTextbox" />
                                         </Grid>
 
-                                        <Grid Grid.Row="20">
+                                        <Grid Grid.Row="21">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -302,10 +305,10 @@
                                                                 ValueChanged="NumberPlayersChanged" FormatString="N0"
                                                                 Increment="1" Maximum="30" Minimum="1" />
                                         </Grid>
-                                        <CheckBox Grid.Row="21" Foreground="White"
+                                        <CheckBox Grid.Row="22" Foreground="White"
                                                   Content="{x:Static l:LP.ShowSelfOnTop}" Name="ShowSelfOnTop"
                                                   Checked="EnableShowSelfOnTop" Unchecked="DisableShowSelfOnTop" />
-                                        <Grid Grid.Row="22">
+                                        <Grid Grid.Row="23">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -319,7 +322,7 @@
                                                                 FormatString="N0" Increment="1" Maximum="500"
                                                                 Minimum="150" />
                                         </Grid>
-                                        <Grid Grid.Row="23">
+                                        <Grid Grid.Row="24">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -333,7 +336,7 @@
                                                                 FormatString="N0" Increment="1" Maximum="600"
                                                                 Minimum="0" />
                                         </Grid>
-                                        <Grid Grid.Row="24">
+                                        <Grid Grid.Row="25">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -348,7 +351,7 @@
                                                               SelectedColorChanged="WhisperColorChanged" />
                                         </Grid>
 
-                                        <Grid Grid.Row="25">
+                                        <Grid Grid.Row="26">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -362,7 +365,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="AllianceColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="26">
+                                        <Grid Grid.Row="27">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -376,7 +379,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="AreaColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="27">
+                                        <Grid Grid.Row="28">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -390,7 +393,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="GeneralColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="28">
+                                        <Grid Grid.Row="29">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -404,7 +407,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="GroupColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="29">
+                                        <Grid Grid.Row="30">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -418,7 +421,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="GuildColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="30">
+                                        <Grid Grid.Row="31">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -432,7 +435,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="RaidColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="31">
+                                        <Grid Grid.Row="32">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -446,7 +449,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="SayColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="32">
+                                        <Grid Grid.Row="33">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -460,7 +463,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="TradingColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="33">
+                                        <Grid Grid.Row="34">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
@@ -474,7 +477,7 @@
                                                               Background="DarkGray"
                                                               SelectedColorChanged="EmotesColorChanged" />
                                         </Grid>
-                                        <Grid Grid.Row="34">
+                                        <Grid Grid.Row="35">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
