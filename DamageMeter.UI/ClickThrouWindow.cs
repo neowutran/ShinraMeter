@@ -62,8 +62,8 @@ namespace DamageMeter.UI
                     a.Completed += (o, args) => { Close(); };
                     BeginAnimation(OpacityProperty, a);
                 }));
+                e.Cancel = true;
             }
-            else { Close(); }
         }
 
         public void HideWindow()
