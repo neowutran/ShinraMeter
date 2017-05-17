@@ -158,7 +158,7 @@ namespace DamageMeter.AutoUpdate
             });
         }
 
-        internal static void RemoveShinraLauncher()
+        public static void RemoveShinraLauncher()
         {
             foreach (var process in Process.GetProcessesByName("ShinraLauncher")) { process.Kill(); }
             using (TaskService taskService = new TaskService())
