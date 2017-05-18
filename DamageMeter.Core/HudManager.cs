@@ -49,6 +49,15 @@ namespace DamageMeter
             _bosses.Remove(boss);
             boss.Dispose();
         }
+
+        public void RemoveAll()
+        {
+            foreach (var boss in _bosses)
+            {
+                _bosses.Remove(boss);
+                boss.Dispose();
+            }
+        }
     }
 
     public class BuffDuration : TSPropertyChanged, IDisposable
