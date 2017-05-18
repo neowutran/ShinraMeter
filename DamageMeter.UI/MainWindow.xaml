@@ -199,7 +199,7 @@
         </Style>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush x:Name="BackgroundColor" Color="Transparent" Opacity="0" />
+        <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
     <Grid HorizontalAlignment="Left" MinWidth="265" Margin="7">
         <Grid.RowDefinitions>
@@ -212,7 +212,7 @@
                             ScaleX="{DynamicResource Scale}"
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
-        <Border Background="#202026" Grid.RowSpan="3" BorderBrush="#303037" BorderThickness="1" Opacity=".85">
+        <Border Background="#202026" Grid.RowSpan="3" BorderBrush="#303037" BorderThickness="1" x:Name="BackgroundColor">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity=".6"></DropShadowEffect>
             </Border.Effect>
