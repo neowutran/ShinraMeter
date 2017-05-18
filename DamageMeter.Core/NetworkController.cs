@@ -95,6 +95,7 @@ namespace DamageMeter
             TeraSniffer.Instance.Enabled = false;
             _keepAlive = false;
             Thread.Sleep(500);
+            HudManager.Instance.CurrentBosses.Clear();
             Application.Exit();
         }
 
