@@ -15,6 +15,16 @@ namespace DamageMeter
     // Since it works with OpCodeNames not numeric OpCodes, it needs an OpCodeNamer
     public class PacketProcessingFactory
     {
+        public bool Paused = false;
+        private static readonly Dictionary<Type, Delegate> MessageToProcessingPaused = new Dictionary<Type, Delegate>
+        {
+            {typeof(S_GET_USER_LIST), new Action<S_GET_USER_LIST>(x => NetworkController.Instance.UserLogoTracker.SetUserList(x))},
+            {typeof(S_GET_USER_GUILD_LOGO), new Action<S_GET_USER_GUILD_LOGO>(x => NetworkController.Instance.UserLogoTracker.AddLogo(x))},
+            {typeof(C_CHECK_VERSION), Helpers.Contructor<Func<C_CHECK_VERSION, Processing.C_CHECK_VERSION>>()},
+            {typeof(S_LOAD_TOPO), new Action<S_LOAD_TOPO>(x => NotifyProcessor.Instance.Resume(x))},
+            {typeof(LoginServerMessage), Helpers.Contructor<Func<LoginServerMessage, S_LOGIN>>()}
+        };
+
         private static readonly Dictionary<Type, Delegate> MessageToProcessingInit = new Dictionary<Type, Delegate>
         {
             {typeof(S_GET_USER_LIST), new Action<S_GET_USER_LIST>(x => NetworkController.Instance.UserLogoTracker.SetUserList(x))},
@@ -69,6 +79,15 @@ namespace DamageMeter
             UpdatePlayerTracker();
             UpdateAbnormalityTracker();
             if (BasicTeraData.Instance.WindowData.EnableChat) { MessageToProcessingOptionnal.ToList().ForEach(x => MainProcessor[x.Key] = x.Value); }
+            Paused = false;
+        }
+
+        public void Pause()
+        {
+            MainProcessor.Clear();
+            MessageToProcessingPaused.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
+            UpdatePlayerTracker();
+            Paused = true;
         }
 
         public static void UpdateEntityTracker()

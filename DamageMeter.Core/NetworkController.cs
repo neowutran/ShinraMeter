@@ -35,7 +35,7 @@ namespace DamageMeter
 
         private static NetworkController _instance;
         private static readonly object _pasteLock = new object();
-        internal readonly AbnormalityStorage AbnormalityStorage;
+        internal AbnormalityStorage AbnormalityStorage;
 
         internal readonly List<Player> MeterPlayers = new List<Player>();
 
@@ -154,7 +154,7 @@ namespace DamageMeter
                         AbnormalityTracker.AbnormalityRemoved -= NotifyProcessor.Instance.AbnormalityNotifierRemoved;
                         HudManager.Instance.CurrentBosses.Clear();
                     }
-                    PacketProcessing.Update();
+                    if (!PacketProcessing.Paused) PacketProcessing.Update();
                 }
                 NotifyProcessor.Instance.AbnormalityNotifierMissing();
             }
@@ -165,7 +165,7 @@ namespace DamageMeter
 
             var entities = Database.Database.Instance.AllEntity();
             var filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
-            if (packetsWaiting > 1500 && filteredEntities.Count > 1)
+            if (packetsWaiting > 2500 && filteredEntities.Count > 1)
             {
                 Database.Database.Instance.DeleteAllWhenTimeBelow(Encounter);
                 entities = Database.Database.Instance.AllEntity();
@@ -322,10 +322,16 @@ namespace DamageMeter
                 Encounter = NewEncounter;
 
                 var packetsWaiting = TeraSniffer.Instance.Packets.Count;
-                if (packetsWaiting > 3000)
+                if (packetsWaiting > 5000)
                 {
-                    MessageBox.Show(LP.Your_computer_is_too_slow);
-                    Exit();
+                    //MessageBox.Show(LP.Your_computer_is_too_slow);
+                    //Exit();
+                    PacketProcessing.Pause();
+                    Database.Database.Instance.DeleteAll();
+                    AbnormalityStorage = new AbnormalityStorage();
+                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, AbnormalityStorage, DamageTracker.Instance.Update);
+                    HudManager.Instance.RemoveAll();
+                    TeraSniffer.Instance.Packets=new ConcurrentQueue<Message>();
                 }
 
                 if (_forceUiUpdate)
