@@ -185,6 +185,7 @@
       <DependentUpon>AbnormalityTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="HUD\Controls\Arc.cs" />
+    <Compile Include="HUD\Converters\TransparencyToMarginConverter.cs" />
     <Compile Include="HUD\Converters\BossHPbarColorConverter.cs" />
     <Compile Include="HUD\Controls\GenericGauge.xaml.cs">
       <DependentUpon>GenericGauge.xaml</DependentUpon>

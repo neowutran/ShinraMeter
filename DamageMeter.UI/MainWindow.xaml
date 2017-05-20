@@ -5,12 +5,14 @@
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:ui="clr-namespace:DamageMeter.UI"
                      xmlns:l="clr-namespace:Lang;assembly=Lang"
+                     xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
                      mc:Ignorable="d"
                      Title="Shinra Meter"
                      Loaded="MainWindow_OnLoaded"
                      Closed="MainWindow_OnClosed" >
 
     <Window.Resources>
+        <converters:TransparencyToMarginConverter x:Key="BoolToMargin" />
         <Style TargetType="{x:Type ToolTip}">
             <Setter Property="Background" Value="#8F000000" />
             <Setter Property="FontSize" Value="14" />
@@ -201,7 +203,7 @@
     <Window.Background>
         <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
-    <Grid HorizontalAlignment="Left" MinWidth="265" Margin="7">
+    <Grid HorizontalAlignment="Left" MinWidth="265" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
@@ -212,11 +214,7 @@
                             ScaleX="{DynamicResource Scale}"
                             ScaleY="{DynamicResource Scale}" />
         </Grid.LayoutTransform>
-        <Border Background="#202026" Grid.RowSpan="3" BorderBrush="#303037" BorderThickness="1" x:Name="BackgroundColor">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity=".6"></DropShadowEffect>
-            </Border.Effect>
-        </Border>
+        <Border Style="{StaticResource border}" Grid.RowSpan="3" x:Name="BackgroundColor"/>
         <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

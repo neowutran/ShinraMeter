@@ -32,7 +32,7 @@ namespace DamageMeter.UI
 
         public void UpdatePacketWaiting(int packetWaiting)
         {
-            PacketWaitingLabel.Content = $"{packetWaiting} /3000 {LP.SystemTray_before_crash}";
+            PacketWaitingLabel.Content = $"{packetWaiting} /5000 {LP.SystemTray_before_crash}";
             PacketWaitingProgressBar.Value = packetWaiting;
         }
 
