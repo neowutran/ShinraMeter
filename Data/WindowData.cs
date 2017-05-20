@@ -103,7 +103,7 @@ namespace Data
             ParseColor("trading_color", "TradingColor");
             ParseColor("emotes_color", "EmotesColor");
             ParseColor("private_channel_color", "PrivateChannelColor");
-
+            PopupNotificationLocation = ParseLocation(_xml.Root, "popup_notification_location");
             Location = ParseLocation(_xml.Root);
             ParseWindowStatus("boss_gage_window", "BossGageStatus");
             ParseWindowStatus("debuff_uptime_window", "DebuffsStatus");
@@ -118,6 +118,7 @@ namespace Data
 
         public int LFDelay { get; set; }
         public Point Location { get; set; }
+        public Point PopupNotificationLocation { get; set; }
         public WindowStatus BossGageStatus { get; set; }
         public WindowStatus DebuffsStatus { get; set; }
         public WindowStatus HistoryStatus { get; set; }
@@ -184,6 +185,7 @@ namespace Data
             ShowTimeLeft = false;
             DateInExcelPath = false;
             Location = new Point(0, 0);
+            PopupNotificationLocation = new Point(0,0);
             Language = "Auto";
             UILanguage = "Auto";
             MainWindowOpacity = 0.5;
@@ -295,10 +297,10 @@ namespace Data
             foreach (var server in privateS.Elements()) { PrivateDpsServers.Add(server.Value); }
         }
 
-        private Point ParseLocation(XElement root)
+        private Point ParseLocation(XElement root, string elementName = "location")
         {
             double x, y;
-            var location = root?.Element("location");
+            var location = root?.Element(elementName);
             if (location == null) { return new Point(); }
             var xElement = location.Element("x");
             var yElement = location.Element("y");
@@ -353,6 +355,9 @@ namespace Data
             xml.Root.Add(new XElement("location"));
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("popup_notification_location"));
+            xml.Root.Element("popup_notification_location").Add(new XElement("x", PopupNotificationLocation.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("popup_notification_location").Add(new XElement("y", PopupNotificationLocation.Y.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("boss_gage_window", new XAttribute("visible", BossGageStatus.Visible)));
             xml.Root.Element("boss_gage_window").Add(new XElement("location"));
             xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("x", BossGageStatus.Location.X.ToString(CultureInfo.InvariantCulture)));

@@ -79,22 +79,6 @@ namespace DamageMeter.UI
             ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
-
-        public void ShowBallon(NotifyFlashMessage flash)
-        {
-            if (flash == null) { return; }
-
-            Tray.HideBalloonTip();
-            if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
-            {
-                var balloon = new Balloon();
-                balloon.Value(flash.Balloon.TitleText, flash.Balloon.BodyText);
-                Tray.ShowCustomBalloon(balloon, PopupAnimation.Fade, flash.Balloon.DisplayTime);
-            }
-
-            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null) { Task.Run(() => flash.Sound.Play()); }
-        }
-
         private void ResetAction(object sender, RoutedEventArgs e)
         {
             NetworkController.Instance.NeedToReset = true;

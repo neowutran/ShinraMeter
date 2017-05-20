@@ -38,6 +38,7 @@ namespace DamageMeter.UI
         private readonly BossGageWindow _bossGageBar;
         private readonly DispatcherTimer _dispatcherTimer;
         private readonly EntityStatsMain _entityStats;
+        private readonly PopupNotification _popupNotification;
 
         private readonly TeradpsHistory _windowHistory;
         internal Chatbox _chatbox;
@@ -86,6 +87,7 @@ namespace DamageMeter.UI
             Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
             _entityStats = new EntityStatsMain();
             _bossGageBar = new BossGageWindow();
+            _popupNotification = new PopupNotification();
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
 
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
@@ -117,6 +119,7 @@ namespace DamageMeter.UI
             WindowsServices.SetWindowExTransparent(hwnd);
             foreach (var players in Controls) { players.Value.SetClickThrou(); }
             _entityStats.SetClickThrou();
+            _popupNotification.SetClickThrou();
             _bossGageBar.SetClickThrou();
             NotifyIcon.ClickThrou.IsChecked = true;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStatsClickThrou.Source;
@@ -129,6 +132,7 @@ namespace DamageMeter.UI
             foreach (var players in Controls) { players.Value.UnsetClickThrou(); }
             _entityStats.UnsetClickThrou();
             _bossGageBar.UnsetClickThrou();
+            _popupNotification.UnsetClickThrou();
             NotifyIcon.ClickThrou.IsChecked = false;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
@@ -138,16 +142,15 @@ namespace DamageMeter.UI
         {
             SetForegroundWindow(new WindowInteropHelper(this).Handle);
             if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application, LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                BasicTeraData.Instance.WindowData.BossGageStatus =
-                    new WindowStatus(new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visibility == Visibility.Visible);
-                BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(new Point(_windowHistory.Left, _windowHistory.Top),
-                    _windowHistory.Visibility == Visibility.Visible);
-                BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(new Point(_entityStats.Left, _entityStats.Top),
-                    _entityStats.Visibility == Visibility.Visible);
-                Close();
-            }
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) { return; }
+            BasicTeraData.Instance.WindowData.BossGageStatus =
+                new WindowStatus(new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visibility == Visibility.Visible);
+            BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(new Point(_windowHistory.Left, _windowHistory.Top),
+                _windowHistory.Visibility == Visibility.Visible);
+            BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(new Point(_entityStats.Left, _entityStats.Top),
+                _entityStats.Visibility == Visibility.Visible);
+            BasicTeraData.Instance.WindowData.PopupNotificationLocation = new Point(_popupNotification.Left, _popupNotification.Top);
+            Close();
         }
 
         public void Exit()
@@ -219,8 +222,7 @@ namespace DamageMeter.UI
                 _entityStats.Update(statsSummary.EntityInformation, abnormals);
                 _windowHistory.Update(bossHistory);
                 _chatbox?.Update(chatbox);
-
-                NotifyIcon.ShowBallon(flash);
+                _popupNotification.AddNotification(flash);
                 NotifyIcon.UpdatePacketWaiting(packetWaiting);
 
                 PartyDps.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
@@ -406,6 +408,8 @@ namespace DamageMeter.UI
             {
                 Top = BasicTeraData.Instance.WindowData.Location.Y;
                 Left = BasicTeraData.Instance.WindowData.Location.X;
+                _popupNotification.Top = BasicTeraData.Instance.WindowData.PopupNotificationLocation.Y;
+                _popupNotification.Left = BasicTeraData.Instance.WindowData.PopupNotificationLocation.X;
                 if (BasicTeraData.Instance.WindowData.DebuffsStatus.Location != new Point(0, 0))
                 {
                     _entityStats.Top = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.Y;
