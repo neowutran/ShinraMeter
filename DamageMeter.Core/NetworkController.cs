@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using DamageMeter.Database.Structures;
 using DamageMeter.Processing;
@@ -324,14 +325,13 @@ namespace DamageMeter
                 var packetsWaiting = TeraSniffer.Instance.Packets.Count;
                 if (packetsWaiting > 5000)
                 {
-                    //MessageBox.Show(LP.Your_computer_is_too_slow);
-                    //Exit();
                     PacketProcessing.Pause();
                     Database.Database.Instance.DeleteAll();
                     AbnormalityStorage = new AbnormalityStorage();
                     AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, AbnormalityStorage, DamageTracker.Instance.Update);
                     HudManager.Instance.RemoveAll();
                     TeraSniffer.Instance.Packets=new ConcurrentQueue<Message>();
+                    Task.Run(()=>MessageBox.Show(LP.Your_computer_is_too_slow));
                 }
 
                 if (_forceUiUpdate)

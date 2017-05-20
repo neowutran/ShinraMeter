@@ -506,7 +506,7 @@
                                     <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
                                 <Label Foreground="White" Grid.Row="0" Name="PacketWaitingLabel" />
-                                <ProgressBar Grid.Row="1" Name="PacketWaitingProgressBar" Minimum="0" Maximum="3000"
+                                <ProgressBar Grid.Row="1" Name="PacketWaitingProgressBar" Minimum="0" Maximum="5000"
                                              Value="0" />
                             </Grid>
                         </TabItem.Content>

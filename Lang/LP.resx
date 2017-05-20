@@ -274,7 +274,7 @@
     <value>Common</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Shutting down now.</value>
+    <value>Your computer is too slow to use this DPS meter. Can't analyse all those packet in decent amount of time. Reset and paused until map change or relog.</value>
   </data>
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
     <value>Your hotkeys.xml file is invalid.</value>

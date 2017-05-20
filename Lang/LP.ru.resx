@@ -274,7 +274,9 @@
     <value>Общее</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>Ваш компьютер слишком медленный для этого дпсметра, не успеваю анализировать пакеты с достаточной скоростью.</value>
+    <value>Ваш компьютер слишком медленный для этого дпсметра, не успеваю анализировать пакеты с достаточной скоростью.
+
+Сброс и приостановка сбора статистики до перехода на другую карту или релога.</value>
   </data>
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
     <value>Файл hotkeys.xml некоректен.</value>
