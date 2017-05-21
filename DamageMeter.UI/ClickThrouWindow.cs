@@ -27,6 +27,7 @@ namespace DamageMeter.UI
             }
         }
 
+        public bool DontClose = false;
         public ClickThrouWindow()
         {
             AllowsTransparency = BasicTeraData.Instance.WindowData.AllowTransparency;
@@ -67,8 +68,17 @@ namespace DamageMeter.UI
 
         protected void ClickThrouWindow_Closing(object sender, CancelEventArgs e)
         {
+            if (DontClose) {
+                e.Cancel = true;
+                if (Visibility==Visibility.Visible) HideWindow();
+                return;
+            }
             Closing -= ClickThrouWindow_Closing;
-            foreach (ClickThrouWindow window in ((ClickThrouWindow) sender).OwnedWindows) { window.Close(); }
+            foreach (ClickThrouWindow window in ((ClickThrouWindow) sender).OwnedWindows)
+            {
+                window.DontClose = false;
+                window.Close();
+            }
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
                 Dispatcher.BeginInvoke(new Action(() =>

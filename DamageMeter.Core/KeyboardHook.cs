@@ -35,7 +35,7 @@ namespace DamageMeter
                 Register();
                 return true;
             }
-            if (!value && _isRegistered) { ClearHotkeys(); }
+            if (!value && _isRegistered) { ClearHotkeys(); return true; }
             return false;
         }
 

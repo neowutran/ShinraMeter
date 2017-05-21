@@ -87,10 +87,10 @@ namespace DamageMeter.UI
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
             Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
-            _entityStats = new EntityStatsMain(){ Scale = BasicTeraData.Instance.WindowData.DebuffsStatus.Scale };
-            _bossGageBar = new BossGageWindow() { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale };
-            _popupNotification = new PopupNotification();
-            _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>()) { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale };
+            _entityStats = new EntityStatsMain(){ Scale = BasicTeraData.Instance.WindowData.DebuffsStatus.Scale, DontClose = true};
+            _bossGageBar = new BossGageWindow() { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale, DontClose = true };
+            _popupNotification = new PopupNotification() { DontClose = true };
+            _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>()) { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale, DontClose = true };
 
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             NotifyIcon.Initialize(this);
