@@ -52,11 +52,8 @@ namespace DamageMeter
 
         public void RemoveAll()
         {
-            foreach (var boss in _bosses)
-            {
-                _bosses.Remove(boss);
-                boss.Dispose();
-            }
+            foreach (var boss in _bosses) boss.Dispose();
+            _bosses.Clear();
         }
     }
 
