@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using Data;
 using Data.Actions.Notify;
 
@@ -31,19 +33,26 @@ namespace DamageMeter.UI
 
         private async void Display (int displayTime)
         {
-            Visibility = Visibility.Visible;
+            ShowWindow();
             _stupidNotSafeLock++;
             await Task.Delay(displayTime);
             _stupidNotSafeLock--;
-            if (_stupidNotSafeLock == 0) { Visibility = Visibility.Hidden; }
+            if (_stupidNotSafeLock == 0) { HideWindow(); }
         }
 
 
 
         private void Value(string title, string text)
         {
-            Title.Content = title;
+            TitleLabel.Content = title;
             TextBlock.Text = text;
+        }
+
+        private void MoveWindow(object sender, MouseButtonEventArgs e)
+        {
+            var w = Window.GetWindow(this);
+            try { w?.DragMove(); }
+            catch { Debug.WriteLine(@"Exception move"); }
         }
     }
 }

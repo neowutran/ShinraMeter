@@ -487,6 +487,7 @@ namespace DamageMeter.Processing
         internal void Resume(S_LOAD_TOPO sLoadTopo)
         {
             NetworkController.Instance.PacketProcessing.Update();
+            NetworkController.Instance.RaisePause(false);
             NetworkController.Instance.PacketProcessing.Process(sLoadTopo);
         }
     }

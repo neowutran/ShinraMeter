@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
@@ -66,6 +67,7 @@ namespace DamageMeter.UI
             NetworkController.Instance.SetClickThrouAction += SetClickThrou;
             NetworkController.Instance.UnsetClickThrouAction += UnsetClickThrou;
             NetworkController.Instance.GuildIconAction += InstanceOnGuildIconAction;
+            NetworkController.Instance.PauseAction += PauseState;
             _dispatcherTimer = new DispatcherTimer();
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -85,10 +87,10 @@ namespace DamageMeter.UI
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
             Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
-            _entityStats = new EntityStatsMain();
-            _bossGageBar = new BossGageWindow();
+            _entityStats = new EntityStatsMain(){ Scale = BasicTeraData.Instance.WindowData.DebuffsStatus.Scale };
+            _bossGageBar = new BossGageWindow() { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale };
             _popupNotification = new PopupNotification();
-            _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>());
+            _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>()) { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale };
 
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             NotifyIcon.Initialize(this);
@@ -144,11 +146,11 @@ namespace DamageMeter.UI
             if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application, LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
                     MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) { return; }
             BasicTeraData.Instance.WindowData.BossGageStatus =
-                new WindowStatus(new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visibility == Visibility.Visible);
+                new WindowStatus(new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visibility == Visibility.Visible, _bossGageBar.Scale);
             BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(new Point(_windowHistory.Left, _windowHistory.Top),
-                _windowHistory.Visibility == Visibility.Visible);
+                _windowHistory.Visibility == Visibility.Visible, _windowHistory.Scale);
             BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(new Point(_entityStats.Left, _entityStats.Top),
-                _entityStats.Visibility == Visibility.Visible);
+                _entityStats.Visibility == Visibility.Visible, _entityStats.Scale);
             BasicTeraData.Instance.WindowData.PopupNotificationLocation = new Point(_popupNotification.Left, _popupNotification.Top);
             Close();
         }
@@ -508,6 +510,23 @@ namespace DamageMeter.UI
         {
             e.Handled = true;
             _bossGageBar.ShowWindow();
+        }
+
+        public void PauseState(bool pause)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (pause)
+                {
+                    BackgroundColor.Background = Brushes.DarkRed;
+                    TooSlow.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    BackgroundColor.Background = (SolidColorBrush) App.Current.FindResource("bgColorMain");
+                    TooSlow.Visibility = Visibility.Collapsed;
+                }
+            });
         }
 
         private delegate void ChangeTitle(string servername);

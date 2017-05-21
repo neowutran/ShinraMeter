@@ -273,7 +273,8 @@
     <value>Commun</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>Votre ordinateur est trop lent pour utiliser ce DPS Meter. Vous ne pouvez pas analyser tous les paquets assez rapidement. Arrêt immédiat de l'application.</value>
+    <value>Votre ordinateur est trop lent pour utiliser ce DPS Meter.
+Vous ne pouvez pas analyser tous les paquets assez rapidement.</value>
   </data>
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
     <value>Votre fichier hotkeys.xml est invalide.</value>

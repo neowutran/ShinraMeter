@@ -1897,7 +1897,9 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your computer is too slow to use this DPS meter. Can&apos;t analyse all those packet in decent amount of time. Reset and paused until map change or relog..
+        ///   Looks up a localized string similar to Your computer is too slow to use this DPS meter.
+        ///Can&apos;t analyse all those packet in decent amount of time. 
+        ///Reset and paused until map change or relog..
         /// </summary>
         public static string Your_computer_is_too_slow {
             get {

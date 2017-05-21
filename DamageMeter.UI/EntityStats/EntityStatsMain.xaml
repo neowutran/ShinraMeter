@@ -6,9 +6,6 @@
                      xmlns:ui="clr-namespace:DamageMeter.UI"
                      mc:Ignorable="d"
                      Title="EntityStats">
-    <Window.Background>
-        <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
-    </Window.Background>
     <Window.Resources>
         <Style TargetType="{x:Type ToolTip}">
             <Setter Property="Background" Value="#8F000000" />
@@ -46,16 +43,20 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid MouseLeftButtonDown="Move">
+    <Window.Background>
+        <SolidColorBrush Color="Transparent" Opacity="0" />
+    </Window.Background>
+    <Grid MouseLeftButtonDown="Move" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
-                            ScaleX="{DynamicResource Scale}"
-                            ScaleY="{DynamicResource Scale}" />
+                            ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
+                            ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
+        <Border Style="{StaticResource border}" Grid.RowSpan="2"/>
         <Button Grid.Row="0" x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Black"
                 Opacity="0.5"
                 Foreground="White" Click="CloseStats_OnClick" HorizontalContentAlignment="Stretch"

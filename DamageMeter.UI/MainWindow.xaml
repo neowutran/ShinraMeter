@@ -208,13 +208,14 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
-                            ScaleX="{DynamicResource Scale}"
-                            ScaleY="{DynamicResource Scale}" />
+                            ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
+                            ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource border}" Grid.RowSpan="3" x:Name="BackgroundColor"/>
+        <Border Style="{StaticResource border}" Grid.RowSpan="4" x:Name="BackgroundColor" Background="{StaticResource bgColorMain}"/>
         <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -320,7 +321,9 @@
                           IsTextSearchEnabled="False"
                           HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" />
         </ScrollViewer>
-
+        <TextBlock  Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center" Name="TooSlow" 
+                   Background="Transparent" Foreground="Yellow" Text="{x:Static l:LP.Your_computer_is_too_slow}"
+                   Visibility="Collapsed"/>
         <ui:NotifyIcon x:Name="NotifyIcon" />
 
     </Grid>

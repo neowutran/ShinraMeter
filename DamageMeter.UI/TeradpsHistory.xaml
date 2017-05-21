@@ -7,7 +7,7 @@
                      mc:Ignorable="d"
                      Title="TeradpsHistory">
     <Window.Background>
-        <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
+        <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
     <Window.Resources>
         <Style TargetType="{x:Type ToolTip}">
@@ -46,25 +46,29 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid MouseLeftButtonDown="Move">
+    <Grid MouseLeftButtonDown="Move" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
-                            ScaleX="{DynamicResource Scale}"
-                            ScaleY="{DynamicResource Scale}" />
+                            ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
+                            ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Border Style="{StaticResource border}" Grid.RowSpan="2"/>
+        <Button Grid.Row="0" x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Transparent"
+                Opacity="0.5"
+                Foreground="White" Click="Close_OnClick" HorizontalContentAlignment="Stretch"
+                VerticalAlignment="Top" Margin="0">
+            <Image x:Name="CloseWindow"
+                   Stretch="Fill"
+                   HorizontalAlignment="Left"
+                   Height="29" VerticalAlignment="Top" Width="29" />
+        </Button>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <Grid>
-                <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Transparent"
-                        Opacity="0.5"
-                        Foreground="White" Click="Close_OnClick" HorizontalContentAlignment="Stretch"
-                        VerticalAlignment="Top" Margin="0">
-                    <Image x:Name="CloseWindow"
-                           Stretch="Fill"
-                           HorizontalAlignment="Left"
-                           Height="29" VerticalAlignment="Top" Width="29" />
-                </Button>
-
-                <ItemsControl Margin="0,29,0,0" Name="TeraDpsHistory" Background="Transparent" BorderThickness="0"
+                <ItemsControl Name="TeraDpsHistory" Background="Transparent" BorderThickness="0"
                               Focusable="False"
                               HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False"
                               HorizontalAlignment="Left" />

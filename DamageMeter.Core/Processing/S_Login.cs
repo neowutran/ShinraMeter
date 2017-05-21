@@ -59,6 +59,7 @@ namespace DamageMeter.Processing
             NetworkController.Instance.EntityTracker.Update(message);
             BasicTeraData.Instance.EventsData.Load(NetworkController.Instance.EntityTracker.MeterUser.RaceGenderClass.Class);
             NetworkController.Instance.PacketProcessing.Update();
+            NetworkController.Instance.RaisePause(false);
             var me = NetworkController.Instance.PlayerTracker.Me();
             if (!NetworkController.Instance.MeterPlayers.Contains(me)) { NetworkController.Instance.MeterPlayers.Add(me); }
         }

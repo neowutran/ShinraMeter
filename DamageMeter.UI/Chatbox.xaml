@@ -8,9 +8,6 @@
                      Height="800"
                      ResizeMode="CanResizeWithGrip"
                      Title="Chatbox">
-    <Window.Background>
-        <SolidColorBrush x:Name="BackgroundColor" Color="Black" Opacity="0.7" />
-    </Window.Background>
     <Window.Resources>
         <Style TargetType="{x:Type ToolTip}">
             <Setter Property="Background" Value="#8F000000" />
@@ -48,17 +45,20 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Grid MouseLeftButtonDown="Move">
+    <Window.Background>
+        <SolidColorBrush Color="Transparent" Opacity="0" />
+    </Window.Background>
+    <Grid MouseLeftButtonDown="Move" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
-                            ScaleX="{DynamicResource Scale}"
-                            ScaleY="{DynamicResource Scale}" />
+                            ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
+                            ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-
+        <Border Style="{StaticResource border}" Grid.RowSpan="2"/>
         <Grid Grid.Row="0">
             <Button x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Transparent"
                     Opacity="0.5"

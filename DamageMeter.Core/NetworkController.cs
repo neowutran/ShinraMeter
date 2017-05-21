@@ -30,6 +30,7 @@ namespace DamageMeter
 
         public delegate void UnsetClickThrouEvent();
 
+        public delegate void PauseEvent(bool paused);
 
         public delegate void UpdateUiHandler(StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
             ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, NotifyFlashMessage flash);
@@ -85,6 +86,7 @@ namespace DamageMeter
         public event SetClickThrouEvent SetClickThrouAction;
         public event GuildIconEvent GuildIconAction;
         public event UnsetClickThrouEvent UnsetClickThrouAction;
+        public event PauseEvent PauseAction;
 
         public void Exit()
         {
@@ -102,7 +104,12 @@ namespace DamageMeter
 
         internal void RaiseConnected(string message)
         {
-            Connected(message);
+            Connected?.Invoke(message);
+        }
+
+        internal void RaisePause(bool pause)
+        {
+            PauseAction?.Invoke(pause);
         }
 
         public event ConnectedHandler Connected;
@@ -331,7 +338,7 @@ namespace DamageMeter
                     AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, AbnormalityStorage, DamageTracker.Instance.Update);
                     HudManager.Instance.RemoveAll();
                     TeraSniffer.Instance.Packets=new ConcurrentQueue<Message>();
-                    Task.Run(()=>MessageBox.Show(LP.Your_computer_is_too_slow));
+                    RaisePause(true);
                 }
 
                 if (_forceUiUpdate)

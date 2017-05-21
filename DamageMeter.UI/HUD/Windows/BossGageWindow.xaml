@@ -23,6 +23,11 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0" CenterY="0"
+                            ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
+                            ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
+        </Grid.LayoutTransform>
         <!--<Grid.CacheMode>
             <BitmapCache RenderAtScale="1"/>
         </Grid.CacheMode>-->

@@ -274,8 +274,8 @@
     <value>Общее</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>Ваш компьютер слишком медленный для этого дпсметра, не успеваю анализировать пакеты с достаточной скоростью.
-
+    <value>Ваш компьютер слишком медленный для этого дпсметра,
+не успеваю анализировать пакеты с достаточной скоростью.
 Сброс и приостановка сбора статистики до перехода на другую карту или релога.</value>
   </data>
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
@@ -309,19 +309,19 @@
     <value>Время смерти</value>
   </data>
   <data name="Death_Time_Tooltip" xml:space="preserve">
-    <value>"Время проведенное трупом"</value>
+    <value>Время проведенное трупом</value>
   </data>
   <data name="Aggro" xml:space="preserve">
     <value>Аггро</value>
   </data>
   <data name="Aggro_Tooltip" xml:space="preserve">
-    <value>Количество перехватов аггрессии</value>
+    <value>Количество перехватов агрессии</value>
   </data>
   <data name="Aggro_Time" xml:space="preserve">
     <value>Время аггро</value>
   </data>
   <data name="Aggro_Time_Tooltip" xml:space="preserve">
-    <value>"Время удержания агрессии босса"</value>
+    <value>Время удержания агрессии босса</value>
   </data>
   <data name="Dps" xml:space="preserve">
     <value>ДПС</value>

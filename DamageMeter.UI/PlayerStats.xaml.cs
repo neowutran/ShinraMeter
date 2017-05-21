@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -184,7 +185,7 @@ namespace DamageMeter.UI
         {
             var w = Window.GetWindow(this);
             try { w?.DragMove(); }
-            catch { Console.WriteLine(@"Exception move"); }
+            catch { Debug.WriteLine(@"Exception move"); }
         }
     }
 }

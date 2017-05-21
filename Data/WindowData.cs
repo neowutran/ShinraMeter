@@ -14,11 +14,13 @@ namespace Data
     {
         public Point Location;
         public bool Visible;
+        public double Scale;
 
-        public WindowStatus(Point p, bool v)
+        public WindowStatus(Point p, bool v, double s)
         {
             Location = p;
             Visible = v;
+            Scale = s;
         }
     }
 
@@ -237,9 +239,9 @@ namespace Data
             MuteSound = false;
             IdleResetTimeout = 0;
             NoPaste = false;
-            BossGageStatus = new WindowStatus(new Point(0, 0), true);
-            HistoryStatus = new WindowStatus(new Point(0, 0), false);
-            DebuffsStatus = new WindowStatus(new Point(0, 0), false);
+            BossGageStatus = new WindowStatus(new Point(0, 0), true, 1);
+            HistoryStatus = new WindowStatus(new Point(0, 0), false, 1);
+            DebuffsStatus = new WindowStatus(new Point(0, 0), false, 1);
         }
 
         private void ParseWindowStatus(string xmlName, string settingName)
@@ -250,10 +252,12 @@ namespace Data
             var setting = GetType().GetProperty(settingName);
             var currentSetting = (WindowStatus) setting.GetValue(this);
             var location = ParseLocation(xml);
-            bool value;
+
             var xmlVisible = xml.Attribute("visible");
-            var parseSuccess = bool.TryParse(xmlVisible?.Value ?? "false", out value);
-            setting.SetValue(this, new WindowStatus(location, parseSuccess ? value : currentSetting.Visible));
+            var visibleSuccess = bool.TryParse(xmlVisible?.Value ?? "false", out bool visible);
+            var xmlScale = xml.Attribute("scale");
+            var scaleSuccess = double.TryParse(xmlScale?.Value ?? "0" , NumberStyles.Float, CultureInfo.InvariantCulture, out double scale);
+            setting.SetValue(this, new WindowStatus(location, visibleSuccess ? visible : currentSetting.Visible, scaleSuccess ? scale>0 ? scale : Scale : Scale));
         }
 
         private void ParseColor(string xmlName, string settingName)
@@ -355,18 +359,19 @@ namespace Data
             xml.Root.Add(new XElement("location"));
             xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("popup_notification_location"));
             xml.Root.Element("popup_notification_location").Add(new XElement("x", PopupNotificationLocation.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("popup_notification_location").Add(new XElement("y", PopupNotificationLocation.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("boss_gage_window", new XAttribute("visible", BossGageStatus.Visible)));
+            xml.Root.Add(new XElement("boss_gage_window", new XAttribute("visible", BossGageStatus.Visible), new XAttribute("scale", BossGageStatus.Scale)));
             xml.Root.Element("boss_gage_window").Add(new XElement("location"));
             xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("x", BossGageStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("y", BossGageStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("debuff_uptime_window", new XAttribute("visible", DebuffsStatus.Visible)));
+            xml.Root.Add(new XElement("debuff_uptime_window", new XAttribute("visible", DebuffsStatus.Visible), new XAttribute("scale", DebuffsStatus.Scale)));
             xml.Root.Element("debuff_uptime_window").Add(new XElement("location"));
             xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("x", DebuffsStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("y", DebuffsStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("upload_history_window", new XAttribute("visible", HistoryStatus.Visible)));
+            xml.Root.Add(new XElement("upload_history_window", new XAttribute("visible", HistoryStatus.Visible), new XAttribute("scale", HistoryStatus.Scale)));
             xml.Root.Element("upload_history_window").Add(new XElement("location"));
             xml.Root.Element("upload_history_window").Element("location").Add(new XElement("x", HistoryStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Element("upload_history_window").Element("location").Add(new XElement("y", HistoryStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
@@ -387,7 +392,6 @@ namespace Data
             xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
             xml.Root.Add(new XElement("excel_cma_dps_seconds", ExcelCMADPSSeconds));
             xml.Root.Add(new XElement("always_visible", AlwaysVisible));
-            xml.Root.Add(new XElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("lf_delay", LFDelay));
             xml.Root.Add(new XElement("partyonly", PartyOnly));
             xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));

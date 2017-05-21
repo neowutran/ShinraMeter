@@ -6,13 +6,26 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using Data;
+using System.Windows.Threading;
 
 namespace DamageMeter.UI
 {
-    public class ClickThrouWindow : Window
+    public class ClickThrouWindow : Window, INotifyPropertyChanged
     {
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_NOACTIVATE = 0x08000000;
+
+        private double _scale=1;
+
+        private Dispatcher _dispatcher;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public double Scale { get => _scale;
+            set { if (value == _scale) return;
+                    _scale = value;
+                _dispatcher.InvokeIfRequired(()=>PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scale")),DispatcherPriority.DataBind);
+            }
+        }
 
         public ClickThrouWindow()
         {
@@ -30,6 +43,8 @@ namespace DamageMeter.UI
             ShowActivated = false;
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
+            _dispatcher = Dispatcher.CurrentDispatcher;
+            Scale = BasicTeraData.Instance.WindowData.Scale;
         }
 
         public void SetClickThrou()

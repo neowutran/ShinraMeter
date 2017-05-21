@@ -31,7 +31,6 @@ namespace DamageMeter.UI
             InitializeComponent();
             _parent = parent;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
-            BackgroundColor.Opacity = BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Update(playerDamageDealt, entityInformation, skills, buffs, timedEncounter);
         }
 

@@ -274,7 +274,8 @@
     <value>공통</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>미터기를 사용하기엔 당신의 컴퓨터가 너무 느립니다. 모든 패킷을 분석하는데 상당한 시간이 필요하여 강제 종료합니다.</value>
+    <value>미터기를 사용하기엔 당신의 컴퓨터가 너무 느립니다. 
+모든 패킷을 분석하는데 상당한 시간이 필요하여 강제 종료합니다.</value>
   </data>
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
     <value>hotkeys.xml 파일이 잘못 되었습니다.</value>
