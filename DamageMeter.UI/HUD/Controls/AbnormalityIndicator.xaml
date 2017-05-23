@@ -41,7 +41,7 @@
         <Ellipse Name="bgEll" Fill="{Binding Buff.AbType, Converter={StaticResource strokeConv}}" />
         <Ellipse Name="abnormalityIcon" Margin="0,0" Width="64" Height="64">
             <Ellipse.Fill>
-                <ImageBrush ImageSource="{Binding Buff.IconName, Converter={StaticResource iconConv}}" />
+                <ImageBrush ImageSource="{Binding Buff.EffectIcon, Converter={StaticResource iconConv}}" />
             </Ellipse.Fill>
         </Ellipse>
         <hud:Arc x:Name="arc" Stroke="#8000" StrokeThickness="15" EndAngle="0" Width="0" Height="0" />
