@@ -676,4 +676,7 @@ Reset and paused until map change or relog.</value>
   <data name="NoPaste" xml:space="preserve">
     <value>Disable ingame chat paste</value>
   </data>
+  <data name="NoAbnormalsInHUD" xml:space="preserve">
+    <value>Disable abnormality icons under HP bar</value>
+  </data>
 </root>

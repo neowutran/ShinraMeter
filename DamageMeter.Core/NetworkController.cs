@@ -98,7 +98,7 @@ namespace DamageMeter
             TeraSniffer.Instance.Enabled = false;
             _keepAlive = false;
             Thread.Sleep(500);
-            HudManager.Instance.RemoveAll();
+            HudManager.Instance.CurrentBosses.DisposeAll();
             Application.Exit();
         }
 
@@ -336,7 +336,7 @@ namespace DamageMeter
                     Database.Database.Instance.DeleteAll();
                     AbnormalityStorage = new AbnormalityStorage();
                     AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, AbnormalityStorage, DamageTracker.Instance.Update);
-                    HudManager.Instance.RemoveAll();
+                    HudManager.Instance.CurrentBosses.DisposeAll();
                     TeraSniffer.Instance.Packets=new ConcurrentQueue<Message>();
                     RaisePause(true);
                 }

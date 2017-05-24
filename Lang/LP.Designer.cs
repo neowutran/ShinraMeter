@@ -1182,6 +1182,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable abnormality icons under HP bar.
+        /// </summary>
+        public static string NoAbnormalsInHUD {
+            get {
+                return ResourceManager.GetString("NoAbnormalsInHUD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CrystalBind missing.
         /// </summary>
         public static string NoCrystalBind {

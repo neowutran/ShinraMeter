@@ -24,7 +24,7 @@
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource border}" Grid.RowSpan="3" Background="{StaticResource bgColorMain}"/>
+        <Border Style="{StaticResource border}" Grid.RowSpan="3"/>
         <Label Name="TitleLabel" Margin="5" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="0" FontSize="24" Foreground="Red"
                Background="Transparent" />

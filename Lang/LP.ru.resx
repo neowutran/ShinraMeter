@@ -664,4 +664,7 @@
   <data name="NoPaste" xml:space="preserve">
     <value>Отключить вставку в игровой чат</value>
   </data>
+  <data name="NoAbnormalsInHUD" xml:space="preserve">
+    <value>Отключить иконки под полоской HP</value>
+  </data>
 </root>

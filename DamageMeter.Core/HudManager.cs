@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using System.Windows;
+using Data;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
@@ -48,12 +49,6 @@ namespace DamageMeter
             if (boss == null) { return; }
             _bosses.Remove(boss);
             boss.Dispose();
-        }
-
-        public void RemoveAll()
-        {
-            foreach (var boss in _bosses) boss.Dispose();
-            _bosses.Clear();
         }
     }
 
@@ -240,7 +235,7 @@ namespace DamageMeter
 
         public void Dispose()
         {
-            foreach (var buff in _buffs) { buff.Dispose(); }
+            _buffs.DisposeAll();
         }
 
         public void AddOrRefresh(Abnormality abnormality)
@@ -250,6 +245,7 @@ namespace DamageMeter
                 Enraged = true;
                 return;
             }
+            if (BasicTeraData.Instance.WindowData.NoAbnormalsInHUD) return;
             var existing = Buffs.FirstOrDefault(x => x.Buff.Id == abnormality.HotDot.Id);
             if (existing == null)
             {

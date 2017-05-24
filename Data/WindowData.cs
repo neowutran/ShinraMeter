@@ -95,6 +95,7 @@ namespace Data
             Parse("mute_sound", "MuteSound");
             Parse("idle_reset_timeout", "IdleResetTimeout");
             Parse("no_paste", "NoPaste");
+            Parse("no_abnormals_in_hud", "NoAbnormalsInHUD");
             ParseColor("say_color", "SayColor");
             ParseColor("alliance_color", "AllianceColor");
             ParseColor("area_color", "AreaColor");
@@ -181,6 +182,7 @@ namespace Data
         public int IdleResetTimeout { get; set; }
         public bool DateInExcelPath { get; set; }
         public bool ShowTimeLeft { get; set; }
+        public bool NoAbnormalsInHUD { get; set; }
 
         private void DefaultValue()
         {
@@ -239,6 +241,7 @@ namespace Data
             MuteSound = false;
             IdleResetTimeout = 0;
             NoPaste = false;
+            NoAbnormalsInHUD = false;
             BossGageStatus = new WindowStatus(new Point(0, 0), true, 1);
             HistoryStatus = new WindowStatus(new Point(0, 0), false, 1);
             DebuffsStatus = new WindowStatus(new Point(0, 0), false, 1);
@@ -421,6 +424,7 @@ namespace Data
             xml.Root.Add(new XElement("show_afk_events_ingame", ShowAfkEventsIngame));
             xml.Root.Add(new XElement("idle_reset_timeout", IdleResetTimeout));
             xml.Root.Add(new XElement("no_paste", NoPaste));
+            xml.Root.Add(new XElement("no_abnormals_in_hud", NoAbnormalsInHUD));
 
             xml.Root.Add(new XElement("teradps.io"));
             xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));

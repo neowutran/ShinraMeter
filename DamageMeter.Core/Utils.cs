@@ -93,6 +93,20 @@ namespace DamageMeter
             }, DispatcherPriority.DataBind);
         }
 
+        public void DisposeAll() //No checks, use only if all items are disposable
+        {
+            _dispatcher.InvokeIfRequired(() =>
+            {
+                _lock.EnterWriteLock();
+                try
+                {
+                    foreach (IDisposable x1 in base.Items) { x1.Dispose(); }
+                    base.ClearItems();
+                }
+                finally { _lock.ExitWriteLock(); }
+            }, DispatcherPriority.DataBind);
+        }
+
         public T[] ToSyncArray()
         {
             _lock.EnterReadLock();

@@ -75,6 +75,7 @@ namespace DamageMeter.UI
             ShowSelfOnTop.IsChecked = BasicTeraData.Instance.WindowData.MeterUserOnTop;
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             NoPaste.IsChecked = BasicTeraData.Instance.WindowData.NoPaste;
+            NoAbnormalsInHUD.IsChecked = BasicTeraData.Instance.WindowData.NoAbnormalsInHUD;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
@@ -342,6 +343,7 @@ namespace DamageMeter.UI
             CopyInspect.Height = show ? double.NaN : 0;
             MuteSound.Height = show ? double.NaN : 0;
             PartyEvent.Height = show ? double.NaN : 0;
+            NoAbnormalsInHUD.Height = show ? double.NaN : 0;
             ShowAfkIventsIngame.Height = show ? double.NaN : 0;
             WhisperColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
             AllianceColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
@@ -502,5 +504,16 @@ namespace DamageMeter.UI
         private void NoPaste_OnUnchecked(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoPaste=false; }
 
         private void NoPaste_OnChecked(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoPaste = true; }
+
+        private void EnableNoAbnormalsInHUD(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.NoAbnormalsInHUD = true;
+            foreach (var boss in HudManager.Instance.CurrentBosses)
+            {
+                boss.Buffs.DisposeAll();
+            }
+        }
+
+        private void DisableNoAbnormalsInHUD(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoAbnormalsInHUD = false; }
     }
 }

@@ -523,7 +523,7 @@ namespace DamageMeter.UI
                 }
                 else
                 {
-                    BackgroundColor.Background = (SolidColorBrush) App.Current.FindResource("bgColorMain");
+                    BackgroundColor.Background = (SolidColorBrush) App.Current.FindResource("bgColor");
                     TooSlow.Visibility = Visibility.Collapsed;
                 }
             });
