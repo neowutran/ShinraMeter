@@ -18,7 +18,7 @@ namespace DamageMeter.AutoUpdate
     {
         private static Dictionary<string, string> _hashes;
         private static Dictionary<string, string> _latest;
-        public static string Version = "1.97";
+        public static string Version = "1.98";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -58,6 +58,7 @@ namespace DamageMeter.AutoUpdate
 
         private static bool GetDiff(KeyValuePair<string, string> file)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             using (var client = new WebClient())
             {
                 var compressed = client.OpenRead(new Uri("https://neowutran.ovh/updates/ShinraMeterV/" + file.Key + ".zip"));

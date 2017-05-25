@@ -338,6 +338,7 @@ namespace DamageMeter
                     AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, AbnormalityStorage, DamageTracker.Instance.Update);
                     HudManager.Instance.CurrentBosses.DisposeAll();
                     TeraSniffer.Instance.Packets=new ConcurrentQueue<Message>();
+                    NotifyProcessor.Instance.S_LOAD_TOPO(null);
                     RaisePause(true);
                 }
 

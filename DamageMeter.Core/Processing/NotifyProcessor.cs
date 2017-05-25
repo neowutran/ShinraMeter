@@ -12,6 +12,7 @@ using Lang;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
+using Action = Data.Actions.Action;
 
 namespace DamageMeter.Processing
 {
@@ -442,7 +443,7 @@ namespace DamageMeter.Processing
             _lastBosses = new Dictionary<EntityId, long>();
             _lastBossMeterUser = null;
             _lastBossHpMeterUser = 0;
-            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys) { e.NextChecks = new Dictionary<EntityId, DateTime>(); }
+            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities?.Keys ?? new Dictionary<Event, List<Action>>().Keys ) { e.NextChecks = new Dictionary<EntityId, DateTime>(); }
         }
 
         internal void SpawnUser(SpawnUserServerMessage message)

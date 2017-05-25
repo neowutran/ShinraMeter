@@ -46,6 +46,7 @@ namespace DamageMeter.UI
         private bool _keyboardInitialized;
         private double _oldWidth;
         private bool _topMost = true;
+        private bool _paused = false;
 
         internal bool ForceWindowVisibilityHidden;
         //private readonly SystemTray _systemTray;
@@ -284,7 +285,7 @@ namespace DamageMeter.UI
                         abnormals.Get(item.Source), timedEncounter);
                 }
 
-                if (BasicTeraData.Instance.WindowData.InvisibleUi)
+                if (BasicTeraData.Instance.WindowData.InvisibleUi && !_paused)
                 {
                     if (Controls.Count > 0 && !ForceWindowVisibilityHidden) { Visibility = Visibility.Visible; }
                     if (Controls.Count == 0) { Visibility = Visibility.Hidden; }
@@ -516,6 +517,7 @@ namespace DamageMeter.UI
         {
             Dispatcher.Invoke(() =>
             {
+                _paused = pause;
                 if (pause)
                 {
                     BackgroundColor.Background = Brushes.DarkRed;
