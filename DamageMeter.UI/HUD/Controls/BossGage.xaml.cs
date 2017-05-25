@@ -5,6 +5,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Tera.Game;
 
 namespace DamageMeter.UI.HUD.Controls
 {
@@ -38,6 +39,7 @@ namespace DamageMeter.UI.HUD.Controls
         {
             InitializeComponent();
 
+            if (NetworkController.Instance.EntityTracker?.MeterUser?.RaceGenderClass.Class != PlayerClass.Valkyrie) RunemarksGrid.Visibility=Visibility.Collapsed;
             SlideAnimation.EasingFunction = new QuadraticEase();
             ColorChangeAnimation.EasingFunction = new QuadraticEase();
             DoubleAnimation.EasingFunction = new QuadraticEase();

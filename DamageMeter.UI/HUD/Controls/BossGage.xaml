@@ -22,6 +22,7 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid Width="Auto" Height="Auto" Margin="0,0,0,2" Name="topGrid">
             <Grid.RowDefinitions>
@@ -43,7 +44,8 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
 
                     </Grid.ColumnDefinitions>
@@ -51,7 +53,7 @@
                     <TextBlock Name="BossNameTB" Style="{StaticResource tcc_text}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="15"
+                               FontSize="14"
                                Text="{Binding Name}"
                                Grid.Row="0"
                                Grid.Column="0" />
@@ -67,6 +69,19 @@
                                Text="{Binding CurrentPercentage, StringFormat=##0.## %}"
                                Grid.Row="0"
                                Grid.Column="1" />
+                    <TextBlock Style="{StaticResource tcc_text}"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center"
+                               Margin="20,0,0,0"
+                               Foreground="White"
+                               FontSize="10"
+                               Grid.Row="0"
+                               Grid.Column="2">
+                        <Run Text=" " />
+                        <Run Text="{Binding CurrentHP, StringFormat={}{0:N0}}" />
+                        <Run Text=" / " />
+                        <Run Text="{Binding MaxHP, StringFormat={}{0:N0}}" />
+                    </TextBlock>
                     <!--<Polygon Points="0,10 5,0 10,10"  Margin="10,0"  Fill="{Binding CurrentAggroType, Converter={StaticResource aggroTypeToFill}}" Name="aggroArrow"
                                  VerticalAlignment="Center" Height="Auto"  HorizontalAlignment="Center"
                                  Grid.Column="1" RenderTransformOrigin=".5,.5">
@@ -151,7 +166,17 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1" Height="Auto" Margin="0,0,0,0" HorizontalAlignment="Left" Name="abnormalitiesGrid">
+        <Grid Grid.Row="1" Height="Auto" Margin="0,0,0,0" HorizontalAlignment="Left" Name="RunemarksGrid">
+            <controls:RunemarksControl 
+                DataContext="{Binding}" 
+                x:Name="runemarksBar"  
+                Width="220"
+                Grid.Column="1"
+                Grid.RowSpan="1"
+                VerticalAlignment="Center"
+            />
+        </Grid>
+        <Grid Grid.Row="2" Height="Auto" Margin="0,0,0,0" HorizontalAlignment="Left" Name="abnormalitiesGrid">
             <ItemsControl Name="Abnormalities" ItemTemplate="{StaticResource BossBuffDataTemplate}"
                           ItemsSource="{Binding Buffs}">
                 <ItemsControl.ItemsPanel>

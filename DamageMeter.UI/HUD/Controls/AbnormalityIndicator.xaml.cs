@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using Data;
 using static Tera.Game.HotDot;
 
 namespace DamageMeter.UI.HUD.Controls
@@ -69,39 +68,6 @@ namespace DamageMeter.UI.HUD.Controls
 
 namespace DamageMeter.UI.HUD.Converters
 {
-    public class IconConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return BasicTeraData.Instance.Icons.GetImage((string) value);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class DurationLabelConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var seconds = (long) value / 1000;
-            var minutes = seconds / 60;
-            var hours = minutes / 60;
-            var days = hours / 24;
-
-            if (minutes < 3) { return seconds.ToString(); }
-            if (hours < 3) { return minutes + "m"; }
-            if (days < 1) { return hours + "h"; }
-            return days + "d";
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
 
     public class AbnormalityStrokeConverter : IValueConverter
     {

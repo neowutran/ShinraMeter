@@ -50,6 +50,13 @@ namespace DamageMeter
             _bosses.Remove(boss);
             boss.Dispose();
         }
+
+        public void UpdateRunemarks(S_WEAK_POINT message)
+        {
+            var boss = _bosses.FirstOrDefault(x => x.EntityId == message.Target);
+            if (boss == null) { return; }
+            boss.Runmarks = (int) message.RunemarksAfter;
+        }
     }
 
     public class BuffDuration : TSPropertyChanged, IDisposable
@@ -137,6 +144,7 @@ namespace DamageMeter
 
         private float _maxHp;
         private string _name;
+        private int _runemarks;
 
         private Visibility visible;
 
@@ -230,6 +238,18 @@ namespace DamageMeter
                 if (visible == value) { return; }
                 visible = value;
                 NotifyPropertyChanged("Visible");
+            }
+        }
+
+        public int Runmarks
+        {
+            get => _runemarks;
+            set
+            {
+                if (_runemarks == value) { return; }
+                _runemarks = value;
+                NotifyPropertyChanged("Runemarks");
+                if (_runemarks==7) NotifyPropertyChanged("MaxRunemarks");
             }
         }
 

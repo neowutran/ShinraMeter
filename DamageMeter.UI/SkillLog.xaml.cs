@@ -76,13 +76,11 @@ namespace DamageMeter.UI
             SkillAmount.Foreground = color;
 
             SkillName.ToolTip = skill.Time;
-            var npcEntity = entity as NpcEntity;
-            if (npcEntity != null)
+            if (entity is NpcEntity npcEntity)
             {
-                var npc = npcEntity;
-                SkillTarget.Content = npc.Info.Name + " : " + npc.Info.Area;
+                SkillTarget.Content = npcEntity.Info.Name + " : " + npcEntity.Info.Area;
             }
-            else if (entity is UserEntity) { SkillTarget.Content = ((UserEntity) entity).Name; }
+            else if (entity is UserEntity) { SkillTarget.Content = ((UserEntity)entity).Name; }
             SkillPet.Content = skill.Pet == null ? "" : skill.Pet.Name;
         }
 

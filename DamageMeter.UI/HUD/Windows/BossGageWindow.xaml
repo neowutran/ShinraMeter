@@ -9,7 +9,6 @@
                      Title="BossGageWindow" Height="Auto" Width="Auto"
                      SizeToContent="WidthAndHeight"
                      Topmost="True"
-                     AllowsTransparency="True"
                      ShowInTaskbar="False"
                      WindowStyle="None"
                      Background="#00000000"
@@ -34,7 +33,7 @@
         <ItemsControl Name="Bosses" ItemTemplate="{StaticResource BossGageDataTemplate}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Background="Transparent" Orientation="Vertical" ItemHeight="Auto" Height="270" />
+                    <WrapPanel Background="Transparent" Orientation="Vertical" ItemHeight="Auto" Height="Auto" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>

@@ -149,6 +149,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HUD\Controls\RunemarksControl.xaml.cs">
+      <DependentUpon>RunemarksControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HUD\Converters\TimeInMsToLabelConverter.cs" />
+    <Compile Include="HUD\Converters\IconConverter.cs" />
     <Compile Include="PopupNotification.xaml.cs">
       <DependentUpon>PopupNotification.xaml</DependentUpon>
     </Compile>
@@ -190,7 +195,7 @@
     <Compile Include="HUD\Controls\GenericGauge.xaml.cs">
       <DependentUpon>GenericGauge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HUD\Converters\PercentageVisibiltyConverter.cs" />
+    <Compile Include="HUD\Converters\BoolToVisibiltyConverter.cs" />
     <Compile Include="HUD\Windows\BossGageWindow.xaml.cs">
       <DependentUpon>BossGageWindow.xaml</DependentUpon>
     </Compile>
@@ -254,6 +259,10 @@
       <DependentUpon>TeradpsHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowServices.cs" />
+    <Page Include="HUD\Controls\RunemarksControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="PopupNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <converters:IconConverter x:Key="iconConv" />
         <converters:AbnormalityStrokeConverter x:Key="strokeConv" />
-        <converters:DurationLabelConverter x:Key="durationConv" />
+        <converters:TimeInMsToLabelConverter x:Key="durationConv" />
         <converters:StacksToVisibilityConverter x:Key="stacksToVisibilityConv" />
         <converters:DurationToVisibilityConverter x:Key="durationToVisibilityConv" />
         <converters:SizeToStackLabelSizeConverter x:Key="sizeToStackLabelSizeConv" />
