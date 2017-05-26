@@ -385,7 +385,10 @@ namespace DamageMeter.Processing
                 }
 
                 if (player.OutOfRange) { continue; }
-
+                var maxHp = bossList.FirstOrDefault(x => x.Id == target)?.Info.HP??0;
+                _lastBosses.TryGetValue(target, out long curHp);
+                var percHp = maxHp == 0 ? 0 : curHp * 100 / maxHp;
+                var nextHp = percHp <= 10 ? 0 : percHp - 10;
                 foreach (var a in e.Value)
                 {
                     if (a.GetType() != typeof(NotifyAction)) { continue; }
@@ -393,6 +396,8 @@ namespace DamageMeter.Processing
                     var abnormality = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityId);
                     if (notifyAction.Balloon != null)
                     {
+                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{boss_hp}", percHp.ToString());
+                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{next_hp}", nextHp.ToString());
                         notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", abnormality.Name);
                         notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{stack}", stack.ToString());
                         if (player != null)
@@ -400,6 +405,8 @@ namespace DamageMeter.Processing
                             notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{player_name}", player.Name);
                             notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{player_name}", player.Name);
                         }
+                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{boss_hp}", percHp.ToString());
+                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{next_hp}", nextHp.ToString());
                         notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abnormality.Name);
                         notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{stack}", stack.ToString());
                     }
@@ -407,6 +414,8 @@ namespace DamageMeter.Processing
                     {
                         var textToSpeech = (TextToSpeech) notifyAction.Sound;
                         if (player != null) { textToSpeech.Text = textToSpeech.Text.Replace("{player_name}", player.Name); }
+                        textToSpeech.Text = textToSpeech.Text.Replace("{boss_hp}", percHp.ToString());
+                        textToSpeech.Text = textToSpeech.Text.Replace("{next_hp}", nextHp.ToString());
                         textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", abnormality.Name);
                         textToSpeech.Text = textToSpeech.Text.Replace("{stack}", stack.ToString());
                     }
