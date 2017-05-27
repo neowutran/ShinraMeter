@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -49,7 +50,7 @@ namespace DamageMeter.UI
             var size = new Size(double.PositiveInfinity, double.PositiveInfinity);
             TitleLabel.Measure(size);
             TextBlock.Measure(size);
-            var width = TitleLabel.DesiredSize.Width + TextBlock.DesiredSize.Width;
+            var width = Math.Max(TitleLabel.DesiredSize.Width, TextBlock.DesiredSize.Width);
             var height = TitleLabel.DesiredSize.Height + TextBlock.DesiredSize.Height + 4 * dx;
             var newLeft = (dragged ? Left : LastSnappedPoint?.X ?? Left) * dx;
             var newTop = (dragged ? Top : LastSnappedPoint?.Y ?? Top) * dy;
