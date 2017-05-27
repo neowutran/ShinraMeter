@@ -152,7 +152,8 @@ namespace DamageMeter.UI
                 _windowHistory.Visibility == Visibility.Visible, _windowHistory.Scale);
             BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(new Point(_entityStats.Left, _entityStats.Top),
                 _entityStats.Visibility == Visibility.Visible, _entityStats.Scale);
-            BasicTeraData.Instance.WindowData.PopupNotificationLocation = new Point(_popupNotification.Left, _popupNotification.Top);
+            BasicTeraData.Instance.WindowData.PopupNotificationLocation = _popupNotification.LastSnappedPoint ??
+                                                                          new Point(_popupNotification.Left, _popupNotification.Top);
             Close();
         }
 

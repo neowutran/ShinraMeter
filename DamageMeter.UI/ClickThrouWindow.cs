@@ -60,7 +60,7 @@ namespace DamageMeter.UI
             WindowsServices.SetWindowExVisible(hwnd);
         }
 
-        protected void Move(object sender, MouseButtonEventArgs e)
+        internal virtual void Move(object sender, MouseButtonEventArgs e)
         {
             try { DragMove(); }
             catch { Console.WriteLine(@"Exception Move"); }
