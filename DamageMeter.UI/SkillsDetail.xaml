@@ -9,7 +9,7 @@
 
             <ItemsControl ScrollViewer.CanContentScroll="True" PreviewMouseWheel="SkillsList_PreviewMouseWheel"
                           ScrollViewer.VerticalScrollBarVisibility="Auto"
-                          MouseLeftButtonDown="Skills_OnMouseLeftButtonDown" x:Name="SkillsList"
+                          MouseLeftButtonDown="DragWindow" x:Name="SkillsList"
                           Background="Transparent" BorderThickness="0" Focusable="False"
                           HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False"
                           Grid.IsSharedSizeScope="True" />

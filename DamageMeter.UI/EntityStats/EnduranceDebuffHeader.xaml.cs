@@ -21,14 +21,6 @@ namespace DamageMeter.UI.EntityStats
             LabelName.Content = LP.Name;
         }
 
-        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                var w = Window.GetWindow(this);
-                w?.DragMove();
-            }
-            catch { Console.WriteLine(@"Exception move"); }
-        }
+        private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
     }
 }

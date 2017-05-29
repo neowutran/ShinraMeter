@@ -25,11 +25,6 @@ namespace DamageMeter.UI.HUD.Windows
             ContextMenu.Items.Add(HideButton);
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Move(sender, e);
-        }
-
         private void Window_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             ContextMenu.IsOpen = true;

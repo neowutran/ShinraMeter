@@ -8,7 +8,7 @@
         <Expander IsExpanded="False">
             <Expander.Header>
                 <Grid MouseLeave="UIElement_OnMouseLeave" MouseEnter="UIElement_OnMouseEnter"
-                      MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
+                      MouseLeftButtonDown="DragWindow" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition SharedSizeGroup="d1" Width="Auto" />
                         <ColumnDefinition SharedSizeGroup="d2" Width="Auto" />
@@ -73,7 +73,7 @@
             </Expander.Header>
             <Expander.Content>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
-                    <ItemsControl MouseLeftButtonDown="MoveWindow" x:Name="SkillsDetailList"
+                    <ItemsControl MouseLeftButtonDown="DragWindow" x:Name="SkillsDetailList"
                                   Background="Transparent" BorderThickness="0" Focusable="False"
                                   HorizontalContentAlignment="Stretch" VerticalAlignment="Top"
                                   IsTextSearchEnabled="False" />

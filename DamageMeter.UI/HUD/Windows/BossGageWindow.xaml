@@ -12,7 +12,6 @@
                      ShowInTaskbar="False"
                      WindowStyle="None"
                      Background="#00000000"
-                     MouseLeftButtonDown="Window_MouseLeftButtonDown"
                      MouseRightButtonDown="Window_MouseRightButtonDown"
                      Loaded="Window_Loaded"
                      ResizeMode="NoResize">

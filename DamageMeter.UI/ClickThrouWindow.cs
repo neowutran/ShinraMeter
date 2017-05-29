@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
@@ -41,11 +42,61 @@ namespace DamageMeter.UI
             Icon = BasicTeraData.Instance.ImageDatabase.Icon;
             SizeToContent = SizeToContent.WidthAndHeight;
             MouseLeftButtonDown += Move;
+            Loaded += (s, a) =>
+            {
+                SnapToScreen();
+                SizeChanged += (s1, a1) => SnapToScreen();
+            };
             ShowActivated = false;
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
             _dispatcher = Dispatcher.CurrentDispatcher;
             Scale = BasicTeraData.Instance.WindowData.Scale;
+        }
+
+        public Point? LastSnappedPoint = null;
+        private bool dragged = true;
+        private bool dragging = false;
+
+        public void SnapToScreen()
+        {
+            if (dragging) return;
+            var screen = Screen.FromHandle(new WindowInteropHelper(this).Handle);
+            var source = PresentationSource.FromVisual(this);
+            if (source?.CompositionTarget == null) return;
+            var m = source.CompositionTarget.TransformToDevice;
+            var dx = m.M11;
+            var dy = m.M22;
+            var width = ActualWidth * dx;
+            var height = ActualHeight * dy;
+            var newLeft = (dragged ? Left : LastSnappedPoint?.X ?? Left) * dx;
+            var newTop = (dragged ? Top : LastSnappedPoint?.Y ?? Top) * dy;
+            var snapLeft = newLeft;
+            var snapTop = newTop;
+            if (screen.WorkingArea.X + screen.WorkingArea.Width < newLeft + width + 30 * dx)
+            {
+                newLeft = screen.WorkingArea.X + screen.WorkingArea.Width - width;
+                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - 10;
+            }
+            else if (screen.WorkingArea.X > newLeft - 30 * dx)
+            {
+                newLeft = screen.WorkingArea.X;
+                snapLeft = screen.WorkingArea.X;
+            }
+            if (screen.WorkingArea.Y + screen.WorkingArea.Height < newTop + height + 30 * dy)
+            {
+                newTop = screen.WorkingArea.Y + screen.WorkingArea.Height - height;
+                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - 10;
+            }
+            else if (screen.WorkingArea.Y > newTop - 30 * dy)
+            {
+                newTop = screen.WorkingArea.Y;
+                snapTop = screen.WorkingArea.Y;
+            }
+            Left = newLeft/dx;
+            Top = newTop/dy;
+            if (dragged) LastSnappedPoint = new Point(snapLeft/dx, snapTop/dy);
+            dragged = false;
         }
 
         public void SetClickThrou()
@@ -60,9 +111,16 @@ namespace DamageMeter.UI
             WindowsServices.SetWindowExVisible(hwnd);
         }
 
-        internal virtual void Move(object sender, MouseButtonEventArgs e)
+        public void Move(object sender, MouseButtonEventArgs e)
         {
-            try { DragMove(); }
+            try {
+                if (e.LeftButton != MouseButtonState.Pressed) return;
+                dragging = true;
+                DragMove();
+                dragged = true;
+                dragging = false;
+                SnapToScreen();
+            }
             catch { Console.WriteLine(@"Exception Move"); }
         }
 
