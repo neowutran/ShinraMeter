@@ -396,27 +396,13 @@ namespace DamageMeter.UI
             _windowHistory.Owner = this;
             if (BasicTeraData.Instance.WindowData.RememberPosition)
             {
-                Top = BasicTeraData.Instance.WindowData.Location.Y;
-                Left = BasicTeraData.Instance.WindowData.Location.X;
-                _popupNotification.Top = BasicTeraData.Instance.WindowData.PopupNotificationLocation.Y;
-                _popupNotification.Left = BasicTeraData.Instance.WindowData.PopupNotificationLocation.X;
-                if (BasicTeraData.Instance.WindowData.DebuffsStatus.Location != new Point(0, 0))
-                {
-                    _entityStats.Top = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.Y;
-                    _entityStats.Left = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.X;
-                }
+                LastSnappedPoint=BasicTeraData.Instance.WindowData.Location;
+                _popupNotification.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
+                _entityStats.LastSnappedPoint = BasicTeraData.Instance.WindowData.DebuffsStatus.Location;
                 if (BasicTeraData.Instance.WindowData.DebuffsStatus.Visible) { _entityStats.ShowWindow(); }
-                if (BasicTeraData.Instance.WindowData.BossGageStatus.Location != new Point(0, 0))
-                {
-                    _bossGageBar.Top = BasicTeraData.Instance.WindowData.BossGageStatus.Location.Y;
-                    _bossGageBar.Left = BasicTeraData.Instance.WindowData.BossGageStatus.Location.X;
-                }
+                _bossGageBar.LastSnappedPoint = BasicTeraData.Instance.WindowData.BossGageStatus.Location;
                 if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible) { _bossGageBar.ShowWindow(); }
-                if (BasicTeraData.Instance.WindowData.HistoryStatus.Location != new Point(0, 0))
-                {
-                    _windowHistory.Top = BasicTeraData.Instance.WindowData.HistoryStatus.Location.Y;
-                    _windowHistory.Left = BasicTeraData.Instance.WindowData.HistoryStatus.Location.X;
-                }
+                _windowHistory.LastSnappedPoint = BasicTeraData.Instance.WindowData.HistoryStatus.Location;
                 if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible) { _windowHistory.ShowWindow(); }
                 return;
             }
