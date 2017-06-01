@@ -37,11 +37,14 @@ namespace DamageMeter.UI.EntityStats
             LabelName.Content = hotdot.Name;
             LabelName.ToolTip = string.IsNullOrEmpty(hotdot.Tooltip) ? null : hotdot.Tooltip;
             LabelAbnormalityDurationPercentage.ToolTip = hotdot.Id;
-            StacksDetailList.Items.Clear();
+            var count = 0;
             foreach (var stack in abnormalityDuration.Stacks(firstHit, lastHit))
             {
-                StacksDetailList.Items.Add(new EnduranceDebuffDetail(hotdot, stack, abnormalityDuration, firstHit, lastHit));
+                if (StacksDetailList.Items.Count > count) { ((EnduranceDebuffDetail) StacksDetailList.Items[count]).Update(hotdot, stack, abnormalityDuration, firstHit, lastHit);}
+                else { StacksDetailList.Items.Add(new EnduranceDebuffDetail(hotdot, stack, abnormalityDuration, firstHit, lastHit)); }
+                count++;
             }
+            while (StacksDetailList.Items.Count > count + 1) StacksDetailList.Items.RemoveAt(count + 1);
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }

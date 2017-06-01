@@ -29,5 +29,11 @@ namespace DamageMeter.UI.HUD.Windows
         {
             ContextMenu.IsOpen = true;
         }
+
+        protected override bool Empty
+        {
+            get
+            { return !Bosses.HasItems; }
+        }
     }
 }

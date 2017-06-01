@@ -146,11 +146,11 @@ namespace DamageMeter.UI
             if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application, LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
                     MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) { return; }
             BasicTeraData.Instance.WindowData.BossGageStatus =
-                new WindowStatus(_bossGageBar.LastSnappedPoint ?? new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visibility == Visibility.Visible, _bossGageBar.Scale);
+                new WindowStatus(_bossGageBar.LastSnappedPoint ?? new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visible, _bossGageBar.Scale);
             BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(_windowHistory.LastSnappedPoint ?? new Point(_windowHistory.Left, _windowHistory.Top),
-                _windowHistory.Visibility == Visibility.Visible, _windowHistory.Scale);
+                _windowHistory.Visible, _windowHistory.Scale);
             BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(_entityStats.LastSnappedPoint ?? new Point(_entityStats.Left, _entityStats.Top),
-                _entityStats.Visibility == Visibility.Visible, _entityStats.Scale);
+                _entityStats.Visible, _entityStats.Scale);
             BasicTeraData.Instance.WindowData.PopupNotificationLocation = _popupNotification.LastSnappedPoint ??
                                                                           new Point(_popupNotification.Left, _popupNotification.Top);
             Close();
@@ -199,7 +199,7 @@ namespace DamageMeter.UI
             {
                 if (!teraWindowActive && !meterWindowActive)
                 {
-                    Visibility = Visibility.Hidden;
+                    HideWindow(); //Visibility = Visibility.Hidden;
                     ForceWindowVisibilityHidden = true;
                 }
 
@@ -207,7 +207,7 @@ namespace DamageMeter.UI
                                                                 !BasicTeraData.Instance.WindowData.InvisibleUi))
                 {
                     ForceWindowVisibilityHidden = false;
-                    Visibility = Visibility.Visible;
+                    ShowWindow(); //Visibility = Visibility.Visible;
                 }
             }
             else { ForceWindowVisibilityHidden = false; }
@@ -287,11 +287,11 @@ namespace DamageMeter.UI
 
                 if (BasicTeraData.Instance.WindowData.InvisibleUi && !_paused)
                 {
-                    if (Controls.Count > 0 && !ForceWindowVisibilityHidden) { Visibility = Visibility.Visible; }
-                    if (Controls.Count == 0) { Visibility = Visibility.Hidden; }
+                    if (Controls.Count > 0 && !ForceWindowVisibilityHidden) { ShowWindow(); } //Visibility = Visibility.Visible; }
+                    if (Controls.Count == 0) { HideWindow(); } //Visibility = Visibility.Hidden; }
                 }
-                else { if (!ForceWindowVisibilityHidden) { Visibility = Visibility.Visible; } }
-            }
+                else if (!ForceWindowVisibilityHidden) { ShowWindow(); } //Visibility = Visibility.Visible; } 
+                }
 
             Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox,
                 npacketWaiting, nflash);

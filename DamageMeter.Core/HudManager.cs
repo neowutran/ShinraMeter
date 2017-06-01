@@ -249,7 +249,6 @@ namespace DamageMeter
                 if (_runemarks == value) { return; }
                 _runemarks = value;
                 NotifyPropertyChanged("Runemarks");
-                if (_runemarks==7) NotifyPropertyChanged("MaxRunemarks");
             }
         }
 

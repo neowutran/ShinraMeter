@@ -19,7 +19,7 @@ namespace DamageMeter.UI
 
         private double _scale=1;
 
-        private Dispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public double Scale { get => _scale;
@@ -53,6 +53,7 @@ namespace DamageMeter.UI
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
             _dispatcher = Dispatcher.CurrentDispatcher;
+            _opacity = this.GetType().Name == "MainWindow" ? BasicTeraData.Instance.WindowData.MainWindowOpacity : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Scale = BasicTeraData.Instance.WindowData.Scale;
         }
 
@@ -60,10 +61,15 @@ namespace DamageMeter.UI
         private bool _dragged = false;
         private bool _dragging = false;
         private Thickness _margin;
+        private double _opacity;
+        public bool Visible;
+
+        protected virtual bool Empty => false;
 
         public void SnapToScreen()
         {
             if (_dragging) return;
+            if (Empty && Visible) { HideWindow(true); return; }
             var screen = Screen.FromHandle(new WindowInteropHelper(this).Handle);
             var source = PresentationSource.FromVisual(this);
             if (source?.CompositionTarget == null) return;
@@ -100,6 +106,7 @@ namespace DamageMeter.UI
             Top = newTop/dy;
             if (_dragged) LastSnappedPoint = new Point(snapLeft/dx, snapTop/dy);
             _dragged = false;
+            if (Visible & Visibility == Visibility.Hidden) ShowWindow();
         }
 
         public void SetClickThrou()
@@ -142,7 +149,7 @@ namespace DamageMeter.UI
             }
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
-                Dispatcher.BeginInvoke(new Action(() =>
+                _dispatcher.BeginInvoke(new Action(() =>
                 {
                     var a = OpacityAnimation(0);
                     a.Completed += (o, args) => { Close(); };
@@ -152,11 +159,12 @@ namespace DamageMeter.UI
             }
         }
 
-        public void HideWindow()
+        public void HideWindow(bool set=false)
         {
+            Visible = set;
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
-                Dispatcher.BeginInvoke(new Action(() =>
+                _dispatcher.BeginInvoke(new Action(() =>
                 {
                     var a = OpacityAnimation(0);
                     a.Completed += (o, args) => { Visibility = Visibility.Hidden; };
@@ -168,13 +176,15 @@ namespace DamageMeter.UI
 
         public void ShowWindow()
         {
+            Visible = true;
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
                 Opacity = 0;
-                Dispatcher.BeginInvoke(
-                    new Action(() => { BeginAnimation(OpacityProperty, OpacityAnimation(BasicTeraData.Instance.WindowData.OtherWindowOpacity)); }));
+                _dispatcher.BeginInvoke(
+                    new Action(() => { BeginAnimation(OpacityProperty, OpacityAnimation(_opacity)); }));
             }
             Visibility = Visibility.Visible;
+            SnapToScreen();
         }
 
         protected override void OnSourceInitialized(EventArgs e)

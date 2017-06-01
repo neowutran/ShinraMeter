@@ -30,11 +30,13 @@ namespace DamageMeter.UI
         {
             if (_updated) { return; }
             _updated = true;
+            if (chatbox.Count == 0) Close();
             for (var i = 0; i < chatbox.Count; i++)
             {
                 if (ChatboxList.Items.Count > i) { ((ChatMessageUi) ChatboxList.Items.GetItemAt(i)).Update(chatbox[i]); }
                 else { ChatboxList.Items.Add(new ChatMessageUi(chatbox[i])); }
             }
+            SnapToScreen();
         }
 
         private void ChatboxList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -54,5 +56,7 @@ namespace DamageMeter.UI
             }
             Clipboard.SetDataObject(messages);
         }
+
+        protected override bool Empty => !ChatboxList.HasItems && _updated;
     }
 }

@@ -39,6 +39,7 @@ namespace DamageMeter
             {typeof(S_AVAILABLE_EVENT_MATCHING_LIST), new Action<S_AVAILABLE_EVENT_MATCHING_LIST>(x => NotifyProcessor.Instance.UpdateCredits(x))},
             {typeof(S_UPDATE_NPCGUILD), new Action<S_UPDATE_NPCGUILD>(x => NotifyProcessor.Instance.UpdateCredits(x))},
             {typeof(S_BOSS_GAGE_INFO), new Action<S_BOSS_GAGE_INFO>(x => NotifyProcessor.Instance.S_BOSS_GAGE_INFO(x))}, //override with optional processing
+            {typeof(S_RETURN_TO_LOBBY), new Action<S_RETURN_TO_LOBBY>(x => NotifyProcessor.Instance.S_LOAD_TOPO(null))},
             {typeof(S_LOAD_TOPO), new Action<S_LOAD_TOPO>(x => NotifyProcessor.Instance.S_LOAD_TOPO(x))},
             {typeof(S_CHAT), new Action<S_CHAT>(x => Chat.Instance.Add(x))},
             {typeof(S_WHISPER), new Action<S_WHISPER>(x => Chat.Instance.Add(x))},
