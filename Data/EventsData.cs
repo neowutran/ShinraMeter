@@ -54,9 +54,16 @@ namespace Data
                 BasicTeraData.LogError(ex.Message, true, true);
                 return;
             }
+            EventsClass = new Dictionary<Event, List<Action>>();
+            MissingAbnormalities = new Dictionary<Event, List<Action>>();
+            AddedRemovedAbnormalities = new Dictionary<Event, List<Action>>();
+            Cooldown = new Dictionary<Event, List<Action>>();
+            Events = new Dictionary<Event, List<Action>>();
+            AFK = null;
             ParseAbnormalities(EventsCommon, xml);
             ParseCooldown(EventsCommon, xml);
             ParseCommonAFK(EventsCommon, xml);
+            AssociateEvent(EventsCommon);
         }
 
         private Dictionary<Event, List<Action>> EventsCommon { get; }

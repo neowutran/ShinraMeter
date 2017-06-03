@@ -119,6 +119,7 @@ namespace DamageMeter
         {
             NeedInit = true;
             MessageFactory = new MessageFactory();
+            NotifyProcessor.Instance.S_LOAD_TOPO(null);
             Connected?.Invoke(LP.SystemTray_No_server);
             OnGuildIconAction(null);
         }

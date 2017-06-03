@@ -15,21 +15,13 @@ namespace DamageMeter.UI.HUD.Controls
         {
             InitializeComponent();
             baseBorder.Background = new SolidColorBrush(Color.FromRgb(0x20, 0x20, 0x27));
-
         }
 
         private void _context_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Runemarks")
-            {
-                SetRunes(_context.Runmarks);
-            }
-            else if (e.PropertyName == "MaxRunemarks")
-            {
-                //baseBorder.Background = new SolidColorBrush(Color.FromRgb(0xff,0x98,0xbb));
-                maxBorder.Opacity = 1;
-            }
+            if (e.PropertyName == "Runemarks") { SetRunes(_context.Runmarks); }
         }
+
         private int _currentRunes = 0;
 
         private void SetRunes(int newRunes)
@@ -37,32 +29,28 @@ namespace DamageMeter.UI.HUD.Controls
             var diff = newRunes - _currentRunes;
 
             if (diff == 0) return;
-            if (diff > 0)
+            if (newRunes == 7)
             {
-                for (int i = 0; i < diff; i++)
-                {
-                    dotsContainer.Children[_currentRunes + i].Opacity = 1;
-                }
+                //baseBorder.Background = new SolidColorBrush(Color.FromRgb(0xff,0x98,0xbb));
+                maxBorder.Opacity = 1;
             }
+            if (diff > 0) { for (int i = 0; i < diff; i++) { dotsContainer.Children[_currentRunes + i].Opacity = 1; } }
             else
             {
                 //baseBorder.Background = new SolidColorBrush(Color.FromRgb(0x20, 0x20, 0x27));
                 maxBorder.Opacity = 0;
 
-                for (int i = dotsContainer.Children.Count - 1; i >= 0; i--)
-                {
-                    dotsContainer.Children[i].Opacity = 0;
-                }
+                for (int i = dotsContainer.Children.Count - 1; i >= 0; i--) { dotsContainer.Children[i].Opacity = 0; }
             }
             _currentRunes = newRunes;
         }
 
-        Boss _context;
+        private Boss _context;
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void ControlDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (DesignerProperties.GetIsInDesignMode(this)) return;
-            _context = (Boss)DataContext;
+            _context = (Boss)e.NewValue;
+            if (_context == null) return;
             _context.PropertyChanged += _context_PropertyChanged;
         }
     }

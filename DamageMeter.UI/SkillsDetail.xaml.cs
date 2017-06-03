@@ -310,12 +310,7 @@ namespace DamageMeter.UI
             ChangeSort(SortBy.Name, (Label) sender, SkillsHeaderDps.SkillName);
         }
 
-        private void Skills_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var w = Window.GetWindow(this);
-            try { w?.DragMove(); }
-            catch { Console.WriteLine(@"Exception move"); }
-        }
+        private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
 
         private List<ISkill> Clear()
         {

@@ -2,11 +2,13 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using Data;
 using System.Windows.Threading;
+using DamageMeter.UI.HUD.Converters;
 
 namespace DamageMeter.UI
 {
@@ -17,7 +19,7 @@ namespace DamageMeter.UI
 
         private double _scale=1;
 
-        private Dispatcher _dispatcher;
+        private readonly Dispatcher _dispatcher;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public double Scale { get => _scale;
@@ -40,12 +42,71 @@ namespace DamageMeter.UI
             ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
             Icon = BasicTeraData.Instance.ImageDatabase.Icon;
             SizeToContent = SizeToContent.WidthAndHeight;
+            _margin = (Thickness) new TransparencyToMarginConverter().Convert(BasicTeraData.Instance.WindowData.AllowTransparency, typeof(Thickness), null, null);
             MouseLeftButtonDown += Move;
+            Loaded += (s, a) =>
+            {
+                SnapToScreen();
+                SizeChanged += (s1, a1) => SnapToScreen();
+            };
             ShowActivated = false;
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
             _dispatcher = Dispatcher.CurrentDispatcher;
+            _opacity = this.GetType().Name == "MainWindow" ? BasicTeraData.Instance.WindowData.MainWindowOpacity : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Scale = BasicTeraData.Instance.WindowData.Scale;
+        }
+
+        public Point? LastSnappedPoint = null;
+        private bool _dragged = false;
+        private bool _dragging = false;
+        private Thickness _margin;
+        private double _opacity;
+        public bool Visible;
+
+        protected virtual bool Empty => false;
+
+        public void SnapToScreen()
+        {
+            if (_dragging) return;
+            if (Empty && Visible) { HideWindow(true); return; }
+            var screen = Screen.FromHandle(new WindowInteropHelper(this).Handle);
+            var source = PresentationSource.FromVisual(this);
+            if (source?.CompositionTarget == null) return;
+            var m = source.CompositionTarget.TransformToDevice;
+            var dx = m.M11;
+            var dy = m.M22;
+            var width = ActualWidth * dx;
+            var height = ActualHeight * dy;
+            var newLeft = (_dragged ? Left : LastSnappedPoint?.X ?? Left) * dx;
+            var newTop = (_dragged ? Top : LastSnappedPoint?.Y ?? Top) * dy;
+            var snapLeft = newLeft;
+            var snapTop = newTop;
+            if (screen.WorkingArea.X + screen.WorkingArea.Width < newLeft + width + 30 * dx)
+            {
+                newLeft = screen.WorkingArea.X + screen.WorkingArea.Width - width + _margin.Right * dx;
+                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - 10;
+            }
+            else if (screen.WorkingArea.X > newLeft - 30 * dx)
+            {
+                newLeft = screen.WorkingArea.X - _margin.Left * dx;
+                snapLeft = screen.WorkingArea.X;
+            }
+            if (screen.WorkingArea.Y + screen.WorkingArea.Height < newTop + height + 30 * dy)
+            {
+                newTop = screen.WorkingArea.Y + screen.WorkingArea.Height - height + _margin.Bottom * dy;
+                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - 10;
+            }
+            else if (screen.WorkingArea.Y > newTop - 30 * dy)
+            {
+                newTop = screen.WorkingArea.Y - _margin.Top * dy;
+                snapTop = screen.WorkingArea.Y;
+            }
+            Left = newLeft/dx;
+            Top = newTop/dy;
+            if (_dragged) LastSnappedPoint = new Point(snapLeft/dx, snapTop/dy);
+            _dragged = false;
+            if (Visible & Visibility == Visibility.Hidden) ShowWindow();
         }
 
         public void SetClickThrou()
@@ -60,9 +121,16 @@ namespace DamageMeter.UI
             WindowsServices.SetWindowExVisible(hwnd);
         }
 
-        internal virtual void Move(object sender, MouseButtonEventArgs e)
+        public void Move(object sender, MouseButtonEventArgs e)
         {
-            try { DragMove(); }
+            try {
+                if (e.LeftButton != MouseButtonState.Pressed) return;
+                _dragging = true;
+                DragMove();
+                _dragged = true;
+                _dragging = false;
+                SnapToScreen();
+            }
             catch { Console.WriteLine(@"Exception Move"); }
         }
 
@@ -81,7 +149,7 @@ namespace DamageMeter.UI
             }
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
-                Dispatcher.BeginInvoke(new Action(() =>
+                _dispatcher.BeginInvoke(new Action(() =>
                 {
                     var a = OpacityAnimation(0);
                     a.Completed += (o, args) => { Close(); };
@@ -91,11 +159,12 @@ namespace DamageMeter.UI
             }
         }
 
-        public void HideWindow()
+        public void HideWindow(bool set=false)
         {
+            Visible = set;
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
-                Dispatcher.BeginInvoke(new Action(() =>
+                _dispatcher.BeginInvoke(new Action(() =>
                 {
                     var a = OpacityAnimation(0);
                     a.Completed += (o, args) => { Visibility = Visibility.Hidden; };
@@ -107,13 +176,15 @@ namespace DamageMeter.UI
 
         public void ShowWindow()
         {
+            Visible = true;
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
                 Opacity = 0;
-                Dispatcher.BeginInvoke(
-                    new Action(() => { BeginAnimation(OpacityProperty, OpacityAnimation(BasicTeraData.Instance.WindowData.OtherWindowOpacity)); }));
+                _dispatcher.BeginInvoke(
+                    new Action(() => { BeginAnimation(OpacityProperty, OpacityAnimation(_opacity)); }));
             }
             Visibility = Visibility.Visible;
+            SnapToScreen();
         }
 
         protected override void OnSourceInitialized(EventArgs e)

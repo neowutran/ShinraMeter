@@ -167,7 +167,7 @@ namespace DamageMeter.UI.HUD.Controls
         {
             NumberTimer.Enabled = false;
             NumberTimer.Dispose();
-            _boss.PropertyChanged -= boss_PropertyChanged;
+            //_boss.PropertyChanged -= boss_PropertyChanged; // seems not needed
             _boss = null;
         }
     }

@@ -44,7 +44,6 @@ namespace DamageMeter.UI
         private readonly TeradpsHistory _windowHistory;
         internal Chatbox _chatbox;
         private bool _keyboardInitialized;
-        private double _oldWidth;
         private bool _topMost = true;
         private bool _paused = false;
 
@@ -147,11 +146,11 @@ namespace DamageMeter.UI
             if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application, LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
                     MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) { return; }
             BasicTeraData.Instance.WindowData.BossGageStatus =
-                new WindowStatus(new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visibility == Visibility.Visible, _bossGageBar.Scale);
-            BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(new Point(_windowHistory.Left, _windowHistory.Top),
-                _windowHistory.Visibility == Visibility.Visible, _windowHistory.Scale);
-            BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(new Point(_entityStats.Left, _entityStats.Top),
-                _entityStats.Visibility == Visibility.Visible, _entityStats.Scale);
+                new WindowStatus(_bossGageBar.LastSnappedPoint ?? new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visible, _bossGageBar.Scale);
+            BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(_windowHistory.LastSnappedPoint ?? new Point(_windowHistory.Left, _windowHistory.Top),
+                _windowHistory.Visible, _windowHistory.Scale);
+            BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(_entityStats.LastSnappedPoint ?? new Point(_entityStats.Left, _entityStats.Top),
+                _entityStats.Visible, _entityStats.Scale);
             BasicTeraData.Instance.WindowData.PopupNotificationLocation = _popupNotification.LastSnappedPoint ??
                                                                           new Point(_popupNotification.Left, _popupNotification.Top);
             Close();
@@ -159,7 +158,7 @@ namespace DamageMeter.UI
 
         public void Exit()
         {
-            BasicTeraData.Instance.WindowData.Location = new Point(Left, Top);
+            BasicTeraData.Instance.WindowData.Location = LastSnappedPoint ?? new Point(Left, Top);
             ForceWindowVisibilityHidden = true;
             NetworkController.Instance.TickUpdated -= Update;
             _dispatcherTimer.Stop();
@@ -200,7 +199,7 @@ namespace DamageMeter.UI
             {
                 if (!teraWindowActive && !meterWindowActive)
                 {
-                    Visibility = Visibility.Hidden;
+                    HideWindow(); //Visibility = Visibility.Hidden;
                     ForceWindowVisibilityHidden = true;
                 }
 
@@ -208,7 +207,7 @@ namespace DamageMeter.UI
                                                                 !BasicTeraData.Instance.WindowData.InvisibleUi))
                 {
                     ForceWindowVisibilityHidden = false;
-                    Visibility = Visibility.Visible;
+                    ShowWindow(); //Visibility = Visibility.Visible;
                 }
             }
             else { ForceWindowVisibilityHidden = false; }
@@ -288,24 +287,11 @@ namespace DamageMeter.UI
 
                 if (BasicTeraData.Instance.WindowData.InvisibleUi && !_paused)
                 {
-                    if (Controls.Count > 0 && !ForceWindowVisibilityHidden) { Visibility = Visibility.Visible; }
-                    if (Controls.Count == 0) { Visibility = Visibility.Hidden; }
+                    if (Controls.Count > 0 && !ForceWindowVisibilityHidden) { ShowWindow(); } //Visibility = Visibility.Visible; }
+                    if (Controls.Count == 0) { HideWindow(); } //Visibility = Visibility.Hidden; }
                 }
-                else { if (!ForceWindowVisibilityHidden) { Visibility = Visibility.Visible; } }
-                if (ActualWidth != _oldWidth) // auto snap to right screen border on width change
-                {
-                    var screen = Screen.FromHandle(new WindowInteropHelper(GetWindow(this)).Handle);
-                    // Transform screen point to WPF device independent point
-                    var source = PresentationSource.FromVisual(this);
-                    if (source?.CompositionTarget == null) { return; }
-                    var dx = source.CompositionTarget.TransformToDevice.M11;
-                    if (Math.Abs(screen.WorkingArea.X + screen.WorkingArea.Width - (Left + _oldWidth) * dx) < 50) //snap at 50 px
-                    {
-                        Left = Left + _oldWidth - ActualWidth;
-                    }
-                    _oldWidth = ActualWidth;
+                else if (!ForceWindowVisibilityHidden) { ShowWindow(); } //Visibility = Visibility.Visible; } 
                 }
-            }
 
             Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox,
                 npacketWaiting, nflash);
@@ -410,27 +396,19 @@ namespace DamageMeter.UI
             _windowHistory.Owner = this;
             if (BasicTeraData.Instance.WindowData.RememberPosition)
             {
-                Top = BasicTeraData.Instance.WindowData.Location.Y;
-                Left = BasicTeraData.Instance.WindowData.Location.X;
-                _popupNotification.Top = BasicTeraData.Instance.WindowData.PopupNotificationLocation.Y;
-                _popupNotification.Left = BasicTeraData.Instance.WindowData.PopupNotificationLocation.X;
-                if (BasicTeraData.Instance.WindowData.DebuffsStatus.Location != new Point(0, 0))
-                {
-                    _entityStats.Top = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.Y;
-                    _entityStats.Left = BasicTeraData.Instance.WindowData.DebuffsStatus.Location.X;
-                }
+                LastSnappedPoint=BasicTeraData.Instance.WindowData.Location;
+                Left = LastSnappedPoint?.X ?? 0;
+                Top = LastSnappedPoint?.Y ?? 0;
+                _popupNotification.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
+                _popupNotification.Left = _popupNotification.LastSnappedPoint?.X ?? 0;
+                _popupNotification.Top = _popupNotification.LastSnappedPoint?.Y ?? 0;
+                _entityStats.LastSnappedPoint = BasicTeraData.Instance.WindowData.DebuffsStatus.Location;
+                _entityStats.Left = _entityStats.LastSnappedPoint?.X ?? 0;
+                _entityStats.Top = _entityStats.LastSnappedPoint?.Y ?? 0;
                 if (BasicTeraData.Instance.WindowData.DebuffsStatus.Visible) { _entityStats.ShowWindow(); }
-                if (BasicTeraData.Instance.WindowData.BossGageStatus.Location != new Point(0, 0))
-                {
-                    _bossGageBar.Top = BasicTeraData.Instance.WindowData.BossGageStatus.Location.Y;
-                    _bossGageBar.Left = BasicTeraData.Instance.WindowData.BossGageStatus.Location.X;
-                }
+                _bossGageBar.LastSnappedPoint = BasicTeraData.Instance.WindowData.BossGageStatus.Location;
                 if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible) { _bossGageBar.ShowWindow(); }
-                if (BasicTeraData.Instance.WindowData.HistoryStatus.Location != new Point(0, 0))
-                {
-                    _windowHistory.Top = BasicTeraData.Instance.WindowData.HistoryStatus.Location.Y;
-                    _windowHistory.Left = BasicTeraData.Instance.WindowData.HistoryStatus.Location.X;
-                }
+                _windowHistory.LastSnappedPoint = BasicTeraData.Instance.WindowData.HistoryStatus.Location;
                 if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible) { _windowHistory.ShowWindow(); }
                 return;
             }

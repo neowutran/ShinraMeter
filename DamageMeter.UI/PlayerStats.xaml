@@ -26,7 +26,7 @@
                 </Setter>
             </Style>
         </Grid.Resources>
-        <Rectangle Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow"
+        <Rectangle Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="DragWindow"
                    x:Name="DpsIndicator"
                    Fill="#2bf"
                    Opacity="1" HorizontalAlignment="Left" Height="20" Margin="0,0,0,1"
@@ -37,7 +37,7 @@
             </Rectangle.LayoutTransform>
         </Rectangle>
 
-        <Grid Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow"
+        <Grid Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="DragWindow"
               x:Name="GridStats" HorizontalAlignment="Center" Width="Auto"
               VerticalAlignment="Top" Height="29" MinHeight="29" MaxHeight="29">
             <Grid.ColumnDefinitions>
@@ -48,7 +48,7 @@
                 <ColumnDefinition SharedSizeGroup="p4" MinWidth="60" Width="Auto" />
                 <ColumnDefinition SharedSizeGroup="p5" MinWidth="45" Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="MoveWindow" x:Name="Class"
+            <Image PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="DragWindow" x:Name="Class"
                    Focusable="False" Grid.Column="0" RenderOptions.BitmapScalingMode="HighQuality"
                    Source="{Binding Image}" Stretch="Fill" HorizontalAlignment="Left" 
                    Height="25" VerticalAlignment="Top" Width="25" Margin="2,0,0,0" />

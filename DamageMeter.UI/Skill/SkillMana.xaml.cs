@@ -44,12 +44,7 @@ namespace DamageMeter.UI.Skill
             foreach (var skillInfo in skill.Skills) { SkillsDetailList.Items.Add(new SkillDetailMana(skillInfo.Key, skill)); }
         }
 
-        private void MoveWindow(object sender, MouseButtonEventArgs e)
-        {
-            var w = Window.GetWindow(this);
-            try { w?.DragMove(); }
-            catch { Console.WriteLine(@"Exception move"); }
-        }
+        private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
 
         private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
         {

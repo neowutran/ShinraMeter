@@ -12,7 +12,6 @@
                      ShowInTaskbar="False"
                      WindowStyle="None"
                      Background="#00000000"
-                     MouseLeftButtonDown="Window_MouseLeftButtonDown"
                      MouseRightButtonDown="Window_MouseRightButtonDown"
                      Loaded="Window_Loaded"
                      ResizeMode="NoResize">
@@ -21,7 +20,7 @@
             <controls:BossGage />
         </DataTemplate>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"

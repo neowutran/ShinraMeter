@@ -32,11 +32,6 @@ namespace DamageMeter.UI
             if (Boss.Tag.ToString().StartsWith("http://") || Boss.Tag.ToString().StartsWith("https://")) { Process.Start("explorer.exe", "\"" + Boss.Tag + "\""); }
         }
 
-        private void Sender_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var w = Window.GetWindow(this);
-            try { w?.DragMove(); }
-            catch { Console.WriteLine(@"Exception move"); }
-        }
+        private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
     }
 }

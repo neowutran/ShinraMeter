@@ -39,14 +39,6 @@ namespace DamageMeter.UI.EntityStats
             LabelAbnormalityDurationPercentage.ToolTip = hotdot.Id;
         }
 
-        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                var w = Window.GetWindow(this);
-                w?.DragMove();
-            }
-            catch { Console.WriteLine(@"Exception move"); }
-        }
+        private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
     }
 }

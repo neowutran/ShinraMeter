@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DamageMeter.UI.HUD.Controls"
-             mc:Ignorable="d"  Loaded="UserControl_Loaded" >
+             DataContextChanged="ControlDataContextChanged"
+             mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="rec" TargetType="Rectangle">
             <Setter Property="Height" Value="8"></Setter>

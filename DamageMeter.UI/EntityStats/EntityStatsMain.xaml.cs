@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using DamageMeter.Database.Structures;
 using Data;
 using Tera.Game.Abnormality;
@@ -20,15 +22,13 @@ namespace DamageMeter.UI.EntityStats
             InitializeComponent();
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             _header = new EnduranceDebuffHeader();
+            EnduranceAbnormality.Items.Add(_header);
         }
 
         public void Update(EntityInformation entityInformation, AbnormalityStorage abnormals)
         {
-            EnduranceAbnormality.Items.Clear();
             if (entityInformation == null) { return; }
             if (entityInformation.Interval == 0) { return; }
-
-            EnduranceAbnormality.Items.Add(_header);
 
             var count = 0;
             foreach (var abnormality in abnormals.Get(entityInformation.Entity))
@@ -40,12 +40,13 @@ namespace DamageMeter.UI.EntityStats
                     abnormalityUi = new EnduranceDebuff();
                     _enduranceDebuffsList.Add(abnormalityUi);
                 }
-
                 abnormalityUi.Update(abnormality.Key, abnormality.Value, entityInformation.BeginTime, entityInformation.EndTime);
-                EnduranceAbnormality.Items.Add(abnormalityUi);
                 count++;
+                if (EnduranceAbnormality.Items.Count <= count) EnduranceAbnormality.Items.Add(abnormalityUi);
             }
+            while (EnduranceAbnormality.Items.Count > count + 1) EnduranceAbnormality.Items.RemoveAt(count + 1);
         }
+        protected override bool Empty => EnduranceAbnormality.Items.Count<=1;
 
         private void CloseStats_OnClick(object sender, RoutedEventArgs e)
         {

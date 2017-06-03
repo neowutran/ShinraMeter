@@ -6,7 +6,7 @@
              mc:Ignorable="d">
     <StackPanel>
 
-        <Grid MouseLeftButtonDown="MoveWindow" Margin="0,0,0,0">
+        <Grid MouseLeftButtonDown="DragWindow" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="m0" Width="25" />
                 <ColumnDefinition SharedSizeGroup="m1" Width="40" />
