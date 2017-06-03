@@ -397,8 +397,14 @@ namespace DamageMeter.UI
             if (BasicTeraData.Instance.WindowData.RememberPosition)
             {
                 LastSnappedPoint=BasicTeraData.Instance.WindowData.Location;
+                Left = LastSnappedPoint?.X ?? 0;
+                Top = LastSnappedPoint?.Y ?? 0;
                 _popupNotification.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
+                _popupNotification.Left = _popupNotification.LastSnappedPoint?.X ?? 0;
+                _popupNotification.Top = _popupNotification.LastSnappedPoint?.Y ?? 0;
                 _entityStats.LastSnappedPoint = BasicTeraData.Instance.WindowData.DebuffsStatus.Location;
+                _entityStats.Left = _entityStats.LastSnappedPoint?.X ?? 0;
+                _entityStats.Top = _entityStats.LastSnappedPoint?.Y ?? 0;
                 if (BasicTeraData.Instance.WindowData.DebuffsStatus.Visible) { _entityStats.ShowWindow(); }
                 _bossGageBar.LastSnappedPoint = BasicTeraData.Instance.WindowData.BossGageStatus.Location;
                 if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible) { _bossGageBar.ShowWindow(); }
