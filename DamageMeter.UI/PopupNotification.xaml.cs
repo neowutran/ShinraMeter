@@ -34,6 +34,8 @@ namespace DamageMeter.UI
 
         private async void Display (int displayTime)
         {
+            Topmost = false;
+            Topmost = true;
             ShowWindow();
             _stupidNotSafeLock++;
             await Task.Delay(displayTime);
