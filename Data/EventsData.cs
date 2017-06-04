@@ -16,6 +16,13 @@ using Action = Data.Actions.Action;
 
 namespace Data
 {
+    public enum EventType
+    {
+        MissingAb,
+        AddRemoveAb,
+        Cooldown,
+        AFK
+    }
     public class EventsData
     {
         private readonly BasicTeraData _basicData;
@@ -147,11 +154,11 @@ namespace Data
             var active = bool.Parse(commonAfk.Attribute("active")?.Value ?? default_active);
             var ev = new CommonAFKEvent(active);
             events.Add(ev, new List<Action>());
-            ParseActions(commonAfk, events, ev);
+            ParseActions(commonAfk, events, ev, EventType.AFK);
         }
 
 
-        private void ParseActions(XElement root, Dictionary<Event, List<Action>> events, Event ev)
+        private void ParseActions(XElement root, Dictionary<Event, List<Action>> events, Event ev, EventType evType)
         {
             foreach (var notify in root.Element("actions").Elements("notify"))
             {
@@ -162,7 +169,7 @@ namespace Data
                     var titleText = balloon.Attribute("title_text").Value;
                     var bodyText = balloon.Attribute("body_text").Value;
                     var displayDuration = int.Parse(balloon.Attribute("display_time").Value);
-                    ballonData = new Balloon(titleText, bodyText, displayDuration);
+                    ballonData = new Balloon(titleText, bodyText, displayDuration, evType);
                 }
 
                 SoundInterface soundInterface = null;
@@ -239,7 +246,7 @@ namespace Data
                 ParseAreaBossBlackList(abnormality);
                 var cooldownEvent = new CooldownEvent(ingame, active, priority, skillId, onlyResetted);
                 events.Add(cooldownEvent, new List<Action>());
-                ParseActions(abnormality, events, cooldownEvent);
+                ParseActions(abnormality, events, cooldownEvent, EventType.Cooldown);
             }
         }
 
@@ -287,7 +294,8 @@ namespace Data
                 var abnormalityEvent = new AbnormalityEvent(ingame, active, priority, blacklist.Any() ? blacklist : default_blacklist, ids, types, target, trigger,
                     remainingSecondsBeforeTrigger, rewarnTimeoutSeconds);
                 events.Add(abnormalityEvent, new List<Action>());
-                ParseActions(abnormality, events, abnormalityEvent);
+                var t = trigger == AbnormalityTriggerType.MissingDuringFight ? EventType.MissingAb : EventType.AddRemoveAb;
+                ParseActions(abnormality, events, abnormalityEvent, t);
             }
         }
     }
