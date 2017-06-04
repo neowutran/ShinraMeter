@@ -5,6 +5,7 @@
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:ui="clr-namespace:DamageMeter.UI"
                      mc:Ignorable="d"
+                     MinHeight="30" MinWidth="645"
                      Title="EntityStats">
     <Window.Resources>
         <Style TargetType="{x:Type ToolTip}">

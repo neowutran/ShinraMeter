@@ -7,6 +7,7 @@
                         xmlns:l="clr-namespace:Lang;assembly=Lang"
                         mc:Ignorable="d"
                         d:DesignWidth="500"
+                        MinHeight="50" MinWidth="100"
                         Title="Notification popup">
     <Window.Resources>
     </Window.Resources>

@@ -7,6 +7,7 @@
                      xmlns:controls="clr-namespace:DamageMeter.UI.HUD.Controls"
                      mc:Ignorable="d"
                      Title="BossGageWindow" Height="Auto" Width="Auto"
+                     MinHeight="30" MinWidth="380"
                      SizeToContent="WidthAndHeight"
                      Topmost="True"
                      ShowInTaskbar="False"

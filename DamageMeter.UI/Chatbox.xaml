@@ -6,6 +6,7 @@
                      xmlns:ui="clr-namespace:DamageMeter.UI"
                      mc:Ignorable="d"
                      Height="800"
+                     MinHeight="10" MinWidth="10"
                      ResizeMode="CanResizeWithGrip"
                      Title="Chatbox">
     <Window.Resources>

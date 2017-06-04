@@ -8,6 +8,7 @@
                      xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
                      mc:Ignorable="d"
                      Title="Shinra Meter"
+                     MinHeight="60" MinWidth="219"
                      Loaded="MainWindow_OnLoaded"
                      Closed="MainWindow_OnClosed" >
 

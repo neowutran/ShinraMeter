@@ -287,10 +287,10 @@ namespace DamageMeter.UI
 
                 if (BasicTeraData.Instance.WindowData.InvisibleUi && !_paused)
                 {
-                    if (Controls.Count > 0 && !ForceWindowVisibilityHidden) { ShowWindow(); } //Visibility = Visibility.Visible; }
-                    if (Controls.Count == 0) { HideWindow(); } //Visibility = Visibility.Hidden; }
+                    if (Controls.Count > 0 && !ForceWindowVisibilityHidden && Visibility != Visibility.Visible) { ShowWindow(); } //Visibility = Visibility.Visible; }
+                    if (Controls.Count == 0 && Visibility != Visibility.Hidden) { HideWindow(); } //Visibility = Visibility.Hidden; }
                 }
-                else if (!ForceWindowVisibilityHidden) { ShowWindow(); } //Visibility = Visibility.Visible; } 
+                else if (!ForceWindowVisibilityHidden && Visibility != Visibility.Visible) { ShowWindow(); } //Visibility = Visibility.Visible; } 
                 }
 
             Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox,
@@ -402,13 +402,25 @@ namespace DamageMeter.UI
                 _popupNotification.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
                 _popupNotification.Left = _popupNotification.LastSnappedPoint?.X ?? 0;
                 _popupNotification.Top = _popupNotification.LastSnappedPoint?.Y ?? 0;
+                _popupNotification.Show();
+                _popupNotification.Hide();
                 _entityStats.LastSnappedPoint = BasicTeraData.Instance.WindowData.DebuffsStatus.Location;
                 _entityStats.Left = _entityStats.LastSnappedPoint?.X ?? 0;
                 _entityStats.Top = _entityStats.LastSnappedPoint?.Y ?? 0;
+                _entityStats.Show();
+                _entityStats.Hide();
                 if (BasicTeraData.Instance.WindowData.DebuffsStatus.Visible) { _entityStats.ShowWindow(); }
                 _bossGageBar.LastSnappedPoint = BasicTeraData.Instance.WindowData.BossGageStatus.Location;
+                _bossGageBar.Left = _bossGageBar.LastSnappedPoint?.X ?? 0;
+                _bossGageBar.Top = _bossGageBar.LastSnappedPoint?.Y ?? 0;
+                _bossGageBar.Show();
+                _bossGageBar.Hide();
                 if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible) { _bossGageBar.ShowWindow(); }
                 _windowHistory.LastSnappedPoint = BasicTeraData.Instance.WindowData.HistoryStatus.Location;
+                _windowHistory.Left = _windowHistory.LastSnappedPoint?.X ?? 0;
+                _windowHistory.Top = _windowHistory.LastSnappedPoint?.Y ?? 0;
+                _windowHistory.Show();
+                _windowHistory.Hide();
                 if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible) { _windowHistory.ShowWindow(); }
                 return;
             }

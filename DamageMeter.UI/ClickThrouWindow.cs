@@ -53,7 +53,7 @@ namespace DamageMeter.UI
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
             _dispatcher = Dispatcher.CurrentDispatcher;
-            _opacity = this.GetType().Name == "MainWindow" ? BasicTeraData.Instance.WindowData.MainWindowOpacity : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
+            _opacity = this.GetType().Name == "MainWindow" ? 1 : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Scale = BasicTeraData.Instance.WindowData.Scale;
         }
 
@@ -85,7 +85,7 @@ namespace DamageMeter.UI
             if (screen.WorkingArea.X + screen.WorkingArea.Width < newLeft + width + 30 * dx)
             {
                 newLeft = screen.WorkingArea.X + screen.WorkingArea.Width - width + _margin.Right * dx;
-                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - 10;
+                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - MinWidth * dx * Scale;
             }
             else if (screen.WorkingArea.X > newLeft - 30 * dx)
             {
@@ -95,7 +95,7 @@ namespace DamageMeter.UI
             if (screen.WorkingArea.Y + screen.WorkingArea.Height < newTop + height + 30 * dy)
             {
                 newTop = screen.WorkingArea.Y + screen.WorkingArea.Height - height + _margin.Bottom * dy;
-                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - 10;
+                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - MinHeight * dy * Scale;
             }
             else if (screen.WorkingArea.Y > newTop - 30 * dy)
             {
@@ -177,13 +177,15 @@ namespace DamageMeter.UI
         public void ShowWindow()
         {
             Visible = true;
-            if (BasicTeraData.Instance.WindowData.AllowTransparency)
+            if (!Empty)
             {
-                Opacity = 0;
-                _dispatcher.BeginInvoke(
-                    new Action(() => { BeginAnimation(OpacityProperty, OpacityAnimation(_opacity)); }));
+                if (BasicTeraData.Instance.WindowData.AllowTransparency)
+                {
+                    //Opacity = 0;
+                    _dispatcher.BeginInvoke(new Action(() => { BeginAnimation(OpacityProperty, OpacityAnimation(_opacity)); }));
+                }
+                Visibility = Visibility.Visible;
             }
-            Visibility = Visibility.Visible;
             SnapToScreen();
         }
 
