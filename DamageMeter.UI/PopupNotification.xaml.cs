@@ -40,8 +40,8 @@ namespace DamageMeter.UI
             Topmost = false;
             Topmost = true;
             ShowWindow();
-            var w = root.ActualWidth;
-            root.BeginAnimation(WidthProperty, new DoubleAnimation(0, w, TimeSpan.FromMilliseconds(400)) { EasingFunction = new QuadraticEase() });
+            //var w = root.ActualWidth;
+            //root.BeginAnimation(WidthProperty, new DoubleAnimation(0, w, TimeSpan.FromMilliseconds(400)) { EasingFunction = new QuadraticEase() });
             _stupidNotSafeLock++;
             await Task.Delay(displayTime);
             _stupidNotSafeLock--;
