@@ -14,22 +14,27 @@
     <Window.Background>
         <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
-    <Grid Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
+    <Grid x:Name="root" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource border}" Grid.RowSpan="3"/>
+        <Border Style="{StaticResource border}" Grid.RowSpan="3" Name="b" Grid.ColumnSpan="2"/>
+        <Rectangle Fill="#2bf" Width="5" Grid.RowSpan="3" Margin="1,1,0,1" Name="rect"/>
+        <Rectangle Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#4555"></Rectangle>
         <Label Name="TitleLabel" Margin="5" HorizontalAlignment="Center" HorizontalContentAlignment="Center"
                VerticalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="0" FontSize="24" Foreground="Red"
-               Background="Transparent" MaxWidth="500" MinWidth="100"/>
-        <Separator Grid.Row="1" />
-        <TextBlock Margin="5" Name="TextBlock" Background="Transparent" Foreground="White" FontSize="14" Grid.Row="2" MaxWidth="500" TextWrapping="Wrap"/>
+               Background="Transparent" MaxWidth="500" MinWidth="100" Grid.Column="1"/>
+        <TextBlock Margin="5" Name="TextBlock" Background="Transparent" Foreground="White" FontSize="14" Grid.Row="2" MaxWidth="500" TextWrapping="Wrap" Grid.Column="1"/>
     </Grid>
 </ui:ClickThrouWindow>
