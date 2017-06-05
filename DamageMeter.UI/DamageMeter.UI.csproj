@@ -154,6 +154,9 @@
     </Compile>
     <Compile Include="HUD\Converters\TimeInMsToLabelConverter.cs" />
     <Compile Include="HUD\Converters\IconConverter.cs" />
+    <Compile Include="NotificationControl.xaml.cs">
+      <DependentUpon>NotificationControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PopupNotification.xaml.cs">
       <DependentUpon>PopupNotification.xaml</DependentUpon>
     </Compile>
@@ -262,6 +265,10 @@
     <Page Include="HUD\Controls\RunemarksControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NotificationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PopupNotification.xaml">
       <SubType>Designer</SubType>

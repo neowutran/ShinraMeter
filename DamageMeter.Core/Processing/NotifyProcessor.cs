@@ -37,7 +37,7 @@ namespace DamageMeter.Processing
             MatchingSuccess();
         }
 
-        internal NotifyFlashMessage DefaultNotifyAction(string titleText, string bodyText)
+        internal NotifyFlashMessage DefaultNotifyAction(string titleText, string bodyText, EventType evType)
         {
             var ev = BasicTeraData.Instance.EventsData.AFK;
 
@@ -49,7 +49,7 @@ namespace DamageMeter.Processing
                 var notifyAction = action1.Clone();
                 notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{afk_body}", bodyText);
                 notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{afk_title}", titleText);
-
+                notifyAction.Balloon.EventType = evType;
 
                 if (notifyAction.Sound == null || notifyAction.Sound.GetType() != typeof(TextToSpeech))
                 {
@@ -70,7 +70,7 @@ namespace DamageMeter.Processing
         {
             if (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive())
             {
-                NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.PartyMatchingSuccess, LP.PartyMatchingSuccess);
+                NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.PartyMatchingSuccess, LP.PartyMatchingSuccess, EventType.MatchingSuccess);
             }
         }
 
@@ -78,7 +78,7 @@ namespace DamageMeter.Processing
         {
             if (message.Count == 1 && (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()))
             {
-                NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.CombatReadyCheck, LP.CombatReadyCheck);
+                NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.CombatReadyCheck, LP.CombatReadyCheck, EventType.ReadyCheck);
             }
         }
 
@@ -88,7 +88,7 @@ namespace DamageMeter.Processing
             {
                 NetworkController.Instance.FlashMessage = DefaultNotifyAction(message.PlayerName + " " + LP.ApplyToYourParty,
                     LP.Class + ": " + LP.ResourceManager.GetString(message.PlayerClass.ToString(), LP.Culture) + Environment.NewLine + LP.Lvl + ": " + message.Lvl +
-                    Environment.NewLine);
+                    Environment.NewLine, EventType.OtherUserApply);
             }
 
             if (BasicTeraData.Instance.WindowData.CopyInspect)
@@ -105,7 +105,7 @@ namespace DamageMeter.Processing
             {
                 NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.Trading + ": " + message.PlayerName,
                     LP.SellerPrice + ": " + Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED.Gold(message.SellerPrice) + Environment.NewLine + LP.OfferedPrice +
-                    ": " + Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED.Gold(message.OfferedPrice));
+                    ": " + Tera.Game.Messages.S_TRADE_BROKER_DEAL_SUGGESTED.Gold(message.OfferedPrice), EventType.Broker);
             }
         }
 
@@ -115,15 +115,15 @@ namespace DamageMeter.Processing
             {
                 if (message.Type == Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.PartyInvite)
                 {
-                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.PartyInvite + ": " + message.Sender, message.Sender);
+                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.PartyInvite + ": " + message.Sender, message.Sender, EventType.PartyInvite);
                 }
                 else if (message.Type == Tera.Game.Messages.S_REQUEST_CONTRACT.RequestType.TradeRequest)
                 {
-                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.Trading + ": " + message.Sender, message.Sender);
+                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.Trading + ": " + message.Sender, message.Sender, EventType.Trade);
                 }
                 else if (!Enum.IsDefined(typeof(S_REQUEST_CONTRACT.RequestType), (int) message.Type))
                 {
-                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.ContactTry, LP.ContactTry);
+                    NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.ContactTry, LP.ContactTry, EventType.GenericContract);
                 }
             }
         }
@@ -256,13 +256,16 @@ namespace DamageMeter.Processing
                             if (abnormalityEvent.Ids.Count > 0)
                             {
                                 var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key).Name;
+                                var icon = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key).EffectIcon;
                                 notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", abName);
                                 notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abName);
+                                notifyAction.Balloon.Icon = icon;
                             }
                             else
                             {
                                 notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", LP.NoCrystalBind);
                                 notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{abnormality_name}", LP.NoCrystalBind);
+                                notifyAction.Balloon.Icon = "icon_items.q_closedspace_stone_05_tex";
                             }
                             notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{player_name}", player?.Name);
                             notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{player_name}", player?.Name);
@@ -409,6 +412,9 @@ namespace DamageMeter.Processing
                         notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{next_hp}", nextHp.ToString());
                         notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abnormality.Name);
                         notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{stack}", stack.ToString());
+
+                        notifyAction.Balloon.EventType = EventType.AddRemoveAb;
+                        notifyAction.Balloon.Icon = abnormality.EffectIcon;
                     }
                     if (notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
                     {
@@ -480,7 +486,7 @@ namespace DamageMeter.Processing
         {
             if (type == S_UPDATE_NPCGUILD.NpcGuildType.Vanguard && credits >= 8500)
             {
-                NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.VanguardCredits + credits, LP.VanguardCredits + credits);
+                NetworkController.Instance.FlashMessage = DefaultNotifyAction(LP.VanguardCredits + credits, LP.VanguardCredits + credits, EventType.VanguardCredits);
             }
         }
 

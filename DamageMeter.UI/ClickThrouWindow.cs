@@ -17,15 +17,19 @@ namespace DamageMeter.UI
         private const int GWL_EXSTYLE = -20;
         private const int WS_EX_NOACTIVATE = 0x08000000;
 
-        private double _scale=1;
+        private double _scale = 1;
 
         private readonly Dispatcher _dispatcher;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public double Scale { get => _scale;
-            set { if (value == _scale) return;
-                    _scale = value;
-                _dispatcher.InvokeIfRequired(()=>PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scale")),DispatcherPriority.DataBind);
+        public double Scale
+        {
+            get => _scale;
+            set
+            {
+                if (value == _scale) return;
+                _scale = value;
+                _dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scale")), DispatcherPriority.DataBind);
             }
         }
 
@@ -42,12 +46,10 @@ namespace DamageMeter.UI
             ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
             Icon = BasicTeraData.Instance.ImageDatabase.Icon;
             SizeToContent = SizeToContent.WidthAndHeight;
-            _margin = (Thickness) new TransparencyToMarginConverter().Convert(BasicTeraData.Instance.WindowData.AllowTransparency, typeof(Thickness), null, null);
+            _margin = (Thickness)new TransparencyToMarginConverter().Convert(BasicTeraData.Instance.WindowData.AllowTransparency, typeof(Thickness), null, null);
             MouseLeftButtonDown += Move;
             Loaded += (s, a) =>
             {
-                MinWidth = MinWidth * Scale;
-                MinHeight = MinHeight * Scale;
                 SnapToScreen();
                 SizeChanged += (s1, a1) => SnapToScreen();
             };
@@ -65,7 +67,7 @@ namespace DamageMeter.UI
         private Thickness _margin;
         private double _opacity;
         public bool Visible;
-
+        protected bool IsBottomHalf;
         protected virtual bool Empty => false;
 
         public void SnapToScreen()
@@ -87,7 +89,7 @@ namespace DamageMeter.UI
             if (screen.WorkingArea.X + screen.WorkingArea.Width < newLeft + width + 30 * dx)
             {
                 newLeft = screen.WorkingArea.X + screen.WorkingArea.Width - width + _margin.Right * dx;
-                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - MinWidth * dx;
+                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - MinWidth * dx * Scale;
             }
             else if (screen.WorkingArea.X > newLeft - 30 * dx)
             {
@@ -97,18 +99,27 @@ namespace DamageMeter.UI
             if (screen.WorkingArea.Y + screen.WorkingArea.Height < newTop + height + 30 * dy)
             {
                 newTop = screen.WorkingArea.Y + screen.WorkingArea.Height - height + _margin.Bottom * dy;
-                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - MinHeight * dy;
+                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - MinHeight * dy * Scale;
             }
             else if (screen.WorkingArea.Y > newTop - 30 * dy)
             {
                 newTop = screen.WorkingArea.Y - _margin.Top * dy;
                 snapTop = screen.WorkingArea.Y;
             }
-            Left = newLeft/dx;
-            Top = newTop/dy;
-            if (_dragged) LastSnappedPoint = new Point(snapLeft/dx, snapTop/dy);
+            Left = newLeft / dx;
+            Top = newTop / dy;
+            if (_dragged) LastSnappedPoint = new Point(snapLeft / dx, snapTop / dy);
             _dragged = false;
             if (Visible & Visibility == Visibility.Hidden) ShowWindow();
+
+            if (newTop < screen.WorkingArea.Y +( screen.WorkingArea.Height / 2))
+            {
+                IsBottomHalf = false;
+            }
+            else
+            {
+                IsBottomHalf = true;
+            }
         }
 
         public void SetClickThrou()
@@ -125,7 +136,8 @@ namespace DamageMeter.UI
 
         public void Move(object sender, MouseButtonEventArgs e)
         {
-            try {
+            try
+            {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
                 _dragging = true;
                 DragMove();
@@ -138,13 +150,14 @@ namespace DamageMeter.UI
 
         protected void ClickThrouWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (DontClose) {
+            if (DontClose)
+            {
                 e.Cancel = true;
-                if (Visibility==Visibility.Visible) HideWindow();
+                if (Visibility == Visibility.Visible) HideWindow();
                 return;
             }
             Closing -= ClickThrouWindow_Closing;
-            foreach (ClickThrouWindow window in ((ClickThrouWindow) sender).OwnedWindows)
+            foreach (ClickThrouWindow window in ((ClickThrouWindow)sender).OwnedWindows)
             {
                 window.DontClose = false;
                 window.Close();
@@ -161,7 +174,7 @@ namespace DamageMeter.UI
             }
         }
 
-        public void HideWindow(bool set=false)
+        public void HideWindow(bool set = false)
         {
             Visible = set;
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
@@ -209,7 +222,7 @@ namespace DamageMeter.UI
 
         private static DoubleAnimation OpacityAnimation(double to)
         {
-            return new DoubleAnimation(to, TimeSpan.FromMilliseconds(300)) {EasingFunction = new QuadraticEase()};
+            return new DoubleAnimation(to, TimeSpan.FromMilliseconds(300)) { EasingFunction = new QuadraticEase() };
         }
 
         [DllImport("user32.dll")]

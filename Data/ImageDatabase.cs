@@ -21,8 +21,17 @@ namespace Data
             Link = new Image {Source = new BitmapImage(new Uri(folder + "link.png"))};
             Enraged = new Image {Source = new BitmapImage(new Uri(folder + "enraged.png"))};
             BossGage = new Image {Source = new BitmapImage(new Uri(folder + "eye.png"))};
+            Whisper = new Image { Source = new BitmapImage(new Uri(folder + "whisper.png")) };
+            Info = new Image { Source = new BitmapImage(new Uri(folder + "info.png")) };
+            DoneCircle = new Image { Source = new BitmapImage(new Uri(folder + "done_circle.png")) };
+            Group = new Image { Source = new BitmapImage(new Uri(folder + "group.png")) };
+            GroupAdd = new Image { Source = new BitmapImage(new Uri(folder + "group_add.png")) };
+            Money = new Image { Source = new BitmapImage(new Uri(folder + "money.png")) };
+            Credits = new Image { Source = new BitmapImage(new Uri(folder + "credits.png")) };
+
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
+
             Tray = new Icon(folder + "shinra.ico");
         }
 
@@ -43,6 +52,14 @@ namespace Data
         public Image EntityStats { get; }
         public Image Enraged { get; }
         public Image EntityStatsClickThrou { get; }
+
+        public Image Whisper { get; }
+        public Image Info { get; }
+        public Image DoneCircle { get; }
+        public Image Group { get; }
+        public Image GroupAdd { get; }
+        public Image Money { get; }
+        public Image Credits { get; }
 
         public Icon Tray { get; }
     }

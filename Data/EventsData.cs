@@ -21,7 +21,18 @@ namespace Data
         MissingAb,
         AddRemoveAb,
         Cooldown,
-        AFK
+        AFK,
+        Whisper,
+        MatchingSuccess,
+        ReadyCheck,
+        OtherUserApply,
+        Broker,
+        PartyInvite,
+        Trade,
+        GenericContract,
+        VanguardCredits,
+        WakeUp,
+        Mention
     }
     public class EventsData
     {
