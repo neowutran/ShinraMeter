@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+
+	<!-- Notification when something happen & you are not on the Tera windows -->
+	<common_afk>
+		<actions>
+				<notify>
+					<balloon title_text="{afk_title}" body_text="{afk_body}" display_time="3000" />
+					<beeps>
+						<beep frequency="250" duration="500"/>
+					</beeps>
+				</notify>
+			</actions>
+	</common_afk>
+	
+	<!-- The boss became enraged -->
+	<abnormality active="true" ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!--<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="5000" />
+				<beeps>
+					<beep frequency="180" duration="500"/>
+				</beeps>-->
+				<text_to_speech text="Enragé" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+
+	<!-- Enrage is ending -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="10" trigger="Ending" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!-- <balloon title_text="{abnormality_name} is ending" body_text="{abnormality_name} {time_left} left" display_time="3000" />
+				 <beeps>
+					<beep frequency="110" duration="500"/>
+				</beeps> -->
+				<text_to_speech text="Désenrage dans {time_left} secondes" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+3" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Hurricane -->
+	<abnormality active="false" ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>60010</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<beeps>
+					<beep frequency="110" duration="500"/>
+				</beeps>
+			</notify>
+		</actions>
+	</abnormality> 
+	
+	<!-- Joy of party is at 100% (everyone is in the dungeons) -->
+	<abnormality  active="true" ingame="false" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>999001021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<beeps>
+					<beep frequency="250" duration="500"/>
+				</beeps>
+			</notify>
+		</actions>
+	</abnormality>
+		
+	<!-- Raid 30, phase 3, black debuff (Dust) -->
+	<abnormality active="true" ingame="true" priority="11" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>950069</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="Noir" volume="80" rate="+2" /> 
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Raid 30, phase 3, red debuff (Flame) -->
+	<abnormality active="true" ingame="true" priority="10" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>950068</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="Rouge" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Crystal bind check for yourself -->
+	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="50" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>CrystalBind</abnormality>
+			<abnormality>CCrystalBind</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<!-- <beeps>
+					<beep frequency="440" duration="500"/>
+				</beeps>-->
+				<text_to_speech text="Lien de christale" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Crystal bind check for your party members -->
+	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="240" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
+		<abnormalities>
+			<abnormality>CrystalBind</abnormality>
+			<abnormality>CCrystalBind</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!-- <balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" /> -->
+				<text_to_speech text="Lien de christale {player_name} {time_left} secondes" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Everful Nostrum for yourself -->
+	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="3" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>4031</abnormality>
+			<abnormality>4030</abnormality>
+			<abnormality>4020</abnormality>
+			<abnormality>4021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!--<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				 <beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps> -->
+			<text_to_speech text="Remède abondant" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+3"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Everful Nostrum for your party members -->
+	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="240" trigger="MissingDuringFight" target="PartySelfExcluded">
+		<abnormalities>
+			<abnormality>4031</abnormality>
+			<abnormality>4030</abnormality>
+			<abnormality>4020</abnormality>
+			<abnormality>4021</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<beeps>
+					<beep frequency="100" duration="500"/>
+				</beeps>
+			</notify>
+		</actions>
+	</abnormality>
+</events>

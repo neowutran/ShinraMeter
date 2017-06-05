@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+
+	<!-- Blessing of Shakan -->
+	<abnormality active="true" ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>805102</abnormality>
+			<abnormality>805101</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!--<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps> -->
+				<text_to_speech text="Bénédiction d'Arun" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Blessing of Balder --> 
+	<abnormality active="true" ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+		<abnormalities>
+			<abnormality>805600</abnormality>
+			<abnormality>805601</abnormality>
+			<abnormality>805602</abnormality>
+			<abnormality>805603</abnormality>
+			<abnormality>805604</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!--<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<beeps>
+					<beep frequency="196" duration="500"/>
+				</beeps>-->
+				<text_to_speech text="Bénédiction de Shara" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Energy Stars -->
+	<abnormality active="true" ingame="true"  rewarn_timeout_seconds="5" remaining_seconds_before_trigger="4" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>801500</abnormality>
+			<abnormality>801501</abnormality>
+			<abnormality>801502</abnormality>
+			<abnormality>801503</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+			<!--<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<beeps>
+					<beep frequency="150" duration="500"/>
+				</beeps> -->
+				<text_to_speech text="Étoile énergétique" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Triple Nemesis -->
+	<abnormality ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="3" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>28090</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+			<!--<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				 <beeps>
+					<beep frequency="100" duration="500"/>
+				</beeps> -->
+				<text_to_speech text="Triple Némésice" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+</events>

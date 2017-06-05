@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	<!-- Mystic contagion -->
+	<abnormality active="true" ingame="true" trigger="Added" target="Boss">
+		<abnormalities>
+			<abnormality>701700</abnormality>
+			<abnormality>701701</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!-- <balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+				<beeps>
+					<beep frequency="110" duration="500"/>
+				</beeps>-->
+			<text_to_speech text="Contagion" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Adrenaline Rush -->
+	<abnormality active="true" ingame="true" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>200701</abnormality>
+			<abnormality>200700</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!-- <balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
+				<beeps>
+					<beep frequency="100" duration="500"/>
+				</beeps> -->
+				<text_to_speech text="Adrénaline Rush" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+3"/>
+			</notify>
+		</actions>
+	</abnormality>
+
+	<!-- The boss is not enraged anymore  -->
+	<abnormality  active="true" ingame="true" trigger="Removed" target="Boss">
+		<abnormalities>
+			<abnormality>8888888</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<!-- <balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="3000" />
+				<beeps>
+					<beep frequency="185" duration="500"/>
+				</beeps>-->
+				<text_to_speech text="Désenrage" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Endurance debuff  -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>10153140</abnormality>
+			<abnormality>200300</abnormality>
+			<abnormality>200301</abnormality>
+			<abnormality>200302</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<beeps>
+					<beep frequency="392" duration="500"/>
+				</beeps>
+			</notify>
+		</actions>
+	</abnormality>
+</events>
