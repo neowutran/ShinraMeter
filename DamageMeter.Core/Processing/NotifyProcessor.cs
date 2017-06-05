@@ -248,7 +248,7 @@ namespace DamageMeter.Processing
                             }
                             else { textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", LP.NoCrystalBind); }
 
-                            textToSpeech.Text = textToSpeech.Text.Replace("{time_left}", abnormalityTimeLeft?.Seconds.ToString() ?? "");
+                            textToSpeech.Text = textToSpeech.Text.Replace("{time_left}", abnormalityTimeLeft?.Seconds.ToString() ?? "0");
                         }
 
                         if (notifyAction.Balloon != null)
@@ -276,8 +276,8 @@ namespace DamageMeter.Processing
                             }
                             else
                             {
-                                notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{time_left}", "");
-                                notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{time_left}", "");
+                                notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{time_left}", "0");
+                                notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{time_left}", "0");
                             }
                         }
                         NetworkController.Instance.FlashMessage = new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, e.Key.Priority);
