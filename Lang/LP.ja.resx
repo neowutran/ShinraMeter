@@ -275,8 +275,9 @@
     <value>一般</value>
   </data>
   <data name="Your_computer_is_too_slow" xml:space="preserve">
-    <value>お使いのコンピュータは、DPSメーターを使用するには動作が遅すぎるため終了します。
-十分な速度でパケットを分析することはできませんでした。</value>
+    <value>お使いのコンピュータは、DPSメーターを使用するには動作が遅すぎます。
+十分な速度でパケットを分析することができませんでした。
+リセットとマップ変更または再度ログインするまで一時停止します。</value>
   </data>
   <data name="Your_hotkeys_xml_file_is_invalid" xml:space="preserve">
     <value>hotkeys.xml が不正です。</value>
@@ -660,5 +661,20 @@
   </data>
   <data name="CritDamagePercent" xml:space="preserve">
     <value>クリティカルダメージ(%)</value>
+  </data>
+  <data name="AuthToken" xml:space="preserve">
+    <value>Moongourd認証トークン</value>
+  </data>
+  <data name="ShowBossGage" xml:space="preserve">
+    <value>ボスHPゲージ表示</value>
+  </data>
+  <data name="Counter" xml:space="preserve">
+    <value>Skill Сasts</value>
+  </data>
+  <data name="NoPaste" xml:space="preserve">
+    <value>ゲーム内でのチャット貼り付け無効</value>
+  </data>
+  <data name="NoAbnormalsInHUD" xml:space="preserve">
+    <value>HPバー下の異常アイコンを無効</value>
   </data>
 </root>
