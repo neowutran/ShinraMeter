@@ -42,12 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="d3d9render.cs" />
-    <Compile Include="Overlay\Box.cs" />
-    <Compile Include="Overlay\DXOverlay.cs" />
-    <Compile Include="Overlay\Image.cs" />
-    <Compile Include="Overlay\Line.cs" />
-    <Compile Include="Overlay\Overlay.cs" />
-    <Compile Include="Overlay\TextLabel.cs" />
+    <Compile Include="Overlays\Box.cs" />
+    <Compile Include="Overlays\DXOverlay.cs" />
+    <Compile Include="Overlays\Image.cs" />
+    <Compile Include="Overlays\Line.cs" />
+    <Compile Include="Overlays\Overlay.cs" />
+    <Compile Include="Overlays\TextLabel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeraData\TerInfoEx.cs" />
   </ItemGroup>

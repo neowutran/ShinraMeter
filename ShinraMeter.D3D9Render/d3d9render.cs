@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using ShinraMeter.D3D9Render.Overlay;
+using ShinraMeter.D3D9Render.Overlays;
 using ShinraMeter.D3D9Render.TeraData;
 
 namespace ShinraMeter.D3D9Render
 {
     public class D3D9Render : IDisposable
     {
-        private readonly List<Dictionary<string, Overlay.Overlay>> _cacheOverlays =
-            new List<Dictionary<string, Overlay.Overlay>>(2) {new Dictionary<string, Overlay.Overlay>(), new Dictionary<string, Overlay.Overlay>()};
+        private readonly List<List<Overlay>> _cacheOverlays = new List<List<Overlay>> {new List<Overlay>(1), new List<Overlay>()};
 
         private int _dataUserCount;
         private bool _needUpdateBox = true;
@@ -28,13 +27,13 @@ namespace ShinraMeter.D3D9Render
         private void RedrawBox()
         {
             if (!_needUpdateBox) { return; }
-            if (!_cacheOverlays[0].ContainsKey("box"))
+            if (!_cacheOverlays[0].Exists(overlay => overlay.GetType() == typeof(Box)))
             {
-                _cacheOverlays[0].Add("box", new Box(new Rectangle(X, Y, 177, DpsData.Count * 20), Color.FromArgb(170, Color.Black), true));
+                _cacheOverlays[0].Add(new Box(new Rectangle(X, Y, 177, DpsData.Count * 20), Color.FromArgb(170, Color.Black), true));
                 return;
             }
-            _cacheOverlays[0]["box"].Destroy();
-            _cacheOverlays[0]["box"] = new Box(new Rectangle(X, Y, 177, DpsData.Count * 20), Color.FromArgb(170, Color.Black), true);
+            _cacheOverlays[0][0].Destroy();
+            _cacheOverlays[0][0] = new Box(new Rectangle(X, Y, 177, DpsData.Count * 20), Color.FromArgb(170, Color.Black), true);
         }
 
         private static void ChekForDevice()
@@ -44,35 +43,48 @@ namespace ShinraMeter.D3D9Render
 
         public void Draw(List<ClassInfo> userListData)
         {
-            if(Process.GetProcessesByName("TERA").FirstOrDefault() == null)
-                return;
+            if (Process.GetProcessesByName("TERA").FirstOrDefault() == null) { return; }
             DpsData = userListData;
             _needUpdateBox = _dataUserCount.Equals(userListData.Count);
             _dataUserCount = userListData.Count;
             ChekForDevice();
             RedrawBox();
-            foreach (var keyValuePair in _cacheOverlays[1]) { keyValuePair.Value.Destroy(); }
-            _cacheOverlays[1].Clear();
+            if (_cacheOverlays[1].Count / 4 != DpsData.Count)
+            {
+                for (var i = DpsData.Count - 1; i < _cacheOverlays.Count / 4 - DpsData.Count - 1; i++) { _cacheOverlays[1][i].Destroy(); }
+                _cacheOverlays.RemoveRange(DpsData.Count - 1, _cacheOverlays.Count / 4 - DpsData.Count);
+            }
             for (var i = 0; i < DpsData.Count; i++)
             {
-                if(!_cacheOverlays[1].ContainsKey($"username_{i}"))
-                    _cacheOverlays[1].Add($"username_{i}",
-                        new TextLabel("Arial", 7, TypeFace.None, new Point(X + 5, Y + i * 20 + 5), Color.FromArgb(220, Color.YellowGreen), DpsData[i].PName, false, true));
-                else
-                    SetTextLabel(_cacheOverlays[1][$"username_{i}"], $"username_{i}");
-                _cacheOverlays[1].Add($"userdmg_{i}",
-                    new TextLabel("Arial", 7, TypeFace.None, new Point(X + 85, Y + i * 20 + 5), Color.FromArgb(220, Color.White), DpsData[i].PDmg, false, true));
-                _cacheOverlays[1].Add($"userdps_{i}",
-                    new TextLabel("Arial", 7, TypeFace.None, new Point(X + 115, Y + i * 20 + 5), Color.FromArgb(220, Color.White), DpsData[i].PDsp, false, true));
-                _cacheOverlays[1].Add($"usercrit_{i}",
-                    new TextLabel("Arial", 7, TypeFace.None, new Point(X + 155, Y + i * 20 + 5), Color.FromArgb(220, Color.OrangeRed), DpsData[i].PCrit, false,
-                        true));
+                if (_cacheOverlays[1].Count < i ||_cacheOverlays[1][0] == null)
+                {
+                    _cacheOverlays[1].Add(new TextLabel("Arial", 7, TypeFace.None, new Point(X + 5, Y + i * 20 + 5), Color.FromArgb(220, Color.YellowGreen), DpsData[i].PName, false, true));
+                }
+                else { SetTextLabel(_cacheOverlays[1][0], DpsData[i].PName); }
+
+                if (_cacheOverlays[1].Count < i || _cacheOverlays[1][1] == null)
+                {
+                    _cacheOverlays[1].Add(new TextLabel("Arial", 7, TypeFace.None, new Point(X + 85, Y + i * 20 + 5), Color.FromArgb(220, Color.White), DpsData[i].PDmg, false, true));
+                }
+                else { SetTextLabel(_cacheOverlays[1][1], DpsData[i].PDmg); }
+
+                if (_cacheOverlays[1].Count < i || _cacheOverlays[1][2] == null)
+                {
+                    _cacheOverlays[1].Add(new TextLabel("Arial", 7, TypeFace.None, new Point(X + 115, Y + i * 20 + 5), Color.FromArgb(220, Color.White), DpsData[i].PDsp, false, true));
+                }
+                else { SetTextLabel(_cacheOverlays[1][2], DpsData[i].PDsp); }
+
+                if (_cacheOverlays[1].Count < i || _cacheOverlays[1][3] == null)
+                {
+                    _cacheOverlays[1].Add(new TextLabel("Arial", 7, TypeFace.None, new Point(X + 155, Y + i * 20 + 5), Color.FromArgb(220, Color.OrangeRed), DpsData[i].PCrit, false, true));
+                }
+                else { SetTextLabel(_cacheOverlays[1][3], DpsData[i].PCrit); }
             }
         }
 
-        public void SetTextLabel(Overlay.Overlay textLabel, string text)
+        public void SetTextLabel(Overlay textLabel, string text)
         {
-            ((TextLabel)textLabel).Text = text;
+            ((TextLabel) textLabel).Text = text;
         }
 
         public void Destroy()
