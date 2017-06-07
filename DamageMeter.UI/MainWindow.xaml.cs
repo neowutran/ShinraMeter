@@ -399,6 +399,8 @@ namespace DamageMeter.UI
                 LastSnappedPoint=BasicTeraData.Instance.WindowData.Location;
                 Left = LastSnappedPoint?.X ?? 0;
                 Top = LastSnappedPoint?.Y ?? 0;
+                _dragged = true;
+                SnapToScreen();
                 _popupNotification.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
                 _popupNotification.Left = _popupNotification.LastSnappedPoint?.X ?? 0;
                 _popupNotification.Top = _popupNotification.LastSnappedPoint?.Y ?? 0;

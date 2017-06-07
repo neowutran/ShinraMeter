@@ -33,10 +33,23 @@ namespace DamageMeter.UI
             }
         }
 
+        private bool _snappedToBottom;
+        public bool SnappedToBottom
+        {
+            get => _snappedToBottom;
+            set
+            {
+                if (value == _snappedToBottom) return;
+                _snappedToBottom = value;
+                _dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SnappedToBottom")), DispatcherPriority.DataBind);
+            }
+        }
+
         public bool DontClose = false;
         public ClickThrouWindow()
         {
-            AllowsTransparency = BasicTeraData.Instance.WindowData.AllowTransparency;
+            SnapsToDevicePixels = true;
+            AllowsTransparency = GetType().Name == "PopupNotification" || BasicTeraData.Instance.WindowData.AllowTransparency;
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 200;
             Closing += ClickThrouWindow_Closing;
             WindowStyle = WindowStyle.None;
@@ -57,17 +70,18 @@ namespace DamageMeter.UI
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
             _dispatcher = Dispatcher.CurrentDispatcher;
-            _opacity = this.GetType().Name == "MainWindow" ? 1 : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
+            _opacity = GetType().Name == "MainWindow" ? 1 : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Scale = BasicTeraData.Instance.WindowData.Scale;
         }
 
         public Point? LastSnappedPoint = null;
-        private bool _dragged = false;
+        internal bool _dragged = false;
         private bool _dragging = false;
+        private int _oldHeight;
+        private int _oldWidth;
         private Thickness _margin;
         private double _opacity;
         public bool Visible;
-        protected bool IsBottomHalf;
         protected virtual bool Empty => false;
 
         public void SnapToScreen()
@@ -82,6 +96,9 @@ namespace DamageMeter.UI
             var dy = m.M22;
             var width = ActualWidth * dx;
             var height = ActualHeight * dy;
+            if (!_dragged && (int)width==_oldWidth && (int)height==_oldHeight) return;
+            _oldWidth = (int) width;
+            _oldHeight = (int) height;
             var newLeft = (_dragged ? Left : LastSnappedPoint?.X ?? Left) * dx;
             var newTop = (_dragged ? Top : LastSnappedPoint?.Y ?? Top) * dy;
             var snapLeft = newLeft;
@@ -100,26 +117,20 @@ namespace DamageMeter.UI
             {
                 newTop = screen.WorkingArea.Y + screen.WorkingArea.Height - height + _margin.Bottom * dy;
                 snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - MinHeight * dy * Scale;
+                SnappedToBottom = true;
             }
             else if (screen.WorkingArea.Y > newTop - 30 * dy)
             {
                 newTop = screen.WorkingArea.Y - _margin.Top * dy;
                 snapTop = screen.WorkingArea.Y;
+                SnappedToBottom = false;
             }
+            else SnappedToBottom = false;
             Left = newLeft / dx;
             Top = newTop / dy;
             if (_dragged) LastSnappedPoint = new Point(snapLeft / dx, snapTop / dy);
             _dragged = false;
             if (Visible & Visibility == Visibility.Hidden) ShowWindow();
-
-            if (newTop < screen.WorkingArea.Y +( screen.WorkingArea.Height / 2))
-            {
-                IsBottomHalf = false;
-            }
-            else
-            {
-                IsBottomHalf = true;
-            }
         }
 
         public void SetClickThrou()

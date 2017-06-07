@@ -1,21 +1,12 @@
 ﻿using Data;
 using Data.Actions.Notify;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Xceed.Wpf.AvalonDock.Controls;
 
 namespace DamageMeter.UI
 {
@@ -27,10 +18,11 @@ namespace DamageMeter.UI
         public NotificationControl()
         {
             InitializeComponent();
-            Width = 0;
+            //Width = 0;
         }
         Balloon _context;
         Timer _close;
+        public double DHeight;
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             _context = (Balloon)DataContext;
@@ -133,11 +125,11 @@ namespace DamageMeter.UI
             }
 
             rect.Fill = new SolidColorBrush(col);
-
-            var an = new DoubleAnimation(0, 300, TimeSpan.FromMilliseconds(300)) { EasingFunction = new QuadraticEase() };
-            this.BeginAnimation(WidthProperty, an);
+            DHeight = ActualHeight;
+            ((UIElement)this).FindLogicalAncestor<PopupNotification>().DHeight += DHeight;
+            var an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(400)) { EasingFunction = new QuadraticEase() };
+            this.BeginAnimation(OpacityProperty, an);
             _close.Start();
-
         }
 
         private void _context_RefreshEvent(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -150,6 +142,10 @@ namespace DamageMeter.UI
             else if (e.PropertyName == "BodyText")
             {
                 TextBlock.Text = _context.BodyText;
+                var par = ((UIElement) this).FindLogicalAncestor<PopupNotification>();
+                par.DHeight -= DHeight;
+                DHeight = ActualHeight;
+                par.DHeight += DHeight;
             }
         }
 
@@ -159,10 +155,12 @@ namespace DamageMeter.UI
             Dispatcher.InvokeIfRequired(() =>
             {
                 var h = this.ActualHeight;
-                var an = new DoubleAnimation(h, 0, TimeSpan.FromMilliseconds(400)) { EasingFunction = new QuadraticEase() };
+                var an = new DoubleAnimation(h, 0, TimeSpan.FromMilliseconds(500));
                 an.Completed += (s, ev) =>
                 {
-                    PopupNotification.RemoveMe(_context);
+                    var parent = ((UIElement)this).FindLogicalAncestor<PopupNotification>();
+                    parent?.RemoveMe(_context);
+                    if (parent != null) parent.DHeight -= DHeight;
                     _close.Dispose();
                 };
                 //this.BeginAnimation(WidthProperty, an);

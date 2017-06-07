@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <converters:IconConverter x:Key="iconConv" />
     </UserControl.Resources>
-    <Grid Margin="5" Width="240" HorizontalAlignment="Left">
+    <Grid Margin="5" Width="Auto" HorizontalAlignment="Left">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
