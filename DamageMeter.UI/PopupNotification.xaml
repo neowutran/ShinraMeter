@@ -20,9 +20,6 @@
         <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
     <Grid x:Name="root" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
-        <Grid.Resources>
-            <converters:TopSpacerConverter x:Key="TopSpacer" />
-        </Grid.Resources>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
