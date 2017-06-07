@@ -10,20 +10,23 @@ namespace ShinraMeter.D3D9Render
 {
     public class D3D9Render : IDisposable
     {
+        // cache overlay
         private readonly List<List<Overlay>> _cacheOverlays = new List<List<Overlay>> {new List<Overlay>(1), new List<Overlay>()};
-
+        // check data for redraw box
         private int _dataUserCount;
+        // validate data to redraw box
         private bool _needUpdateBox = true;
+        // position X ,Y 
         public int X { get; set; } = 0;
         public int Y { get; set; } = 0;
-
+        // Dps data see ToClassInfo method
         private List<ClassInfo> DpsData { get; set; } = new List<ClassInfo>();
-
+        // destroy all visual on exit or on disposing
         public void Dispose()
         {
             Destroy();
         }
-
+        // redraw box with validate
         private void RedrawBox()
         {
             if (!_needUpdateBox) { return; }
@@ -35,12 +38,12 @@ namespace ShinraMeter.D3D9Render
             _cacheOverlays[0][0].Destroy();
             _cacheOverlays[0][0] = new Box(new Rectangle(X, Y, 177, DpsData.Count * 20), Color.FromArgb(170, Color.Black), true);
         }
-
+        // check device for ready draw
         private static void ChekForDevice()
         {
             DxOverlay.SetParam("process", "TERA.exe");
         }
-
+        // draw the overlays with caching
         public void Draw(List<ClassInfo> userListData)
         {
             if (Process.GetProcessesByName("TERA").FirstOrDefault() == null) { return; }
@@ -81,12 +84,12 @@ namespace ShinraMeter.D3D9Render
                 else { SetTextLabel(_cacheOverlays[1][3], DpsData[i].PCrit); }
             }
         }
-
+        // update data for texlabel
         public void SetTextLabel(Overlay textLabel, string text)
         {
             ((TextLabel) textLabel).Text = text;
         }
-
+        // destroy all visual and remove from memory
         public void Destroy()
         {
             DxOverlay.DestroyAllVisual();

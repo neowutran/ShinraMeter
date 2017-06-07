@@ -51,5 +51,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeraData\TerInfoEx.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="dx_overlay\dx9_overlay.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
