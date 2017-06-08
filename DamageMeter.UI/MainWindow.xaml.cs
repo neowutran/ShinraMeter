@@ -253,7 +253,8 @@ namespace DamageMeter.UI
                         skills, abnormals.Get(playerStats.Source));
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
-                if(statsDamage.Any())
+
+                if (statsDamage.Any())
                     Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, (ThreadStart) delegate { _render.Draw(statsDamage.ToClassInfo()); });
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
@@ -537,20 +538,32 @@ namespace DamageMeter.UI
 
     public static class Extensions
     {
-        public static List<ClassInfo> ToClassInfo(this List<PlayerDamageDealt> data)
+        public static List<ClassInfo> ToClassInfo(this IEnumerable<PlayerDamageDealt> data)
         {
-            List<ClassInfo> tmp = new List<ClassInfo>();
-            data.ForEach(dealt =>
-            {
-                tmp.Add(new ClassInfo
+            // convert to linq expression knowable as
+            /*
+            IEnumerable<ClassInfo> tmpList = from p in data
+                select new ClassInfo
                 {
-                    PDmg = $"{FormatHelpers.Instance.FormatValue(dealt.Amount)}",
-                    PDsp = $"{FormatHelpers.Instance.FormatValue(dealt.Interval == 0 ? dealt.Amount : dealt.Amount * TimeSpan.TicksPerSecond / dealt.Interval)}{LP.PerSecond}",
-                    PName = $"{dealt.Source.Name}",
-                    PCrit = $"{Math.Round(dealt.CritRate)}%"
-                });
-            });
-            return tmp;
+                    PName = $"{p.Source.Name}",
+                    PDmg = $"{FormatHelpers.Instance.FormatValue(p.Amount)}",
+                    PDsp =
+                        $"{FormatHelpers.Instance.FormatValue(p.Interval == 0 ? p.Amount : p.Amount * TimeSpan.TicksPerSecond / p.Interval)}{LP.PerSecond}",
+                    PCrit = $"{Math.Round(p.CritRate)}%"
+                    PId = p.Source.PlayerId
+                };
+            return tmpList.ToList();
+            */
+            // return linq expression method
+            return data.Select(dealt => new ClassInfo
+            {
+                PName = $"{dealt.Source.Name}",
+                PDmg = $"{FormatHelpers.Instance.FormatValue(dealt.Amount)}",
+                PDsp =
+                    $"{FormatHelpers.Instance.FormatValue(dealt.Interval == 0 ? dealt.Amount : dealt.Amount * TimeSpan.TicksPerSecond / dealt.Interval)}{LP.PerSecond}",
+                PCrit = $"{Math.Round(dealt.CritRate)}%",
+                PId = dealt.Source.PlayerId
+            }).ToList();
         }
     }
 }
