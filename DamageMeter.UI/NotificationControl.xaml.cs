@@ -127,7 +127,7 @@ namespace DamageMeter.UI
             rect.Fill = new SolidColorBrush(col);
             DHeight = ActualHeight;
             ((UIElement)this).FindLogicalAncestor<PopupNotification>().DHeight += DHeight;
-            var an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(400)) { EasingFunction = new QuadraticEase() };
+            var an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));
             this.BeginAnimation(OpacityProperty, an);
             _close.Start();
         }
@@ -155,7 +155,7 @@ namespace DamageMeter.UI
             Dispatcher.InvokeIfRequired(() =>
             {
                 var h = this.ActualHeight;
-                var an = new DoubleAnimation(h, 0, TimeSpan.FromMilliseconds(500));
+                var an = new DoubleAnimation(h, 0, TimeSpan.FromMilliseconds(300)) { EasingFunction = new QuadraticEase() };
                 an.Completed += (s, ev) =>
                 {
                     var parent = ((UIElement)this).FindLogicalAncestor<PopupNotification>();

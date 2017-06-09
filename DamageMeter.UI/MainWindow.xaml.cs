@@ -21,8 +21,7 @@ using DamageMeter.UI.HUD.Windows;
 using Data;
 using Data.Actions.Notify;
 using Lang;
-using ShinraMeter.D3D9Render;
-using ShinraMeter.D3D9Render.TeraData;
+using DamageMeter.D3D9Render.TeraData;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Application = System.Windows.Forms.Application;
@@ -43,7 +42,7 @@ namespace DamageMeter.UI
         private readonly EntityStatsMain _entityStats;
         private readonly PopupNotification _popupNotification;
 
-        private readonly D3D9Render _render;
+        public D3D9Render.Renderer DXrender;
 
         private readonly TeradpsHistory _windowHistory;
         internal Chatbox _chatbox;
@@ -76,7 +75,7 @@ namespace DamageMeter.UI
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             _dispatcherTimer.Start();
-            _render = new D3D9Render();
+            if (BasicTeraData.Instance.WindowData.EnableOverlay) DXrender = new D3D9Render.Renderer();
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
             Chrono.ToolTip = LP.MainWindow_Only_boss;
@@ -174,7 +173,7 @@ namespace DamageMeter.UI
             NotifyIcon.Tray = null;
             _topMost = false;
             NetworkController.Instance.Exit();
-            _render.Dispose();
+            DXrender?.Dispose();
         }
 
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
@@ -253,9 +252,7 @@ namespace DamageMeter.UI
                         skills, abnormals.Get(playerStats.Source));
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
-
-                if (statsDamage.Any())
-                    Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, (ThreadStart) delegate { _render.Draw(statsDamage.ToClassInfo()); });
+                DXrender?.Draw(statsDamage.ToClassInfo());
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
                 foreach (var invisibleControl in invisibleControls)
@@ -540,20 +537,6 @@ namespace DamageMeter.UI
     {
         public static List<ClassInfo> ToClassInfo(this IEnumerable<PlayerDamageDealt> data)
         {
-            // convert to linq expression knowable as
-            /*
-            IEnumerable<ClassInfo> tmpList = from p in data
-                select new ClassInfo
-                {
-                    PName = $"{p.Source.Name}",
-                    PDmg = $"{FormatHelpers.Instance.FormatValue(p.Amount)}",
-                    PDsp =
-                        $"{FormatHelpers.Instance.FormatValue(p.Interval == 0 ? p.Amount : p.Amount * TimeSpan.TicksPerSecond / p.Interval)}{LP.PerSecond}",
-                    PCrit = $"{Math.Round(p.CritRate)}%"
-                    PId = p.Source.PlayerId
-                };
-            return tmpList.ToList();
-            */
             // return linq expression method
             return data.Select(dealt => new ClassInfo
             {

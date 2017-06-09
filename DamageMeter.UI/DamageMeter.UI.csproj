@@ -447,6 +447,10 @@
       <Project>{d1ed4752-f2fc-44c3-97b2-580bc79f4af1}</Project>
       <Name>DamageMeter.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj">
+      <Project>{23f7be64-3627-4f4e-af78-291a7664fe6a}</Project>
+      <Name>DamageMeter.D3D9Render</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
       <Name>Data</Name>
@@ -459,13 +463,9 @@
       <Project>{220fef0f-4a83-4ab8-9435-f9bc09b9039f}</Project>
       <Name>Lang</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ShinraMeter.D3D9Render\ShinraMeter.D3D9Render.csproj">
-      <Project>{23f7be64-3627-4f4e-af78-291a7664fe6a}</Project>
-      <Name>ShinraMeter.D3D9Render</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
-      <Name>Tera</Name>
+      <Name>Tera.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace ShinraMeter.D3D9Render.Overlays
+namespace DamageMeter.D3D9Render.Overlays
 {
     /// <summary>
     /// Class providing all necessary Functions for the API

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using System.Runtime.InteropServices;
 
-namespace ShinraMeter.D3D9Render.Overlays
+namespace DamageMeter.D3D9Render.Overlays
 {
     public class TextLabel : Overlay
     {
@@ -9,6 +10,7 @@ namespace ShinraMeter.D3D9Render.Overlays
             get => base.Visible;
             set
             {
+                if (base.Visible==value) return;
                 DxOverlay.TextSetShown(Id, value);
                 base.Visible = value;
             }
@@ -20,6 +22,7 @@ namespace ShinraMeter.D3D9Render.Overlays
             get => _text;
             set
             {
+                if (_text==value)return;
                 DxOverlay.TextSetString(Id, value);
                 _text = value;
             }
@@ -61,6 +64,9 @@ namespace ShinraMeter.D3D9Render.Overlays
         public TextLabel(string font, int size, TypeFace type, Point position, Color color, string text, bool shadow, bool show)
         {
             Id = DxOverlay.TextCreate(font, size, type.HasFlag(TypeFace.Bold), type.HasFlag(TypeFace.Italic), position.X, position.Y, (uint)color.ToArgb(), text, shadow, show);
+            //_font = font;
+            //_size = size;
+            //_type = type;
             _text = text;
             _shadow = shadow;
             base.Visible = show;

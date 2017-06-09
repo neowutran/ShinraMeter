@@ -529,6 +529,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable overlay.
+        /// </summary>
+        public static string EnableOverlay {
+            get {
+                return ResourceManager.GetString("EnableOverlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enrage.
         /// </summary>
         public static string Enrage {

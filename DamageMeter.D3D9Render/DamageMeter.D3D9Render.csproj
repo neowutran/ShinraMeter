@@ -7,8 +7,8 @@
     <ProjectGuid>{23F7BE64-3627-4F4E-AF78-291A7664FE6A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ShinraMeter.D3D9Render</RootNamespace>
-    <AssemblyName>ShinraMeter.D3D9Render</AssemblyName>
+    <RootNamespace>DamageMeter.D3D9Render</RootNamespace>
+    <AssemblyName>DamageMeter.D3D9Render</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="d3d9render.cs" />
+    <Compile Include="Renderer.cs" />
     <Compile Include="Overlays\Box.cs" />
     <Compile Include="Overlays\DXOverlay.cs" />
     <Compile Include="Overlays\Image.cs" />
@@ -52,9 +52,15 @@
     <Compile Include="TeraData\TerInfoEx.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dx_overlay\dx9_overlay.dll">
+    <Content Include="dx9_overlay.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

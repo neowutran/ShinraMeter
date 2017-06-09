@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using DamageMeter.AutoUpdate;
+using DamageMeter.D3D9Render;
 using Data;
 using Data.Actions.Notify;
 using Lang;
@@ -76,6 +77,7 @@ namespace DamageMeter.UI
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             NoPaste.IsChecked = BasicTeraData.Instance.WindowData.NoPaste;
             NoAbnormalsInHUD.IsChecked = BasicTeraData.Instance.WindowData.NoAbnormalsInHUD;
+            EnableOverlayCheckbox.IsChecked = BasicTeraData.Instance.WindowData.EnableOverlay;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
@@ -515,5 +517,20 @@ namespace DamageMeter.UI
         }
 
         private void DisableNoAbnormalsInHUD(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoAbnormalsInHUD = false; }
+
+        private void EnableOverlay(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.EnableOverlay = true;
+            if (_mainWindow.DXrender!=null) return;
+            _mainWindow.DXrender = new Renderer();
+        }
+
+        private void DisableOverlay(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.EnableOverlay = false;
+            var render = _mainWindow.DXrender;
+            _mainWindow.DXrender = null;
+            render.Dispose();
+        }
     }
 }

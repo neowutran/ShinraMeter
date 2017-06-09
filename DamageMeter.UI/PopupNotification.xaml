@@ -1,67 +1,43 @@
-﻿<ui:ClickThrouWindow
-    x:Class="DamageMeter.UI.PopupNotification"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:l="clr-namespace:Lang;assembly=Lang"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:ui="clr-namespace:DamageMeter.UI"
-    Title="Notification popup"
-    MinWidth="100"
-    MinHeight="50"
-    d:DesignWidth="500"
-    mc:Ignorable="d">
+﻿<ui:ClickThrouWindow x:Class="DamageMeter.UI.PopupNotification"
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                        xmlns:ui="clr-namespace:DamageMeter.UI"
+                        xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
+                        xmlns:l="clr-namespace:Lang;assembly=Lang"
+                        mc:Ignorable="d"
+                        d:DesignWidth="500"
+                        MinHeight="50" MinWidth="100"
+                        Title="Notification popup">
     <Window.Resources>
         <DataTemplate x:Key="notification">
             <ui:NotificationControl HorizontalAlignment="Left" />
         </DataTemplate>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush Opacity="0" Color="Transparent" />
+        <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
     <Grid x:Name="root" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
-        <Grid.Resources>
-            <converters:TopSpacerConverter x:Key="TopSpacer" />
-        </Grid.Resources>
         <Grid.LayoutTransform>
-            <ScaleTransform
-                CenterX="0"
-                CenterY="0"
-                ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
-                ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
+            <ScaleTransform CenterX="0" CenterY="0"
+                            ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
+                            ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Rectangle
-            Name="spacer"
-            Grid.Row="0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Fill="Transparent" />
-        <ItemsControl
-            Name="content"
-            Grid.Row="1"
-            ItemTemplate="{StaticResource notification}">
+        <Rectangle Name="spacer" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="Transparent"/>
+        <ItemsControl Grid.Row="1" ItemTemplate="{StaticResource notification}" Name="content">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel
-                        Name="mainPanel"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Stretch"
-                        Orientation="Vertical" />
+                    <StackPanel HorizontalAlignment="Left" Orientation="Vertical" VerticalAlignment="Stretch" Name="mainPanel"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <Rectangle
-            Name="bottomspacer"
-            Grid.Row="2"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Fill="Transparent" />
+        <Rectangle Name="bottomspacer" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="Transparent"/>
     </Grid>
 </ui:ClickThrouWindow>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
 EndProject
@@ -12,6 +12,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.Core", "DamageMeter.Core\DamageMeter.Core.csproj", "{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.UI", "DamageMeter.UI\DamageMeter.UI.csproj", "{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B431143-1A77-44FF-8BC3-926FEC8AD97C} = {5B431143-1A77-44FF-8BC3-926FEC8AD97C}
+		{23F7BE64-3627-4F4E-AF78-291A7664FE6A} = {23F7BE64-3627-4F4E-AF78-291A7664FE6A}
+		{968CE869-A989-4608-AA51-6C6BD7CC78F4} = {968CE869-A989-4608-AA51-6C6BD7CC78F4}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.AutoUpdate", "DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj", "{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}"
 EndProject
@@ -23,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang", "Lang\Lang.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publisher.csproj", "{968CE869-A989-4608-AA51-6C6BD7CC78F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShinraMeter.D3D9Render", "ShinraMeter.D3D9Render\ShinraMeter.D3D9Render.csproj", "{23F7BE64-3627-4F4E-AF78-291A7664FE6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.D3D9Render", "DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj", "{23F7BE64-3627-4F4E-AF78-291A7664FE6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

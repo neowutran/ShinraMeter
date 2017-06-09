@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ShinraMeter.D3D9Render.Overlays
+namespace DamageMeter.D3D9Render.Overlays
 {
     public class Box : Overlay
     {
@@ -39,6 +39,17 @@ namespace ShinraMeter.D3D9Render.Overlays
                 _rectangle = value;
             }
         }
+
+        public int Height
+        {
+            get => _rectangle.Height;
+            set
+            {
+                DxOverlay.BoxSetHeight(Id, value);
+                _rectangle.Height = value;
+            }
+        }
+
 
         private bool _borderShown;
 

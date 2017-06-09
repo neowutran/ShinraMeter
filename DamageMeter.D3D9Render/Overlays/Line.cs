@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ShinraMeter.D3D9Render.Overlays
+namespace DamageMeter.D3D9Render.Overlays
 {
     public class Line : Overlay
     {
