@@ -5,6 +5,7 @@ resources/config/*
 resources/logs/*
 /debug/
 *.suo
+.vs/
 *.user
 ShinraMeter*
 resources/hotkeys.xml
