@@ -123,7 +123,7 @@ namespace DamageMeter.UI
             _entityStats.SetClickThrou();
             _popupNotification.SetClickThrou();
             _bossGageBar.SetClickThrou();
-            NotifyIcon.ClickThrou.IsChecked = true;
+            //NotifyIcon.ClickThrou.IsChecked = true;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStatsClickThrou.Source;
         }
 
@@ -135,7 +135,7 @@ namespace DamageMeter.UI
             _entityStats.UnsetClickThrou();
             _bossGageBar.UnsetClickThrou();
             _popupNotification.UnsetClickThrou();
-            NotifyIcon.ClickThrou.IsChecked = false;
+            //NotifyIcon.ClickThrou.IsChecked = false;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
 

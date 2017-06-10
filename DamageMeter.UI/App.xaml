@@ -213,7 +213,7 @@
         <!--HUD-->
         <DropShadowEffect x:Key="dropShadow" BlurRadius="5" ShadowDepth="2" Opacity=".6" />
         <SolidColorBrush x:Key="bgColor" Color="#101016" />
-
+        <SolidColorBrush x:Key="mainColor" Color="#d0d0d7"/>
         <Style x:Key="border" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource bgColor}" />
             <Setter Property="CornerRadius" Value="0" />
@@ -229,6 +229,31 @@
             <Setter Property="Foreground" Value="#bbffffff" />
         </Style>
         <converters:TransparencyToMarginConverter x:Key="BoolToMargin" />
+        <Style TargetType="{x:Type Button}" x:Key="ButtonMainStyle">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border"
+                                                BorderThickness="0"
+                                                Padding="0"
+                                                BorderBrush="Transparent"
+                                                CornerRadius="0"
+                                                Background="Transparent">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2fff" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </Application.Resources>
 </Application>

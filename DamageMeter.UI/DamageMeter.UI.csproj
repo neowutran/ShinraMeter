@@ -149,11 +149,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomScrollViewer.cs" />
     <Compile Include="HUD\Controls\RunemarksControl.xaml.cs">
       <DependentUpon>RunemarksControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="HUD\Converters\TimeInMsToLabelConverter.cs" />
     <Compile Include="HUD\Converters\IconConverter.cs" />
+    <Compile Include="KineticBehaviour.cs" />
+    <Compile Include="MaterialSwitch.xaml.cs">
+      <DependentUpon>MaterialSwitch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NotificationControl.xaml.cs">
       <DependentUpon>NotificationControl.xaml</DependentUpon>
     </Compile>
@@ -262,9 +267,21 @@
       <DependentUpon>TeradpsHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowServices.cs" />
+    <Page Include="ColorCanvasStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPickerStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HUD\Controls\RunemarksControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MaterialSwitch.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NotificationControl.xaml">
       <SubType>Designer</SubType>

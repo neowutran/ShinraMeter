@@ -28,7 +28,18 @@ namespace Data
             GroupAdd = new Image { Source = new BitmapImage(new Uri(folder + "group_add.png")) };
             Money = new Image { Source = new BitmapImage(new Uri(folder + "money.png")) };
             Credits = new Image { Source = new BitmapImage(new Uri(folder + "credits.png")) };
+            Settings = new Image { Source = new BitmapImage(new Uri(folder + "settings.png")) };
+            Performance = new Image { Source = new BitmapImage(new Uri(folder + "performance.png")) };
+            Action = new Image { Source = new BitmapImage(new Uri(folder + "action.png")) };
+            Links = new Image { Source = new BitmapImage(new Uri(folder + "links.png")) };
 
+            Excel = new Image { Source = new BitmapImage(new Uri(folder + "excel.png")) };
+            Upload = new Image { Source = new BitmapImage(new Uri(folder + "upload.png")) };
+            Reset = new Image { Source = new BitmapImage(new Uri(folder + "reset.png")) };
+
+            GitHub = new Image { Source = new BitmapImage(new Uri(folder + "github.png")) };
+            Discord = new Image { Source = new BitmapImage(new Uri(folder + "discord.png")) };
+            Moongourd = new Image { Source = new BitmapImage(new Uri(folder + "moongourd.png")) };
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
 
@@ -60,6 +71,18 @@ namespace Data
         public Image GroupAdd { get; }
         public Image Money { get; }
         public Image Credits { get; }
+
+        public Image Links { get; }
+        public Image Performance { get; }
+        public Image Action { get; }
+        public Image Settings { get; }
+
+        public Image Excel { get; }
+        public Image Upload { get; }
+        public Image Reset { get; }
+        public Image GitHub { get; }
+        public Image Discord { get; }
+        public Image Moongourd { get; }
 
         public Icon Tray { get; }
     }

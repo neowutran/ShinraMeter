@@ -6,518 +6,735 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
              xmlns:tb="http://www.hardcodet.net/taskbar"
-             xmlns:l="clr-namespace:Lang;assembly=Lang">
+             xmlns:l="clr-namespace:Lang;assembly=Lang"
+             xmlns:ui="clr-namespace:DamageMeter.UI">
     <tb:TaskbarIcon Name="Tray" IconSource="shinra.ico" PopupActivation="All">
+
 
         <!--
     We can use arbitrary UI elements as Popups.
     Popups stay open if the user moves away from the tray area
   -->
-        <tb:TaskbarIcon.TrayPopup>
-            <Border
-                Background="Black"
-                BorderBrush="Transparent"
-                BorderThickness="0"
-                CornerRadius="4"
-                Opacity="0.9">
 
-                <TabControl TabStripPlacement="Bottom" MinHeight="500" MaxHeight="500" MaxWidth="450" MinWidth="450"
-                            Background="Transparent" BorderThickness="0" x:Name="TabControl">
+        <tb:TaskbarIcon.TrayPopup>
+            <Grid Margin="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border Style="{StaticResource border}" Opacity=".9" BorderThickness="0" Grid.RowSpan="2" />
+                <Grid Grid.Row="0" Height="38">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonMainStyle}" >
+                            <Setter Property="Height" Value="Auto"/>
+                            <Setter Property="Width" Value="Auto"/>
+                            <Setter Property="Margin" Value="0,0"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource border}" Grid.ColumnSpan="20" BorderThickness="0,0,0,1">
+                        <Border.Effect>
+                            <DropShadowEffect Direction="-90" Opacity=".8" BlurRadius="5" ShadowDepth="3"></DropShadowEffect>
+                        </Border.Effect>
+                    </Border>
+
+                    <Image x:Name="TopLeftLogo" Width="Auto" Height="Auto" Stretch="UniformToFill" />
+
+                    <Button  Grid.Column="1" Click="SiteExportAction" ToolTip="{x:Static l:LP.SystemTray_Export_current_to_Site}">
+                        <Image x:Name="SiteExportIcon" Opacity=".8" Margin="6"></Image>
+                    </Button>
+                    <Button Grid.Column="2"  Click="ExcelExportAction" ToolTip="{x:Static l:LP.SystemTray_Export_current_to_Excel}">
+                        <Image x:Name="ExcelExportIcon" Opacity=".8" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                    </Button>
+                    <Button Grid.Column="3" Click="ClickUploadGlyphAction" ToolTip="{x:Static l:LP.UploadGlyphBuild}">
+                        <Image x:Name="UploadGlyphIcon" Opacity=".8" Margin="6"></Image>
+                    </Button>
+                    <Button Grid.Column="4" Click="ClickOpenChatBox" ToolTip="{x:Static l:LP.OpenChatBox}">
+                        <Image x:Name="ChatBoxIcon" Opacity=".8" Margin="6"></Image>
+                    </Button>
+                    <Button Grid.Column="5" Click="ResetAction" ToolTip="{x:Static l:LP.Reset}">
+                        <Image x:Name="ResetIcon" Opacity=".8" Margin="6"></Image>
+                    </Button>
+                    <Rectangle Width="1" VerticalAlignment="Stretch" Grid.Column="6" />
+                    <Rectangle Width="1" VerticalAlignment="Stretch" Grid.Column="10" />
+                    <Button Grid.Column="11"  Click="CloseAction" ToolTip="{x:Static l:LP.Close}">
+                        <Image  x:Name="CloseIcon" Opacity=".8" Margin="6"/>
+                    </Button>
+
+                    <Button Grid.Column="7" ToolTip="GitHub" Name="gitButton" Click="gitButton_Click">
+                        <Image x:Name="GitHubIcon" Grid.Column="1" Grid.Row="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+                    <Popup Name="gitPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="gitPopup_MouseLeave" VerticalOffset="-1" HorizontalOffset="55" Height="90" >
+                        <Grid Margin="3" Width="150" >
+                            <Border Style="{StaticResource border}" BorderThickness="1,0,1,1" Padding="0" />
+
+                            <UniformGrid Margin="0,0,0,0" Columns="1">
+                                <Button Grid.Row="0" Name="Wiki" Click="WikiAction" HorizontalAlignment="Stretch" Height="Auto">
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Wiki}" />
+                                </Button>
+                                <Button Grid.Row="1" Name="Patch" Click="PatchAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Patch_note}" />
+                                </Button>
+                                <Button Grid.Row="2"  Name="Issues" Click="IssueAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Report_issue}" />
+                                </Button>
+
+                            </UniformGrid>
+                        </Grid>
+
+                    </Popup>
+                    <Button Grid.Column="8" Name="Discord" Click="DiscordAction" ToolTip="{x:Static l:LP.SystemTray_Discord}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="DiscordIcon" Grid.Column="1" Grid.Row="3"  Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="9" Name="DpsWebsite" Click="DpsWebsiteAction" ToolTip="moongourd.com">
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="MoongourdIcon" Grid.Column="1" Grid.Row="4" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </StackPanel>
+                    </Button>
+
+
+                </Grid>
+
+                <TabControl Grid.Row="1" TabStripPlacement="Left" MinHeight="500" MaxHeight="500" MaxWidth="520" MinWidth="450" Width="520"
+                            Background="#2ccd" BorderThickness="0" x:Name="TabControl" Margin="-2,0,0,0">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type ToolTip}">
-                            <Setter Property="Background" Value="#8F000000" />
+                            <Setter Property="Background" Value="#00000000" />
                             <Setter Property="FontSize" Value="14" />
-                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Foreground" Value="#9fff" />
                             <Setter Property="ContentTemplate">
                                 <Setter.Value>
                                     <DataTemplate>
-                                        <TextBlock TextWrapping="Wrap" Text="{Binding}" MaxWidth="600" />
+                                        <Grid Margin="4">
+                                            <Border Style="{StaticResource border}">
+                                                <TextBlock TextWrapping="Wrap" Text="{Binding}" MaxWidth="600" Margin="4,2"/>
+                                            </Border>
+                                        </Grid>
                                     </DataTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                         <Style TargetType="{x:Type TabItem}">
+                            <Setter Property="Margin" Value="0,-2,0,2"/>
+                            <Setter Property="Width" Value="38"/>
+                            <Setter Property="Height" Value="38"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type TabItem}">
-                                        <Grid>
-                                            <Border
-                                                Name="Border"
-                                                Background="Transparent"
-                                                BorderThickness="1"
-                                                CornerRadius="4"
-                                                BorderBrush="Transparent">
-                                                <ContentPresenter x:Name="ContentSite"
+                                        <Grid Name="Panel" Cursor="Hand">
+                                            <ContentPresenter x:Name="ContentSite"
                                                                   VerticalAlignment="Center"
                                                                   HorizontalAlignment="Center"
                                                                   ContentSource="Header"
-                                                                  Margin="12,2,12,2"
-                                                                  RecognizesAccessKey="True" />
-                                            </Border>
+                                                                  Margin="0,0"
+                                                                  RecognizesAccessKey="True" >
+                                            </ContentPresenter>
+                                            <Grid.Style>
+                                                <Style>
+                                                    <Setter Property="Grid.Background" Value="Transparent"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Grid.IsMouseOver" Value="True">
+                                                            <Setter Property="Grid.Background" Value="#1fff"/>
+                                                        </Trigger>
+
+                                                    </Style.Triggers>
+                                                </Style>
+
+                                            </Grid.Style>
                                         </Grid>
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsSelected" Value="True">
                                                 <Setter Property="Panel.ZIndex" Value="100" />
-                                                <Setter TargetName="Border" Property="BorderBrush" Value="White" />
-
                                             </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Panel" Property="Border.Background" Value="#2ccd" />
+                                            </Trigger>
+
                                             <Trigger Property="IsEnabled" Value="False" />
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="OverridesDefaultStyle" Value="True" />
-                            <Setter Property="Margin" Value="5" />
-                            <Setter Property="Foreground" Value="White" />
-
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Name="border"
-                                                BorderThickness="1"
-                                                Padding="4,2"
-                                                BorderBrush="Transparent"
-                                                CornerRadius="0"
-                                                Background="Black">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="border" Property="BorderBrush" Value="White" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
                     </TabControl.Resources>
-                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Action}" x:Name="Actions"
+                    <TabItem FontSize="14" x:Name="Configs"
                              Background="Transparent" Foreground="White">
+                        <TabItem.Header>
+                            <Image x:Name="SettingsTabIcon" Width="30" Height="30" Margin="0" Opacity=".6" RenderOptions.BitmapScalingMode="HighQuality"  ToolTip="{x:Static l:LP.SystemTray_Config}" />
+                        </TabItem.Header>
                         <TabItem.Content>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="{x:Static l:LP.Reset}" Name="Reset" Click="ResetAction" />
-                                <Button Grid.Row="1" Content="{x:Static l:LP.Close}" Name="Close" Click="CloseAction" />
-                                <Button Grid.Row="2" Content="{x:Static l:LP.SystemTray_Export_current_to_Excel}"
-                                        Name="ExcelExport" Click="ExcelExportAction" />
-                                <Button Grid.Row="3" Content="{x:Static l:LP.SystemTray_Export_current_to_Site}"
-                                        Name="SiteExport" Click="SiteExportAction" />
-                                <Button Grid.Row="4" Content="{x:Static l:LP.UploadGlyphBuild}"
-                                        Name="UploadGlyphAction" Click="ClickUploadGlyphAction" />
-                                <Button Grid.Row="5" Content="{x:Static l:LP.OpenChatBox}" Name="OpenChatBox"
-                                        Click="ClickOpenChatBox" />
-                            </Grid>
-                        </TabItem.Content>
-                    </TabItem>
-                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Links}" x:Name="Links"
-                             Background="Transparent" Foreground="White">
-                        <TabItem.Content>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="{x:Static l:LP.SystemTray_Wiki}" Name="Wiki"
-                                        Click="WikiAction" />
-                                <Button Grid.Row="1" Content="{x:Static l:LP.SystemTray_Patch_note}" Name="Patch"
-                                        Click="PatchAction" />
-                                <Button Grid.Row="2" Content="{x:Static l:LP.SystemTray_Report_issue}" Name="Issues"
-                                        Click="IssueAction" />
-                                <Button Grid.Row="3" Content="{x:Static l:LP.SystemTray_Discord}" Name="Discord"
-                                        Click="DiscordAction" />
-                                <Button Grid.Row="4" Content="moongourd.com" Name="DpsWebsite" Click="DpsWebsiteAction" />
-                            </Grid>
-                        </TabItem.Content>
-                    </TabItem>
-                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Config}" x:Name="Configs"
-                             Background="Transparent" Foreground="White">
-                        <TabItem.Content>
+                            <Grid UseLayoutRounding="True">
+                                <ScrollViewer  x:Name="ConfigScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Auto" MaxHeight="500" >
+                                    <StackPanel  Name="GridS" PreviewMouseWheel="Grid_PreviewMouseWheel">
+                                        <StackPanel.Resources>
+                                            <Style TargetType="{x:Type ui:MaterialSwitch}">
+                                                <Setter Property="Margin" Value="20,0,0,0"/>
+                                                <Setter Property="Height" Value="Auto"/>
+                                            </Style>
+                                            <Style TargetType="Grid" x:Key="SettingWrapper">
+                                                <Setter Property="Height" Value="Auto"/>
+                                            </Style>
+                                            <Style TargetType="{x:Type xctk:IntegerUpDown}">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="xctk:IntegerUpDown">
+                                                            <Grid >
+                                                                <Grid.Resources>
+                                                                    <Style TargetType="{x:Type xctk:ButtonSpinner}">
+                                                                        <Setter Property="Template">
+                                                                            <Setter.Value>
+                                                                                <ControlTemplate TargetType="xctk:ButtonSpinner">
+                                                                                    <Border Name="Border" Background="Transparent">
+                                                                                        <Grid Height="18">
+                                                                                            <Grid.Resources>
+                                                                                                <Style TargetType="{x:Type RepeatButton}">
+                                                                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                                                                    <Setter Property="Margin" Value="0"/>
+                                                                                                    <Setter Property="Background" Value="Transparent"/>
+                                                                                                    <Setter Property="Height" Value="8"/>
+                                                                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                                                                    <Setter Property="Template">
+                                                                                                        <Setter.Value>
+                                                                                                            <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                                                                                <Border x:Name="Background" Background="Transparent">
+                                                                                                                    <Grid Background="{TemplateBinding Background}">
+                                                                                                                        <Rectangle Fill="Transparent" />
+                                                                                                                        <ContentPresenter
+                                                                                                                            x:Name="contentPresenter"
+                                                                                                                              Content="{TemplateBinding Content}"
+                                                                                                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                                                                              Margin="{TemplateBinding Padding}"/>
+                                                                                                                    </Grid>
+                                                                                                                </Border>
+                                                                                                            </ControlTemplate>
+                                                                                                        </Setter.Value>
+                                                                                                    </Setter>
+                                                                                                </Style>
+                                                                                            </Grid.Resources>
+                                                                                            <Grid.RowDefinitions>
+                                                                                                <RowDefinition />
+                                                                                                <RowDefinition />
+                                                                                            </Grid.RowDefinitions>
+                                                                                            <RepeatButton Name="PART_IncreaseButton">
+                                                                                                <Grid>
+                                                                                                    <Path Data="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" 
+                                                                                  Fill="White" Stretch="Uniform" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                                                </Grid>
+                                                                                            </RepeatButton>
+                                                                                            <RepeatButton Name="PART_DecreaseButton" Grid.Row="1" >
+                                                                                                <Grid>
+                                                                                                    <Path Data="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z" 
+                                                                                  Fill="White" Stretch="Uniform" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                            <Grid>
-                                <ScrollViewer Name="ConfigScrollViewer" Grid.Row="0" VerticalScrollBarVisibility="Auto"
-                                              MaxHeight="500">
+                                                                                                </Grid>
+                                                                                            </RepeatButton>
+                                                                                        </Grid>
+                                                                                    </Border>
+                                                                                    <ControlTemplate.Triggers>
+                                                                                        <Trigger SourceName="PART_IncreaseButton" Property="IsEnabled" Value="False">
+                                                                                            <Setter TargetName="PART_IncreaseButton" Property="Opacity" Value=".2" />
+                                                                                        </Trigger>
+                                                                                        <Trigger SourceName="PART_DecreaseButton" Property="IsEnabled" Value="False">
+                                                                                            <Setter TargetName="PART_DecreaseButton" Property="Opacity" Value=".2" />
+                                                                                        </Trigger>
+                                                                                    </ControlTemplate.Triggers>
+                                                                                </ControlTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </Grid.Resources>
+                                                                <Grid.ColumnDefinitions >
+                                                                    <ColumnDefinition />
+                                                                    <ColumnDefinition Width="17" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <xctk:WatermarkTextBox 
+                                                                    Name="PART_TextBox" 
+                                                                    Foreground="{TemplateBinding Foreground}" 
+                                                                    BorderThickness="0"
+                                                                    Background="Transparent"/>
+                                                                <xctk:ButtonSpinner Name="PART_Spinner" Grid.Column="1"/>
+                                                            </Grid>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Foreground" Value="#8fff"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Resources>
 
-                                    <Grid PreviewMouseWheel="Grid_PreviewMouseWheel" Name="GridS">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <CheckBox Grid.Row="0" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Site_export}"
-                                                  Name="DpsWebsiteExport" Checked="EnableDpsWebsiteExportAction"
-                                                  Unchecked="DisableDpsWebsiteExportAction" />
-                                        <Grid Grid.Row="1">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="AuthLabel"
-                                                   Content="{x:Static l:LP.AuthToken}" />
-                                            <TextBox LostFocus="TokenChanged" KeyDown ="AuthTokenTextbox_OnKeyDown" HorizontalAlignment="Stretch" Margin="5"
-                                                     Grid.Column="1" Foreground="Black" Background="DarkGray"
+                                        <!--Export settings card-->
+                                        <Grid Margin="20,20,20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
+                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
+                                            <TextBlock Margin="10,3,10,3" VerticalAlignment="Center" Foreground="#e000">Export Settings</TextBlock>
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Site_export}" 
+                                                          x:Name="DpsWebsiteExport"
+                                                          On="EnableDpsWebsiteExportAction"
+                                                          Off="DisableDpsWebsiteExportAction" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" 
+                                                          x:Name="AutoExcelExport"
+                                                          On="EnableAutoExcelExportAction"
+                                                          Off="DisableExcelExportAction" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.PrivateServerExport}" 
+                                                          x:Name="PrivateServerExport"
+                                                          On="EnablePServerExp"
+                                                          Off="DisablePServerExp" />
+                                                <Separator Background="#1fff" Margin="20,0,-3,0" Height="5" Name="authSeparator">
+                                                    <Separator.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </Separator.LayoutTransform>
+                                                </Separator>
+                                                <Grid Margin="20,0,0,0" Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Name="AuthLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                   Text="{x:Static l:LP.AuthToken}" />
+                                                    <TextBox LostFocus="TokenChanged" KeyDown ="AuthTokenTextbox_OnKeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
+                                                     Grid.Column="1" Foreground="#9fff" Background="#2fff"
                                                      BorderBrush="Transparent" BorderThickness="0"
-                                                     Name="AuthTokenTextbox" />
-                                        </Grid>
-                                        <CheckBox Grid.Row="2" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}"
-                                                  Name="AutoExcelExport" Checked="EnableAutoExcelExportAction"
-                                                  Unchecked="DisableExcelExportAction" />
-                                        <Grid Grid.Row="3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="ExcelCMADPSSecLabel"
-                                                   Content="{x:Static l:LP.SystemTray_ExcelCMADPSSeconds}" />
-                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1"
-                                                                Foreground="Black" Background="DarkGray"
-                                                                BorderBrush="Transparent" BorderThickness="0"
-                                                                Name="ExcelCMADPSSpinner"
-                                                                ValueChanged="ExcelCMADPSChanged" FormatString="N0"
-                                                                Increment="1" Maximum="60" Minimum="1" />
-                                        </Grid>
-                                        <CheckBox Grid.Row="4" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Count_only_bosses}"
-                                                  Name="CountOnlyBoss" Checked="EnableCountOnlyBoss"
-                                                  Unchecked="DisableCountOnlyBoss" />
-                                        <CheckBox Grid.Row="5" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Detect_bosses_by_HP_bar}"
-                                                  Name="BossByHpBar" Checked="EnableBossByHpBar"
-                                                  Unchecked="DisableBossByHpBar" />
-                                        <CheckBox Grid.Row="6" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Count_only_party_members}"
-                                                  Name="PartyOnly" Checked="EnablePartyOnly"
-                                                  Unchecked="DisablePartyOnly" />
-                                        <CheckBox Grid.Row="7" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Click_throu}" Name="ClickThrou"
-                                                  Checked="EnableClickThrou" Unchecked="DisableClickThrou" />
-                                        <CheckBox Grid.Row="8" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Invisible_when_no_stats}"
-                                                  Name="InvisibleWhenNoStats" Checked="EnableInvisibleWhenNoStats"
-                                                  Unchecked="DisableInvisibleWhenNoStats" />
-                                        <CheckBox Grid.Row="9" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Show_always}" Name="ShowAlways"
-                                                  Checked="EnableShowAlways" Unchecked="DisableShowAlways" />
-                                        <CheckBox Grid.Row="10" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Stay_topmost}" Name="StayTopMost"
-                                                  Checked="EnableStayTopMost" Unchecked="DisableStayTopMost" />
-                                        <CheckBox Grid.Row="11" Foreground="White"
-                                                  Content="{x:Static l:LP.RemoveTeraAltEnterHotkey}"
-                                                  Name="RemoveTeraAltEnterHotkey"
-                                                  Checked="EnableRemoveTeraAltEnterHotkey"
-                                                  Unchecked="DisableRemoveTeraAltEnterHotkey" />
-                                        <CheckBox Grid.Row="12" Foreground="White"
-                                                  Content="{x:Static l:LP.FormatPasteString}" Name="FormatPasteString"
-                                                  Checked="EnableFormatPasteString"
-                                                  Unchecked="DisableFormatPasteString" />
-                                        <CheckBox Grid.Row="13" Foreground="White" Content="{x:Static l:LP.NoPaste}"
-                                                  Name="NoPaste" Checked="NoPaste_OnChecked" Unchecked="NoPaste_OnUnchecked" />
-                                        <CheckBox Grid.Row="14" Foreground="White" Content="{x:Static l:LP.EnableChat}"
-                                                  Name="ChatEnabled" Checked="EnableChat" Unchecked="DisableChat" />
-                                        <CheckBox Grid.Row="15" Foreground="White" Content="{x:Static l:LP.NoAbnormalsInHUD}"
-                                                  Name="NoAbnormalsInHUD" Checked="EnableNoAbnormalsInHUD" Unchecked="DisableNoAbnormalsInHUD" />
-                                        <CheckBox Grid.Row="16" Foreground="White" Content="{x:Static l:LP.MuteSound}"
-                                                  Name="MuteSound" Checked="EnableMuteSound"
-                                                  Unchecked="DisableMuteSound" />
-                                        <CheckBox Grid.Row="17" Foreground="White"
-                                                  Content="{x:Static l:LP.CopyInspect}" Name="CopyInspect"
-                                                  Checked="EnableCopyInspect" Unchecked="DisableCopyInspect" />
-                                        <CheckBox Grid.Row="18" Foreground="White"
-                                                  Content="{x:Static l:LP.DisablePartyEvents}" Name="PartyEvent"
-                                                  Checked="DisablePartyEvent" Unchecked="EnablePartyEvent" />
-                                        <CheckBox Grid.Row="19" Foreground="White"
-                                                  Content="{x:Static l:LP.ShowAfkEventsIngame}"
-                                                  Name="ShowAfkIventsIngame" Checked="EnableAfkIventsIngame"
-                                                  Unchecked="DisableAfkIventsIngame" />
-                                        <CheckBox Grid.Row="20" Foreground="White"
-                                                  Content="{x:Static l:LP.PrivateServerExport}"
-                                                  Name="PrivateServerExport" Checked="EnablePServerExp"
-                                                  Unchecked="DisablePServerExp" />
-                                        <Grid Grid.Row="21">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="ServerLabel"
-                                                   Content="{x:Static l:LP.PrivateServerURL}" />
-                                            <TextBox LostFocus="ServerURLChanged" KeyDown="ServerURLTextbox_OnKeyDown" HorizontalAlignment="Stretch"
-                                                     Margin="5" Grid.Column="1" Foreground="Black"
-                                                     Background="DarkGray" BorderBrush="Transparent"
+                                                             Name="AuthTokenTextbox" />
+                                                    <Grid.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"/>
+                                                    </Grid.LayoutTransform>
+                                                </Grid>
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Name="ServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                   Text="{x:Static l:LP.PrivateServerURL}" />
+                                                    <TextBox LostFocus="ServerURLChanged" KeyDown="ServerURLTextbox_OnKeyDown" HorizontalAlignment="Stretch"
+                                                     Margin="5,5,5,5" Grid.Column="1" 
+                                                     Background="#2fff" BorderBrush="Transparent"
                                                      BorderThickness="0" Name="ServerURLTextbox" />
+                                                    <Grid.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"/>
+                                                    </Grid.LayoutTransform>
+                                                </Grid>
+                                            </StackPanel>
                                         </Grid>
 
-                                        <Grid Grid.Row="22">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="NumberPlayersLabel"
-                                                   Content="{x:Static l:LP.NumberPlayersDisplayed}" />
-                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1"
-                                                                Foreground="Black" Background="DarkGray"
-                                                                BorderBrush="Transparent" BorderThickness="0"
-                                                                Name="NumberPlayersSpinner"
-                                                                ValueChanged="NumberPlayersChanged" FormatString="N0"
-                                                                Increment="1" Maximum="30" Minimum="1" />
-                                        </Grid>
-                                        <CheckBox Grid.Row="23" Foreground="White"
-                                                  Content="{x:Static l:LP.ShowSelfOnTop}" Name="ShowSelfOnTop"
-                                                  Checked="EnableShowSelfOnTop" Unchecked="DisableShowSelfOnTop" />
-                                        <Grid Grid.Row="24">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="LFDelay"
-                                                   Content="{x:Static l:LP.DelayToWaitPasting}" />
-                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1"
-                                                                Foreground="Black" Background="DarkGray"
-                                                                BorderBrush="Transparent" BorderThickness="0"
-                                                                Name="LFDelaySpinner" ValueChanged="LFDelayChanged"
-                                                                FormatString="N0" Increment="1" Maximum="500"
-                                                                Minimum="150" />
-                                        </Grid>
-                                        <Grid Grid.Row="25">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="IdleRTO"
-                                                   Content="{x:Static l:LP.IdleResetTimeout}" />
-                                            <xctk:IntegerUpDown Margin="5" HorizontalAlignment="Right" Grid.Column="1"
-                                                                Foreground="Black" Background="DarkGray"
+                                        <!--Detection settings card-->
+                                        <Grid Margin="20,20,20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
+                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
+                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Detection settings</TextBlock>
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Count_only_bosses}" 
+                                                          x:Name="CountOnlyBoss"
+                                                          On="EnableCountOnlyBoss"
+                                                          Off="DisableCountOnlyBoss" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Detect_bosses_by_HP_bar}" 
+                                                          x:Name="BossByHpBar"
+                                                          On="EnableBossByHpBar"
+                                                          Off="DisableBossByHpBar" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Count_only_party_members}" 
+                                                          x:Name="PartyOnly"
+                                                          On="EnablePartyOnly"
+                                                          Off="DisablePartyOnly" />
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Margin="5,0,0,0" Name="IdleRTO" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                                   Text="{x:Static l:LP.IdleResetTimeout}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff" Background="DarkGray"
                                                                 BorderBrush="Transparent" BorderThickness="0"
                                                                 Name="IdleRTOSpinner" ValueChanged="IdleRtoChanged"
                                                                 FormatString="N0" Increment="1" Maximum="600"
                                                                 Minimum="0" />
-                                        </Grid>
-                                        <Grid Grid.Row="26">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="WhisperColor"
-                                                   Content="{x:Static l:LP.WhisperColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="WhisperColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
-                                                              BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
-                                                              SelectedColorChanged="WhisperColorChanged" />
+                                                </Grid>
+                                            </StackPanel>
                                         </Grid>
 
-                                        <Grid Grid.Row="27">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="AllianceColor"
-                                                   Content="{x:Static l:LP.AllianceColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="AllianceColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                        <!--UI settings card-->
+                                        <Grid Margin="20,20,20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
+                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
+                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">UI settings</TextBlock>
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Click_throu}" 
+                                                          x:Name="ClickThrou"
+                                                          On="EnableClickThrou"
+                                                          Off="DisableClickThrou" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Invisible_when_no_stats}" 
+                                                          x:Name="InvisibleWhenNoStats"
+                                                          On="EnableInvisibleWhenNoStats"
+                                                          Off="DisableInvisibleWhenNoStats" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Show_always}" 
+                                                               x:Name="ShowAlways"
+                                                               On="EnableShowAlways" 
+                                                               Off="DisableShowAlways" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Stay_topmost}" x:Name="StayTopMost"
+                                                  On="EnableStayTopMost" Off="DisableStayTopMost" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.ShowSelfOnTop}" x:Name="ShowSelfOnTop"
+                                                  On="EnableShowSelfOnTop" Off="DisableShowSelfOnTop" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.NoAbnormalsInHUD}"
+                                                  x:Name="NoAbnormalsInHUD" On="EnableNoAbnormalsInHUD" Off="DisableNoAbnormalsInHUD" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"/>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Name="NumberPlayersLabel" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.NumberPlayersDisplayed}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff" Background="DarkGray"
+                                                                BorderBrush="Transparent" BorderThickness="0"
+                                                                Name="NumberPlayersSpinner"
+                                                                ValueChanged="NumberPlayersChanged" FormatString="N0"
+                                                                Increment="1" Maximum="30" Minimum="1" />
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Event settings card-->
+                                        <Grid Margin="20,20,20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
+                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
+
+                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Event settings</TextBlock>
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.EnableChat}"
+                                                  x:Name="ChatEnabled" On="EnableChat" Off="DisableChat" />
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.MuteSound}"
+                                                  x:Name="MuteSound" On="EnableMuteSound"
+                                                  Off="DisableMuteSound" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.CopyInspect}" x:Name="CopyInspect"
+                                                  On="EnableCopyInspect" Off="DisableCopyInspect" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.DisablePartyEvents}" x:Name="PartyEvent"
+                                                  On="DisablePartyEvent" Off="EnablePartyEvent" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.ShowAfkEventsIngame}"
+                                                  x:Name="ShowAfkIventsIngame" On="EnableAfkIventsIngame"
+                                                  Off="DisableAfkIventsIngame" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Input settings card-->
+                                        <Grid Margin="20,20,20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
+                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
+
+                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Input settings</TextBlock>
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.RemoveTeraAltEnterHotkey}"
+                                                  x:Name="RemoveTeraAltEnterHotkey"
+                                                  On="EnableRemoveTeraAltEnterHotkey"
+                                                  Off="DisableRemoveTeraAltEnterHotkey" />
+                                                <ui:MaterialSwitch
+                                                  Content="{x:Static l:LP.FormatPasteString}" x:Name="FormatPasteString"
+                                                  On="EnableFormatPasteString"
+                                                  Off="DisableFormatPasteString" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.NoPaste}"
+                                                  x:Name="NoPaste" On="NoPaste_OnChecked" Off="NoPaste_OnUnchecked" />
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Name="LFDelay" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.DelayToWaitPasting}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff" Background="DarkGray"
+                                                                BorderBrush="Transparent" BorderThickness="0"
+                                                                Name="LFDelaySpinner" ValueChanged="LFDelayChanged"
+                                                                FormatString="N0" Increment="1" Maximum="500"
+                                                                Minimum="150" />
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Misc settings card-->
+                                        <Grid Margin="20,20,20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
+                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}" />
+                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Misc settings</TextBlock>
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Name="ExcelCMADPSSecLabel" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.SystemTray_ExcelCMADPSSeconds}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff" Background="#2fff"
+                                                                BorderBrush="Transparent" BorderThickness="0"
+                                                                Name="ExcelCMADPSSpinner"
+                                                                ValueChanged="ExcelCMADPSChanged" FormatString="N0"
+                                                                Increment="1" Maximum="60" Minimum="1" >
+                                                    </xctk:IntegerUpDown>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Misc settings card-->
+                                        <Grid Margin="20,20,20,20">
+                                            <Grid.Resources>
+                                                <ResourceDictionary Source="ColorPickerStyle.xaml"/>
+                                            </Grid.Resources>
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
+                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}" />
+                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Chat color settings</TextBlock>
+                                            <UniformGrid Columns="2" Grid.Row="2" Margin="20,3,3,3" x:Name="ColorSettingsContainer">
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="WhisperColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.WhisperColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto"  VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="WhisperColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
+                                                              SelectedColorChanged="WhisperColorChanged" />
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="AllianceColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.AllianceColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="AllianceColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
+                                                              BorderBrush="Transparent" BorderThickness="0"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="AllianceColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="28">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="AreaColor"
-                                                   Content="{x:Static l:LP.AreaColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="AreaColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                                </Grid >
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="AreaColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.AreaColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="AreaColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="AreaColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="29">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="GeneralColor"
-                                                   Content="{x:Static l:LP.GeneralColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="GeneralColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="GeneralColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.GeneralColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="GeneralColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="GeneralColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="30">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="GroupColor"
-                                                   Content="{x:Static l:LP.GroupColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="GroupColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="GroupColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.GroupColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="GroupColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="GroupColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="31">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="GuildColor"
-                                                   Content="{x:Static l:LP.GuildColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="GuildColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2"  Name="GuildColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.GuildColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="GuildColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="GuildColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="32">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="RaidColor"
-                                                   Content="{x:Static l:LP.RaidColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="RaidColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="RaidColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.RaidColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="RaidColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="RaidColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="33">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="SayColor"
-                                                   Content="{x:Static l:LP.SayColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="SayColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="SayColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.SayColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="SayColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="SayColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="34">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="TradingColor"
-                                                   Content="{x:Static l:LP.TradingColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="TradingColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="TradingColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.TradingColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="TradingColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="TradingColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="35">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="EmotesColor"
-                                                   Content="{x:Static l:LP.EmotesColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True" Name="EmotesColorSelecter"
-                                                              Margin="5" Grid.Column="1" Foreground="Black"
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="EmotesColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.EmotesColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False" Name="EmotesColorSelecter"
+                                                              Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="EmotesColorChanged" />
-                                        </Grid>
-                                        <Grid Grid.Row="36">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="PrivateChannelColor"
-                                                   Content="{x:Static l:LP.PrivateChannelColor}" />
-                                            <xctk:ColorPicker HorizontalAlignment="Right" Width="150"
-                                                              DisplayColorAndName="True"
+                                                </Grid>
+                                                <Grid  HorizontalAlignment="Left">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="2" Name="PrivateChannelColor" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.PrivateChannelColor}" />
+                                                    <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                              DisplayColorAndName="False"
                                                               Name="PrivateChannelColorSelecter" Margin="5"
-                                                              Grid.Column="1" Foreground="Black"
+                                                              Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
-                                                              Background="DarkGray"
+                                                              Background="Transparent" ShowDropDownButton="False"
                                                               SelectedColorChanged="PrivateChannelColorChanged" />
+                                                </Grid>
+                                                <UniformGrid.LayoutTransform>
+                                                    <ScaleTransform ScaleY="1"/>
+                                                </UniformGrid.LayoutTransform>
+                                            </UniformGrid>
                                         </Grid>
-                                    </Grid>
+
+                                    </StackPanel>
                                 </ScrollViewer>
-                            </Grid>
-                        </TabItem.Content>
-                    </TabItem>
-                    <TabItem FontSize="14" Header="{x:Static l:LP.SystemTray_Performance_information}"
-                             x:Name="Performance" Background="Transparent" Foreground="White">
-                        <TabItem.Content>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30" />
-                                    <RowDefinition Height="30" />
-                                </Grid.RowDefinitions>
-                                <Label Foreground="White" Grid.Row="0" Name="PacketWaitingLabel" />
-                                <ProgressBar Grid.Row="1" Name="PacketWaitingProgressBar" Minimum="0" Maximum="5000"
-                                             Value="0" />
                             </Grid>
                         </TabItem.Content>
                     </TabItem>
                 </TabControl>
 
 
-            </Border>
+
+            </Grid>
+
         </tb:TaskbarIcon.TrayPopup>
 
     </tb:TaskbarIcon>
