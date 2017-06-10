@@ -18,14 +18,13 @@ namespace DamageMeter.TeraDpsApi.Tests
         {
             List<AreaAllowed> areasAllowed = new List<AreaAllowed>();
             try {
-                areasAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>("[{AreaId:953, BossIds:[]},{AreaId:950, BossIds:[1000,2000,3000,4000]}]");
+                areasAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>("[{\"AreaId\":953, \"BossIds\":[]},{\"AreaId\":950, \"BossIds\":[1000,2000,3000,4000]}]");
             }
             catch
             {
                 Assert.Fail();
             }
 
-            Console.WriteLine("test: "+areasAllowed.ElementAt(0).AreaId);
             Assert.AreEqual(953, areasAllowed.ElementAt(0).AreaId);
             Assert.AreEqual(950, areasAllowed.ElementAt(1).AreaId);
             Assert.IsTrue(areasAllowed.ElementAt(1).BossIds.Contains(2000));

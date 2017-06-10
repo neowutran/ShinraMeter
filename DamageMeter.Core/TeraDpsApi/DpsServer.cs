@@ -3,6 +3,7 @@ using Lang;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -13,21 +14,7 @@ namespace DamageMeter.TeraDpsApi
 {
     public class DpsServer
     {
-
-        public static readonly List<AreaAllowed> DefaultAreaAllowed = new List<AreaAllowed> {
-            new AreaAllowed(770),
-            new AreaAllowed(769),
-            new AreaAllowed(916),
-            new AreaAllowed(969),
-            new AreaAllowed(970),
-            new AreaAllowed(710),
-            new AreaAllowed(780),
-            new AreaAllowed(980),
-            new AreaAllowed(781),
-            new AreaAllowed(981),
-            new AreaAllowed(950, new List<int>{ 1000, 2000, 3000, 4000})
-        };
-
+        public static readonly List<AreaAllowed> DefaultAreaAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>("[{\"AreaId\": 780,\"BossIds\": []},{\"AreaId\": 781,\"BossIds\": []},{\"AreaId\": 950,\"BossIds\": []},{\"AreaId\": 980,\"BossIds\": []},{\"AreaId\": 981,\"BossIds\": []}]");
         public static DpsServer NeowutranAnonymousServer => new DpsServer(DpsServerData.Neowutran, true);
 
         public DpsServer(DpsServerData data, bool anonymousUpload)
@@ -44,7 +31,7 @@ namespace DamageMeter.TeraDpsApi
 
             try
             {
-                if (_allowedAreaId.Count == 0) { try { FetchAllowedAreaId(); } catch { return false; } }
+                if (_allowedAreaId.Count == 0) { FetchAllowedAreaId(); }
                 if (!_allowedAreaId.Any(x => x.AreaId == areaId && ( x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return false; }
 
                 long timediff;
@@ -129,12 +116,15 @@ namespace DamageMeter.TeraDpsApi
                 try
                 {
                     var response = client.GetAsync(Data.AllowedAreaUrl);
-                    allowedAreaIdByServer = JsonConvert.DeserializeObject<List<AreaAllowed>>(response.Result.Content.ReadAsStringAsync().Result);
+                    var allwedAreaIdByServerString = response.Result.Content.ReadAsStringAsync().Result;
+                    allowedAreaIdByServer = JsonConvert.DeserializeObject<List<AreaAllowed>>(allwedAreaIdByServerString);
+                    Debug.WriteLine("Allowed Area Id successfully retrieved for "+Data.AllowedAreaUrl+" : "+ allwedAreaIdByServerString);
                 }
                 catch
                 {
-                    //TODO logs
                     allowedAreaIdByServer = new List<AreaAllowed> (DefaultAreaAllowed);
+                    Debug.WriteLine("Allowed Area Id retrieve failed for " + Data.AllowedAreaUrl + " , using default values");
+                    // TODO, display to error to a UI ?
                 }
                 ComputeAllowedAreaId(allowedAreaIdByServer);
             }

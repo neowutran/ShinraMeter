@@ -23,13 +23,15 @@ namespace Data
         public static DpsServerData Moongourd => new DpsServerData()
         {
             UploadUrl = new Uri("https://moongourd.com/dpsmeter_data.php"),
-            ServerTimeUrl = new Uri("https://moongourd.com/shared/servertime")
+            ServerTimeUrl = new Uri("https://moongourd.com/api/shinra/servertime"),
+            AllowedAreaUrl = new Uri("https://moongourd.com/api/shinra/whitelist")
         };
 
         public static DpsServerData TeraLogs => new DpsServerData()
         {
             UploadUrl = new Uri("http://teralogs.com/api/logs"),
-            ServerTimeUrl = new Uri("https://teralogs.com/")
+            ServerTimeUrl = new Uri("https://teralogs.com/"),
+            AllowedAreaUrl = new Uri("http://teralogs.com/api/logs/a/allow")
         };
 
     }

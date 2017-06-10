@@ -183,7 +183,7 @@ namespace Data
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetProperty(settingName);
+            var setting = GetType().GetField(settingName);
             var currentSetting = (WindowStatus) setting.GetValue(this);
             var location = ParseLocation(xml);
 
@@ -199,8 +199,8 @@ namespace Data
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetProperty(settingName);
-            setting.SetValue(this, (Color) ColorConverter.ConvertFromString(xml.Value), null);
+            var setting = GetType().GetField(settingName);
+            setting.SetValue(this, (Color) ColorConverter.ConvertFromString(xml.Value));
         }
 
 
@@ -224,6 +224,7 @@ namespace Data
         {
             var root = _xml.Root;
             var teradps = root.Element("dps_servers");
+            if(teradps == null) { return; }
             foreach(var server in teradps.Elements())
             {
                 var username = server.Element("username");
@@ -371,7 +372,14 @@ namespace Data
             xml.Root.Add(new XElement("dps_servers"));
             foreach(var server in DpsServers)
             {
-                xml.Root.Element("dps_servers").Add(new XElement("server", server));
+                var serverXml = new XElement("server");
+                serverXml.Add(new XElement("username", server.Username));
+                serverXml.Add(new XElement("token", server.Token));
+                serverXml.Add(new XElement("enabled", server.Enabled));
+                serverXml.Add(new XElement("upload_url", server.UploadUrl));
+                serverXml.Add(new XElement("allowed_area_url", server.AllowedAreaUrl));
+                serverXml.Add(new XElement("server_time_url", server.ServerTimeUrl));
+                xml.Root.Element("dps_servers").Add(serverXml);
             }
 
             _filestream.SetLength(0);
@@ -384,32 +392,32 @@ namespace Data
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetProperty(settingName);
-            if (setting.PropertyType == typeof(int))
+            var setting = GetType().GetField(settingName);
+            if (setting.FieldType == typeof(int))
             {
                 int value;
                 var parseSuccess = int.TryParse(xml.Value, out value);
-                if (parseSuccess) { setting.SetValue(this, value, null); }
+                if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.PropertyType == typeof(double))
+            if (setting.FieldType == typeof(double))
             {
                 double value;
                 var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
-                if (parseSuccess) { setting.SetValue(this, value, null); }
+                if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.PropertyType == typeof(float))
+            if (setting.FieldType == typeof(float))
             {
                 float value;
                 var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
-                if (parseSuccess) { setting.SetValue(this, value, null); }
+                if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.PropertyType == typeof(bool))
+            if (setting.FieldType == typeof(bool))
             {
                 bool value;
                 var parseSuccess = bool.TryParse(xml.Value, out value);
-                if (parseSuccess) { setting.SetValue(this, value, null); }
+                if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.PropertyType == typeof(string)) { setting.SetValue(this, xml.Value, null); }
+            if (setting.FieldType == typeof(string)) { setting.SetValue(this, xml.Value); }
         }
     }
 }
