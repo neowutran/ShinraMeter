@@ -232,7 +232,6 @@ namespace Data
                 var enabled = server.Element("enabled");
                 var uploadUrl = server.Element("upload_url");
                 var allowedAreaUrl = server.Element("allowed_area_url");
-                var serverTimeUrl = server.Element("server_time_url");
                 var parseSuccess = bool.TryParse(enabled?.Value ?? "false", out bool enabledBool);
                 if(uploadUrl == null || String.IsNullOrWhiteSpace(uploadUrl.Value)) { continue; }
                 DpsServerData serverData = new DpsServerData()
@@ -243,7 +242,6 @@ namespace Data
                     Username = username?.Value ?? "",
                     Token = token?.Value ?? ""
                 };
-                serverData.ServerTimeUrl = new Uri(serverTimeUrl?.Value ?? serverData.UploadUrl.GetLeftPart(UriPartial.Authority)+ "/api/shinra/servertime");
             }
         }
 
@@ -378,7 +376,6 @@ namespace Data
                 serverXml.Add(new XElement("enabled", server.Enabled));
                 serverXml.Add(new XElement("upload_url", server.UploadUrl));
                 serverXml.Add(new XElement("allowed_area_url", server.AllowedAreaUrl));
-                serverXml.Add(new XElement("server_time_url", server.ServerTimeUrl));
                 xml.Root.Element("dps_servers").Add(serverXml);
             }
 
