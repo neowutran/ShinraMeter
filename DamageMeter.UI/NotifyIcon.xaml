@@ -78,21 +78,20 @@
                         <Image x:Name="GitHubIcon" Grid.Column="1" Grid.Row="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
                     </Button>
                     <Popup Name="gitPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="gitPopup_MouseLeave" VerticalOffset="-1" HorizontalOffset="55" Height="90" >
-                        <Grid Margin="3" Width="150" >
-                            <Border Style="{StaticResource border}" BorderThickness="1,0,1,1" Padding="0" />
-
-                            <UniformGrid Margin="0,0,0,0" Columns="1">
-                                <Button Grid.Row="0" Name="Wiki" Click="WikiAction" HorizontalAlignment="Stretch" Height="Auto">
-                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Wiki}" />
-                                </Button>
-                                <Button Grid.Row="1" Name="Patch" Click="PatchAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
-                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Patch_note}" />
-                                </Button>
-                                <Button Grid.Row="2"  Name="Issues" Click="IssueAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
-                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Report_issue}" />
-                                </Button>
-
-                            </UniformGrid>
+                        <Grid Margin="3" Width="Auto" >
+                            <Border Style="{StaticResource border}" BorderThickness="1,0,1,1"  >
+                                <UniformGrid Margin="0" Columns="1" HorizontalAlignment="Stretch">
+                                    <Button Grid.Row="0" Name="Wiki" Click="WikiAction" HorizontalAlignment="Stretch" Height="Auto">
+                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Wiki}" Margin="10,0"/>
+                                    </Button>
+                                    <Button Grid.Row="1" Name="Patch" Click="PatchAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
+                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Patch_note}" Margin="10,0"/>
+                                    </Button>
+                                    <Button Grid.Row="2"  Name="Issues" Click="IssueAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
+                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Report_issue}" Margin="10,0"/>
+                                    </Button>
+                                    </UniformGrid>
+                            </Border>
                         </Grid>
 
                     </Popup>
@@ -110,7 +109,7 @@
 
                 </Grid>
 
-                <TabControl Grid.Row="1" TabStripPlacement="Left" MinHeight="500" MaxHeight="500" MaxWidth="520" MinWidth="450" Width="520"
+                <TabControl Grid.Row="1" TabStripPlacement="Left" MinHeight="500" MaxHeight="500" MinWidth="450" 
                             Background="#2ccd" BorderThickness="0" x:Name="TabControl" Margin="-2,0,0,0">
                     <TabControl.Resources>
                         <Style TargetType="{x:Type ToolTip}">
