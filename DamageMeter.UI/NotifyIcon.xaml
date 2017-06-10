@@ -10,15 +10,14 @@
              xmlns:ui="clr-namespace:DamageMeter.UI">
     <tb:TaskbarIcon Name="Tray" IconSource="shinra.ico" PopupActivation="All">
 
+
         <!--
     We can use arbitrary UI elements as Popups.
     Popups stay open if the user moves away from the tray area
   -->
+
         <tb:TaskbarIcon.TrayPopup>
             <Grid Margin="4">
-                <Grid.Resources>
-
-                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -30,7 +29,6 @@
                             <Setter Property="Height" Value="Auto"/>
                             <Setter Property="Width" Value="Auto"/>
                             <Setter Property="Margin" Value="0,0"/>
-
                         </Style>
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
@@ -42,14 +40,18 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Border Style="{StaticResource border}" Grid.ColumnSpan="8" BorderThickness="0">
+                    <Border Style="{StaticResource border}" Grid.ColumnSpan="20" BorderThickness="0,0,0,1">
                         <Border.Effect>
                             <DropShadowEffect Direction="-90" Opacity=".8" BlurRadius="5" ShadowDepth="3"></DropShadowEffect>
                         </Border.Effect>
                     </Border>
-                    <Image x:Name="TopLeftLogo" Width="Auto" Height="Auto" Stretch="UniformToFill" />
 
+                    <Image x:Name="TopLeftLogo" Width="Auto" Height="Auto" Stretch="UniformToFill" />
 
                     <Button  Grid.Column="1" Click="SiteExportAction" ToolTip="{x:Static l:LP.SystemTray_Export_current_to_Site}">
                         <Image x:Name="SiteExportIcon" Opacity=".8" Margin="6"></Image>
@@ -66,9 +68,45 @@
                     <Button Grid.Column="5" Click="ResetAction" ToolTip="{x:Static l:LP.Reset}">
                         <Image x:Name="ResetIcon" Opacity=".8" Margin="6"></Image>
                     </Button>
-                    <Button Grid.Column="7"  Click="CloseAction" ToolTip="{x:Static l:LP.Close}">
+                    <Rectangle Width="1" VerticalAlignment="Stretch" Grid.Column="6" />
+                    <Rectangle Width="1" VerticalAlignment="Stretch" Grid.Column="10" />
+                    <Button Grid.Column="11"  Click="CloseAction" ToolTip="{x:Static l:LP.Close}">
                         <Image  x:Name="CloseIcon" Opacity=".8" Margin="6"/>
                     </Button>
+
+                    <Button Grid.Column="7" ToolTip="GitHub" Name="gitButton" Click="gitButton_Click">
+                        <Image x:Name="GitHubIcon" Grid.Column="1" Grid.Row="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+                    <Popup Name="gitPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="gitPopup_MouseLeave" VerticalOffset="-1" HorizontalOffset="55" Height="90" >
+                        <Grid Margin="3" Width="150" >
+                            <Border Style="{StaticResource border}" BorderThickness="1,0,1,1" Padding="0" />
+
+                            <UniformGrid Margin="0,0,0,0" Columns="1">
+                                <Button Grid.Row="0" Name="Wiki" Click="WikiAction" HorizontalAlignment="Stretch" Height="Auto">
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Wiki}" />
+                                </Button>
+                                <Button Grid.Row="1" Name="Patch" Click="PatchAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Patch_note}" />
+                                </Button>
+                                <Button Grid.Row="2"  Name="Issues" Click="IssueAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
+                                    <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Report_issue}" />
+                                </Button>
+
+                            </UniformGrid>
+                        </Grid>
+
+                    </Popup>
+                    <Button Grid.Column="8" Name="Discord" Click="DiscordAction" ToolTip="{x:Static l:LP.SystemTray_Discord}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="DiscordIcon" Grid.Column="1" Grid.Row="3"  Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="9" Name="DpsWebsite" Click="DpsWebsiteAction" ToolTip="moongourd.com">
+                        <StackPanel Orientation="Horizontal">
+                            <Image x:Name="MoongourdIcon" Grid.Column="1" Grid.Row="4" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </StackPanel>
+                    </Button>
+
 
                 </Grid>
 
@@ -688,86 +726,6 @@
 
                                     </StackPanel>
                                 </ScrollViewer>
-                            </Grid>
-                        </TabItem.Content>
-                    </TabItem>
-                    <TabItem FontSize="14" x:Name="Links" Background="Transparent" Foreground="White">
-                        <TabItem.Header>
-                            <Image x:Name="LinksTabIcon" Width="30" Height="30" Margin="5" Opacity=".6" RenderOptions.BitmapScalingMode="HighQuality"  ToolTip="{x:Static l:LP.SystemTray_Links}"></Image>
-                        </TabItem.Header>
-                        <TabItem.Content>
-                            <Grid Margin="-3,-2,-3,0" UseLayoutRounding="True">
-                                <Grid.Resources>
-                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonMainStyle}">
-                                        <Setter Property="Height" Value="40"/>
-                                        <Setter Property="Grid.ColumnSpan" Value="3"/>
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border Name="border"
-                                                BorderThickness="0"
-                                                Padding="0,0"
-                                                BorderBrush="Transparent"
-                                                CornerRadius="0"
-                                                Background="Transparent">
-                                                        <ContentPresenter HorizontalAlignment="Left" Margin="130,0,0,0" VerticalAlignment="Center" />
-                                                    </Border>
-                                                    <ControlTemplate.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter TargetName="border" Property="Background" Value="#1fff" />
-                                                        </Trigger>
-                                                    </ControlTemplate.Triggers>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-
-                                    </Style>
-
-                                </Grid.Resources>
-
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Button Grid.Row="0" Name="Wiki" Click="WikiAction" >
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image x:Name="GitHubIcon" Grid.Column="1" Grid.Row="0" Width="26" Height="26" Margin="7,0" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                            <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Wiki}" ></TextBlock>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Grid.Row="1" Name="Patch" Click="PatchAction"  >
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image x:Name="GitHubIcon1" Grid.Column="1" Grid.Row="0" Width="26" Height="26" Margin="7,0" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                            <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Patch_note}" ></TextBlock>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Grid.Row="2"  Name="Issues" Click="IssueAction" >
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image x:Name="GitHubIcon2" Grid.Column="1" Grid.Row="1" Width="26" Height="26" Margin="7,0" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Report_issue}" ></TextBlock>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Grid.Row="3" Name="Discord" Click="DiscordAction" >
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image x:Name="DiscordIcon" Grid.Column="1" Grid.Row="3" Width="26" Height="26" Margin="7,0" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Discord}" ></TextBlock>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Grid.Row="4" Name="DpsWebsite" Click="DpsWebsiteAction" >
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image x:Name="MoongourdIcon" Grid.Column="1" Grid.Row="4" Width="26" Height="26" Margin="7,0" RenderOptions.BitmapScalingMode="HighQuality"></Image>
-                                            <TextBlock VerticalAlignment="Center" Text="moongourd.com" ></TextBlock>
-                                        </StackPanel>
-                                    </Button>
-
-
-
-                                </Grid>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

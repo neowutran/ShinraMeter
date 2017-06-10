@@ -135,8 +135,6 @@ namespace DamageMeter.UI
             UploadGlyphIcon.Source = BasicTeraData.Instance.ImageDatabase.Upload.Source;
 
             GitHubIcon.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
-            GitHubIcon1.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
-            GitHubIcon2.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
             DiscordIcon.Source = BasicTeraData.Instance.ImageDatabase.Discord.Source;
             MoongourdIcon.Source = BasicTeraData.Instance.ImageDatabase.Moongourd.Source;
         }
@@ -608,5 +606,22 @@ namespace DamageMeter.UI
         }
 
         private void DisableNoAbnormalsInHUD(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoAbnormalsInHUD = false; }
+
+        private void gitButton_Click(object sender, RoutedEventArgs e)
+        {
+            gitPopup.Placement = PlacementMode.Bottom;
+            gitPopup.PlacementTarget = gitButton;
+            var h = gitPopup.Height;
+            gitPopup.Height = 0;
+            var an = new DoubleAnimation(0, h, TimeSpan.FromMilliseconds(200)) { EasingFunction = new QuadraticEase() };
+            gitPopup.IsOpen = true;
+            gitPopup.BeginAnimation(HeightProperty, an);
+
+        }
+
+        private void gitPopup_MouseLeave(object sender, MouseEventArgs e)
+        {
+            gitPopup.IsOpen = false;
+        }
     }
 }
