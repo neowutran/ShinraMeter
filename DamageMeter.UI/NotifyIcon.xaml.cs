@@ -32,8 +32,8 @@ namespace DamageMeter.UI
 
         public void UpdatePacketWaiting(int packetWaiting)
         {
-            PacketWaitingLabel.Content = $"{packetWaiting} /5000 {LP.SystemTray_before_crash}";
-            PacketWaitingProgressBar.Value = packetWaiting;
+            //PacketWaitingLabel.Content = $"{packetWaiting} /5000 {LP.SystemTray_before_crash}";
+            //PacketWaitingProgressBar.Value = packetWaiting;
         }
         private void SetAuthTokenRowVisibility(bool show)
         {
@@ -121,7 +121,7 @@ namespace DamageMeter.UI
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             SetPrivateSrvExportRowVisibility(BasicTeraData.Instance.WindowData.PrivateServerExport); //ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
 
-            PerformanceTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Performance.Source;
+            //PerformanceTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Performance.Source;
             SettingsTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Settings.Source;
             LinksTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Links.Source;
 

@@ -771,22 +771,6 @@
                             </Grid>
                         </TabItem.Content>
                     </TabItem>
-                    <TabItem FontSize="14" x:Name="Performance" Background="Transparent" Foreground="White" >
-                        <TabItem.Header>
-                            <Image x:Name="PerformanceTabIcon" Width="30" Height="30" Margin="5" Opacity=".6" RenderOptions.BitmapScalingMode="HighQuality" ToolTip="{x:Static l:LP.SystemTray_Performance_information}"></Image>
-                        </TabItem.Header>
-                        <TabItem.Content>
-                            <Grid Margin="-2,-2,-2,0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30" />
-                                    <RowDefinition Height="30" />
-                                </Grid.RowDefinitions>
-                                <Label Foreground="White" Grid.Row="0" Name="PacketWaitingLabel" />
-                                <ProgressBar Grid.Row="1" Name="PacketWaitingProgressBar" Minimum="0" Maximum="5000"
-                                             Value="0" />
-                            </Grid>
-                        </TabItem.Content>
-                    </TabItem>
                 </TabControl>
 
 
