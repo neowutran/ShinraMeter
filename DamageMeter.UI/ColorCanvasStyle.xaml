@@ -5,6 +5,93 @@
     <xctk:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <SolidColorBrush x:Key="CheckerBrush" Color="Transparent"/>
+    <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+        <Setter Property="SnapsToDevicePixels" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="false"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Ellipse  Name="Ellipse"
+                                 Cursor="Hand"
+                          Fill="#ff303037" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Ellipse.Effect>
+                            <DropShadowEffect ShadowDepth="1" Opacity=".55" BlurRadius="4"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Ellipse" Property="Fill" Value="#ff3822"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="IsTabStop" Value="false" />
+        <Setter Property="Focusable" Value="false" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border  BorderThickness="0" BorderBrush="Black" Opacity=".3" Background="#ff3822" Height="2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border SnapsToDevicePixels="True" Background="#f222" Opacity="1" BorderThickness="0" BorderBrush="YellowGreen" Height="2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="Slider" x:Key="AppSliderStyle">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Slider">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" Name="row" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" Name="column" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Track Name="PART_Track"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Grid.Row="1" Grid.Column="1"
+                              Width="{TemplateBinding Width}"
+                              Height="{TemplateBinding Height}">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Style="{StaticResource SliderRepeatButton}"  Command="Slider.DecreaseLarge" />
+                            </Track.DecreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource SliderThumbStyle}" />
+                            </Track.Thumb>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Style="{StaticResource SliderRepeatButton1}" Command="Slider.IncreaseLarge" />
+                            </Track.IncreaseRepeatButton>
+
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <LinearGradientBrush x:Key="ColorPickerDarkBorderBrush"
                         EndPoint="0.5,1"
@@ -415,7 +502,7 @@
                                    Grid.Row="0"
                                    Grid.Column="1"
                                    Margin="4,6,4,6"
-                                   Style="{StaticResource ColorCanvasSliderStyle}"
+                                   Style="{StaticResource AppSliderStyle}"
                                    Value="{Binding R, RelativeSource={RelativeSource TemplatedParent}}"
                                    VerticalAlignment="Center" />
                                     <TextBox Grid.Row="0"
@@ -436,7 +523,7 @@
                                    Grid.Row="1"
                                    Grid.Column="1"
                                    Margin="4,6,4,6"
-                                   Style="{StaticResource ColorCanvasSliderStyle}"
+                                   Style="{StaticResource AppSliderStyle}"
                                    Value="{Binding G, RelativeSource={RelativeSource TemplatedParent}}"
                                    VerticalAlignment="Center" />
                                     <TextBox Grid.Row="1"
@@ -457,7 +544,7 @@
                                    Grid.Row="2"
                                    Grid.Column="1"
                                    Margin="4,6,4,6"
-                                   Style="{StaticResource ColorCanvasSliderStyle}"
+                                   Style="{StaticResource AppSliderStyle}"
                                    Value="{Binding B, RelativeSource={RelativeSource TemplatedParent}}"
                                    VerticalAlignment="Center" />
                                     <TextBox Grid.Row="2"
@@ -478,7 +565,7 @@
                                    SmallChange="1"
                                    LargeChange="10"
                                    Margin="4,6,4,6"
-                                   Style="{StaticResource ColorCanvasSliderStyle}"
+                                   Style="{StaticResource AppSliderStyle}"
                                    Value="{Binding Path=A, RelativeSource={RelativeSource TemplatedParent}}"
                                    VerticalAlignment="Center"
                                    Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
