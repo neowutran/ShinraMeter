@@ -102,6 +102,7 @@ namespace DamageMeter.AutoUpdate
 
         public static async Task<bool> IsUpToDate()
         {
+            return true;
             return await NoNewHashes().ConfigureAwait(false);
             //var latestVersion = await LatestVersion().ConfigureAwait(false);
             //Console.WriteLine("Current version = " + Version);

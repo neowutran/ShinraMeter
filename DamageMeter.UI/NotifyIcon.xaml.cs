@@ -12,16 +12,16 @@ using Data;
 using Data.Actions.Notify;
 using Lang;
 using Newtonsoft.Json;
+using System.Windows.Media.Animation;
+using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace DamageMeter.UI
 {
-    /// <summary>
-    ///     Logique d'interaction pour NotifyIcon.xaml
-    /// </summary>
     public partial class NotifyIcon
     {
         private long _lastSend;
-
+        private int _animationSpeed = 150;
         private MainWindow _mainWindow;
 
         public NotifyIcon()
@@ -35,27 +35,69 @@ namespace DamageMeter.UI
             PacketWaitingLabel.Content = $"{packetWaiting} /5000 {LP.SystemTray_before_crash}";
             PacketWaitingProgressBar.Value = packetWaiting;
         }
+        private void SetAuthTokenRowVisibility(bool show)
+        {
+            DoubleAnimation an;
+            if (show)
+            {
+                an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
+            else
+            {
+                an = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
+            ((Grid)AuthTokenTextbox.Parent).LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            SeparatorVisibility();
+        }
+        private void SetPrivateSrvExportRowVisibility(bool show)
+        {
+            DoubleAnimation an;
+            if (show)
+            {
+                an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
+            else
+            {
+                an = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
+            ((Grid)ServerURLTextbox.Parent).LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            SeparatorVisibility();
 
+        }
+        private void SeparatorVisibility()
+        {
+            DoubleAnimation an;
+            var currentScale = ((ScaleTransform)authSeparator.LayoutTransform).ScaleY;
+            if (BasicTeraData.Instance.WindowData.SiteExport || BasicTeraData.Instance.WindowData.PrivateServerExport)
+            {
+                an = new DoubleAnimation(currentScale, 1, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
+            else
+            {
+                an = new DoubleAnimation(currentScale, 0, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
+            authSeparator.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+        }
         public void Initialize(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
-            DpsWebsiteExport.IsChecked = BasicTeraData.Instance.WindowData.SiteExport;
+            DpsWebsiteExport.Status = BasicTeraData.Instance.WindowData.SiteExport;
             AuthTokenTextbox.Text = BasicTeraData.Instance.WindowData.TeraDpsToken;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
-            AutoExcelExport.IsChecked = BasicTeraData.Instance.WindowData.Excel;
+            SetAuthTokenRowVisibility(BasicTeraData.Instance.WindowData.SiteExport); //AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
+            AutoExcelExport.Status = BasicTeraData.Instance.WindowData.Excel;
             ExcelCMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
-            CountOnlyBoss.IsChecked = BasicTeraData.Instance.WindowData.OnlyBoss;
-            BossByHpBar.IsChecked = BasicTeraData.Instance.WindowData.DetectBosses;
-            PartyOnly.IsChecked = BasicTeraData.Instance.WindowData.PartyOnly;
-            InvisibleWhenNoStats.IsChecked = BasicTeraData.Instance.WindowData.InvisibleUi;
-            ShowAlways.IsChecked = BasicTeraData.Instance.WindowData.AlwaysVisible;
-            StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
+            CountOnlyBoss.Status = BasicTeraData.Instance.WindowData.OnlyBoss;
+            BossByHpBar.Status = BasicTeraData.Instance.WindowData.DetectBosses;
+            PartyOnly.Status = BasicTeraData.Instance.WindowData.PartyOnly;
+            InvisibleWhenNoStats.Status = BasicTeraData.Instance.WindowData.InvisibleUi;
+            ShowAlways.Status = BasicTeraData.Instance.WindowData.AlwaysVisible;
+            StayTopMost.Status = BasicTeraData.Instance.WindowData.Topmost;
             NumberPlayersSpinner.Value = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed;
             LFDelaySpinner.Value = BasicTeraData.Instance.WindowData.LFDelay;
-            RemoveTeraAltEnterHotkey.IsChecked = BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey;
-            ChatEnabled.IsChecked = BasicTeraData.Instance.WindowData.EnableChat;
-            CopyInspect.IsChecked = BasicTeraData.Instance.WindowData.CopyInspect;
-            FormatPasteString.IsChecked = BasicTeraData.Instance.WindowData.FormatPasteString;
+            RemoveTeraAltEnterHotkey.Status = BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey;
+            ChatEnabled.Status = BasicTeraData.Instance.WindowData.EnableChat;
+            CopyInspect.Status = BasicTeraData.Instance.WindowData.CopyInspect;
+            FormatPasteString.Status = BasicTeraData.Instance.WindowData.FormatPasteString;
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
             AllianceColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.AllianceColor;
@@ -67,17 +109,36 @@ namespace DamageMeter.UI
             PrivateChannelColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.PrivateChannelColor;
             GeneralColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GeneralColor;
             RaidColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.RaidColor;
-            PartyEvent.IsChecked = BasicTeraData.Instance.WindowData.DisablePartyEvent;
-            ShowAfkIventsIngame.IsChecked = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
-            PrivateServerExport.IsChecked = BasicTeraData.Instance.WindowData.PrivateServerExport;
+            PartyEvent.Status = BasicTeraData.Instance.WindowData.DisablePartyEvent;
+            ShowAfkIventsIngame.Status = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
+            PrivateServerExport.Status = BasicTeraData.Instance.WindowData.PrivateServerExport;
             ServerURLTextbox.Text = BasicTeraData.Instance.WindowData.PrivateDpsServers[0];
-            MuteSound.IsChecked = BasicTeraData.Instance.WindowData.MuteSound;
-            ShowSelfOnTop.IsChecked = BasicTeraData.Instance.WindowData.MeterUserOnTop;
+            MuteSound.Status = BasicTeraData.Instance.WindowData.MuteSound;
+            ShowSelfOnTop.Status = BasicTeraData.Instance.WindowData.MeterUserOnTop;
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
-            NoPaste.IsChecked = BasicTeraData.Instance.WindowData.NoPaste;
-            NoAbnormalsInHUD.IsChecked = BasicTeraData.Instance.WindowData.NoAbnormalsInHUD;
+            NoPaste.Status = BasicTeraData.Instance.WindowData.NoPaste;
+            NoAbnormalsInHUD.Status = BasicTeraData.Instance.WindowData.NoAbnormalsInHUD;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
+            SetPrivateSrvExportRowVisibility(BasicTeraData.Instance.WindowData.PrivateServerExport); //ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
+
+            PerformanceTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Performance.Source;
+            SettingsTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Settings.Source;
+            LinksTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Links.Source;
+
+            TopLeftLogo.Source = BasicTeraData.Instance.ImageDatabase.Icon;
+
+            CloseIcon.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
+            ChatBoxIcon.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
+            SiteExportIcon.Source = BasicTeraData.Instance.ImageDatabase.Link.Source;
+            ExcelExportIcon.Source = BasicTeraData.Instance.ImageDatabase.Excel.Source;
+            ResetIcon.Source = BasicTeraData.Instance.ImageDatabase.Reset.Source;
+            UploadGlyphIcon.Source = BasicTeraData.Instance.ImageDatabase.Upload.Source;
+
+            GitHubIcon.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
+            GitHubIcon1.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
+            GitHubIcon2.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
+            DiscordIcon.Source = BasicTeraData.Instance.ImageDatabase.Discord.Source;
+            MoongourdIcon.Source = BasicTeraData.Instance.ImageDatabase.Moongourd.Source;
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -113,7 +174,7 @@ namespace DamageMeter.UI
         public void SwitchStayTop(object sender = null, EventArgs e = null)
         {
             BasicTeraData.Instance.WindowData.Topmost = !BasicTeraData.Instance.WindowData.Topmost;
-            StayTopMost.IsChecked = BasicTeraData.Instance.WindowData.Topmost;
+            StayTopMost.Status = BasicTeraData.Instance.WindowData.Topmost;
             UpdateTopMost();
         }
 
@@ -125,13 +186,13 @@ namespace DamageMeter.UI
         private void EnableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SiteExport = true;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
+            SetAuthTokenRowVisibility(true); //AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
         }
 
         private void DisableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.SiteExport = false;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
+            SetAuthTokenRowVisibility(false); //AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
         }
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
@@ -256,62 +317,62 @@ namespace DamageMeter.UI
         private void Grid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             ConfigScrollViewer.ScrollToVerticalOffset(ConfigScrollViewer.VerticalOffset - e.Delta);
-            e.Handled = true;
+            e.Handled = true;            
         }
 
         private void PrivateChannelColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.PrivateChannelColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.PrivateChannelColor = (Color)e.NewValue;
         }
 
         private void EmotesColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.EmotesColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.EmotesColor = (Color)e.NewValue;
         }
 
         private void TradingColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.TradingColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.TradingColor = (Color)e.NewValue;
         }
 
         private void SayColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.SayColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.SayColor = (Color)e.NewValue;
         }
 
         private void RaidColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.RaidColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.RaidColor = (Color)e.NewValue;
         }
 
         private void GuildColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.GuildColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.GuildColor = (Color)e.NewValue;
         }
 
         private void GroupColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.GroupColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.GroupColor = (Color)e.NewValue;
         }
 
         private void GeneralColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.GeneralColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.GeneralColor = (Color)e.NewValue;
         }
 
         private void AreaColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.AreaColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.AreaColor = (Color)e.NewValue;
         }
 
         private void AllianceColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.AllianceColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.AllianceColor = (Color)e.NewValue;
         }
 
         private void WhisperColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
-            BasicTeraData.Instance.WindowData.WhisperColor = (Color) e.NewValue;
+            BasicTeraData.Instance.WindowData.WhisperColor = (Color)e.NewValue;
         }
 
         private void EnableRemoveTeraAltEnterHotkey(object sender, RoutedEventArgs e)
@@ -340,22 +401,54 @@ namespace DamageMeter.UI
 
         private void ChatSettingsVisible(bool show)
         {
-            CopyInspect.Height = show ? double.NaN : 0;
-            MuteSound.Height = show ? double.NaN : 0;
-            PartyEvent.Height = show ? double.NaN : 0;
-            NoAbnormalsInHUD.Height = show ? double.NaN : 0;
-            ShowAfkIventsIngame.Height = show ? double.NaN : 0;
-            WhisperColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            AllianceColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            AreaColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            GeneralColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            GroupColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            GuildColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            RaidColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            SayColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            TradingColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            EmotesColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
-            PrivateChannelColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            DoubleAnimation an;
+            if (show)
+            {
+                an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() } ;
+            }
+            else
+            {
+                an = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
+
+            CopyInspect.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            MuteSound.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            NoAbnormalsInHUD.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            ShowAfkIventsIngame.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            PartyEvent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+
+            ColorSettingsContainer.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+
+            //WhisperColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //AllianceColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //AreaColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //GeneralColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //GroupColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //GuildColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //RaidColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //SayColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //TradingColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //EmotesColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            //PrivateChannelColor.Parent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+
+
+            //CopyInspect.Height = show ? double.NaN : 0;
+            //MuteSound.Height = show ? double.NaN : 0;
+            //PartyEvent.Height = show ? double.NaN : 0;
+            //NoAbnormalsInHUD.Height = show ? double.NaN : 0;
+            //ShowAfkIventsIngame.Height = show ? double.NaN : 0;
+
+            //WhisperColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //AllianceColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //AreaColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //GeneralColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //GroupColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //GuildColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //RaidColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //SayColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //TradingColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //EmotesColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
+            //PrivateChannelColor.Parent.SetValue(HeightProperty, show ? double.NaN : 0);
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)
@@ -375,7 +468,7 @@ namespace DamageMeter.UI
             if (NetworkController.Instance.EntityTracker.MeterUser.Level < 65) { return; }
             _lastSend = DateTime.Now.Ticks;
             var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs,
-                new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None});
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
             Debug.WriteLine(json);
             Task.Run(() =>
             {
@@ -383,8 +476,8 @@ namespace DamageMeter.UI
                 {
                     using (var client = new HttpClient())
                     {
-                        //client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
-                        //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
+                        client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
+                        client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
 
                         client.Timeout = TimeSpan.FromSeconds(40);
                         var response = client.PostAsync("https://moongourd.com/shared/glyph_data.php", new StringContent(json, Encoding.UTF8, "application/json"));
@@ -439,25 +532,25 @@ namespace DamageMeter.UI
 
         private void ClickOpenChatBox(object sender, RoutedEventArgs e)
         {
-            _mainWindow._chatbox = new Chatbox {Owner = _mainWindow};
+            _mainWindow._chatbox = new Chatbox { Owner = _mainWindow };
             _mainWindow._chatbox.ShowWindow();
         }
 
         private void EnablePServerExp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PrivateServerExport = true;
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
+            SetPrivateSrvExportRowVisibility(true); // ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
         private void DisablePServerExp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PrivateServerExport = false;
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
+            SetPrivateSrvExportRowVisibility(false); // ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
         private void ServerURLChanged(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.PrivateDpsServers[0] = ServerURLTextbox.Text;
+           BasicTeraData.Instance.WindowData.PrivateDpsServers[0] = ServerURLTextbox.Text;
         }
 
         private void EnableMuteSound(object sender, RoutedEventArgs e)
@@ -501,7 +594,7 @@ namespace DamageMeter.UI
             if (e.Key == Key.Enter) { ServerURLChanged(this, new RoutedEventArgs()); }
         }
 
-        private void NoPaste_OnUnchecked(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoPaste=false; }
+        private void NoPaste_OnUnchecked(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoPaste = false; }
 
         private void NoPaste_OnChecked(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoPaste = true; }
 
