@@ -213,7 +213,7 @@
         <!--HUD-->
         <DropShadowEffect x:Key="dropShadow" BlurRadius="5" ShadowDepth="2" Opacity=".6" />
         <SolidColorBrush x:Key="bgColor" Color="#101016" />
-        <SolidColorBrush x:Key="mainColor" Color="#ddd"/>
+        <SolidColorBrush x:Key="mainColor" Color="#d0d0d7"/>
         <Style x:Key="border" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource bgColor}" />
             <Setter Property="CornerRadius" Value="0" />
