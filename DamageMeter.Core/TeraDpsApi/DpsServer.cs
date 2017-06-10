@@ -88,7 +88,7 @@ namespace DamageMeter.TeraDpsApi
 
         public long FetchServerTime(NpcEntity entity)
         {
-            var serverTimeUrl = String.IsNullOrWhiteSpace(Data.ServerTimeUrl.ToString()) ? HomeUrl : Data.ServerTimeUrl;
+            var serverTimeUrl = String.IsNullOrWhiteSpace(Data.ServerTimeUrl.ToString()) ? new Uri(HomeUrl+"/api/shinra/servertime") : Data.ServerTimeUrl;
             try
             {
                 using (var client = new HttpClient())

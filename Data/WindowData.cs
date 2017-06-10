@@ -243,7 +243,7 @@ namespace Data
                     Username = username?.Value ?? "",
                     Token = token?.Value ?? ""
                 };
-                serverData.ServerTimeUrl = new Uri(serverTimeUrl?.Value ?? serverData.UploadUrl.GetLeftPart(UriPartial.Authority));
+                serverData.ServerTimeUrl = new Uri(serverTimeUrl?.Value ?? serverData.UploadUrl.GetLeftPart(UriPartial.Authority)+ "/api/shinra/servertime");
             }
         }
 
