@@ -123,7 +123,7 @@ namespace DamageMeter.UI
 
             //PerformanceTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Performance.Source;
             SettingsTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Settings.Source;
-            LinksTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Links.Source;
+            //LinksTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Links.Source;
 
             TopLeftLogo.Source = BasicTeraData.Instance.ImageDatabase.Icon;
 
