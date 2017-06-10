@@ -476,6 +476,10 @@
       <Project>{220fef0f-4a83-4ab8-9435-f9bc09b9039f}</Project>
       <Name>Lang</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShinraMeter.D3D9Render\ShinraMeter.D3D9Render.csproj">
+      <Project>{23f7be64-3627-4f4e-af78-291a7664fe6a}</Project>
+      <Name>ShinraMeter.D3D9Render</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
       <Name>Tera</Name>
