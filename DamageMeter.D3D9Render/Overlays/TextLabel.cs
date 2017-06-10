@@ -23,7 +23,7 @@ namespace DamageMeter.D3D9Render.Overlays
             set
             {
                 if (_text==value)return;
-                DxOverlay.TextSetString(Id, value);
+                DxOverlay.TextSetStringUnicode(Id, value);
                 _text = value;
             }
         }
@@ -63,7 +63,7 @@ namespace DamageMeter.D3D9Render.Overlays
 
         public TextLabel(string font, int size, TypeFace type, Point position, Color color, string text, bool shadow, bool show)
         {
-            Id = DxOverlay.TextCreate(font, size, type.HasFlag(TypeFace.Bold), type.HasFlag(TypeFace.Italic), position.X, position.Y, (uint)color.ToArgb(), text, shadow, show);
+            Id = DxOverlay.TextCreateUnicode(font, size, type.HasFlag(TypeFace.Bold), type.HasFlag(TypeFace.Italic), position.X, position.Y, (uint)color.ToArgb(), text, shadow, show);
             //_font = font;
             //_size = size;
             //_type = type;
@@ -82,7 +82,7 @@ namespace DamageMeter.D3D9Render.Overlays
 
         public void TextUpdate(string font, int size, bool bold, bool italic)
         {
-            DxOverlay.TextUpdate(Id, font, size, bold, italic);
+            DxOverlay.TextUpdateUnicode(Id, font, size, bold, italic);
         }
     }
 }

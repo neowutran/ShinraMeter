@@ -19,10 +19,10 @@ namespace DamageMeter.D3D9Render
 
         public DpsRow(ClassInfo info, int row, int x=0, int y=0)
         {
-            PName = new TextLabel("Arial", 7, TypeFace.None, new Point(x + 5, y + row * 20 + 5), Color.FromArgb(220, Color.YellowGreen), info.PName, false, true);
-            PDmg = new TextLabel("Arial", 7, TypeFace.None, new Point(x + 85, y + row * 20 + 5), Color.FromArgb(220, Color.White), info.PDmg, false, true);
-            PDsp = new TextLabel("Arial", 7, TypeFace.None, new Point(x + 115, y + row * 20 + 5), Color.FromArgb(220, Color.White), info.PDsp, false, true);
-            PCrit = new TextLabel("Arial", 7, TypeFace.None, new Point(x + 155, y + row * 20 + 5), Color.FromArgb(220, Color.OrangeRed), info.PCrit, false, true);
+            PName = new TextLabel("Segoe UI", 6, TypeFace.None, new Point(x + 5, y + row * 20 + 5), Color.FromArgb(220, Color.YellowGreen), info.PName, false, true);
+            PDmg = new TextLabel("Segoe UI", 6, TypeFace.None, new Point(x + 95, y + row * 20 + 5), Color.FromArgb(220, Color.White), info.PDmg, false, true);
+            PDsp = new TextLabel("Segoe UI", 6, TypeFace.None, new Point(x + 125, y + row * 20 + 5), Color.FromArgb(220, Color.White), info.PDsp, false, true);
+            PCrit = new TextLabel("Segoe UI", 6, TypeFace.None, new Point(x + 160, y + row * 20 + 5), Color.FromArgb(220, Color.OrangeRed), info.PCrit, false, true);
         }
 
         public void UpdateRow(ClassInfo info)

@@ -252,7 +252,7 @@ namespace DamageMeter.UI
                         skills, abnormals.Get(playerStats.Source));
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
-                DXrender?.Draw(statsDamage.ToClassInfo());
+                DXrender?.Draw(statsDamage.ToClassInfo(statsSummary.EntityInformation.TotalDamage));
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
                 foreach (var invisibleControl in invisibleControls)
@@ -535,13 +535,13 @@ namespace DamageMeter.UI
 
     public static class Extensions
     {
-        public static List<ClassInfo> ToClassInfo(this IEnumerable<PlayerDamageDealt> data)
+        public static List<ClassInfo> ToClassInfo(this IEnumerable<PlayerDamageDealt> data, long sum)
         {
             // return linq expression method
             return data.Select(dealt => new ClassInfo
             {
                 PName = $"{dealt.Source.Name}",
-                PDmg = $"{FormatHelpers.Instance.FormatValue(dealt.Amount)}",
+                PDmg = $"{FormatHelpers.Instance.FormatPercent((double)dealt.Amount/sum)}",
                 PDsp =
                     $"{FormatHelpers.Instance.FormatValue(dealt.Interval == 0 ? dealt.Amount : dealt.Amount * TimeSpan.TicksPerSecond / dealt.Interval)}{LP.PerSecond}",
                 PCrit = $"{Math.Round(dealt.CritRate)}%",

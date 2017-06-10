@@ -14,6 +14,9 @@ namespace DamageMeter.D3D9Render.Overlays
         [DllImport(Path, CallingConvention = CallingConvention.Cdecl)]
         public static extern int TextCreate(string font, int fontSize, bool bBold, bool bItalic, int x, int y, uint color, string text, bool bShadow, bool bShow);
 
+        [DllImport(Path, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern int TextCreateUnicode(string font, int fontSize, bool bBold, bool bItalic, int x, int y, uint color, string text, bool bShadow, bool bShow);
+
         [DllImport(Path, CallingConvention = CallingConvention.Cdecl)]
         public static extern int TextDestroy(int id);
 
@@ -32,8 +35,14 @@ namespace DamageMeter.D3D9Render.Overlays
         [DllImport(Path, CallingConvention = CallingConvention.Cdecl)]
         public static extern int TextSetString(int id, string str);
 
+        [DllImport(Path, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern int TextSetStringUnicode(int id, string str);
+
         [DllImport(Path, CallingConvention = CallingConvention.Cdecl)]
         public static extern int TextUpdate(int id, string font, int fontSize, bool bBold, bool bItalic);
+
+        [DllImport(Path, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern int TextUpdateUnicode(int id, string font, int fontSize, bool bBold, bool bItalic);
 
         [DllImport(Path, CallingConvention = CallingConvention.Cdecl)]
         public static extern int BoxCreate(int x, int y, int w, int h, uint dwColor, bool bShow);
