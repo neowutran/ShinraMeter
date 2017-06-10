@@ -39,9 +39,6 @@ namespace DamageMeter.UI
         public void Initialize(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
-            DpsWebsiteExport.IsChecked = BasicTeraData.Instance.WindowData.SiteExport;
-            AuthTokenTextbox.Text = BasicTeraData.Instance.WindowData.TeraDpsToken;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
             AutoExcelExport.IsChecked = BasicTeraData.Instance.WindowData.Excel;
             ExcelCMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             CountOnlyBoss.IsChecked = BasicTeraData.Instance.WindowData.OnlyBoss;
@@ -69,15 +66,12 @@ namespace DamageMeter.UI
             RaidColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.RaidColor;
             PartyEvent.IsChecked = BasicTeraData.Instance.WindowData.DisablePartyEvent;
             ShowAfkIventsIngame.IsChecked = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
-            PrivateServerExport.IsChecked = BasicTeraData.Instance.WindowData.PrivateServerExport;
-            ServerURLTextbox.Text = BasicTeraData.Instance.WindowData.PrivateDpsServers[0];
             MuteSound.IsChecked = BasicTeraData.Instance.WindowData.MuteSound;
             ShowSelfOnTop.IsChecked = BasicTeraData.Instance.WindowData.MeterUserOnTop;
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             NoPaste.IsChecked = BasicTeraData.Instance.WindowData.NoPaste;
             NoAbnormalsInHUD.IsChecked = BasicTeraData.Instance.WindowData.NoAbnormalsInHUD;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -120,18 +114,6 @@ namespace DamageMeter.UI
         private void DpsWebsiteAction(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer.exe", "http://moongourd.com");
-        }
-
-        private void EnableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.SiteExport = true;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
-        }
-
-        private void DisableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.SiteExport = false;
-            AuthTokenTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.SiteExport ? double.NaN : 0);
         }
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
@@ -443,23 +425,6 @@ namespace DamageMeter.UI
             _mainWindow._chatbox.ShowWindow();
         }
 
-        private void EnablePServerExp(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.PrivateServerExport = true;
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
-        }
-
-        private void DisablePServerExp(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.PrivateServerExport = false;
-            ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
-        }
-
-        private void ServerURLChanged(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.PrivateDpsServers[0] = ServerURLTextbox.Text;
-        }
-
         private void EnableMuteSound(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.MuteSound = true;
@@ -484,21 +449,6 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.IdleResetTimeout = IdleRTOSpinner?.Value ?? 0;
             if (BasicTeraData.Instance.WindowData.IdleResetTimeout == 0) { DamageTracker.Instance.LastIdleStartTime = 0; }
-        }
-
-        private void TokenChanged(object sender, RoutedEventArgs e)
-        {
-            BasicTeraData.Instance.WindowData.TeraDpsToken = AuthTokenTextbox.Text;
-        }
-
-        private void AuthTokenTextbox_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter) { TokenChanged(this, new RoutedEventArgs()); }
-        }
-
-        private void ServerURLTextbox_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter) { ServerURLChanged(this, new RoutedEventArgs()); }
         }
 
         private void NoPaste_OnUnchecked(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoPaste=false; }

@@ -74,9 +74,11 @@
     <Compile Include="Actions\Notify\SoundElements\TextToSpeech.cs" />
     <Compile Include="Actions\Notify\SoundElements\Beep.cs" />
     <Compile Include="Actions\Notify\SoundElements\Music.cs" />
+    <Compile Include="AreaAllowed.cs" />
     <Compile Include="BasicTeraData.cs" />
     <Compile Include="ClassIcons.cs" />
     <Compile Include="CopyKey.cs" />
+    <Compile Include="DpsServerData.cs" />
     <Compile Include="Events\Abnormality\AbnormalityEvent.cs" />
     <Compile Include="Events\Abnormality\AbnormalityTriggerType.cs" />
     <Compile Include="Events\CommonAFKEvent.cs" />

@@ -190,22 +190,7 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-                                        <CheckBox Grid.Row="0" Foreground="White"
-                                                  Content="{x:Static l:LP.SystemTray_Site_export}"
-                                                  Name="DpsWebsiteExport" Checked="EnableDpsWebsiteExportAction"
-                                                  Unchecked="DisableDpsWebsiteExportAction" />
-                                        <Grid Grid.Row="1">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="AuthLabel"
-                                                   Content="{x:Static l:LP.AuthToken}" />
-                                            <TextBox LostFocus="TokenChanged" KeyDown ="AuthTokenTextbox_OnKeyDown" HorizontalAlignment="Stretch" Margin="5"
-                                                     Grid.Column="1" Foreground="Black" Background="DarkGray"
-                                                     BorderBrush="Transparent" BorderThickness="0"
-                                                     Name="AuthTokenTextbox" />
-                                        </Grid>
+                                       
                                         <CheckBox Grid.Row="2" Foreground="White"
                                                   Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}"
                                                   Name="AutoExcelExport" Checked="EnableAutoExcelExportAction"
@@ -277,23 +262,8 @@
                                                   Content="{x:Static l:LP.ShowAfkEventsIngame}"
                                                   Name="ShowAfkIventsIngame" Checked="EnableAfkIventsIngame"
                                                   Unchecked="DisableAfkIventsIngame" />
-                                        <CheckBox Grid.Row="20" Foreground="White"
-                                                  Content="{x:Static l:LP.PrivateServerExport}"
-                                                  Name="PrivateServerExport" Checked="EnablePServerExp"
-                                                  Unchecked="DisablePServerExp" />
-                                        <Grid Grid.Row="21">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Foreground="White" Name="ServerLabel"
-                                                   Content="{x:Static l:LP.PrivateServerURL}" />
-                                            <TextBox LostFocus="ServerURLChanged" KeyDown="ServerURLTextbox_OnKeyDown" HorizontalAlignment="Stretch"
-                                                     Margin="5" Grid.Column="1" Foreground="Black"
-                                                     Background="DarkGray" BorderBrush="Transparent"
-                                                     BorderThickness="0" Name="ServerURLTextbox" />
-                                        </Grid>
-
+                                    
+                                     
                                         <Grid Grid.Row="22">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />

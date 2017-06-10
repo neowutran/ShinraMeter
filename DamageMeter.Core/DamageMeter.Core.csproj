@@ -100,6 +100,7 @@
     <Compile Include="Database\Structures\Skills.cs" />
     <Compile Include="Database\Structures\StatsSummary.cs" />
     <Compile Include="DataExporter.cs" />
+    <Compile Include="TeraDpsApi\DpsServer.cs" />
     <Compile Include="ExcelExport.cs" />
     <Compile Include="FormatHelpers.cs" />
     <Compile Include="HudManager.cs" />

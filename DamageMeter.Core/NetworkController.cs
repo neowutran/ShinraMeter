@@ -213,6 +213,15 @@ namespace DamageMeter
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
             handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, packetsWaiting, flash);
         }
+        
+        public void Initialize()
+        {
+            DataExporter.DpsServers = new List<DpsServer> { DpsServer.NeowutranAnonymousServer };
+            foreach(var dpsServer in BasicTeraData.Instance.WindowData.DpsServers)
+            {
+                DataExporter.DpsServers.Add(new DpsServer(dpsServer, false));
+            }
+        }
 
         public void SwitchClickThrou()
         {
