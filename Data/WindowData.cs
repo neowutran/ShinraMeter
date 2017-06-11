@@ -232,18 +232,18 @@ namespace Data
                 var username = server.Element("username");
                 var token = server.Element("token");
                 var enabled = server.Element("enabled");
-                var uploadUrl = server.Element("upload_url");
+                var uploadUrl = server.Element("dps_url");
                 var allowedAreaUrl = server.Element("allowed_area_url");
+                var glyphUrl = server.Element("glyph_url");
                 var parseSuccess = bool.TryParse(enabled?.Value ?? "false", out bool enabledBool);
                 if(uploadUrl == null || String.IsNullOrWhiteSpace(uploadUrl.Value)) { continue; }
-                DpsServerData serverData = new DpsServerData()
-                {
-                    UploadUrl = new Uri(uploadUrl.Value),
-                    AllowedAreaUrl = new Uri(allowedAreaUrl?.Value ?? ""),
-                    Enabled = enabledBool,
-                    Username = username?.Value ?? "",
-                    Token = token?.Value ?? ""
-                };
+                DpsServerData serverData = new DpsServerData(
+                    new Uri(uploadUrl.Value),
+                    new Uri(allowedAreaUrl?.Value ?? null),
+                    new Uri(glyphUrl?.Value ?? null),
+                    username?.Value ?? null, token?.Value ?? null, enabledBool 
+                );
+               
             }
         }
 
@@ -377,7 +377,8 @@ namespace Data
                 serverXml.Add(new XElement("username", server.Username));
                 serverXml.Add(new XElement("token", server.Token));
                 serverXml.Add(new XElement("enabled", server.Enabled));
-                serverXml.Add(new XElement("upload_url", server.UploadUrl));
+                serverXml.Add(new XElement("dps_url", server.UploadUrl));
+                serverXml.Add(new XElement("glyph_url", server.GlyphUrl));
                 serverXml.Add(new XElement("allowed_area_url", server.AllowedAreaUrl));
                 xml.Root.Element("dps_servers").Add(serverXml);
             }

@@ -7,37 +7,42 @@ namespace Data
 
         public Uri UploadUrl { get; set; }
         public Uri AllowedAreaUrl { get; set; }
-        public Uri ServerTimeUrl { get; set; }
         public Uri GlyphUrl { get; set; }
         public string Username { get; set; }
         public string Token { get; set; }
         public bool Enabled { get; set; }
 
-
-
-        public static DpsServerData Neowutran => new DpsServerData()
+        public DpsServerData(Uri uploadUrl, Uri allowedAreaUrl, Uri glyphUrl, string username, string token, bool enabled)
         {
-            UploadUrl = new Uri("https://neowutran.ovh/storage/store.php"),
-            ServerTimeUrl = new Uri("https://neowutran.ovh/updates/"),
-            Enabled = true
-        };
+            UploadUrl = uploadUrl;
+            AllowedAreaUrl = allowedAreaUrl;
+            GlyphUrl = glyphUrl;
+            Username = username;
+            Token = token;
+            Enabled = enabled;
+        }
 
-        public static DpsServerData Moongourd => new DpsServerData()
+        public DpsServerData(DpsServerData data)
         {
-            UploadUrl = new Uri("https://moongourd.com/dpsmeter_data.php"),
-            ServerTimeUrl = new Uri("https://moongourd.com/api/shinra/servertime"),
-            AllowedAreaUrl = new Uri("https://moongourd.com/api/shinra/whitelist"),
-            GlyphUrl = new Uri("https://moongourd.com/shared/glyph_data.php"),
-            Enabled = false
-        };
+            UploadUrl = data.UploadUrl;
+            AllowedAreaUrl = data.AllowedAreaUrl;
+            GlyphUrl = data.GlyphUrl;
+            Username = data.Username;
+            Token = data.Token;
+            Enabled = data.Enabled;
+        }
 
-        public static DpsServerData TeraLogs => new DpsServerData()
-        {
-            UploadUrl = new Uri("http://teralogs.com/api/logs"),
-            ServerTimeUrl = new Uri("https://teralogs.com/"),
-            AllowedAreaUrl = new Uri("http://teralogs.com/api/logs/a/allow"), 
-            Enabled = false
-        };
+        public static DpsServerData Neowutran => new DpsServerData(new Uri("https://neowutran.ovh/storage/store.php"), null, null, null, null, true);
 
+        public static DpsServerData Moongourd => new DpsServerData(
+            new Uri("https://moongourd.com/dpsmeter_data.php"),
+            new Uri("https://moongourd.com/api/shinra/whitelist"),
+            new Uri("https://moongourd.com/shared/glyph_data.php"),
+            null, null, false );
+
+        public static DpsServerData TeraLogs => new DpsServerData(
+            new Uri("http://teralogs.com/api/logs"),
+            new Uri("http://teralogs.com/api/logs/a/allow"),
+            null, null, null, false );
     }
 }

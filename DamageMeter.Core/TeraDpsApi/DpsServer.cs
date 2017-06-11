@@ -13,22 +13,21 @@ using Tera.Game;
 
 namespace DamageMeter.TeraDpsApi
 {
-    public class DpsServer
+    public class DpsServer : DpsServerData
     {
         public static readonly List<AreaAllowed> DefaultAreaAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>("[{\"AreaId\": 780,\"BossIds\": []},{\"AreaId\": 781,\"BossIds\": []},{\"AreaId\": 950,\"BossIds\": []},{\"AreaId\": 980,\"BossIds\": []},{\"AreaId\": 981,\"BossIds\": []}]");
-        public static DpsServer NeowutranAnonymousServer => new DpsServer(DpsServerData.Neowutran, true);
+        public static DpsServer NeowutranAnonymousServer => new DpsServer(Neowutran, true);
 
-        public DpsServer(DpsServerData data, bool anonymousUpload)
-        {
+        public DpsServer(DpsServerData data, bool anonymousUpload) : base(data)
+        {  
             AnonymousUpload = anonymousUpload;
             Guid = Guid.NewGuid();
-            Data = data;
         }
 
 
        public bool CheckAndSendFightData(EncounterBase teradpsData, NpcEntity entity)
         {
-            if (!Data.Enabled && !AnonymousUpload) { return false; }
+            if (!Enabled && !AnonymousUpload) { return false; }
             var areaId = int.Parse(teradpsData.areaId);
 
             try
@@ -56,7 +55,7 @@ namespace DamageMeter.TeraDpsApi
 
         public bool SendGlyphData()
         {
-            if (String.IsNullOrWhiteSpace(Data.GlyphUrl.ToString())) { return false ; }
+            if (String.IsNullOrWhiteSpace(GlyphUrl.ToString())) { return false ; }
 
             var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
@@ -66,11 +65,11 @@ namespace DamageMeter.TeraDpsApi
                 {
                     using (var client = new HttpClient())
                     {
-                        client.DefaultRequestHeaders.Add("X-Auth-Token", Data.Token);
-                        client.DefaultRequestHeaders.Add("X-Auth-Username", Data.Username);
+                        client.DefaultRequestHeaders.Add("X-Auth-Token", Token);
+                        client.DefaultRequestHeaders.Add("X-Auth-Username", Username);
 
                         client.Timeout = TimeSpan.FromSeconds(40);
-                        var response = client.PostAsync(Data.GlyphUrl, new StringContent(json, Encoding.UTF8, "application/json"));
+                        var response = client.PostAsync(GlyphUrl, new StringContent(json, Encoding.UTF8, "application/json"));
 
                         var responseString = response.Result.Content.ReadAsStringAsync();
                         Debug.WriteLine(responseString.Result);
@@ -93,11 +92,11 @@ namespace DamageMeter.TeraDpsApi
           {
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("X-Auth-Token", Data.Token);
-                client.DefaultRequestHeaders.Add("X-Auth-Username", Data.Username);
+                client.DefaultRequestHeaders.Add("X-Auth-Token", Token);
+                client.DefaultRequestHeaders.Add("X-Auth-Username", Username);
                 client.DefaultRequestHeaders.Add("X-Local-Time", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString());
                 client.Timeout = TimeSpan.FromSeconds(40);
-                var response = client.PostAsync(Data.UploadUrl, new StringContent(json, Encoding.UTF8, "application/json"));
+                var response = client.PostAsync(UploadUrl, new StringContent(json, Encoding.UTF8, "application/json"));
                 var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Result.Content.ReadAsStringAsync().Result);
                 if (responseObject.ContainsKey("id") && ((string)responseObject["id"]).StartsWith("http"))
                 {
@@ -122,7 +121,7 @@ namespace DamageMeter.TeraDpsApi
 
         public long FetchServerTime(NpcEntity entity)
         {
-            var serverTimeUrl = String.IsNullOrWhiteSpace(Data.ServerTimeUrl.ToString()) ? new Uri(HomeUrl+"/api/shinra/servertime") : Data.ServerTimeUrl;
+            var serverTimeUrl = new Uri(HomeUrl+"/api/shinra/servertime");
             try
             {
                 using (var client = new HttpClient())
@@ -149,15 +148,15 @@ namespace DamageMeter.TeraDpsApi
                 List<AreaAllowed> allowedAreaIdByServer;
                 try
                 {
-                    var response = client.GetAsync(Data.AllowedAreaUrl);
+                    var response = client.GetAsync(AllowedAreaUrl);
                     var allwedAreaIdByServerString = response.Result.Content.ReadAsStringAsync().Result;
                     allowedAreaIdByServer = JsonConvert.DeserializeObject<List<AreaAllowed>>(allwedAreaIdByServerString);
-                    Debug.WriteLine("Allowed Area Id successfully retrieved for "+Data.AllowedAreaUrl+" : "+ allwedAreaIdByServerString);
+                    Debug.WriteLine("Allowed Area Id successfully retrieved for "+AllowedAreaUrl+" : "+ allwedAreaIdByServerString);
                 }
                 catch
                 {
                     allowedAreaIdByServer = new List<AreaAllowed> (DefaultAreaAllowed);
-                    Debug.WriteLine("Allowed Area Id retrieve failed for " + Data.AllowedAreaUrl + " , using default values");
+                    Debug.WriteLine("Allowed Area Id retrieve failed for " + AllowedAreaUrl + " , using default values");
                     // TODO, display to error to a UI ?
                 }
                 ComputeAllowedAreaId(allowedAreaIdByServer);
@@ -170,12 +169,9 @@ namespace DamageMeter.TeraDpsApi
             _allowedAreaId.RemoveAll(x => !BasicTeraData.Instance.WindowData.WhiteListAreaId.Contains(x.AreaId));
         }
 
-        public Uri HomeUrl => new Uri(Data.UploadUrl?.GetLeftPart(UriPartial.Authority));
+        public Uri HomeUrl => new Uri(UploadUrl?.GetLeftPart(UriPartial.Authority));
         private List<AreaAllowed> _allowedAreaId = new List<AreaAllowed>();
         public Guid Guid { get; private set; }
         public bool AnonymousUpload { get; private set; }
-
-        public DpsServerData Data { get; set; }
-
     }
 }
