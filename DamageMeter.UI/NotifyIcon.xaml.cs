@@ -138,7 +138,9 @@ namespace DamageMeter.UI
 
             GitHubIcon.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
             DiscordIcon.Source = BasicTeraData.Instance.ImageDatabase.Discord.Source;
+            RankSitesIcon.Source = BasicTeraData.Instance.ImageDatabase.Cloud.Source;
             MoongourdIcon.Source = BasicTeraData.Instance.ImageDatabase.Moongourd.Source;
+            TeralogsIcon.Source = BasicTeraData.Instance.ImageDatabase.Teralogs.Source;
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -178,10 +180,16 @@ namespace DamageMeter.UI
             UpdateTopMost();
         }
 
-        private void DpsWebsiteAction(object sender, RoutedEventArgs e)
+        private void MoongourdAction(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer.exe", "http://moongourd.com");
         }
+        private void TeralogsAction(object sender, RoutedEventArgs e)
+        {
+            Process.Start("explorer.exe", "http://teralogs.com");
+        }
+
+
 
         private void EnableDpsWebsiteExportAction(object sender, RoutedEventArgs e)
         {
@@ -625,6 +633,10 @@ namespace DamageMeter.UI
         {
             gitPopup.IsOpen = false;
         }
+        private void rankPopup_MouseLeave(object sender, MouseEventArgs e)
+        {
+            rankPopup.IsOpen = false;
+        }
 
         private void EnableOverlay(object sender, RoutedEventArgs e)
         {
@@ -639,6 +651,18 @@ namespace DamageMeter.UI
             var render = _mainWindow.DXrender;
             _mainWindow.DXrender = null;
             render.Dispose();
+        }
+
+        private void sitesButton_Click(object sender, RoutedEventArgs e)
+        {
+            rankPopup.Placement = PlacementMode.Bottom;
+            rankPopup.PlacementTarget = sitesButton;
+            var h = rankPopup.Height;
+            rankPopup.Height = 0;
+            var an = new DoubleAnimation(0, h, TimeSpan.FromMilliseconds(200)) { EasingFunction = new QuadraticEase() };
+            rankPopup.IsOpen = true;
+            rankPopup.BeginAnimation(HeightProperty, an);
+
         }
     }
 }
