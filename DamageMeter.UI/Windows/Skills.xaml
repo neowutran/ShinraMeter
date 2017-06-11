@@ -239,7 +239,7 @@
             </Button>
         </Grid>
 
-        <TabControl Grid.Row="1" Background="{StaticResource DarkBackgroundColor}" BorderThickness="0" x:Name="TabControl">
+        <TabControl Grid.Row="1" Background="{StaticResource DarkBackgroundColor}" BorderThickness="0" x:Name="TabControl" Padding="-2,0,-2,0">
             <TabItem FontSize="14" Header="{x:Static l:LP.Dps}" x:Name="DpsPanel" Background="Transparent"
                      Foreground="{StaticResource LightPrimaryText}" />
             <TabItem FontSize="14" Header="{x:Static l:LP.Heal}" x:Name="HealPanel" Background="Transparent"
