@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <StackPanel>
-        <Expander IsExpanded="False">
+        <Expander IsExpanded="False" Margin="5,0,10,0" >
             <Expander.Header>
                 <Grid MouseLeave="UIElement_OnMouseLeave" MouseEnter="UIElement_OnMouseEnter"
-                      MouseLeftButtonDown="DragWindow" Margin="0,0,0,0">
+                      MouseLeftButtonDown="DragWindow" Margin="0,0,0,0" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition SharedSizeGroup="d1" Width="Auto" />
                         <ColumnDefinition SharedSizeGroup="d2" Width="Auto" />
@@ -22,53 +22,56 @@
                         <ColumnDefinition SharedSizeGroup="d10" Width="Auto" />
                         <ColumnDefinition SharedSizeGroup="d11" Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" x:Name="SkillIcon" Source="{Binding Image}" Stretch="Fill"
-                           HorizontalAlignment="Left"
-                           Height="40" VerticalAlignment="Top" Width="40" />
+                    <Ellipse Grid.Column="0" x:Name="SkillIconWrapper" Stretch="Fill" HorizontalAlignment="Left"
+                           Height="40" VerticalAlignment="Top" Width="40" >
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="SkillIcon" ImageSource="{Binding Image}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
 
-                    <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
-                           Foreground="Yellow"
+                    <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Left"
+                           HorizontalAlignment="Stretch" Margin="5,0,0,0" VerticalAlignment="Stretch" VerticalContentAlignment="Center" x:Name="LabelName"
+                           Foreground="{StaticResource LightPrimaryText}"
                            MinHeight="40" />
 
-                    <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelTotalDamage" VerticalAlignment="Center"
+                    <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelTotalDamage" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
+                           Foreground="{StaticResource LightPrimaryText}" />
 
-                    <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelDamagePercentage" VerticalAlignment="Center"
+                    <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Right"  Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelDamagePercentage" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
+                           Foreground="{StaticResource LightPrimaryText}" />
 
-                    <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelCritRateDmg" VerticalAlignment="Center"
+                    <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Right" Padding="0" 
+                           HorizontalAlignment="Stretch" x:Name="LabelCritRateDmg" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
-                    <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelBiggestCrit" VerticalAlignment="Center"
+                           Foreground="{StaticResource LightPrimaryText}" />
+                    <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelBiggestCrit" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
-                    <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelAverageCrit" VerticalAlignment="Center"
+                           Foreground="{StaticResource LightPrimaryText}" />
+                    <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelAverageCrit" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
-                    <Label Grid.Column="7" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelAverageHit" VerticalAlignment="Center"
+                           Foreground="{StaticResource LightPrimaryText}" />
+                    <Label Grid.Column="7" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelAverageHit" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
-                    <Label Grid.Column="8" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelAverageTotal" VerticalAlignment="Center"
+                           Foreground="{StaticResource LightPrimaryText}" />
+                    <Label Grid.Column="8" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelAverageTotal" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
-                    <Label Grid.Column="9" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelNumberHitDmg" VerticalAlignment="Center"
+                           Foreground="{StaticResource LightPrimaryText}" />
+                    <Label Grid.Column="9" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelNumberHitDmg" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
-                    <Label Grid.Column="10" FontSize="14" HorizontalContentAlignment="Center"
-                           HorizontalAlignment="Stretch" x:Name="LabelNumberCritDmg" VerticalAlignment="Center"
+                           Foreground="{StaticResource LightPrimaryText}" />
+                    <Label Grid.Column="10" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelNumberCritDmg" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
-                           Foreground="white" />
+                           Foreground="{StaticResource LightPrimaryText}" />
                 </Grid>
             </Expander.Header>
             <Expander.Content>
