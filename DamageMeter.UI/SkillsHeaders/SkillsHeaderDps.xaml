@@ -4,67 +4,66 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
-    <StackPanel>
-
-        <Grid MouseLeftButtonDown="DragWindow" Margin="0,0,0,0">
+    <StackPanel Margin="0,0,0,0" Background="#09ffffff">
+        <Grid MouseLeftButtonDown="DragWindow" Margin="10,2,10,0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="d0" Width="25" />
                 <ColumnDefinition SharedSizeGroup="d1" Width="40" />
                 <ColumnDefinition SharedSizeGroup="d2" Width="200" MaxWidth="200" />
-                <ColumnDefinition SharedSizeGroup="d3" MinWidth="65" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="d4" MinWidth="65" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="d5" MinWidth="65" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="d6" MinWidth="65" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="d7" MinWidth="65" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="d8" MinWidth="65" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="d9" MinWidth="65" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="d10" MinWidth="65" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="d11" MinWidth="65" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d3" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d4" Width="Auto" MinWidth="65"/>
+                <ColumnDefinition SharedSizeGroup="d5" Width="Auto" MinWidth="65"/>
+                <ColumnDefinition SharedSizeGroup="d6" Width="Auto" MinWidth="65"/>
+                <ColumnDefinition SharedSizeGroup="d7" Width="Auto" MinWidth="65"/>
+                <ColumnDefinition SharedSizeGroup="d8" Width="Auto" MinWidth="65"/>
+                <ColumnDefinition SharedSizeGroup="d9" Width="Auto" MinWidth="65"/>
+                <ColumnDefinition SharedSizeGroup="d10" Width="Auto" MinWidth="65"/>
+                <ColumnDefinition SharedSizeGroup="d11" Width="Auto" MinWidth="65"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" VerticalAlignment="Center"
-                   x:Name="LabelName" Foreground="Yellow"
+            <Label Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
+                   x:Name="LabelName" Foreground="{StaticResource LightHintText}"
                    MinHeight="40" />
 
-            <Label Grid.Column="3" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelTotalDamage"
+            <Label Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" 
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelTotalDamage"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Red" />
+                   Foreground="{StaticResource LightHintText}" />
 
-            <Label Grid.Column="4" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelDamagePercentage"
+            <Label Grid.Column="4" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" 
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelDamagePercentage"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center"
                    MinHeight="40"
-                   Foreground="Red" />
+                   Foreground="{StaticResource LightHintText}" />
 
-            <Label Grid.Column="5" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelCritRateDmg"
+            <Label Grid.Column="5" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" 
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelCritRateDmg"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Red" />
-            <Label Grid.Column="6" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelBiggestCrit"
+                   Foreground="{StaticResource LightHintText}" />
+            <Label Grid.Column="6" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelBiggestCrit"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Red" />
-            <Label Grid.Column="7" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageCrit"
+                   Foreground="{StaticResource LightHintText}" />
+            <Label Grid.Column="7" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageCrit"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Red" />
-            <Label Grid.Column="8" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageHit"
+                   Foreground="{StaticResource LightHintText}" />
+            <Label Grid.Column="8" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageHit"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Red" />
-            <Label Grid.Column="9" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageTotal"
+                   Foreground="{StaticResource LightHintText}" />
+            <Label Grid.Column="9" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageTotal"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Red" />
-            <Label Grid.Column="10" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelNumberHitDmg"
+                   Foreground="{StaticResource LightHintText}" />
+            <Label Grid.Column="10" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelNumberHitDmg"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Red" />
-            <Label Grid.Column="11" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" x:Name="LabelNumberCritDmg"
+                   Foreground="{StaticResource LightHintText}" />
+            <Label Grid.Column="11" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelNumberCritDmg"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Red" />
+                   Foreground="{StaticResource LightHintText}" />
         </Grid>
     </StackPanel>
 </UserControl>
