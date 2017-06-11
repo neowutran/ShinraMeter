@@ -348,14 +348,21 @@
 
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Export settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <!--
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Site_export}" 
                                                           x:Name="DpsWebsiteExport"
                                                           On="EnableDpsWebsiteExportAction"
                                                           Off="DisableDpsWebsiteExportAction" />
+                                                -->
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" 
                                                           x:Name="AutoExcelExport"
                                                           On="EnableAutoExcelExportAction"
                                                           Off="DisableExcelExportAction" />
+
+                                                <StackPanel x:Name="DpsServers" Orientation="Vertical" Margin="3">
+                                                    
+                                                </StackPanel>
+                                                <!--
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.PrivateServerExport}" 
                                                           x:Name="PrivateServerExport"
                                                           On="EnablePServerExp"
@@ -395,6 +402,7 @@
                                                         <ScaleTransform ScaleY="1"/>
                                                     </Grid.LayoutTransform>
                                                 </Grid>
+                                                -->
                                             </StackPanel>
                                         </Grid>
 

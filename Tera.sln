@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
 EndProject
@@ -29,6 +29,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publisher.csproj", "{968CE869-A989-4608-AA51-6C6BD7CC78F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.D3D9Render", "DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj", "{23F7BE64-3627-4F4E-AF78-291A7664FE6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.CoreTests", "DamageMeter.CoreTests\DamageMeter.CoreTests.csproj", "{D6961064-17B1-4F15-B48E-B72D46395226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +175,18 @@ Global
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x64.Build.0 = Release|Any CPU
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x86.ActiveCfg = Release|Any CPU
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x86.Build.0 = Release|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|x64.Build.0 = Debug|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|x64.ActiveCfg = Release|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|x64.Build.0 = Release|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

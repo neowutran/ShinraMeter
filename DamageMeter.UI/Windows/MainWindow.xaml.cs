@@ -97,8 +97,10 @@ namespace DamageMeter.UI
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>()) { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale, DontClose = true };
 
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
-            NotifyIcon.Initialize(this);
             KeyboardHook.Instance.SwitchTopMost += delegate { NotifyIcon.SwitchStayTop(); };
+            NotifyIcon.Initialize(this);
+            NotifyIcon.InitializeServerList(NetworkController.Instance.Initialize());
+           
         }
 
         public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
@@ -219,11 +221,11 @@ namespace DamageMeter.UI
         }
 
         public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities, bool ntimedEncounter,
-            AbnormalityStorage nabnormals, ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox, int npacketWaiting,
+            AbnormalityStorage nabnormals, ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox,
             NotifyFlashMessage nflash)
         {
             void ChangeUi(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
-                ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, NotifyFlashMessage flash)
+                ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, NotifyFlashMessage flash)
             {
                 Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
                 UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
@@ -231,7 +233,6 @@ namespace DamageMeter.UI
                 _windowHistory.Update(bossHistory);
                 _chatbox?.Update(chatbox);
                 _popupNotification.AddNotification(flash);
-                NotifyIcon.UpdatePacketWaiting(packetWaiting);
 
                 PartyDps.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
                                        ? statsSummary.EntityInformation.TotalDamage
@@ -300,7 +301,7 @@ namespace DamageMeter.UI
                 }
 
             Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox,
-                npacketWaiting, nflash);
+                nflash);
         }
 
         private void ShowHistory(object sender, MouseButtonEventArgs e)

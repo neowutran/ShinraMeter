@@ -32,7 +32,6 @@ namespace Data
 
         public WindowData(BasicTeraData basicData)
         {
-            DefaultValue();
             // Load XML File
             var windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
 
@@ -113,149 +112,80 @@ namespace Data
             ParseWindowStatus("debuff_uptime_window", "DebuffsStatus");
             ParseWindowStatus("upload_history_window", "HistoryStatus");
             ParseOpacity();
-            ParseTeraDps();
+            ParseOldDpsServers();
+            ParseDpsServers();
             ParseLanguage();
             ParseUILanguage();
             Parse("date_in_excel_path", "DateInExcelPath");
             if (DateInExcelPath) { ExcelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
         }
 
-        public int LFDelay { get; set; }
-        public Point Location { get; set; }
-        public Point PopupNotificationLocation { get; set; }
-        public WindowStatus BossGageStatus { get; set; }
-        public WindowStatus DebuffsStatus { get; set; }
-        public WindowStatus HistoryStatus { get; set; }
-        public string ExcelSaveDirectory { get; set; }
-        public double Scale { get; set; }
-        public bool PartyOnly { get; set; }
-        public double MainWindowOpacity { get; private set; }
-        public double OtherWindowOpacity { get; private set; }
-        public bool RememberPosition { get; private set; }
-        public string Language { get; private set; }
-        public string UILanguage { get; private set; }
-        public bool AutoUpdate { get; private set; }
-        public bool Winpcap { get; private set; }
-        public bool InvisibleUi { get; set; }
-        public bool NoPaste { get; set; }
-        public bool AllowTransparency { get; set; }
-        public string TeraDpsUser { get; private set; }
-        public string TeraDpsToken { get; set; }
-        public bool AlwaysVisible { get; set; }
-        public bool Topmost { get; set; }
-        public bool Debug { get; set; }
-        public bool Excel { get; set; }
-        public int ExcelCMADPSSeconds { get; set; }
-        public bool SiteExport { get; set; }
-        public bool ShowHealCrit { get; set; }
-        public bool ShowCritDamageRate { get; set; }
-        public bool OnlyBoss { get; set; }
-        public bool DetectBosses { get; set; }
+        public bool EnableOverlay = false;
+        public Color WhisperColor = Brushes.Pink.Color;
+        public Color AllianceColor = Brushes.Green.Color;
+        public Color AreaColor = Brushes.Purple.Color;
+        public Color GeneralColor = Brushes.Yellow.Color;
+        public Color GroupColor = Brushes.Cyan.Color;
+        public Color GuildColor = Brushes.LightGreen.Color;
+        public Color RaidColor = Brushes.Orange.Color;
+        public Color SayColor = Brushes.White.Color;
+        public Color TradingColor = Brushes.Sienna.Color;
+        public Color EmotesColor = Brushes.White.Color;
+        public Color PrivateChannelColor = Brushes.Red.Color;
+        public Point Location = new Point(0, 0);
+        public Point PopupNotificationLocation = new Point(0, 0);
+        public string Language = "Auto";
+        public string UILanguage = "Auto";
+        public double MainWindowOpacity = 0.5;
+        public double OtherWindowOpacity = 0.9;
+        public int LFDelay = 150;
+        public WindowStatus BossGageStatus = new WindowStatus(new Point(0, 0), true, 1);
+        public WindowStatus DebuffsStatus = new WindowStatus(new Point(0, 0), false, 1);
+        public WindowStatus HistoryStatus = new WindowStatus(new Point(0, 0), false, 1);
+        public string ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
+        public double Scale = 1;
+        public bool PartyOnly = false;
+        public bool RememberPosition = true;
+        public bool AutoUpdate = true;
+        public bool Winpcap = true;
+        public bool InvisibleUi = false;
+        public bool NoPaste = false;
+        public bool AllowTransparency = true;
+        public bool AlwaysVisible = false;
+        public bool Topmost = true;
+        public bool Debug = true;
+        public bool Excel = false;
+        public int ExcelCMADPSSeconds = 1;
+        public bool ShowHealCrit = true;
+        public bool ShowCritDamageRate = false;
+        public bool OnlyBoss = false;
+        public bool DetectBosses = false;
 
-        public string ExcelPathTemplate { get; set; }
+        public List<DpsServerData> DpsServers = new List<DpsServerData> { DpsServerData.Moongourd, DpsServerData.TeraLogs };
+        public List<int> WhiteListAreaId = new List<int>();
 
-        public int NumberOfPlayersDisplayed { get; set; }
-        public bool MeterUserOnTop { get; set; }
-        public bool LowPriority { get; set; }
-        public bool EnableChat { get; set; }
-        public bool CopyInspect { get; set; }
-        public bool ShowAfkEventsIngame { get; set; }
-
-        public bool DisablePartyEvent { get; set; }
-
-        public Color WhisperColor { get; set; }
-        public Color AllianceColor { get; set; }
-        public Color AreaColor { get; set; }
-        public Color GeneralColor { get; set; }
-        public Color GroupColor { get; set; }
-        public Color GuildColor { get; set; }
-        public Color RaidColor { get; set; }
-        public Color SayColor { get; set; }
-        public Color TradingColor { get; set; }
-        public Color EmotesColor { get; set; }
-
-        public Color PrivateChannelColor { get; set; }
-        public bool RemoveTeraAltEnterHotkey { get; set; }
-        public bool FormatPasteString { get; set; }
-        public bool PrivateServerExport { get; set; }
-        public List<string> PrivateDpsServers { get; set; }
-        public bool MuteSound { get; set; }
-        public int IdleResetTimeout { get; set; }
-        public bool DateInExcelPath { get; set; }
-        public bool ShowTimeLeft { get; set; }
-        public bool NoAbnormalsInHUD { get; set; }
-        public bool EnableOverlay { get; set; }
-
-        private void DefaultValue()
-        {
-            ShowTimeLeft = false;
-            DateInExcelPath = false;
-            Location = new Point(0, 0);
-            PopupNotificationLocation = new Point(0,0);
-            Language = "Auto";
-            UILanguage = "Auto";
-            MainWindowOpacity = 0.5;
-            OtherWindowOpacity = 0.9;
-            AutoUpdate = true;
-            RememberPosition = true;
-            InvisibleUi = false;
-            Winpcap = true;
-            Topmost = true;
-            AllowTransparency = true;
-            Debug = true;
-            TeraDpsToken = "";
-            TeraDpsUser = "";
-            Excel = false;
-            ExcelCMADPSSeconds = 1;
-            AlwaysVisible = false;
-            Scale = 1;
-            PartyOnly = false;
-            SiteExport = false;
-            ShowHealCrit = true;
-            ShowCritDamageRate = false;
-            ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
-            LFDelay = 150;
-            OnlyBoss = false;
-            DetectBosses = false;
-            ExcelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
-            MeterUserOnTop = false;
-            NumberOfPlayersDisplayed = 5;
-            FormatPasteString = true;
-            WhisperColor = Brushes.Pink.Color;
-            AllianceColor = Brushes.Green.Color;
-            AreaColor = Brushes.Purple.Color;
-            GeneralColor = Brushes.Yellow.Color;
-            GroupColor = Brushes.Cyan.Color;
-            GuildColor = Brushes.LightGreen.Color;
-            RaidColor = Brushes.Orange.Color;
-            SayColor = Brushes.White.Color;
-            TradingColor = Brushes.Sienna.Color;
-            EmotesColor = Brushes.White.Color;
-            PrivateChannelColor = Brushes.Red.Color;
-            LowPriority = true;
-            RemoveTeraAltEnterHotkey = false;
-            EnableChat = true;
-            CopyInspect = true;
-            ShowAfkEventsIngame = false;
-            DisablePartyEvent = false;
-            PrivateServerExport = false;
-            PrivateDpsServers = new List<string> {""};
-            MuteSound = false;
-            IdleResetTimeout = 0;
-            NoPaste = false;
-            NoAbnormalsInHUD = false;
-            EnableOverlay = false;
-            BossGageStatus = new WindowStatus(new Point(0, 0), true, 1);
-            HistoryStatus = new WindowStatus(new Point(0, 0), false, 1);
-            DebuffsStatus = new WindowStatus(new Point(0, 0), false, 1);
-        }
+        public string ExcelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
+        public int NumberOfPlayersDisplayed = 5;
+        public bool MeterUserOnTop = false;
+        public bool LowPriority = true;
+        public bool EnableChat = true;
+        public bool CopyInspect = true;
+        public bool ShowAfkEventsIngame = false;
+        public bool DisablePartyEvent = false;
+        public bool RemoveTeraAltEnterHotkey = true;
+        public bool FormatPasteString = true;
+        public bool MuteSound = false;
+        public int IdleResetTimeout = 0;
+        public bool DateInExcelPath = false;
+        public bool ShowTimeLeft = false;
+        public bool NoAbnormalsInHUD = false;
 
         private void ParseWindowStatus(string xmlName, string settingName)
         {
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetProperty(settingName);
+            var setting = GetType().GetField(settingName);
             var currentSetting = (WindowStatus) setting.GetValue(this);
             var location = ParseLocation(xml);
 
@@ -271,40 +201,50 @@ namespace Data
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetProperty(settingName);
-            setting.SetValue(this, (Color) ColorConverter.ConvertFromString(xml.Value), null);
+            var setting = GetType().GetField(settingName);
+            setting.SetValue(this, (Color) ColorConverter.ConvertFromString(xml.Value));
         }
 
-        private void ParseTeraDps()
+
+        private void ParseOldDpsServers()
         {
             var root = _xml.Root;
-            var teradps = root?.Element("teradps.io");
-            var user = teradps?.Element("user");
-            if (user == null) { return; }
+            var teradps = root.Element("teradps.io");
+            if(teradps == null) { return; }
             var token = teradps.Element("token");
             if (token == null) { return; }
-
-            TeraDpsToken = token.Value;
-            TeraDpsUser = user.Value;
-
-            if (TeraDpsToken == null || TeraDpsUser == null)
-            {
-                TeraDpsToken = "";
-                TeraDpsUser = "";
-            }
+            DpsServerData.Moongourd.Token = token.Value;
             var exp = teradps.Element("enabled");
             if (exp == null) { return; }
-            bool val;
-            var parseSuccess = bool.TryParse(exp.Value, out val);
-            if (parseSuccess) { SiteExport = val; }
-            var privateS = teradps.Element("private_servers");
-            if (privateS == null) { return; }
-            var exp1 = privateS.Attribute("enabled");
-            parseSuccess = bool.TryParse(exp1?.Value ?? "false", out val);
-            if (parseSuccess) { PrivateServerExport = val; }
-            if (privateS.HasElements) { PrivateDpsServers = new List<string>(); }
-            else { return; }
-            foreach (var server in privateS.Elements()) { PrivateDpsServers.Add(server.Value); }
+            var parseSuccess = bool.TryParse(exp.Value, out bool val);
+            DpsServerData.Moongourd.Enabled = val;
+            DpsServerData.TeraLogs.Enabled = val;
+        }
+
+
+        private void ParseDpsServers()
+        {
+            var root = _xml.Root;
+            var teradps = root.Element("dps_servers");
+            if(teradps == null) { return; }
+            foreach(var server in teradps.Elements())
+            {
+                var username = server.Element("username");
+                var token = server.Element("token");
+                var enabled = server.Element("enabled");
+                var uploadUrl = server.Element("upload_url");
+                var allowedAreaUrl = server.Element("allowed_area_url");
+                var parseSuccess = bool.TryParse(enabled?.Value ?? "false", out bool enabledBool);
+                if(uploadUrl == null || String.IsNullOrWhiteSpace(uploadUrl.Value)) { continue; }
+                DpsServerData serverData = new DpsServerData()
+                {
+                    UploadUrl = new Uri(uploadUrl.Value),
+                    AllowedAreaUrl = new Uri(allowedAreaUrl?.Value ?? ""),
+                    Enabled = enabledBool,
+                    Username = username?.Value ?? "",
+                    Token = token?.Value ?? ""
+                };
+            }
         }
 
         private Point ParseLocation(XElement root, string elementName = "location")
@@ -430,12 +370,17 @@ namespace Data
             xml.Root.Add(new XElement("no_abnormals_in_hud", NoAbnormalsInHUD));
             xml.Root.Add(new XElement("enable_overlay", EnableOverlay));
 
-            xml.Root.Add(new XElement("teradps.io"));
-            xml.Root.Element("teradps.io").Add(new XElement("user", TeraDpsUser));
-            xml.Root.Element("teradps.io").Add(new XElement("token", TeraDpsToken));
-            xml.Root.Element("teradps.io").Add(new XElement("enabled", SiteExport));
-            xml.Root.Element("teradps.io").Add(new XElement("private_servers", new XAttribute("enabled", PrivateServerExport)));
-            PrivateDpsServers.ForEach(x => xml.Root.Element("teradps.io").Element("private_servers").Add(new XElement("server", x)));
+            xml.Root.Add(new XElement("dps_servers"));
+            foreach(var server in DpsServers)
+            {
+                var serverXml = new XElement("server");
+                serverXml.Add(new XElement("username", server.Username));
+                serverXml.Add(new XElement("token", server.Token));
+                serverXml.Add(new XElement("enabled", server.Enabled));
+                serverXml.Add(new XElement("upload_url", server.UploadUrl));
+                serverXml.Add(new XElement("allowed_area_url", server.AllowedAreaUrl));
+                xml.Root.Element("dps_servers").Add(serverXml);
+            }
 
             _filestream.SetLength(0);
             using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true))) { sw.Write(xml.Declaration + Environment.NewLine + xml); }
@@ -447,32 +392,32 @@ namespace Data
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetProperty(settingName);
-            if (setting.PropertyType == typeof(int))
+            var setting = GetType().GetField(settingName);
+            if (setting.FieldType == typeof(int))
             {
                 int value;
                 var parseSuccess = int.TryParse(xml.Value, out value);
-                if (parseSuccess) { setting.SetValue(this, value, null); }
+                if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.PropertyType == typeof(double))
+            if (setting.FieldType == typeof(double))
             {
                 double value;
                 var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
-                if (parseSuccess) { setting.SetValue(this, value, null); }
+                if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.PropertyType == typeof(float))
+            if (setting.FieldType == typeof(float))
             {
                 float value;
                 var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
-                if (parseSuccess) { setting.SetValue(this, value, null); }
+                if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.PropertyType == typeof(bool))
+            if (setting.FieldType == typeof(bool))
             {
                 bool value;
                 var parseSuccess = bool.TryParse(xml.Value, out value);
-                if (parseSuccess) { setting.SetValue(this, value, null); }
+                if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.PropertyType == typeof(string)) { setting.SetValue(this, xml.Value, null); }
+            if (setting.FieldType == typeof(string)) { setting.SetValue(this, xml.Value); }
         }
     }
 }

@@ -33,7 +33,7 @@ namespace DamageMeter
         public delegate void PauseEvent(bool paused);
 
         public delegate void UpdateUiHandler(StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
-            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, int packetWaiting, NotifyFlashMessage flash);
+            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, NotifyFlashMessage flash);
 
         private static NetworkController _instance;
         private static readonly object _pasteLock = new object();
@@ -211,7 +211,21 @@ namespace DamageMeter
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, packetsWaiting, flash);
+            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash);
+        }
+        
+        public Dictionary<Guid, DpsServerData> Initialize()
+        {
+            Dictionary<Guid, DpsServerData> listGuid = new Dictionary<Guid, DpsServerData>();
+            DataExporter.DpsServers = new List<DpsServer> { DpsServer.NeowutranAnonymousServer };
+            foreach(var dpsServer in BasicTeraData.Instance.WindowData.DpsServers)
+            {
+                var server = new DpsServer(dpsServer, false);
+                listGuid.Add(server.Guid, dpsServer);
+                DataExporter.DpsServers.Add(server);
+            }
+
+            return listGuid;
         }
 
         public void SwitchClickThrou()
