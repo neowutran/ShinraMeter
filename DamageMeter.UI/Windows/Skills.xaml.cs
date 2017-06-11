@@ -30,7 +30,7 @@ namespace DamageMeter.UI
             Owner = GetWindow(parent);
             InitializeComponent();
             _parent = parent;
-            CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
+            ClassImage.Source = ClassIcons.Instance.GetImage(playerDamageDealt.Source.Class).Source; //BasicTeraData.Instance.ImageDatabase.Close.Source;
             Update(playerDamageDealt, entityInformation, skills, buffs, timedEncounter);
         }
 
@@ -43,28 +43,28 @@ namespace DamageMeter.UI
                 var death = buffs.Death;
                 if (death == null)
                 {
-                    DeathCounter.Content = 0;
-                    DeathDuration.Content = "0" + LP.Seconds;
+                    DeathCounter.Text = "0";
+                    DeathDuration.Text = "0" + LP.Seconds;
                 }
                 else
                 {
-                    DeathCounter.Content = death.Count(entityInformation.BeginTime, entityInformation.EndTime);
+                    DeathCounter.Text = death.Count(entityInformation.BeginTime, entityInformation.EndTime).ToString();
                     var duration = death.Duration(entityInformation.BeginTime, entityInformation.EndTime);
                     var interval = TimeSpan.FromTicks(duration);
-                    DeathDuration.Content = interval.ToString(@"mm\:ss");
+                    DeathDuration.Text = interval.ToString(@"mm\:ss");
                 }
                 var aggro = buffs.Aggro(entityInformation.Entity);
                 if (aggro == null)
                 {
-                    AggroCounter.Content = 0;
-                    AggroDuration.Content = "0" + LP.Seconds;
+                    AggroCounter.Text = "0";
+                    AggroDuration.Text = "0" + LP.Seconds;
                 }
                 else
                 {
-                    AggroCounter.Content = aggro.Count(entityInformation.BeginTime, entityInformation.EndTime);
+                    AggroCounter.Text = aggro.Count(entityInformation.BeginTime, entityInformation.EndTime).ToString();
                     var duration = aggro.Duration(entityInformation.BeginTime, entityInformation.EndTime);
                     var interval = TimeSpan.FromTicks(duration);
-                    AggroDuration.Content = interval.ToString(@"mm\:ss");
+                    AggroDuration.Text = interval.ToString(@"mm\:ss");
                 }
 
                 //return;
@@ -137,6 +137,16 @@ namespace DamageMeter.UI
         private void Button_OnClick(object sender, RoutedEventArgs e)
         {
             _parent.CloseSkills();
+        }
+
+        private void ClickThrouWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
+            DeathIcon.Source = BasicTeraData.Instance.ImageDatabase.Skull.Source;
+            DeathTimeIcon.Source = BasicTeraData.Instance.ImageDatabase.SkullTime.Source;
+            AggroIcon.Source = BasicTeraData.Instance.ImageDatabase.BossGage.Source;
+            AggroTimeIcon.Source = BasicTeraData.Instance.ImageDatabase.AggroTime.Source;
+            
         }
     }
 }
