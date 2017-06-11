@@ -239,9 +239,9 @@
                           Opacity=".5" />
 
         <!--Material colors-->
-        <SolidColorBrush x:Key="DarkBarColor" Color="#212128"/>
-        <SolidColorBrush x:Key="DarkBackgroundColor" Color="#303037" />
-        <SolidColorBrush x:Key="DarkCardColor" Color="#424249" />
+        <SolidColorBrush x:Key="DarkBarColor" Color="#111117"/>
+        <SolidColorBrush x:Key="DarkBackgroundColor" Color="#212127" />
+        <SolidColorBrush x:Key="DarkCardColor" Color="#313137" />
 
         <SolidColorBrush x:Key="DarkPrimaryText" Color="#DD000000"/>
         <SolidColorBrush x:Key="DarkSecondaryText" Color="#89000000"/>
