@@ -27,10 +27,11 @@ namespace DamageMeter.UI
         ColorAnimation fillOn;
         ColorAnimation fillOff;
         ColorAnimation backFillOff;
+        ColorAnimation backFillOn;
 
-        Color onColor = ((SolidColorBrush)Application.Current.Resources["mainColor"]).Color;
-        Color offColor = ((SolidColorBrush)Application.Current.Resources["bgColor"]).Color;
-        Color backOffColor = Colors.Black;
+        //Color onColor = ((SolidColorBrush)Application.Current.Resources["AccentColor"]).Color;
+        //Color offColor = ((SolidColorBrush)Application.Current.Resources["bgColor"]).Color;
+        //Color backOffColor = Colors.Black;
 
         private TimeSpan animationDuration = TimeSpan.FromMilliseconds(150);
 
@@ -61,13 +62,15 @@ namespace DamageMeter.UI
             on = new DoubleAnimation(20, animationDuration) { EasingFunction = new QuadraticEase() };
             off = new DoubleAnimation(0, animationDuration) { EasingFunction = new QuadraticEase() };
 
-            fillOn = new ColorAnimation(onColor, animationDuration) { EasingFunction = new QuadraticEase() };
-            fillOff = new ColorAnimation(offColor, animationDuration) { EasingFunction = new QuadraticEase() };
-            backFillOff = new ColorAnimation(backOffColor, animationDuration) { EasingFunction = new QuadraticEase() };
-            switchHead.RenderTransform = new TranslateTransform(0, 0);
-            switchHead.Fill = new SolidColorBrush(offColor);
-            switchBack.Fill = new SolidColorBrush(backOffColor);
+            fillOn = new ColorAnimation(((SolidColorBrush)this.FindResource("ThumbOn")).Color, animationDuration) { EasingFunction = new QuadraticEase() };
+            fillOff = new ColorAnimation(((SolidColorBrush)this.FindResource("ThumbOff")).Color, animationDuration) { EasingFunction = new QuadraticEase() };
+            backFillOff = new ColorAnimation(((SolidColorBrush)this.FindResource("TrackOff")).Color, animationDuration) { EasingFunction = new QuadraticEase() };
+            backFillOn = new ColorAnimation(((SolidColorBrush)this.FindResource("TrackOn")).Color, animationDuration) { EasingFunction = new QuadraticEase() };
+            switchHead.Fill = (SolidColorBrush)this.FindResource("ThumbOff");
+            switchBack.Fill = (SolidColorBrush)this.FindResource("TrackOff");
 
+
+            switchHead.RenderTransform = new TranslateTransform(0, 0);
             statusWatcher = new DependencyPropertyWatcher<bool>(this, "Status");
             statusWatcher.PropertyChanged += StatusWatcher_PropertyChanged;
 
@@ -115,7 +118,7 @@ namespace DamageMeter.UI
         {
             switchHead.RenderTransform.BeginAnimation(TranslateTransform.XProperty, on);
             switchHead.Fill.BeginAnimation(SolidColorBrush.ColorProperty, fillOn);
-            switchBack.Fill.BeginAnimation(SolidColorBrush.ColorProperty, fillOn);
+            switchBack.Fill.BeginAnimation(SolidColorBrush.ColorProperty, backFillOn);
         }
         public void AnimateOff()
         {
@@ -126,6 +129,8 @@ namespace DamageMeter.UI
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+
+
             if (Status)
             {
                 AnimateOn();
