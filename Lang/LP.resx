@@ -679,4 +679,7 @@ Reset and paused until map change or relog.</value>
   <data name="NoAbnormalsInHUD" xml:space="preserve">
     <value>Disable abnormality icons under HP bar</value>
   </data>
+  <data name="EnableOverlay" xml:space="preserve">
+    <value>Enable overlay</value>
+  </data>
 </root>

@@ -667,4 +667,7 @@
   <data name="NoAbnormalsInHUD" xml:space="preserve">
     <value>Отключить иконки под полоской HP</value>
   </data>
+  <data name="EnableOverlay" xml:space="preserve">
+    <value>Включить оверлей</value>
+  </data>
 </root>

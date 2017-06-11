@@ -79,7 +79,7 @@
 					<beep frequency="392" duration="500"/>
 				</beeps> -->
 				<text_to_speech text="Volée de malédictions" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
-			<!-- </notify> -->
+			</notify>
 		</actions>
 	</abnormality>
 	

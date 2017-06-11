@@ -21,6 +21,7 @@ using DamageMeter.UI.HUD.Windows;
 using Data;
 using Data.Actions.Notify;
 using Lang;
+using DamageMeter.D3D9Render.TeraData;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Application = System.Windows.Forms.Application;
@@ -40,6 +41,8 @@ namespace DamageMeter.UI
         private readonly DispatcherTimer _dispatcherTimer;
         private readonly EntityStatsMain _entityStats;
         private readonly PopupNotification _popupNotification;
+
+        public D3D9Render.Renderer DXrender;
 
         private readonly TeradpsHistory _windowHistory;
         internal Chatbox _chatbox;
@@ -72,6 +75,7 @@ namespace DamageMeter.UI
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             _dispatcherTimer.Start();
+            if (BasicTeraData.Instance.WindowData.EnableOverlay) DXrender = new D3D9Render.Renderer();
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
             Chrono.ToolTip = LP.MainWindow_Only_boss;
@@ -169,6 +173,7 @@ namespace DamageMeter.UI
             NotifyIcon.Tray = null;
             _topMost = false;
             NetworkController.Instance.Exit();
+            DXrender?.Dispose();
         }
 
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
@@ -247,6 +252,7 @@ namespace DamageMeter.UI
                         skills, abnormals.Get(playerStats.Source));
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
+                DXrender?.Draw(statsDamage.ToClassInfo(statsSummary.EntityInformation.TotalDamage));
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
                 foreach (var invisibleControl in invisibleControls)
@@ -525,5 +531,22 @@ namespace DamageMeter.UI
         }
 
         private delegate void ChangeTitle(string servername);
+    }
+
+    public static class Extensions
+    {
+        public static List<ClassInfo> ToClassInfo(this IEnumerable<PlayerDamageDealt> data, long sum)
+        {
+            // return linq expression method
+            return data.Select(dealt => new ClassInfo
+            {
+                PName = $"{dealt.Source.Name}",
+                PDmg = $"{FormatHelpers.Instance.FormatPercent((double)dealt.Amount/sum)}",
+                PDsp =
+                    $"{FormatHelpers.Instance.FormatValue(dealt.Interval == 0 ? dealt.Amount : dealt.Amount * TimeSpan.TicksPerSecond / dealt.Interval)}{LP.PerSecond}",
+                PCrit = $"{Math.Round(dealt.CritRate)}%",
+                PId = dealt.Source.PlayerId
+            }).ToList();
+        }
     }
 }

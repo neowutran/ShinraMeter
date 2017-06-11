@@ -397,6 +397,10 @@
                                             <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
                                             <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">UI settings</TextBlock>
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.EnableOverlay}" 
+                                                                   x:Name="OverlaySwitch"
+                                                                   On="EnableOverlay"
+                                                                   Off="DisableOverlay" />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Click_throu}" 
                                                           x:Name="ClickThrou"
                                                           On="EnableClickThrou"
@@ -433,49 +437,6 @@
                                                                 ValueChanged="NumberPlayersChanged" FormatString="N0"
                                                                 Increment="1" Maximum="30" Minimum="1" />
                                                 </Grid>
-                                            </StackPanel>
-                                        </Grid>
-
-                                        <!--Event settings card-->
-                                        <Grid Margin="20,20,20,0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
-                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
-
-                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Event settings</TextBlock>
-                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
-                                                <ui:MaterialSwitch  Content="{x:Static l:LP.EnableChat}"
-                                                  x:Name="ChatEnabled" On="EnableChat" Off="DisableChat" />
-                                                <ui:MaterialSwitch  Content="{x:Static l:LP.MuteSound}"
-                                                  x:Name="MuteSound" On="EnableMuteSound"
-                                                  Off="DisableMuteSound" >
-                                                    <ui:MaterialSwitch.LayoutTransform>
-                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
-                                                    </ui:MaterialSwitch.LayoutTransform>
-                                                </ui:MaterialSwitch>
-                                                <ui:MaterialSwitch Content="{x:Static l:LP.CopyInspect}" x:Name="CopyInspect"
-                                                  On="EnableCopyInspect" Off="DisableCopyInspect" >
-                                                    <ui:MaterialSwitch.LayoutTransform>
-                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
-                                                    </ui:MaterialSwitch.LayoutTransform>
-                                                </ui:MaterialSwitch>
-                                                <ui:MaterialSwitch Content="{x:Static l:LP.DisablePartyEvents}" x:Name="PartyEvent"
-                                                  On="DisablePartyEvent" Off="EnablePartyEvent" >
-                                                    <ui:MaterialSwitch.LayoutTransform>
-                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
-                                                    </ui:MaterialSwitch.LayoutTransform>
-                                                </ui:MaterialSwitch>
-                                                <ui:MaterialSwitch Content="{x:Static l:LP.ShowAfkEventsIngame}"
-                                                  x:Name="ShowAfkIventsIngame" On="EnableAfkIventsIngame"
-                                                  Off="DisableAfkIventsIngame" >
-                                                    <ui:MaterialSwitch.LayoutTransform>
-                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
-                                                    </ui:MaterialSwitch.LayoutTransform>
-                                                </ui:MaterialSwitch>
                                             </StackPanel>
                                         </Grid>
 
@@ -547,10 +508,53 @@
                                             </StackPanel>
                                         </Grid>
 
-                                        <!--Misc settings card-->
+                                        <!--Event settings card-->
+                                        <Grid Margin="20,20,20,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
+                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
+
+                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Event settings</TextBlock>
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.EnableChat}"
+                                                                    x:Name="ChatEnabled" On="EnableChat" Off="DisableChat" />
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.MuteSound}"
+                                                                    x:Name="MuteSound" On="EnableMuteSound"
+                                                                    Off="DisableMuteSound" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.CopyInspect}" x:Name="CopyInspect"
+                                                                   On="EnableCopyInspect" Off="DisableCopyInspect" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.DisablePartyEvents}" x:Name="PartyEvent"
+                                                                   On="DisablePartyEvent" Off="EnablePartyEvent" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.ShowAfkEventsIngame}"
+                                                                   x:Name="ShowAfkIventsIngame" On="EnableAfkIventsIngame"
+                                                                   Off="DisableAfkIventsIngame" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Color settings card-->
                                         <Grid Margin="20,20,20,20">
                                             <Grid.Resources>
-                                                <ResourceDictionary Source="ColorPickerStyle.xaml"/>
+                                                <ResourceDictionary Source="Controls/ColorPickerStyle.xaml"/>
                                             </Grid.Resources>
 
                                             <Grid.RowDefinitions>

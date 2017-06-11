@@ -149,23 +149,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CustomScrollViewer.cs" />
+    <Compile Include="Controls\CustomScrollViewer.cs" />
     <Compile Include="HUD\Controls\RunemarksControl.xaml.cs">
       <DependentUpon>RunemarksControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="HUD\Converters\TimeInMsToLabelConverter.cs" />
     <Compile Include="HUD\Converters\IconConverter.cs" />
-    <Compile Include="KineticBehaviour.cs" />
-    <Compile Include="MaterialSwitch.xaml.cs">
+    <Compile Include="Controls\KineticBehaviour.cs" />
+    <Compile Include="Controls\MaterialSwitch.xaml.cs">
       <DependentUpon>MaterialSwitch.xaml</DependentUpon>
     </Compile>
     <Compile Include="NotificationControl.xaml.cs">
       <DependentUpon>NotificationControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PopupNotification.xaml.cs">
+    <Compile Include="Windows\PopupNotification.xaml.cs">
       <DependentUpon>PopupNotification.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Chatbox.xaml.cs">
+    <Compile Include="Windows\Chatbox.xaml.cs">
       <DependentUpon>Chatbox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ChatMessageUI.xaml.cs">
@@ -182,7 +182,7 @@
     <Compile Include="EntityStats\EnduranceDebuff.xaml.cs">
       <DependentUpon>EnduranceDebuff.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EntityStats\EntityStatsMain.xaml.cs">
+    <Compile Include="Windows\EntityStatsMain.xaml.cs">
       <DependentUpon>EntityStatsMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="HistoryLink.xaml.cs">
@@ -248,7 +248,7 @@
     <Compile Include="SkillDetail\SkillDetailDps.xaml.cs">
       <DependentUpon>SkillDetailDps.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Skills.xaml.cs">
+    <Compile Include="Windows\Skills.xaml.cs">
       <DependentUpon>Skills.xaml</DependentUpon>
     </Compile>
     <Compile Include="SkillsDetail.xaml.cs">
@@ -263,15 +263,15 @@
     <Compile Include="SkillsHeaders\SkillsHeaderDps.xaml.cs">
       <DependentUpon>SkillsHeaderDps.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TeradpsHistory.xaml.cs">
+    <Compile Include="Windows\TeradpsHistory.xaml.cs">
       <DependentUpon>TeradpsHistory.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowServices.cs" />
-    <Page Include="ColorCanvasStyle.xaml">
+    <Page Include="Controls\ColorCanvasStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ColorPickerStyle.xaml">
+    <Page Include="Controls\ColorPickerStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -279,7 +279,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MaterialSwitch.xaml">
+    <Page Include="Controls\MaterialSwitch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -287,11 +287,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PopupNotification.xaml">
+    <Page Include="Windows\PopupNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Chatbox.xaml">
+    <Page Include="Windows\Chatbox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -311,7 +311,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EntityStats\EntityStatsMain.xaml">
+    <Page Include="Windows\EntityStatsMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -339,7 +339,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -347,7 +347,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -407,7 +407,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Skills.xaml">
+    <Page Include="Windows\Skills.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -427,7 +427,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TeradpsHistory.xaml">
+    <Page Include="Windows\TeradpsHistory.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -464,6 +464,10 @@
       <Project>{d1ed4752-f2fc-44c3-97b2-580bc79f4af1}</Project>
       <Name>DamageMeter.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj">
+      <Project>{23f7be64-3627-4f4e-af78-291a7664fe6a}</Project>
+      <Name>DamageMeter.D3D9Render</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
       <Name>Data</Name>
@@ -478,7 +482,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
-      <Name>Tera</Name>
+      <Name>Tera.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -17,7 +17,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:chrome="clr-namespace:Xceed.Wpf.Toolkit.Chromes"
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
 
     <ResourceDictionary.MergedDictionaries>

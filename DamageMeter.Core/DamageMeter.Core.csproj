@@ -154,7 +154,7 @@
     </ProjectReference>
     <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
-      <Name>Tera</Name>
+      <Name>Tera.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

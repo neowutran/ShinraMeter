@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using DamageMeter.AutoUpdate;
+using DamageMeter.D3D9Render;
 using Data;
 using Data.Actions.Notify;
 using Lang;
@@ -118,6 +119,7 @@ namespace DamageMeter.UI
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             NoPaste.Status = BasicTeraData.Instance.WindowData.NoPaste;
             NoAbnormalsInHUD.Status = BasicTeraData.Instance.WindowData.NoAbnormalsInHUD;
+            OverlaySwitch.Status = BasicTeraData.Instance.WindowData.EnableOverlay;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             SetPrivateSrvExportRowVisibility(BasicTeraData.Instance.WindowData.PrivateServerExport); //ServerURLTextbox.Parent.SetValue(HeightProperty, BasicTeraData.Instance.WindowData.PrivateServerExport ? double.NaN : 0);
 
@@ -475,7 +477,7 @@ namespace DamageMeter.UI
                     using (var client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Add("X-Auth-Token", BasicTeraData.Instance.WindowData.TeraDpsToken);
-                        client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
+                        //client.DefaultRequestHeaders.Add("X-User-Id", BasicTeraData.Instance.WindowData.TeraDpsUser);
 
                         client.Timeout = TimeSpan.FromSeconds(40);
                         var response = client.PostAsync("https://moongourd.com/shared/glyph_data.php", new StringContent(json, Encoding.UTF8, "application/json"));
@@ -622,6 +624,21 @@ namespace DamageMeter.UI
         private void gitPopup_MouseLeave(object sender, MouseEventArgs e)
         {
             gitPopup.IsOpen = false;
+        }
+
+        private void EnableOverlay(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.EnableOverlay = true;
+            if (_mainWindow.DXrender!=null) return;
+            _mainWindow.DXrender = new Renderer();
+        }
+
+        private void DisableOverlay(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.EnableOverlay = false;
+            var render = _mainWindow.DXrender;
+            _mainWindow.DXrender = null;
+            render.Dispose();
         }
     }
 }
