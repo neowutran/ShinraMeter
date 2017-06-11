@@ -66,7 +66,7 @@ namespace DamageMeter.UI.Skill
 
         private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            Background = Brushes.Black;
+            Background = new SolidColorBrush(Color.FromArgb(0x10, 255, 255, 255));
         }
     }
 }
