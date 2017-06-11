@@ -89,7 +89,7 @@
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource border}" Grid.RowSpan="2"/>
+        <Border Style="{StaticResource MainBorder}" Grid.RowSpan="2"/>
 
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>

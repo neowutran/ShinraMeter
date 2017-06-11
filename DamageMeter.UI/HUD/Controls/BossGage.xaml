@@ -34,7 +34,7 @@
                 <ColumnDefinition Width="0" />
             </Grid.ColumnDefinitions>
 
-            <Border Margin="0,0,0,0" Style="{StaticResource border}" x:Name="mainBorder" Grid.RowSpan="2" Grid.Row="0"
+            <Border Margin="0,0,0,0" Style="{StaticResource MainBorder}" x:Name="mainBorder" Grid.RowSpan="2" Grid.Row="0"
                     HorizontalAlignment="Stretch" />
             <Grid Margin="6,2" Name="mainGrid">
                 <Grid.RowDefinitions>

@@ -22,7 +22,7 @@
 
     </UserControl.Resources>
     <Grid Margin="0" x:Name="root" >
-        <Border Style="{StaticResource border}" 
+        <Border Style="{StaticResource MainBorder}" 
                 Opacity="1" 
                 Height="16" 
                 CornerRadius="13" 
