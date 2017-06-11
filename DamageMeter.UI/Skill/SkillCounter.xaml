@@ -14,16 +14,20 @@
                         <ColumnDefinition SharedSizeGroup="m2" Width="Auto" />
                         <ColumnDefinition SharedSizeGroup="m3" Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
-                           Height="40" VerticalAlignment="Top" Width="40" />
+                    <Ellipse Grid.Column="0" x:Name="SkillIconWrapper" Stretch="Fill" HorizontalAlignment="Left"
+                           Height="40" VerticalAlignment="Top" Width="40" >
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="SkillIcon"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
                     <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
                            HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
-                           Foreground="Yellow"
+                           Foreground="{StaticResource LightPrimaryText}"
                            MinHeight="40" />
                     <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
                            HorizontalAlignment="Stretch" x:Name="LabelNumberHit" VerticalAlignment="Center"
                            MinHeight="40"
-                           Foreground="Thistle" />
+                           Foreground="{StaticResource LightPrimaryText}" />
                 </Grid>
             </Expander.Header>
             <Expander.Content>
