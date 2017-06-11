@@ -15,17 +15,8 @@
                 <ControlTemplate TargetType="Thumb">
                     <Ellipse  Name="Ellipse"
                                  Cursor="Hand"
-                          Fill="#ff303037" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <Ellipse.Effect>
-                            <DropShadowEffect ShadowDepth="1" Opacity=".55" BlurRadius="4"/>
-                        </Ellipse.Effect>
+                          Fill="{StaticResource AccentColor}" Effect="{StaticResource SwitchShadow-1dp}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     </Ellipse>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Ellipse" Property="Fill" Value="#ff3822"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -38,7 +29,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border  BorderThickness="0" BorderBrush="Black" Opacity=".3" Background="#ff3822" Height="2"/>
+                    <Border Background="{StaticResource AccentColor}" Height="2"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -49,7 +40,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border SnapsToDevicePixels="True" Background="#f222" Opacity="1" BorderThickness="0" BorderBrush="YellowGreen" Height="2"/>
+                    <Border SnapsToDevicePixels="True" Background="Black" Opacity=".26" Height="2"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

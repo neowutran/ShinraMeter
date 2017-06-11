@@ -21,7 +21,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Style="{StaticResource border}" Grid.RowSpan="3" Name="b" Grid.ColumnSpan="3"/>
+        <Border Style="{StaticResource MainBorder}" Grid.RowSpan="3" Name="b" Grid.ColumnSpan="3"/>
         <Rectangle Fill="#2bf" Width="4" Grid.RowSpan="3" Margin="1,1,0,1" Name="rect"/>
         <Rectangle Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="#3444"></Rectangle>
         <TextBlock Name="TitleLabel" 

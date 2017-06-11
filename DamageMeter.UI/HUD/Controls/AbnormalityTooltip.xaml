@@ -13,7 +13,7 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Border Grid.RowSpan="2" Style="{StaticResource border}" />
+        <Border Grid.RowSpan="2" Style="{StaticResource MainBorder}" />
         <TextBlock Text="{Binding Buff.Name}" Foreground="White" Margin="10" />
         <Border Grid.Row="1" BorderBrush="#20ffffff" BorderThickness="0,1,0,0" Margin="15,0" />
         <TextBlock x:Name="toolTipTB" Text="{Binding Buff.Tooltip}" FontSize="11" Grid.Row="1" Foreground="#91ffffff"

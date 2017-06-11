@@ -40,6 +40,8 @@ namespace Data
             GitHub = new Image { Source = new BitmapImage(new Uri(folder + "github.png")) };
             Discord = new Image { Source = new BitmapImage(new Uri(folder + "discord.png")) };
             Moongourd = new Image { Source = new BitmapImage(new Uri(folder + "moongourd.png")) };
+            Teralogs = new Image { Source = new BitmapImage(new Uri(folder + "teralogs.png")) };
+            Cloud = new Image { Source = new BitmapImage(new Uri(folder + "cloud.png")) };
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
 
@@ -83,6 +85,8 @@ namespace Data
         public Image GitHub { get; }
         public Image Discord { get; }
         public Image Moongourd { get; }
+        public Image Teralogs { get; }
+        public Image Cloud { get; }
 
         public Icon Tray { get; }
     }

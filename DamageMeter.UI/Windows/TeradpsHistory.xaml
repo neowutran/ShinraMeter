@@ -57,7 +57,7 @@
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource border}" Grid.RowSpan="2"/>
+        <Border Style="{StaticResource MainBorder}" Grid.RowSpan="2"/>
         <Button Grid.Row="0" x:Name="CloseStats" Style="{StaticResource ShinraButtonStyle}" Background="Transparent"
                 Opacity="0.5"
                 Foreground="White" Click="Close_OnClick" HorizontalContentAlignment="Stretch"

@@ -8,6 +8,9 @@
              xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:l="clr-namespace:Lang;assembly=Lang"
              xmlns:ui="clr-namespace:DamageMeter.UI">
+    <UserControl.Resources>
+
+    </UserControl.Resources>
     <tb:TaskbarIcon Name="Tray" IconSource="shinra.ico" PopupActivation="All">
 
 
@@ -17,15 +20,37 @@
   -->
 
         <tb:TaskbarIcon.TrayPopup>
+            
             <Grid Margin="4">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type ToolTip}">
+                        <Setter Property="Background" Value="#00000000" />
+                        <Setter Property="FontSize" Value="12" />
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}" />
+                        <Setter Property="ToolTipService.Placement" Value="Bottom"/>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <Grid Margin="0">
+                                        <Border Background="{StaticResource TooltipColor}" BorderThickness="0" Padding="16,0" Height="32" CornerRadius="2">
+                                            <TextBlock TextWrapping="Wrap" Text="{Binding}" MaxWidth="600" Margin="0" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Border Style="{StaticResource border}" Opacity=".9" BorderThickness="0" Grid.RowSpan="2" />
+                <Border Style="{StaticResource MainBorder}" Grid.RowSpan="2" />
                 <Grid Grid.Row="0" Height="38">
                     <Grid.Resources>
-                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonMainStyle}" >
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonMainStyle}">
                             <Setter Property="Height" Value="Auto"/>
                             <Setter Property="Width" Value="Auto"/>
                             <Setter Property="Margin" Value="0,0"/>
@@ -45,11 +70,9 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Border Style="{StaticResource border}" Grid.ColumnSpan="20" BorderThickness="0,0,0,1">
-                        <Border.Effect>
-                            <DropShadowEffect Direction="-90" Opacity=".8" BlurRadius="5" ShadowDepth="3"></DropShadowEffect>
-                        </Border.Effect>
-                    </Border>
+                    <Border Effect="{StaticResource BarShadow-4dp}" Background="{StaticResource DarkBarColor}" Grid.ColumnSpan="20"/>
+
+
 
                     <Image x:Name="TopLeftLogo" Width="Auto" Height="Auto" Stretch="UniformToFill" />
 
@@ -77,32 +100,62 @@
                     <Button Grid.Column="7" ToolTip="GitHub" Name="gitButton" Click="gitButton_Click">
                         <Image x:Name="GitHubIcon" Grid.Column="1" Grid.Row="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
                     </Button>
-                    <Popup Name="gitPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="gitPopup_MouseLeave" VerticalOffset="-1" HorizontalOffset="55" Height="90" >
-                        <Grid Margin="3" Width="Auto" >
-                            <Border Style="{StaticResource border}" BorderThickness="1,0,1,1"  >
+                    <Button Grid.Column="9" ToolTip="Sites" Name="sitesButton" Click="sitesButton_Click">
+                        <Image x:Name="RankSitesIcon" Grid.Column="1" Grid.Row="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+                    <Popup Name="gitPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="gitPopup_MouseLeave"  Height="150" >
+                        <Grid Margin="16" Width="Auto" >
+                            <Border Background="{StaticResource DarkCardColor}" Effect="{StaticResource MenuShadow-8dp}"  >
                                 <UniformGrid Margin="0" Columns="1" HorizontalAlignment="Stretch">
-                                    <Button Grid.Row="0" Name="Wiki" Click="WikiAction" HorizontalAlignment="Stretch" Height="Auto">
-                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Wiki}" Margin="10,0"/>
+                                    <Button Grid.Row="0" Name="Wiki" Click="WikiAction" HorizontalAlignment="Stretch" Height="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Left">
+                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Wiki}" Margin="16,0"/>
                                     </Button>
-                                    <Button Grid.Row="1" Name="Patch" Click="PatchAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
-                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Patch_note}" Margin="10,0"/>
+                                    <Button Grid.Row="1" Name="Patch" Click="PatchAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Left">
+                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Patch_note}" Margin="16,0"/>
                                     </Button>
-                                    <Button Grid.Row="2"  Name="Issues" Click="IssueAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto">
-                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Report_issue}" Margin="10,0"/>
+                                    <Button Grid.Row="2"  Name="Issues" Click="IssueAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Left">
+                                        <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Report_issue}" Margin="16,0"/>
                                     </Button>
                                     </UniformGrid>
                             </Border>
                         </Grid>
 
                     </Popup>
+                    <Popup Name="rankPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="rankPopup_MouseLeave" Height="100" >
+                        <Grid Margin="16" Width="Auto" >
+                            <Border Background="{StaticResource DarkCardColor}" Effect="{StaticResource MenuShadow-8dp}" >
+                                <UniformGrid Margin="0" Columns="1" HorizontalAlignment="Stretch">
+                                    <Button Name="MoongourdLink" Click="MoongourdAction" HorizontalContentAlignment="Left">
+                                        <Grid HorizontalAlignment="Stretch" Margin="10,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image x:Name="MoongourdIcon" Grid.Column="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <TextBlock Text="moongourd.com" Grid.Column="1" VerticalAlignment="Center" Margin="0,6,6,6"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Name="TeralogsLink" Click="TeralogsAction" HorizontalContentAlignment="Left">
+                                        <Grid HorizontalAlignment="Stretch" Margin="10,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Image x:Name="TeralogsIcon" Grid.Column="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <TextBlock Text="teralogs.com" Grid.Column="1" VerticalAlignment="Center" Margin="0,6,6,6"/>
+                                        </Grid>
+                                    </Button>
+
+                                </UniformGrid>
+                            </Border>
+                        </Grid>
+
+                    </Popup>
+
                     <Button Grid.Column="8" Name="Discord" Click="DiscordAction" ToolTip="{x:Static l:LP.SystemTray_Discord}">
                         <StackPanel Orientation="Horizontal">
                             <Image x:Name="DiscordIcon" Grid.Column="1" Grid.Row="3"  Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Grid.Column="9" Name="DpsWebsite" Click="DpsWebsiteAction" ToolTip="moongourd.com">
-                        <StackPanel Orientation="Horizontal">
-                            <Image x:Name="MoongourdIcon" Grid.Column="1" Grid.Row="4" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </StackPanel>
                     </Button>
 
@@ -110,25 +163,8 @@
                 </Grid>
 
                 <TabControl Grid.Row="1" TabStripPlacement="Left" MinHeight="500" MaxHeight="500" MinWidth="450" 
-                            Background="#2ccd" BorderThickness="0" x:Name="TabControl" Margin="-2,0,0,0">
+                            Background="{StaticResource DarkBackgroundColor}" BorderThickness="0" x:Name="TabControl" Margin="-2,0,0,0">
                     <TabControl.Resources>
-                        <Style TargetType="{x:Type ToolTip}">
-                            <Setter Property="Background" Value="#00000000" />
-                            <Setter Property="FontSize" Value="14" />
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="Foreground" Value="#9fff" />
-                            <Setter Property="ContentTemplate">
-                                <Setter.Value>
-                                    <DataTemplate>
-                                        <Grid Margin="4">
-                                            <Border Style="{StaticResource border}">
-                                                <TextBlock TextWrapping="Wrap" Text="{Binding}" MaxWidth="600" Margin="4,2"/>
-                                            </Border>
-                                        </Grid>
-                                    </DataTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
                         <Style TargetType="{x:Type TabItem}">
                             <Setter Property="Margin" Value="0,-2,0,2"/>
                             <Setter Property="Width" Value="38"/>
@@ -162,7 +198,7 @@
                                                 <Setter Property="Panel.ZIndex" Value="100" />
                                             </Trigger>
                                             <Trigger Property="IsSelected" Value="True">
-                                                <Setter TargetName="Panel" Property="Border.Background" Value="#2ccd" />
+                                                <Setter TargetName="Panel" Property="Border.Background" Value="{StaticResource DarkBackgroundColor}" />
                                             </Trigger>
 
                                             <Trigger Property="IsEnabled" Value="False" />
@@ -173,7 +209,7 @@
                         </Style>
                     </TabControl.Resources>
                     <TabItem FontSize="14" x:Name="Configs"
-                             Background="Transparent" Foreground="White">
+                             Background="Transparent" Foreground="{StaticResource LightPrimaryText}">
                         <TabItem.Header>
                             <Image x:Name="SettingsTabIcon" Width="30" Height="30" Margin="0" Opacity=".6" RenderOptions.BitmapScalingMode="HighQuality"  ToolTip="{x:Static l:LP.SystemTray_Config}" />
                         </TabItem.Header>
@@ -283,18 +319,34 @@
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
+                                            <Style TargetType="Border" x:Key="SettingsCard">
+                                                <Setter Property="Effect" Value="{StaticResource CardShadow-2dp}"/>
+                                                <Setter Property="CornerRadius" Value="2"/>
+                                                <Setter Property="Background" Value="{StaticResource DarkCardColor}"/>
+                                                <Setter Property="Grid.RowSpan" Value="3"/>
+                                            </Style>
+                                            <Style TargetType="Border" x:Key="SettingsCardHeader">
+                                                <Setter Property="Background" Value="{StaticResource DarkBarColor}"/>
+                                                <Setter Property="CornerRadius" Value="2,2,0,0"/>
+                                            </Style>
+                                            <Style TargetType="TextBlock" x:Key="SettingsCardHeaderText">
+                                                <Setter Property="Foreground" Value="{StaticResource LightHintText}"/>
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="Margin" Value="10,3"/>
+                                            </Style>
                                         </StackPanel.Resources>
 
                                         <!--Export settings card-->
-                                        <Grid Margin="20,20,20,0">
+                                        <Grid Margin="10,10,10,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
-                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
-                                            <TextBlock Margin="10,3,10,3" VerticalAlignment="Center" Foreground="#e000">Export Settings</TextBlock>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Export settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Site_export}" 
                                                           x:Name="DpsWebsiteExport"
@@ -321,7 +373,7 @@
                                                     <TextBlock Grid.Column="0" Name="AuthLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
                                                    Text="{x:Static l:LP.AuthToken}" />
                                                     <TextBox LostFocus="TokenChanged" KeyDown ="AuthTokenTextbox_OnKeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
-                                                     Grid.Column="1" Foreground="#9fff" Background="#2fff"
+                                                     Grid.Column="1" Foreground="{StaticResource LightSecondaryText}" Background="#2fff"
                                                      BorderBrush="Transparent" BorderThickness="0"
                                                              Name="AuthTokenTextbox" />
                                                     <Grid.LayoutTransform>
@@ -347,15 +399,15 @@
                                         </Grid>
 
                                         <!--Detection settings card-->
-                                        <Grid Margin="20,20,20,0">
+                                        <Grid Margin="10,10,10,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
-                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
-                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Detection settings</TextBlock>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Detection settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Count_only_bosses}" 
                                                           x:Name="CountOnlyBoss"
@@ -377,7 +429,7 @@
                                                     <TextBlock Grid.Column="0" Margin="5,0,0,0" Name="IdleRTO" VerticalAlignment="Center" HorizontalAlignment="Left"
                                                    Text="{x:Static l:LP.IdleResetTimeout}" />
                                                     <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
-                                                                Foreground="#9fff" Background="DarkGray"
+                                                                Foreground="{StaticResource LightSecondaryText}" Background="DarkGray"
                                                                 BorderBrush="Transparent" BorderThickness="0"
                                                                 Name="IdleRTOSpinner" ValueChanged="IdleRtoChanged"
                                                                 FormatString="N0" Increment="1" Maximum="600"
@@ -387,15 +439,15 @@
                                         </Grid>
 
                                         <!--UI settings card-->
-                                        <Grid Margin="20,20,20,0">
+                                        <Grid Margin="10,10,10,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
-                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
-                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">UI settings</TextBlock>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="UI settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.EnableOverlay}" 
                                                                    x:Name="OverlaySwitch"
@@ -431,7 +483,7 @@
                                                     <TextBlock Grid.Column="0"  Name="NumberPlayersLabel" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
                                                    Text="{x:Static l:LP.NumberPlayersDisplayed}" />
                                                     <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
-                                                                Foreground="#9fff" Background="DarkGray"
+                                                                Foreground="#9fff"
                                                                 BorderBrush="Transparent" BorderThickness="0"
                                                                 Name="NumberPlayersSpinner"
                                                                 ValueChanged="NumberPlayersChanged" FormatString="N0"
@@ -441,16 +493,16 @@
                                         </Grid>
 
                                         <!--Input settings card-->
-                                        <Grid Margin="20,20,20,0">
+                                        <Grid Margin="10,10,10,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
-                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
 
-                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Input settings</TextBlock>
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Input settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.RemoveTeraAltEnterHotkey}"
                                                   x:Name="RemoveTeraAltEnterHotkey"
@@ -470,7 +522,7 @@
                                                     <TextBlock Grid.Column="0" Name="LFDelay" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
                                                    Text="{x:Static l:LP.DelayToWaitPasting}" />
                                                     <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
-                                                                Foreground="#9fff" Background="DarkGray"
+                                                                Foreground="{StaticResource LightSecondaryText}" Background="DarkGray"
                                                                 BorderBrush="Transparent" BorderThickness="0"
                                                                 Name="LFDelaySpinner" ValueChanged="LFDelayChanged"
                                                                 FormatString="N0" Increment="1" Maximum="500"
@@ -480,15 +532,15 @@
                                         </Grid>
 
                                         <!--Misc settings card-->
-                                        <Grid Margin="20,20,20,0">
+                                        <Grid Margin="10,10,10,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
-                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}" />
-                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Misc settings</TextBlock>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Misc settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
                                                     <Grid.ColumnDefinitions>
@@ -498,7 +550,7 @@
                                                     <TextBlock Grid.Column="0" Name="ExcelCMADPSSecLabel" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
                                                    Text="{x:Static l:LP.SystemTray_ExcelCMADPSSeconds}" />
                                                     <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
-                                                                Foreground="#9fff" Background="#2fff"
+                                                                Foreground="{StaticResource LightPrimaryText}" Background="#2fff"
                                                                 BorderBrush="Transparent" BorderThickness="0"
                                                                 Name="ExcelCMADPSSpinner"
                                                                 ValueChanged="ExcelCMADPSChanged" FormatString="N0"
@@ -509,16 +561,16 @@
                                         </Grid>
 
                                         <!--Event settings card-->
-                                        <Grid Margin="20,20,20,0">
+                                        <Grid Margin="10,10,10,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
-                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}"></Border>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
 
-                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Event settings</TextBlock>
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Event settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch  Content="{x:Static l:LP.EnableChat}"
                                                                     x:Name="ChatEnabled" On="EnableChat" Off="DisableChat" />
@@ -552,7 +604,7 @@
                                         </Grid>
 
                                         <!--Color settings card-->
-                                        <Grid Margin="20,20,20,20">
+                                        <Grid Margin="10,10,10,10">
                                             <Grid.Resources>
                                                 <ResourceDictionary Source="Controls/ColorPickerStyle.xaml"/>
                                             </Grid.Resources>
@@ -562,9 +614,9 @@
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource border}" Background="#404047" CornerRadius="2" BorderThickness="0" Grid.RowSpan="10"/>
-                                            <Border CornerRadius="2,2,0,0" Background="{StaticResource mainColor}" />
-                                            <TextBlock Margin="10,5,10,3" VerticalAlignment="Center" Foreground="#e000">Chat color settings</TextBlock>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Chat color settings" />
                                             <UniformGrid Columns="2" Grid.Row="2" Margin="20,3,3,3" x:Name="ColorSettingsContainer">
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
