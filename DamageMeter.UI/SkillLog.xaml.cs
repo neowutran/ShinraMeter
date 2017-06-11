@@ -33,11 +33,11 @@ namespace DamageMeter.UI
             Time.Content = (skill.Time - beginTime) / TimeSpan.TicksPerSecond + LP.Seconds;
             if (skillInfo != null)
             {
-                SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
+                SkillIcon.ImageSource = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
                 SkillName.Content = skillInfo.Name;
             }
             SkillAmount.Content = skill.Amount;
-            SkillIcon.ToolTip = skill.SkillId;
+            SkillIconWrapper.ToolTip = skill.SkillId;
             SkillDirection.Content = LP.ResourceManager.GetString(skill.Direction.ToString());
             switch (skill.Direction)
             {
