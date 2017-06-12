@@ -20,53 +20,53 @@
                 <ColumnDefinition SharedSizeGroup="h10" Width="Auto" />
                 <ColumnDefinition SharedSizeGroup="h11" Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Left" Padding="40,0,0,0"
                    HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
-                   Foreground="Yellow"
+                   Foreground="{StaticResource LightSecondaryText}"
                    MinHeight="29" />
 
 
-            <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelTotalHeal" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
+                   Foreground="{StaticResource LightSecondaryText}" />
 
 
-            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelAverageCrit" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
-            <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}" />
+            <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelAverageHit" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
-            <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}" />
+            <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelAverage" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
-            <Label Grid.Column="7" FontSize="14" HorizontalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}" />
+            <Label Grid.Column="7" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelBiggestCrit" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
+                   Foreground="{StaticResource LightSecondaryText}" />
 
-            <Label Grid.Column="8" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="8" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelBiggestHit" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
+                   Foreground="{StaticResource LightSecondaryText}" />
 
 
-            <Label Grid.Column="9" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="9" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelCritRateHeal" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
-            <Label Grid.Column="10" FontSize="14" HorizontalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}" />
+            <Label Grid.Column="10" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelNumberHitHeal" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
-            <Label Grid.Column="11" FontSize="14" HorizontalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}" />
+            <Label Grid.Column="11" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                    HorizontalAlignment="Stretch" x:Name="LabelNumberCritHeal" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="LawnGreen" />
+                   Foreground="{StaticResource LightSecondaryText}" />
         </Grid>
     </Grid>
 </UserControl>
