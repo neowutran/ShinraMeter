@@ -22,48 +22,48 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
-                   x:Name="LabelName" Foreground="{StaticResource LightHintText}"
+                   x:Name="LabelName" Foreground="{StaticResource DamageText}"
                    MinHeight="40" />
 
             <Label Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" 
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelTotalDamage"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
 
             <Label Grid.Column="4" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" 
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelDamagePercentage"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center"
                    MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
 
             <Label Grid.Column="5" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" 
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelCritRateDmg"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
             <Label Grid.Column="6" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelBiggestCrit"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
             <Label Grid.Column="7" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageCrit"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
             <Label Grid.Column="8" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageHit"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
             <Label Grid.Column="9" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelAverageTotal"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
             <Label Grid.Column="10" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelNumberHitDmg"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
             <Label Grid.Column="11" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelNumberCritDmg"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="{StaticResource LightHintText}" />
+                   Foreground="{StaticResource DamageText}" />
         </Grid>
     </StackPanel>
 </UserControl>

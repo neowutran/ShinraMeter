@@ -4,24 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
-    <StackPanel>
+    <StackPanel Background="#09ffffff">
 
-        <Grid MouseLeftButtonDown="DragWindow" Margin="0,0,0,0">
+        <Grid MouseLeftButtonDown="DragWindow"  Margin="10,2,10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="m0" Width="25" />
                 <ColumnDefinition SharedSizeGroup="m1" Width="40" />
-                <ColumnDefinition SharedSizeGroup="m2" MinWidth="300" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="m3" MinWidth="100" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="m2" MinWidth="200" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="m3" MinWidth="65" Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch"
-                   BorderThickness="1" BorderBrush="Gray" FontSize="14" VerticalAlignment="Center"
-                   x:Name="LabelName" Foreground="Yellow"
+            <Label Grid.Column="2" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch"  VerticalContentAlignment="Center"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" VerticalAlignment="Center"
+                   x:Name="LabelName" Foreground="{StaticResource  CastText}"
                    MinHeight="40" />
 
-            <Label Grid.Column="3" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" FontSize="14"
-                   BorderThickness="1" BorderBrush="Gray" x:Name="LabelNumberHit"
+            <Label Grid.Column="3" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" FontSize="14" Margin="5,0,0,0"
+                   BorderThickness="0" BorderBrush="Gray" x:Name="LabelNumberHit"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
-                   Foreground="Thistle" />
+                   Foreground="{StaticResource  CastText}" />
         </Grid>
     </StackPanel>
 </UserControl>
