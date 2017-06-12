@@ -260,8 +260,14 @@
                B="#ac" />
         <SolidColorBrush x:Key="AccentColor" Color="{StaticResource Accent}"/>
         <SolidColorBrush x:Key="TooltipColor" Color="#616161" Opacity=".9"/>
-               
-        
+
+        <SolidColorBrush x:Key="DamageText" Color="#ef5350"/>
+        <SolidColorBrush x:Key="HealText" Color="#66bb6a"/>
+        <SolidColorBrush x:Key="ManaText" Color="#26c6da"/>
+        <SolidColorBrush x:Key="CastText" Color="#ba68c8"/>
+        <SolidColorBrush x:Key="BuffText" Color="#ffd54f"/>
+
+
         <!---->
 
         <Style x:Key="MainBorder" TargetType="Border">
@@ -488,7 +494,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Ellipse x:Name="circle" Fill="{StaticResource Expander.Static.Circle.Fill}" Cursor="Hand" HorizontalAlignment="Center" Height="19" Stroke="{StaticResource Expander.Static.Circle.Stroke}" VerticalAlignment="Center" Width="19"/>
-                                <Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" Width="13" Height="6" Stretch="Fill" HorizontalAlignment="Center" SnapsToDevicePixels="false" Stroke="{StaticResource Expander.Static.Arrow.Stroke}" StrokeThickness="2" VerticalAlignment="Center"/>
+                                <Path x:Name="arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5" Width="13" Height="6" Stretch="Fill" HorizontalAlignment="Center" SnapsToDevicePixels="false" Stroke="{StaticResource Expander.Static.Arrow.Stroke}" StrokeThickness="2" VerticalAlignment="Center" Cursor="Hand"/>
                                 <ContentPresenter Grid.Column="1" HorizontalAlignment="Left" Margin="4,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
