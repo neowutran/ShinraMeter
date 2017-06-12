@@ -20,7 +20,7 @@ namespace DamageMeter.UI.Skill
             foreach (var skillInfo in skill.Skills)
             {
                 if (string.IsNullOrEmpty(skillInfo.Key.IconName)) { continue; }
-                SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.Key.IconName);
+                SkillIcon.ImageSource = BasicTeraData.Instance.Icons.GetImage(skillInfo.Key.IconName);
                 break;
             }
             Update(skill);
