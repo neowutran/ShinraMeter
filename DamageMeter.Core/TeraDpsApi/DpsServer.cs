@@ -22,6 +22,8 @@ namespace DamageMeter.TeraDpsApi
         {  
             AnonymousUpload = anonymousUpload;
             Guid = Guid.NewGuid();
+
+            Debug.WriteLine("dps url:"+data.UploadUrl + ";enabled:" + Enabled + ";anonymous:" + AnonymousUpload);
         }
 
 

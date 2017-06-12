@@ -227,6 +227,7 @@ namespace Data
             var root = _xml.Root;
             var teradps = root.Element("dps_servers");
             if(teradps == null) { return; }
+            DpsServers = new List<DpsServerData>();
             foreach(var server in teradps.Elements())
             {
                 var username = server.Element("username");
@@ -243,7 +244,9 @@ namespace Data
                     String.IsNullOrWhiteSpace(glyphUrl?.Value) ? null : new Uri(glyphUrl.Value),
                     username?.Value ?? null, token?.Value ?? null, enabledBool 
                 );
-               
+                DpsServers.Add(serverData);
+
+
             }
         }
 
