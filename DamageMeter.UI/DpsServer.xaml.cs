@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -31,9 +32,50 @@ namespace DamageMeter.UI
 
         private DpsServerData _data = null;
 
+        private void HideShowSettings(bool b)
+        {
+            DoubleAnimation an;
+            if (b)
+            {
+                an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(150)) { EasingFunction = new QuadraticEase() };
+            }
+            else
+            {
+                an = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(150)) { EasingFunction = new QuadraticEase() };
+            }
+            usernameGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            tokenGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            dpsUploadGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            glyphUploadGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            allowedAreasGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+
+        }
         public void SetData(DpsServerData data)
         {
             _data = data;
+
+            //TO DO: add hostname to switch text
+            //using raw url parsing for now
+            try
+            {
+                var c = data.UploadUrl.ToString();
+                if (c.Contains("https"))
+                {
+                    c = c.Replace("https://", "");
+                }
+                else
+                {
+                    c = c.Replace("http://", "");
+                }
+
+                var i = c.IndexOf("/");
+                Enabled.Content = c.Substring(0, i);
+            }
+            catch
+            {
+                Enabled.Content = "Server";
+            }
+            HideShowSettings(data.Enabled);
             Enabled.Status = data.Enabled;
             AuthTokenTextbox.Text = data.Token;
             UsernameTextbox.Text = data.Username;
@@ -56,11 +98,13 @@ namespace DamageMeter.UI
         private void Enabled_On(object sender, RoutedEventArgs e)
         {
             _data.Enabled = true;
+            HideShowSettings(true);
         }
 
         private void Enabled_Off(object sender, RoutedEventArgs e)
         {
             _data.Enabled = false;
+            HideShowSettings(false);
         }
 
         private void AuthTokenTextbox_LostFocus(object sender, RoutedEventArgs e)
