@@ -35,7 +35,7 @@ namespace DamageMeter
             if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) { return; }
             if (NetworkController.Instance.EntityTracker.MeterUser.Level < 65) { return; }
             _lastSend = DateTime.Now.Ticks;
-            DpsServers.Select(x => x.SendGlyphData());
+            DpsServers.ForEach(x => x.SendGlyphData());
         }
         
 
@@ -196,7 +196,7 @@ namespace DamageMeter
                 {
                     DpsServers.Where(x => NetworkController.Instance.BossLink.Where(y => y.Value == entity && y.Key.StartsWith("!"))
                             .Select(y => y.Key.Substring(1, y.Key.IndexOf(" ", StringComparison.Ordinal) - 1))
-                            .Contains(x.Guid.ToString())).Select(x => x.CheckAndSendFightData(stats.BaseStats, entity));
+                            .Contains(x.Guid.ToString())).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
                 }
                 if (type.HasFlag(Dest.Excel))
                 {
@@ -216,10 +216,10 @@ namespace DamageMeter
 
             var sendThread = new Thread(() =>
             {
-                DpsServers.Where(x => !x.AnonymousUpload).Select(x => x.CheckAndSendFightData(stats.BaseStats, entity));
+                DpsServers.Where(x => !x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
                 ExcelExport.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
                 Anonymize(stats.BaseStats);
-                DpsServers.Where(x => x.AnonymousUpload).Select(x => x.CheckAndSendFightData(stats.BaseStats, entity));
+                DpsServers.Where(x => x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
             });
             sendThread.Start();
         }
