@@ -38,23 +38,23 @@ namespace DamageMeter.UI
             Database.Database.Type? typeCounter = null;
             Database.Database.Type? lastType = null;
 
-            if ((bool) Damage.IsChecked)
+            if ((bool) Damage.Status)
             {
                 typeDamage = Database.Database.Type.Damage;
                 lastType = typeDamage;
             }
-            if ((bool) Heal.IsChecked)
+            if ((bool) Heal.Status)
             {
                 typeHeal = Database.Database.Type.Heal;
                 lastType = typeHeal;
             }
-            if ((bool) Mana.IsChecked)
+            if ((bool) Mana.Status)
             {
                 typeMana = Database.Database.Type.Mana;
                 lastType = typeMana;
             }
 
-            if ((bool)Casts.IsChecked)
+            if ((bool)Casts.Status)
             {
                 typeCounter = Database.Database.Type.Counter;
                 lastType = typeCounter;
