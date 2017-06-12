@@ -55,7 +55,7 @@ namespace DamageMeter.TeraDpsApi
 
         public bool SendGlyphData()
         {
-            if (String.IsNullOrWhiteSpace(GlyphUrl.ToString())) { return false ; }
+            if (String.IsNullOrWhiteSpace(GlyphUrl?.ToString())) { return false ; }
 
             var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
@@ -169,7 +169,7 @@ namespace DamageMeter.TeraDpsApi
             _allowedAreaId.RemoveAll(x => !BasicTeraData.Instance.WindowData.WhiteListAreaId.Contains(x.AreaId));
         }
 
-        public Uri HomeUrl => new Uri(UploadUrl?.GetLeftPart(UriPartial.Authority));
+        public Uri HomeUrl => UploadUrl==null ? null : new Uri(UploadUrl.GetLeftPart(UriPartial.Authority));
         private List<AreaAllowed> _allowedAreaId = new List<AreaAllowed>();
         public Guid Guid { get; private set; }
         public bool AnonymousUpload { get; private set; }

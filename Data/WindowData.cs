@@ -239,8 +239,8 @@ namespace Data
                 if(uploadUrl == null || String.IsNullOrWhiteSpace(uploadUrl.Value)) { continue; }
                 DpsServerData serverData = new DpsServerData(
                     new Uri(uploadUrl.Value),
-                    new Uri(allowedAreaUrl?.Value ?? null),
-                    new Uri(glyphUrl?.Value ?? null),
+                    allowedAreaUrl==null ? null: new Uri(allowedAreaUrl.Value),
+                    glyphUrl==null ? null : new Uri(glyphUrl.Value),
                     username?.Value ?? null, token?.Value ?? null, enabledBool 
                 );
                
