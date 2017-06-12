@@ -12,39 +12,40 @@
             <ColumnDefinition SharedSizeGroup="s3" MinWidth="70" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="s4" MinWidth="200" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="s5" MinWidth="200" Width="Auto" />
-            <ColumnDefinition SharedSizeGroup="s6" MinWidth="200" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="s6" MinWidth="60" Width="Auto" />
         </Grid.ColumnDefinitions>
+        <Ellipse Fill="#1999" Margin="10,2,2,2"></Ellipse>
         <Ellipse Grid.Column="0" HorizontalAlignment="Left" x:Name="SkillIconWrapper"
-               Height="40" VerticalAlignment="Top" Width="40" Margin="2,2">
+               Height="40" VerticalAlignment="Top" Width="40" Margin="10,2,2,2">
             <Ellipse.Fill>
                 <ImageBrush x:Name="SkillIcon"></ImageBrush>
             </Ellipse.Fill>
         </Ellipse>
 
-        <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
+        <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Left" Margin="2,0"
                HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="SkillName"
                Foreground="{StaticResource LightPrimaryText}"
                MinHeight="29" />
 
-        <Label Grid.Column="2" FontSize="15" HorizontalContentAlignment="Center"
+        <Label Grid.Column="2" FontSize="15" HorizontalContentAlignment="Right"
                HorizontalAlignment="Stretch" x:Name="SkillAmount" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="{StaticResource LightSecondaryText}" />
 
 
-        <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
+        <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Right" Padding="10,5"
                HorizontalAlignment="Stretch" x:Name="SkillDirection" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="{StaticResource LightSecondaryText}" />
-        <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
+        <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Right"
                HorizontalAlignment="Stretch" x:Name="SkillTarget" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="{StaticResource LightSecondaryText}" />
-        <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
+        <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Right"
                HorizontalAlignment="Stretch" x:Name="SkillPet" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="{StaticResource LightSecondaryText}" />
-        <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
+        <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Right"
                HorizontalAlignment="Stretch" x:Name="Time" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="{StaticResource LightSecondaryText}" />
