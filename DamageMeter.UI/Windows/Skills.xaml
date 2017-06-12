@@ -233,7 +233,7 @@
                     Background="Transparent"
                      Click="Button_OnClick" HorizontalContentAlignment="Center"
                     VerticalAlignment="Top" Margin="0">
-                <Image x:Name="CloseWindow"
+                <Image x:Name="CloseWindow" Opacity=".5"
                        HorizontalAlignment="Left" Margin="0"
                        Height="Auto" VerticalAlignment="Stretch"  Width="30" />
             </Button>
@@ -242,17 +242,17 @@
         <TabControl Grid.Row="1" Background="{StaticResource DarkBackgroundColor}" BorderThickness="0" x:Name="TabControl" Padding="-2,0,-2,0">
             <TabItem FontSize="14" Header="{x:Static l:LP.Dps}" x:Name="DpsPanel" Background="Transparent"
                      Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.Heal}" x:Name="HealPanel" Background="Transparent"
+            <TabItem FontSize="14" Header="{x:Static l:LP.Heal}" x:Name="HealPanel" Background="Transparent" Padding="-2,0,-2,0"
                      Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.Mana}" x:Name="ManaPanel" Background="Transparent"
+            <TabItem FontSize="14" Header="{x:Static l:LP.Mana}" x:Name="ManaPanel" Background="Transparent" Padding="-2,0,-2,0"
                      Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.Buff}" x:Name="BuffPanel" Background="Transparent"
+            <TabItem FontSize="14" Header="{x:Static l:LP.Buff}" x:Name="BuffPanel" Background="Transparent" Padding="-2,0,-2,0"
                      Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.Counter}" x:Name="CounterPanel" Background="Transparent"
+            <TabItem FontSize="14" Header="{x:Static l:LP.Counter}" x:Name="CounterPanel" Background="Transparent" Padding="-2,0,-2,0"
                      Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.SkillDealt}" x:Name="SkillsDealtPanel"
+            <TabItem FontSize="14" Header="{x:Static l:LP.SkillDealt}" x:Name="SkillsDealtPanel" Padding="-2,0,-2,0"
                      Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.SkillReceived}" x:Name="SkillsReceivedPanel"
+            <TabItem FontSize="14" Header="{x:Static l:LP.SkillReceived}" x:Name="SkillsReceivedPanel" Padding="-2,0,-2,0"
                      Foreground="{StaticResource LightPrimaryText}" />
         </TabControl>
     </Grid>
