@@ -7,99 +7,115 @@
              xmlns:ui="clr-namespace:DamageMeter.UI"
              mc:Ignorable="d">
 
-    <StackPanel Orientation="Vertical" Margin="3">
-        <ui:MaterialSwitch x:Name="Enabled"  Content="Enabled" 
+    <Grid Margin="18,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="{StaticResource LightPrimaryText}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}" />
+                <Setter Property="Background" Value="#1ddd" />
+                <Style.Triggers>
+                    <Trigger Property="IsFocused" Value="True">
+                        <Setter Property="Foreground" Value="{StaticResource LightPrimaryText}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+        </Grid.Resources>
+        <ui:MaterialSwitch x:Name="Enabled"  Content="Enabled"  Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0"
             On="Enabled_On"
             Off="Enabled_Off" />
-
-        <Grid Margin="20,0,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Name="UsernameLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
-                                                   Text="Username" />
-            <TextBox LostFocus="UsernameTextbox_LostFocus" KeyDown ="UsernameTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
-                                                     Grid.Column="1" Foreground="{StaticResource LightSecondaryText}" Background="#2fff"
-                                                     BorderBrush="Transparent" BorderThickness="0"
-                                                             Name="UsernameTextbox" />
-            <Grid.LayoutTransform>
-                <ScaleTransform ScaleY="1"/>
-            </Grid.LayoutTransform>
-        </Grid>
-
-
-        <Grid Margin="20,0,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Name="AuthLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
-                                                   Text="{x:Static l:LP.AuthToken}" />
-            <TextBox LostFocus="AuthTokenTextbox_LostFocus" KeyDown ="AuthTokenTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
-                                                     Grid.Column="1" Foreground="{StaticResource LightSecondaryText}" Background="#2fff"
-                                                     BorderBrush="Transparent" BorderThickness="0"
-                                                             Name="AuthTokenTextbox" />
-            <Grid.LayoutTransform>
-                <ScaleTransform ScaleY="1"/>
-            </Grid.LayoutTransform>
-        </Grid>
-        <Grid Margin="20,0,0,0" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Name="ServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
-                                                   Text="ServerDpsUploadUrl" />
-            <TextBox LostFocus="ServerURLTextbox_LostFocus" KeyDown="ServerURLTextbox_KeyDown" HorizontalAlignment="Stretch"
-                                                     Margin="5,5,5,5" Grid.Column="1" 
-                                                     Background="#2fff" BorderBrush="Transparent"
-                                                     BorderThickness="0" Name="ServerURLTextbox" />
-            <Grid.LayoutTransform>
-                <ScaleTransform ScaleY="1"/>
-            </Grid.LayoutTransform>
-        </Grid>
-
-
-
-
-
-        <Grid Margin="20,0,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Name="AllowedAreaUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
-                                                   Text="AllowedAreaUrl" />
-            <TextBox LostFocus="AllowedAreaUrlTextbox_LostFocus" KeyDown="AllowedAreaUrlTextbox_KeyDown" HorizontalAlignment="Stretch"
-                                                     Margin="5,5,5,5" Grid.Column="1" 
-                                                     Background="#2fff" BorderBrush="Transparent"
-                                                     BorderThickness="0" Name="AllowedAreaUrlTextbox" />
-            <Grid.LayoutTransform>
-                <ScaleTransform ScaleY="1"/>
-            </Grid.LayoutTransform>
-        </Grid>
-
-
-
-
-
-
-        <Grid Margin="20,0,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Name="GlyphUploadUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
-                                                   Text="GlyphUploadURL" />
-            <TextBox LostFocus="GlyphUploadUrlTextbox_LostFocus" KeyDown="GlyphUploadUrlTextbox_KeyDown" HorizontalAlignment="Stretch"
-                                                     Margin="5,5,5,5" Grid.Column="1" 
-                                                     Background="#2fff" BorderBrush="Transparent"
-                                                     BorderThickness="0" Name="GlyphUploadUrlTextbox" />
-            <Grid.LayoutTransform>
-                <ScaleTransform ScaleY="1"/>
-            </Grid.LayoutTransform>
-        </Grid>
-
-    </StackPanel>
+        <Rectangle Grid.Row="1" Fill="#1fff" Width="2" Margin="18,0,0,0"></Rectangle>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch">
+            <Grid Margin="0,0,0,0" x:Name="usernameGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Name="UsernameLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                       Text="Username" />
+                <TextBox LostFocus="UsernameTextbox_LostFocus" KeyDown ="UsernameTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
+                                                         Grid.Column="1"  Width="Auto"
+                                                         BorderBrush="Transparent" BorderThickness="0"
+                                                                 Name="UsernameTextbox" />
+                <Grid.LayoutTransform>
+                    <ScaleTransform ScaleY="1"/>
+                </Grid.LayoutTransform>
+            </Grid>
+            <Grid Margin="0,0,0,0" x:Name="tokenGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Name="AuthLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                       Text="{x:Static l:LP.AuthToken}" />
+                <TextBox LostFocus="AuthTokenTextbox_LostFocus" KeyDown ="AuthTokenTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
+                                                         Grid.Column="1" 
+                                                         BorderBrush="Transparent" BorderThickness="0"
+                                                                 Name="AuthTokenTextbox" />
+                <Grid.LayoutTransform>
+                    <ScaleTransform ScaleY="1"/>
+                </Grid.LayoutTransform>
+            </Grid>
+            <Grid Margin="0,0,0,0" x:Name="dpsUploadGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Name="ServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                       Text="ServerDpsUploadUrl" />
+                <TextBox LostFocus="ServerURLTextbox_LostFocus" KeyDown="ServerURLTextbox_KeyDown" HorizontalAlignment="Stretch"
+                                                         Margin="5,5,5,5" Grid.Column="1" 
+                                                          BorderBrush="Transparent"
+                                                         BorderThickness="0" Name="ServerURLTextbox" />
+                <Grid.LayoutTransform>
+                    <ScaleTransform ScaleY="1"/>
+                </Grid.LayoutTransform>
+            </Grid>
+            <Grid Margin="0,0,0,0" x:Name="allowedAreasGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Name="AllowedAreaUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                       Text="AllowedAreaUrl" />
+                <TextBox LostFocus="AllowedAreaUrlTextbox_LostFocus" KeyDown="AllowedAreaUrlTextbox_KeyDown" HorizontalAlignment="Stretch"
+                                                         Margin="5,5,5,5" Grid.Column="1" 
+                                                          BorderBrush="Transparent"
+                                                         BorderThickness="0" Name="AllowedAreaUrlTextbox" />
+                <Grid.LayoutTransform>
+                    <ScaleTransform ScaleY="1"/>
+                </Grid.LayoutTransform>
+            </Grid>
+            <Grid Margin="0,0,0,0" x:Name="glyphUploadGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Name="GlyphUploadUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                       Text="GlyphUploadURL" />
+                <TextBox LostFocus="GlyphUploadUrlTextbox_LostFocus" KeyDown="GlyphUploadUrlTextbox_KeyDown" HorizontalAlignment="Stretch"
+                                                         Margin="5,5,5,5" Grid.Column="1" 
+                                                          BorderBrush="Transparent"
+                                                         BorderThickness="0" Name="GlyphUploadUrlTextbox" />
+                <Grid.LayoutTransform>
+                    <ScaleTransform ScaleY="1"/>
+                </Grid.LayoutTransform>
+            </Grid>
+        </StackPanel>
+    </Grid>
 </UserControl>
