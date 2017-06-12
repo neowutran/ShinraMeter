@@ -236,11 +236,11 @@ namespace Data
                 var allowedAreaUrl = server.Element("allowed_area_url");
                 var glyphUrl = server.Element("glyph_url");
                 var parseSuccess = bool.TryParse(enabled?.Value ?? "false", out bool enabledBool);
-                if(uploadUrl == null || String.IsNullOrWhiteSpace(uploadUrl.Value)) { continue; }
+                if(String.IsNullOrWhiteSpace(uploadUrl?.Value)) { continue; }
                 DpsServerData serverData = new DpsServerData(
                     new Uri(uploadUrl.Value),
-                    allowedAreaUrl==null ? null: new Uri(allowedAreaUrl.Value),
-                    glyphUrl==null ? null : new Uri(glyphUrl.Value),
+                    String.IsNullOrWhiteSpace(allowedAreaUrl?.Value) ? null: new Uri(allowedAreaUrl.Value),
+                    String.IsNullOrWhiteSpace(glyphUrl?.Value) ? null : new Uri(glyphUrl.Value),
                     username?.Value ?? null, token?.Value ?? null, enabledBool 
                 );
                
