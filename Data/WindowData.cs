@@ -162,7 +162,7 @@ namespace Data
         public bool DetectBosses = false;
 
         public List<DpsServerData> DpsServers = new List<DpsServerData> { DpsServerData.Moongourd, DpsServerData.TeraLogs };
-        public List<int> WhiteListAreaId = new List<int>();
+        public List<int> BlackListAreaId = new List<int>();
 
         public string ExcelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
         public int NumberOfPlayersDisplayed = 5;
@@ -239,7 +239,8 @@ namespace Data
             var teradps = root.Element("dps_servers");
             if(teradps == null) { return; }
             DpsServers = new List<DpsServerData>();
-            foreach(var server in teradps.Elements())
+            if (teradps.Elements("server") == null) { return; }
+            foreach(var server in teradps.Elements("server"))
             {
                 var username = server.Element("username");
                 var token = server.Element("token");
@@ -256,8 +257,16 @@ namespace Data
                     username?.Value ?? null, token?.Value ?? null, enabledBool 
                 );
                 DpsServers.Add(serverData);
+            }
 
-
+            if(teradps.Element("blacklist") == null) { return; }
+            if(teradps.Element("blacklist").Elements("id") == null) { return; }
+            foreach(var blacklistedAreaId in teradps.Element("blacklist").Elements("id"))
+            {
+                
+                if(blacklistedAreaId.Value == "*") { blacklistedAreaId.Value = "-1"; }
+                var parseSuccess = int.TryParse(blacklistedAreaId.Value, out int areaId);
+                if (parseSuccess){ blacklistedAreaId.Add(areaId); }
             }
         }
 
@@ -395,6 +404,13 @@ namespace Data
                 serverXml.Add(new XElement("glyph_url", server.GlyphUrl));
                 serverXml.Add(new XElement("allowed_area_url", server.AllowedAreaUrl));
                 xml.Root.Element("dps_servers").Add(serverXml);
+            }
+
+            xml.Root.Element("dps_servers").Add(new XElement("blacklist"));
+            foreach (var areaId in BlackListAreaId)
+            {
+                var blacklistId = new XElement("id", areaId);
+                xml.Root.Element("dps_servers").Element("blacklist").Add(blacklistId);
             }
 
             _filestream.SetLength(0);

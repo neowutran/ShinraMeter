@@ -8,6 +8,8 @@ namespace Data
 {
     public class AreaAllowed
     {
+
+        public static readonly AreaAllowed  DummyArea = new AreaAllowed(-1);
         public int AreaId { get; set; }
         public List<int> BossIds { get; set; }
 

@@ -28,7 +28,7 @@ namespace DamageMeter.UI
             Tray.ToolTipText = "Shinra Meter V" + UpdateManager.Version + ": " + LP.SystemTray_No_server;
         }
 
-        public void InitializeServerList(List<DamageMeter.TeraDpsApi.DpsServer> servers)
+        public void InitializeServerList(List<TeraDpsApi.DpsServer> servers)
         {
             foreach(var server in servers)
             {

@@ -177,7 +177,8 @@ namespace DamageMeter.TeraDpsApi
         private void ComputeAllowedAreaId(List<AreaAllowed> allowedAreaIdByServer)
         {
             _allowedAreaId = allowedAreaIdByServer;
-            //_allowedAreaId.RemoveAll(x => !BasicTeraData.Instance.WindowData.WhiteListAreaId.Contains(x.AreaId)); //todo white or better blacklisting in config
+            if (BasicTeraData.Instance.WindowData.BlackListAreaId.Contains(-1)) { _allowedAreaId = new List<AreaAllowed> { AreaAllowed.DummyArea }; }
+            else{_allowedAreaId.RemoveAll(x => BasicTeraData.Instance.WindowData.BlackListAreaId.Contains(x.AreaId));}
         }
 
         public Uri HomeUrl => UploadUrl==null ? null : new Uri(UploadUrl.GetLeftPart(UriPartial.Authority));
