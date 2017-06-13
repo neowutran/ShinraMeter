@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Lang;
 using Xceed.Wpf.AvalonDock.Controls;
+using System.Diagnostics;
 
 namespace DamageMeter.UI
 {
@@ -35,7 +36,6 @@ namespace DamageMeter.UI
         }
 
         private DpsServerData _data = null;
-
         private void HideShowSettings(bool b)
         {
             DoubleAnimation an;
@@ -48,13 +48,12 @@ namespace DamageMeter.UI
                 an = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(150)) { EasingFunction = new QuadraticEase() };
             }
             settingsGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
-            rect.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
         }
 
         public void SetData(DpsServerData data)
         {
             _data = data;
-            Enabled.Content = data?.HostName ?? LP.Bad_server_url;
+            serverLabel.Text = data?.HostName ?? LP.Bad_server_url;
             HideShowSettings(data.Enabled);
             Enabled.Status = data.Enabled;
             AuthTokenTextbox.Text = data.Token;
@@ -163,6 +162,13 @@ namespace DamageMeter.UI
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             RemoveServerButtonImage.Source = BasicTeraData.Instance.ImageDatabase.Delete.Source;
+            LinkIcon.Source = BasicTeraData.Instance.ImageDatabase.Link.Source;
+        }
+
+        private void LinkIcon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Process.Start("explorer.exe", "http://"+_data.HostName);
+
         }
     }
 }
