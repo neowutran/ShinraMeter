@@ -59,7 +59,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="serverLabel" 
+            <TextBlock x:Name="ServerLabel"
                        HorizontalAlignment="Left" 
                        VerticalAlignment="Center" 
                        Margin="8,0"
@@ -109,7 +109,7 @@
             <TextBox Grid.Row="2" LostFocus="AuthTokenTextbox_LostFocus" KeyDown ="AuthTokenTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
                                                          Grid.Column="1" Name="AuthTokenTextbox"
                                                          BorderBrush="Transparent" BorderThickness="0"></TextBox>
-            <TextBlock Grid.Row="3" Grid.Column="0" Name="ServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+            <TextBlock Grid.Row="3" Grid.Column="0" Name="ServerUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
                                                        Text="{x:Static l:LP.DpsUploadUrl}" />
             <TextBox  Grid.Row="3" LostFocus="ServerURLTextbox_LostFocus" KeyDown="ServerURLTextbox_KeyDown" HorizontalAlignment="Stretch"
                                                          Margin="5,5,5,5" Grid.Column="1" 

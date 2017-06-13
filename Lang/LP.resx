@@ -646,12 +646,6 @@ Reset and paused until map change or relog.</value>
   <data name="events_valkyrie" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\en\events-valkyrie.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="PrivateServerExport" xml:space="preserve">
-    <value>Export to private dps servers</value>
-  </data>
-  <data name="PrivateServerURL" xml:space="preserve">
-    <value>Private server URL</value>
-  </data>
   <data name="MuteSound" xml:space="preserve">
     <value>Mute sound</value>
   </data>

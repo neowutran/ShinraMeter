@@ -647,12 +647,6 @@
   <data name="events_valkyrie" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\en\events-valkyrie.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="PrivateServerExport" xml:space="preserve">
-    <value>Exporter vers un serveur privé de DPS</value>
-  </data>
-  <data name="PrivateServerURL" xml:space="preserve">
-    <value>URL du serveur privé</value>
-  </data>
   <data name="MuteSound" xml:space="preserve">
     <value>Désactiver les sons</value>
   </data>

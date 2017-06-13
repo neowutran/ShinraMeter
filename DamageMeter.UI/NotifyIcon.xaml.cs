@@ -33,7 +33,6 @@ namespace DamageMeter.UI
             foreach(var server in servers)
             {
                 DpsServer dpsServerUi = new DpsServer(server, this);
-                dpsServerUi.SetData(server.Data);
                 DpsServers.Children.Add(dpsServerUi);
             }
         }
@@ -519,7 +518,6 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.DpsServers.Add(server.Data);
             DataExporter.DpsServers.Add(server);
             DpsServer dpsServerUi = new DpsServer(server, this);
-            dpsServerUi.SetData(server.Data);
             DpsServers.Children.Add(dpsServerUi);
         }
     }

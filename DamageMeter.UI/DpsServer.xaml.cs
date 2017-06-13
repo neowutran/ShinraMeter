@@ -26,16 +26,17 @@ namespace DamageMeter.UI
     public partial class DpsServer : UserControl
     {
 
-        private DamageMeter.TeraDpsApi.DpsServer _server;
+        private TeraDpsApi.DpsServer _server;
+        private DpsServerData _data = null;
         private NotifyIcon _icon;
         public DpsServer(DamageMeter.TeraDpsApi.DpsServer server, NotifyIcon parent)
         {
             InitializeComponent();
             _server = server;
             _icon = parent;
+            SetData(_server.Data);
         }
 
-        private DpsServerData _data = null;
         private void HideShowSettings(bool b)
         {
             DoubleAnimation an;
@@ -53,7 +54,7 @@ namespace DamageMeter.UI
         public void SetData(DpsServerData data)
         {
             _data = data;
-            serverLabel.Text = data?.HostName ?? LP.Bad_server_url;
+            ServerLabel.Text = data.HostName ?? LP.Bad_server_url;
             HideShowSettings(data.Enabled);
             Enabled.Status = data.Enabled;
             AuthTokenTextbox.Text = data.Token;
@@ -61,6 +62,7 @@ namespace DamageMeter.UI
             ServerURLTextbox.Text = data.UploadUrl?.ToString();
             AllowedAreaUrlTextbox.Text = data.AllowedAreaUrl?.ToString();
             GlyphUploadUrlTextbox.Text = data.GlyphUrl?.ToString();
+            LinkIcon.ToolTip = _server.HomeUrl;
         }
 
         public void RemoveServer()
@@ -108,12 +110,13 @@ namespace DamageMeter.UI
             {
                 _data.UploadUrl = new Uri(ServerURLTextbox.Text);
                 ServerURLTextbox.Background = new SolidColorBrush(Color.FromArgb(11, 211, 211, 211));
-                Enabled.Content = _data.HostName;
+                ServerLabel.Text = _data.HostName;
+                LinkIcon.ToolTip = _server.HomeUrl;
             }
             catch
             {
                 ServerURLTextbox.Background = new SolidColorBrush(Color.FromArgb(150, 211, 10, 10));
-                Enabled.Content = LP.Bad_server_url;
+                ServerLabel.Text = LP.Bad_server_url;
             }
         }
 
@@ -162,13 +165,12 @@ namespace DamageMeter.UI
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             RemoveServerButtonImage.Source = BasicTeraData.Instance.ImageDatabase.Delete.Source;
-            LinkIcon.Source = BasicTeraData.Instance.ImageDatabase.Link.Source;
+            LinkIcon.Source = BasicTeraData.Instance.ImageDatabase.Links.Source;
         }
 
         private void LinkIcon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Process.Start("explorer.exe", "http://"+_data.HostName);
-
+            if (_server.HomeUrl!=null) Process.Start("explorer.exe", _server.HomeUrl.ToString());
         }
     }
 }

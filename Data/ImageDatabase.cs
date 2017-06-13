@@ -19,7 +19,6 @@ namespace Data
             Config = new Image {Source = new BitmapImage(new Uri(folder + "config.png"))};
             Chat = new Image {Source = new BitmapImage(new Uri(folder + "chat.png"))};
             Link = new Image {Source = new BitmapImage(new Uri(folder + "link.png"))};
-            Enraged = new Image {Source = new BitmapImage(new Uri(folder + "enraged.png"))};
             BossGage = new Image {Source = new BitmapImage(new Uri(folder + "eye.png"))};
             Whisper = new Image { Source = new BitmapImage(new Uri(folder + "whisper.png")) };
             Info = new Image { Source = new BitmapImage(new Uri(folder + "info.png")) };
@@ -39,8 +38,6 @@ namespace Data
 
             GitHub = new Image { Source = new BitmapImage(new Uri(folder + "github.png")) };
             Discord = new Image { Source = new BitmapImage(new Uri(folder + "discord.png")) };
-            Moongourd = new Image { Source = new BitmapImage(new Uri(folder + "moongourd.png")) };
-            Teralogs = new Image { Source = new BitmapImage(new Uri(folder + "teralogs.png")) };
             Cloud = new Image { Source = new BitmapImage(new Uri(folder + "cloud.png")) };
 
             AggroTime = new Image { Source = new BitmapImage(new Uri(folder + "eye_time.png")) };
@@ -69,7 +66,6 @@ namespace Data
         public Image Chronobar { get; }
 
         public Image EntityStats { get; }
-        public Image Enraged { get; }
         public Image EntityStatsClickThrou { get; }
 
         public Image Whisper { get; }
@@ -90,8 +86,6 @@ namespace Data
         public Image Reset { get; }
         public Image GitHub { get; }
         public Image Discord { get; }
-        public Image Moongourd { get; }
-        public Image Teralogs { get; }
         public Image Cloud { get; }
 
         public Image Skull { get; }

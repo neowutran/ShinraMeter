@@ -634,12 +634,6 @@
   <data name="OpenChatBox" xml:space="preserve">
     <value>Открыть окно чата</value>
   </data>
-  <data name="PrivateServerExport" xml:space="preserve">
-    <value>Экспорт на приватные сайты</value>
-  </data>
-  <data name="PrivateServerURL" xml:space="preserve">
-    <value>URL приватного сайта</value>
-  </data>
   <data name="MuteSound" xml:space="preserve">
     <value>Выключить звук</value>
   </data>

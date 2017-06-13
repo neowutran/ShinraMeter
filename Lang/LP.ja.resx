@@ -638,12 +638,6 @@
   <data name="OpenChatBox" xml:space="preserve">
     <value>チャットボックスを開く</value>
   </data>
-  <data name="PrivateServerExport" xml:space="preserve">
-    <value>プライベートDPSサーバーに出力</value>
-  </data>
-  <data name="PrivateServerURL" xml:space="preserve">
-    <value>プライベートサーバーURL</value>
-  </data>
   <data name="MuteSound" xml:space="preserve">
     <value>ミュート</value>
   </data>

@@ -1362,24 +1362,6 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export to private dps servers.
-        /// </summary>
-        public static string PrivateServerExport {
-            get {
-                return ResourceManager.GetString("PrivateServerExport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Private server URL.
-        /// </summary>
-        public static string PrivateServerURL {
-            get {
-                return ResourceManager.GetString("PrivateServerURL", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Quests done status: .
         /// </summary>
         public static string Quests_status {
