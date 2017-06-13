@@ -14,6 +14,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Lang;
+using Xceed.Wpf.AvalonDock.Controls;
 
 namespace DamageMeter.UI
 {
@@ -23,11 +25,13 @@ namespace DamageMeter.UI
     public partial class DpsServer : UserControl
     {
 
-        private Guid _guid;
-        public DpsServer(Guid guid)
+        private DamageMeter.TeraDpsApi.DpsServer _server;
+        private NotifyIcon _icon;
+        public DpsServer(DamageMeter.TeraDpsApi.DpsServer server, NotifyIcon parent)
         {
             InitializeComponent();
-            _guid = guid;
+            _server = server;
+            _icon = parent;
         }
 
         private DpsServerData _data = null;
@@ -48,20 +52,27 @@ namespace DamageMeter.UI
             dpsUploadGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
             glyphUploadGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
             allowedAreasGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
-
+            RemoveServerGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
         }
+
         public void SetData(DpsServerData data)
         {
             _data = data;
-            Enabled.Content = data.HostName;
+            Enabled.Content = data?.HostName ?? LP.Bad_server_url;
             HideShowSettings(data.Enabled);
             Enabled.Status = data.Enabled;
             AuthTokenTextbox.Text = data.Token;
             UsernameTextbox.Text = data.Username;
-            ServerURLTextbox.Text = data.UploadUrl.ToString();
+            ServerURLTextbox.Text = data.UploadUrl?.ToString();
             AllowedAreaUrlTextbox.Text = data.AllowedAreaUrl?.ToString();
             GlyphUploadUrlTextbox.Text = data.GlyphUrl?.ToString();
-            
+        }
+
+        public void RemoveServer()
+        {
+            BasicTeraData.Instance.WindowData.DpsServers.Remove(_data);
+            DataExporter.DpsServers.Remove(_server);
+            _icon.DpsServers.Children.Remove(this);
         }
 
         private void UsernameTextbox_LostFocus(object sender, RoutedEventArgs e)
@@ -102,9 +113,13 @@ namespace DamageMeter.UI
             {
                 _data.UploadUrl = new Uri(ServerURLTextbox.Text);
                 ServerURLTextbox.Background = new SolidColorBrush(Color.FromArgb(11, 211, 211, 211));
+                Enabled.Content = _data.HostName;
             }
-            catch { ServerURLTextbox.Background = new SolidColorBrush(Color.FromArgb(150, 211, 10, 10)); }
-            Enabled.Content = _data.HostName;
+            catch
+            {
+                ServerURLTextbox.Background = new SolidColorBrush(Color.FromArgb(150, 211, 10, 10));
+                Enabled.Content = LP.Bad_server_url;
+            }
         }
 
         private void ServerURLTextbox_KeyDown(object sender, KeyEventArgs e)
@@ -141,5 +156,7 @@ namespace DamageMeter.UI
         {
             if (e.Key == Key.Enter) { GlyphUploadUrlTextbox_LostFocus(this, new RoutedEventArgs()); }
         }
+
+        private void RemoveServerButton_OnClick(object sender, RoutedEventArgs e) { RemoveServer(); }
     }
 }

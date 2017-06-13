@@ -3,6 +3,7 @@ using Lang;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
@@ -13,23 +14,31 @@ using Tera.Game;
 
 namespace DamageMeter.TeraDpsApi
 {
-    public class DpsServer : DpsServerData
+    public class DpsServer
     {
         public static readonly List<AreaAllowed> DefaultAreaAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>("[{\"AreaId\": 780,\"BossIds\": []},{\"AreaId\": 781,\"BossIds\": []},{\"AreaId\": 950,\"BossIds\": []},{\"AreaId\": 980,\"BossIds\": []},{\"AreaId\": 981,\"BossIds\": []}]");
-        public static DpsServer NeowutranAnonymousServer => new DpsServer(Neowutran, true);
+        public static DpsServer NeowutranAnonymousServer => new DpsServer(DpsServerData.Neowutran, true);
 
-        public DpsServer(DpsServerData data, bool anonymousUpload) : base(data)
+        public bool Enabled => Data.Enabled;
+        public Uri UploadUrl => Data.UploadUrl;
+        public Uri AllowedAreaUrl => Data.AllowedAreaUrl;
+        public Uri GlyphUrl => Data.GlyphUrl;
+        public string Token => Data.Token;
+        public string Username => Data.Username;
+
+        public DpsServerData Data;
+        public DpsServer(DpsServerData data, bool anonymousUpload)
         {  
             AnonymousUpload = anonymousUpload;
             Guid = Guid.NewGuid();
-
+            Data = data;
             Debug.WriteLine("dps url:"+data.UploadUrl + ";enabled:" + Enabled + ";anonymous:" + AnonymousUpload);
         }
 
 
        public bool CheckAndSendFightData(EncounterBase teradpsData, NpcEntity entity)
         {
-            if (!Enabled && !AnonymousUpload) { return false; }
+            if (!Enabled && !AnonymousUpload || String.IsNullOrWhiteSpace(UploadUrl?.ToString())) { return false; }
             var areaId = int.Parse(teradpsData.areaId);
 
             try

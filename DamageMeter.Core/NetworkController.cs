@@ -214,18 +214,17 @@ namespace DamageMeter
             handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash);
         }
         
-        public Dictionary<Guid, DpsServerData> Initialize()
+        public List<DpsServer> Initialize()
         {
-            Dictionary<Guid, DpsServerData> listGuid = new Dictionary<Guid, DpsServerData>();
+            var listForUi = new List<DpsServer>();
             DataExporter.DpsServers = new List<DpsServer> { DpsServer.NeowutranAnonymousServer };
             foreach(var dpsServer in BasicTeraData.Instance.WindowData.DpsServers)
             {
                 var server = new DpsServer(dpsServer, false);
-                listGuid.Add(server.Guid, dpsServer);
+                listForUi.Add(server);
                 DataExporter.DpsServers.Add(server);
             }
-
-            return listGuid;
+            return listForUi;
         }
 
         public void SwitchClickThrou()

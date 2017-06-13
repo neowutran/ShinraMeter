@@ -11,7 +11,7 @@ namespace Data
         public string Username { get; set; }
         public string Token { get; set; }
         public bool Enabled { get; set; }
-        public string HostName => UploadUrl.Host;
+        public string HostName => UploadUrl?.Host;
 
         public DpsServerData(Uri uploadUrl, Uri allowedAreaUrl, Uri glyphUrl, string username, string token, bool enabled)
         {

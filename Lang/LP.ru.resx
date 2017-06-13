@@ -682,4 +682,13 @@
   <data name="GlyphUploadURL" xml:space="preserve">
     <value>Адрес загруки глифбилда</value>
   </data>
+  <data name="Bad_server_url" xml:space="preserve">
+    <value>Неправильный адрес сервера</value>
+  </data>
+  <data name="RemoveDpsServer" xml:space="preserve">
+    <value>Удалить сервер статистики</value>
+  </data>
+  <data name="AddDpsServer" xml:space="preserve">
+    <value>Добавить сервер статистики</value>
+  </data>
 </root>

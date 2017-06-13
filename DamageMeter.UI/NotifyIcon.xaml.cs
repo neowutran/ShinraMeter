@@ -28,12 +28,12 @@ namespace DamageMeter.UI
             Tray.ToolTipText = "Shinra Meter V" + UpdateManager.Version + ": " + LP.SystemTray_No_server;
         }
 
-        public void InitializeServerList(Dictionary<Guid, DpsServerData> servers)
+        public void InitializeServerList(List<DamageMeter.TeraDpsApi.DpsServer> servers)
         {
             foreach(var server in servers)
             {
-                DpsServer dpsServerUi = new DpsServer(server.Key);
-                dpsServerUi.SetData(server.Value);
+                DpsServer dpsServerUi = new DpsServer(server, this);
+                dpsServerUi.SetData(server.Data);
                 DpsServers.Children.Add(dpsServerUi);
             }
         }
@@ -511,6 +511,16 @@ namespace DamageMeter.UI
             rankPopup.IsOpen = true;
             rankPopup.BeginAnimation(HeightProperty, an);
 
+        }
+
+        private void AddServerButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var server = new DamageMeter.TeraDpsApi.DpsServer(new DpsServerData(null, null, null, null, null, true), false);
+            BasicTeraData.Instance.WindowData.DpsServers.Add(server.Data);
+            DataExporter.DpsServers.Add(server);
+            DpsServer dpsServerUi = new DpsServer(server, this);
+            dpsServerUi.SetData(server.Data);
+            DpsServers.Children.Add(dpsServerUi);
         }
     }
 }

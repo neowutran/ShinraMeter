@@ -61,6 +61,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add DPS server.
+        /// </summary>
+        public static string AddDpsServer {
+            get {
+                return ResourceManager.GetString("AddDpsServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aggro.
         /// </summary>
         public static string Aggro {
@@ -228,6 +237,15 @@ namespace Lang {
         public static string Back {
             get {
                 return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bad server url.
+        /// </summary>
+        public static string Bad_server_url {
+            get {
+                return ResourceManager.GetString("Bad_server_url", resourceCulture);
             }
         }
         
@@ -1394,6 +1412,15 @@ namespace Lang {
         public static string RegisterHotKeyError {
             get {
                 return ResourceManager.GetString("RegisterHotKeyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove DPS server.
+        /// </summary>
+        public static string RemoveDpsServer {
+            get {
+                return ResourceManager.GetString("RemoveDpsServer", resourceCulture);
             }
         }
         

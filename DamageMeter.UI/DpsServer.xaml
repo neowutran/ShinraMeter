@@ -116,6 +116,19 @@
                     <ScaleTransform ScaleY="1"/>
                 </Grid.LayoutTransform>
             </Grid>
+            <Grid Margin="0,0,0,0" x:Name="RemoveServerGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" Name="RemoveServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Right"
+                           Text="{x:Static l:LP.RemoveDpsServer}" />
+                <Button Grid.Column="1" Style="{StaticResource ButtonMainStyle}" Name="RemoveServerButton" Click="RemoveServerButton_OnClick">
+                </Button>
+                <Grid.LayoutTransform>
+                    <ScaleTransform ScaleY="1"/>
+                </Grid.LayoutTransform>
+            </Grid>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -694,4 +694,13 @@ Reset and paused until map change or relog.</value>
   <data name="GlyphUploadURL" xml:space="preserve">
     <value>Glyph upload url</value>
   </data>
+  <data name="Bad_server_url" xml:space="preserve">
+    <value>Bad server url</value>
+  </data>
+  <data name="RemoveDpsServer" xml:space="preserve">
+    <value>Remove DPS server</value>
+  </data>
+  <data name="AddDpsServer" xml:space="preserve">
+    <value>Add DPS server</value>
+  </data>
 </root>
