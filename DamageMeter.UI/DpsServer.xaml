@@ -5,14 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:l="clr-namespace:Lang;assembly=Lang"
              xmlns:ui="clr-namespace:DamageMeter.UI"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Loaded="UserControl_Loaded">
 
-    <Grid Margin="18,0,0,0">
+    <Grid Margin="-3,0" x:Name="root">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -34,101 +35,76 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+            <Style TargetType="{x:Type Image}">
+                <Setter Property="Opacity" Value=".2"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Opacity" Value=".8"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
 
         </Grid.Resources>
-        <ui:MaterialSwitch x:Name="Enabled"  Content="Enabled"  Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0"
+        <Image x:Name="RemoveServerButtonImage" Margin="2,2,0,0" VerticalAlignment="Center" ToolTip="{x:Static l:LP.RemoveDpsServer}" PreviewMouseLeftButtonDown="RemoveServerButton_OnClick" ></Image>
+
+        <ui:MaterialSwitch x:Name="Enabled"  Content="Enabled"  Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0" Grid.Column="1"
             On="Enabled_On"
             Off="Enabled_Off" />
-        <Rectangle Grid.Row="1" Fill="#1fff" Width="2" Margin="18,0,0,0"></Rectangle>
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch">
-            <Grid Margin="0,0,0,0" x:Name="usernameGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Name="UsernameLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
+        <Rectangle Grid.Row="1" Grid.Column="1" Fill="#1fff" Width="2" Margin="18,0,0,0" VerticalAlignment="Top" Height="130" x:Name="rect" Visibility="Hidden">
+            <Rectangle.LayoutTransform>
+                <ScaleTransform ScaleY="1"/>
+            </Rectangle.LayoutTransform>
+        </Rectangle>
+
+        <Grid Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" x:Name="settingsGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Name="UsernameLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
                                                        Text="{x:Static l:LP.Username}" />
-                <TextBox LostFocus="UsernameTextbox_LostFocus" KeyDown ="UsernameTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
+            <TextBox  LostFocus="UsernameTextbox_LostFocus" KeyDown ="UsernameTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
                                                          Grid.Column="1"  Width="Auto"
-                                                         BorderBrush="Transparent" BorderThickness="0"
-                                                                 Name="UsernameTextbox" />
-                <Grid.LayoutTransform>
-                    <ScaleTransform ScaleY="1"/>
-                </Grid.LayoutTransform>
-            </Grid>
-            <Grid Margin="0,0,0,0" x:Name="tokenGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Name="AuthLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                         BorderBrush="Transparent" BorderThickness="0" Name="UsernameTextbox" />
+            <TextBlock Grid.Row="1" Name="AuthLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
                                                        Text="{x:Static l:LP.AuthToken}" />
-                <TextBox LostFocus="AuthTokenTextbox_LostFocus" KeyDown ="AuthTokenTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
-                                                         Grid.Column="1" 
-                                                         BorderBrush="Transparent" BorderThickness="0"
-                                                                 Name="AuthTokenTextbox" />
-                <Grid.LayoutTransform>
-                    <ScaleTransform ScaleY="1"/>
-                </Grid.LayoutTransform>
-            </Grid>
-            <Grid Margin="0,0,0,0" x:Name="dpsUploadGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Name="ServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+            <TextBox Grid.Row="1" LostFocus="AuthTokenTextbox_LostFocus" KeyDown ="AuthTokenTextbox_KeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
+                                                         Grid.Column="1" Name="AuthTokenTextbox"
+                                                         BorderBrush="Transparent" BorderThickness="0"></TextBox>
+            <TextBlock Grid.Row="2" Grid.Column="0" Name="ServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
                                                        Text="{x:Static l:LP.DpsUploadUrl}" />
-                <TextBox LostFocus="ServerURLTextbox_LostFocus" KeyDown="ServerURLTextbox_KeyDown" HorizontalAlignment="Stretch"
+            <TextBox  Grid.Row="2" LostFocus="ServerURLTextbox_LostFocus" KeyDown="ServerURLTextbox_KeyDown" HorizontalAlignment="Stretch"
                                                          Margin="5,5,5,5" Grid.Column="1" 
                                                           BorderBrush="Transparent"
                                                          BorderThickness="0" Name="ServerURLTextbox" />
-                <Grid.LayoutTransform>
-                    <ScaleTransform ScaleY="1"/>
-                </Grid.LayoutTransform>
-            </Grid>
-            <Grid Margin="0,0,0,0" x:Name="allowedAreasGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Name="AllowedAreaUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+            <TextBlock  Grid.Row="3" Name="AllowedAreaUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
                                                        Text="{x:Static l:LP.AllowedAreaUrl}" />
-                <TextBox LostFocus="AllowedAreaUrlTextbox_LostFocus" KeyDown="AllowedAreaUrlTextbox_KeyDown" HorizontalAlignment="Stretch"
+            <TextBox Grid.Row="3" LostFocus="AllowedAreaUrlTextbox_LostFocus" KeyDown="AllowedAreaUrlTextbox_KeyDown" HorizontalAlignment="Stretch"
                                                          Margin="5,5,5,5" Grid.Column="1" 
                                                           BorderBrush="Transparent"
                                                          BorderThickness="0" Name="AllowedAreaUrlTextbox" />
-                <Grid.LayoutTransform>
-                    <ScaleTransform ScaleY="1"/>
-                </Grid.LayoutTransform>
-            </Grid>
-            <Grid Margin="0,0,0,0" x:Name="glyphUploadGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Name="GlyphUploadUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+            <TextBlock Grid.Row="4" Name="GlyphUploadUrlLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
                                                        Text="{x:Static l:LP.GlyphUploadURL}" />
-                <TextBox LostFocus="GlyphUploadUrlTextbox_LostFocus" KeyDown="GlyphUploadUrlTextbox_KeyDown" HorizontalAlignment="Stretch"
+            <TextBox Grid.Row="4" LostFocus="GlyphUploadUrlTextbox_LostFocus" KeyDown="GlyphUploadUrlTextbox_KeyDown" HorizontalAlignment="Stretch"
                                                          Margin="5,5,5,5" Grid.Column="1" 
                                                           BorderBrush="Transparent"
                                                          BorderThickness="0" Name="GlyphUploadUrlTextbox" />
-                <Grid.LayoutTransform>
-                    <ScaleTransform ScaleY="1"/>
-                </Grid.LayoutTransform>
-            </Grid>
-            <Grid Margin="0,0,0,0" x:Name="RemoveServerGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="1" Name="RemoveServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Right"
-                           Text="{x:Static l:LP.RemoveDpsServer}" />
-                <Button Grid.Column="1" Style="{StaticResource ButtonMainStyle}" Name="RemoveServerButton" Click="RemoveServerButton_OnClick">
-                </Button>
-                <Grid.LayoutTransform>
-                    <ScaleTransform ScaleY="1"/>
-                </Grid.LayoutTransform>
-            </Grid>
-        </StackPanel>
+            <Grid.LayoutTransform>
+                <ScaleTransform ScaleY="1"/>
+            </Grid.LayoutTransform>
+        </Grid>
+        <Grid.LayoutTransform>
+            <ScaleTransform ScaleY="1"/>
+        </Grid.LayoutTransform>
+
     </Grid>
 </UserControl>
