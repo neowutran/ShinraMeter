@@ -4,27 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:l="clr-namespace:Lang;assembly=Lang"
+             xmlns:ui="clr-namespace:DamageMeter.UI"
              mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Height="30">
+        <Grid Grid.Row="0" Height="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="80" Width="Auto"/>
                 <ColumnDefinition MinWidth="80" Width="Auto"/>
                 <ColumnDefinition MinWidth="80" Width="Auto"/>
                 <ColumnDefinition MinWidth="80" Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <CheckBox Grid.Column="0" IsChecked="True" Foreground="Red" Content="{x:Static l:LP.Dps}" Height="30" Name="Damage"
-                      Checked="ValueChanged" Unchecked="ValueChanged" />
-            <CheckBox Grid.Column="1" IsChecked="True" Foreground="LightGreen" Content="{x:Static l:LP.Heal}" Height="30" Name="Heal"
-                      Checked="ValueChanged" Unchecked="ValueChanged" />
-            <CheckBox Grid.Column="2" IsChecked="True" Foreground="LightBlue" Content="{x:Static l:LP.Mana}" Height="30" Name="Mana"
-                      Checked="ValueChanged" Unchecked="ValueChanged" />
-            <CheckBox Grid.Column="3" IsChecked="True" Foreground="Thistle" Content="{x:Static l:LP.Counter}" Height="30" Name="Casts"
-                      Checked="ValueChanged" Unchecked="ValueChanged" />
+            <ui:MaterialSwitch Grid.Column="0" Status="True" Foreground="{StaticResource DamageText}" SwitchColor="{StaticResource DamageText}" Content="{x:Static l:LP.Dps}" Height="30" x:Name="Damage"
+                      On="ValueChanged" Off="ValueChanged" Margin="20,5"/>
+            <ui:MaterialSwitch Grid.Column="1" Status="True" Foreground="{StaticResource HealText}" SwitchColor="{StaticResource HealText}" Content="{x:Static l:LP.Heal}" Height="30" x:Name="Heal"
+                      On="ValueChanged" Off="ValueChanged" Margin="20,5"/>
+            <ui:MaterialSwitch Grid.Column="2" Status="True" Foreground="{StaticResource ManaText}" SwitchColor="{StaticResource ManaText}" Content="{x:Static l:LP.Mana}" Height="30" x:Name="Mana"
+                      On="ValueChanged" Off="ValueChanged" Margin="20,5"/>
+            <ui:MaterialSwitch Grid.Column="3" Status="True" Foreground="{StaticResource CastText}" SwitchColor="{StaticResource CastText}"  Content="{x:Static l:LP.Counter}" Height="30" x:Name="Casts"
+                      On="ValueChanged" Off="ValueChanged" Margin="20,5"/>
         </Grid>
         <ScrollViewer Name="ScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500">
 

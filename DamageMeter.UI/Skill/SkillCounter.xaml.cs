@@ -20,7 +20,7 @@ namespace DamageMeter.UI.Skill
             foreach (var skillInfo in skill.Skills)
             {
                 if (string.IsNullOrEmpty(skillInfo.Key.IconName)) { continue; }
-                SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.Key.IconName);
+                SkillIcon.ImageSource = BasicTeraData.Instance.Icons.GetImage(skillInfo.Key.IconName);
                 break;
             }
             Update(skill);
@@ -52,7 +52,7 @@ namespace DamageMeter.UI.Skill
 
         private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            Background = Brushes.Black;
+            Background = new SolidColorBrush(Color.FromArgb(0x10,255,255,255));
         }
     }
 }

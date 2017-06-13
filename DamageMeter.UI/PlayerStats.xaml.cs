@@ -126,7 +126,8 @@ namespace DamageMeter.UI
                 _windowSkill = new Skills(this, PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter)
                 {
                     Title = PlayerName,
-                    CloseMeter = {Content = LP.ResourceManager.GetString(PlayerDamageDealt.Source.Class.ToString(), LP.Culture) + " " + PlayerName + ": " + LP.Close}
+                    PlayerNameTB = {Text = PlayerName}
+                     //CloseMeter = {Content = LP.ResourceManager.GetString(PlayerDamageDealt.Source.Class.ToString(), LP.Culture) + " " + PlayerName + ": " + LP.Close}
                 };
                 var main = Window.GetWindow(this);
                 var screen = Screen.FromHandle(new WindowInteropHelper(main).Handle);

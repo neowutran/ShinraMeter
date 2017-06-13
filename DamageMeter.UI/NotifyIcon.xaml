@@ -312,7 +312,7 @@
                                                 </Setter>
                                             </Style>
                                             <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Foreground" Value="#8fff"/>
+                                                <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}"/>
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="True">
                                                         <Setter Property="Foreground" Value="White"/>
@@ -336,75 +336,6 @@
                                             </Style>
                                         </StackPanel.Resources>
 
-                                        <!--Export settings card-->
-                                        <Grid Margin="10,10,10,0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition />
-                                                <RowDefinition />
-                                            </Grid.RowDefinitions>
-                                            <Border Style="{StaticResource SettingsCard}" />
-                                            <Border Style="{StaticResource SettingsCardHeader}"/>
-
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Export settings" />
-                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
-                                                <!--
-                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Site_export}" 
-                                                          x:Name="DpsWebsiteExport"
-                                                          On="EnableDpsWebsiteExportAction"
-                                                          Off="DisableDpsWebsiteExportAction" />
-                                                -->
-                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" 
-                                                          x:Name="AutoExcelExport"
-                                                          On="EnableAutoExcelExportAction"
-                                                          Off="DisableExcelExportAction" />
-
-                                                <StackPanel x:Name="DpsServers" Orientation="Vertical" Margin="3">
-                                                    
-                                                </StackPanel>
-                                                <!--
-                                                <ui:MaterialSwitch Content="{x:Static l:LP.PrivateServerExport}" 
-                                                          x:Name="PrivateServerExport"
-                                                          On="EnablePServerExp"
-                                                          Off="DisablePServerExp" />
-                                                <Separator Background="#1fff" Margin="20,0,-3,0" Height="5" Name="authSeparator">
-                                                    <Separator.LayoutTransform>
-                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
-                                                    </Separator.LayoutTransform>
-                                                </Separator>
-                                                <Grid Margin="20,0,0,0" Style="{StaticResource SettingWrapper}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Name="AuthLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
-                                                   Text="{x:Static l:LP.AuthToken}" />
-                                                    <TextBox LostFocus="TokenChanged" KeyDown ="AuthTokenTextbox_OnKeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
-                                                     Grid.Column="1" Foreground="{StaticResource LightSecondaryText}" Background="#2fff"
-                                                     BorderBrush="Transparent" BorderThickness="0"
-                                                             Name="AuthTokenTextbox" />
-                                                    <Grid.LayoutTransform>
-                                                        <ScaleTransform ScaleY="1"/>
-                                                    </Grid.LayoutTransform>
-                                                </Grid>
-                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Name="ServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
-                                                   Text="{x:Static l:LP.PrivateServerURL}" />
-                                                    <TextBox LostFocus="ServerURLChanged" KeyDown="ServerURLTextbox_OnKeyDown" HorizontalAlignment="Stretch"
-                                                     Margin="5,5,5,5" Grid.Column="1" 
-                                                     Background="#2fff" BorderBrush="Transparent"
-                                                     BorderThickness="0" Name="ServerURLTextbox" />
-                                                    <Grid.LayoutTransform>
-                                                        <ScaleTransform ScaleY="1"/>
-                                                    </Grid.LayoutTransform>
-                                                </Grid>
-                                                -->
-                                            </StackPanel>
-                                        </Grid>
 
                                         <!--Detection settings card-->
                                         <Grid Margin="10,10,10,0">
@@ -539,6 +470,72 @@
                                             </StackPanel>
                                         </Grid>
 
+                                        <!--Export settings card-->
+                                        <Grid Margin="10,10,10,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="DPS servers settings" />
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <!--
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Site_export}" 
+                                                          x:Name="DpsWebsiteExport"
+                                                          On="EnableDpsWebsiteExportAction"
+                                                          Off="DisableDpsWebsiteExportAction" />
+                                                -->
+
+                                                <StackPanel x:Name="DpsServers" Orientation="Vertical" Margin="3">
+                                                    
+                                                </StackPanel>
+                                                <!--
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.PrivateServerExport}" 
+                                                          x:Name="PrivateServerExport"
+                                                          On="EnablePServerExp"
+                                                          Off="DisablePServerExp" />
+                                                <Separator Background="#1fff" Margin="20,0,-3,0" Height="5" Name="authSeparator">
+                                                    <Separator.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </Separator.LayoutTransform>
+                                                </Separator>
+                                                <Grid Margin="20,0,0,0" Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Name="AuthLabel" VerticalAlignment="Center" Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                   Text="{x:Static l:LP.AuthToken}" />
+                                                    <TextBox LostFocus="TokenChanged" KeyDown ="AuthTokenTextbox_OnKeyDown" HorizontalAlignment="Stretch" Margin="5,5,5,5"
+                                                     Grid.Column="1" Foreground="{StaticResource LightSecondaryText}" Background="#2fff"
+                                                     BorderBrush="Transparent" BorderThickness="0"
+                                                             Name="AuthTokenTextbox" />
+                                                    <Grid.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"/>
+                                                    </Grid.LayoutTransform>
+                                                </Grid>
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Name="ServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Left"
+                                                   Text="{x:Static l:LP.PrivateServerURL}" />
+                                                    <TextBox LostFocus="ServerURLChanged" KeyDown="ServerURLTextbox_OnKeyDown" HorizontalAlignment="Stretch"
+                                                     Margin="5,5,5,5" Grid.Column="1" 
+                                                     Background="#2fff" BorderBrush="Transparent"
+                                                     BorderThickness="0" Name="ServerURLTextbox" />
+                                                    <Grid.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"/>
+                                                    </Grid.LayoutTransform>
+                                                </Grid>
+                                                -->
+                                            </StackPanel>
+                                        </Grid>
+                                        
                                         <!--Misc settings card-->
                                         <Grid Margin="10,10,10,0">
                                             <Grid.RowDefinitions>
@@ -550,6 +547,11 @@
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Misc settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" 
+                                                          x:Name="AutoExcelExport"
+                                                          On="EnableAutoExcelExportAction"
+                                                          Off="DisableExcelExportAction" />
+
                                                 <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />

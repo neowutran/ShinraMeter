@@ -14,31 +14,36 @@
             <ColumnDefinition SharedSizeGroup="b5" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="b6" Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="1" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
-               Height="40" VerticalAlignment="Top" Width="40" />
-        <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
-               HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelClass"
-               Foreground="Yellow"
+        <Ellipse Fill="#1999" Grid.Column="1"></Ellipse>
+        <Ellipse Grid.Column="1" x:Name="SkillIconWrapper" Stretch="Fill" HorizontalAlignment="Left"
+                           Height="40" VerticalAlignment="Top" Width="40" >
+            <Ellipse.Fill>
+                <ImageBrush x:Name="SkillIcon" />
+            </Ellipse.Fill>
+        </Ellipse>
+        <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Left" Padding="40,0,0,0"
+               HorizontalAlignment="Stretch" x:Name="LabelName" VerticalAlignment="Center" VerticalContentAlignment="Center"
+               MinHeight="29"
+                   Foreground="{StaticResource LightSecondaryText}" />
+        <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Right" Padding="0,0,0,0"
+               HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelClass"  VerticalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}"
                MinHeight="29" />
 
 
-        <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
-               HorizontalAlignment="Stretch" x:Name="LabelName" VerticalAlignment="Center"
-               MinHeight="29"
-               Foreground="Yellow" />
 
 
-        <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
+        <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Right" Padding="0,0,0,0" VerticalContentAlignment="Center"
                HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDuration" VerticalAlignment="Center"
                MinHeight="29"
-               Foreground="White" />
-        <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}" />
+        <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Right" Padding="0,0,0,0" VerticalContentAlignment="Center"
                HorizontalAlignment="Stretch" x:Name="LabelInterval" VerticalAlignment="Center"
                MinHeight="29"
-               Foreground="White" />
-        <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}" />
+        <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Right" Padding="0,0,0,0" VerticalContentAlignment="Center"
                HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDurationPercentage" VerticalAlignment="Center"
                MinHeight="29"
-               Foreground="White" />
+                   Foreground="{StaticResource LightSecondaryText}" />
     </Grid>
 </UserControl>

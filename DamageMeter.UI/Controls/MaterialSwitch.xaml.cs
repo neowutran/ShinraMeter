@@ -44,16 +44,24 @@ namespace DamageMeter.UI
         }
         public static readonly DependencyProperty StatusProperty = DependencyProperty.Register("Status", typeof(bool), typeof(MaterialSwitch), new PropertyMetadata(false));
 
-
-
         public new string Content
         {
             get { return (string)GetValue(ContentProperty); }
             set { SetValue(ContentProperty, value); }
         }
-
-        // Using a DependencyProperty as the backing store for Content.  This enables animation, styling, binding, etc...
         public static readonly new DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(string), typeof(MaterialSwitch));
+
+
+
+        public SolidColorBrush SwitchColor
+        {
+            get { return (SolidColorBrush)GetValue(SwitchColorProperty); }
+            set { SetValue(SwitchColorProperty, value); }
+        }
+        public static readonly DependencyProperty SwitchColorProperty = DependencyProperty.Register("SwitchColor", typeof(SolidColorBrush), typeof(MaterialSwitch), new PropertyMetadata(((SolidColorBrush)Application.Current.FindResource("AccentColor"))));
+
+
+
 
         public MaterialSwitch()
         {
@@ -62,13 +70,14 @@ namespace DamageMeter.UI
             on = new DoubleAnimation(20, animationDuration) { EasingFunction = new QuadraticEase() };
             off = new DoubleAnimation(0, animationDuration) { EasingFunction = new QuadraticEase() };
 
-            fillOn = new ColorAnimation(((SolidColorBrush)this.FindResource("ThumbOn")).Color, animationDuration) { EasingFunction = new QuadraticEase() };
+            fillOn = new ColorAnimation(SwitchColor.Color, animationDuration) { EasingFunction = new QuadraticEase() };
             fillOff = new ColorAnimation(((SolidColorBrush)this.FindResource("ThumbOff")).Color, animationDuration) { EasingFunction = new QuadraticEase() };
             backFillOff = new ColorAnimation(((SolidColorBrush)this.FindResource("TrackOff")).Color, animationDuration) { EasingFunction = new QuadraticEase() };
-            backFillOn = new ColorAnimation(((SolidColorBrush)this.FindResource("TrackOn")).Color, animationDuration) { EasingFunction = new QuadraticEase() };
+            var TrackOn = new SolidColorBrush() { Color = SwitchColor.Color, Opacity = .5 };
+            
+            backFillOn = new ColorAnimation(TrackOn.Color, animationDuration) { EasingFunction = new QuadraticEase() };
             switchHead.Fill = (SolidColorBrush)this.FindResource("ThumbOff");
             switchBack.Fill = (SolidColorBrush)this.FindResource("TrackOff");
-
 
             switchHead.RenderTransform = new TranslateTransform(0, 0);
             statusWatcher = new DependencyPropertyWatcher<bool>(this, "Status");
@@ -117,7 +126,10 @@ namespace DamageMeter.UI
         public void AnimateOn()
         {
             switchHead.RenderTransform.BeginAnimation(TranslateTransform.XProperty, on);
+            fillOn.To = SwitchColor.Color;
             switchHead.Fill.BeginAnimation(SolidColorBrush.ColorProperty, fillOn);
+            var TrackOn = new SolidColorBrush() { Color = SwitchColor.Color, Opacity = .5 };
+            backFillOn.To = TrackOn.Color;
             switchBack.Fill.BeginAnimation(SolidColorBrush.ColorProperty, backFillOn);
         }
         public void AnimateOff()

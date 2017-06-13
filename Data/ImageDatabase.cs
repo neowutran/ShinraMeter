@@ -43,6 +43,11 @@ namespace Data
             Teralogs = new Image { Source = new BitmapImage(new Uri(folder + "teralogs.png")) };
             Cloud = new Image { Source = new BitmapImage(new Uri(folder + "cloud.png")) };
 
+            AggroTime = new Image { Source = new BitmapImage(new Uri(folder + "eye_time.png")) };
+            Skull = new Image { Source = new BitmapImage(new Uri(folder + "skull.png")) };
+            SkullTime = new Image { Source = new BitmapImage(new Uri(folder + "skull_time.png")) };
+
+
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
 
             Tray = new Icon(folder + "shinra.ico");
@@ -87,6 +92,10 @@ namespace Data
         public Image Moongourd { get; }
         public Image Teralogs { get; }
         public Image Cloud { get; }
+
+        public Image Skull { get; }
+        public Image SkullTime { get; }
+        public Image AggroTime { get; }
 
         public Icon Tray { get; }
     }

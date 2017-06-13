@@ -33,44 +33,44 @@ namespace DamageMeter.UI
             Time.Content = (skill.Time - beginTime) / TimeSpan.TicksPerSecond + LP.Seconds;
             if (skillInfo != null)
             {
-                SkillIcon.Source = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
+                SkillIcon.ImageSource = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
                 SkillName.Content = skillInfo.Name;
             }
             SkillAmount.Content = skill.Amount;
-            SkillIcon.ToolTip = skill.SkillId;
+            SkillIconWrapper.ToolTip = skill.SkillId;
             SkillDirection.Content = LP.ResourceManager.GetString(skill.Direction.ToString());
             switch (skill.Direction)
             {
                 case HitDirection.Back:
-                    SkillDirection.Foreground = Brushes.Red;
+                    SkillDirection.Foreground = ((SolidColorBrush)Application.Current.FindResource("DamageText"));
                     break;
                 case HitDirection.Dot:
                     if (skill.Type == Database.Database.Type.Heal) { SkillDirection.Content = LP.Hot; }
                     if (skill.Type == Database.Database.Type.Mana) { SkillDirection.Content = LP.Mot; }
                     break;
                 case HitDirection.Front:
-                    SkillDirection.Foreground = Brushes.BlueViolet;
+                    SkillDirection.Foreground = ((SolidColorBrush)Application.Current.FindResource("ManaText"));
                     break;
                 case HitDirection.Side:
-                    SkillDirection.Foreground = Brushes.SpringGreen;
+                    SkillDirection.Foreground = ((SolidColorBrush)Application.Current.FindResource("BuffText"));
                     break;
             }
 
             switch (skill.Type)
             {
                 case Database.Database.Type.Damage:
-                    color = Brushes.Red;
+                    color = ((SolidColorBrush)Application.Current.FindResource("DamageText"));
                     break;
                 case Database.Database.Type.Heal:
-                    color = Brushes.LawnGreen;
+                    color = ((SolidColorBrush)Application.Current.FindResource("HealText"));
                     break;
                 case Database.Database.Type.Mana:
-                    color = Brushes.DeepSkyBlue;
+                    color = ((SolidColorBrush)Application.Current.FindResource("ManaText"));
                     break;
                 case Database.Database.Type.Counter:
-                    color = Brushes.Thistle;
+                    color = ((SolidColorBrush)Application.Current.FindResource("CastText"));
                     SkillDirection.Content = LP.Counter;
-                    SkillDirection.Foreground = Brushes.Thistle;
+                    SkillDirection.Foreground = ((SolidColorBrush)Application.Current.FindResource("CastText"));
                     break;
             }
             SkillAmount.Foreground = color;

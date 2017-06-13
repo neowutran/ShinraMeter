@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DamageMeter.UI" Loaded="UserControl_Loaded" MouseLeftButtonDown="UserControl_MouseLeftButtonDown"
-             mc:Ignorable="d" >
+             mc:Ignorable="d" x:Name="materialSwitch" >
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}"></Setter>
@@ -15,13 +15,13 @@
             </Style.Triggers>
         </Style>
         <!--Switch colors-->
-        <SolidColorBrush x:Key="ThumbOn" Color="{StaticResource Accent}" />
+        <SolidColorBrush x:Key="ThumbOn" Color="{Binding SwitchColor.Color, RelativeSource={RelativeSource AncestorType=local:MaterialSwitch}}" />
         <SolidColorBrush x:Key="ThumbOff" Color="#BDBDBD"/>
-        <SolidColorBrush x:Key="TrackOn" Color="{StaticResource Accent}" Opacity=".5" />
+        <SolidColorBrush x:Key="TrackOn" Color="{Binding SwitchColor.Color, RelativeSource={RelativeSource AncestorType=local:MaterialSwitch}}" Opacity=".5" />
         <SolidColorBrush x:Key="TrackOff" Color="#FFFFFF" Opacity=".3"/>
 
     </UserControl.Resources>
-    <Grid Grid.Column="1" 
+    <Grid Grid.Column="1" UseLayoutRounding="True"
           VerticalAlignment="Center" 
           Width="Auto"
           Height="Auto" 
@@ -31,8 +31,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Margin="5,0,10,0" VerticalAlignment="Center" Text="{Binding Content, RelativeSource={RelativeSource AncestorType=local:MaterialSwitch}}">
-        </TextBlock>
+        <TextBlock Margin="5,0,10,0" VerticalAlignment="Center" Text="{Binding Content, RelativeSource={RelativeSource AncestorType=local:MaterialSwitch}}" x:Name="TB" />
+
         <Rectangle x:Name="switchBack" 
                    Width="36" 
                    Height="14" 

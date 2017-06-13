@@ -4,46 +4,47 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
-    <StackPanel>
-        <Grid MouseLeftButtonDown="DragWindow" Margin="0,0,0,0">
+    <StackPanel Background="#09ffffff">
+        <Grid MouseLeftButtonDown="DragWindow"  Margin="10,2,10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="b0" Width="25" />
                 <ColumnDefinition SharedSizeGroup="b1" Width="40" />
-                <ColumnDefinition SharedSizeGroup="b2" MinWidth="70" />
-                <ColumnDefinition SharedSizeGroup="b3" MinWidth="300" />
+                <ColumnDefinition SharedSizeGroup="b2" MinWidth="300" />
+                <ColumnDefinition SharedSizeGroup="b3" MinWidth="70" />
                 <ColumnDefinition SharedSizeGroup="b4" MinWidth="70" />
                 <ColumnDefinition SharedSizeGroup="b5" MinWidth="70" />
                 <ColumnDefinition SharedSizeGroup="b6" MinWidth="70" />
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
-                   HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelClass"
-                   Foreground="Yellow"
-                   BorderThickness="1" BorderBrush="Gray"
-                   MinHeight="29" />
-
-
-            <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelName" VerticalAlignment="Center"
-                   MinHeight="29"
-                   BorderThickness="1" BorderBrush="Gray"
-                   Foreground="Yellow" />
+                   MinHeight="40"
+                   BorderThickness="0" BorderBrush="Gray"
+                   Foreground="{StaticResource BuffText}" />
+
+            <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelClass"
+                   Foreground="{StaticResource BuffText}"
+                   BorderThickness="0" BorderBrush="Gray"
+                   MinHeight="40" />
 
 
-            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
+
+
+            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDuration" VerticalAlignment="Center"
-                   MinHeight="29"
-                   BorderThickness="1" BorderBrush="Gray"
-                   Foreground="White" />
-            <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Center"
+                   MinHeight="40"
+                   BorderThickness="0" BorderBrush="Gray"
+                   Foreground="{StaticResource BuffText}" />
+            <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelInterval" VerticalAlignment="Center"
-                   MinHeight="29"
-                   BorderThickness="1" BorderBrush="Gray"
-                   Foreground="White" />
-            <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Center"
+                   MinHeight="40"
+                   BorderThickness="0" BorderBrush="Gray"
+                   Foreground="{StaticResource BuffText}" />
+            <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelAbnormalityDurationPercentage" VerticalAlignment="Center"
-                   MinHeight="29"
-                   BorderThickness="1" BorderBrush="Gray"
-                   Foreground="White" />
+                   MinHeight="40"
+                   BorderThickness="0" BorderBrush="Gray"
+                   Foreground="{StaticResource BuffText}"/>
         </Grid>
     </StackPanel>
 </UserControl>

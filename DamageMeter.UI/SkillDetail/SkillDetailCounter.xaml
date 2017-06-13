@@ -13,14 +13,15 @@
                 <ColumnDefinition SharedSizeGroup="m3" Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Center"
-                   HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
-                   Foreground="Yellow"
+            <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Left" Padding="40,0,0,0"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName" VerticalContentAlignment="Center"
+                   Foreground="{StaticResource LightSecondaryText}"
                    MinHeight="29" />
-            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Center"
+            <Label Grid.Column="4" FontSize="14" HorizontalContentAlignment="Right" Padding="0" VerticalContentAlignment="Center"
                    HorizontalAlignment="Stretch" x:Name="LabelNumberHit" VerticalAlignment="Center"
                    MinHeight="29"
-                   Foreground="Thistle" />
+                   Foreground="{StaticResource LightSecondaryText}"
+ />
         </Grid>
     </Grid>
 </UserControl>

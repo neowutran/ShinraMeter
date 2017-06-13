@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <StackPanel>
-        <Expander IsExpanded="False">
+        <Expander IsExpanded="False" Margin="5,0,10,0" Padding="0,1">
             <Expander.Header>
                 <Grid MouseLeave="UIElement_OnMouseLeave" MouseEnter="UIElement_OnMouseEnter"
                       MouseLeftButtonDown="DragWindow" Margin="0,0,0,0">
@@ -14,20 +14,25 @@
                         <ColumnDefinition SharedSizeGroup="m2" Width="Auto" />
                         <ColumnDefinition SharedSizeGroup="m3" Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" x:Name="SkillIcon" Stretch="Fill" HorizontalAlignment="Left"
-                           Height="40" VerticalAlignment="Top" Width="40" />
-                    <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Center"
+                    <Ellipse Fill="#1999"></Ellipse>
+                    <Ellipse Grid.Column="0" x:Name="SkillIconWrapper" Stretch="Fill" HorizontalAlignment="Left"
+                           Height="40" VerticalAlignment="Top" Width="40">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="SkillIcon"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Label Grid.Column="1" FontSize="14" HorizontalContentAlignment="Left"  VerticalContentAlignment="Center"
                            HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
-                           Foreground="Yellow"
+                           Foreground="{StaticResource LightPrimaryText}" Padding="10,0,0,0"
                            MinHeight="40" />
-                    <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Center"
+                    <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Right" Padding="0" VerticalContentAlignment="Center"
                            HorizontalAlignment="Stretch" x:Name="LabelNumberHit" VerticalAlignment="Center"
                            MinHeight="40"
-                           Foreground="Thistle" />
+                           Foreground="{StaticResource LightPrimaryText}" />
                 </Grid>
             </Expander.Header>
             <Expander.Content>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="-1,0,0,0">
                     <ItemsControl MouseLeftButtonDown="DragWindow" x:Name="SkillsDetailList"
                                   Background="Transparent" BorderThickness="0" Focusable="False"
                                   HorizontalContentAlignment="Stretch" VerticalAlignment="Top"
