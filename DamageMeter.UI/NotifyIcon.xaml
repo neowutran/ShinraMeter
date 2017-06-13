@@ -100,9 +100,9 @@
                     <Button Grid.Column="7" ToolTip="GitHub" Name="gitButton" Click="gitButton_Click">
                         <Image x:Name="GitHubIcon" Grid.Column="1" Grid.Row="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
                     </Button>
-                    <Button Grid.Column="9" ToolTip="Sites" Name="sitesButton" Click="sitesButton_Click">
+                    <!--<Button Grid.Column="9" ToolTip="Sites" Name="sitesButton" Click="sitesButton_Click">
                         <Image x:Name="RankSitesIcon" Grid.Column="1" Grid.Row="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Button>
+                    </Button>-->
                     <Popup Name="gitPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="gitPopup_MouseLeave"  Height="150" >
                         <Grid Margin="16" Width="Auto" >
                             <Border Background="{StaticResource DarkCardColor}" Effect="{StaticResource MenuShadow-8dp}"  >
@@ -121,7 +121,7 @@
                         </Grid>
 
                     </Popup>
-                    <Popup Name="rankPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="rankPopup_MouseLeave" Height="100" >
+                    <!--<Popup Name="rankPopup" StaysOpen="True" AllowsTransparency="True" MouseLeave="rankPopup_MouseLeave" Height="100" >
                         <Grid Margin="16" Width="Auto" >
                             <Border Background="{StaticResource DarkCardColor}" Effect="{StaticResource MenuShadow-8dp}" >
                                 <UniformGrid Margin="0" Columns="1" HorizontalAlignment="Stretch">
@@ -151,7 +151,7 @@
                             </Border>
                         </Grid>
 
-                    </Popup>
+                    </Popup>-->
 
                     <Button Grid.Column="8" Name="Discord" Click="DiscordAction" ToolTip="{x:Static l:LP.SystemTray_Discord}">
                         <StackPanel Orientation="Horizontal">
@@ -481,7 +481,7 @@
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
 
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="DPS servers settings" />
-                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" >
                                                 <!--
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Site_export}" 
                                                           x:Name="DpsWebsiteExport"
@@ -489,10 +489,9 @@
                                                           Off="DisableDpsWebsiteExportAction" />
                                                 -->
 
-                                                <StackPanel x:Name="DpsServers" Orientation="Vertical" Margin="3">
+                                                <StackPanel x:Name="DpsServers" Orientation="Vertical" Margin="0">
                                                     
                                                 </StackPanel>
-                                                <Separator Opacity=".05" Margin="-3,0,-3,2" Background="White" ></Separator>
                                                 <Grid Margin="0,0,0,0" x:Name="AddServerGrid"  HorizontalAlignment="Stretch" Height="25">
                                                     <Button Grid.Column="0"
                                                             Style="{StaticResource ButtonMainStyle}" 

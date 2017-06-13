@@ -90,9 +90,9 @@ namespace DamageMeter.UI
 
             GitHubIcon.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
             DiscordIcon.Source = BasicTeraData.Instance.ImageDatabase.Discord.Source;
-            RankSitesIcon.Source = BasicTeraData.Instance.ImageDatabase.Cloud.Source;
-            MoongourdIcon.Source = BasicTeraData.Instance.ImageDatabase.Moongourd.Source;
-            TeralogsIcon.Source = BasicTeraData.Instance.ImageDatabase.Teralogs.Source;
+            //RankSitesIcon.Source = BasicTeraData.Instance.ImageDatabase.Cloud.Source;
+            //MoongourdIcon.Source = BasicTeraData.Instance.ImageDatabase.Moongourd.Source;
+            //TeralogsIcon.Source = BasicTeraData.Instance.ImageDatabase.Teralogs.Source;
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -483,7 +483,7 @@ namespace DamageMeter.UI
         }
         private void rankPopup_MouseLeave(object sender, MouseEventArgs e)
         {
-            rankPopup.IsOpen = false;
+            //rankPopup.IsOpen = false;
         }
 
         private void EnableOverlay(object sender, RoutedEventArgs e)
@@ -503,13 +503,13 @@ namespace DamageMeter.UI
 
         private void sitesButton_Click(object sender, RoutedEventArgs e)
         {
-            rankPopup.Placement = PlacementMode.Bottom;
-            rankPopup.PlacementTarget = sitesButton;
-            var h = rankPopup.Height;
-            rankPopup.Height = 0;
-            var an = new DoubleAnimation(0, h, TimeSpan.FromMilliseconds(200)) { EasingFunction = new QuadraticEase() };
-            rankPopup.IsOpen = true;
-            rankPopup.BeginAnimation(HeightProperty, an);
+            //rankPopup.Placement = PlacementMode.Bottom;
+            //rankPopup.PlacementTarget = sitesButton;
+            //var h = rankPopup.Height;
+            //rankPopup.Height = 0;
+            //var an = new DoubleAnimation(0, h, TimeSpan.FromMilliseconds(200)) { EasingFunction = new QuadraticEase() };
+            //rankPopup.IsOpen = true;
+            //rankPopup.BeginAnimation(HeightProperty, an);
 
         }
 
