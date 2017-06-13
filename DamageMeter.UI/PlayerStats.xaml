@@ -38,7 +38,7 @@
         </Rectangle>
 
         <Grid Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="DragWindow"
-              x:Name="GridStats" HorizontalAlignment="Center" Width="Auto"
+              x:Name="GridStats" HorizontalAlignment="Center" Width="Auto" MouseEnter="GridStats_MouseEnter" MouseLeave="GridStats_MouseLeave"
               VerticalAlignment="Top" Height="29" MinHeight="29" MaxHeight="29">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="p0" Width="25" />
