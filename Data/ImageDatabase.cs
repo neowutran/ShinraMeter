@@ -47,6 +47,7 @@ namespace Data
             Skull = new Image { Source = new BitmapImage(new Uri(folder + "skull.png")) };
             SkullTime = new Image { Source = new BitmapImage(new Uri(folder + "skull_time.png")) };
 
+            Delete = new Image { Source = new BitmapImage(new Uri(folder + "delete.png")) };
 
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
 
@@ -96,6 +97,8 @@ namespace Data
         public Image Skull { get; }
         public Image SkullTime { get; }
         public Image AggroTime { get; }
+
+        public Image Delete { get; }
 
         public Icon Tray { get; }
     }
