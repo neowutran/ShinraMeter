@@ -492,14 +492,15 @@
                                                 <StackPanel x:Name="DpsServers" Orientation="Vertical" Margin="3">
                                                     
                                                 </StackPanel>
-                                                <Grid Margin="0,0,0,0" x:Name="AddServerGrid">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Name="AddServerLabel" VerticalAlignment="Center"  Margin="5,5,5,5" HorizontalAlignment="Right"
-                                                               Text="{x:Static l:LP.AddDpsServer}" />
-                                                    <Button Grid.Column="0" Style="{StaticResource ButtonMainStyle}" Name="AddServerButton" Click="AddServerButton_OnClick">
+                                                <Separator Opacity=".05" Margin="-3,0,-3,2" Background="White" ></Separator>
+                                                <Grid Margin="0,0,0,0" x:Name="AddServerGrid"  HorizontalAlignment="Stretch" Height="25">
+                                                    <Button Grid.Column="0"
+                                                            Style="{StaticResource ButtonMainStyle}" 
+                                                            Click="AddServerButton_OnClick"
+                                                            ToolTip="{x:Static l:LP.AddDpsServer}"
+                                                            HorizontalContentAlignment="Stretch" 
+                                                            VerticalContentAlignment="Stretch">
+                                                        <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextAlignment="Center" Text="+" FontSize="20" Margin="0,-4,0,0" IsHitTestVisible="True" />
                                                     </Button>
                                                     <Grid.LayoutTransform>
                                                         <ScaleTransform ScaleY="1"/>

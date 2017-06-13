@@ -47,12 +47,8 @@ namespace DamageMeter.UI
             {
                 an = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(150)) { EasingFunction = new QuadraticEase() };
             }
-            usernameGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
-            tokenGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
-            dpsUploadGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
-            glyphUploadGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
-            allowedAreasGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
-            RemoveServerGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            settingsGrid.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            rect.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
         }
 
         public void SetData(DpsServerData data)
@@ -157,6 +153,16 @@ namespace DamageMeter.UI
             if (e.Key == Key.Enter) { GlyphUploadUrlTextbox_LostFocus(this, new RoutedEventArgs()); }
         }
 
-        private void RemoveServerButton_OnClick(object sender, RoutedEventArgs e) { RemoveServer(); }
+        private void RemoveServerButton_OnClick(object sender, RoutedEventArgs e){
+
+            var an = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(150));
+            an.Completed += (s,ev) => RemoveServer();
+            root.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            RemoveServerButtonImage.Source = BasicTeraData.Instance.ImageDatabase.Delete.Source;
+        }
     }
 }
