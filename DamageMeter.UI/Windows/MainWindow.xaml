@@ -59,6 +59,15 @@
                 <Trigger Property="ToggleButton.IsChecked" Value="true" />
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        <Style TargetType="Image" x:Key="ImageButton">
+            <Setter Property="Opacity" Value=".7"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity"  Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <ControlTemplate x:Key="ComboBoxTextBox" TargetType="{x:Type TextBox}">
             <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}" />
@@ -230,34 +239,33 @@
                       HorizontalContentAlignment="Left"
                       MinHeight="29" Height="5" Grid.Column="0" />
 
-            <Image x:Name="CloseWindow" PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown"
-                   Stretch="Fill" Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   Height="29" VerticalAlignment="Top" Width="29" />
+            <Image PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown" 
+                    Grid.Column="1" Stretch="Fill" x:Name="CloseWindow"
+                   HorizontalAlignment="Left"  Style="{StaticResource ImageButton}"
+                   Height="29" VerticalAlignment="Top" Width="29" >
+            </Image>
         </Grid>
         <Grid Grid.Row="1" Name="SGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="31" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition MinWidth="52" Width="Auto" />
                 <ColumnDefinition MinWidth="68" Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="31" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition MinWidth="52" Width="Auto" />
-                <ColumnDefinition Width="31" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image x:Name="Chrono" PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown"
-                   Stretch="Fill" Opacity=".8"
-                   HorizontalAlignment="Left"
-                   Height="28" VerticalAlignment="Top" Width="28" Grid.Column="6" />
+            <Image PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown"
+                   HorizontalAlignment="Left" x:Name="Chrono" Stretch="Fill"  Style="{StaticResource ImageButton}"
+                   Height="29" VerticalAlignment="Top" Width="29" Grid.Column="6">
 
-            <Image x:Name="Config" Opacity=".8"
-                   Stretch="Fill"
+            </Image>
 
-                   HorizontalAlignment="Left" 
-                   PreviewMouseLeftButtonDown="Config_MouseLeftButtonDown"
-                   Height="28" VerticalAlignment="Top" Width="28" Grid.Column="4">
+            <Image  
+                   HorizontalAlignment="Left"  Stretch="Fill" x:Name="Config"
+                   PreviewMouseLeftButtonDown="Config_MouseLeftButtonDown"  Style="{StaticResource ImageButton}"
+                   Height="29" VerticalAlignment="Top" Width="29" Grid.Column="4">
                 <Image.ContextMenu>
-
                     <ContextMenu Style="{DynamicResource ShinraContext}" x:Name="PopupMenu">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -303,7 +311,7 @@
             </Image>
 
             <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown"
-                   Stretch="Fill" Opacity=".8"
+                   Stretch="Fill"  Style="{StaticResource ImageButton}"
                    HorizontalAlignment="Left"
                    Height="29" VerticalAlignment="Top" Width="29" Grid.Column="0" />
 
