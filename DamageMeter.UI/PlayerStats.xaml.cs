@@ -183,5 +183,15 @@ namespace DamageMeter.UI
 
 
         private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
+
+        private void GridStats_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            GridStats.Background = new SolidColorBrush(Color.FromArgb(0x10, 0xb0, 0xb0, 0xb0));
+        }
+
+        private void GridStats_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            GridStats.Background = new SolidColorBrush(Colors.Transparent);
+        }
     }
 }
