@@ -666,7 +666,7 @@
     <value>% Crit Dmg</value>
   </data>
   <data name="AuthToken" xml:space="preserve">
-    <value>Moongourd Auth Token</value>
+    <value>Auth Token</value>
   </data>
   <data name="ShowBossGage" xml:space="preserve">
     <value>Afficher la barre de vie des Boss</value>

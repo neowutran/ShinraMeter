@@ -626,7 +626,7 @@
     <value>無傷害技能計數</value>
   </data>
   <data name="AuthToken" xml:space="preserve">
-    <value>Moongourd金鑰</value>
+    <value>金鑰</value>
   </data>
   <data name="CritDamagePercent" xml:space="preserve">
     <value>報擊傷害%</value>

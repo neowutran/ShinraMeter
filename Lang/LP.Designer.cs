@@ -106,6 +106,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allowed area url.
+        /// </summary>
+        public static string AllowedAreaUrl {
+            get {
+                return ResourceManager.GetString("AllowedAreaUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  probably is already in use..
         /// </summary>
         public static string AlreadyInUse {
@@ -169,7 +178,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Moongourd auth token.
+        ///   Looks up a localized string similar to Auth Token.
         /// </summary>
         public static string AuthToken {
             get {
@@ -498,6 +507,15 @@ namespace Lang {
         public static string Dps {
             get {
                 return ResourceManager.GetString("Dps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DPS upload url.
+        /// </summary>
+        public static string DpsUploadUrl {
+            get {
+                return ResourceManager.GetString("DpsUploadUrl", resourceCulture);
             }
         }
         
@@ -935,6 +953,15 @@ namespace Lang {
         public static string GeneralColor {
             get {
                 return ResourceManager.GetString("GeneralColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Glyph upload url.
+        /// </summary>
+        public static string GlyphUploadURL {
+            get {
+                return ResourceManager.GetString("GlyphUploadURL", resourceCulture);
             }
         }
         
@@ -1857,6 +1884,15 @@ namespace Lang {
         public static string UploadGlyphBuild {
             get {
                 return ResourceManager.GetString("UploadGlyphBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
         

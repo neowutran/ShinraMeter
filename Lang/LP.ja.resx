@@ -663,7 +663,7 @@
     <value>クリティカルダメージ(%)</value>
   </data>
   <data name="AuthToken" xml:space="preserve">
-    <value>Moongourd認証トークン</value>
+    <value>認証トークン</value>
   </data>
   <data name="ShowBossGage" xml:space="preserve">
     <value>ボスHPゲージ表示</value>

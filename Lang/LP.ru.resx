@@ -670,4 +670,16 @@
   <data name="EnableOverlay" xml:space="preserve">
     <value>Включить оверлей</value>
   </data>
+  <data name="Username" xml:space="preserve">
+    <value>Имя пользователя</value>
+  </data>
+  <data name="DpsUploadUrl" xml:space="preserve">
+    <value>Адрес загрузки DPS</value>
+  </data>
+  <data name="AllowedAreaUrl" xml:space="preserve">
+    <value>Адрес списка боссов</value>
+  </data>
+  <data name="GlyphUploadURL" xml:space="preserve">
+    <value>Адрес загруки глифбилда</value>
+  </data>
 </root>

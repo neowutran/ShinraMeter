@@ -53,28 +53,7 @@ namespace DamageMeter.UI
         public void SetData(DpsServerData data)
         {
             _data = data;
-
-            //TO DO: add hostname to switch text
-            //using raw url parsing for now
-            try
-            {
-                var c = data.UploadUrl.ToString();
-                if (c.Contains("https"))
-                {
-                    c = c.Replace("https://", "");
-                }
-                else
-                {
-                    c = c.Replace("http://", "");
-                }
-
-                var i = c.IndexOf("/");
-                Enabled.Content = c.Substring(0, i);
-            }
-            catch
-            {
-                Enabled.Content = "Server";
-            }
+            Enabled.Content = data.HostName;
             HideShowSettings(data.Enabled);
             Enabled.Status = data.Enabled;
             AuthTokenTextbox.Text = data.Token;
@@ -119,33 +98,48 @@ namespace DamageMeter.UI
 
         private void ServerURLTextbox_LostFocus(object sender, RoutedEventArgs e)
         {
-            _data.UploadUrl = new Uri(ServerURLTextbox.Text);
+            try
+            {
+                _data.UploadUrl = new Uri(ServerURLTextbox.Text);
+                ServerURLTextbox.Background = new SolidColorBrush(Color.FromArgb(11, 211, 211, 211));
+            }
+            catch { ServerURLTextbox.Background = new SolidColorBrush(Color.FromArgb(150, 211, 10, 10)); }
+            Enabled.Content = _data.HostName;
         }
 
         private void ServerURLTextbox_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Enter) { ServerURLTextbox_LostFocus(this, new RoutedEventArgs()); }
         }
 
         private void AllowedAreaUrlTextbox_LostFocus(object sender, RoutedEventArgs e)
         {
-            _data.AllowedAreaUrl = new Uri(AllowedAreaUrlTextbox.Text);
+            try
+            {
+                _data.AllowedAreaUrl = new Uri(AllowedAreaUrlTextbox.Text);
+                AllowedAreaUrlTextbox.Background = new SolidColorBrush(Color.FromArgb(11, 211, 211, 211));
+            }
+            catch { AllowedAreaUrlTextbox.Background = new SolidColorBrush(Color.FromArgb(150, 211, 10, 10)); }
         }
 
         private void AllowedAreaUrlTextbox_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Enter) { AllowedAreaUrlTextbox_LostFocus(this, new RoutedEventArgs()); }
         }
 
         private void GlyphUploadUrlTextbox_LostFocus(object sender, RoutedEventArgs e)
         {
-            _data.GlyphUrl = new Uri(GlyphUploadUrlTextbox.Text);
-
+            try
+            {
+                _data.GlyphUrl = new Uri(GlyphUploadUrlTextbox.Text);
+                GlyphUploadUrlTextbox.Background = new SolidColorBrush(Color.FromArgb(11, 211, 211, 211));
+            }
+            catch { GlyphUploadUrlTextbox.Background = new SolidColorBrush(Color.FromArgb(150, 211, 10, 10)); }
         }
 
         private void GlyphUploadUrlTextbox_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Enter) { GlyphUploadUrlTextbox_LostFocus(this, new RoutedEventArgs()); }
         }
     }
 }
