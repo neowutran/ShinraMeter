@@ -263,8 +263,6 @@ namespace Data
             if(teradps.Element("blacklist").Elements("id") == null) { return; }
             foreach(var blacklistedAreaId in teradps.Element("blacklist").Elements("id"))
             {
-                
-                if(blacklistedAreaId.Value == "*") { blacklistedAreaId.Value = "-1"; }
                 var parseSuccess = int.TryParse(blacklistedAreaId.Value, out int areaId);
                 if (parseSuccess){ blacklistedAreaId.Add(areaId); }
             }
