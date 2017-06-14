@@ -39,6 +39,7 @@ namespace Data
             GitHub = new Image { Source = new BitmapImage(new Uri(folder + "github.png")) };
             Discord = new Image { Source = new BitmapImage(new Uri(folder + "discord.png")) };
             Cloud = new Image { Source = new BitmapImage(new Uri(folder + "cloud.png")) };
+            SiteExport = new Image { Source = new BitmapImage(new Uri(folder + "site_export.png")) };
 
             AggroTime = new Image { Source = new BitmapImage(new Uri(folder + "eye_time.png")) };
             Skull = new Image { Source = new BitmapImage(new Uri(folder + "skull.png")) };
@@ -87,6 +88,7 @@ namespace Data
         public Image GitHub { get; }
         public Image Discord { get; }
         public Image Cloud { get; }
+        public Image SiteExport { get; }
 
         public Image Skull { get; }
         public Image SkullTime { get; }
