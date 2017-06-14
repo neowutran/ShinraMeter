@@ -273,7 +273,7 @@ namespace DamageMeter
                     ws.Cells[2, 11].Value = LP.Dps;
                     ws.Cells[2, 12].Value = LP.Damage;
                     var i = 2;
-                    foreach (var user in data.members.OrderByDescending(x => long.Parse(x.playerTotalDamage)))
+                    foreach (var user in data.members.Where(x=>x.playerTotalDamage!="0").OrderByDescending(x => long.Parse(x.playerTotalDamage)))
                     {
                         i++;
                         ws.Cells[i, 1].Value = i - 2;
@@ -694,35 +694,36 @@ namespace DamageMeter
             ws.Cells[2, 11].Value = LP.AvgWhite;
             var i = 2;
 
-            foreach (var stat in exdata.PlayerSkillsAggregated[user.playerServer + "/" + user.playerName].OrderByDescending(x => x.Amount()))
-            {
-                i++;
-                ws.Cells[i, 1].Value = i - 2;
-                foreach (var skillInfo in stat.Skills)
+            if(user.playerTotalDamage!="0")
+                foreach (var stat in exdata.PlayerSkillsAggregated[user.playerServer + "/" + user.playerName].OrderByDescending(x => x.Amount()))
                 {
-                    if (string.IsNullOrEmpty(skillInfo.Key.IconName)) { continue; }
-                    AddImage(ws, i, 1, BTD.Icons.GetBitmap(skillInfo.Key.IconName));
-                    break;
-                }
+                    i++;
+                    ws.Cells[i, 1].Value = i - 2;
+                    foreach (var skillInfo in stat.Skills)
+                    {
+                        if (string.IsNullOrEmpty(skillInfo.Key.IconName)) { continue; }
+                        AddImage(ws, i, 1, BTD.Icons.GetBitmap(skillInfo.Key.IconName));
+                        break;
+                    }
 
-                ws.Cells[i, 2].Value = stat.Name;
-                ws.Cells[i, 3].Value = stat.DamagePercent() / 100;
-                ws.Cells[i, 3].Style.Numberformat.Format = "0.0%";
-                ws.Cells[i, 4].Value = stat.Amount();
-                ws.Cells[i, 4].Style.Numberformat.Format = @"#,#0,\k";
-                ws.Cells[i, 5].Value = stat.CritRate() / 100;
-                ws.Cells[i, 5].Style.Numberformat.Format = "0.0%";
-                ws.Cells[i, 6].Value = stat.Hits();
-                ws.Cells[i, 7].Value = stat.Crits();
-                ws.Cells[i, 8].Value = stat.BiggestCrit();
-                ws.Cells[i, 8].Style.Numberformat.Format = @"#,#0,\k";
-                ws.Cells[i, 9].Value = stat.LowestCrit();
-                ws.Cells[i, 9].Style.Numberformat.Format = @"#,#0,\k";
-                ws.Cells[i, 10].Value = stat.AvgCrit();
-                ws.Cells[i, 10].Style.Numberformat.Format = @"#,#0,\k";
-                ws.Cells[i, 11].Value = stat.AvgWhite();
-                ws.Cells[i, 11].Style.Numberformat.Format = @"#,#0,\k";
-            }
+                    ws.Cells[i, 2].Value = stat.Name;
+                    ws.Cells[i, 3].Value = stat.DamagePercent() / 100;
+                    ws.Cells[i, 3].Style.Numberformat.Format = "0.0%";
+                    ws.Cells[i, 4].Value = stat.Amount();
+                    ws.Cells[i, 4].Style.Numberformat.Format = @"#,#0,\k";
+                    ws.Cells[i, 5].Value = stat.CritRate() / 100;
+                    ws.Cells[i, 5].Style.Numberformat.Format = "0.0%";
+                    ws.Cells[i, 6].Value = stat.Hits();
+                    ws.Cells[i, 7].Value = stat.Crits();
+                    ws.Cells[i, 8].Value = stat.BiggestCrit();
+                    ws.Cells[i, 8].Style.Numberformat.Format = @"#,#0,\k";
+                    ws.Cells[i, 9].Value = stat.LowestCrit();
+                    ws.Cells[i, 9].Style.Numberformat.Format = @"#,#0,\k";
+                    ws.Cells[i, 10].Value = stat.AvgCrit();
+                    ws.Cells[i, 10].Style.Numberformat.Format = @"#,#0,\k";
+                    ws.Cells[i, 11].Value = stat.AvgWhite();
+                    ws.Cells[i, 11].Style.Numberformat.Format = @"#,#0,\k";
+                }
             var border = ws.Cells[1, 1, i, 11].Style.Border;
             border.Bottom.Style = border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thick;
             ws.Cells[2, 1, i, 11].AutoFilter = true;

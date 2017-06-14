@@ -24,6 +24,10 @@ namespace DamageMeter.Database.Structures
         private Dictionary<Entity, Dictionary<int, List<Skill>>> SourceIdSkill { get; }
         private Dictionary<Entity, Dictionary<Entity, Dictionary<int, List<Skill>>>> SourceTargetIdSkill { get; }
 
+        public List<Player> GetPlayers()
+        {
+            return SourceIdSkill.Keys.Where(x => x is UserEntity).Select(x=>NetworkController.Instance.PlayerTracker.Get(((UserEntity)x).ServerId, ((UserEntity)x).PlayerId)).ToList();
+        }
 
         public long DamageReceived(Entity target, Entity source, bool timed)
         {
@@ -100,7 +104,8 @@ namespace DamageMeter.Database.Structures
             IEnumerable<Tera.Game.Skill> result;
 
 
-            if (timed || target == null)
+            if (!SourceTargetSkill.ContainsKey(source)) { return new List<Tera.Game.Skill>(); }
+            if (timed || target == null )
             {
                 result = from skills in SourceTargetSkill[source].Values
                     from skill in skills
@@ -110,7 +115,7 @@ namespace DamageMeter.Database.Structures
                 return result.Distinct();
             }
 
-
+            if (!SourceTargetSkill.ContainsKey(target)) { return new List<Tera.Game.Skill>(); }
             result = from skills in SourceTargetSkill[source][target]
                 select SkillResult.GetSkill(source, skills.Pet, skills.SkillId, skills.HotDot, NetworkController.Instance.EntityTracker,
                     BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
@@ -327,12 +332,14 @@ namespace DamageMeter.Database.Structures
         {
             IEnumerable<Skill> result;
 
+            if (!SourceTargetSkill.ContainsKey(source)) { return new List<Skill>(); }
             if (timed || target == null)
             {
                 result = from skills in SourceTargetSkill[source].Values from skill in skills select skill;
                 return result.ToList();
             }
 
+            if (!SourceTargetSkill[source].ContainsKey(target)) { return new List<Skill>(); }
             result = from skills in SourceTargetSkill[source][target] select skills;
             return result.ToList();
         }

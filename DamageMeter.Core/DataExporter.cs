@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using DamageMeter.Database.Structures;
 using DamageMeter.TeraDpsApi;
 using Data;
 using Lang;
@@ -65,7 +66,9 @@ namespace DamageMeter
             if (interval == 0) { return null; }
             var totaldamage = entityInfo.TotalDamage;
             var partyDps = TimeSpan.TicksPerSecond * totaldamage / interTick;
-
+            var allPlayers = skills.GetPlayers();
+            allPlayers.RemoveAll(x => playersInfo.Any(y => x == y.Source));
+            allPlayers.ForEach(x=>playersInfo.Add(new PlayerDamageDealt(0,0,firstTick,lastTick,0,0,x)));
             var teradpsData = new EncounterBase();
             var extendedStats = new ExtendedStats();
             var _abnormals = abnormals.Clone(entity, firstTick, lastTick);
@@ -103,7 +106,7 @@ namespace DamageMeter
                 var damage = user.Amount;
                 teradpsUser.playerTotalDamage = damage + "";
 
-                if (damage <= 0) { continue; }
+                //if (damage <= 0) { continue; }
 
                 var buffs = _abnormals.Get(user.Source);
                 teradpsUser.guild = string.IsNullOrWhiteSpace(user.Source.GuildName) ? null : user.Source.GuildName;
@@ -143,33 +146,40 @@ namespace DamageMeter
                         stacks.Add(new List<int> {stack, (int) percentage});
                     }
                 }
-                var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
-                extendedStats.PlayerSkills.Add(serverPlayerName, skills.GetSkillsDealt(user.Source.User, entity, timedEncounter));
-                extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
-                var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
-                extendedStats.PlayerSkillsAggregated[teradpsUser.playerServer + "/" + teradpsUser.playerName] = skillsId;
-
-                foreach (var skill in skillsId.OrderByDescending(x => x.Amount()))
+                var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Counter);
+                foreach (var skill in skillsId.OrderByDescending(x => x.Hits())) { teradpsUser.skillCasts.Add(new List<int> { skill.Skills.First().Key.Id, (int)skill.Hits() }); }
+                if (user.Amount > 0)
                 {
-                    var skillLog = new SkillLog();
-                    var skilldamage = skill.Amount();
+                    var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
+                    extendedStats.PlayerSkills.Add(serverPlayerName, skills.GetSkillsDealt(user.Source.User, entity, timedEncounter));
+                    extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
-                    skillLog.skillAverageCrit = Math.Round(skill.AvgCrit()) + "";
-                    skillLog.skillAverageWhite = Math.Round(skill.AvgWhite()) + "";
-                    skillLog.skillCritRate = skill.CritRate() + "";
-                    skillLog.skillDamagePercent = skill.DamagePercent() + "";
-                    skillLog.skillHighestCrit = skill.BiggestCrit() + "";
-                    skillLog.skillHits = skill.Hits() + "";
-                    var skillKey = skill.Skills.First().Key;
-                    skillLog.skillId = BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(skillKey.NpcInfo?.Name, user.Source.RaceGenderClass)?.Id.ToString() ??
-                                       skillKey.Id.ToString();
-                    skillLog.skillLowestCrit = skill.LowestCrit() + "";
-                    skillLog.skillTotalDamage = skilldamage + "";
+                    skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
+                    extendedStats.PlayerSkillsAggregated[teradpsUser.playerServer + "/" + teradpsUser.playerName] = skillsId;
+
+                    foreach (var skill in skillsId.OrderByDescending(x => x.Amount()))
+                    {
+                        var skillLog = new SkillLog();
+                        var skilldamage = skill.Amount();
+
+                        skillLog.skillAverageCrit = Math.Round(skill.AvgCrit()) + "";
+                        skillLog.skillAverageWhite = Math.Round(skill.AvgWhite()) + "";
+                        skillLog.skillCritRate = skill.CritRate() + "";
+                        skillLog.skillDamagePercent = skill.DamagePercent() + "";
+                        skillLog.skillHighestCrit = skill.BiggestCrit() + "";
+                        skillLog.skillHits = skill.Hits() + "";
+                        var skillKey = skill.Skills.First().Key;
+                        skillLog.skillId =
+                            BasicTeraData.Instance.SkillDatabase.GetSkillByPetName(skillKey.NpcInfo?.Name, user.Source.RaceGenderClass)?.Id.ToString() ??
+                            skillKey.Id.ToString();
+                        skillLog.skillLowestCrit = skill.LowestCrit() + "";
+                        skillLog.skillTotalDamage = skilldamage + "";
 
 
-                    if (skilldamage == 0) { continue; }
-                    teradpsUser.skillLog.Add(skillLog);
+                        if (skilldamage == 0) { continue; }
+                        teradpsUser.skillLog.Add(skillLog);
+                    }
                 }
                 if (NetworkController.Instance.MeterPlayers.Contains(user.Source)) { teradpsData.uploader = teradpsData.members.Count.ToString(); }
                 teradpsData.members.Add(teradpsUser);
