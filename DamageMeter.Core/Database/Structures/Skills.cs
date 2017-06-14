@@ -115,7 +115,7 @@ namespace DamageMeter.Database.Structures
                 return result.Distinct();
             }
 
-            if (!SourceTargetSkill.ContainsKey(target)) { return new List<Tera.Game.Skill>(); }
+            if (!SourceTargetSkill[source].ContainsKey(target)) { return new List<Tera.Game.Skill>(); }
             result = from skills in SourceTargetSkill[source][target]
                 select SkillResult.GetSkill(source, skills.Pet, skills.SkillId, skills.HotDot, NetworkController.Instance.EntityTracker,
                     BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
