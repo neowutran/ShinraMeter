@@ -82,7 +82,7 @@ namespace DamageMeter.UI
 
             CloseIcon.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             ChatBoxIcon.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
-            SiteExportIcon.Source = BasicTeraData.Instance.ImageDatabase.Link.Source;
+            SiteExportIcon.Source = BasicTeraData.Instance.ImageDatabase.SiteExport.Source;
             ExcelExportIcon.Source = BasicTeraData.Instance.ImageDatabase.Excel.Source;
             ResetIcon.Source = BasicTeraData.Instance.ImageDatabase.Reset.Source;
             UploadGlyphIcon.Source = BasicTeraData.Instance.ImageDatabase.Upload.Source;
