@@ -29,6 +29,7 @@ using Brushes = System.Windows.Media.Brushes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
+using Microsoft.Win32;
 
 namespace DamageMeter.UI
 {
@@ -98,12 +99,19 @@ namespace DamageMeter.UI
 
             Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             KeyboardHook.Instance.SwitchTopMost += delegate { NotifyIcon.SwitchStayTop(); };
+            SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             NotifyIcon.Initialize(this);
             NotifyIcon.InitializeServerList(NetworkController.Instance.Initialize());
            
         }
 
         public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
+
+        private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
+        {
+            Exit();
+        }
+
 
         private void InstanceOnGuildIconAction(Bitmap icon)
         {
@@ -161,6 +169,8 @@ namespace DamageMeter.UI
                                                                           new Point(_popupNotification.Left, _popupNotification.Top);
             Close();
         }
+
+
 
         public void Exit()
         {
