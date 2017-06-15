@@ -102,7 +102,6 @@ namespace DamageMeter.UI
             SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             NotifyIcon.Initialize(this);
             NotifyIcon.InitializeServerList(NetworkController.Instance.Initialize());
-           
         }
 
         public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
@@ -308,7 +307,11 @@ namespace DamageMeter.UI
                     if (Controls.Count == 0 && Visibility != Visibility.Hidden) { HideWindow(); } //Visibility = Visibility.Hidden; }
                 }
                 else if (!ForceWindowVisibilityHidden && Visibility != Visibility.Visible) { ShowWindow(); } //Visibility = Visibility.Visible; } 
+                if (TeraWindow.IsTeraActive() && BasicTeraData.Instance.WindowData.Topmost)
+                {
+                    StayTopMost();
                 }
+            }
 
             Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox,
                 nflash);
@@ -340,7 +343,10 @@ namespace DamageMeter.UI
 
         internal void StayTopMost()
         {
-            if (!_topMost || !Topmost) { return; }
+            if (!_topMost || !Topmost) {
+                Console.WriteLine("Not topmost");
+                return;
+            }
             foreach (Window window in System.Windows.Application.Current.Windows)
             {
                 window.Topmost = false;
