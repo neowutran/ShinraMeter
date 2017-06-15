@@ -63,6 +63,8 @@ namespace DamageMeter.UI
             MouseLeftButtonDown += Move;
             Loaded += (s, a) =>
             {
+                MinWidth = MinWidth * Scale;
+                MinHeight = MinHeight * Scale;
                 SnapToScreen();
                 SizeChanged += (s1, a1) => SnapToScreen();
             };
@@ -106,7 +108,7 @@ namespace DamageMeter.UI
             if (screen.WorkingArea.X + screen.WorkingArea.Width < newLeft + width + 30 * dx)
             {
                 newLeft = screen.WorkingArea.X + screen.WorkingArea.Width - width + _margin.Right * dx;
-                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - MinWidth * dx * Scale;
+                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - MinWidth * dx;
             }
             else if (screen.WorkingArea.X > newLeft - 30 * dx)
             {
@@ -116,7 +118,7 @@ namespace DamageMeter.UI
             if (screen.WorkingArea.Y + screen.WorkingArea.Height < newTop + height + 30 * dy)
             {
                 newTop = screen.WorkingArea.Y + screen.WorkingArea.Height - height + _margin.Bottom * dy;
-                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - MinHeight * dy * Scale;
+                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - MinHeight * dy;
                 SnappedToBottom = true;
             }
             else if (screen.WorkingArea.Y > newTop - 30 * dy)
