@@ -344,7 +344,7 @@ namespace DamageMeter.UI
         internal void StayTopMost()
         {
             if (!_topMost || !Topmost) {
-                Console.WriteLine("Not topmost");
+                Debug.WriteLine("Not topmost");
                 return;
             }
             foreach (Window window in System.Windows.Application.Current.Windows)
