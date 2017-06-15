@@ -263,7 +263,7 @@ namespace DamageMeter.UI
                         skills, abnormals.Get(playerStats.Source));
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
-                DXrender?.Draw(statsDamage.ToClassInfo(statsSummary.EntityInformation.TotalDamage));
+                DXrender?.Draw(statsDamage.ToClassInfo(statsSummary.EntityInformation.TotalDamage, statsSummary.EntityInformation.Interval));
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
                 foreach (var invisibleControl in invisibleControls)
@@ -546,7 +546,7 @@ namespace DamageMeter.UI
 
     public static class Extensions
     {
-        public static List<ClassInfo> ToClassInfo(this IEnumerable<PlayerDamageDealt> data, long sum)
+        public static List<ClassInfo> ToClassInfo(this IEnumerable<PlayerDamageDealt> data, long sum, long interval)
         {
             // return linq expression method
             return data.Select(dealt => new ClassInfo
@@ -554,7 +554,7 @@ namespace DamageMeter.UI
                 PName = $"{dealt.Source.Name}",
                 PDmg = $"{FormatHelpers.Instance.FormatPercent((double)dealt.Amount/sum)}",
                 PDsp =
-                    $"{FormatHelpers.Instance.FormatValue(dealt.Interval == 0 ? dealt.Amount : dealt.Amount * TimeSpan.TicksPerSecond / dealt.Interval)}{LP.PerSecond}",
+                    $"{FormatHelpers.Instance.FormatValue(interval == 0 ? dealt.Amount : dealt.Amount * TimeSpan.TicksPerSecond / interval)}{LP.PerSecond}",
                 PCrit = $"{Math.Round(dealt.CritRate)}%",
                 PId = dealt.Source.PlayerId
             }).ToList();
