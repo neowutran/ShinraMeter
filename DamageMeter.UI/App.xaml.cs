@@ -113,6 +113,7 @@ namespace DamageMeter.UI
             var isUpToDate = await UpdateManager.IsUpToDate().ConfigureAwait(false);
             if (isUpToDate) { return false; }
 
+            SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
             if (MessageBox.Show(LP.App_Do_you_want_to_update, LP.App_Update_Available, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
             {
                 return false;
