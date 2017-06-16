@@ -89,7 +89,7 @@ namespace DamageMeter.UI
         public void SnapToScreen()
         {
             if (_dragging) return;
-            if (Empty && Visible) { HideWindow(true); return; }
+            if (Empty && Visible) { _oldHeight = 0; HideWindow(true); return; }
             var screen = Screen.FromHandle(new WindowInteropHelper(this).Handle);
             var source = PresentationSource.FromVisual(this);
             if (source?.CompositionTarget == null) return;
