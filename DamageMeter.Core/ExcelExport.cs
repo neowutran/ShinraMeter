@@ -353,7 +353,7 @@ namespace DamageMeter
                     ws.Cells[1, 1, j, 12].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     ws.PrinterSettings.FitToPage = true;
 
-                    AddCharts(ws, exdata, details, j);
+                    AddCharts(ws, exdata, details, j, LP.Boss);
 
                     // I don't know why, but sometimes column height setting is lost.
                     for (var x = 1; x <= j; ++x)
@@ -372,17 +372,17 @@ namespace DamageMeter
             }
         }
 
-        private static void AddCharts(ExcelWorksheet ws, ExtendedStats exdata, ExcelWorksheet details, int startrow)
+        private static void AddCharts(ExcelWorksheet ws, ExtendedStats exdata, ExcelWorksheet details, int startrow, string name)
         {
             var time = (int) (exdata.LastTick / TimeSpan.TicksPerSecond - exdata.FirstTick / TimeSpan.TicksPerSecond);
-            var offset = exdata.PlayerBuffs.Keys.ToList().IndexOf(ws.Name) + 1;
-            var bossSheet = ws.Name == LP.Boss;
+            var offset = exdata.PlayerBuffs.Keys.ToList().IndexOf(name) + 1;
+            var bossSheet = name == LP.Boss;
             if (!bossSheet && offset <= 0)
             {
                 return; //no buff data for user -> no graphs.
             }
             offset = bossSheet ? 3 : 4 + offset * 7;
-            var dps = ws.Drawings.AddChart(ws.Name + LP.Dps, eChartType.Line);
+            var dps = ws.Drawings.AddChart(name + LP.Dps, eChartType.Line);
             dps.SetPosition(startrow + 1, 5, 0, 5);
             dps.SetSize(1200, 300);
             dps.Legend.Position = eLegendPosition.Top;
@@ -396,7 +396,7 @@ namespace DamageMeter
                 typeDmg.YAxis.Title.Rotation = 90;
 
                 serieDmg = typeDmg.Series.Add(details.Cells[3, offset + 5, time + 3, offset + 5], details.Cells[3, 2, time + 3, 2]);
-                serieDmg.Header = ws.Name + " " + BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds + LP.CMADPS;
+                serieDmg.Header = name + " " + BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds + LP.CMADPS;
             }
             else
             {
@@ -415,7 +415,7 @@ namespace DamageMeter
             typeDps.YAxis.SourceLinked = false;
             typeDps.YAxis.Format = @"#,#0\k\/\s"; //not sure why, but it loss sourcelink itself if we show only dps.
             var serieDps = typeDps.Series.Add(details.Cells[3, offset + 6, time + 3, offset + 6], details.Cells[3, 2, time + 3, 2]);
-            serieDps.Header = ws.Name + " " + LP.AvgDPS;
+            serieDps.Header = name + " " + LP.AvgDPS;
             if (bossSheet)
             {
                 typeDps.YAxis.MaxValue = details.Cells[3, offset + 6, time + 3, offset + 6].Max(x => (long) x.Value);
@@ -435,15 +435,15 @@ namespace DamageMeter
 
             var numInt = bossSheet
                 ? exdata.Debuffs.Sum(x => x.Value.Count()) - 1
-                : exdata.PlayerBuffs[ws.Name].Times.Sum(x => x.Value.Count()) + exdata.PlayerBuffs[ws.Name].Death.Count() +
-                  exdata.PlayerBuffs[ws.Name].Aggro(exdata.Entity).Count() - 1;
+                : exdata.PlayerBuffs[name].Times.Sum(x => x.Value.Count()) + exdata.PlayerBuffs[name].Death.Count() +
+                  exdata.PlayerBuffs[name].Aggro(exdata.Entity).Count() - 1;
             var numBuff = bossSheet
                 ? exdata.Debuffs.Count
-                : exdata.PlayerBuffs[ws.Name].Times.Count(x => x.Value.Count() > 0) + (exdata.PlayerBuffs[ws.Name].Death.Count() > 0 ? 1 : 0) +
-                  (exdata.PlayerBuffs[ws.Name].Aggro(exdata.Entity).Count() > 0 ? 1 : 0);
+                : exdata.PlayerBuffs[name].Times.Count(x => x.Value.Count() > 0) + (exdata.PlayerBuffs[name].Death.Count() > 0 ? 1 : 0) +
+                  (exdata.PlayerBuffs[name].Aggro(exdata.Entity).Count() > 0 ? 1 : 0);
             if (numInt >= 0 && numBuff > 0)
             {
-                var buff = ws.Drawings.AddChart(ws.Name + LP.Buff, eChartType.BarStacked);
+                var buff = ws.Drawings.AddChart(name + LP.Buff, eChartType.BarStacked);
                 var typeBuff = buff.PlotArea.ChartTypes[0];
                 buff.SetPosition(startrow + 9, 5, 0, 5);
                 buff.SetSize(1200, numBuff * 25 + 38);
@@ -674,7 +674,8 @@ namespace DamageMeter
 
         private static ExcelHyperLink CreateUserSheet(ExcelWorkbook wb, Members user, ExtendedStats exdata, ExcelWorksheet details)
         {
-            var ws = wb.Worksheets.Add($"{user.playerServer}_{user.playerName}");
+            var name = $"{user.playerServer}_{user.playerName}";
+            var ws = wb.Worksheets.Add(name);
             ws.DefaultRowHeight = 30;
             ws.Cells.Style.Font.Size = 12;
             ws.Cells.Style.Font.Name = "Arial";
@@ -774,7 +775,7 @@ namespace DamageMeter
             ws.Cells[1, 1, j, 11].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ws.PrinterSettings.FitToPage = true;
 
-            AddCharts(ws, exdata, details, j);
+            AddCharts(ws, exdata, details, j, name);
 
             // I don't know why, but sometimes column height setting is lost.
             for (var x = 1; x <= j; ++x)
