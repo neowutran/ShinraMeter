@@ -212,22 +212,23 @@ namespace Data
             var teradps = root.Element("teradps.io");
             if(teradps == null) { return; }
             var token = teradps.Element("token");
-            if (token == null) { return; }
-            DpsServerData.Moongourd.Token = token.Value;
+            if (token != null) { DpsServerData.Moongourd.Token = token.Value; }
             var exp = teradps.Element("enabled");
-            if (exp == null) { return; }
-            var parseSuccess = bool.TryParse(exp.Value, out bool val);
-            DpsServerData.Moongourd.Enabled = val;
-            DpsServerData.TeraLogs.Enabled = val;
+            if (exp != null)
+            {
+                var parseSuccess = bool.TryParse(exp.Value, out bool val);
+                DpsServerData.Moongourd.Enabled = val;
+                DpsServerData.TeraLogs.Enabled = val;
+            }
             var privateS = teradps.Element("private_servers");
             if (privateS == null) { return; }
             var exp1 = privateS.Attribute("enabled");
-            parseSuccess = bool.TryParse(exp1?.Value ?? "false", out val);
-            if (!parseSuccess || !privateS.HasElements) { return; }
+            var parseS = bool.TryParse(exp1?.Value ?? "false", out bool enabled);
+            if (!parseS || !privateS.HasElements) { return; }
             foreach (var server in privateS.Elements())
             {
                 if (String.IsNullOrWhiteSpace(server?.Value)) { continue; }
-                DpsServerData serverData = new DpsServerData(new Uri(server.Value), null, null, null, null, val);
+                DpsServerData serverData = new DpsServerData(new Uri(server.Value), null, null, null, null, enabled);
                 DpsServers.Add(serverData);
             }
         }
