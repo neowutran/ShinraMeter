@@ -336,6 +336,7 @@ namespace DamageMeter.UI
             {
                 Title = newServerName;
                 NotifyIcon.Tray.ToolTipText = "Shinra Meter V" + UpdateManager.Version + ": " + newServerName;
+                SnapToScreen();
             }
 
             Dispatcher.Invoke((ChangeTitle) ChangeTitle, serverName);

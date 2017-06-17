@@ -105,26 +105,27 @@ namespace DamageMeter.UI
             var newTop = (_dragged ? Top : LastSnappedPoint?.Y ?? Top) * dy;
             var snapLeft = newLeft;
             var snapTop = newTop;
-            if (screen.WorkingArea.X + screen.WorkingArea.Width < newLeft + width + 30 * dx)
+            var area = TeraWindow.IsTeraFullScreen() ? screen.Bounds : screen.WorkingArea;
+            if (area.X + area.Width < newLeft + width + 40 * dx)
             {
-                newLeft = screen.WorkingArea.X + screen.WorkingArea.Width - width + _margin.Right * dx;
-                snapLeft = screen.WorkingArea.X + screen.WorkingArea.Width - MinWidth * dx;
+                newLeft = area.X + area.Width - width + _margin.Right * dx;
+                snapLeft = screen.Bounds.X + screen.Bounds.Width - MinWidth * dx;
             }
-            else if (screen.WorkingArea.X > newLeft - 30 * dx)
+            else if (area.X > newLeft - 40 * dx)
             {
-                newLeft = screen.WorkingArea.X - _margin.Left * dx;
-                snapLeft = screen.WorkingArea.X;
+                newLeft = area.X - _margin.Left * dx;
+                snapLeft = screen.Bounds.X;
             }
-            if (screen.WorkingArea.Y + screen.WorkingArea.Height < newTop + height + 30 * dy)
+            if (area.Y + area.Height < newTop + height + 40 * dy)
             {
-                newTop = screen.WorkingArea.Y + screen.WorkingArea.Height - height + _margin.Bottom * dy;
-                snapTop = screen.WorkingArea.Y + screen.WorkingArea.Height - MinHeight * dy;
+                newTop = area.Y + area.Height - height + _margin.Bottom * dy;
+                snapTop = screen.Bounds.Y + screen.Bounds.Height - MinHeight * dy;
                 SnappedToBottom = true;
             }
-            else if (screen.WorkingArea.Y > newTop - 30 * dy)
+            else if (area.Y > newTop - 40 * dy)
             {
-                newTop = screen.WorkingArea.Y - _margin.Top * dy;
-                snapTop = screen.WorkingArea.Y;
+                newTop = area.Y - _margin.Top * dy;
+                snapTop = screen.Bounds.Y;
                 SnappedToBottom = false;
             }
             else SnappedToBottom = false;

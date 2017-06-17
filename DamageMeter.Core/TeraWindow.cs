@@ -7,8 +7,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Interop;
 using Data;
+using Application = System.Windows.Application;
 
 namespace DamageMeter
 {
@@ -27,6 +29,18 @@ namespace DamageMeter
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;        // x position of upper-left corner
+            public int Top;         // y position of upper-left corner
+            public int Right;       // x position of lower-right corner
+            public int Bottom;      // y position of lower-right corner
+        }
 
         private static IntPtr FindTeraWindow()
         {
@@ -80,6 +94,15 @@ namespace DamageMeter
             var teraWindow = FindTeraWindow();
             var activeWindow = GetForegroundWindow();
             return teraWindow != IntPtr.Zero && teraWindow == activeWindow;
+        }
+
+        public static bool IsTeraFullScreen()
+        {
+            var teraWindow = FindTeraWindow();
+            if (teraWindow == IntPtr.Zero) return false;
+            var screen = Screen.FromHandle(teraWindow);
+            RECT rc;
+            return GetWindowRect(teraWindow,out rc) && screen.Bounds.Width==rc.Right-rc.Left && screen.Bounds.Height==rc.Bottom-rc.Top;
         }
 
         public static bool IsMeterActive()
