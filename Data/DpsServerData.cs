@@ -36,9 +36,9 @@ namespace Data
         public static DpsServerData Neowutran = new DpsServerData(new Uri("https://neowutran.ovh/storage/store.php"), null, null, null, null, true);
 
         public static DpsServerData Moongourd = new DpsServerData(
-            new Uri("https://moongourd.com/dpsmeter_data.php"),
+            new Uri("https://moongourd.com/api/shinra/upload"),
             new Uri("https://moongourd.com/api/shinra/whitelist"),
-            new Uri("https://moongourd.com/shared/glyph_data.php"),
+            new Uri("https://moongourd.com/api/shinra/glyph_upload"),
             null, null, false );
 
         public static DpsServerData TeraLogs = new DpsServerData(
