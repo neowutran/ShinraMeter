@@ -538,7 +538,7 @@
     <value>戰鬥準備確認</value>
   </data>
   <data name="UploadGlyphBuild" xml:space="preserve">
-    <value>上傳紋章至moongourd.com</value>
+    <value>上傳紋章</value>
   </data>
   <data name="No_active_quest" xml:space="preserve">
     <value>目前沒有活動任務</value>

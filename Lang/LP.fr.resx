@@ -541,7 +541,7 @@
     <value>Copier "/inspect Pseudo" dans chat pour inspecter la dernière personne qui postule (Touche: Début)</value>
   </data>
   <data name="UploadGlyphBuild" xml:space="preserve">
-    <value>Envoyer mes glyphes vers moongourd.com</value>
+    <value>Envoyer mes glyphes</value>
   </data>
   <data name="No_active_quest" xml:space="preserve">
     <value>Pas de quête active pour le moment</value>
