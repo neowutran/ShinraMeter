@@ -16,7 +16,9 @@ namespace DamageMeter.TeraDpsApi
 {
     public class DpsServer
     {
-        public static readonly List<AreaAllowed> DefaultAreaAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>("[{\"AreaId\": 780,\"BossIds\": []},{\"AreaId\": 781,\"BossIds\": []},{\"AreaId\": 950,\"BossIds\": []},{\"AreaId\": 980,\"BossIds\": []},{\"AreaId\": 981,\"BossIds\": []}]");
+        public static readonly List<AreaAllowed> DefaultAreaAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>(
+            "[{\"AreaId\": 780,\"BossIds\": []},{\"AreaId\": 781,\"BossIds\": []},{\"AreaId\": 950,\"BossIds\": []},{\"AreaId\": 980,\"BossIds\": []},{\"AreaId\": 981,\"BossIds\": []},{\"AreaId\": 916,\"BossIds\": []}]"
+            );
         public static DpsServer NeowutranAnonymousServer => new DpsServer(DpsServerData.Neowutran, true);
 
         public bool Enabled => Data.Enabled;
