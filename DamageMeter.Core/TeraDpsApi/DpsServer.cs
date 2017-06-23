@@ -68,7 +68,7 @@ namespace DamageMeter.TeraDpsApi
 
         public bool SendGlyphData()
         {
-            if (String.IsNullOrWhiteSpace(GlyphUrl?.ToString())) { return false ; }
+            if (!Enabled||String.IsNullOrWhiteSpace(GlyphUrl?.ToString())) { return false ; }
 
             var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
