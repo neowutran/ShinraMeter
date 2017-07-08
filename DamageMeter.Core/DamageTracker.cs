@@ -2,6 +2,7 @@
 using Data;
 using Tera.Game;
 using Tera.Game.Messages;
+using System.Diagnostics;
 
 namespace DamageMeter
 {
@@ -46,7 +47,6 @@ namespace DamageMeter
 
         public void UpdateCurrentBoss(NpcEntity entity)
         {
-            if (!entity.Info.Boss) { return; }
             if (NetworkController.Instance.Encounter != entity) { NetworkController.Instance.NewEncounter = entity; }
         }
 

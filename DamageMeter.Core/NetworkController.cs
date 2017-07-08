@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DamageMeter.Database.Structures;
 using DamageMeter.Processing;
@@ -173,12 +172,12 @@ namespace DamageMeter
             var timedEncounter = TimedEncounter;
 
             var entities = Database.Database.Instance.AllEntity();
-            var filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
+            var filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().ToList();
             if (packetsWaiting > 2500 && filteredEntities.Count > 1)
             {
                 Database.Database.Instance.DeleteAllWhenTimeBelow(Encounter);
                 entities = Database.Database.Instance.AllEntity();
-                filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
+                filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().ToList();
             }
 
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);

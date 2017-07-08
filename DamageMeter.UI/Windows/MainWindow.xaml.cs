@@ -237,6 +237,9 @@ namespace DamageMeter.UI
                 ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, NotifyFlashMessage flash)
             {
                 Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
+
+                Debug.WriteLine("Beta:"+statsSummary.EntityInformation.Entity?.Info.Name);
+
                 UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
                 _entityStats.Update(statsSummary.EntityInformation, abnormals);
                 _windowHistory.Update(bossHistory);
@@ -407,8 +410,8 @@ namespace DamageMeter.UI
                 ListEncounter.SelectedItem = item;
                 selected = true;
             }
-            if (ChangeEncounterSelection(currentBoss)) { return; }
 
+            if (ChangeEncounterSelection(currentBoss)) { return; }
             if (selected) { return; }
             ListEncounter.SelectedItem = ListEncounter.Items[0];
         }
