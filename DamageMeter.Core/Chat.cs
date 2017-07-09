@@ -62,23 +62,22 @@ namespace DamageMeter
             if (chatType == ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender &&
                 (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()))
             {
-                NetworkController.Instance.FlashMessage = NotifyProcessor.Instance.DefaultNotifyAction(LP.Whisper + ": " + sender, message, EventType.Whisper);
+                NetworkController.Instance.FlashMessage.Add(NotifyProcessor.Instance.DefaultNotifyAction(LP.Whisper + ": " + sender, message, EventType.Whisper));
             }
 
             if (chatType != ChatType.Whisper && NetworkController.Instance.EntityTracker.MeterUser.Name != sender &&
                 (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()) &&
                 message.Contains("@" + NetworkController.Instance.EntityTracker.MeterUser.Name))
             {
-                NetworkController.Instance.FlashMessage = NotifyProcessor.Instance.DefaultNotifyAction(LP.Chat + ": " + sender, message, EventType.Mention);
+                NetworkController.Instance.FlashMessage.Add(NotifyProcessor.Instance.DefaultNotifyAction(LP.Chat + ": " + sender, message, EventType.Mention));
             }
 
             if ((chatType == ChatType.PrivateChannel || chatType == ChatType.Normal &&
                  (channel == ChannelEnum.Group || channel == ChannelEnum.Guild || channel == ChannelEnum.Raid)) &&
                 (BasicTeraData.Instance.WindowData.ShowAfkEventsIngame || !TeraWindow.IsTeraActive()) && message.Contains("@@"))
             {
-                NetworkController.Instance.FlashMessage =
-                    NotifyProcessor.Instance.DefaultNotifyAction("Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name,
-                        "Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name, EventType.WakeUp);
+                NetworkController.Instance.FlashMessage.Add(NotifyProcessor.Instance.DefaultNotifyAction("Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name,
+                        "Wake up, " + NetworkController.Instance.EntityTracker.MeterUser.Name, EventType.WakeUp));
             }
         }
 

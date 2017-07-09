@@ -3,6 +3,7 @@ using System.Windows;
 using Data;
 using Data.Actions.Notify;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DamageMeter.UI
 {
@@ -19,6 +20,10 @@ namespace DamageMeter.UI
             content.ItemsSource = notificationBalloons;
         }
 
+        private static PopupNotification _instance = null;
+        public static PopupNotification Instance => _instance ?? (_instance = new PopupNotification());
+
+
         private void NotificationBalloons_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if(notificationBalloons.Count == 0)
@@ -27,7 +32,16 @@ namespace DamageMeter.UI
             }
         }
 
-        public static SynchronizedObservableCollection<Balloon> notificationBalloons;
+        public SynchronizedObservableCollection<Balloon> notificationBalloons;
+
+        public void AddNotification(List<NotifyFlashMessage> flashList)
+        {
+            foreach(NotifyFlashMessage flash in flashList.OrderByDescending(x => x.Priority))
+            {
+                AddNotification(flash);
+            }
+        }
+
 
         public void AddNotification(NotifyFlashMessage flash)
         {

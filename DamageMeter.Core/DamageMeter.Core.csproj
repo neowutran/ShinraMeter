@@ -130,6 +130,7 @@
     <Compile Include="TeraDpsApi\SkillLog.cs" />
     <Compile Include="TeraWindow.cs" />
     <Compile Include="NetworkController.cs" />
+    <Compile Include="UiUpdateMessage.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

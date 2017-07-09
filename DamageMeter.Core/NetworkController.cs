@@ -31,8 +31,7 @@ namespace DamageMeter
 
         public delegate void PauseEvent(bool paused);
 
-        public delegate void UpdateUiHandler(StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
-            ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, NotifyFlashMessage flash);
+        public delegate void UpdateUiHandler(UiUpdateMessage message);
 
         private static NetworkController _instance;
         private static readonly object _pasteLock = new object();
@@ -68,7 +67,7 @@ namespace DamageMeter
             packetAnalysis.Start();
         }
 
-        public NotifyFlashMessage FlashMessage { get; set; }
+        public List<NotifyFlashMessage> FlashMessage = new List<NotifyFlashMessage>();
         public PlayerTracker PlayerTracker { get; internal set; }
 
         public TeraData TeraData { get; internal set; }
@@ -204,13 +203,14 @@ namespace DamageMeter
             var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
 
             var flash = FlashMessage;
-            FlashMessage = null;
+            FlashMessage = new List<NotifyFlashMessage>();
 
             var statsSummary = new StatsSummary(playersInfo, heals, entityInfo);
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-            handler?.Invoke(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash);
+            var uiMessage = new UiUpdateMessage(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash);
+            handler?.Invoke(uiMessage);
         }
         
         public List<DpsServer> Initialize()

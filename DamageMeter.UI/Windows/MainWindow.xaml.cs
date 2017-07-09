@@ -229,30 +229,24 @@ namespace DamageMeter.UI
             else { ForceWindowVisibilityHidden = false; }
         }
 
-        public void Update(StatsSummary nstatsSummary, Database.Structures.Skills nskills, List<NpcEntity> nentities, bool ntimedEncounter,
-            AbnormalityStorage nabnormals, ConcurrentDictionary<string, NpcEntity> nbossHistory, List<ChatMessage> nchatbox,
-            NotifyFlashMessage nflash)
+        public void Update(UiUpdateMessage nmessage)
         {
-            void ChangeUi(StatsSummary statsSummary, Database.Structures.Skills skills, List<NpcEntity> entities, bool timedEncounter, AbnormalityStorage abnormals,
-                ConcurrentDictionary<string, NpcEntity> bossHistory, List<ChatMessage> chatbox, NotifyFlashMessage flash)
+            void ChangeUi(UiUpdateMessage message)
             {
                 Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
+                UpdateComboboxEncounter(message.Entities, message.StatsSummary.EntityInformation.Entity);
+                _entityStats.Update(message.StatsSummary.EntityInformation, message.Abnormals);
+                _windowHistory.Update(message.BossHistory);
+                _chatbox?.Update(message.Chatbox);
+                _popupNotification.AddNotification(message.Flash);
 
-                Debug.WriteLine("Beta:"+statsSummary.EntityInformation.Entity?.Info.Name);
-
-                UpdateComboboxEncounter(entities, statsSummary.EntityInformation.Entity);
-                _entityStats.Update(statsSummary.EntityInformation, abnormals);
-                _windowHistory.Update(bossHistory);
-                _chatbox?.Update(chatbox);
-                _popupNotification.AddNotification(flash);
-
-                PartyDps.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.Interval == 0
-                                       ? statsSummary.EntityInformation.TotalDamage
-                                       : statsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond / statsSummary.EntityInformation.Interval) +
+                PartyDps.Content = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.Interval == 0
+                                       ? message.StatsSummary.EntityInformation.TotalDamage
+                                       : message.StatsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond / message.StatsSummary.EntityInformation.Interval) +
                                    LP.PerSecond;
                 var visiblePlayerStats = new HashSet<Player>();
-                var statsDamage = statsSummary.PlayerDamageDealt;
-                var statsHeal = statsSummary.PlayerHealDealt;
+                var statsDamage = message.StatsSummary.PlayerDamageDealt;
+                var statsHeal = message.StatsSummary.PlayerHealDealt;
                 foreach (var playerStats in statsDamage)
                 {
                     PlayerStats playerStatsControl;
@@ -261,11 +255,11 @@ namespace DamageMeter.UI
 
                     visiblePlayerStats.Add(playerStats.Source);
                     if (playerStatsControl != null) { continue; }
-                    playerStatsControl = new PlayerStats(playerStats, statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), statsSummary.EntityInformation,
-                        skills, abnormals.Get(playerStats.Source));
+                    playerStatsControl = new PlayerStats(playerStats, statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), message.StatsSummary.EntityInformation,
+                        message.Skills, message.Abnormals.Get(playerStats.Source));
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
-                DXrender?.Draw(statsDamage.ToClassInfo(statsSummary.EntityInformation.TotalDamage, statsSummary.EntityInformation.Interval));
+                DXrender?.Draw(statsDamage.ToClassInfo(message.StatsSummary.EntityInformation.TotalDamage, message.StatsSummary.EntityInformation.Interval));
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
                 foreach (var invisibleControl in invisibleControls)
@@ -274,18 +268,18 @@ namespace DamageMeter.UI
                     Controls.Remove(invisibleControl.Key);
                 }
 
-                TotalDamage.Content = FormatHelpers.Instance.FormatValue(statsSummary.EntityInformation.TotalDamage);
-                if (BasicTeraData.Instance.WindowData.ShowTimeLeft && statsSummary.EntityInformation.TimeLeft > 0)
+                TotalDamage.Content = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.TotalDamage);
+                if (BasicTeraData.Instance.WindowData.ShowTimeLeft && message.StatsSummary.EntityInformation.TimeLeft > 0)
                 {
-                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.TimeLeft / TimeSpan.TicksPerSecond);
+                    var interval = TimeSpan.FromSeconds(message.StatsSummary.EntityInformation.TimeLeft / TimeSpan.TicksPerSecond);
                     Timer.Content = interval.ToString(@"mm\:ss");
                     Timer.Foreground = Brushes.LightCoral;
                 }
                 else
                 {
-                    var interval = TimeSpan.FromSeconds(statsSummary.EntityInformation.Interval / TimeSpan.TicksPerSecond);
+                    var interval = TimeSpan.FromSeconds(message.StatsSummary.EntityInformation.Interval / TimeSpan.TicksPerSecond);
                     Timer.Content = interval.ToString(@"mm\:ss");
-                    if (statsSummary.EntityInformation.Interval == 0 && BasicTeraData.Instance.WindowData.ShowTimeLeft) { Timer.Foreground = Brushes.LightCoral; }
+                    if (message.StatsSummary.EntityInformation.Interval == 0 && BasicTeraData.Instance.WindowData.ShowTimeLeft) { Timer.Foreground = Brushes.LightCoral; }
                     else { Timer.Foreground = Brushes.White; }
                 }
                 Players.Items.Clear();
@@ -300,8 +294,8 @@ namespace DamageMeter.UI
                         continue;
                     }
                     Players.Items.Add(Controls[item.Source]);
-                    Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), statsSummary.EntityInformation, skills,
-                        abnormals.Get(item.Source), timedEncounter);
+                    Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), message.StatsSummary.EntityInformation, message.Skills,
+                        message.Abnormals.Get(item.Source), message.TimedEncounter);
                 }
 
                 if (BasicTeraData.Instance.WindowData.InvisibleUi && !_paused)
@@ -316,8 +310,7 @@ namespace DamageMeter.UI
                 }
             }
 
-            Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nstatsSummary, nskills, nentities, ntimedEncounter, nabnormals, nbossHistory, nchatbox,
-                nflash);
+            Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nmessage);
         }
 
         private void ShowHistory(object sender, MouseButtonEventArgs e)

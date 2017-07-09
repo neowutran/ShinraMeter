@@ -52,7 +52,6 @@ namespace DamageMeter.AutoUpdate
 
         public static bool Update()
         {
-            //Download(); return true;
             return HashedUpdate();
         }
 
@@ -103,10 +102,6 @@ namespace DamageMeter.AutoUpdate
         public static async Task<bool> IsUpToDate()
         {
             return await NoNewHashes().ConfigureAwait(false);
-            //var latestVersion = await LatestVersion().ConfigureAwait(false);
-            //Console.WriteLine("Current version = " + Version);
-            //Console.WriteLine("Latest version = " + latestVersion);
-            //return latestVersion == Version;
         }
 
         private static void DestroyDownloadDirectory()
