@@ -30,7 +30,18 @@ namespace DamageMeter.Sniffing
         private MessageSplitter _messageSplitter;
         private TcpConnection _serverToClient;
         public int ClientProxyOverhead;
-        public bool Connected;
+        private bool _connected;
+
+        public bool Connected
+        {
+            get => _connected;
+            set
+            {
+                _connected = value;
+                _isNew.Clear();
+            }
+        }
+    
         public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
         public int ServerProxyOverhead;
 
