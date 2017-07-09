@@ -56,6 +56,9 @@ namespace NetworkSniffer
         {
             if (!_connections.ContainsKey(connection.ConnectionId)) { return; }
             _connections.TryRemove(connection.ConnectionId, out TcpConnection temp);
+            var reverse = connection.ConnectionId.Reverse;
+            if (!_connections.ContainsKey(reverse)) { return; }
+            _connections.TryRemove(reverse, out TcpConnection temp1);
         }
 
         //private void ParsePacketsLoop()
