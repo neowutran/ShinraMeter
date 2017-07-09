@@ -14,6 +14,13 @@ namespace NetworkSniffer
             Destination = new IPEndPoint(destinationIp, destinationPort);
         }
 
+        public ConnectionId(IPEndPoint source, IPEndPoint destination)
+        {
+            Source = source;
+            Destination = destination;
+        }
+        public ConnectionId Reverse => new ConnectionId(Destination, Source);
+
         public static bool operator ==(ConnectionId x, ConnectionId y)
         {
             return x.Source.Equals(y.Source) && x.Destination.Equals(y.Destination);

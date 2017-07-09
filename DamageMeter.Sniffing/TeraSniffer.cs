@@ -108,6 +108,7 @@ namespace DamageMeter.Sniffing
                 Connected = false;
                 OnEndConnection();
             }
+            else connection.RemoveCallback();
         }
 
         // called from the tcp sniffer, so it needs to lock
