@@ -159,6 +159,7 @@ namespace DamageMeter.Sniffing
                         _isNew.TryRemove(connection, out q);
                         _clientToServer = connection;
                         var server = _serversByIp[connection.Destination.Address.ToString()];
+                        _isNew.Clear();
                         OnNewConnection(server);
                     }
                     if (connection.BytesReceived > 0x10000) //if received more bytes but still not recognized - not interesting.
