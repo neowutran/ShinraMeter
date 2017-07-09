@@ -135,7 +135,7 @@ namespace DamageMeter
                 {typeof(SAbnormalityEnd), new Action<SAbnormalityEnd>(Abnormalities.Update)},
                 {typeof(SAbnormalityRefresh), new Action<SAbnormalityRefresh>(Abnormalities.Update)},
                 {typeof(SpawnMeServerMessage), new Action<SpawnMeServerMessage>(x => NetworkController.Instance.AbnormalityTracker.Update(x))},
-                {typeof(SCreatureChangeHp), new Action<SCreatureChangeHp>(x => NetworkController.Instance.AbnormalityTracker.Update(x))},
+                {typeof(SCreatureChangeHp), Helpers.Contructor<Func<SCreatureChangeHp, S_CREATURE_CHANGE_HP>>()},
                 {typeof(SPlayerChangeMp), new Action<SPlayerChangeMp>(x => NetworkController.Instance.AbnormalityTracker.Update(x))},
                 {typeof(SPartyMemberChangeHp), new Action<SPartyMemberChangeHp>(x => NetworkController.Instance.AbnormalityTracker.Update(x))},
                 {typeof(SDespawnUser), Helpers.Contructor<Func<SDespawnUser, S_DESPAWN_USER>>()},
@@ -148,8 +148,7 @@ namespace DamageMeter
 
         public bool Process(ParsedMessage message)
         {
-            Delegate type;
-            MainProcessor.TryGetValue(message.GetType(), out type);
+            MainProcessor.TryGetValue(message.GetType(), out Delegate type);
             if (type == null) { return false; }
             type.DynamicInvoke(message);
             return true;

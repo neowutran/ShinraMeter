@@ -99,6 +99,7 @@
     <Compile Include="Database\Structures\Skills.cs" />
     <Compile Include="Database\Structures\StatsSummary.cs" />
     <Compile Include="DataExporter.cs" />
+    <Compile Include="Processing\S_CREATURE_CHANGE_HP.cs" />
     <Compile Include="TeraDpsApi\DpsServer.cs" />
     <Compile Include="ExcelExport.cs" />
     <Compile Include="FormatHelpers.cs" />

@@ -47,7 +47,11 @@ namespace DamageMeter
 
         public void UpdateCurrentBoss(NpcEntity entity)
         {
-            if (NetworkController.Instance.Encounter != entity) { NetworkController.Instance.NewEncounter = entity; }
+            if (!entity.Info.Boss) { return; }
+            if (NetworkController.Instance.Encounter != entity) {
+                NetworkController.Instance.NewEncounter = entity;
+                HudManager.Instance.AddBoss(entity);
+            }
         }
 
         public void Reset()

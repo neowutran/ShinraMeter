@@ -53,6 +53,7 @@
     value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
+
     mimetype: application/x-microsoft.net.object.bytearray.base64
     value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
@@ -296,7 +297,6 @@
   <data name="SystemTray_No_server" xml:space="preserve">
     <value>Aucun serveur</value>
   </data>
-  <!-- Detailed skill window -->
   <data name="Deaths" xml:space="preserve">
     <value>Morts</value>
   </data>
@@ -387,7 +387,6 @@
   <data name="Name" xml:space="preserve">
     <value>Nom</value>
   </data>
-  <!--Excel Export-->
   <data name="Boss" xml:space="preserve">
     <value>Boss</value>
   </data>
@@ -415,7 +414,6 @@
   <data name="MinCrit" xml:space="preserve">
     <value>Crit Min.</value>
   </data>
-  <!-- Hotdot overrides -->
   <data name="Enrage" xml:space="preserve">
     <value>Enrage</value>
   </data>
@@ -425,7 +423,6 @@
   <data name="SlayingTooltip" xml:space="preserve">
     <value>Temps passé sous les 50% d'hp</value>
   </data>
-  <!-- HitDirection overrides -->
   <data name="Back" xml:space="preserve">
     <value>Derrière</value>
   </data>
@@ -447,10 +444,10 @@
   <data name="NumberPlayersDisplayed" xml:space="preserve">
     <value>Nombre de joueurs affiché</value>
   </data>
-    <data name="Chat" xml:space="preserve">
+  <data name="Chat" xml:space="preserve">
     <value>Chat</value>
   </data>
-    <data name="ApplyToYourParty" xml:space="preserve">
+  <data name="ApplyToYourParty" xml:space="preserve">
     <value>postule</value>
   </data>
   <data name="Lvl" xml:space="preserve">
@@ -558,7 +555,7 @@
   <data name="JoyOfPartying" xml:space="preserve">
     <value>Loot 100% - Groupe full</value>
   </data>
-<data name="ServerOverrides" xml:space="preserve">
+  <data name="ServerOverrides" xml:space="preserve">
     <value>###########################################################
 # Add additional servers in this file (needed only for
 # VPN/Proxy that is not supported out-of-box)
@@ -642,7 +639,7 @@
     <value>Ouvrir le chat</value>
   </data>
   <data name="Valkyrie" xml:space="preserve">
-    <value>Dancelune</value>
+    <value>Danselune</value>
   </data>
   <data name="events_valkyrie" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\en\events-valkyrie.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
@@ -666,7 +663,7 @@
     <value>Afficher la barre de vie des Boss</value>
   </data>
   <data name="Counter" xml:space="preserve">
-    <value>Skill Envoyés</value>
+    <value>Skill compteur</value>
   </data>
   <data name="NoPaste" xml:space="preserve">
     <value>Désactiver le "collage" en jeu</value>

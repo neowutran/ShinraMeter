@@ -43,6 +43,26 @@ namespace DamageMeter
             boss.CurrentHP = message.HpRemaining;
         }
 
+
+        public void UpdateBoss(SCreatureChangeHp hpChange)
+        {   
+            var boss = _bosses.FirstOrDefault(x => x.EntityId == hpChange.TargetId);
+            if (boss == null){return;}
+            boss.CurrentHP = hpChange.HpRemaining;
+        }
+
+        public void AddBoss(NpcEntity entity)
+        {
+            var boss = _bosses.FirstOrDefault(x => x.EntityId == entity.Id);
+            if (boss == null)
+            {
+                if (entity == null) { return; }
+                boss = new Boss(entity, Visibility.Visible);
+                _bosses.Add(boss);
+            }
+            boss.MaxHP = entity.Info.HP;
+        }
+
         public void RemoveBoss(SDespawnNpc message)
         {
             var boss = _bosses.FirstOrDefault(x => x.EntityId == message.Npc);
