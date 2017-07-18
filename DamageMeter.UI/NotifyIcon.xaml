@@ -388,6 +388,10 @@
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="UI settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.Display_only_boss_hit_by_meter_user}" 
+                                                                   x:Name="DisplayOnlyBossHitByMeterUser"
+                                                                   On="DisplayOnlyBossHitByMeterUser_On"
+                                                                   Off="DisplayOnlyBossHitByMeterUser_Off" />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.EnableOverlay}" 
                                                                    x:Name="OverlaySwitch"
                                                                    On="EnableOverlay"

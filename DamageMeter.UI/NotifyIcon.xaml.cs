@@ -514,11 +514,21 @@ namespace DamageMeter.UI
 
         private void AddServerButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var server = new DamageMeter.TeraDpsApi.DpsServer(new DpsServerData(null, null, null, null, null, true), false);
+            var server = new TeraDpsApi.DpsServer(new DpsServerData(null, null, null, null, null, true), false);
             BasicTeraData.Instance.WindowData.DpsServers.Add(server.Data);
             DataExporter.DpsServers.Add(server);
             DpsServer dpsServerUi = new DpsServer(server, this);
             DpsServers.Children.Add(dpsServerUi);
+        }
+
+        private void DisplayOnlyBossHitByMeterUser_On(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser = true;
+        }
+
+        private void DisplayOnlyBossHitByMeterUser_Off(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser = false;
         }
     }
 }

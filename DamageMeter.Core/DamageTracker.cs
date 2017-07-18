@@ -127,8 +127,11 @@ namespace DamageMeter
                     foreach (var delete in _toDelete) { DeleteEntity(delete); }
                     _toDelete = new List<Entity>();
                 }
-
-                UpdateCurrentBoss(entity);
+                
+                if((BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser && NetworkController.Instance.PlayerTracker.Me().User.Id == entitySource.Id) || !BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser)
+                {
+                    UpdateCurrentBoss(entity);
+                }
             }
 
             Database.Database.Instance.Insert(message.Amount, skillType, entityTarget, entitySource, message.SkillId, message.Abnormality, message.IsCritical,

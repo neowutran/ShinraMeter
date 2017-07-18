@@ -64,8 +64,7 @@ namespace Data
             Parse("excel_save_directory", "ExcelSaveDirectory");
 
             if (ExcelSaveDirectory == "") { ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/"); }
-
-
+            Parse("display_only_boss_hit_by_meter_user", "DisplayOnlyBossHitByMeterUser");
             Parse("show_crit_damage_rate", "ShowCritDamageRate");
             Parse("showhealcrit", "ShowHealCrit");
             Parse("showtimeleft", "ShowTimeLeft");
@@ -160,6 +159,7 @@ namespace Data
         public bool ShowCritDamageRate = false;
         public bool OnlyBoss = false;
         public bool DetectBosses = false;
+        public bool DisplayOnlyBossHitByMeterUser = false;
 
         public List<DpsServerData> DpsServers = new List<DpsServerData> { DpsServerData.Moongourd, DpsServerData.TeraLogs };
         public List<int> BlackListAreaId = new List<int>();
@@ -391,6 +391,7 @@ namespace Data
             xml.Root.Add(new XElement("no_paste", NoPaste));
             xml.Root.Add(new XElement("no_abnormals_in_hud", NoAbnormalsInHUD));
             xml.Root.Add(new XElement("enable_overlay", EnableOverlay));
+            xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", DisplayOnlyBossHitByMeterUser));
 
             xml.Root.Add(new XElement("dps_servers"));
             foreach(var server in DpsServers)
