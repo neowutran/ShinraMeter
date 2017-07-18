@@ -1,90 +1,82 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
-	<!-- Adrenaline Rush -->
-	<abnormality active="true" ingame="true" trigger="Added" target="Self">
-		<abnormalities>
-			<abnormality>200701</abnormality>
-			<abnormality>200700</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<!-- <balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="100" duration="500"/>
-				</beeps> -->
-				<text_to_speech text="Adrénaline Rush" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+3"/>
-			</notify>
-		</actions>
-	</abnormality>
 
 	<!-- United Thrall of Protection (endurance buff) -->
-	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="PartySelfExcluded">
+	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="PartySelfExcluded">
+		<area_boss_blacklist>
+			<blacklist area_id="950" />
+		</area_boss_blacklist>
 		<abnormalities>
 			<abnormality>27120</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<!-- <balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<beeps>
-					<beep frequency="196" duration="500"/>
-				</beeps> -->
-				<text_to_speech text="Serviteur de protection" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+3"/>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left} seconds" display_time="3000" />
 			</notify>
 		</actions>
 	</abnormality>
 	
 	<!-- United Thrall of Protection (endurance buff) -->
-	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="10" trigger="MissingDuringFight" target="Self">
+	<abnormality active="true" priority="7" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="Self">
+		<area_boss_blacklist>
+			<blacklist area_id="713" />
+			<blacklist area_id="813" />
+			<blacklist area_id="432" />
+			<blacklist area_id="431" />
+			<blacklist area_id="433" />		
+		</area_boss_blacklist>
 		<abnormalities>
 			<abnormality>27120</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-			<!--<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<beeps>
-					<beep frequency="196" duration="500"/>
-				</beeps>-->
-				<text_to_speech text="Serviteur de protection" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+3"/>
+				<text_to_speech text="Serviteur de protection" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
 			</notify>
-		</actions>tera
+		</actions>
 	</abnormality>
 	
 	<!-- Mana aura -->
-	<abnormality ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	<abnormality ingame="true" priority="7" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<area_boss_blacklist>
+			<blacklist area_id="713" />
+			<blacklist area_id="813" />
+			<blacklist area_id="432" />
+			<blacklist area_id="431" />
+			<blacklist area_id="433" />	
+		</area_boss_blacklist>
 		<abnormalities>
 			<abnormality>700330</abnormality>
 			<abnormality>700300</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<!-- <balloon title_text="Aura" body_text="Activate the fucking mana aura" display_time="3000" />
-				<beeps>
-					<beep frequency="220" duration="500"/>
-				</beeps> -->
-				<text_to_speech text="Aura de ténacit" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
 	
 	<!-- Endurance debuff -->
-	<abnormality active="true" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="5" trigger="MissingDuringFight" target="Boss">
+	<abnormality active="true" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<area_boss_blacklist>
+			<blacklist area_id="713" />
+			<blacklist area_id="813" />
+			<blacklist area_id="432" />
+			<blacklist area_id="431" />
+			<blacklist area_id="433" />		
+		</area_boss_blacklist>
 		<abnormalities>
 			<abnormality>27160</abnormality>
 			<abnormality>28090</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<!-- <balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="392" duration="500"/>
-				</beeps> -->
-				<text_to_speech text="Volée de malédictions" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<text_to_speech text="Debuff" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
 	
 	<!-- Crit/Swift aura -->
-	<abnormality ingame="true"  rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	<abnormality ingame="true" priority="7" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>700600</abnormality>
 			<abnormality>700601</abnormality>
@@ -95,11 +87,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<!-- <balloon title_text="Aura" body_text="Activate the crit/swift aura" display_time="3000" />
-				<beeps>
-					<beep frequency="440" duration="500"/>
-				</beeps> -->
-				<text_to_speech text="Aura d'inclémence" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>

@@ -10,6 +10,20 @@
 			</actions>
 	</common_afk>
 	
+	
+	<!-- Raid P3 tank debuff overload warning -->
+	<abnormality ingame="true" trigger="Added" target="Self" priority="11" >
+		<abnormalities>
+			<abnormality stack="5">950023</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="{abnormality_name}" />
+			</notify>
+		</actions>
+	</abnormality>
+	
 	<!-- The boss became enraged -->
 	<abnormality ingame="true" trigger="Added" target="Boss">
 		<abnormalities>

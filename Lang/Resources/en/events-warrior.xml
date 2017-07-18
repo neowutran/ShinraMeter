@@ -8,9 +8,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : off" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="185" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name}: off" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -28,9 +26,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="392" duration="500"/>
-				</beeps>
+				<text_to_speech text="Endurance" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -44,9 +40,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="110" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -59,24 +53,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="110" duration="500"/>
-				</beeps>
-			</notify>
-		</actions>
-	</abnormality>
-
-	<!-- Endurance debuff (traverse cut) -->
-	<abnormality active="false" ingame="true" rewarn_timeout_seconds="8" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
-		<abnormalities>
-			<abnormality>101300</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="392" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>

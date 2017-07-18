@@ -2,13 +2,11 @@
 <events>
 
 	<!-- Notification when something happen & you are not on the Tera windows -->
-	<common_afk>
+	<common_afk priority="0">
 		<actions>
 				<notify>
 					<balloon title_text="{afk_title}" body_text="{afk_body}" display_time="3000" />
-					<beeps>
-						<beep frequency="440" duration="500"/>
-					</beeps>
+					<text_to_speech text="{afk_body}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
 				</notify>
 			</actions>
 	</common_afk>
@@ -21,9 +19,20 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="185" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Raid P3 tank debuff overload warning -->
+	<abnormality ingame="true" trigger="Added" target="Self" priority="11" >
+		<abnormalities>
+			<abnormality stack="5">950023</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="WARNING {abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="WARNING {abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -36,9 +45,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} is ending" body_text="{abnormality_name} {time_left} left" display_time="3000" />
-				<beeps>
-					<beep frequency="185" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name} is ending" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>	
@@ -51,9 +58,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="110" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -66,9 +71,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="440" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -81,7 +84,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Black" />
+				<text_to_speech text="Black" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -94,7 +97,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Red" />
+				<text_to_speech text="Red" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -108,9 +111,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<beeps>
-					<beep frequency="440" duration="500"/>
-				</beeps>
+				<text_to_speech text="Crystal bind" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -139,9 +140,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<beeps>
-					<beep frequency="196" duration="500"/>
-				</beeps>
+				<text_to_speech text="Nostrum" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -157,9 +156,6 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<beeps>
-					<beep frequency="196" duration="500"/>
-				</beeps>
 			</notify>
 		</actions>
 	</abnormality>

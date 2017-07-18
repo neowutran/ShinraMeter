@@ -9,9 +9,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="110" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -24,26 +22,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="110" duration="500"/>
-				</beeps>
-			</notify>
-		</actions>
-	</abnormality>
-
-	<!-- Velik's Mark -->
-	<abnormality active="false" rewarn_timeout_seconds="5" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
-		<abnormalities>
-			<abnormality>600502</abnormality>
-			<abnormality>600501</abnormality>
-			<abnormality>600500</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="220" duration="500"/>
-				</beeps>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
