@@ -50,7 +50,7 @@ namespace DamageMeter
             if (!entity.Info.Boss) { return; }
             if (NetworkController.Instance.Encounter != entity) {
                 NetworkController.Instance.NewEncounter = entity;
-                HudManager.Instance.AddBoss(entity);
+                if (BasicTeraData.Instance.WindowData.EnableChat) HudManager.Instance.AddBoss(entity);
             }
         }
 
