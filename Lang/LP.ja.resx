@@ -671,4 +671,31 @@
   <data name="NoAbnormalsInHUD" xml:space="preserve">
     <value>HPバー下の異常アイコンを無効</value>
   </data>
+  <data name="EnableOverlay" xml:space="preserve">
+    <value>オーバーレイ有効</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>ユーザー名</value>
+  </data>
+  <data name="DpsUploadUrl" xml:space="preserve">
+    <value>DPSアップロードURL</value>
+  </data>
+  <data name="AllowedAreaUrl" xml:space="preserve">
+    <value>許可するエリアのURL</value>
+  </data>
+  <data name="GlyphUploadURL" xml:space="preserve">
+    <value>紋章アップロードURL</value>
+  </data>
+  <data name="Bad_server_url" xml:space="preserve">
+    <value>不正なサーバーURL</value>
+  </data>
+  <data name="RemoveDpsServer" xml:space="preserve">
+    <value>DPSサーバー削除</value>
+  </data>
+  <data name="AddDpsServer" xml:space="preserve">
+    <value>DPSサーバー追加</value>
+  </data>
+  <data name="Display_only_boss_hit_by_meter_user" xml:space="preserve">
+    <value>メーターユーザーが攻撃したボスだけ表示</value>
+  </data>
 </root>
