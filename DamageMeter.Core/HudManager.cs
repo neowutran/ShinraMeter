@@ -32,12 +32,19 @@ namespace DamageMeter
         public void AddOrUpdateBoss(S_BOSS_GAGE_INFO message)
         {
             var boss = _bosses.FirstOrDefault(x => x.EntityId == message.EntityId);
-            if (boss == null)
+            if (boss == null && message.HpRemaining > 0)
             {
                 var bossEntity = NetworkController.Instance.EntityTracker.GetOrNull(message.EntityId) as NpcEntity;
                 if (bossEntity == null) { return; }
                 boss = new Boss(bossEntity, Visibility.Visible);
                 _bosses.Add(boss);
+            }
+            else if (boss == null) return;
+            else if (message.HpRemaining <= 0)
+            {
+                _bosses.Remove(boss);
+                boss.Dispose();
+                return;
             }
             boss.MaxHP = message.TotalHp;
             boss.CurrentHP = message.HpRemaining;
@@ -48,7 +55,9 @@ namespace DamageMeter
         {   
             var boss = _bosses.FirstOrDefault(x => x.EntityId == hpChange.TargetId);
             if (boss == null){return;}
-            boss.CurrentHP = hpChange.HpRemaining;
+            if (hpChange.HpRemaining > 0) {boss.CurrentHP = hpChange.HpRemaining;}
+            else {_bosses.Remove(boss); boss.Dispose();}
+
         }
 
         public void AddBoss(NpcEntity entity)

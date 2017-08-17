@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Data.Actions.Notify;
@@ -49,7 +50,7 @@ namespace Data
                 foreach (var pclass in Enum.GetNames(typeof(PlayerClass)))
                 {
                     var fname = Path.Combine(_basicData.ResourceDirectory, "config/events/events-" + pclass.ToLowerInvariant() + ".xml");
-                    if (!File.Exists(fname)) { File.WriteAllText(fname, LP.ResourceManager.GetString("events_" + pclass.ToLowerInvariant())); }
+                    if (!File.Exists(fname)) { File.WriteAllText(fname, LP.ResourceManager.GetString("events_" + pclass.ToLowerInvariant()), Encoding.UTF8); }
                 }
             }
             catch (Exception ex) { BasicTeraData.LogError(ex.Message, true); }
