@@ -73,6 +73,7 @@ namespace DamageMeter.UI
             NoPaste.Status = BasicTeraData.Instance.WindowData.NoPaste;
             NoAbnormalsInHUD.Status = BasicTeraData.Instance.WindowData.NoAbnormalsInHUD;
             OverlaySwitch.Status = BasicTeraData.Instance.WindowData.EnableOverlay;
+            DisplayOnlyBossHitByMeterUser.Status = BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             //PerformanceTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Performance.Source;
             SettingsTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Settings.Source;
