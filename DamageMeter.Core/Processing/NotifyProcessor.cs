@@ -316,8 +316,9 @@ namespace DamageMeter.Processing
         {
             if (type != CrestType.Reset) { return; }
             var meterUser = NetworkController.Instance.EntityTracker.MeterUser;
-            var bossIds = _lastBosses.Where(x => x.Value > 0).Select(x => x.Key).ToList();
-            if (meterUser == null || !bossIds.Any()) { return; }
+            //var bossIds = _lastBosses.Where(x => x.Value > 0).Select(x => x.Key).ToList();
+            //if (meterUser == null || !bossIds.Any()) { return; }
+            if (meterUser == null) { return; }
             var teraActive = TeraWindow.IsTeraActive();
 
             foreach (var e in BasicTeraData.Instance.EventsData.Cooldown)
