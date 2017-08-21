@@ -128,7 +128,7 @@ namespace DamageMeter
                     _toDelete = new List<Entity>();
                 }
                 
-                if((BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser && NetworkController.Instance.PlayerTracker.Me().User.Id == entitySource.Id) || !BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser)
+                if((BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser && NetworkController.Instance.EntityTracker.MeterUser.Id == entitySource.Id) || !BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser)
                 {
                     UpdateCurrentBoss(entity);
                 }

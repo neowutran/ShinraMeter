@@ -685,4 +685,7 @@
   <data name="AddDpsServer" xml:space="preserve">
     <value>Добавить сервер статистики</value>
   </data>
+  <data name="Display_only_boss_hit_by_meter_user" xml:space="preserve">
+    <value>Переключать боссов только при атаке пользователем метра</value>
+  </data>
 </root>
