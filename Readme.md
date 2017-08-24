@@ -36,6 +36,7 @@ https://github.com/Foglio1024/Tera-custom-cooldowns
 Somehow related project
 --------------------
 https://github.com/neowutran/S1UI_GPU
+
 https://github.com/neowutran/S1UI_chat2
 
 
