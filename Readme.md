@@ -25,10 +25,18 @@ Thanks to Se7en-Hellas for the new Shinra logo =)
 
 Se7en-Hellas website: http://se7enhellas.wixsite.com/mylogogr 
 
+Shinra Manager by Dark (external contributor) 
+---------------
+https://github.com/SaltyMonkey/ShinraManager
 
-Legacy deleted work
+Cool UI project by Folgio
+-------------------
+https://github.com/Foglio1024/Tera-custom-cooldowns
+
+Somehow related project
 --------------------
-By Vysse: Shinra launcher
+https://github.com/neowutran/S1UI_GPU
+https://github.com/neowutran/S1UI_chat2
 
 
 Original Readme
