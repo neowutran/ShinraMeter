@@ -700,4 +700,7 @@ Reset and paused until map change or relog.</value>
   <data name="Display_only_boss_hit_by_meter_user" xml:space="preserve">
     <value>Display only boss hit by meter user</value>
   </data>
+  <data name="Unknown_client_version" xml:space="preserve">
+    <value>Unknown client version, meter require update to continue working: </value>
+  </data>
 </root>
