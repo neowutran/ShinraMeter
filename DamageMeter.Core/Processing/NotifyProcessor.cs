@@ -334,8 +334,8 @@ namespace DamageMeter.Processing
                     var skill = BasicTeraData.Instance.SkillDatabase.GetOrNull(meterUser, skillId);
                     if (notifyAction.Balloon != null)
                     {
-                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{skill_name}", skill?.Name ?? skillId.ToString());
-                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{skill_name}", skill?.Name ?? skillId.ToString());
+                        notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{skill_name}", skill?.Name ?? skillId.ToString()).Replace("{skill_id}",skillId.ToString());
+                        notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{skill_name}", skill?.Name ?? skillId.ToString()).Replace("{skill_id}", skillId.ToString());
                     }
                     if (notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
                     {
