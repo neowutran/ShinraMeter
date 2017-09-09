@@ -325,7 +325,7 @@ namespace DamageMeter.Processing
             {
                 if (e.Key.InGame != teraActive) { continue; }
                 var cooldownEvent = (CooldownEvent) e.Key;
-                if (cooldownEvent.SkillId != skillId) { continue; }
+                if (cooldownEvent.SkillId != 0 && cooldownEvent.SkillId != skillId) { continue; }
 
                 foreach (var a in e.Value)
                 {

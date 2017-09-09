@@ -250,7 +250,7 @@ namespace Data
             var default_priority = root.Attribute("priority")?.Value ?? "5";
             foreach (var abnormality in root.Elements("cooldown"))
             {
-                var skillId = int.Parse(abnormality.Attribute("skill_id").Value);
+                var skillId = int.Parse(abnormality.Attribute("skill_id")?.Value ?? "0");
                 var onlyResetted = bool.Parse(abnormality.Attribute("only_resetted")?.Value ?? "True");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
