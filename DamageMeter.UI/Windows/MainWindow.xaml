@@ -230,17 +230,22 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="29" />
+                <ColumnDefinition Width="29" />
             </Grid.ColumnDefinitions>
 
             <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
                       SelectionChanged="ListEncounter_OnSelectionChanged"
                       x:Name="ListEncounter" HorizontalAlignment="Left"
-                      Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="235" Width="Auto"
+                      Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="205" Width="Auto"
                       HorizontalContentAlignment="Left"
                       MinHeight="29" Height="5" Grid.Column="0" />
-
+            <Image 
+                    Grid.Column="1" Stretch="Fill" x:Name="HideNames"
+                   HorizontalAlignment="Left"  Style="{StaticResource ImageButton}"
+                   Height="29" VerticalAlignment="Top" Width="29" MouseLeftButtonDown="HideNames_MouseLeftButtonDown" >
+            </Image>
             <Image PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown" 
-                    Grid.Column="1" Stretch="Fill" x:Name="CloseWindow"
+                    Grid.Column="2" Stretch="Fill" x:Name="CloseWindow"
                    HorizontalAlignment="Left"  Style="{StaticResource ImageButton}"
                    Height="29" VerticalAlignment="Top" Width="29" >
             </Image>
@@ -303,6 +308,19 @@
                            Height="29" VerticalAlignment="Top" Width="29" />
                             <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowBossGage"
                                    Content="{Binding Source={x:Static l:LP.ShowBossGage}}" Foreground="White"
+                                   FontSize="14" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" x:Name="ShowHotkeysIcon" PreviewMouseLeftButtonDown="ShowHotkeysInfo"
+                           Stretch="Fill"
+                           HorizontalAlignment="Left"
+                           Height="29" VerticalAlignment="Top" Width="29" />
+                            <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowHotkeysInfo"
+                                   Content="Show hotkeys" Foreground="White"
                                    FontSize="14" />
                         </Grid>
                     </ContextMenu>

@@ -81,6 +81,8 @@ namespace DamageMeter.UI
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
             Chrono.ToolTip = LP.MainWindow_Only_boss;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
+            HideNames.Source = BasicTeraData.Instance.ImageDatabase.HideNicknames.Source;
+            ShowHotkeysIcon.Source = BasicTeraData.Instance.ImageDatabase.Hotkeys.Source;
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
             Chatbox.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
@@ -105,7 +107,7 @@ namespace DamageMeter.UI
         }
 
         public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
-
+       
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
             Exit();
@@ -209,6 +211,7 @@ namespace DamageMeter.UI
                 KeyboardHook.Instance.RegisterKeyboardHook();
                 _keyboardInitialized = true;
             }
+            
             else { if (KeyboardHook.Instance.SetHotkeys(teraWindowActive)) { StayTopMost(); } }
 
             if (!BasicTeraData.Instance.WindowData.AlwaysVisible)
@@ -525,6 +528,11 @@ namespace DamageMeter.UI
             e.Handled = true;
             _bossGageBar.ShowWindow();
         }
+        private void ShowHotkeysInfo(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            _bossGageBar.ShowWindow();
+        }
 
         public void PauseState(bool pause)
         {
@@ -545,6 +553,15 @@ namespace DamageMeter.UI
         }
 
         private delegate void ChangeTitle(string servername);
+
+        private void HideNames_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Controls.Count == 0) return;
+            foreach (var it in Controls)
+            {
+                it.Value.SwitchHiddenMode();
+            }
+        }
     }
 
     public static class Extensions
