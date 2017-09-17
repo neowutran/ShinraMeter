@@ -31,7 +31,8 @@ namespace Data
             Performance = new Image { Source = new BitmapImage(new Uri(folder + "performance.png")) };
             Action = new Image { Source = new BitmapImage(new Uri(folder + "action.png")) };
             Links = new Image { Source = new BitmapImage(new Uri(folder + "links.png")) };
-
+            HideNicknames = new Image { Source = new BitmapImage(new Uri(folder + "nicknames_hide.png")) };
+            Hotkeys = new Image { Source = new BitmapImage(new Uri(folder + "hotkeys.png")) };
             Excel = new Image { Source = new BitmapImage(new Uri(folder + "excel.png")) };
             Upload = new Image { Source = new BitmapImage(new Uri(folder + "upload.png")) };
             Reset = new Image { Source = new BitmapImage(new Uri(folder + "reset.png")) };
@@ -63,6 +64,8 @@ namespace Data
 
         public Image History { get; }
         public Image Close { get; }
+        public Image HideNicknames { get; }
+        public Image Hotkeys { get; }
 
         public Image Chronobar { get; }
 
