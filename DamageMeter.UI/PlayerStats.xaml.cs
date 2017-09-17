@@ -111,6 +111,19 @@ namespace DamageMeter.UI
             _windowSkill?.SetClickThrou();
         }
 
+        public void SwitchHiddenMode()
+        {
+            if (LabelName.Content.ToString() == PlayerName)
+            {
+                //Fixed amount of symbols because im lazy for dynamic generation based on PlayerName.Length (c) Dark
+                LabelName.Content = "**********";
+            }
+            else
+            {
+                LabelName.Content = PlayerName;
+            }
+        }
+
         public void UnsetClickThrou()
         {
             _windowSkill?.UnsetClickThrou();
