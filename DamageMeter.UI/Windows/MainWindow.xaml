@@ -320,7 +320,7 @@
                            HorizontalAlignment="Left"
                            Height="29" VerticalAlignment="Top" Width="29" />
                             <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowHotkeysInfo"
-                                   Content="Show hotkeys" Foreground="White"
+                                   Content="{Binding Source={x:Static l:LP.MainWindow_Show_hotkeys}}" Foreground="White"
                                    FontSize="14" />
                         </Grid>
                     </ContextMenu>

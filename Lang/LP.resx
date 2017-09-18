@@ -126,6 +126,12 @@
   <data name="MainWindow_Only_boss" xml:space="preserve">
     <value>Only boss</value>
   </data>
+  <data name="MainWindow_Hide_users" xml:space="preserve">
+    <value>Hide users</value>
+  </data>
+  <data name="MainWindow_Show_hotkeys" xml:space="preserve">
+    <value>Show hotkeys</value>
+  </data>
   <data name="MainWindow_Fatal_error" xml:space="preserve">
     <value>An fatal error has be found, please see the error.log file for more information.</value>
   </data>

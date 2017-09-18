@@ -126,6 +126,12 @@
   <data name="MainWindow_Only_boss" xml:space="preserve">
     <value>Только босс</value>
   </data>
+  <data name="MainWindow_Hide_users" xml:space="preserve">
+    <value>Скрыть имена</value>
+  </data>
+  <data name="MainWindow_Show_hotkeys" xml:space="preserve">
+    <value>Показать хоткеи</value>
+  </data>
   <data name="MainWindow_Fatal_error" xml:space="preserve">
     <value>Фатальная ошибка, подробности в файле error.log.</value>
   </data>
