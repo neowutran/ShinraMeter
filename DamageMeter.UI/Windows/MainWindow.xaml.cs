@@ -42,7 +42,7 @@ namespace DamageMeter.UI
         private readonly DispatcherTimer _dispatcherTimer;
         private readonly EntityStatsMain _entityStats;
         private readonly PopupNotification _popupNotification;
-
+        private HotkeysWindow _hotkeyWindow;
         public D3D9Render.Renderer DXrender;
 
         private readonly TeradpsHistory _windowHistory;
@@ -76,12 +76,14 @@ namespace DamageMeter.UI
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             _dispatcherTimer.Start();
+          
             if (BasicTeraData.Instance.WindowData.EnableOverlay) DXrender = new D3D9Render.Renderer();
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
             Chrono.ToolTip = LP.MainWindow_Only_boss;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             HideNames.Source = BasicTeraData.Instance.ImageDatabase.HideNicknames.Source;
+            HideNames.ToolTip = LP.MainWindow_Hide_users;
             ShowHotkeysIcon.Source = BasicTeraData.Instance.ImageDatabase.Hotkeys.Source;
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
@@ -417,6 +419,12 @@ namespace DamageMeter.UI
             _entityStats.Owner = this;
             _bossGageBar.Owner = this;
             _windowHistory.Owner = this;
+
+            _hotkeyWindow = new HotkeysWindow
+            {
+                Owner = this
+            };
+
             if (BasicTeraData.Instance.WindowData.RememberPosition)
             {
                 LastSnappedPoint=BasicTeraData.Instance.WindowData.Location;
@@ -530,8 +538,8 @@ namespace DamageMeter.UI
         }
         private void ShowHotkeysInfo(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
-            _bossGageBar.ShowWindow();
+            _hotkeyWindow.Owner = this;
+            _hotkeyWindow.Show();
         }
 
         public void PauseState(bool pause)
