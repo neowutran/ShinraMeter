@@ -1100,7 +1100,29 @@ namespace Lang {
                 return ResourceManager.GetString("MainWindow_Only_boss", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hide names.
+        /// </summary>
+        public static string MainWindow_Hide_users
+        {
+            get
+            {
+                return ResourceManager.GetString("MainWindow_Hide_users", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hide names.
+        /// </summary>
+        public static string MainWindow_Show_hotkeys
+        {
+            get
+            {
+                return ResourceManager.GetString("MainWindow_Show_hotkeys", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Mana.
         /// </summary>

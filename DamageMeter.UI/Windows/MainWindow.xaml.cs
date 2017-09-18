@@ -42,7 +42,7 @@ namespace DamageMeter.UI
         private readonly DispatcherTimer _dispatcherTimer;
         private readonly EntityStatsMain _entityStats;
         private readonly PopupNotification _popupNotification;
-
+        private HotkeysWindow _hotkeyWindow;
         public D3D9Render.Renderer DXrender;
 
         private readonly TeradpsHistory _windowHistory;
@@ -50,7 +50,7 @@ namespace DamageMeter.UI
         private bool _keyboardInitialized;
         private bool _topMost = true;
         private bool _paused = false;
-
+        private bool _namesMustBeHidden = false;
         internal bool ForceWindowVisibilityHidden;
         //private readonly SystemTray _systemTray;
 
@@ -76,11 +76,15 @@ namespace DamageMeter.UI
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             _dispatcherTimer.Start();
+          
             if (BasicTeraData.Instance.WindowData.EnableOverlay) DXrender = new D3D9Render.Renderer();
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
             Chrono.ToolTip = LP.MainWindow_Only_boss;
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
+            HideNames.Source = BasicTeraData.Instance.ImageDatabase.HideNicknames.Source;
+            HideNames.ToolTip = LP.MainWindow_Hide_users;
+            ShowHotkeysIcon.Source = BasicTeraData.Instance.ImageDatabase.Hotkeys.Source;
             History.Source = BasicTeraData.Instance.ImageDatabase.History.Source;
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
             Chatbox.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
@@ -105,7 +109,7 @@ namespace DamageMeter.UI
         }
 
         public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
-
+       
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
             Exit();
@@ -209,6 +213,7 @@ namespace DamageMeter.UI
                 KeyboardHook.Instance.RegisterKeyboardHook();
                 _keyboardInitialized = true;
             }
+            
             else { if (KeyboardHook.Instance.SetHotkeys(teraWindowActive)) { StayTopMost(); } }
 
             if (!BasicTeraData.Instance.WindowData.AlwaysVisible)
@@ -256,7 +261,7 @@ namespace DamageMeter.UI
                     visiblePlayerStats.Add(playerStats.Source);
                     if (playerStatsControl != null) { continue; }
                     playerStatsControl = new PlayerStats(playerStats, statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), message.StatsSummary.EntityInformation,
-                        message.Skills, message.Abnormals.Get(playerStats.Source));
+                        message.Skills, message.Abnormals.Get(playerStats.Source), _namesMustBeHidden);
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
                 DXrender?.Draw(statsDamage.ToClassInfo(message.StatsSummary.EntityInformation.TotalDamage, message.StatsSummary.EntityInformation.Interval));
@@ -295,7 +300,7 @@ namespace DamageMeter.UI
                     }
                     Players.Items.Add(Controls[item.Source]);
                     Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), message.StatsSummary.EntityInformation, message.Skills,
-                        message.Abnormals.Get(item.Source), message.TimedEncounter);
+                        message.Abnormals.Get(item.Source), message.TimedEncounter, _namesMustBeHidden);
                 }
 
                 if (BasicTeraData.Instance.WindowData.InvisibleUi && !_paused)
@@ -414,6 +419,12 @@ namespace DamageMeter.UI
             _entityStats.Owner = this;
             _bossGageBar.Owner = this;
             _windowHistory.Owner = this;
+
+            _hotkeyWindow = new HotkeysWindow
+            {
+                Owner = this
+            };
+
             if (BasicTeraData.Instance.WindowData.RememberPosition)
             {
                 LastSnappedPoint=BasicTeraData.Instance.WindowData.Location;
@@ -525,6 +536,11 @@ namespace DamageMeter.UI
             e.Handled = true;
             _bossGageBar.ShowWindow();
         }
+        private void ShowHotkeysInfo(object sender, MouseButtonEventArgs e)
+        {
+            _hotkeyWindow.Owner = this;
+            _hotkeyWindow.Show();
+        }
 
         public void PauseState(bool pause)
         {
@@ -545,6 +561,15 @@ namespace DamageMeter.UI
         }
 
         private delegate void ChangeTitle(string servername);
+
+        private void HideNames_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _namesMustBeHidden = !_namesMustBeHidden;
+            foreach (var itm in Controls)
+            {
+                itm.Value.SwitchHiddenMode();
+            }
+        }
     }
 
     public static class Extensions
