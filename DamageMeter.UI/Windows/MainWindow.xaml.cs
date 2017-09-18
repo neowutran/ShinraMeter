@@ -50,7 +50,7 @@ namespace DamageMeter.UI
         private bool _keyboardInitialized;
         private bool _topMost = true;
         private bool _paused = false;
-
+        private bool _namesMustBeHidden = false;
         internal bool ForceWindowVisibilityHidden;
         //private readonly SystemTray _systemTray;
 
@@ -259,7 +259,7 @@ namespace DamageMeter.UI
                     visiblePlayerStats.Add(playerStats.Source);
                     if (playerStatsControl != null) { continue; }
                     playerStatsControl = new PlayerStats(playerStats, statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), message.StatsSummary.EntityInformation,
-                        message.Skills, message.Abnormals.Get(playerStats.Source));
+                        message.Skills, message.Abnormals.Get(playerStats.Source), _namesMustBeHidden);
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
                 DXrender?.Draw(statsDamage.ToClassInfo(message.StatsSummary.EntityInformation.TotalDamage, message.StatsSummary.EntityInformation.Interval));
@@ -298,7 +298,7 @@ namespace DamageMeter.UI
                     }
                     Players.Items.Add(Controls[item.Source]);
                     Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), message.StatsSummary.EntityInformation, message.Skills,
-                        message.Abnormals.Get(item.Source), message.TimedEncounter);
+                        message.Abnormals.Get(item.Source), message.TimedEncounter, _namesMustBeHidden);
                 }
 
                 if (BasicTeraData.Instance.WindowData.InvisibleUi && !_paused)
@@ -556,10 +556,10 @@ namespace DamageMeter.UI
 
         private void HideNames_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (Controls.Count == 0) return;
-            foreach (var it in Controls)
+            _namesMustBeHidden = !_namesMustBeHidden;
+            foreach (var itm in Controls)
             {
-                it.Value.SwitchHiddenMode();
+                itm.Value.SwitchHiddenMode();
             }
         }
     }

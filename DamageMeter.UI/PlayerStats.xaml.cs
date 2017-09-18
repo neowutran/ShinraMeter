@@ -23,9 +23,9 @@ namespace DamageMeter.UI
         private bool _timedEncounter;
         private Skills _windowSkill;
         public ImageSource Image;
-
+        private string HiddenName = "**********";
         public PlayerStats(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playeHealDealt, EntityInformation entityInformation,
-            Database.Structures.Skills skills, PlayerAbnormals buffs)
+            Database.Structures.Skills skills, PlayerAbnormals buffs, bool hidden)
         {
             InitializeComponent();
             PlayerDamageDealt = playerDamageDealt;
@@ -35,8 +35,13 @@ namespace DamageMeter.UI
             _buffs = buffs;
             Image = ClassIcons.Instance.GetImage(PlayerDamageDealt.Source.Class).Source;
             Class.Source = Image;
-            LabelName.Content = PlayerName;
+            LabelNameSet(hidden);
             LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
+        }
+
+        private void LabelNameSet(bool hidden)
+        {
+            LabelName.Content = (hidden) ? HiddenName : PlayerName;
         }
 
         public PlayerDamageDealt PlayerDamageDealt { get; set; }
@@ -68,8 +73,9 @@ namespace DamageMeter.UI
         public string DamagePart => Math.Round((double) PlayerDamageDealt.Amount * 100 / EntityInformation.TotalDamage) + "%";
 
         public void Repaint(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playerHealDealt, EntityInformation entityInformation,
-            Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
+            Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter, bool _hidden)
         {
+            LabelNameSet(_hidden);
             PlayerHealDealt = playerHealDealt;
             EntityInformation = entityInformation;
             PlayerDamageDealt = playerDamageDealt;
@@ -116,7 +122,7 @@ namespace DamageMeter.UI
             if (LabelName.Content.ToString() == PlayerName)
             {
                 //Fixed amount of symbols because im lazy for dynamic generation based on PlayerName.Length (c) Dark
-                LabelName.Content = "**********";
+                LabelName.Content = HiddenName;
             }
             else
             {
