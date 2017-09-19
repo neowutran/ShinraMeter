@@ -259,6 +259,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blur player names.
+        /// </summary>
+        public static string Blur_player_names {
+            get {
+                return ResourceManager.GetString("Blur_player_names", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boss.
         /// </summary>
         public static string Boss {

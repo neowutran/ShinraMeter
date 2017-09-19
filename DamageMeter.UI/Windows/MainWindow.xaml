@@ -230,18 +230,26 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="29" />
+                <ColumnDefinition Width="29" />
             </Grid.ColumnDefinitions>
 
             <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
                       SelectionChanged="ListEncounter_OnSelectionChanged"
                       x:Name="ListEncounter" HorizontalAlignment="Left"
-                      Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="235" Width="Auto"
+                      Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="205" Width="Auto"
                       HorizontalContentAlignment="Left"
                       MinHeight="29" Height="5" Grid.Column="0" />
 
+            <ToggleButton  
+                   Grid.Column="1" x:Name="HideNames"
+                   HorizontalAlignment="Left" Style="{StaticResource ToggleButtonStyle}"
+                   Height="29" VerticalAlignment="Top" Width="29" >
+                <Image Name="HideNamesImage"/>
+            </ToggleButton>
+
             <Image PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown" 
-                    Grid.Column="1" Stretch="Fill" x:Name="CloseWindow"
-                   HorizontalAlignment="Left"  Style="{StaticResource ImageButton}"
+                    Grid.Column="2" Stretch="Fill" x:Name="CloseWindow"
+                   HorizontalAlignment="Right"  Style="{StaticResource ImageButton}"
                    Height="29" VerticalAlignment="Top" Width="29" >
             </Image>
         </Grid>

@@ -20,6 +20,7 @@ namespace Data
             Chat = new Image {Source = new BitmapImage(new Uri(folder + "chat.png"))};
             Link = new Image {Source = new BitmapImage(new Uri(folder + "link.png"))};
             BossGage = new Image {Source = new BitmapImage(new Uri(folder + "eye.png"))};
+            HideNicknames = new Image { Source = new BitmapImage(new Uri(folder + "blur.png")) };
             Whisper = new Image { Source = new BitmapImage(new Uri(folder + "whisper.png")) };
             Info = new Image { Source = new BitmapImage(new Uri(folder + "info.png")) };
             DoneCircle = new Image { Source = new BitmapImage(new Uri(folder + "done_circle.png")) };
@@ -60,6 +61,7 @@ namespace Data
         public Image Config { get; }
         public Image Chat { get; }
         public Image BossGage { get; }
+        public Image HideNicknames { get; }
 
         public Image History { get; }
         public Image Close { get; }

@@ -694,4 +694,7 @@
   <data name="Unknown_client_version" xml:space="preserve">
     <value>Неизвестная версия клиента, для продолжения работы необходимо обновление: </value>
   </data>
+  <data name="Blur_player_names" xml:space="preserve">
+    <value>Скрыть имена игроков</value>
+  </data>
 </root>

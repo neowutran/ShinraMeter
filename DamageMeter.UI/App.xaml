@@ -116,6 +116,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <SolidColorBrush x:Key="ToggleButton.Static.Background" Color="#FF000000" />
+        <SolidColorBrush x:Key="ToggleButton.IsChecked.Background" Color="#FF414141" />
+        <SolidColorBrush x:Key="ToggleButton.MouseOver.Background" Color="#FF416399" />
         <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#FFF3F9FF" />
         <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#FF5593FF" />
         <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#FF212121" />
@@ -209,7 +212,27 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        <ControlTemplate TargetType="{x:Type ToggleButton}" x:Key="ToggleButtonTemplate">
+            <Border Background="{TemplateBinding Background}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    BorderBrush="{TemplateBinding BorderBrush}">
+                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template" Value="{StaticResource ToggleButtonTemplate}"/>
+            <Setter Property="Background" Value="{StaticResource ToggleButton.Static.Background}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ToggleButton.IsChecked.Background}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource ToggleButton.MouseOver.Background}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
         <sys:Double x:Key="ShadowDirection">-100</sys:Double>
         <sys:Double x:Key="ShadowOpacity">.3</sys:Double>
         <!--HUD-->

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -85,6 +86,8 @@ namespace DamageMeter.UI
             Config.Source = BasicTeraData.Instance.ImageDatabase.Config.Source;
             Chatbox.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
             BossGageImg.Source = BasicTeraData.Instance.ImageDatabase.BossGage.Source;
+            HideNamesImage.Source = BasicTeraData.Instance.ImageDatabase.HideNicknames.Source;
+            HideNames.ToolTip = LP.Blur_player_names;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new List<NpcEntity>(), null);
             Title = "Shinra Meter V" + UpdateManager.Version;
@@ -545,6 +548,8 @@ namespace DamageMeter.UI
         }
 
         private delegate void ChangeTitle(string servername);
+
+        public ToggleButton HideNames4Binding { get => HideNames;}
     }
 
     public static class Extensions
