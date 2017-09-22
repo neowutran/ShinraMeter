@@ -31,6 +31,7 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 using Microsoft.Win32;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace DamageMeter.UI
 {
@@ -550,6 +551,16 @@ namespace DamageMeter.UI
         private delegate void ChangeTitle(string servername);
 
         public ToggleButton HideNames4Binding { get => HideNames;}
+
+        private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            Footer.Visibility = Visibility.Visible;
+        }
+
+        private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            Footer.Visibility = Visibility.Collapsed;
+        }
     }
 
     public static class Extensions
