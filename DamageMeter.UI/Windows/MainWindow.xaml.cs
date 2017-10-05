@@ -112,6 +112,7 @@ namespace DamageMeter.UI
 
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
+            SaveWindowsPos();
             Exit();
         }
 
@@ -162,6 +163,12 @@ namespace DamageMeter.UI
             SetForegroundWindow(new WindowInteropHelper(this).Handle);
             if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application, LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
                     MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) { return; }
+            SaveWindowsPos();
+            Close();
+        }
+
+        internal void SaveWindowsPos()
+        {
             BasicTeraData.Instance.WindowData.BossGageStatus =
                 new WindowStatus(_bossGageBar.LastSnappedPoint ?? new Point(_bossGageBar.Left, _bossGageBar.Top), _bossGageBar.Visible, _bossGageBar.Scale);
             BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(_windowHistory.LastSnappedPoint ?? new Point(_windowHistory.Left, _windowHistory.Top),
@@ -170,10 +177,7 @@ namespace DamageMeter.UI
                 _entityStats.Visible, _entityStats.Scale);
             BasicTeraData.Instance.WindowData.PopupNotificationLocation = _popupNotification.LastSnappedPoint ??
                                                                           new Point(_popupNotification.Left, _popupNotification.Top);
-            Close();
         }
-
-
 
         public void Exit()
         {
