@@ -56,20 +56,7 @@
 			</notify>
 		</actions>
 	</abnormality>
-	
-	<!-- Hurricane -->
-	<abnormality active="false" ingame="true" trigger="Added" target="Boss">
-		<abnormalities>
-			<abnormality>60010</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+3" />
-			</notify>
-		</actions>
-	</abnormality> 
-	
+		
 	<!-- Joy of party is at 100% (everyone is in the dungeons) -->
 	<abnormality  active="true" ingame="false" trigger="Added" target="Self">
 		<abnormalities>
