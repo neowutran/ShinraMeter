@@ -138,6 +138,7 @@ namespace DamageMeter.UI
 
         private void RefreshClickThrou()
         {
+            if (!_needRefreshClickThrou) { return; }
             if (BasicTeraData.Instance.WindowData.ClickThrou)
             {
                 SetClickThrou();
