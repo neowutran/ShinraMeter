@@ -68,10 +68,6 @@
       <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
       <Name>Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Lang\Lang.csproj">
-      <Project>{220fef0f-4a83-4ab8-9435-f9bc09b9039f}</Project>
-      <Name>Lang</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

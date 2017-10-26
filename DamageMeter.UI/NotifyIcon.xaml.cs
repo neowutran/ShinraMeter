@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,7 +10,6 @@ using DamageMeter.AutoUpdate;
 using DamageMeter.D3D9Render;
 using Data;
 using Lang;
-using Newtonsoft.Json;
 using System.Windows.Media.Animation;
 using System.Collections.Generic;
 
