@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
@@ -26,19 +28,21 @@ namespace Data
 
     public class WindowData
     {
-        private readonly FileStream _filestream;
+        private FileStream _filestream;
         private readonly XDocument _xml;
+        private readonly String _windowFile;
 
 
         public WindowData(BasicTeraData basicData)
         {
+
             // Load XML File
-            var windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
+            _windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
 
             try
             {
-                var attrs = File.GetAttributes(windowFile);
-                File.SetAttributes(windowFile, attrs & ~FileAttributes.ReadOnly);
+                var attrs = File.GetAttributes(_windowFile);
+                File.SetAttributes(_windowFile, attrs & ~FileAttributes.ReadOnly);
             }
             catch
             {
@@ -47,145 +51,216 @@ namespace Data
 
             try
             {
-                _filestream = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 _xml = XDocument.Load(_filestream);
             }
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 Save();
-                _filestream = new FileStream(windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 return;
             }
             catch { return; }
-
-            Parse("lf_delay", "LFDelay");
-            Parse("number_of_players_displayed", "NumberOfPlayersDisplayed");
-            Parse("meter_user_on_top", "MeterUserOnTop");
-            Parse("excel_save_directory", "ExcelSaveDirectory");
+            Parse("lf_delay", "lFDelay");
+            Parse("number_of_players_displayed", "numberOfPlayersDisplayed");
+            Parse("meter_user_on_top", "meterUserOnTop");
+            Parse("excel_save_directory", "excelSaveDirectory");
 
             if (ExcelSaveDirectory == "") { ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/"); }
-            Parse("display_only_boss_hit_by_meter_user", "DisplayOnlyBossHitByMeterUser");
-            Parse("show_crit_damage_rate", "ShowCritDamageRate");
-            Parse("showhealcrit", "ShowHealCrit");
-            Parse("showtimeleft", "ShowTimeLeft");
-            Parse("partyonly", "PartyOnly");
-            Parse("excel", "Excel");
-            Parse("scale", "Scale");
-            Parse("always_visible", "AlwaysVisible");
-            Parse("remember_position", "RememberPosition");
-            Parse("debug", "Debug");
-            Parse("topmost", "Topmost");
-            Parse("invisible_ui_when_no_stats", "InvisibleUi");
-            Parse("allow_transparency", "AllowTransparency");
-            Parse("winpcap", "Winpcap");
-            Parse("autoupdate", "AutoUpdate");
-            Parse("only_bosses", "OnlyBoss");
-            Parse("detect_bosses_only_by_hp_bar", "DetectBosses");
-            Parse("excel_path_template", "ExcelPathTemplate");
-            Parse("low_priority", "LowPriority");
-            Parse("format_paste_string", "FormatPasteString");
-            Parse("remove_tera_alt_enter_hotkey", "RemoveTeraAltEnterHotkey");
-            Parse("enable_chat_and_notifications", "EnableChat");
-            Parse("copy_inspect", "CopyInspect");
-            Parse("excel_cma_dps_seconds", "ExcelCMADPSSeconds");
-            Parse("disable_party_event", "DisablePartyEvent");
-            Parse("show_afk_events_ingame", "ShowAfkEventsIngame");
-            Parse("mute_sound", "MuteSound");
-            Parse("idle_reset_timeout", "IdleResetTimeout");
-            Parse("no_paste", "NoPaste");
-            Parse("no_abnormals_in_hud", "NoAbnormalsInHUD");
-            Parse("enable_overlay", "EnableOverlay");
-            ParseColor("say_color", "SayColor");
-            ParseColor("alliance_color", "AllianceColor");
-            ParseColor("area_color", "AreaColor");
-            ParseColor("guild_color", "GuildColor");
-            ParseColor("whisper_color", "WhisperColor");
-            ParseColor("general_color", "GeneralColor");
-            ParseColor("group_color", "GroupColor");
-            ParseColor("trading_color", "TradingColor");
-            ParseColor("emotes_color", "EmotesColor");
-            ParseColor("private_channel_color", "PrivateChannelColor");
+            Parse("display_only_boss_hit_by_meter_user", "displayOnlyBossHitByMeterUser");
+            Parse("show_crit_damage_rate", "showCritDamageRate");
+            Parse("showhealcrit", "showHealCrit");
+            Parse("showtimeleft", "showTimeLeft");
+            Parse("partyonly", "partyOnly");
+            Parse("excel", "excel");
+            Parse("scale", "scale");
+            Parse("always_visible", "alwaysVisible");
+            Parse("remember_position", "rememberPosition");
+            Parse("debug", "debug");
+            Parse("topmost", "topmost");
+            Parse("invisible_ui_when_no_stats", "invisibleUi");
+            Parse("allow_transparency", "allowTransparency");
+            Parse("winpcap", "winpcap");
+            Parse("autoupdate", "autoUpdate");
+            Parse("only_bosses", "onlyBoss");
+            Parse("detect_bosses_only_by_hp_bar", "detectBosses");
+            Parse("excel_path_template", "excelPathTemplate");
+            Parse("low_priority", "lowPriority");
+            Parse("format_paste_string", "formatPasteString");
+            Parse("remove_tera_alt_enter_hotkey", "removeTeraAltEnterHotkey");
+            Parse("enable_chat_and_notifications", "enableChat");
+            Parse("copy_inspect", "copyInspect");
+            Parse("excel_cma_dps_seconds", "excelCMADPSSeconds");
+            Parse("disable_party_event", "disablePartyEvent");
+            Parse("show_afk_events_ingame", "showAfkEventsIngame");
+            Parse("mute_sound", "muteSound");
+            Parse("idle_reset_timeout", "idleResetTimeout");
+            Parse("no_paste", "noPaste");
+            Parse("no_abnormals_in_hud", "noAbnormalsInHUD");
+            Parse("enable_overlay", "enableOverlay");
+            Parse("click_throu", "clickThrou");
+            Parse("packets_collect", "packetsCollect");
+
+            ParseColor("say_color", "sayColor");
+            ParseColor("alliance_color", "allianceColor");
+            ParseColor("area_color", "areaColor");
+            ParseColor("guild_color", "guildColor");
+            ParseColor("whisper_color", "whisperColor");
+            ParseColor("general_color", "generalColor");
+            ParseColor("group_color", "groupColor");
+            ParseColor("trading_color", "tradingColor");
+            ParseColor("emotes_color", "emotesColor");
+            ParseColor("private_channel_color", "privateChannelColor");
             PopupNotificationLocation = ParseLocation(_xml.Root, "popup_notification_location");
             Location = ParseLocation(_xml.Root);
-            ParseWindowStatus("boss_gage_window", "BossGageStatus");
-            ParseWindowStatus("debuff_uptime_window", "DebuffsStatus");
-            ParseWindowStatus("upload_history_window", "HistoryStatus");
+            ParseWindowStatus("boss_gage_window", "bossGageStatus");
+            ParseWindowStatus("debuff_uptime_window", "debuffsStatus");
+            ParseWindowStatus("upload_history_window", "historyStatus");
             ParseOpacity();
             ParseOldDpsServers();
             ParseDpsServers();
             ParseLanguage();
             ParseUILanguage();
-            Parse("date_in_excel_path", "DateInExcelPath");
+            Parse("date_in_excel_path", "dateInExcelPath");
             if (DateInExcelPath) { ExcelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
+            DpsServers.CollectionChanged += DpsServers_CollectionChanged;
         }
 
-        public bool EnableOverlay = false;
-        public Color WhisperColor = Brushes.Pink.Color;
-        public Color AllianceColor = Brushes.Green.Color;
-        public Color AreaColor = Brushes.Purple.Color;
-        public Color GeneralColor = Brushes.Yellow.Color;
-        public Color GroupColor = Brushes.Cyan.Color;
-        public Color GuildColor = Brushes.LightGreen.Color;
-        public Color RaidColor = Brushes.Orange.Color;
-        public Color SayColor = Brushes.White.Color;
-        public Color TradingColor = Brushes.Sienna.Color;
-        public Color EmotesColor = Brushes.White.Color;
-        public Color PrivateChannelColor = Brushes.Red.Color;
-        public Point Location = new Point(0, 0);
-        public Point PopupNotificationLocation = new Point(0, 0);
-        public string Language = "Auto";
-        public string UILanguage = "Auto";
-        public double MainWindowOpacity = 0.5;
-        public double OtherWindowOpacity = 0.9;
-        public int LFDelay = 150;
-        public WindowStatus BossGageStatus = new WindowStatus(new Point(0, 0), true, 1);
-        public WindowStatus DebuffsStatus = new WindowStatus(new Point(0, 0), false, 1);
-        public WindowStatus HistoryStatus = new WindowStatus(new Point(0, 0), false, 1);
-        public string ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
-        public double Scale = 1;
-        public bool PartyOnly = false;
-        public bool RememberPosition = true;
-        public bool AutoUpdate = true;
-        public bool Winpcap = true;
-        public bool InvisibleUi = false;
-        public bool NoPaste = false;
-        public bool AllowTransparency = true;
-        public bool AlwaysVisible = false;
-        public bool Topmost = true;
-        public bool Debug = true;
-        public bool Excel = false;
-        public int ExcelCMADPSSeconds = 1;
-        public bool ShowHealCrit = true;
-        public bool ShowCritDamageRate = false;
-        public bool OnlyBoss = false;
-        public bool DetectBosses = false;
-        public bool DisplayOnlyBossHitByMeterUser = false;
+        private void DpsServers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            Save();
+        }
 
-        public List<DpsServerData> DpsServers = new List<DpsServerData> { DpsServerData.Moongourd, DpsServerData.TeraLogs };
-        public List<int> BlackListAreaId = new List<int>();
+        private bool enableOverlay = false;
+        private Color whisperColor = Brushes.Pink.Color;
+        private Color allianceColor = Brushes.Green.Color;
+        private Color areaColor = Brushes.Purple.Color;
+        private Color generalColor = Brushes.Yellow.Color;
+        private Color groupColor = Brushes.Cyan.Color;
+        private Color guildColor = Brushes.LightGreen.Color;
+        private Color raidColor = Brushes.Orange.Color;
+        private Color sayColor = Brushes.White.Color;
+        private Color tradingColor = Brushes.Sienna.Color;
+        private Color emotesColor = Brushes.White.Color;
+        private Color privateChannelColor = Brushes.Red.Color;
+        private Point location = new Point(0, 0);
+        private Point popupNotificationLocation = new Point(0, 0);
+        private string language = "Auto";
+        private string uILanguage = "Auto";
+        private double mainWindowOpacity = 0.5;
+        private double otherWindowOpacity = 0.9;
+        private int lFDelay = 150;
+        private WindowStatus bossGageStatus = new WindowStatus(new Point(0, 0), true, 1);
+        private WindowStatus debuffsStatus = new WindowStatus(new Point(0, 0), false, 1);
+        private WindowStatus historyStatus = new WindowStatus(new Point(0, 0), false, 1);
+        private string excelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
+        private double scale = 1;
+        private bool partyOnly = false;
+        private bool rememberPosition = true;
+        private bool autoUpdate = true;
+        private bool winpcap = true;
+        private bool invisibleUi = false;
+        private bool noPaste = false;
+        private bool allowTransparency = true;
+        private bool alwaysVisible = false;
+        private bool topmost = true;
+        private bool debug = true;
+        private bool excel = false;
+        private int excelCMADPSSeconds = 1;
+        private bool showHealCrit = true;
+        private bool showCritDamageRate = false;
+        private bool onlyBoss = false;
+        private bool detectBosses = false;
+        private bool displayOnlyBossHitByMeterUser = false;
+        private bool clickThrou = false;
+        private bool packetsCollect = false;
 
-        public string ExcelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
-        public int NumberOfPlayersDisplayed = 5;
-        public bool MeterUserOnTop = false;
-        public bool LowPriority = true;
-        public bool EnableChat = true;
-        public bool CopyInspect = true;
-        public bool ShowAfkEventsIngame = false;
-        public bool DisablePartyEvent = false;
-        public bool RemoveTeraAltEnterHotkey = true;
-        public bool FormatPasteString = true;
-        public bool MuteSound = false;
-        public int IdleResetTimeout = 0;
-        public bool DateInExcelPath = false;
-        public bool ShowTimeLeft = false;
-        public bool NoAbnormalsInHUD = false;
+        public ObservableCollection<DpsServerData> DpsServers = new ObservableCollection<DpsServerData> { DpsServerData.Moongourd, DpsServerData.TeraLogs };
+        private List<int> blackListAreaId = new List<int>();
+
+        private string excelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
+        private int numberOfPlayersDisplayed = 5;
+        private bool meterUserOnTop = false;
+        private bool lowPriority = true;
+        private bool enableChat = true;
+        private bool copyInspect = true;
+        private bool showAfkEventsIngame = false;
+        private bool disablePartyEvent = false;
+        private bool removeTeraAltEnterHotkey = true;
+        private bool formatPasteString = true;
+        private bool muteSound = false;
+        private int idleResetTimeout = 0;
+        private bool dateInExcelPath = false;
+        private bool showTimeLeft = false;
+        private bool noAbnormalsInHUD = false;
+
+        public bool EnableOverlay { get => enableOverlay; set { enableOverlay = value; Save();}}
+        public Color WhisperColor { get => whisperColor; set { whisperColor = value; Save();}}
+        public Color AllianceColor { get => allianceColor; set { allianceColor = value; Save();}}
+        public Color AreaColor { get => areaColor; set { areaColor = value; Save();}}
+        public Color GeneralColor { get => generalColor; set { generalColor = value; Save();}}
+        public Color GroupColor { get => groupColor; set { groupColor = value; Save();}}
+        public Color GuildColor { get => guildColor; set { guildColor = value; Save();}}
+        public Color RaidColor { get => raidColor; set { raidColor = value; Save();}}
+        public Color SayColor { get => sayColor; set { sayColor = value; Save();}}
+        public Color TradingColor { get => tradingColor; set { tradingColor = value; Save();}}
+        public Color EmotesColor { get => emotesColor; set { emotesColor = value; Save();}}
+        public Color PrivateChannelColor { get => privateChannelColor; set { privateChannelColor = value; Save();}}
+        public Point Location { get => location; set { location = value; Save();}}
+        public Point PopupNotificationLocation { get => popupNotificationLocation; set { popupNotificationLocation = value; Save();}}
+        public string Language { get => language; set { language = value; Save();}}
+        public string UILanguage { get => uILanguage; set { uILanguage = value; Save();}}
+        public double MainWindowOpacity { get => mainWindowOpacity; set { mainWindowOpacity = value; Save();}}
+        public double OtherWindowOpacity { get => otherWindowOpacity; set { otherWindowOpacity = value; Save();}}
+        public int LFDelay { get => lFDelay; set { lFDelay = value; Save();}}
+        public WindowStatus BossGageStatus { get => bossGageStatus; set { bossGageStatus = value; Save();}}
+        public WindowStatus DebuffsStatus { get => debuffsStatus; set { debuffsStatus = value; Save();}}
+        public WindowStatus HistoryStatus { get => historyStatus; set { historyStatus = value; Save();}}
+        public string ExcelSaveDirectory { get => excelSaveDirectory; set { excelSaveDirectory = value; Save();}}
+        public double Scale { get => scale; set { scale = value; Save();}}
+        public bool PartyOnly { get => partyOnly; set { partyOnly = value; Save();}}
+        public bool RememberPosition { get => rememberPosition; set { rememberPosition = value; Save();}}
+        public bool AutoUpdate { get => autoUpdate; set { autoUpdate = value; Save();}}
+        public bool Winpcap { get => winpcap; set { winpcap = value; Save();}}
+        public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; Save();}}
+        public bool NoPaste { get => noPaste; set { noPaste = value; Save();}}
+        public bool AllowTransparency { get => allowTransparency; set { allowTransparency = value; Save();}}
+        public bool AlwaysVisible { get => alwaysVisible; set { alwaysVisible = value; Save();}}
+        public bool Topmost { get => topmost; set { topmost = value; Save();}}
+        public bool Debug { get => debug; set { debug = value; Save();}}
+        public bool Excel { get => excel; set { excel = value; Save();}}
+        public int ExcelCMADPSSeconds { get => excelCMADPSSeconds; set { excelCMADPSSeconds = value; Save();}}
+        public bool ShowHealCrit { get => showHealCrit; set { showHealCrit = value; Save();}}
+        public bool ShowCritDamageRate { get => showCritDamageRate; set { showCritDamageRate = value; Save();}}
+        public bool OnlyBoss { get => onlyBoss; set { onlyBoss = value; Save();}}
+        public bool DetectBosses { get => detectBosses; set { detectBosses = value; Save();}}
+        public bool DisplayOnlyBossHitByMeterUser { get => displayOnlyBossHitByMeterUser; set { displayOnlyBossHitByMeterUser = value; Save();}}
+        public bool ClickThrou { get => clickThrou; set { clickThrou = value; Save();}}
+        public bool PacketsCollect { get => packetsCollect; set { packetsCollect = value; Save();}}
+       
+        public List<int> BlackListAreaId { get => blackListAreaId; set { blackListAreaId = value; Save();}}
+        public string ExcelPathTemplate { get => excelPathTemplate; set { excelPathTemplate = value; Save();}}
+        public int NumberOfPlayersDisplayed { get => numberOfPlayersDisplayed; set { numberOfPlayersDisplayed = value; Save();}}
+        public bool MeterUserOnTop { get => meterUserOnTop; set { meterUserOnTop = value; Save();}}
+        public bool LowPriority { get => lowPriority; set { lowPriority = value; Save();}}
+        public bool EnableChat { get => enableChat; set { enableChat = value; Save();}}
+        public bool CopyInspect { get => copyInspect; set { copyInspect = value; Save();}}
+        public bool ShowAfkEventsIngame { get => showAfkEventsIngame; set { showAfkEventsIngame = value; Save();}}
+        public bool DisablePartyEvent { get => disablePartyEvent; set { disablePartyEvent = value; Save();}}
+        public bool RemoveTeraAltEnterHotkey { get => removeTeraAltEnterHotkey; set { removeTeraAltEnterHotkey = value; Save();}}
+        public bool FormatPasteString { get => formatPasteString; set { formatPasteString = value; Save();}}
+        public bool MuteSound { get => muteSound; set { muteSound = value; Save();}}
+        public int IdleResetTimeout { get => idleResetTimeout; set { idleResetTimeout = value; Save();}}
+        public bool DateInExcelPath { get => dateInExcelPath; set { dateInExcelPath = value; Save();}}
+        public bool ShowTimeLeft { get => showTimeLeft; set { showTimeLeft = value; Save();}}
+        public bool NoAbnormalsInHUD { get => noAbnormalsInHUD; set { noAbnormalsInHUD = value; Save();}}
 
         private void ParseWindowStatus(string xmlName, string settingName)
         {
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetField(settingName);
+            var setting = GetType().GetField(settingName, BindingFlags.NonPublic | BindingFlags.Instance);
             var currentSetting = (WindowStatus) setting.GetValue(this);
             var location = ParseLocation(xml);
 
@@ -201,7 +276,7 @@ namespace Data
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetField(settingName);
+            var setting = GetType().GetField(settingName, BindingFlags.NonPublic | BindingFlags.Instance);
             setting.SetValue(this, (Color) ColorConverter.ConvertFromString(xml.Value));
         }
 
@@ -239,7 +314,7 @@ namespace Data
             var root = _xml.Root;
             var teradps = root.Element("dps_servers");
             if(teradps == null) { return; }
-            DpsServers = new List<DpsServerData>();
+            DpsServers = new ObservableCollection<DpsServerData>();
             if (teradps.Elements("server") == null) { return; }
             foreach(var server in teradps.Elements("server"))
             {
@@ -318,80 +393,82 @@ namespace Data
             if (int.TryParse(otherWindowElement.Value, out otherWindowOpacity)) { OtherWindowOpacity = (double) otherWindowOpacity / 100; }
         }
 
-        public void Save()
+        private void Save()
         {
             if (_filestream == null) { return; }
 
 
             var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
             xml.Root.Add(new XElement("location"));
-            xml.Root.Element("location").Add(new XElement("x", Location.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("location").Add(new XElement("y", Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("scale", Scale.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("location").Add(new XElement("x", location.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("location").Add(new XElement("y", location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("scale", scale.ToString(CultureInfo.InvariantCulture)));
             xml.Root.Add(new XElement("popup_notification_location"));
-            xml.Root.Element("popup_notification_location").Add(new XElement("x", PopupNotificationLocation.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("popup_notification_location").Add(new XElement("y", PopupNotificationLocation.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("boss_gage_window", new XAttribute("visible", BossGageStatus.Visible), new XAttribute("scale", BossGageStatus.Scale)));
+            xml.Root.Element("popup_notification_location").Add(new XElement("x", popupNotificationLocation.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("popup_notification_location").Add(new XElement("y", popupNotificationLocation.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("boss_gage_window", new XAttribute("visible", bossGageStatus.Visible), new XAttribute("scale", BossGageStatus.Scale)));
             xml.Root.Element("boss_gage_window").Add(new XElement("location"));
-            xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("x", BossGageStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("y", BossGageStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("debuff_uptime_window", new XAttribute("visible", DebuffsStatus.Visible), new XAttribute("scale", DebuffsStatus.Scale)));
+            xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("x", bossGageStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("y", bossGageStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("debuff_uptime_window", new XAttribute("visible", debuffsStatus.Visible), new XAttribute("scale", DebuffsStatus.Scale)));
             xml.Root.Element("debuff_uptime_window").Add(new XElement("location"));
-            xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("x", DebuffsStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("y", DebuffsStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("upload_history_window", new XAttribute("visible", HistoryStatus.Visible), new XAttribute("scale", HistoryStatus.Scale)));
+            xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("x", debuffsStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("y", debuffsStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("upload_history_window", new XAttribute("visible", historyStatus.Visible), new XAttribute("scale", HistoryStatus.Scale)));
             xml.Root.Element("upload_history_window").Add(new XElement("location"));
-            xml.Root.Element("upload_history_window").Element("location").Add(new XElement("x", HistoryStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("upload_history_window").Element("location").Add(new XElement("y", HistoryStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("language", Language));
-            xml.Root.Add(new XElement("ui_language", UILanguage));
+            xml.Root.Element("upload_history_window").Element("location").Add(new XElement("x", historyStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Element("upload_history_window").Element("location").Add(new XElement("y", historyStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
+            xml.Root.Add(new XElement("language", language));
+            xml.Root.Add(new XElement("ui_language", uILanguage));
             xml.Root.Add(new XElement("opacity"));
-            xml.Root.Element("opacity").Add(new XElement("mainWindow", MainWindowOpacity * 100));
-            xml.Root.Element("opacity").Add(new XElement("otherWindow", OtherWindowOpacity * 100));
-            xml.Root.Add(new XElement("autoupdate", AutoUpdate));
-            xml.Root.Add(new XElement("remember_position", RememberPosition));
-            xml.Root.Add(new XElement("winpcap", Winpcap));
-            xml.Root.Add(new XElement("invisible_ui_when_no_stats", InvisibleUi));
-            xml.Root.Add(new XElement("allow_transparency", AllowTransparency));
-            xml.Root.Add(new XElement("topmost", Topmost));
-            xml.Root.Add(new XElement("debug", Debug));
-            xml.Root.Add(new XElement("excel", Excel));
-            xml.Root.Add(new XElement("excel_path_template", ExcelPathTemplate));
-            xml.Root.Add(new XElement("excel_save_directory", ExcelSaveDirectory));
-            xml.Root.Add(new XElement("excel_cma_dps_seconds", ExcelCMADPSSeconds));
-            xml.Root.Add(new XElement("always_visible", AlwaysVisible));
-            xml.Root.Add(new XElement("lf_delay", LFDelay));
-            xml.Root.Add(new XElement("partyonly", PartyOnly));
-            xml.Root.Add(new XElement("showhealcrit", ShowHealCrit));
-            xml.Root.Add(new XElement("showtimeleft", ShowTimeLeft));
-            xml.Root.Add(new XElement("show_crit_damage_rate", ShowCritDamageRate));
-            xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", DetectBosses));
-            xml.Root.Add(new XElement("only_bosses", OnlyBoss));
-            xml.Root.Add(new XElement("low_priority", LowPriority));
-            xml.Root.Add(new XElement("number_of_players_displayed", NumberOfPlayersDisplayed));
-            xml.Root.Add(new XElement("meter_user_on_top", MeterUserOnTop));
-            xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", RemoveTeraAltEnterHotkey));
-            xml.Root.Add(new XElement("enable_chat_and_notifications", EnableChat));
-            xml.Root.Add(new XElement("mute_sound", MuteSound));
-            xml.Root.Add(new XElement("copy_inspect", CopyInspect));
-            xml.Root.Add(new XElement("format_paste_string", FormatPasteString));
-            xml.Root.Add(new XElement("say_color", SayColor.ToString()));
-            xml.Root.Add(new XElement("alliance_color", AllianceColor.ToString()));
-            xml.Root.Add(new XElement("area_color", AreaColor.ToString()));
-            xml.Root.Add(new XElement("guild_color", GuildColor.ToString()));
-            xml.Root.Add(new XElement("whisper_color", WhisperColor.ToString()));
-            xml.Root.Add(new XElement("general_color", GeneralColor.ToString()));
-            xml.Root.Add(new XElement("group_color", GroupColor.ToString()));
-            xml.Root.Add(new XElement("trading_color", TradingColor.ToString()));
-            xml.Root.Add(new XElement("emotes_color", EmotesColor.ToString()));
-            xml.Root.Add(new XElement("private_channel_color", PrivateChannelColor.ToString()));
-            xml.Root.Add(new XElement("disable_party_event", DisablePartyEvent));
-            xml.Root.Add(new XElement("show_afk_events_ingame", ShowAfkEventsIngame));
-            xml.Root.Add(new XElement("idle_reset_timeout", IdleResetTimeout));
-            xml.Root.Add(new XElement("no_paste", NoPaste));
-            xml.Root.Add(new XElement("no_abnormals_in_hud", NoAbnormalsInHUD));
-            xml.Root.Add(new XElement("enable_overlay", EnableOverlay));
-            xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", DisplayOnlyBossHitByMeterUser));
+            xml.Root.Element("opacity").Add(new XElement("mainWindow", mainWindowOpacity * 100));
+            xml.Root.Element("opacity").Add(new XElement("otherWindow", otherWindowOpacity * 100));
+            xml.Root.Add(new XElement("autoupdate", autoUpdate));
+            xml.Root.Add(new XElement("remember_position", rememberPosition));
+            xml.Root.Add(new XElement("winpcap", winpcap));
+            xml.Root.Add(new XElement("invisible_ui_when_no_stats", invisibleUi));
+            xml.Root.Add(new XElement("allow_transparency", allowTransparency));
+            xml.Root.Add(new XElement("topmost", topmost));
+            xml.Root.Add(new XElement("debug", debug));
+            xml.Root.Add(new XElement("excel", excel));
+            xml.Root.Add(new XElement("excel_path_template", excelPathTemplate));
+            xml.Root.Add(new XElement("excel_save_directory", excelSaveDirectory));
+            xml.Root.Add(new XElement("excel_cma_dps_seconds", excelCMADPSSeconds));
+            xml.Root.Add(new XElement("always_visible", alwaysVisible));
+            xml.Root.Add(new XElement("lf_delay", lFDelay));
+            xml.Root.Add(new XElement("partyonly", partyOnly));
+            xml.Root.Add(new XElement("showhealcrit", showHealCrit));
+            xml.Root.Add(new XElement("showtimeleft", showTimeLeft));
+            xml.Root.Add(new XElement("show_crit_damage_rate", showCritDamageRate));
+            xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", detectBosses));
+            xml.Root.Add(new XElement("only_bosses", onlyBoss));
+            xml.Root.Add(new XElement("low_priority", lowPriority));
+            xml.Root.Add(new XElement("number_of_players_displayed", numberOfPlayersDisplayed));
+            xml.Root.Add(new XElement("meter_user_on_top", meterUserOnTop));
+            xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", removeTeraAltEnterHotkey));
+            xml.Root.Add(new XElement("enable_chat_and_notifications", enableChat));
+            xml.Root.Add(new XElement("mute_sound", muteSound));
+            xml.Root.Add(new XElement("click_throu", clickThrou));
+            xml.Root.Add(new XElement("copy_inspect", copyInspect));
+            xml.Root.Add(new XElement("format_paste_string", formatPasteString));
+            xml.Root.Add(new XElement("say_color", sayColor.ToString()));
+            xml.Root.Add(new XElement("alliance_color", allianceColor.ToString()));
+            xml.Root.Add(new XElement("area_color", areaColor.ToString()));
+            xml.Root.Add(new XElement("guild_color", guildColor.ToString()));
+            xml.Root.Add(new XElement("whisper_color", whisperColor.ToString()));
+            xml.Root.Add(new XElement("general_color", generalColor.ToString()));
+            xml.Root.Add(new XElement("group_color", groupColor.ToString()));
+            xml.Root.Add(new XElement("trading_color", tradingColor.ToString()));
+            xml.Root.Add(new XElement("emotes_color", emotesColor.ToString()));
+            xml.Root.Add(new XElement("private_channel_color", privateChannelColor.ToString()));
+            xml.Root.Add(new XElement("disable_party_event", disablePartyEvent));
+            xml.Root.Add(new XElement("show_afk_events_ingame", showAfkEventsIngame));
+            xml.Root.Add(new XElement("idle_reset_timeout", idleResetTimeout));
+            xml.Root.Add(new XElement("no_paste", noPaste));
+            xml.Root.Add(new XElement("packets_collect", packetsCollect));
+            xml.Root.Add(new XElement("no_abnormals_in_hud", noAbnormalsInHUD));
+            xml.Root.Add(new XElement("enable_overlay", enableOverlay));
+            xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
 
             xml.Root.Add(new XElement("dps_servers"));
             foreach(var server in DpsServers)
@@ -416,6 +493,16 @@ namespace Data
             _filestream.SetLength(0);
             using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true))) { sw.Write(xml.Declaration + Environment.NewLine + xml); }
             _filestream.Close();
+            _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+
+
+        }
+
+        // I choose to keep the filestream open with Sharing set to None to avoid receiving 
+        // help request about "why the config file I manually edited while the meter was running got erased?"
+        public void Close()
+        {
+            _filestream.Close();
         }
 
         private void Parse(string xmlName, string settingName)
@@ -423,7 +510,7 @@ namespace Data
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
-            var setting = GetType().GetField(settingName);
+            var setting = GetType().GetField(settingName, BindingFlags.NonPublic | BindingFlags.Instance);
             if (setting.FieldType == typeof(int))
             {
                 int value;

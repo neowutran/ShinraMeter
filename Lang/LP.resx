@@ -706,4 +706,7 @@ Reset and paused until map change or relog.</value>
   <data name="Blur_player_names" xml:space="preserve">
     <value>Blur player names</value>
   </data>
+  <data name="ExportPacketLogs" xml:space="preserve">
+    <value>Export packets logs</value>
+  </data>
 </root>

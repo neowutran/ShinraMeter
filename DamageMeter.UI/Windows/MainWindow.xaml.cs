@@ -106,6 +106,7 @@ namespace DamageMeter.UI
             SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             NotifyIcon.Initialize(this);
             NotifyIcon.InitializeServerList(NetworkController.Instance.Initialize());
+            if (BasicTeraData.Instance.WindowData.ClickThrou) { SetClickThrou(); }            
         }
 
         public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
@@ -133,27 +134,51 @@ namespace DamageMeter.UI
             Exit();
         }
 
+        private bool _needRefreshClickThrou = false;
+
+        private void RefreshClickThrou()
+        {
+            if (BasicTeraData.Instance.WindowData.ClickThrou)
+            {
+                SetClickThrou();
+            }
+            else
+            {
+                UnsetClickThrou();
+            }
+        }
+
         public new void SetClickThrou()
         {
             var hwnd = new WindowInteropHelper(this).Handle;
+            if(hwnd.ToInt64() == 0)
+            {
+                _needRefreshClickThrou = true;
+                return;
+            }
+            _needRefreshClickThrou = false;
             WindowsServices.SetWindowExTransparent(hwnd);
             foreach (var players in Controls) { players.Value.SetClickThrou(); }
             _entityStats.SetClickThrou();
             _popupNotification.SetClickThrou();
             _bossGageBar.SetClickThrou();
-            //NotifyIcon.ClickThrou.IsChecked = true;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStatsClickThrou.Source;
         }
 
         public new void UnsetClickThrou()
         {
             var hwnd = new WindowInteropHelper(this).Handle;
+            if (hwnd.ToInt64() == 0)
+            {
+                _needRefreshClickThrou = true;
+                return;
+            }
+            _needRefreshClickThrou = false;
             WindowsServices.SetWindowExVisible(hwnd);
             foreach (var players in Controls) { players.Value.UnsetClickThrou(); }
             _entityStats.UnsetClickThrou();
             _bossGageBar.UnsetClickThrou();
             _popupNotification.UnsetClickThrou();
-            //NotifyIcon.ClickThrou.IsChecked = false;
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
 
@@ -241,6 +266,7 @@ namespace DamageMeter.UI
         {
             void ChangeUi(UiUpdateMessage message)
             {
+                RefreshClickThrou();
                 Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
                 UpdateComboboxEncounter(message.Entities, message.StatsSummary.EntityInformation.Entity);
                 _entityStats.Update(message.StatsSummary.EntityInformation, message.Abnormals);

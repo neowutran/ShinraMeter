@@ -38,8 +38,6 @@ namespace DamageMeter
         internal AbnormalityStorage AbnormalityStorage;
 
         internal readonly List<Player> MeterPlayers = new List<Player>();
-
-        private bool _clickThrou;
         private bool _forceUiUpdate;
         private bool _keepAlive = true;
         private long _lastTick;
@@ -90,7 +88,7 @@ namespace DamageMeter
         {
             if (_keepAlive)
             {
-                BasicTeraData.Instance.WindowData.Save();
+                BasicTeraData.Instance.WindowData.Close();
                 BasicTeraData.Instance.HotkeysData.Save();
             }
             TeraSniffer.Instance.Enabled = false;
@@ -228,14 +226,14 @@ namespace DamageMeter
 
         public void SwitchClickThrou()
         {
-            if (_clickThrou)
+            if (BasicTeraData.Instance.WindowData.ClickThrou)
             {
                 UnsetClickThrou();
-                _clickThrou = false;
+                BasicTeraData.Instance.WindowData.ClickThrou = false;
                 return;
             }
             SetClickThrou();
-            _clickThrou = true;
+            BasicTeraData.Instance.WindowData.ClickThrou = true;
         }
 
         public void SwitchClickThrou(bool value)
@@ -243,11 +241,11 @@ namespace DamageMeter
             if (value)
             {
                 SetClickThrou();
-                _clickThrou = true;
+                BasicTeraData.Instance.WindowData.ClickThrou = true;
                 return;
             }
             UnsetClickThrou();
-            _clickThrou = false;
+            BasicTeraData.Instance.WindowData.ClickThrou = false;
         }
 
         protected virtual void SetClickThrou()

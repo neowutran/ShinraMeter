@@ -90,6 +90,8 @@ namespace DamageMeter.UI
 
             GitHubIcon.Source = BasicTeraData.Instance.ImageDatabase.GitHub.Source;
             DiscordIcon.Source = BasicTeraData.Instance.ImageDatabase.Discord.Source;
+            ClickThrou.Status = BasicTeraData.Instance.WindowData.ClickThrou;
+            ExportPacketLog.Status = BasicTeraData.Instance.WindowData.PacketsCollect;
             //RankSitesIcon.Source = BasicTeraData.Instance.ImageDatabase.Cloud.Source;
             //MoongourdIcon.Source = BasicTeraData.Instance.ImageDatabase.Moongourd.Source;
             //TeralogsIcon.Source = BasicTeraData.Instance.ImageDatabase.Teralogs.Source;
@@ -481,11 +483,7 @@ namespace DamageMeter.UI
         {
             gitPopup.IsOpen = false;
         }
-        private void rankPopup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            //rankPopup.IsOpen = false;
-        }
-
+ 
         private void EnableOverlay(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableOverlay = true;
@@ -499,18 +497,6 @@ namespace DamageMeter.UI
             var render = _mainWindow.DXrender;
             _mainWindow.DXrender = null;
             render.Dispose();
-        }
-
-        private void sitesButton_Click(object sender, RoutedEventArgs e)
-        {
-            //rankPopup.Placement = PlacementMode.Bottom;
-            //rankPopup.PlacementTarget = sitesButton;
-            //var h = rankPopup.Height;
-            //rankPopup.Height = 0;
-            //var an = new DoubleAnimation(0, h, TimeSpan.FromMilliseconds(200)) { EasingFunction = new QuadraticEase() };
-            //rankPopup.IsOpen = true;
-            //rankPopup.BeginAnimation(HeightProperty, an);
-
         }
 
         private void AddServerButton_OnClick(object sender, RoutedEventArgs e)
@@ -531,5 +517,16 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser = false;
         }
+
+        private void ExportPacketLog_On(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.PacketsCollect = true;
+        }
+
+        private void ExportPacketLog_Off(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.PacketsCollect = false;
+        }
+
     }
 }
