@@ -10,6 +10,7 @@ using NetworkSniffer;
 using Tera;
 using Tera.Game;
 using Tera.Sniffing;
+using System.Diagnostics;
 
 namespace DamageMeter.Sniffing
 {
@@ -44,7 +45,7 @@ namespace DamageMeter.Sniffing
         }
     
         public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
-        public ConcurrentQueue<Message> PacketsCopyStorage = new ConcurrentQueue<Message>();
+        public Queue<Message> PacketsCopyStorage = new Queue<Message>();
 
         public int ServerProxyOverhead;
 
