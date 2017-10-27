@@ -130,7 +130,7 @@ namespace DamageMeter.Sniffing
                 if (!_enableMessageStorage) {
                     // Drop the object since we don't want to keep storage anymore & let the
                     // garbage collector do the job of cleaning the memory
-                    PacketsCopyStorage = new ConcurrentQueue<Message>();
+                    PacketsCopyStorage = new Queue<Message>();
                 }
             } }
 
