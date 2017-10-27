@@ -63,6 +63,7 @@ namespace DamageMeter
             AbnormalityStorage = new AbnormalityStorage();
             var packetAnalysis = new Thread(PacketAnalysisLoop);
             packetAnalysis.Start();
+            TeraSniffer.Instance.EnableMessageStorage = BasicTeraData.Instance.WindowData.PacketsCollect;
         }
 
         public List<NotifyFlashMessage> FlashMessage = new List<NotifyFlashMessage>();

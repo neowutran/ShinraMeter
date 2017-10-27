@@ -44,6 +44,8 @@ namespace DamageMeter.Sniffing
         }
     
         public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
+        public ConcurrentQueue<Message> PacketsCopyStorage = new ConcurrentQueue<Message>();
+
         public int ServerProxyOverhead;
 
         private TeraSniffer()
@@ -101,8 +103,35 @@ namespace DamageMeter.Sniffing
 
         protected virtual void OnMessageReceived(Message message)
         {
+            
             Packets.Enqueue(message);
+
+            // Want to store message only if we can store since the very first message received
+            // And only if the public settings is set to true. 
+            // Avoid stocking message if not required (memory leak), and keep consistancy since
+            // we need every message since the very beginning for analysis
+            if (EnableMessageStorage && _firstMessageReceived == false)
+            {
+                _allowMessageStorage = true;
+            }
+
+            if (_allowMessageStorage && EnableMessageStorage) {PacketsCopyStorage.Enqueue(message);}
+            _firstMessageReceived = true;
         }
+
+        private bool _firstMessageReceived = false;
+        private bool _allowMessageStorage = false;
+        private bool _enableMessageStorage;
+        public bool EnableMessageStorage {
+            get { return _enableMessageStorage;  }
+            set {
+                _enableMessageStorage = value;
+                if (!_enableMessageStorage) {
+                    // Drop the object since we don't want to keep storage anymore & let the
+                    // garbage collector do the job of cleaning the memory
+                    PacketsCopyStorage = new ConcurrentQueue<Message>();
+                }
+            } }
 
         protected virtual void OnWarning(string obj)
         {

@@ -230,8 +230,11 @@ namespace DamageMeter
                 ExcelExport.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
                 Anonymize(stats.BaseStats);
                 DpsServers.Where(x => x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
+                if (BasicTeraData.Instance.WindowData.PacketsCollect) { TeraMessageExporter.Instance.Export(stats.BaseStats, entity); }
+
             });
             sendThread.Start();
+
         }
 
         private static void Anonymize(EncounterBase teradpsData)

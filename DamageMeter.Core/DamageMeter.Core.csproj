@@ -54,6 +54,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SevenZipSharp, Version=1.0.14.0, Culture=neutral, PublicKeyToken=c8ff6ba0184838bb, processorArchitecture=MSIL">
+      <HintPath>..\packages\SevenZipSharp.Net45.1.0.14\lib\net45\SevenZipSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -118,6 +121,7 @@
     <Compile Include="TeraDpsApi\GlyphBuild.cs" />
     <Compile Include="TeraDpsApi\Members.cs" />
     <Compile Include="TeraDpsApi\SkillLog.cs" />
+    <Compile Include="TeraMessageExporter.cs" />
     <Compile Include="TeraWindow.cs" />
     <Compile Include="NetworkController.cs" />
     <Compile Include="UiUpdateMessage.cs" />
