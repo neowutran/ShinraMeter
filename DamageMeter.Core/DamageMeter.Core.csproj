@@ -58,8 +58,6 @@
       <HintPath>..\packages\SevenZipSharp.Net45.1.0.14\lib\net45\SevenZipSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.105.2, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -135,10 +133,6 @@
     <ProjectReference Include="..\Lang\Lang.csproj">
       <Project>{220fef0f-4a83-4ab8-9435-f9bc09b9039f}</Project>
       <Name>Lang</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetworkSniffer\NetworkSniffer.csproj">
-      <Project>{5b431143-1a77-44ff-8bc3-926fec8ad97c}</Project>
-      <Name>NetworkSniffer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>

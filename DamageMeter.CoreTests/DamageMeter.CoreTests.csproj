@@ -66,10 +66,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DamageMeter.Core\DamageMeter.Core.csproj">
-      <Project>{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}</Project>
-      <Name>DamageMeter.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}</Project>
       <Name>Data</Name>
