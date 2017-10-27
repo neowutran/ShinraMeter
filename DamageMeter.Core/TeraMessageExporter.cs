@@ -27,7 +27,17 @@ namespace DamageMeter
         private static TeraMessageExporter _instance;
         private static readonly string PUBLIC_KEY_STRING = "<?xml version=\"1.0\" encoding=\"utf-16\"?><RSAParameters xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><Exponent>AQAB</Exponent><Modulus>sD+HLW7fz2xuQ+JoawSXsZLrb8m7Vn9HVnmkeIJazHDEwPycQrDyYo4XNI27qC2ZhEGlk0qQ1Dd8pFEvhsVVzyve2Ov7CuuuBm7I/rpO1ii9TvEPIjr47eQ5fY4+Trwzjp9au1nw8/E2XNJTFagU1Ch1jJK730BS3ZAbcJSnpUGR0svCnbAc2gpPUJfQxaQgYlr23bdS2dTC/qey/pieg9QhU4N9ZCoYMCshB5+r2wLEfcgHkYtP2aUbUBVGGQ4YtfkX8eIZsRjmMClEzeaVSqvkNh5q5K6qdKFpkc1zZnLKNhwjo/OmcjIc11q/8wlOZPiRKsVe9gC8ySdDCGQXIW9PF2rFYEvTVPWRVeLOPlCfTA1wVXDBlNs5Bchix7pBVumfO2apuizzgWfqm0Q7xyvsHfv7I7ejynjPr5/aEdHzWZK1/RSEwWCSMrstMTzDuuNgOlpYzbAxEpAc1APKAxxjD3C7bgY9IHFNgTpGIYlzJgA6xy2MCWgLm5q0pNjpaiQIBiuCArxMSIn2qpPOkoRLmi2cXHKl27WmjQtBVrw93jRPtLMUSyJ5fsXAVlXy5gnXBl69tQmrvuiRZKWqpZCDhrXHpUEj7J9cULUv0bjzonpAH6UnPVZTIp/VHq+yh0wnbPRUzqcT+ku34U8J3NGYlkf9ZgqGup9EJRka2eE=</Modulus></RSAParameters>";
         public static readonly List<AreaAllowed> BossAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>(
-          "[{\"AreaId\": 735,\"BossIds\": [3000]},{\"AreaId\": 935,\"BossIds\": [3000]},{\"AreaId\": 950,\"BossIds\": [3000, 4000]},{\"AreaId\": 794,\"BossIds\": [Gaaruksalk]},{\"AreaId\": 994,\"BossIds\": [3000]},{\"AreaId\": 916,\"BossIds\": [1000]}]"
+          "[" +
+            "{\"AreaId\":716, \"BossIds\":[1000]}," +
+            "{\"AreaId\":769, \"BossIds\":[76903]}," +
+            "{\"AreaId\":969, \"BossIds\":[76903]}," +
+            "{\"AreaId\": 735,\"BossIds\": [3000]}," +
+            "{\"AreaId\": 935,\"BossIds\": [3000]}," +
+            "{\"AreaId\": 950,\"BossIds\": [3000, 4000]}," +
+            "{\"AreaId\": 794,\"BossIds\": [3000]}," +
+            "{\"AreaId\": 994,\"BossIds\": [3000]}," +
+            "{\"AreaId\": 916,\"BossIds\": [1000]}" +
+            "]"
           );
         public void Export(EncounterBase teradpsData, NpcEntity entity)
         {
@@ -64,16 +74,6 @@ namespace DamageMeter
 
         }
 
-        private static string RandomString(int length)
-        {
-            Random r = new Random();
-            const string pool = "abcdefghijklmnopqrstuvwxyz0123456789";
-            var chars = Enumerable.Range(0, length)
-                .Select(x => pool[r.Next(0, pool.Length)]);
-            return new string(chars.ToArray());
-        }
-
-
         private void SaveToTmpFile(string version, Queue<Message> packetsCopyStorage, string filename)
         {
             var header = new LogHeader { Region = version };
@@ -83,14 +83,14 @@ namespace DamageMeter
                 ParsedMessage parsedMessage = NetworkController.Instance.MessageFactory.Create(message);
                 if(parsedMessage.GetType() == typeof(S_CHAT))
                 {
-                    ((S_CHAT)parsedMessage).Text = RandomString(((S_CHAT)parsedMessage).Text.Length);
+                    ((S_CHAT)parsedMessage).ReplaceStringWithGarbage(((S_CHAT)parsedMessage).TextOffset);
                 }else if(parsedMessage.GetType() == typeof(S_WHISPER))
                 {
-                    ((S_WHISPER)parsedMessage).Text = RandomString(((S_WHISPER)parsedMessage).Text.Length);
+                    ((S_WHISPER)parsedMessage).ReplaceStringWithGarbage(((S_WHISPER)parsedMessage).TextOffset);
                 }
                 else if (parsedMessage.GetType() == typeof(S_PRIVATE_CHAT))
                 {
-                    ((S_PRIVATE_CHAT)parsedMessage).Text = RandomString(((S_PRIVATE_CHAT)parsedMessage).Text.Length);
+                    ((S_PRIVATE_CHAT)parsedMessage).ReplaceStringWithGarbage(((S_PRIVATE_CHAT)parsedMessage).TextOffset);
                 }
                 //TODO add def for their C_ equivalent
                 writer.Append(message);
