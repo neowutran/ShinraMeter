@@ -210,7 +210,7 @@ namespace DamageMeter
                 }
                 if (type.HasFlag(Dest.Excel))
                 {
-                    ExcelExport.ExcelSave(stats,
+                    ExcelExporter.ExcelSave(stats,
                         stats.BaseStats.members.Select(x => x.playerName)
                             .FirstOrDefault(x => NetworkController.Instance.MeterPlayers.Select(z => z.Name).Contains(x)), type.HasFlag(Dest.Manual));
                 }
@@ -227,10 +227,10 @@ namespace DamageMeter
             var sendThread = new Thread(() =>
             {
                 DpsServers.Where(x => !x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
-                ExcelExport.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
+                ExcelExporter.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
                 Anonymize(stats.BaseStats);
                 DpsServers.Where(x => x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
-                if (BasicTeraData.Instance.WindowData.PacketsCollect) { TeraMessageExporter.Instance.Export(stats.BaseStats, entity); }
+                if (BasicTeraData.Instance.WindowData.PacketsCollect) { PacketsExporter.Instance.Export(stats.BaseStats, entity); }
 
             });
             sendThread.Start();

@@ -89,10 +89,10 @@
     <Compile Include="Database\Structures\Skill.cs" />
     <Compile Include="Database\Structures\Skills.cs" />
     <Compile Include="Database\Structures\StatsSummary.cs" />
-    <Compile Include="DataExporter.cs" />
+    <Compile Include="Exporter\DataExporter.cs" />
     <Compile Include="Processing\S_CREATURE_CHANGE_HP.cs" />
     <Compile Include="TeraDpsApi\DpsServer.cs" />
-    <Compile Include="ExcelExport.cs" />
+    <Compile Include="Exporter\ExcelExporter.cs" />
     <Compile Include="FormatHelpers.cs" />
     <Compile Include="HudManager.cs" />
     <Compile Include="KeyboardHook.cs" />
@@ -119,7 +119,7 @@
     <Compile Include="TeraDpsApi\GlyphBuild.cs" />
     <Compile Include="TeraDpsApi\Members.cs" />
     <Compile Include="TeraDpsApi\SkillLog.cs" />
-    <Compile Include="TeraMessageExporter.cs" />
+    <Compile Include="Exporter\PacketsExporter.cs" />
     <Compile Include="TeraWindow.cs" />
     <Compile Include="NetworkController.cs" />
     <Compile Include="UiUpdateMessage.cs" />

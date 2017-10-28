@@ -204,7 +204,7 @@ namespace DamageMeter
         }
     }
 
-    internal class ExcelExport
+    internal class ExcelExporter
     {
         private static readonly BasicTeraData BTD = BasicTeraData.Instance;
         private static readonly object savelock = new object();

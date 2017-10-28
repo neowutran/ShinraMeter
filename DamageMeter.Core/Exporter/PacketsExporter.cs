@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -21,10 +22,10 @@ using Tera.PacketLog;
 
 namespace DamageMeter
 {
-    public class TeraMessageExporter
+    public class PacketsExporter
     {
-        public static TeraMessageExporter Instance => _instance ?? (_instance = new TeraMessageExporter());
-        private static TeraMessageExporter _instance;
+        public static PacketsExporter Instance => _instance ?? (_instance = new PacketsExporter());
+        private static PacketsExporter _instance;
         private static readonly string PUBLIC_KEY_STRING = "<?xml version=\"1.0\" encoding=\"utf-16\"?><RSAParameters xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><Exponent>AQAB</Exponent><Modulus>sD+HLW7fz2xuQ+JoawSXsZLrb8m7Vn9HVnmkeIJazHDEwPycQrDyYo4XNI27qC2ZhEGlk0qQ1Dd8pFEvhsVVzyve2Ov7CuuuBm7I/rpO1ii9TvEPIjr47eQ5fY4+Trwzjp9au1nw8/E2XNJTFagU1Ch1jJK730BS3ZAbcJSnpUGR0svCnbAc2gpPUJfQxaQgYlr23bdS2dTC/qey/pieg9QhU4N9ZCoYMCshB5+r2wLEfcgHkYtP2aUbUBVGGQ4YtfkX8eIZsRjmMClEzeaVSqvkNh5q5K6qdKFpkc1zZnLKNhwjo/OmcjIc11q/8wlOZPiRKsVe9gC8ySdDCGQXIW9PF2rFYEvTVPWRVeLOPlCfTA1wVXDBlNs5Bchix7pBVumfO2apuizzgWfqm0Q7xyvsHfv7I7ejynjPr5/aEdHzWZK1/RSEwWCSMrstMTzDuuNgOlpYzbAxEpAc1APKAxxjD3C7bgY9IHFNgTpGIYlzJgA6xy2MCWgLm5q0pNjpaiQIBiuCArxMSIn2qpPOkoRLmi2cXHKl27WmjQtBVrw93jRPtLMUSyJ5fsXAVlXy5gnXBl69tQmrvuiRZKWqpZCDhrXHpUEj7J9cULUv0bjzonpAH6UnPVZTIp/VHq+yh0wnbPRUzqcT+ku34U8J3NGYlkf9ZgqGup9EJRka2eE=</Modulus></RSAParameters>";
         public static readonly List<AreaAllowed> BossAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>(
           "[" +
@@ -69,7 +70,7 @@ namespace DamageMeter
             File.Delete(filename + ".TeraLog");
             Encrypt(filename + ".7z", filename + ".rsa");
             File.Delete(filename + ".7z");
-            //Send(filename + ".rsa");
+            Send(filename + ".rsa");
             //File.Delete(filename+".rsa");
 
         }
@@ -81,23 +82,37 @@ namespace DamageMeter
             foreach (var message in packetsCopyStorage)
             {
                 ParsedMessage parsedMessage = NetworkController.Instance.MessageFactory.Create(message);
-                if(parsedMessage.GetType() == typeof(S_CHAT))
-                {
-                    ((S_CHAT)parsedMessage).ReplaceStringWithGarbage(((S_CHAT)parsedMessage).TextOffset);
-                }else if(parsedMessage.GetType() == typeof(S_WHISPER))
-                {
-                    ((S_WHISPER)parsedMessage).ReplaceStringWithGarbage(((S_WHISPER)parsedMessage).TextOffset);
-                }
-                else if (parsedMessage.GetType() == typeof(S_PRIVATE_CHAT))
-                {
-                    ((S_PRIVATE_CHAT)parsedMessage).ReplaceStringWithGarbage(((S_PRIVATE_CHAT)parsedMessage).TextOffset);
-                }
-                //TODO add def for their C_ equivalent
+                parsedMessage = WipeoutSensitiveData(parsedMessage);
                 writer.Append(message);
             }
             writer.Dispose();
             
         }
+
+        private ParsedMessage WipeoutSensitiveData(ParsedMessage parsedMessage)
+        {
+            if (parsedMessage.GetType() == typeof(S_CHAT))
+            {
+                ((S_CHAT)parsedMessage).ReplaceStringWithGarbage(((S_CHAT)parsedMessage).TextOffset);
+            }
+            else if (parsedMessage.GetType() == typeof(S_WHISPER))
+            {
+                ((S_WHISPER)parsedMessage).ReplaceStringWithGarbage(((S_WHISPER)parsedMessage).TextOffset);
+            }
+            else if (parsedMessage.GetType() == typeof(S_PRIVATE_CHAT))
+            {
+                ((S_PRIVATE_CHAT)parsedMessage).ReplaceStringWithGarbage(((S_PRIVATE_CHAT)parsedMessage).TextOffset);
+            }
+            else if (parsedMessage.GetType() == typeof(C_CHAT))
+            {
+                ((C_CHAT)parsedMessage).ReplaceStringWithGarbage(((C_CHAT)parsedMessage).TextOffset);
+            }
+            else if (parsedMessage.GetType() == typeof(C_WHISPER))
+            {
+                ((C_WHISPER)parsedMessage).ReplaceStringWithGarbage(((C_WHISPER)parsedMessage).TextOffset);
+            }
+            return parsedMessage;
+        } 
 
 
         private void Encrypt(string inputFilename, string outputFilename)
@@ -136,7 +151,10 @@ namespace DamageMeter
 
         private void Send(string filename)
         {
-            // TODO
+            using (WebClient client = new WebClient())
+            {
+                client.UploadFile(new Uri("https://neowutran.ovh/storage/store_packets.php"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename));
+            }
         }
 
     }
