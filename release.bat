@@ -8,8 +8,10 @@ rmdir /Q /S "%output%"
 md "%output%
 md "%output%\resources"
 md "%output%\resources\config"
+md "%output%\lib"
 
 xcopy "%source%\DamageMeter.UI\bin\%variant%" "%output%\" /E
+xcopy "%source%\lib\" "%output%\lib\" /E
 copy "%source%\ShinraLauncher.exe" "%output%\"
 copy "%source%\Randomizer\bin\%variant%\Randomizer.exe" "%output%\"
 copy "%source%\Randomizer\bin\%variant%\Randomizer.exe.config" "%output%\"
