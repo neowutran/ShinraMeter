@@ -128,7 +128,7 @@ namespace DamageMeter
             var xs = new System.Xml.Serialization.XmlSerializer(typeof(RSAParameters));
             //get the object back from the stream
             var publicKey = (RSAParameters)xs.Deserialize(sr);
-
+            
             var csp = new RSACryptoServiceProvider();
             csp.ImportParameters(publicKey);
             var clearData = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, inputFilename));

@@ -463,7 +463,7 @@
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.ExportPacketLogs}"
                                                   x:Name="ExportPacketLog"
                                                   On="ExportPacketLog_On"
-                                                  Off="ExportPacketLog_Off" />
+                                                  Off="ExportPacketLog_Off"  />
                                                 <StackPanel x:Name="DpsServers" Orientation="Vertical" Margin="0">
                                                     
                                                 </StackPanel>
