@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -44,7 +45,7 @@ namespace DamageMeter
         {
             // Only export when a notable dungeons is cleared
             var areaId = int.Parse(teradpsData.areaId);
-            if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return; }
+           // if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return; }
             if (!TeraSniffer.Instance.EnableMessageStorage)
             {
                 // Message storing have already been stopped
@@ -70,7 +71,7 @@ namespace DamageMeter
             File.Delete(filename + ".TeraLog");
             Encrypt(filename + ".7z", filename + ".rsa");
             File.Delete(filename + ".7z");
-            Send(filename + ".rsa");
+            Send(filename + ".rsa", version);
             //File.Delete(filename+".rsa");
 
         }
@@ -112,9 +113,14 @@ namespace DamageMeter
                 ((C_WHISPER)parsedMessage).ReplaceStringWithGarbage(((C_WHISPER)parsedMessage).TextOffset);
             }
             return parsedMessage;
-        } 
+        }
 
-
+        /*
+         * Get file byte array
+         * Encrypt file byte array using AES and a random key / iv
+         * Encrypt the random key/iv using the public RSA key
+         * Concat the encrypted key/iv + encrypted file to a new file
+         */
         private void Encrypt(string inputFilename, string outputFilename)
         {
             var sr = new StringReader(PUBLIC_KEY_STRING);
@@ -127,13 +133,32 @@ namespace DamageMeter
             csp.ImportParameters(publicKey);
 
             var clearData = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, inputFilename));
-            var encryptedData = csp.Encrypt(clearData, false);
+
+            Aes aes = Aes.Create();
+            aes.KeySize = 256;
+            aes.Mode = CipherMode.CBC;
+            aes.BlockSize = 128;
+            aes.GenerateIV();
+            aes.GenerateKey();
 
             using (var fs = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, outputFilename), FileMode.Create, FileAccess.Write))
             {
-                fs.Write(encryptedData, 0, encryptedData.Length);
-            }
+                var encryptedAESKey = csp.Encrypt(aes.Key, true);
+                var encryptedAESIV = csp.Encrypt(aes.IV, true);
+                var fileheaderString = BitConverter.ToString(encryptedAESKey).Replace("-", string.Empty) +
+                    "</EncryptedAESKey>" +
+                    BitConverter.ToString(encryptedAESKey).Replace("-", string.Empty) +
+                    "</EncryptedAESIV>";
+                var fileheaderBytes = Encoding.ASCII.GetBytes(fileheaderString);
+                fs.Write(fileheaderBytes, 0, fileheaderBytes.Length);
 
+                using (var encryptor = aes.CreateEncryptor())
+                using (var encrypt = new CryptoStream(fs, encryptor, CryptoStreamMode.Write))
+                {
+                    encrypt.Write(clearData, 0, clearData.Length);
+                    encrypt.FlushFinalBlock();
+                }             
+            }
         }
 
         private void Compress(string inputFilename, string outputFilename)
@@ -149,23 +174,25 @@ namespace DamageMeter
             compressor.CompressFiles(outputFilename, new string[]{ Path.Combine(AppDomain.CurrentDomain.BaseDirectory,inputFilename)});
         }
 
-        private void Send(string filename)
+        private void Send(string filename, uint version)
         {
-            string sendCheckSum;
-            using (FileStream stream = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename)))
+            var filebytes = File.ReadAllBytes(filename);
+            
+            SHA1Managed sha = new SHA1Managed();
+            byte[] checksum = sha.ComputeHash(filebytes);
+            var sendCheckSum = BitConverter.ToString(checksum).Replace("-", string.Empty);
+            Debug.WriteLine(sendCheckSum);
+            
+            using (var client = new HttpClient())
             {
-                using (SHA1Managed sha = new SHA1Managed())
-                {
-                    byte[] checksum = sha.ComputeHash(stream);
-                    sendCheckSum = BitConverter.ToString(checksum).Replace("-", string.Empty);
-                }
-            }
-
-            using (WebClient client = new WebClient())
-            {
-                client.UploadFile(new Uri("https://neowutran.ovh/storage/store_packets.php?sha1="+sendCheckSum), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename));
+                client.Timeout = TimeSpan.FromSeconds(3600);
+                var response = client.PostAsync(
+                    new Uri("https://neowutran.ovh/storage/store_packets.php?version=" + version + "&sha1=" + sendCheckSum),
+                    new ByteArrayContent(filebytes)
+                    );
+                Debug.WriteLine("Packets logs sended");
+                Debug.WriteLine(response.Result.Content.ReadAsStringAsync().Result);
             }
         }
-
     }
 }
