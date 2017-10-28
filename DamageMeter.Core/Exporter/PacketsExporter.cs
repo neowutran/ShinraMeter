@@ -151,9 +151,19 @@ namespace DamageMeter
 
         private void Send(string filename)
         {
+            string sendCheckSum;
+            using (FileStream stream = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename)))
+            {
+                using (SHA1Managed sha = new SHA1Managed())
+                {
+                    byte[] checksum = sha.ComputeHash(stream);
+                    sendCheckSum = BitConverter.ToString(checksum).Replace("-", string.Empty);
+                }
+            }
+
             using (WebClient client = new WebClient())
             {
-                client.UploadFile(new Uri("https://neowutran.ovh/storage/store_packets.php"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename));
+                client.UploadFile(new Uri("https://neowutran.ovh/storage/store_packets.php?sha1="+sendCheckSum), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename));
             }
         }
 
