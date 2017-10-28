@@ -45,7 +45,7 @@ namespace DamageMeter
         {
             // Only export when a notable dungeons is cleared
             var areaId = int.Parse(teradpsData.areaId);
-           // if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return; }
+            if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return; }
             if (!TeraSniffer.Instance.EnableMessageStorage)
             {
                 // Message storing have already been stopped
@@ -72,7 +72,7 @@ namespace DamageMeter
             Encrypt(filename + ".7z", filename + ".rsa");
             File.Delete(filename + ".7z");
             Send(filename + ".rsa", version);
-            //File.Delete(filename+".rsa");
+            File.Delete(filename+".rsa");
 
         }
 
@@ -131,7 +131,6 @@ namespace DamageMeter
 
             var csp = new RSACryptoServiceProvider();
             csp.ImportParameters(publicKey);
-
             var clearData = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, inputFilename));
 
             Aes aes = Aes.Create();
@@ -147,7 +146,7 @@ namespace DamageMeter
                 var encryptedAESIV = csp.Encrypt(aes.IV, true);
                 var fileheaderString = BitConverter.ToString(encryptedAESKey).Replace("-", string.Empty) +
                     "</EncryptedAESKey>" +
-                    BitConverter.ToString(encryptedAESKey).Replace("-", string.Empty) +
+                    BitConverter.ToString(encryptedAESIV).Replace("-", string.Empty) +
                     "</EncryptedAESIV>";
                 var fileheaderBytes = Encoding.ASCII.GetBytes(fileheaderString);
                 fs.Write(fileheaderBytes, 0, fileheaderBytes.Length);
