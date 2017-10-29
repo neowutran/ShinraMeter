@@ -57,7 +57,6 @@ namespace Data
             catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
             {
                 Save();
-                _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 return;
             }
             catch { return; }
@@ -512,26 +511,22 @@ namespace Data
             var setting = GetType().GetField(settingName, BindingFlags.NonPublic | BindingFlags.Instance);
             if (setting.FieldType == typeof(int))
             {
-                int value;
-                var parseSuccess = int.TryParse(xml.Value, out value);
+                var parseSuccess = int.TryParse(xml.Value, out int value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
             if (setting.FieldType == typeof(double))
             {
-                double value;
-                var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
+                var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
             if (setting.FieldType == typeof(float))
             {
-                float value;
-                var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out value);
+                var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out float value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
             if (setting.FieldType == typeof(bool))
             {
-                bool value;
-                var parseSuccess = bool.TryParse(xml.Value, out value);
+                var parseSuccess = bool.TryParse(xml.Value, out bool value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
             if (setting.FieldType == typeof(string)) { setting.SetValue(this, xml.Value); }
