@@ -66,7 +66,7 @@ namespace Data
             Parse("meter_user_on_top", "meterUserOnTop");
             Parse("excel_save_directory", "excelSaveDirectory");
 
-            if (ExcelSaveDirectory == "") { ExcelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/"); }
+            if (excelSaveDirectory == "") { excelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/"); }
             Parse("display_only_boss_hit_by_meter_user", "displayOnlyBossHitByMeterUser");
             Parse("show_crit_damage_rate", "showCritDamageRate");
             Parse("showhealcrit", "showHealCrit");
@@ -122,7 +122,7 @@ namespace Data
             ParseLanguage();
             ParseUILanguage();
             Parse("date_in_excel_path", "dateInExcelPath");
-            if (DateInExcelPath) { ExcelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
+            if (dateInExcelPath) { excelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
             DpsServers.CollectionChanged += DpsServers_CollectionChanged;
         }
 
@@ -268,7 +268,7 @@ namespace Data
             var visibleSuccess = bool.TryParse(xmlVisible?.Value ?? "false", out bool visible);
             var xmlScale = xml.Attribute("scale");
             var scaleSuccess = double.TryParse(xmlScale?.Value ?? "0" , NumberStyles.Float, CultureInfo.InvariantCulture, out double scale);
-            setting.SetValue(this, new WindowStatus(location, visibleSuccess ? visible : currentSetting.Visible, scaleSuccess ? scale>0 ? scale : Scale : Scale));
+            setting.SetValue(this, new WindowStatus(location, visibleSuccess ? visible : currentSetting.Visible, scaleSuccess ? scale>0 ? scale : scale : scale));
         }
 
         private void ParseColor(string xmlName, string settingName)
@@ -363,8 +363,8 @@ namespace Data
             var root = _xml.Root;
             var languageElement = root?.Element("language");
             if (languageElement == null) { return; }
-            Language = languageElement.Value;
-            if (!Array.Exists(new[] {"Auto", "EU-EN", "EU-FR", "EU-GER", "NA", "RU", "JP", "TW", "KR"}, s => s.Equals(Language))) { Language = "Auto"; }
+            language = languageElement.Value;
+            if (!Array.Exists(new[] {"Auto", "EU-EN", "EU-FR", "EU-GER", "NA", "RU", "JP", "TW", "KR"}, s => s.Equals(language))) { language = "Auto"; }
         }
 
         private void ParseUILanguage()
@@ -372,9 +372,9 @@ namespace Data
             var root = _xml.Root;
             var languageElement = root?.Element("ui_language");
             if (languageElement == null) { return; }
-            UILanguage = languageElement.Value;
-            try { CultureInfo.GetCultureInfo(UILanguage); }
-            catch { UILanguage = "Auto"; }
+            uILanguage = languageElement.Value;
+            try { CultureInfo.GetCultureInfo(uILanguage); }
+            catch { uILanguage = "Auto"; }
         }
 
         private void ParseOpacity()
@@ -385,15 +385,14 @@ namespace Data
             if (mainWindowElement != null)
             {
                 int mainWindowOpacity;
-                if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity)) { MainWindowOpacity = (double) mainWindowOpacity / 100; }
+                if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity)) { this.mainWindowOpacity = (double) mainWindowOpacity / 100; }
             }
             var otherWindowElement = opacity?.Element("otherWindow");
             if (otherWindowElement == null) { return; }
-            int otherWindowOpacity;
-            if (int.TryParse(otherWindowElement.Value, out otherWindowOpacity)) { OtherWindowOpacity = (double) otherWindowOpacity / 100; }
+            if (int.TryParse(otherWindowElement.Value, out int otherWindowOpacity)) { this.otherWindowOpacity = (double)otherWindowOpacity / 100; }
         }
 
-        private void Save()
+        public void Save()
         {
             if (_filestream == null) { return; }
 

@@ -89,6 +89,7 @@ namespace DamageMeter
         {
             if (_keepAlive)
             {
+                BasicTeraData.Instance.WindowData.Save();
                 BasicTeraData.Instance.WindowData.Close();
                 BasicTeraData.Instance.HotkeysData.Save();
             }
