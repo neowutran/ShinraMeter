@@ -11,6 +11,7 @@ using Tera;
 using Tera.Game;
 using Tera.Sniffing;
 using System.Diagnostics;
+using System.Threading;
 
 namespace DamageMeter.Sniffing
 {
@@ -45,7 +46,7 @@ namespace DamageMeter.Sniffing
         }
     
         public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
-        public Queue<Message> PacketsCopyStorage = new Queue<Message>();
+        private Queue<Message> PacketsCopyStorage;
 
         public int ServerProxyOverhead;
 
@@ -92,6 +93,7 @@ namespace DamageMeter.Sniffing
 
         protected virtual void OnNewConnection(Server server)
         {
+            PacketsCopyStorage = new Queue<Message>();
             var handler = NewConnection;
             handler?.Invoke(server);
         }
@@ -104,35 +106,21 @@ namespace DamageMeter.Sniffing
 
         protected virtual void OnMessageReceived(Message message)
         {
-            
             Packets.Enqueue(message);
-
-            // Want to store message only if we can store since the very first message received
-            // And only if the public settings is set to true. 
-            // Avoid stocking message if not required (memory leak), and keep consistancy since
-            // we need every message since the very beginning for analysis
-            if (EnableMessageStorage && _firstMessageReceived == false)
-            {
-                _allowMessageStorage = true;
-            }
-
-            if (_allowMessageStorage && EnableMessageStorage) {PacketsCopyStorage.Enqueue(message);}
-            _firstMessageReceived = true;
+            if (EnableMessageStorage) {PacketsCopyStorage.Enqueue(message);}
         }
 
-        private bool _firstMessageReceived = false;
-        private bool _allowMessageStorage = false;
-        private bool _enableMessageStorage;
-        public bool EnableMessageStorage {
-            get { return _enableMessageStorage;  }
-            set {
-                _enableMessageStorage = value;
-                if (!_enableMessageStorage) {
-                    // Drop the object since we don't want to keep storage anymore & let the
-                    // garbage collector do the job of cleaning the memory
-                    PacketsCopyStorage = new Queue<Message>();
-                }
-            } }
+        public bool EnableMessageStorage { get; set; }
+
+        public Queue<Message> GetPacketsLogsAndStop()
+        {
+            EnableMessageStorage = false;
+            var tmp = PacketsCopyStorage;
+            // Wait for thread to sync, more perf than concurrentQueue
+            Thread.Sleep(1);
+            PacketsCopyStorage = new Queue<Message>();
+            return tmp;
+        }
 
         protected virtual void OnWarning(string obj)
         {

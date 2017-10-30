@@ -33,8 +33,7 @@ namespace DamageMeter
         public void UpdateEntities(SpawnNpcServerMessage message)
         {
             var entity = NetworkController.Instance.EntityTracker.GetOrNull(message.Id);
-            var npcEntity = entity as NpcEntity;
-            if (npcEntity != null && NetworkController.Instance.Encounter == npcEntity) { _toDelete.Add(entity); }
+            if (entity is NpcEntity npcEntity && NetworkController.Instance.Encounter == npcEntity) { _toDelete.Add(entity); }
         }
 
         public void DeleteEntity(Entity entity)
@@ -113,8 +112,7 @@ namespace DamageMeter
             if (message.IsHp) { skillType = message.IsHeal ? Database.Database.Type.Heal : Database.Database.Type.Damage; }
             if (message.Amount == 0) { skillType = Database.Database.Type.Counter; }
 
-            var entity = entityTarget as NpcEntity;
-            if (entity != null)
+            if (entityTarget is NpcEntity entity)
             {
                 /*
                  * Remove data from resetted boss when hitting a new boss
@@ -127,8 +125,8 @@ namespace DamageMeter
                     foreach (var delete in _toDelete) { DeleteEntity(delete); }
                     _toDelete = new List<Entity>();
                 }
-                
-                if((BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser && NetworkController.Instance.EntityTracker.MeterUser.Id == entitySource.Id) || !BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser)
+
+                if ((BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser && NetworkController.Instance.EntityTracker.MeterUser.Id == entitySource.Id) || !BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser)
                 {
                     UpdateCurrentBoss(entity);
                 }

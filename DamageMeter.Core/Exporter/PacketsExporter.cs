@@ -16,6 +16,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Tera;
 using Tera.Game;
 using Tera.Game.Messages;
@@ -43,36 +44,39 @@ namespace DamageMeter
           );
         public void Export(EncounterBase teradpsData, NpcEntity entity)
         {
+            BasicTeraData.LogError("PacketExport: Start", true);
             // Only export when a notable dungeons is cleared
             var areaId = int.Parse(teradpsData.areaId);
-            if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return; }
+           /* if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) {
+                BasicTeraData.LogError("PacketExport: Boss not allowed, exiting", true);
+                return;
+            }*/
             if (!TeraSniffer.Instance.EnableMessageStorage)
             {
+                BasicTeraData.LogError("PacketExport: Option not activated, exiting", true);
                 // Message storing have already been stopped
                 return;
             }
             // Keep a local reference of the packet list
-            Queue<Message> packetsCopyStorage = TeraSniffer.Instance.PacketsCopyStorage;
-
-            // Stop filling the packet list & delete the original reference, so memory will be freed 
-            // by the garbage collector after the export
-            TeraSniffer.Instance.EnableMessageStorage = false;
-
-            // Wait for thread to sync, more perf than concurrentQueue
-            Thread.Sleep(1);
+            Queue<Message> packetsCopyStorage = TeraSniffer.Instance.GetPacketsLogsAndStop();
 
             var version = NetworkController.Instance.MessageFactory.Version;
             Guid id = Guid.NewGuid();
             string filename =  version + "_"+ id;
 
             Debug.WriteLine("Start exporting data");
+            BasicTeraData.LogError("PacketExport: Export data to tmp file", true);
             SaveToTmpFile(version.ToString(), packetsCopyStorage, filename+ ".TeraLog");
+            BasicTeraData.LogError("PacketExport: Compress file", true);
             Compress(filename + ".TeraLog", filename+".7z");
             File.Delete(filename + ".TeraLog");
+            BasicTeraData.LogError("PacketExport: Encrypt file", true);
             Encrypt(filename + ".7z", filename + ".rsa");
             File.Delete(filename + ".7z");
+            BasicTeraData.LogError("PacketExport: Send file", true);
             Send(filename + ".rsa", version);
             File.Delete(filename+".rsa");
+
 
         }
 
@@ -181,6 +185,7 @@ namespace DamageMeter
             byte[] checksum = sha.ComputeHash(filebytes);
             var sendCheckSum = BitConverter.ToString(checksum).Replace("-", string.Empty);
             Debug.WriteLine(sendCheckSum);
+            BasicTeraData.LogError("PacketExport: Send hash: "+sendCheckSum, true);
             
             using (var client = new HttpClient())
             {
@@ -190,6 +195,7 @@ namespace DamageMeter
                     new ByteArrayContent(filebytes)
                     );
                 Debug.WriteLine("Packets logs sended");
+                BasicTeraData.LogError("PacketExport: "+ response.Result.Content.ReadAsStringAsync().Result, true);
                 Debug.WriteLine(response.Result.Content.ReadAsStringAsync().Result);
             }
         }
