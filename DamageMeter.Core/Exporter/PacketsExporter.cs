@@ -47,10 +47,10 @@ namespace DamageMeter
             BasicTeraData.LogError("PacketExport: Start", true);
             // Only export when a notable dungeons is cleared
             var areaId = int.Parse(teradpsData.areaId);
-           /* if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) {
+            if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) {
                 BasicTeraData.LogError("PacketExport: Boss not allowed, exiting", true);
                 return;
-            }*/
+            }
             if (!TeraSniffer.Instance.EnableMessageStorage)
             {
                 BasicTeraData.LogError("PacketExport: Option not activated, exiting", true);
