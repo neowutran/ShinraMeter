@@ -59,6 +59,11 @@ namespace DamageMeter
             }
             // Keep a local reference of the packet list
             Queue<Message> packetsCopyStorage = TeraSniffer.Instance.GetPacketsLogsAndStop();
+            if (!packetsCopyStorage.Any())
+            {
+                BasicTeraData.LogError("PacketExport: Empty packet log, exiting", true);
+                return;
+            }
 
             var version = NetworkController.Instance.MessageFactory.Version;
             Guid id = Guid.NewGuid();

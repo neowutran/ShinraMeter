@@ -12,6 +12,7 @@ using Data;
 using Lang;
 using System.Windows.Media.Animation;
 using System.Collections.Generic;
+using DamageMeter.Sniffing;
 
 namespace DamageMeter.UI
 {
@@ -519,11 +520,13 @@ namespace DamageMeter.UI
         private void ExportPacketLog_On(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PacketsCollect = true;
+            TeraSniffer.Instance.EnableMessageStorage = true;
         }
 
         private void ExportPacketLog_Off(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.PacketsCollect = false;
+            TeraSniffer.Instance.EnableMessageStorage = false;
         }
 
     }

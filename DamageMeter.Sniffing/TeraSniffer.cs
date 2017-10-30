@@ -93,7 +93,7 @@ namespace DamageMeter.Sniffing
 
         protected virtual void OnNewConnection(Server server)
         {
-            PacketsCopyStorage = new Queue<Message>();
+            PacketsCopyStorage = EnableMessageStorage ? new Queue<Message>() : null;
             var handler = NewConnection;
             handler?.Invoke(server);
         }
@@ -107,18 +107,26 @@ namespace DamageMeter.Sniffing
         protected virtual void OnMessageReceived(Message message)
         {
             Packets.Enqueue(message);
-            if (EnableMessageStorage) {PacketsCopyStorage.Enqueue(message);}
+            PacketsCopyStorage?.Enqueue(message);
         }
 
-        public bool EnableMessageStorage { get; set; }
+        private bool _enableMessageStorage;
+        public bool EnableMessageStorage
+        {
+            get => _enableMessageStorage;
+            set
+            {
+                _enableMessageStorage = value;
+                if (!_enableMessageStorage) { PacketsCopyStorage = null; }
+            }
+        }
 
         public Queue<Message> GetPacketsLogsAndStop()
         {
+            var tmp = PacketsCopyStorage ?? new Queue<Message>();
             EnableMessageStorage = false;
-            var tmp = PacketsCopyStorage;
             // Wait for thread to sync, more perf than concurrentQueue
             Thread.Sleep(1);
-            PacketsCopyStorage = new Queue<Message>();
             return tmp;
         }
 
