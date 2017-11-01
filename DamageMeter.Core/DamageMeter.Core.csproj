@@ -91,7 +91,6 @@
     <Compile Include="Database\Structures\StatsSummary.cs" />
     <Compile Include="Exporter\DataExporter.cs" />
     <Compile Include="Processing\S_CREATURE_CHANGE_HP.cs" />
-    <Compile Include="Processing\S_NPC_STATUS.cs" />
     <Compile Include="TeraDpsApi\DpsServer.cs" />
     <Compile Include="Exporter\ExcelExporter.cs" />
     <Compile Include="FormatHelpers.cs" />

@@ -16,6 +16,7 @@ using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
+using System.Diagnostics;
 
 namespace DamageMeter
 {
@@ -186,6 +187,7 @@ namespace DamageMeter
                 var entityDamaged = currentBoss.Info.HP - entityHP;
                 entityInfo.TimeLeft = entityDamaged == 0 ? 0 : entityInfo.Interval * entityHP / entityDamaged;
             }
+            
             Skills skills = null;
             if (SendFullDetails)
             {
@@ -363,8 +365,7 @@ namespace DamageMeter
 
                 CheckUpdateUi(packetsWaiting);
 
-                Message obj;
-                var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out obj);
+                var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out Message obj);
                 if (!successDequeue)
                 {
                     Thread.Sleep(1);
