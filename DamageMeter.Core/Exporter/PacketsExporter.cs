@@ -199,7 +199,6 @@ namespace DamageMeter
                     new Uri("https://neowutran.ovh/storage/store_packets.php?version=" + version + "&sha1=" + sendCheckSum),
                     new ByteArrayContent(filebytes)
                     );
-                Debug.WriteLine("Packets logs sended");
                 BasicTeraData.LogError("PacketExport: "+ response.Result.Content.ReadAsStringAsync().Result, true);
                 Debug.WriteLine(response.Result.Content.ReadAsStringAsync().Result);
             }

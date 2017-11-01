@@ -139,7 +139,7 @@ namespace DamageMeter
                 {typeof(SPlayerChangeMp), new Action<SPlayerChangeMp>(x => NetworkController.Instance.AbnormalityTracker.Update(x))},
                 {typeof(SPartyMemberChangeHp), new Action<SPartyMemberChangeHp>(x => NetworkController.Instance.AbnormalityTracker.Update(x))},
                 {typeof(SDespawnUser), Helpers.Contructor<Func<SDespawnUser, S_DESPAWN_USER>>()},
-                {typeof(SNpcStatus), new Action<SNpcStatus>(x => NetworkController.Instance.AbnormalityTracker.Update(x))},
+                {typeof(SNpcStatus), Helpers.Contructor<Func<SNpcStatus, S_NPC_STATUS>>()},
                 {typeof(S_PARTY_MEMBER_STAT_UPDATE), new Action<S_PARTY_MEMBER_STAT_UPDATE>(x => NetworkController.Instance.AbnormalityTracker.Update(x))},
                 {typeof(S_PLAYER_STAT_UPDATE), new Action<S_PLAYER_STAT_UPDATE>(x => NetworkController.Instance.AbnormalityTracker.Update(x))}
             };

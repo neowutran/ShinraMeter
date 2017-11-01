@@ -293,10 +293,17 @@ namespace DamageMeter.Processing
         {
             var source = NetworkController.Instance.EntityTracker.GetOrNull(message.Source) as UserEntity;
             if (NetworkController.Instance.EntityTracker.MeterUser != source) { return; }
-            var target = NetworkController.Instance.EntityTracker.GetOrNull(message.Target) as NpcEntity;
-            if (target == null) { return; }
-            if (target.Info.Boss) { _lastBossMeterUser = target.Id; }
+            UpdateMeterBoss(message.Target);
         }
+
+        internal void UpdateMeterBoss(EntityId entityId)
+        {
+            var npc = NetworkController.Instance.EntityTracker.GetOrNull(entityId) as NpcEntity;
+            if (npc == null) { return; }
+            if (npc.Info.Boss) { _lastBossMeterUser = npc.Id; }
+        }
+
+        
 
         internal void AbnormalityNotifierAdded(Abnormality ab, bool newStack)
         {
