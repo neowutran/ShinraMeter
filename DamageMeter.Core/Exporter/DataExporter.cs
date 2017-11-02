@@ -230,7 +230,17 @@ namespace DamageMeter
                 ExcelExporter.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
                 Anonymize(stats.BaseStats);
                 DpsServers.Where(x => x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
-                if (BasicTeraData.Instance.WindowData.PacketsCollect) { PacketsExporter.Instance.Export(stats.BaseStats, entity); }
+                if (BasicTeraData.Instance.WindowData.PacketsCollect) {
+                    try
+                    {
+                        PacketsExporter.Instance.Export(stats.BaseStats, entity);
+                    }
+                    catch (Exception ex)
+                    {
+                        BasicTeraData.LogError("##### Packets export EXCEPTION #####\r\n" + ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data +
+                                  "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
+                    }
+                }
 
             });
             sendThread.Start();
