@@ -191,7 +191,7 @@ namespace DamageMeter
             var sendCheckSum = BitConverter.ToString(checksum).Replace("-", string.Empty);
             Debug.WriteLine(sendCheckSum);
             BasicTeraData.LogError("PacketExport: Send hash: "+sendCheckSum, true);
-            
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             using (var client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromSeconds(3600);
