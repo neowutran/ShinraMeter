@@ -180,7 +180,7 @@ namespace DamageMeter
                 filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
             }
 
-            var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter, BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro);
+            var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter, BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro);
             if (currentBoss != null)
             {
                 NotifyProcessor.Instance._lastBosses.TryGetValue(currentBoss.Id, out long entityHP);
@@ -307,7 +307,7 @@ namespace DamageMeter
                     var currentBoss = Encounter;
                     var timedEncounter = TimedEncounter;
 
-                    var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter, BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro);
+                    var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter, BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro);
                     var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
                     var playersInfo = timedEncounter
                         ? Database.Database.Instance.PlayerDamageInformation(entityInfo.BeginTime, entityInfo.EndTime)

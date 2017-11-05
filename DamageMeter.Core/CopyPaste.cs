@@ -142,21 +142,21 @@ namespace DamageMeter
             dpsString.Replace("{encounter}", name);
             var interval = TimeSpan.FromSeconds(lastHit - firstHit);
             var timerType = "Aggro";
-            if (!BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro) { timerType = "First hit"; }
+            if (!BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro) { timerType = "First hit"; }
             dpsString.Replace("{timer}", timerType + ": "+ interval.ToString(@"mm\:ss"));
             dpsString.Replace("{partyDps}",
                 FormatHelpers.Instance.FormatValue(lastHit - firstHit > 0 ? entityInfo.TotalDamage / (lastHit - firstHit) : 0) + LP.PerSecond);
             dpsString.Replace("{enrage}", FormatHelpers.Instance.FormatPercent(enrageperc));
             dpsString.Replace("{debuff_list}",
                 string.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != HotDotDatabase.Enrage.Id && x.Value.Duration(firstTick, lastTick) > 0)
+                    bossDebuff.Where(x => x.Key.Id != BasicTeraData.Instance.HotDotDatabase.Enrage.Id && x.Value.Duration(firstTick, lastTick) > 0)
                         .OrderByDescending(x => x.Value.Duration(firstTick, lastTick, -1)).ToList()
                         .Select(x => x.Key.ShortName + (x.Value.MaxStack(firstTick, lastTick) > 1 ? "(" + x.Value.MaxStack(firstTick, lastTick) + ")" : "") + " " +
                                      FormatHelpers.Instance.FormatPercent((double) x.Value.Duration(firstTick, lastTick, -1) / (lastTick - firstTick)) + " (" +
                                      TimeSpan.FromTicks(x.Value.Duration(firstTick, lastTick, -1)).ToString(@"mm\:ss") + ") ")));
             dpsString.Replace("{debuff_list_p}",
                 string.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != HotDotDatabase.Enrage.Id && x.Value.Duration(firstTick, lastTick) > 0)
+                    bossDebuff.Where(x => x.Key.Id != BasicTeraData.Instance.HotDotDatabase.Enrage.Id && x.Value.Duration(firstTick, lastTick) > 0)
                         .OrderByDescending(x => x.Value.Duration(firstTick, lastTick, -1)).ToList()
                         .Select(x => x.Key.ShortName + (x.Value.MaxStack(firstTick, lastTick) > 1 ? "(" + x.Value.MaxStack(firstTick, lastTick) + ")" : "") + " " +
                                      FormatHelpers.Instance.FormatPercent((double) x.Value.Duration(firstTick, lastTick - 1) / (lastTick - firstTick)))));
@@ -203,13 +203,13 @@ namespace DamageMeter
                 playerHolder["{hits_received}"] =
                     FormatHelpers.Instance.FormatValue(skills.HitsReceived(playerStats.Source.User, entityInfo.Entity, timedEncounter));
                 playerHolder["{debuff_list}"] = string.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != HotDotDatabase.Enrage.Id && x.Value.InitialPlayerClass == playerStats.Source.Class && x.Value.Duration(firstTick, lastTick) > 0)
+                    bossDebuff.Where(x => x.Key.Id != BasicTeraData.Instance.HotDotDatabase.Enrage.Id && x.Value.InitialPlayerClass == playerStats.Source.Class && x.Value.Duration(firstTick, lastTick) > 0)
                         .OrderByDescending(x => x.Value.Duration(firstTick, lastTick, -1)).ToList()
                         .Select(x => x.Key.ShortName + (x.Value.MaxStack(firstTick, lastTick) > 1 ? "(" + x.Value.MaxStack(firstTick, lastTick) + ")" : "") + " " +
                                      FormatHelpers.Instance.FormatPercent((double) x.Value.Duration(firstTick, lastTick, -1) / (lastTick - firstTick)) + " (" +
                                      TimeSpan.FromTicks(x.Value.Duration(firstTick, lastTick, -1)).ToString(@"mm\:ss") + ") "));
                 playerHolder["{debuff_list_p}"] = string.Join(" | ",
-                    bossDebuff.Where(x => x.Key.Id != HotDotDatabase.Enrage.Id && x.Value.InitialPlayerClass == playerStats.Source.Class && x.Value.Duration(firstTick, lastTick) > 0)
+                    bossDebuff.Where(x => x.Key.Id != BasicTeraData.Instance.HotDotDatabase.Enrage.Id && x.Value.InitialPlayerClass == playerStats.Source.Class && x.Value.Duration(firstTick, lastTick) > 0)
                         .OrderByDescending(x => x.Value.Duration(firstTick, lastTick, -1)).ToList()
                         .Select(x => x.Key.ShortName + (x.Value.MaxStack(firstTick, lastTick) > 1 ? "(" + x.Value.MaxStack(firstTick, lastTick) + ")" : "") + " " +
                                      FormatHelpers.Instance.FormatPercent((double) x.Value.Duration(firstTick, lastTick, -1) / (lastTick - firstTick))));

@@ -67,7 +67,7 @@ namespace DamageMeter.UI
             PartyEvent.Status = BasicTeraData.Instance.WindowData.DisablePartyEvent;
             ShowAfkIventsIngame.Status = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
             MuteSound.Status = BasicTeraData.Instance.WindowData.MuteSound;
-            DisplayTimerOnAggro.Status = BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro;
+            DisplayTimerOnAggro.Status = BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro;
             ShowSelfOnTop.Status = BasicTeraData.Instance.WindowData.MeterUserOnTop;
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             NoPaste.Status = BasicTeraData.Instance.WindowData.NoPaste;
@@ -532,12 +532,12 @@ namespace DamageMeter.UI
 
         private void DisplayTimerOnAggro_On(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro = true;
+            BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro = true;
         }
 
         private void DisplayTimerOnAggro_Off(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro = false;
+            BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro = false;
 
         }
     }

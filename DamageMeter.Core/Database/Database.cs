@@ -5,6 +5,7 @@ using DamageMeter.Database.Structures;
 using Data;
 using Tera.Game;
 using Skill = DamageMeter.Database.Structures.Skill;
+using static Tera.Game.HotDotDatabase;
 
 namespace DamageMeter.Database
 {
@@ -174,7 +175,7 @@ namespace DamageMeter.Database
         public EntityInformation GlobalInformationEntity(NpcEntity entity, bool timed, bool timerBasedOnAggro = true)
         {
             var aggroTimeCondition = "";
-            if (!timerBasedOnAggro) { aggroTimeCondition = " AND skill_id != "+HotDotDatabase.Enrage.Id + " "; }
+            if (!timerBasedOnAggro) { aggroTimeCondition = " AND skill_id != "+ (int)StaticallyUsedBuff.Enraged + " "; }
 
             SQLiteCommand command;
 
