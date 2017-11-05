@@ -99,7 +99,9 @@ namespace Data
             Parse("enable_overlay", "enableOverlay");
             Parse("click_throu", "clickThrou");
             Parse("packets_collect", "packetsCollect");
+            Parse("display_timer_based_on_aggro", "displayTimerNasedOnAggro");
 
+            
             ParseColor("say_color", "sayColor");
             ParseColor("alliance_color", "allianceColor");
             ParseColor("area_color", "areaColor");
@@ -192,6 +194,9 @@ namespace Data
         private bool dateInExcelPath = false;
         private bool showTimeLeft = false;
         private bool noAbnormalsInHUD = false;
+        private bool displayTimerNasedOnAggro = true;
+
+        public bool DisplayTImerBasedOnAggro { get => displayTimerNasedOnAggro; set { displayTimerNasedOnAggro = value; Save(); } }
 
         public bool EnableOverlay { get => enableOverlay; set { enableOverlay = value; Save();}}
         public Color WhisperColor { get => whisperColor; set { whisperColor = value; Save();}}
@@ -466,6 +471,7 @@ namespace Data
             xml.Root.Add(new XElement("packets_collect", packetsCollect));
             xml.Root.Add(new XElement("no_abnormals_in_hud", noAbnormalsInHUD));
             xml.Root.Add(new XElement("enable_overlay", enableOverlay));
+            xml.Root.Add(new XElement("display_timer_based_on_aggro", displayTimerNasedOnAggro));
             xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
 
             xml.Root.Add(new XElement("dps_servers"));

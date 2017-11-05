@@ -67,6 +67,7 @@ namespace DamageMeter.UI
             PartyEvent.Status = BasicTeraData.Instance.WindowData.DisablePartyEvent;
             ShowAfkIventsIngame.Status = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
             MuteSound.Status = BasicTeraData.Instance.WindowData.MuteSound;
+            DisplayTimerOnAggro.Status = BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro;
             ShowSelfOnTop.Status = BasicTeraData.Instance.WindowData.MeterUserOnTop;
             IdleRTOSpinner.Value = BasicTeraData.Instance.WindowData.IdleResetTimeout;
             NoPaste.Status = BasicTeraData.Instance.WindowData.NoPaste;
@@ -98,7 +99,7 @@ namespace DamageMeter.UI
 
         private void ResetAction(object sender, RoutedEventArgs e)
         {
-            NetworkController.Instance.NeedToReset = true;
+            PacketProcessor.Instance.NeedToReset = true;
         }
 
         private void CloseAction(object sender, RoutedEventArgs e)
@@ -144,14 +145,14 @@ namespace DamageMeter.UI
 
         private void ExcelExportAction(object sender, RoutedEventArgs e)
         {
-            NetworkController.Instance.NeedToExport = DataExporter.Dest.Excel | DataExporter.Dest.Manual;
+            PacketProcessor.Instance.NeedToExport = DataExporter.Dest.Excel | DataExporter.Dest.Manual;
         }
         private long _lastSend;
 
         private void SiteExportAction(object sender, RoutedEventArgs e)
         {
             if (_lastSend + TimeSpan.TicksPerSecond * 60 >= DateTime.Now.Ticks) { return; }
-            NetworkController.Instance.NeedToExport = DataExporter.Dest.Site;
+            PacketProcessor.Instance.NeedToExport = DataExporter.Dest.Site;
             _lastSend = DateTime.Now.Ticks;
         }
 
@@ -212,12 +213,12 @@ namespace DamageMeter.UI
 
         private void EnableClickThrou(object sender, RoutedEventArgs e)
         {
-            NetworkController.Instance.SwitchClickThrou(true);
+            PacketProcessor.Instance.SwitchClickThrou(true);
         }
 
         private void DisableClickThrou(object sender, RoutedEventArgs e)
         {
-            NetworkController.Instance.SwitchClickThrou(false);
+            PacketProcessor.Instance.SwitchClickThrou(false);
         }
 
         private void EnablePartyOnly(object sender, RoutedEventArgs e)
@@ -529,5 +530,15 @@ namespace DamageMeter.UI
             TeraSniffer.Instance.EnableMessageStorage = false;
         }
 
+        private void DisplayTimerOnAggro_On(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro = true;
+        }
+
+        private void DisplayTimerOnAggro_Off(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro = false;
+
+        }
     }
 }

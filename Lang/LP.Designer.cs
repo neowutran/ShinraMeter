@@ -529,6 +529,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Timer based on aggro.
+        /// </summary>
+        public static string Display_timer_aggro_or_firsthit {
+            get {
+                return ResourceManager.GetString("Display_timer_aggro_or_firsthit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à DOT.
         /// </summary>
         public static string Dot {

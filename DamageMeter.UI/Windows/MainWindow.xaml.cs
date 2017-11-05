@@ -68,12 +68,12 @@ namespace DamageMeter.UI
 
             TeraSniffer.Instance.Enabled = true;
             TeraSniffer.Instance.Warning += PcapWarning;
-            NetworkController.Instance.Connected += HandleConnected;
-            NetworkController.Instance.TickUpdated += Update;
-            NetworkController.Instance.SetClickThrouAction += SetClickThrou;
-            NetworkController.Instance.UnsetClickThrouAction += UnsetClickThrou;
-            NetworkController.Instance.GuildIconAction += InstanceOnGuildIconAction;
-            NetworkController.Instance.PauseAction += PauseState;
+            PacketProcessor.Instance.Connected += HandleConnected;
+            PacketProcessor.Instance.TickUpdated += Update;
+            PacketProcessor.Instance.SetClickThrouAction += SetClickThrou;
+            PacketProcessor.Instance.UnsetClickThrouAction += UnsetClickThrou;
+            PacketProcessor.Instance.GuildIconAction += InstanceOnGuildIconAction;
+            PacketProcessor.Instance.PauseAction += PauseState;
             _dispatcherTimer = new DispatcherTimer();
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -105,7 +105,7 @@ namespace DamageMeter.UI
             KeyboardHook.Instance.SwitchTopMost += delegate { NotifyIcon.SwitchStayTop(); };
             SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             NotifyIcon.Initialize(this);
-            NotifyIcon.InitializeServerList(NetworkController.Instance.Initialize());
+            NotifyIcon.InitializeServerList(PacketProcessor.Instance.Initialize());
             if (BasicTeraData.Instance.WindowData.ClickThrou) { SetClickThrou(); }            
         }
 
@@ -126,7 +126,7 @@ namespace DamageMeter.UI
                 NotifyIcon.Tray.Icon = bitmap?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
             }
 
-            Dispatcher.Invoke((NetworkController.GuildIconEvent) ChangeUi, icon);
+            Dispatcher.Invoke((PacketProcessor.GuildIconEvent) ChangeUi, icon);
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
@@ -209,7 +209,7 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.Location = LastSnappedPoint ?? new Point(Left, Top);
             ForceWindowVisibilityHidden = true;
-            NetworkController.Instance.TickUpdated -= Update;
+            PacketProcessor.Instance.TickUpdated -= Update;
             _dispatcherTimer.Stop();
             NotifyIcon.Tray.Visibility = Visibility.Collapsed;
             NotifyIcon.Tray.Icon = null;
@@ -217,7 +217,7 @@ namespace DamageMeter.UI
             NotifyIcon.Tray.Dispose();
             NotifyIcon.Tray = null;
             _topMost = false;
-            NetworkController.Instance.Exit();
+            PacketProcessor.Instance.Exit();
             DXrender?.Dispose();
         }
 
@@ -345,7 +345,7 @@ namespace DamageMeter.UI
                 }
             }
 
-            Dispatcher.Invoke((NetworkController.UpdateUiHandler) ChangeUi, nmessage);
+            Dispatcher.Invoke((PacketProcessor.UpdateUiHandler) ChangeUi, nmessage);
         }
 
         private void ShowHistory(object sender, MouseButtonEventArgs e)
@@ -492,7 +492,7 @@ namespace DamageMeter.UI
             NpcEntity encounter = null;
             if (((ComboBoxItem) e.AddedItems[0]).Content is NpcEntity) { encounter = (NpcEntity) ((ComboBoxItem) e.AddedItems[0]).Content; }
 
-            if (encounter != NetworkController.Instance.Encounter) { NetworkController.Instance.NewEncounter = encounter; }
+            if (encounter != PacketProcessor.Instance.Encounter) { PacketProcessor.Instance.NewEncounter = encounter; }
         }
 
         private void EntityStatsImage_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -503,15 +503,15 @@ namespace DamageMeter.UI
 
         private void Chrono_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (NetworkController.Instance.TimedEncounter)
+            if (PacketProcessor.Instance.TimedEncounter)
             {
-                NetworkController.Instance.TimedEncounter = false;
+                PacketProcessor.Instance.TimedEncounter = false;
                 Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
                 Chrono.ToolTip = LP.MainWindow_Only_boss;
             }
             else
             {
-                NetworkController.Instance.TimedEncounter = true;
+                PacketProcessor.Instance.TimedEncounter = true;
                 Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chrono.Source;
                 Chrono.ToolTip = LP.MainWindow_Boss_Adds;
             }

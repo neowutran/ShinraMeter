@@ -12,7 +12,7 @@ namespace DamageMeter.Processing
         internal S_CREATURE_CHANGE_HP(SCreatureChangeHp message)
         {
             HudManager.Instance.UpdateBoss(message);
-            NetworkController.Instance.AbnormalityTracker.Update(message);
+            PacketProcessor.Instance.AbnormalityTracker.Update(message);
         }
     }
 }

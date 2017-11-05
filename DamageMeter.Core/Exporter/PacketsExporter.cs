@@ -65,7 +65,7 @@ namespace DamageMeter
                 return;
             }
 
-            var version = NetworkController.Instance.MessageFactory.Version;
+            var version = PacketProcessor.Instance.MessageFactory.Version;
             Guid id = Guid.NewGuid();
             string filename =  version + "_"+ id;
 
@@ -91,7 +91,7 @@ namespace DamageMeter
             PacketLogWriter writer = new PacketLogWriter(filename, header);
             foreach (var message in packetsCopyStorage)
             {
-                ParsedMessage parsedMessage = NetworkController.Instance.MessageFactory.Create(message);
+                ParsedMessage parsedMessage = PacketProcessor.Instance.MessageFactory.Create(message);
                 parsedMessage = WipeoutSensitiveData(parsedMessage);
                 writer.Append(message);
             }

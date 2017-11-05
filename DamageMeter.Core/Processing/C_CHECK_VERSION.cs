@@ -18,12 +18,12 @@ namespace DamageMeter.Processing
             {
                 BasicTeraData.LogError("Unknown client version: " + message.Versions[0]);
                 MessageBox.Show(LP.Unknown_client_version + message.Versions[0]);
-                NetworkController.Instance.Exit();
+                PacketProcessor.Instance.Exit();
             }
             var opCodeNamer = new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory, $"data/opcodes/{message.Versions[0]}.txt"));
             var sysMsgNamer = new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory, $"data/opcodes/smt_{message.Versions[0]}.txt"));
             TeraSniffer.Instance.Connected = true;
-            NetworkController.Instance.MessageFactory = new MessageFactory(opCodeNamer, NetworkController.Instance.Server.Region, message.Versions[0], false, sysMsgNamer);
+            PacketProcessor.Instance.MessageFactory = new MessageFactory(opCodeNamer, PacketProcessor.Instance.Server.Region, message.Versions[0], false, sysMsgNamer);
 
             if (TeraSniffer.Instance.ClientProxyOverhead + TeraSniffer.Instance.ServerProxyOverhead > 0x1000)
             {

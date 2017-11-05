@@ -171,14 +171,17 @@ namespace DamageMeter.Database
             command.Dispose();
         }
 
-        public EntityInformation GlobalInformationEntity(NpcEntity entity, bool timed)
+        public EntityInformation GlobalInformationEntity(NpcEntity entity, bool timed, bool timerBasedOnAggro = true)
         {
+            var aggroTimeCondition = "";
+            if (!timerBasedOnAggro) { aggroTimeCondition = " AND skill_id != "+HotDotDatabase.Enrage.Id + " "; }
+
             SQLiteCommand command;
 
             if (entity == null)
             {
-                var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " + "WHERE type = $type " +
-                          "GROUP BY source; ";
+                var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " + "WHERE type = $type "+ aggroTimeCondition +
+                          " GROUP BY source; ";
 
                 command = new SQLiteCommand(sql, Connexion);
                 command.Parameters.AddWithValue("$type", (int) Type.Damage);
@@ -188,7 +191,7 @@ namespace DamageMeter.Database
                 if (!timed)
                 {
                     var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " +
-                              "WHERE target = $target AND type = $type " + "GROUP BY source; ";
+                              "WHERE target = $target AND type = $type " + aggroTimeCondition + " GROUP BY source; ";
 
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
@@ -197,8 +200,8 @@ namespace DamageMeter.Database
                 else
                 {
                     var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " +
-                              "WHERE time BETWEEN (SELECT MIN(time) FROM skills WHERE target = $target) AND (SELECT MAX(time) FROM skills WHERE target = $target) AND type = $type " +
-                              "GROUP BY source; ";
+                              "WHERE time BETWEEN (SELECT MIN(time) FROM skills WHERE target = $target "+ aggroTimeCondition + " ) AND (SELECT MAX(time) FROM skills WHERE target = $target "+ aggroTimeCondition + " ) AND type = $type " + aggroTimeCondition +
+                              " GROUP BY source; ";
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
                     command.Parameters.AddWithValue("$target", entity.Id.Id);
@@ -214,7 +217,7 @@ namespace DamageMeter.Database
             while (rdr.Read())
             {
                 var source = rdr.GetFieldValue<long>(rdr.GetOrdinal("source"));
-                var entitySource = NetworkController.Instance.EntityTracker.GetOrNull(new EntityId((ulong) source));
+                var entitySource = PacketProcessor.Instance.EntityTracker.GetOrNull(new EntityId((ulong) source));
                 if (!(entitySource is UserEntity)) { continue; }
                 var totalDamage = rdr.IsDBNull(rdr.GetOrdinal("total_amount")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
                 var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));
@@ -269,17 +272,17 @@ namespace DamageMeter.Database
                 Player sourcePlayer = null;
                 if (sourceServerIdPlayerId != 0)
                 {
-                    sourcePlayer = NetworkController.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32),
+                    sourcePlayer = PacketProcessor.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32),
                         (uint) ((sourceServerIdPlayerId << 32) >> 32));
                 }
                 Player targetPlayer = null;
                 if (targetServerIdPlayerId != 0)
                 {
-                    targetPlayer = NetworkController.Instance.PlayerTracker.Get((uint) (targetServerIdPlayerId >> 32),
+                    targetPlayer = PacketProcessor.Instance.PlayerTracker.Get((uint) (targetServerIdPlayerId >> 32),
                         (uint) ((targetServerIdPlayerId << 32) >> 32));
                 }
-                var entityTarget = NetworkController.Instance.EntityTracker.GetOrNull(target);
-                var entitySource = NetworkController.Instance.EntityTracker.GetOrNull(source);
+                var entityTarget = PacketProcessor.Instance.EntityTracker.GetOrNull(target);
+                var entitySource = PacketProcessor.Instance.EntityTracker.GetOrNull(source);
                 var skill = new Skill(amount, type, entityTarget, targetPlayer, entitySource, sourcePlayer, (int) skillid, hotdot, critic, time, pet, direction);
 
                 if (!targetSourceSkills.ContainsKey(skill.Target)) { targetSourceSkills.Add(skill.Target, new Dictionary<Entity, List<Skill>>()); }
@@ -336,7 +339,7 @@ namespace DamageMeter.Database
             while (rdr.Read())
             {
                 var sourceServerIdPlayerId = (ulong) rdr.GetInt64(rdr.GetOrdinal("sourceServerIdPlayerId"));
-                var player = NetworkController.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32), (uint) ((sourceServerIdPlayerId << 32) >> 32));
+                var player = PacketProcessor.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32), (uint) ((sourceServerIdPlayerId << 32) >> 32));
                 var critic = rdr.IsDBNull(rdr.GetOrdinal("number_critics")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_critics"));
                 var hit = rdr.IsDBNull(rdr.GetOrdinal("number_hits")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("number_hits"));
 
@@ -371,7 +374,7 @@ namespace DamageMeter.Database
             while (rdr.Read())
             {
                 var sourceServerIdPlayerId = (ulong) rdr.GetInt64(rdr.GetOrdinal("sourceServerIdPlayerId"));
-                var player = NetworkController.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32), (uint) ((sourceServerIdPlayerId << 32) >> 32));
+                var player = PacketProcessor.Instance.PlayerTracker.Get((uint) (sourceServerIdPlayerId >> 32), (uint) ((sourceServerIdPlayerId << 32) >> 32));
                 var amount = rdr.IsDBNull(rdr.GetOrdinal("total_amount")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("total_amount"));
                 var critAmount = rdr.IsDBNull(rdr.GetOrdinal("crit_amount")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("crit_amount"));
                 var beginTime = rdr.IsDBNull(rdr.GetOrdinal("start_time")) ? 0 : rdr.GetFieldValue<long>(rdr.GetOrdinal("start_time"));

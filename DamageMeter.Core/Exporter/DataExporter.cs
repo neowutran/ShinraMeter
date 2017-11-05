@@ -33,8 +33,8 @@ namespace DamageMeter
         public static void ExportGlyph()
         {
             if (_lastSend + TimeSpan.TicksPerSecond * 30 >= DateTime.Now.Ticks) { return; }
-            if (string.IsNullOrEmpty(NetworkController.Instance.Glyphs.playerName)) { return; }
-            if (NetworkController.Instance.EntityTracker.MeterUser.Level < 65) { return; }
+            if (string.IsNullOrEmpty(PacketProcessor.Instance.Glyphs.playerName)) { return; }
+            if (PacketProcessor.Instance.EntityTracker.MeterUser.Level < 65) { return; }
             _lastSend = DateTime.Now.Ticks;
             DpsServers.ForEach(x => x.SendGlyphData());
         }
@@ -181,7 +181,7 @@ namespace DamageMeter
                         teradpsUser.skillLog.Add(skillLog);
                     }
                 }
-                if (NetworkController.Instance.MeterPlayers.Contains(user.Source)) { teradpsData.uploader = teradpsData.members.Count.ToString(); }
+                if (PacketProcessor.Instance.MeterPlayers.Contains(user.Source)) { teradpsData.uploader = teradpsData.members.Count.ToString(); }
                 teradpsData.members.Add(teradpsUser);
             }
             return extendedStats;
@@ -202,9 +202,9 @@ namespace DamageMeter
             if (stats == null) { return; }
             var sendThread = new Thread(() =>
             {
-                if (type.HasFlag(Dest.Site) && NetworkController.Instance.BossLink.Any(x => x.Value == entity && x.Key.StartsWith("!")))
+                if (type.HasFlag(Dest.Site) && PacketProcessor.Instance.BossLink.Any(x => x.Value == entity && x.Key.StartsWith("!")))
                 {
-                    DpsServers.Where(x => NetworkController.Instance.BossLink.Where(y => y.Value == entity && y.Key.StartsWith("!"))
+                    DpsServers.Where(x => PacketProcessor.Instance.BossLink.Where(y => y.Value == entity && y.Key.StartsWith("!"))
                             .Select(y => y.Key.Substring(1, y.Key.IndexOf(" ", StringComparison.Ordinal) - 1))
                             .Contains(x.Guid.ToString())).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
                 }
@@ -212,7 +212,7 @@ namespace DamageMeter
                 {
                     ExcelExporter.ExcelSave(stats,
                         stats.BaseStats.members.Select(x => x.playerName)
-                            .FirstOrDefault(x => NetworkController.Instance.MeterPlayers.Select(z => z.Name).Contains(x)), type.HasFlag(Dest.Manual));
+                            .FirstOrDefault(x => PacketProcessor.Instance.MeterPlayers.Select(z => z.Name).Contains(x)), type.HasFlag(Dest.Manual));
                 }
             });
             sendThread.Start();
@@ -227,7 +227,7 @@ namespace DamageMeter
             var sendThread = new Thread(() =>
             {
                 DpsServers.Where(x => !x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
-                ExcelExporter.ExcelSave(stats, NetworkController.Instance.EntityTracker.MeterUser.Name);
+                ExcelExporter.ExcelSave(stats, PacketProcessor.Instance.EntityTracker.MeterUser.Name);
                 Anonymize(stats.BaseStats);
                 DpsServers.Where(x => x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
                 if (BasicTeraData.Instance.WindowData.PacketsCollect) {

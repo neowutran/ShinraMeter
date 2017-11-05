@@ -26,7 +26,7 @@ namespace DamageMeter.Database.Structures
 
         public List<Player> GetPlayers()
         {
-            return SourceIdSkill.Keys.Where(x => x is UserEntity).Select(x=>NetworkController.Instance.PlayerTracker.Get(((UserEntity)x).ServerId, ((UserEntity)x).PlayerId)).ToList();
+            return SourceIdSkill.Keys.Where(x => x is UserEntity).Select(x=>PacketProcessor.Instance.PlayerTracker.Get(((UserEntity)x).ServerId, ((UserEntity)x).PlayerId)).ToList();
         }
 
         public long DamageReceived(Entity target, Entity source, bool timed)
@@ -109,7 +109,7 @@ namespace DamageMeter.Database.Structures
             {
                 result = from skills in SourceTargetSkill[source].Values
                     from skill in skills
-                    select SkillResult.GetSkill(source, skill.Pet, skill.SkillId, skill.HotDot, NetworkController.Instance.EntityTracker,
+                    select SkillResult.GetSkill(source, skill.Pet, skill.SkillId, skill.HotDot, PacketProcessor.Instance.EntityTracker,
                         BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
 
                 return result.Distinct();
@@ -117,7 +117,7 @@ namespace DamageMeter.Database.Structures
 
             if (!SourceTargetSkill[source].ContainsKey(target)) { return new List<Tera.Game.Skill>(); }
             result = from skills in SourceTargetSkill[source][target]
-                select SkillResult.GetSkill(source, skills.Pet, skills.SkillId, skills.HotDot, NetworkController.Instance.EntityTracker,
+                select SkillResult.GetSkill(source, skills.Pet, skills.SkillId, skills.HotDot, PacketProcessor.Instance.EntityTracker,
                     BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
             return result.Distinct();
         }
@@ -130,7 +130,7 @@ namespace DamageMeter.Database.Structures
             var result = from skills in TargetSourceSkill[target].Values
                 from skill in skills
                 select new KeyValuePair<Entity, Tera.Game.Skill>(skill.Source,
-                    SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot, NetworkController.Instance.EntityTracker,
+                    SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot, PacketProcessor.Instance.EntityTracker,
                         BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase));
             return result.Where(x => x.Value != null).Distinct();
         }

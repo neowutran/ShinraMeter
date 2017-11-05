@@ -709,4 +709,7 @@ Reset and paused until map change or relog.</value>
   <data name="ExportPacketLogs" xml:space="preserve">
     <value>Export packets logs</value>
   </data>
+  <data name="Display_timer_aggro_or_firsthit" xml:space="preserve">
+    <value>Timer based on aggro</value>
+  </data>
 </root>

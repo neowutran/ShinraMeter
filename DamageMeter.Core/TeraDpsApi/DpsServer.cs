@@ -58,7 +58,7 @@ namespace DamageMeter.TeraDpsApi
             }
             catch
             {
-                NetworkController.Instance.BossLink.TryAdd(
+                PacketProcessor.Instance.BossLink.TryAdd(
                        "!" + Guid + " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks, entity);
                 return false;
             }
@@ -69,7 +69,7 @@ namespace DamageMeter.TeraDpsApi
         {
             if (!Enabled||String.IsNullOrWhiteSpace(GlyphUrl?.ToString())) { return false ; }
 
-            var json = JsonConvert.SerializeObject(NetworkController.Instance.Glyphs,
+            var json = JsonConvert.SerializeObject(PacketProcessor.Instance.Glyphs,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
             Task.Run(() =>
             {
@@ -112,11 +112,11 @@ namespace DamageMeter.TeraDpsApi
                 var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Result.Content.ReadAsStringAsync().Result);
                 if (responseObject.ContainsKey("id") && ((string)responseObject["id"]).StartsWith("http"))
                 {
-                    NetworkController.Instance.BossLink.TryAdd((string)responseObject["id"], npc);
+                    PacketProcessor.Instance.BossLink.TryAdd((string)responseObject["id"], npc);
                 }
                 else
                 {
-                    NetworkController.Instance.BossLink.TryAdd(
+                    PacketProcessor.Instance.BossLink.TryAdd(
                         "!" + Guid + " " + (string)responseObject["message"] + " " + npc.Info.Name + " " + DateTime.UtcNow.Ticks, npc);
                 }
             }

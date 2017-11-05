@@ -21,7 +21,7 @@ namespace DamageMeter.UI
 
         public void Update(Database.Structures.Skill skill, bool received, long beginTime)
         {
-            var skillInfo = SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot, NetworkController.Instance.EntityTracker,
+            var skillInfo = SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot, PacketProcessor.Instance.EntityTracker,
                 BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
             var entity = received ? skill.Source : skill.Target;
             Brush color = null;

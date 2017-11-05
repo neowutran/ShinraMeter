@@ -164,7 +164,7 @@ namespace DamageMeter.UI
                     _windowSkill.Top = targetPoints.Y;
                 }
             }
-            NetworkController.Instance.SendFullDetails = true;
+            PacketProcessor.Instance.SendFullDetails = true;
             _windowSkill.ShowWindow();
         }
 

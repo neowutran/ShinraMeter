@@ -39,7 +39,7 @@ namespace DamageMeter.UI.HUD.Controls
         {
             InitializeComponent();
 
-            if (NetworkController.Instance.EntityTracker?.MeterUser?.RaceGenderClass.Class != PlayerClass.Valkyrie) RunemarksGrid.Visibility=Visibility.Collapsed;
+            if (PacketProcessor.Instance.EntityTracker?.MeterUser?.RaceGenderClass.Class != PlayerClass.Valkyrie) RunemarksGrid.Visibility=Visibility.Collapsed;
             SlideAnimation.EasingFunction = new QuadraticEase();
             ColorChangeAnimation.EasingFunction = new QuadraticEase();
             DoubleAnimation.EasingFunction = new QuadraticEase();

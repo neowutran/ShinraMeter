@@ -6,7 +6,7 @@ namespace DamageMeter.Processing
     {
         internal static void Process(SpawnMeServerMessage message)
         {
-            NetworkController.Instance.AbnormalityTracker.Update(message);
+            PacketProcessor.Instance.AbnormalityTracker.Update(message);
         }
     }
 }

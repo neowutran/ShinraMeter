@@ -34,7 +34,7 @@ namespace DamageMeter
             var boss = _bosses.FirstOrDefault(x => x.EntityId == message.EntityId);
             if (boss == null && message.HpRemaining > 0)
             {
-                var bossEntity = NetworkController.Instance.EntityTracker.GetOrNull(message.EntityId) as NpcEntity;
+                var bossEntity = PacketProcessor.Instance.EntityTracker.GetOrNull(message.EntityId) as NpcEntity;
                 if (bossEntity == null) { return; }
                 boss = new Boss(bossEntity, Visibility.Visible);
                 _bosses.Add(boss);

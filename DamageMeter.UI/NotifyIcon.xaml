@@ -356,6 +356,10 @@
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="UI settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.Display_timer_aggro_or_firsthit}" 
+                                                                   x:Name="DisplayTimerOnAggro"
+                                                                   On="DisplayTimerOnAggro_On"
+                                                                   Off="DisplayTimerOnAggro_Off" />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.Display_only_boss_hit_by_meter_user}" 
                                                                    x:Name="DisplayOnlyBossHitByMeterUser"
                                                                    On="DisplayOnlyBossHitByMeterUser_On"

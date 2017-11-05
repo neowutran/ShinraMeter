@@ -54,26 +54,26 @@ namespace DamageMeter
             else if (e.Key == BasicTeraData.Instance.HotkeysData.Reset.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Value)
             {
                 //Can't call directly NetworkController.Instance.Reset() => threading problem
-                NetworkController.Instance.NeedToReset = true;
+                PacketProcessor.Instance.NeedToReset = true;
             }
             else if (e.Key == BasicTeraData.Instance.HotkeysData.ResetCurrent.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ResetCurrent.Value)
             {
                 //Can't call directly NetworkController.Instance.ResetCurrent() => threading problem
-                NetworkController.Instance.NeedToResetCurrent = true;
+                PacketProcessor.Instance.NeedToResetCurrent = true;
             }
             else if (e.Key == BasicTeraData.Instance.HotkeysData.ExcelSave.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ExcelSave.Value)
             {
                 //Can't call directly Export => threading problem
-                NetworkController.Instance.NeedToExport = DataExporter.Dest.Excel | DataExporter.Dest.Manual;
+                PacketProcessor.Instance.NeedToExport = DataExporter.Dest.Excel | DataExporter.Dest.Manual;
             }
             else if (e.Key == BasicTeraData.Instance.HotkeysData.ClickThrou.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ClickThrou.Value)
             {
-                NetworkController.Instance.SwitchClickThrou();
+                PacketProcessor.Instance.SwitchClickThrou();
             }
             foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy.Where(copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
                 //Can't copy directly, => threading problem
             {
-                NetworkController.Instance.NeedToCopy = copy;
+                PacketProcessor.Instance.NeedToCopy = copy;
             }
         }
 

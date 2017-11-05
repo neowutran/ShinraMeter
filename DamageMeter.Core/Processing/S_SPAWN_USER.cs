@@ -6,8 +6,8 @@ namespace DamageMeter.Processing
     {
         internal S_SPAWN_USER(SpawnUserServerMessage message)
         {
-            NetworkController.Instance.EntityTracker.Update(message);
-            NetworkController.Instance.AbnormalityTracker.Update(message);
+            PacketProcessor.Instance.EntityTracker.Update(message);
+            PacketProcessor.Instance.AbnormalityTracker.Update(message);
             NotifyProcessor.Instance.SpawnUser(message);
         }
     }

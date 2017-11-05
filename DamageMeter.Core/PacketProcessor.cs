@@ -20,7 +20,7 @@ using System.Diagnostics;
 
 namespace DamageMeter
 {
-    public class NetworkController
+    public class PacketProcessor
     {
         public delegate void ConnectedHandler(string serverName);
 
@@ -34,7 +34,7 @@ namespace DamageMeter
 
         public delegate void UpdateUiHandler(UiUpdateMessage message);
 
-        private static NetworkController _instance;
+        private static PacketProcessor _instance;
         private static readonly object _pasteLock = new object();
         internal AbnormalityStorage AbnormalityStorage;
 
@@ -57,7 +57,7 @@ namespace DamageMeter
         public Server Server;
         internal UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
-        private NetworkController()
+        private PacketProcessor()
         {
             TeraSniffer.Instance.NewConnection += HandleNewConnection;
             TeraSniffer.Instance.EndConnection += HandleEndConnection;
@@ -76,7 +76,7 @@ namespace DamageMeter
 
         public bool TimedEncounter { get; set; }
 
-        public static NetworkController Instance => _instance ?? (_instance = new NetworkController());
+        public static PacketProcessor Instance => _instance ?? (_instance = new PacketProcessor());
 
         public EntityTracker EntityTracker { get; internal set; }
         public bool SendFullDetails { get; set; }
@@ -180,7 +180,7 @@ namespace DamageMeter
                 filteredEntities = entities.Select(entityid => EntityTracker.GetOrNull(entityid)).OfType<NpcEntity>().Where(npc => npc.Info.Boss).ToList();
             }
 
-            var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
+            var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter, BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro);
             if (currentBoss != null)
             {
                 NotifyProcessor.Instance._lastBosses.TryGetValue(currentBoss.Id, out long entityHP);
@@ -307,7 +307,7 @@ namespace DamageMeter
                     var currentBoss = Encounter;
                     var timedEncounter = TimedEncounter;
 
-                    var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter);
+                    var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter, BasicTeraData.Instance.WindowData.DisplayTImerBasedOnAggro);
                     var skills = Database.Database.Instance.GetSkills(entityInfo.BeginTime, entityInfo.EndTime);
                     var playersInfo = timedEncounter
                         ? Database.Database.Instance.PlayerDamageInformation(entityInfo.BeginTime, entityInfo.EndTime)
