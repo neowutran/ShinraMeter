@@ -20,9 +20,9 @@ namespace DamageMeter.UI.HUD.Controls
 
         private readonly int AnimationTime = 350;
         private Boss _boss;
-        private float _currentHp;
+        private long _currentHp;
         private bool _enraged;
-        private float _maxHp;
+        private long _maxHp;
 
 
         private Color BaseHpColor = Color.FromRgb(0x00, 0x97, 0xce);
@@ -156,7 +156,7 @@ namespace DamageMeter.UI.HUD.Controls
             }));
         }
 
-        private double ValueToLength(double value, double maxValue)
+        private double ValueToLength(long value, long maxValue)
         {
             if (maxValue == 0) { return 1; }
             var n = value / maxValue;

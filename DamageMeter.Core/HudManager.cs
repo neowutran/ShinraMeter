@@ -167,17 +167,17 @@ namespace DamageMeter
     public class Boss : TSPropertyChanged, IDisposable
     {
         private SynchronizedObservableCollection<BuffDuration> _buffs;
-        private float _currentHp;
+        private long _currentHp;
 
         private bool _enraged;
 
-        private float _maxHp;
+        private long _maxHp;
         private string _name;
         private int _runemarks;
 
         private Visibility visible;
 
-        public Boss(EntityId eId, float maxHP, float curHP, string name, Visibility visible)
+        public Boss(EntityId eId, long maxHP, long curHP, string name, Visibility visible)
         {
             EntityId = eId;
             Name = name;
@@ -234,7 +234,7 @@ namespace DamageMeter
             }
         }
 
-        public float MaxHP
+        public long MaxHP
         {
             get => _maxHp;
             set
@@ -245,7 +245,7 @@ namespace DamageMeter
             }
         }
 
-        public float CurrentHP
+        public long CurrentHP
         {
             get => _currentHp;
             set
