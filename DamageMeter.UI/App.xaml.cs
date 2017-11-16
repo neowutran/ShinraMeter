@@ -77,6 +77,8 @@ namespace DamageMeter.UI
             DeleteTmp();
             updating.Close();
             waitUpdateEnd.Close();
+            try { _unique.WaitOne(); }
+            catch { _unique = new Mutex(true, "ShinraMeter", out _isNewInstance); }
         }
 
         private void DeleteTmp()
