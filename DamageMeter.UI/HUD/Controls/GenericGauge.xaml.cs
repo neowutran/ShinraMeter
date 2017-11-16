@@ -102,7 +102,7 @@ namespace DamageMeter.UI.HUD.Controls
 
         private void CurValWatcher_PropertyChanged(object sender, EventArgs e)
         {
-                Factor = (_maxValwatcher?.Value ?? 0) > 0 ? (double)_curValwatcher.Value / _maxValwatcher.Value : 0;
+                Factor = _maxValwatcher.Value > 0 ? (double)_curValwatcher.Value / _maxValwatcher.Value : 0;
         }
 
         private void AnimateBar(double factor)

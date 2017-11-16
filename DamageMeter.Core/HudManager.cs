@@ -257,7 +257,7 @@ namespace DamageMeter
             }
         }
 
-        public float CurrentPercentage => _maxHp == 0 ? 0 : _currentHp / _maxHp;
+        public float CurrentPercentage => _maxHp == 0 ? 0 : (float)_currentHp / _maxHp;
 
         public Visibility Visible
         {

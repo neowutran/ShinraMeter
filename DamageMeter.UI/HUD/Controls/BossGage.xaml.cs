@@ -48,7 +48,7 @@ namespace DamageMeter.UI.HUD.Controls
             DoubleAnimation.Duration = TimeSpan.FromMilliseconds(AnimationTime);
         }
 
-        public float CurrentPercentage => _maxHp == 0 ? 0 : _currentHp / _maxHp * 100;
+        public float CurrentPercentage => _maxHp == 0 ? 0 : (float) _currentHp / _maxHp * 100;
 
         public float NextEnragePercentage
         {
