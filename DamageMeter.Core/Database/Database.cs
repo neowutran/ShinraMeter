@@ -175,7 +175,7 @@ namespace DamageMeter.Database
         public EntityInformation GlobalInformationEntity(NpcEntity entity, bool timed, bool timerBasedOnAggro = true)
         {
             var aggroTimeCondition = "";
-            if (!timerBasedOnAggro) { aggroTimeCondition = " AND skill_id != "+ (int)StaticallyUsedBuff.Enraged + " "; }
+            if (timerBasedOnAggro) { aggroTimeCondition = " OR skill_id = "+ (int)StaticallyUsedBuff.Enraged + " "; }
 
             SQLiteCommand command;
 

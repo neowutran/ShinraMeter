@@ -63,8 +63,8 @@ namespace DamageMeter
             var lastTick = entityInfo.EndTime;
             var interTick = lastTick - firstTick;
             var interval = interTick / TimeSpan.TicksPerSecond;
-            if (interval == 0) { return null; }
             var totaldamage = entityInfo.TotalDamage;
+            if (interval == 0||totaldamage==0) { return null; }
             var partyDps = TimeSpan.TicksPerSecond * totaldamage / interTick;
             var allPlayers = skills.GetPlayers();
             allPlayers.RemoveAll(x => playersInfo.Any(y => x == y.Source));
