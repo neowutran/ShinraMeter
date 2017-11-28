@@ -192,7 +192,7 @@ namespace DamageMeter.Database
                 if (!timed)
                 {
                     var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " +
-                              "WHERE target = $target AND type = $type " + aggroTimeCondition + " GROUP BY source; ";
+                              "WHERE target = $target AND (type = $type " + aggroTimeCondition + ") GROUP BY source; ";
 
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
@@ -201,8 +201,7 @@ namespace DamageMeter.Database
                 else
                 {
                     var sql = "SELECT SUM(amount) as total_amount, MIN(time) as start_time, MAX(time) as end_time, source " + "FROM skills " +
-                              "WHERE time BETWEEN (SELECT MIN(time) FROM skills WHERE target = $target "+ aggroTimeCondition + " ) AND (SELECT MAX(time) FROM skills WHERE target = $target "+ aggroTimeCondition + " ) AND type = $type " + aggroTimeCondition +
-                              " GROUP BY source; ";
+                              "WHERE time BETWEEN (SELECT MIN(time) FROM skills WHERE target = $target AND (type = $type " + aggroTimeCondition+")) AND (SELECT MAX(time) FROM skills WHERE target = $target) AND (type = $type) GROUP BY source; ";
                     command = new SQLiteCommand(sql, Connexion);
                     command.Parameters.AddWithValue("$type", (int) Type.Damage);
                     command.Parameters.AddWithValue("$target", entity.Id.Id);
