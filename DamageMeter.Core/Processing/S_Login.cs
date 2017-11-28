@@ -68,7 +68,7 @@ namespace DamageMeter.Processing
         {
             CopyPaste.PFC = new PrivateFontCollection();
             if (region == "RU") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Fira Sans.ttf"); }
-            else if (region == "KR") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\2002L_chat.ttf"); }
+            else if (region == "KR"||region == "KR-PTS") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\2002L_chat.ttf"); }
             else if (region == "TW") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\DFPHeiMedium-B5.ttf"); }
             else if (region == "JP") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\TT-UDShinGo-Medium.ttf"); }
             else { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Frutiger LT Pro 55 Roman.ttf"); }
