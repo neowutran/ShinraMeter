@@ -68,6 +68,7 @@ namespace DamageMeter
                 if (entity == null) { return; }
                 boss = new Boss(entity, Visibility.Visible);
                 _bosses.Add(boss);
+                PacketProcessor.Instance.AbnormalityTracker.BuffList(entity.Id).ToList().ForEach(x=>boss.AddOrRefresh(x));
             }
             boss.MaxHP = entity.Info.HP;
         }
@@ -301,7 +302,7 @@ namespace DamageMeter
                 return;
             }
             existing.Duration = abnormality.Duration;
-            existing.DurationLeft = abnormality.Duration;
+            existing.DurationLeft = (long) Math.Round((double)abnormality.TimeBeforeEnd / TimeSpan.TicksPerMillisecond);
             existing.Stacks = abnormality.Stack;
             existing.Refresh();
         }
