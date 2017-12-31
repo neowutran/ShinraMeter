@@ -343,6 +343,7 @@ namespace DamageMeter.Processing
                     {
                         notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{skill_name}", skill?.Name ?? skillId.ToString()).Replace("{skill_id}",skillId.ToString());
                         notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{skill_name}", skill?.Name ?? skillId.ToString()).Replace("{skill_id}", skillId.ToString());
+                        notifyAction.Balloon.Icon = skill?.IconName??"";
                     }
                     if (notifyAction.Sound != null && notifyAction.Sound.GetType() == typeof(TextToSpeech))
                     {
