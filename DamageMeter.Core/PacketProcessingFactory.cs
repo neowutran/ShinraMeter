@@ -18,6 +18,7 @@ namespace DamageMeter
         public bool Paused = false;
         private static readonly Dictionary<Type, Delegate> MessageToProcessingPaused = new Dictionary<Type, Delegate>
         {
+            {typeof(C_LOGIN_ARBITER), new Action<C_LOGIN_ARBITER>(x => BasicTeraData.Instance.Servers.Language=x.Language)},
             {typeof(S_GET_USER_LIST), new Action<S_GET_USER_LIST>(x => PacketProcessor.Instance.UserLogoTracker.SetUserList(x))},
             {typeof(S_GET_USER_GUILD_LOGO), new Action<S_GET_USER_GUILD_LOGO>(x => PacketProcessor.Instance.UserLogoTracker.AddLogo(x))},
             {typeof(C_CHECK_VERSION), Helpers.Contructor<Func<C_CHECK_VERSION, Processing.C_CHECK_VERSION>>()},
@@ -27,6 +28,7 @@ namespace DamageMeter
 
         private static readonly Dictionary<Type, Delegate> MessageToProcessingInit = new Dictionary<Type, Delegate>
         {
+            {typeof(C_LOGIN_ARBITER), new Action<C_LOGIN_ARBITER>(x => BasicTeraData.Instance.Servers.Language=x.Language)},
             {typeof(S_GET_USER_LIST), new Action<S_GET_USER_LIST>(x => PacketProcessor.Instance.UserLogoTracker.SetUserList(x))},
             {typeof(S_GET_USER_GUILD_LOGO), new Action<S_GET_USER_GUILD_LOGO>(x => PacketProcessor.Instance.UserLogoTracker.AddLogo(x))},
             {typeof(C_CHECK_VERSION), Helpers.Contructor<Func<C_CHECK_VERSION, Processing.C_CHECK_VERSION>>()},
