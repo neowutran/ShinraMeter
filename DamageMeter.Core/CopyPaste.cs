@@ -41,6 +41,9 @@ namespace DamageMeter
                 case "JP":
                     clip = "/詳細確認 ";
                     break;
+                case "THA":
+                    clip = "/ดูอุปกรณ์ ";
+                    break;
                 case "KR-PTS":
                 case "KR":
                     clip = "/살펴보기 ";
