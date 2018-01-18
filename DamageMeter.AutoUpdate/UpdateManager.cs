@@ -10,7 +10,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Win32.TaskScheduler;
 
 namespace DamageMeter.AutoUpdate
 {
@@ -18,7 +17,7 @@ namespace DamageMeter.AutoUpdate
     {
         private static Dictionary<string, string> _hashes;
         private static Dictionary<string, string> _latest;
-        public static string Version = "2.28";
+        public static string Version = "2.29";
 
         public static string ExecutableDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -152,19 +151,6 @@ namespace DamageMeter.AutoUpdate
                 DeleteEmptySubdirectories(directory);
                 if (!Directory.EnumerateFileSystemEntries(directory).Any()) { Directory.Delete(directory, false); }
             });
-        }
-
-        public static void RemoveShinraLauncher()
-        {
-            foreach (var process in Process.GetProcessesByName("ShinraLauncher")) { process.Kill(); }
-            using (TaskService taskService = new TaskService())
-            {
-                var task = taskService.GetTask("Shinra Launcher");
-                if (task == null)
-                    return;
-                task.Enabled=false;
-                taskService.RootFolder.DeleteTask("Shinra Launcher");
-            }
         }
 
         internal static void CleanupRelease(Dictionary<string, string> hashes)
