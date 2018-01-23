@@ -88,7 +88,6 @@ namespace DamageMeter.UI
                 if (Directory.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\"))
                 {
                     Directory.Delete(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\", true);
-                    UpdateManager.RemoveShinraLauncher();
                 }
             }
             catch
