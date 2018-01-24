@@ -23,9 +23,14 @@ namespace Data
             {
                 return;
             }
+            filename = directory + Path.DirectorySeparatorChar + "protocol." + version + ".map";
+            if (File.Exists(filename))
+            {
+                return;
+            }
             try
             {
-                Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/" + version + ".txt", filename);
+                Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/protocol." + version + ".map", filename);
                 return;
             }
             catch { }
@@ -50,9 +55,14 @@ namespace Data
             {
                 return;
             }
+            filename = directory + Path.DirectorySeparatorChar + "sysmsg." + version + ".map";
+            if (File.Exists(filename))
+            {
+                return;
+            }
             try
             {
-                Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/smt_" + version + ".txt", filename);
+                Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/sysmsg." + version + ".map", filename);
                 return;
             }
             catch { }
