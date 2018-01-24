@@ -176,7 +176,7 @@ namespace Data
         private bool clickThrou = false;
         private bool packetsCollect = false;
 
-        public ObservableCollection<DpsServerData> DpsServers = new ObservableCollection<DpsServerData> { DpsServerData.Moongourd, DpsServerData.TeraLogs };
+        public ObservableCollection<DpsServerData> DpsServers = new ObservableCollection<DpsServerData> { DpsServerData.Moongourd };
         private List<int> blackListAreaId = new List<int>();
 
         private string excelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
@@ -297,7 +297,6 @@ namespace Data
             {
                 var parseSuccess = bool.TryParse(exp.Value, out bool val);
                 DpsServerData.Moongourd.Enabled = val;
-                DpsServerData.TeraLogs.Enabled = val;
             }
             var privateS = teradps.Element("private_servers");
             if (privateS == null) { return; }

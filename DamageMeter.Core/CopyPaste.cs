@@ -102,6 +102,14 @@ namespace DamageMeter
                     case "hits_received":
                         playerInfosOrdered = playersInfos.OrderBy(playerInfo => skills.HitsReceived(playerInfo.Source.User, entityInfo.Entity, timedEncounter));
                         break;
+                    case "deaths":
+                        playerInfosOrdered =
+                           playersInfos.OrderBy(playerInfo => abnormals.Get(playerInfo.Source).Death.Count(firstTick, lastTick));
+                        break;
+                    case "death_duration":
+                        playerInfosOrdered =
+                          playersInfos.OrderBy(playerInfo => abnormals.Get(playerInfo.Source).Death.Duration(firstTick, lastTick));
+                        break;
                     default:
                         Console.WriteLine("wrong value for orderby");
                         throw new Exception("wrong value for orderby");
@@ -129,6 +137,14 @@ namespace DamageMeter
                     case "hits_received":
                         playerInfosOrdered =
                             playersInfos.OrderByDescending(playerInfo => skills.HitsReceived(playerInfo.Source.User, entityInfo.Entity, timedEncounter));
+                        break;
+                    case "deaths":
+                        playerInfosOrdered =
+                           playersInfos.OrderByDescending(playerInfo => abnormals.Get(playerInfo.Source).Death.Count(firstTick, lastTick));
+                        break;
+                    case "death_duration":
+                        playerInfosOrdered =
+                          playersInfos.OrderByDescending(playerInfo => abnormals.Get(playerInfo.Source).Death.Duration(firstTick, lastTick));
                         break;
                     default:
                         Console.WriteLine("wrong value for orderby");

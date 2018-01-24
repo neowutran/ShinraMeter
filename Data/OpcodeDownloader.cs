@@ -29,6 +29,18 @@ namespace Data
                 return;
             }
             catch { }
+            try
+            {
+                Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/protocol." + version + ".map", filename);
+                return;
+            }
+            catch { }
+            try
+            {
+                Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map_base/protocol." + version + ".map", filename);
+                return;
+            }
+            catch { }
         }
 
         private static void DownloadSysmsg(uint version, String directory)
@@ -41,6 +53,18 @@ namespace Data
             try
             {
                 Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/smt_" + version + ".txt", filename);
+                return;
+            }
+            catch { }
+            try
+            {
+                Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/sysmsg." + version + ".map", filename);
+                return;
+            }
+            catch { }
+            try
+            {
+                Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map_base/sysmsg." + version + ".map", filename);
                 return;
             }
             catch { }

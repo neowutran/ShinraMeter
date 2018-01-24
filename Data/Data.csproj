@@ -87,6 +87,7 @@
     <Compile Include="InvalidConfigFileException.cs" />
     <Compile Include="ImageDatabase.cs" />
     <Compile Include="ObjectToXmlUtility.cs" />
+    <Compile Include="OpcodeDownloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeraData.cs" />
     <Compile Include="EventsData.cs" />
