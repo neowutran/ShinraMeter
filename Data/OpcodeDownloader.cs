@@ -12,72 +12,74 @@ namespace Data
     {
         public static void DownloadIfNotExist(uint version, String directory)
         {
-            DownloadOpcode(version, directory);
-            DownloadSysmsg(version, directory);
+            var res = DownloadOpcode(version, directory) | DownloadSysmsg(version, directory);
+            if (res) BasicTeraData.LogError("Updated opcodes: " + version);
         }
 
-        private static void DownloadOpcode(uint version, String directory)
+        private static bool DownloadOpcode(uint version, String directory)
         {
             String filename = directory + Path.DirectorySeparatorChar + version + ".txt";
             if (File.Exists(filename))
             {
-                return;
+                return false;
             }
             filename = directory + Path.DirectorySeparatorChar + "protocol." + version + ".map";
             if (File.Exists(filename))
             {
-                return;
+                return false;
             }
             try
             {
                 Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/protocol." + version + ".map", filename);
-                return;
+                return true;
             }
             catch { }
             try
             {
                 Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/protocol." + version + ".map", filename);
-                return;
+                return true;
             }
             catch { }
             try
             {
                 Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map/protocol." + version + ".map", filename);
-                return;
+                return true;
             }
             catch { }
+            return false;
         }
 
-        private static void DownloadSysmsg(uint version, String directory)
+        private static bool DownloadSysmsg(uint version, String directory)
         {
             String filename = directory + Path.DirectorySeparatorChar + "smt_" + version + ".txt";
             if (File.Exists(filename))
             {
-                return;
+                return false;
             }
             filename = directory + Path.DirectorySeparatorChar + "sysmsg." + version + ".map";
             if (File.Exists(filename))
             {
-                return;
+                return false;
             }
             try
             {
                 Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/sysmsg." + version + ".map", filename);
-                return;
+                return true;
             }
             catch { }
             try
             {
                 Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/sysmsg." + version + ".map", filename);
-                return;
+                return true;
             }
             catch { }
             try
             {
                 Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map/sysmsg." + version + ".map", filename);
-                return;
+                return true;
             }
             catch { }
+            return false;
         }
 
         private static void Download(String remote, String local)
