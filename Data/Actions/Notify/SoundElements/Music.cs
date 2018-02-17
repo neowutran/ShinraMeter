@@ -21,7 +21,7 @@ namespace Data.Actions.Notify.SoundElements
 
         public void Play()
         {
-            var file = Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", File);
+            var file = System.IO.File.Exists(File) ? File : Path.Combine(BasicTeraData.Instance.ResourceDirectory, "sound/", File);
             try
             {
                 var outputStream = new MediaFoundationReader(file);
