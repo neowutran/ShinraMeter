@@ -36,7 +36,7 @@ namespace DamageMeter.AutoUpdate
                 UpdateManager.ReadDbVersion();
                 CountError(0);
                 Console.WriteLine("New version installed");
-                Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
+                //Process.Start("explorer.exe", "https://github.com/neowutran/ShinraMeter/wiki/Patch-note");
                 Process.Start(UpdateManager.ExecutableDirectory + @"\..\ShinraMeter.exe");
             }
             else
