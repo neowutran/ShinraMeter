@@ -45,7 +45,7 @@ namespace DamageMeter.UI.Skill
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skill.BiggestCrit());
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skill.AvgWhite());
             LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long) skill.Avg());
-            LabelNumberHPM.Content = FormatHelpers.Instance.FormatDouble(skill.Interval == 0 ? 0 : (double)hits / skill.Interval / TimeSpan.TicksPerMinute);
+            LabelNumberHPM.Content = FormatHelpers.Instance.FormatDouble(skill.Interval == 0 ? 0 : (double)hits / skill.Interval * TimeSpan.TicksPerMinute);
 
             SkillsDetailList.Items.Clear();
             foreach (var skillInfo in skill.Skills) { SkillsDetailList.Items.Add(new SkillDetailDps(skillInfo.Key, skill)); }
