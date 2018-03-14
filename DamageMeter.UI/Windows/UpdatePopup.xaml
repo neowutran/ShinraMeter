@@ -1,0 +1,80 @@
+﻿<ui:ClickThrouWindow x:Class="DamageMeter.UI.Windows.UpdatePopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DamageMeter.UI.Windows"
+        xmlns:markdig="clr-namespace:Markdig.Wpf;assembly=Markdig.Wpf"                     
+        xmlns:ui="clr-namespace:DamageMeter.UI"
+        xmlns:l="clr-namespace:Lang;assembly=Lang"
+        mc:Ignorable="d" Loaded="ClickThrouWindow_Loaded"
+        MinHeight="10" MinWidth="10"
+        Title="UpdatePopup" Height="300" Width="800" WindowStartupLocation="CenterScreen" Icon="/ShinraMeter;component/shinra.ico" ResizeMode="CanResizeWithGrip">
+    <Window.Background>
+        <SolidColorBrush Color="Transparent" Opacity="0" />
+    </Window.Background>
+    <Grid MouseLeftButtonDown="Move" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.LayoutTransform>
+            <ScaleTransform CenterX="0" CenterY="0"
+                            ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
+                            ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
+        </Grid.LayoutTransform>
+        <Border Style="{StaticResource MainBorder}" Grid.RowSpan="4"/>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.App_Update_Available}"/>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="CloseButton" Style="{StaticResource ButtonMainStyle}" 
+                Background="Transparent"
+                Click="CloseButton_OnClick" HorizontalContentAlignment="Center"
+                VerticalAlignment="Top" Margin="0">
+            <Image x:Name="CloseWindow" Opacity=".5"
+                   HorizontalAlignment="Right" Margin="0"
+                   Height="Auto" VerticalAlignment="Stretch"  Width="30" />
+            </Button>
+        </Grid>
+        <Grid Grid.Row="1" Margin="4" Background="White">
+            <markdig:MarkdownViewer Name="Browser"/>
+        </Grid>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.App_Do_you_want_to_update}"/>
+        <Grid Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="UpdateButton" Style="{StaticResource ButtonMainStyle}" 
+                    Background="Transparent"
+                    Click="StartButton_OnClick" HorizontalContentAlignment="Stretch"
+                    VerticalAlignment="Top" Margin="4" >
+                <TextBlock HorizontalAlignment="Center" Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.Start}"/>
+            </Button>
+            <Button Grid.Row="0" Grid.Column="3" x:Name="CloseButton1" Style="{StaticResource ButtonMainStyle}" 
+                    Background="Transparent"
+                    Click="CloseButton_OnClick" HorizontalContentAlignment="Stretch"
+                    VerticalAlignment="Top" Margin="4" >
+                <TextBlock HorizontalAlignment="Center" Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.Close}"/>
+            </Button>
+        </Grid>
+
+    </Grid>
+</ui:ClickThrouWindow>

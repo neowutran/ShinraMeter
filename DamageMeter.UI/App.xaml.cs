@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using DamageMeter.AutoUpdate;
+using DamageMeter.UI.Windows;
 using Data;
 using log4net;
 using Lang;
@@ -35,7 +36,7 @@ namespace DamageMeter.UI
                                    ex.InnerException + "\r\n" + ex.TargetSite);
             MessageBox.Show(LP.MainWindow_Fatal_error);
         }
-
+        
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
             bool notUpdating;
@@ -115,11 +116,14 @@ namespace DamageMeter.UI
             if (isUpToDate) { return false; }
 
             SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
-            if (MessageBox.Show(LP.App_Do_you_want_to_update, LP.App_Update_Available, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            bool result=App.Current.Dispatcher.Invoke(() =>
             {
-                return false;
-            }
-            return UpdateManager.Update();
+                var patchnotes = new UpdatePopup();
+                patchnotes.ShowDialog();
+                if ((patchnotes.DialogResult??false)!=true) return false;
+                return UpdateManager.Update();
+            });
+            return result;
         }
 
         private void App_OnExit(object sender, ExitEventArgs e)
