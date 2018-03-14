@@ -19,6 +19,7 @@
                 <ColumnDefinition SharedSizeGroup="d9" Width="Auto" MinWidth="65"/>
                 <ColumnDefinition SharedSizeGroup="d10" Width="Auto" MinWidth="65"/>
                 <ColumnDefinition SharedSizeGroup="d11" Width="Auto" MinWidth="65"/>
+                <ColumnDefinition SharedSizeGroup="d12" Width="Auto" MinWidth="65"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="2" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
@@ -62,6 +63,10 @@
                    Foreground="{StaticResource DamageText}" />
             <Label Grid.Column="11" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
                    BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelNumberCritDmg"  VerticalContentAlignment="Center"
+                   VerticalAlignment="Center" MinHeight="40"
+                   Foreground="{StaticResource DamageText}" />
+            <Label Grid.Column="12" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch" Margin="5,0,0,0"
+                   BorderThickness="0" BorderBrush="Gray" FontSize="14" x:Name="LabelNumberHPM"  VerticalContentAlignment="Center"
                    VerticalAlignment="Center" MinHeight="40"
                    Foreground="{StaticResource DamageText}" />
         </Grid>

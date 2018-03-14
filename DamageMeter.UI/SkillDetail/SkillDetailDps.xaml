@@ -19,6 +19,7 @@
                 <ColumnDefinition SharedSizeGroup="d9" Width="Auto" />
                 <ColumnDefinition SharedSizeGroup="d10" Width="Auto" />
                 <ColumnDefinition SharedSizeGroup="d11" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="d12" Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Left" Padding="40,0,0,0"
@@ -62,6 +63,10 @@
                    Foreground="{StaticResource LightSecondaryText}" />
             <Label Grid.Column="11" FontSize="14" HorizontalContentAlignment="Right"  Padding="0,0,0,0"
                    HorizontalAlignment="Stretch" x:Name="LabelNumberCritDmg" VerticalAlignment="Center"
+                   MinHeight="29"
+                   Foreground="{StaticResource LightSecondaryText}" />
+            <Label Grid.Column="12" FontSize="14" HorizontalContentAlignment="Right"  Padding="0,0,0,0"
+                   HorizontalAlignment="Stretch" x:Name="LabelNumberHPM" VerticalAlignment="Center"
                    MinHeight="29"
                    Foreground="{StaticResource LightSecondaryText}" />
         </Grid>

@@ -21,6 +21,7 @@
                         <ColumnDefinition SharedSizeGroup="d9" Width="Auto" />
                         <ColumnDefinition SharedSizeGroup="d10" Width="Auto" />
                         <ColumnDefinition SharedSizeGroup="d11" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="d12" Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Ellipse Fill="#1999"></Ellipse>
                     <Ellipse Grid.Column="0" x:Name="SkillIconWrapper" Stretch="Fill" HorizontalAlignment="Left"
@@ -71,6 +72,10 @@
                            Foreground="{StaticResource LightPrimaryText}" />
                     <Label Grid.Column="10" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
                            HorizontalAlignment="Stretch" x:Name="LabelNumberCritDmg" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
+                           MinHeight="40"
+                           Foreground="{StaticResource LightPrimaryText}" />
+                    <Label Grid.Column="11" FontSize="14" HorizontalContentAlignment="Right" Padding="0"
+                           HorizontalAlignment="Stretch" x:Name="LabelNumberHPM" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                            MinHeight="40"
                            Foreground="{StaticResource LightPrimaryText}" />
                 </Grid>

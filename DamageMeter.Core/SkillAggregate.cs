@@ -51,6 +51,7 @@ namespace DamageMeter
             return true;
         }
 
+        public long Interval => _playerDamageDealt.Interval;
         public long Amount()
         {
             var result = from skill in Skills from source in skill.Value select SkillsData.Amount(source, _target, skill.Key.Id, _timed, _petinfo, Type);

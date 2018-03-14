@@ -20,6 +20,7 @@ namespace DamageMeter.UI.SkillsHeaders
         public static readonly string AverageTotal = LP.Average;
         public static readonly string HitsDmg = LP.Hits;
         public static readonly string CritsDmg = LP.Crits;
+        public static readonly string HPM = LP.HPM;
 
         public SkillsHeaderDps()
         {
@@ -37,6 +38,7 @@ namespace DamageMeter.UI.SkillsHeaders
 
             LabelNumberCritDmg.Content = CritsDmg;
             LabelAverageTotal.Content = AverageTotal;
+            LabelNumberHPM.Content = HPM;
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }

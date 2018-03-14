@@ -712,4 +712,7 @@ Reset and paused until map change or relog.</value>
   <data name="Display_timer_aggro_or_firsthit" xml:space="preserve">
     <value>Timer based on aggro</value>
   </data>
+  <data name="HPM" xml:space="preserve">
+    <value>Hit/m</value>
+  </data>
 </root>

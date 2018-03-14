@@ -116,5 +116,10 @@ namespace DamageMeter
         {
             return double.IsNaN(fraction) ? null : fraction.ToString("P1", CultureInfo);
         }
+
+        public string FormatDouble(double value)
+        {
+            return double.IsNaN(value) ? null : value.ToString("F2", CultureInfo);
+        }
     }
 }

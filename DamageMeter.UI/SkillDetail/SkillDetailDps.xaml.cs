@@ -32,13 +32,15 @@ namespace DamageMeter.UI.SkillDetail
             LabelDamagePercentage.Content = skillAggregate.DamagePercent(skill.Id) + "%";
             LabelTotalDamage.Content = FormatHelpers.Instance.FormatValue(skillAggregate.Amount(skill.Id));
 
-            LabelNumberHitDmg.Content = skillAggregate.Hits(skill.Id);
+            var hits = skillAggregate.Hits(skill.Id);
+            LabelNumberHitDmg.Content = hits;
             LabelNumberCritDmg.Content = skillAggregate.Crits(skill.Id);
 
             LabelAverageCrit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgCrit(skill.Id));
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skillAggregate.BiggestCrit(skill.Id));
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgWhite(skill.Id));
             LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.Avg(skill.Id));
+            LabelNumberHPM.Content = FormatHelpers.Instance.FormatDouble(skillAggregate.Interval == 0 ? 0 : (double)hits / skillAggregate.Interval / TimeSpan.TicksPerMinute);
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }

@@ -697,4 +697,7 @@
   <data name="Blur_player_names" xml:space="preserve">
     <value>Скрыть имена игроков</value>
   </data>
+  <data name="HPM" xml:space="preserve">
+    <value>Удар/мин</value>
+  </data>
 </root>
