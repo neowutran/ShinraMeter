@@ -51,7 +51,10 @@
             </Button>
         </Grid>
         <Grid Grid.Row="1" Margin="4" Background="White">
-            <markdig:MarkdownViewer Name="Browser"/>
+            <FrameworkElement.CommandBindings>
+                <CommandBinding Command="{x:Static markdig:Commands.Hyperlink}" Executed="OpenHyperlink" />
+            </FrameworkElement.CommandBindings>
+            <markdig:MarkdownViewer Name="Browser" />
         </Grid>
         <TextBlock Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,4,4,8"
                    Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.App_Do_you_want_to_update}"/>
