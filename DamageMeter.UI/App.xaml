@@ -322,17 +322,20 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
+                        <Grid>
+                            
                         <Border Name="border"
-                                                BorderThickness="0"
-                                                Padding="0"
-                                                BorderBrush="Transparent"
-                                                CornerRadius="0"
-                                                Background="Transparent">
+                                Padding="0"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </Border>
+                        <Border x:Name="hilight" Background="Transparent"></Border>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#2fff" />
+                                <Setter TargetName="hilight" Property="Background" Value="#1fff" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
