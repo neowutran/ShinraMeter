@@ -40,7 +40,7 @@ namespace DamageMeter.UI.SkillDetail
             LabelBiggestCrit.Content = FormatHelpers.Instance.FormatValue(skillAggregate.BiggestCrit(skill.Id));
             LabelAverageHit.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.AvgWhite(skill.Id));
             LabelAverageTotal.Content = FormatHelpers.Instance.FormatValue((long) skillAggregate.Avg(skill.Id));
-            LabelNumberHPM.Content = FormatHelpers.Instance.FormatDouble(skillAggregate.Interval == 0 ? 0 : (double)hits / skillAggregate.Interval / TimeSpan.TicksPerMinute);
+            LabelNumberHPM.Content = FormatHelpers.Instance.FormatDouble(skillAggregate.Interval == 0 ? 0 : (double)hits / skillAggregate.Interval * TimeSpan.TicksPerMinute);
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
