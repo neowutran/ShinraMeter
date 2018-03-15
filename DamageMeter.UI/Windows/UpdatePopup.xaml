@@ -9,13 +9,16 @@
         xmlns:l="clr-namespace:Lang;assembly=Lang"
         mc:Ignorable="d" Loaded="ClickThrouWindow_Loaded"
         MinHeight="10" MinWidth="10"
-        Title="UpdatePopup" Height="300" Width="800" WindowStartupLocation="CenterScreen" Icon="/ShinraMeter;component/shinra.ico" ResizeMode="CanResizeWithGrip">
+        Title="UpdatePopup" Height="300" Width="800" WindowStartupLocation="CenterScreen" Icon="/ShinraMeter;component/shinra.ico" ResizeMode="CanResize">
     <Window.Background>
         <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="0,3,5,5" GlassFrameThickness="0,0,0,1" CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
     <Grid MouseLeftButtonDown="Move" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -50,7 +53,8 @@
         <Grid Grid.Row="1" Margin="4" Background="White">
             <markdig:MarkdownViewer Name="Browser"/>
         </Grid>
-        <TextBlock Grid.Row="2" HorizontalAlignment="Center" Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.App_Do_you_want_to_update}"/>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,4,4,8"
+                   Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.App_Do_you_want_to_update}"/>
         <Grid Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -58,21 +62,20 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="1" x:Name="UpdateButton" Style="{StaticResource ButtonMainStyle}" 
-                    Background="Transparent"
-                    Click="StartButton_OnClick" HorizontalContentAlignment="Stretch"
-                    VerticalAlignment="Top" Margin="4" >
-                <TextBlock HorizontalAlignment="Center" Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.Start}"/>
+            <Button Grid.Row="0" Grid.Column="0" x:Name="UpdateButton" Style="{StaticResource ButtonMainStyle}" 
+                    Background="DodgerBlue" HorizontalAlignment="Stretch" 
+                    Click="StartButton_OnClick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    VerticalAlignment="Center" Margin="0"   >
+                <TextBlock HorizontalAlignment="Center" Margin="8" Style="{StaticResource tcc_text}"  
+                           Text="{x:Static l:LP.Start}" VerticalAlignment="Center"/>
             </Button>
             <Button Grid.Row="0" Grid.Column="3" x:Name="CloseButton1" Style="{StaticResource ButtonMainStyle}" 
-                    Background="Transparent"
+                    Background="{StaticResource DarkCardColor}" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                     Click="CloseButton_OnClick" HorizontalContentAlignment="Stretch"
-                    VerticalAlignment="Top" Margin="4" >
-                <TextBlock HorizontalAlignment="Center" Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.Close}"/>
+                     Margin="0" >
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8"
+                           Style="{StaticResource tcc_text}"  Text="{x:Static l:LP.Close}"/>
             </Button>
         </Grid>
 
