@@ -98,9 +98,9 @@ namespace DamageMeter.UI
             var dy = m.M22;
             var width = ActualWidth * dx;
             var height = ActualHeight * dy;
-            if (!_dragged && (int)width==_oldWidth && (int)height==_oldHeight) return;
-            _oldWidth = (int) width;
-            _oldHeight = (int) height;
+            if (!_dragged && (int)width == _oldWidth && (int)height == _oldHeight) return;
+            _oldWidth = (int)width;
+            _oldHeight = (int)height;
             var newLeft = (_dragged ? Left : LastSnappedPoint?.X ?? Left) * dx;
             var newTop = (_dragged ? Top : LastSnappedPoint?.Y ?? Top) * dy;
             var snapLeft = newLeft;
@@ -154,7 +154,10 @@ namespace DamageMeter.UI
             {
                 if (e.LeftButton != MouseButtonState.Pressed) return;
                 _dragging = true;
+                var rm = ResizeMode;
+                if (rm == ResizeMode.CanResize || rm == ResizeMode.CanResizeWithGrip) ResizeMode = ResizeMode.NoResize;
                 DragMove();
+                ResizeMode = rm;
                 _dragged = true;
                 _dragging = false;
                 SnapToScreen();
