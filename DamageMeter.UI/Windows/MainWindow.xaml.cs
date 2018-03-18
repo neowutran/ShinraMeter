@@ -60,6 +60,7 @@ namespace DamageMeter.UI
         {
             InitializeComponent();
             // Handler for exceptions in threads behind forms.
+            App.SplashScreen.SetText("Initializing main window...");
             Application.ThreadException += GlobalThreadExceptionHandler;
             if (BasicTeraData.Instance.WindowData.InvisibleUi) { Visibility = Visibility.Hidden; }
             System.Windows.Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
@@ -446,6 +447,8 @@ namespace DamageMeter.UI
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            App.SplashScreen.CloseWindowSafe();
+
             _entityStats.Owner = this;
             _bossGageBar.Owner = this;
             _windowHistory.Owner = this;
@@ -483,6 +486,7 @@ namespace DamageMeter.UI
             }
             Top = 0;
             Left = 0;
+
         }
 
         private void ListEncounter_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

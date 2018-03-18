@@ -1,0 +1,44 @@
+﻿<Window x:Class="DamageMeter.UI.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DamageMeter.UI"
+        mc:Ignorable="d"
+        Title="SplashScreen" Height="300" Width="420" ResizeMode="NoResize" AllowsTransparency="True" SizeToContent="Height" ShowInTaskbar="False"
+        Background="Transparent" MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Grid VerticalAlignment="Top" Background="{StaticResource ShinraColor}" Margin="10">
+        <Grid.Effect>
+            <DropShadowEffect Opacity=".5" ShadowDepth="3"/>
+        </Grid.Effect>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="210"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Image  Opacity=".9" Source="shinra.png"/>
+        <Border Grid.Row="1" Grid.RowSpan="2" Background="#333"/>
+        <TextBlock Name="txt" Grid.Row="1" VerticalAlignment="Center" Margin="0,3" TextWrapping="WrapWithOverflow"
+                   HorizontalAlignment="Center" TextAlignment="Center" Foreground="#afff" >Shinra Meter</TextBlock>
+        <ProgressBar Name="bar" Grid.Row="1" Background="Transparent" BorderThickness="0" Foreground="#1fff" />
+        <TextBlock Name="ver" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                   Foreground="#90ffffff" Margin="3,2"/>
+        <UniformGrid Grid.Row="2"  Rows="1" Name="buttonsGrid" Margin="80,0">
+            <Button Height="20" Margin="5" Style="{StaticResource ButtonMainStyle}" Background="Transparent"  HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center" Click="NoClick">
+                <!--<Path Data="{StaticResource SVG.Close}" Fill="White" Stretch="Uniform" Margin="3"></Path>-->
+                <TextBlock Foreground="#90ffffff" FontWeight="Bold">NO</TextBlock>
+
+            </Button>
+            <Button Height="20" Margin="5" Style="{StaticResource ButtonMainStyle}" HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center" Click="OkClick" Background="Transparent">
+                <!--<Path Data="{StaticResource SVG.Confirm}" Fill="White" Stretch="Uniform" Margin="3"></Path>-->
+                <TextBlock Foreground="#90ffffff" FontWeight="Bold">YES</TextBlock>
+            </Button>
+            <UniformGrid.LayoutTransform>
+                <ScaleTransform ScaleY="0"></ScaleTransform>
+            </UniformGrid.LayoutTransform>
+        </UniformGrid>
+    </Grid>
+
+</Window>

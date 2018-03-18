@@ -129,6 +129,7 @@
         <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#FF3C77DD" />
         <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#FF212121" />
         <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FF212121" />
+        <SolidColorBrush x:Key="ShinraColor" Color="#b50000" />
         <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
             <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}" />
