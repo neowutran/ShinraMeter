@@ -33,7 +33,7 @@ namespace Data
             Enabled = data.Enabled;
         }
 
-        public static DpsServerData Neowutran = new DpsServerData(new Uri("https://neowutran.ovh/storage/store.php"), null, null, null, null, true);
+        public static DpsServerData Neowutran = new DpsServerData(new Uri("https://neowutran.ovh/storage/store.php"), new Uri("https://neowutran.ovh/storage/whitelist"), null, null, null, true);
 
         public static DpsServerData Moongourd = new DpsServerData(
             new Uri("https://moongourd.com/api/shinra/upload"),
