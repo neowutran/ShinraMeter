@@ -38,6 +38,7 @@ namespace DamageMeter
                 if (bossEntity == null) { return; }
                 boss = new Boss(bossEntity, Visibility.Visible);
                 _bosses.Add(boss);
+                PacketProcessor.Instance.AbnormalityTracker.BuffList(bossEntity.Id).ForEach(x=>boss.AddOrRefresh(x));
             }
             else if (boss == null) return;
             else if (message.HpRemaining <= 0)
