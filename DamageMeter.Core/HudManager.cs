@@ -31,7 +31,7 @@ namespace DamageMeter
 
         public void AddOrUpdateBoss(S_BOSS_GAGE_INFO message)
         {
-            var boss = _bosses.FirstOrDefault(x => x.EntityId == message.EntityId);
+            var boss = _bosses.ToSyncArray().FirstOrDefault(x => x.EntityId == message.EntityId);
             if (boss == null && message.HpRemaining > 0)
             {
                 var bossEntity = PacketProcessor.Instance.EntityTracker.GetOrNull(message.EntityId) as NpcEntity;
@@ -54,7 +54,7 @@ namespace DamageMeter
 
         public void UpdateBoss(SCreatureChangeHp hpChange)
         {   
-            var boss = _bosses.FirstOrDefault(x => x.EntityId == hpChange.TargetId);
+            var boss = _bosses.ToSyncArray().FirstOrDefault(x => x.EntityId == hpChange.TargetId);
             if (boss == null){return;}
             if (hpChange.HpRemaining > 0) {boss.CurrentHP = hpChange.HpRemaining;}
             else {_bosses.Remove(boss); boss.Dispose();}
@@ -63,7 +63,7 @@ namespace DamageMeter
 
         public void AddBoss(NpcEntity entity)
         {
-            var boss = _bosses.FirstOrDefault(x => x.EntityId == entity.Id);
+            var boss = _bosses.ToSyncArray().FirstOrDefault(x => x.EntityId == entity.Id);
             if (boss == null)
             {
                 if (entity == null) { return; }
@@ -76,7 +76,7 @@ namespace DamageMeter
 
         public void RemoveBoss(SDespawnNpc message)
         {
-            var boss = _bosses.FirstOrDefault(x => x.EntityId == message.Npc);
+            var boss = _bosses.ToSyncArray().FirstOrDefault(x => x.EntityId == message.Npc);
             if (boss == null) { return; }
             _bosses.Remove(boss);
             boss.Dispose();
@@ -84,7 +84,7 @@ namespace DamageMeter
 
         public void UpdateRunemarks(S_WEAK_POINT message)
         {
-            var boss = _bosses.FirstOrDefault(x => x.EntityId == message.Target);
+            var boss = _bosses.ToSyncArray().FirstOrDefault(x => x.EntityId == message.Target);
             if (boss == null) { return; }
             boss.Runmarks = (int) message.RunemarksAfter;
         }
@@ -296,7 +296,7 @@ namespace DamageMeter
                 return;
             }
             if (BasicTeraData.Instance.WindowData.NoAbnormalsInHUD) return;
-            var existing = Buffs.FirstOrDefault(x => x.Buff.Id == abnormality.HotDot.Id);
+            var existing = Buffs.ToSyncArray().FirstOrDefault(x => x.Buff.Id == abnormality.HotDot.Id);
             if (existing == null)
             {
                 Buffs.Add(new BuffDuration(abnormality.HotDot, abnormality.Duration, abnormality.Stack));
@@ -317,7 +317,7 @@ namespace DamageMeter
             }
             try
             {
-                var buff = Buffs.FirstOrDefault(x => x.Buff.Id == id);
+                var buff = Buffs.ToSyncArray().FirstOrDefault(x => x.Buff.Id == id);
                 if (buff == null) { return; }
                 Buffs.Remove(buff);
                 buff.Dispose();

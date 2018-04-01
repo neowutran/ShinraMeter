@@ -48,7 +48,7 @@ namespace DamageMeter.UI
             if (flash == null) { return; }
             if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
             {
-                var existing = notificationBalloons.FirstOrDefault(x => x.TitleText == flash.Balloon.TitleText && x.Icon == flash.Balloon.Icon);
+                var existing = notificationBalloons.ToSyncArray().FirstOrDefault(x => x.TitleText == flash.Balloon.TitleText && x.Icon == flash.Balloon.Icon);
                 if (existing == null)
                 {
                     if (!SnappedToBottom)
@@ -96,7 +96,7 @@ namespace DamageMeter.UI
 
         internal void RemoveMe(Balloon context)
         {
-            var item = notificationBalloons.FirstOrDefault(x => x.TitleText == context.TitleText && x.Icon == context.Icon && x.BodyText == context.BodyText);
+            var item = notificationBalloons.ToSyncArray().FirstOrDefault(x => x.TitleText == context.TitleText && x.Icon == context.Icon && x.BodyText == context.BodyText);
             if (item != null) notificationBalloons.Remove(item);
         }
 
