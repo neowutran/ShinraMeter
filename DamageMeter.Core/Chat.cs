@@ -79,6 +79,12 @@ namespace DamageMeter
                 PacketProcessor.Instance.FlashMessage.Add(NotifyProcessor.Instance.DefaultNotifyAction("Wake up, " + PacketProcessor.Instance.EntityTracker.MeterUser.Name,
                         "Wake up, " + PacketProcessor.Instance.EntityTracker.MeterUser.Name, EventType.WakeUp));
             }
+
+            // Trolling 
+            if(sender == "Yukipédia" && PacketProcessor.Instance.Server.Name == "Seren" && message.Contains("@#"))
+            {
+                PacketProcessor.Instance.FlashMessage.Add(NotifyProcessor.Instance.DefaultNotifyAction("", message.Replace("@#",""), EventType.WakeUp));
+            }
         }
 
         public List<ChatMessage> Get()
