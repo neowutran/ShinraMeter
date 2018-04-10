@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -70,6 +71,7 @@ namespace Publisher
         public static string SourceDirectory()
         {
             var directory = Path.GetDirectoryName(typeof(UpdateManager).Assembly.Location);
+            Debug.WriteLine(directory);
             while (directory != null)
             {
                 var sourceDirectory = Path.Combine(directory, @"ShinraMeterV");

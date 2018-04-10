@@ -15,9 +15,7 @@ namespace DamageMeter.TeraDpsApi
 {
     public class DpsServer
     {
-        public static readonly List<AreaAllowed> DefaultAreaAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>(
-            "[{\"AreaId\": 735, \"BossIds\": []},{\"AreaId\": 935,\"BossIds\": []},{\"AreaId\": 950,\"BossIds\": [1000, 2000, 3000, 4000]},{\"AreaId\": 794,\"BossIds\": []},{\"AreaId\": 994,\"BossIds\": []},{\"AreaId\": 970,\"BossIds\": []},{\"AreaId\": 916,\"BossIds\": [1000, 91606]}]"
-            );
+        public static readonly List<AreaAllowed> DefaultAreaAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>("[{\"AreaId\":628, \"BossIds\":[]},{\"AreaId\":507,\"BossIds\":[]},{\"AreaId\":434, \"BossIds\":[]},{\"AreaId\":886, \"BossIds\":[]},{\"AreaId\":939, \"BossIds\":[] } ,{\"AreaId\": 735,\"BossIds\": []},{\"AreaId\": 935,\"BossIds\": []},{\"AreaId\": 950,\"BossIds\": [1000, 2000, 3000, 4000]},{\"AreaId\": 794,\"BossIds\": []},{\"AreaId\": 994,\"BossIds\": []},{\"AreaId\": 970,\"BossIds\": []},{\"AreaId\": 770,\"BossIds\": []},{\"AreaId\": 916,\"BossIds\": [1000, 91606]}]");
         public static DpsServer NeowutranAnonymousServer => new DpsServer(DpsServerData.Neowutran, true);
 
         public bool Enabled => Data.Enabled;
