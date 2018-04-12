@@ -41,24 +41,6 @@ namespace DamageMeter.UI
         
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
-            var waiting = true;
-            var ssThread = new Thread(new ThreadStart(() =>
-            {
-                SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(Dispatcher.CurrentDispatcher));
-                SplashScreen = new SplashScreen();
-                SplashScreen.SetText("Initializing...");
-                SplashScreen.SetVer(UpdateManager.Version);
-                SplashScreen.Show();
-                waiting = false;
-                Dispatcher.Run();
-            }));
-            ssThread.Name = "SplashScreen window thread";
-            ssThread.SetApartmentState(ApartmentState.STA);
-            ssThread.Start();
-            while (waiting)
-            {
-                Thread.Sleep(1);
-            }
             bool notUpdating;
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
@@ -69,6 +51,24 @@ namespace DamageMeter.UI
 
             if (_isNewInstance)
             {
+                var waiting = true;
+                var ssThread = new Thread(new ThreadStart(() =>
+                {
+                    SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(Dispatcher.CurrentDispatcher));
+                    SplashScreen = new SplashScreen();
+                    SplashScreen.SetText("Initializing...");
+                    SplashScreen.SetVer(UpdateManager.Version);
+                    SplashScreen.Show();
+                    waiting = false;
+                    Dispatcher.Run();
+                }));
+                ssThread.Name = "SplashScreen window thread";
+                ssThread.SetApartmentState(ApartmentState.STA);
+                ssThread.Start();
+                while (waiting)
+                {
+                    Thread.Sleep(1);
+                }
                 DeleteTmp();
                 UpdateManager.ReadDbVersion();
                 if (!BasicTeraData.Instance.WindowData.AllowTransparency) { RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly; }
