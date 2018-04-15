@@ -99,7 +99,7 @@ namespace DamageMeter
 
         private int _stacks;
 
-        public BuffDuration(HotDot b, uint d, int s)
+        public BuffDuration(HotDot b, long d, int s)
         {
             Buff = b;
             Duration = d;
