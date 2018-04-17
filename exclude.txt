@@ -1,3 +1,14 @@
 \items\
 \config\
+\acc_benefits\
+\achi_grade\
+\achievements\
+\dungeons\
+\equip_exp\
+\guild_quests\
+\quests\
+\regions\
+\social\
+\sys_msg\
+\world_map\
 .git
