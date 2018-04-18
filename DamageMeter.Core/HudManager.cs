@@ -56,6 +56,7 @@ namespace DamageMeter
         {   
             var boss = _bosses.ToSyncArray().FirstOrDefault(x => x.EntityId == hpChange.TargetId);
             if (boss == null){return;}
+            if (hpChange.TotalHp != boss.MaxHP) {boss.MaxHP = hpChange.TotalHp;}
             if (hpChange.HpRemaining > 0) {boss.CurrentHP = hpChange.HpRemaining;}
             else {_bosses.Remove(boss); boss.Dispose();}
 
