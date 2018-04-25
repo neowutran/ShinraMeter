@@ -110,11 +110,11 @@ namespace DamageMeter
 
         private void InsertSkill(Entity entityTarget, Entity entitySource, Entity petSource, SkillResult message)
         {
-            if (!IsValidSkill(message)) { return; }
 
             var skillType = Database.Database.Type.Mana;
             if (message.IsHp) { skillType = message.IsHeal ? Database.Database.Type.Heal : Database.Database.Type.Damage; }
             if (message.Amount == 0) { skillType = Database.Database.Type.Counter; }
+            if (!IsValidSkill(message)) { skillType = Database.Database.Type.Counter; }// count DFA etc
 
             if (entityTarget is NpcEntity entity)
             {
