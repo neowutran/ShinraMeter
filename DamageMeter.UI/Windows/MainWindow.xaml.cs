@@ -101,8 +101,6 @@ namespace DamageMeter.UI
             _bossGageBar = new BossGageWindow() { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale, DontClose = true };
             _popupNotification = new PopupNotification() { DontClose = true };
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<string, NpcEntity>()) { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale, DontClose = true };
-
-            Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
             KeyboardHook.Instance.SwitchTopMost += delegate { NotifyIcon.SwitchStayTop(); };
             SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             NotifyIcon.Initialize(this);
