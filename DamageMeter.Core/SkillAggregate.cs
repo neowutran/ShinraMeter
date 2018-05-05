@@ -283,13 +283,13 @@ namespace DamageMeter
                     if (skill == null) { continue; }
                     if (!skillsData.Type(playerDamageDealt.Source.User, null, skill.Id, skill.NpcInfo, true, type)) { continue; }
 
-                    if (!skillsAggregate.ContainsKey(skill.ShortName))
+                    if (!skillsAggregate.ContainsKey(skill.ShortName + skill.NpcInfo?.Name))
                     {
-                        skillsAggregate.Add(skill.ShortName,
+                        skillsAggregate.Add(skill.ShortName + skill.NpcInfo?.Name,
                             new SkillAggregate(skill, skillsData, playerDamageDealt.Source.User, null, playerDamageDealt, true, type));
                         continue;
                     }
-                    skillsAggregate[skill.ShortName].Add(skill, playerDamageDealt.Source.User);
+                    skillsAggregate[skill.ShortName + skill.NpcInfo?.Name].Add(skill, playerDamageDealt.Source.User);
                 }
                 return skillsAggregate.Values;
             }
@@ -303,13 +303,13 @@ namespace DamageMeter
                     if (skill.Value == null) { continue; }
                     if (!skillsData.Type(skill.Key, playerDamageDealt.Source.User, skill.Value.Id, skill.Value.NpcInfo, false, type)) { continue; }
 
-                    if (!skillsAggregate.ContainsKey(skill.Value.ShortName))
+                    if (!skillsAggregate.ContainsKey(skill.Value.ShortName + skill.Value.NpcInfo?.Name))
                     {
-                        skillsAggregate.Add(skill.Value.ShortName,
+                        skillsAggregate.Add(skill.Value.ShortName + skill.Value.NpcInfo?.Name,
                             new SkillAggregate(skill.Value, skillsData, skill.Key, playerDamageDealt.Source.User, playerDamageDealt, false, type));
                         continue;
                     }
-                    skillsAggregate[skill.Value.ShortName].Add(skill.Value, skill.Key);
+                    skillsAggregate[skill.Value.ShortName + skill.Value.NpcInfo?.Name].Add(skill.Value, skill.Key);
                 }
                 return skillsAggregate.Values;
             }
@@ -322,13 +322,13 @@ namespace DamageMeter
                     if (skill == null) { continue; }
                     if (!skillsData.Type(playerDamageDealt.Source.User, null, skill.Id, skill.NpcInfo, true, type)) { continue; }
 
-                    if (!skillsAggregate.ContainsKey(skill.ShortName))
+                    if (!skillsAggregate.ContainsKey(skill.ShortName + skill.NpcInfo?.Name))
                     {
-                        skillsAggregate.Add(skill.ShortName,
+                        skillsAggregate.Add(skill.ShortName + skill.NpcInfo?.Name,
                             new SkillAggregate(skill, skillsData, playerDamageDealt.Source.User, null, playerDamageDealt, true, type));
                         continue;
                     }
-                    skillsAggregate[skill.ShortName].Add(skill, playerDamageDealt.Source.User);
+                    skillsAggregate[skill.ShortName + skill.NpcInfo?.Name].Add(skill, playerDamageDealt.Source.User);
                 }
                 return skillsAggregate.Values;
             }
@@ -340,13 +340,13 @@ namespace DamageMeter
                 {
                     if (skill == null) { continue; }
                     if (!skillsData.Type(playerDamageDealt.Source.User, entity, skill.Id, skill.NpcInfo, timedEncounter, type)) { continue; }
-                    if (!skillsAggregate.ContainsKey(skill.ShortName))
+                    if (!skillsAggregate.ContainsKey(skill.ShortName + skill.NpcInfo?.Name))
                     {
-                        skillsAggregate.Add(skill.ShortName,
+                        skillsAggregate.Add(skill.ShortName + skill.NpcInfo?.Name,
                             new SkillAggregate(skill, skillsData, playerDamageDealt.Source.User, entity, playerDamageDealt, timedEncounter, type));
                         continue;
                     }
-                    skillsAggregate[skill.ShortName].Add(skill, playerDamageDealt.Source.User);
+                    skillsAggregate[skill.ShortName + skill.NpcInfo?.Name].Add(skill, playerDamageDealt.Source.User);
                 }
                 return skillsAggregate.Values;
             }
