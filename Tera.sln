@@ -22,15 +22,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.AutoUpdate", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Core", "TeraCommon\Tera.Core.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Randomizer", "Randomizer\Randomizer.csproj", "{F359D35B-4647-40B9-B730-1CDDD83B6CB4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang", "Lang\Lang.csproj", "{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publisher.csproj", "{968CE869-A989-4608-AA51-6C6BD7CC78F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.D3D9Render", "DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj", "{23F7BE64-3627-4F4E-AF78-291A7664FE6A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.CoreTests", "DamageMeter.CoreTests\DamageMeter.CoreTests.csproj", "{D6961064-17B1-4F15-B48E-B72D46395226}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,18 +123,6 @@ Global
 		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|x64.Build.0 = Release|Any CPU
 		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|x86.ActiveCfg = Release|Any CPU
 		{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}.Release|x86.Build.0 = Release|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Debug|x64.Build.0 = Debug|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Debug|x86.Build.0 = Debug|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|x64.ActiveCfg = Release|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|x64.Build.0 = Release|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|x86.ActiveCfg = Release|Any CPU
-		{F359D35B-4647-40B9-B730-1CDDD83B6CB4}.Release|x86.Build.0 = Release|Any CPU
 		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -175,18 +159,6 @@ Global
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x64.Build.0 = Release|Any CPU
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x86.ActiveCfg = Release|Any CPU
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x86.Build.0 = Release|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|x64.Build.0 = Debug|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Debug|x86.Build.0 = Debug|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|x64.ActiveCfg = Release|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|x64.Build.0 = Release|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|x86.ActiveCfg = Release|Any CPU
-		{D6961064-17B1-4F15-B48E-B72D46395226}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
