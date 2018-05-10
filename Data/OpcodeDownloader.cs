@@ -56,11 +56,22 @@ namespace Data
             {
                 return false;
             }
+            filename = directory + Path.DirectorySeparatorChar + "sysmsg." + version + ".map";
+            if (File.Exists(filename))
+            {
+                return false;
+            }
             filename = directory + Path.DirectorySeparatorChar + "sysmsg." + revision/100 + ".map";
             if (File.Exists(filename))
             {
                 return false;
             }
+            try
+            {
+                Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/sysmsg." + version + ".map", "sysmsg." + version + ".map");
+                return true;
+            }
+            catch { }
             try
             {
                 Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/sysmsg." + revision/100 + ".map", filename);
@@ -69,7 +80,7 @@ namespace Data
             catch { }
             try
             {
-                Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/sysmsg." + version + ".map", filename);
+                Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/sysmsg." + version + ".map", "sysmsg." + version + ".map");
                 return true;
             }
             catch { }
