@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace DamageMeter.AutoUpdate
 {
@@ -12,10 +13,9 @@ namespace DamageMeter.AutoUpdate
         {
             if (args.Length == 0)
             {
-                Console.WriteLine(
-                    "The update system have been modified and is not compatible with your meter version. Download the new version directly from the website.");
-                Console.ReadLine();
-                return;
+                Process.Start("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                MessageBox.Show("Autoupdate.exe is used internally by the meter. End user must not run it.");
+                Environment.Exit(0);
             }
 
             bool aIsNewInstance, isUpdating;
