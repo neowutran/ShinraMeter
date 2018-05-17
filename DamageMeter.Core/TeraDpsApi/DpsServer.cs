@@ -46,7 +46,13 @@ namespace DamageMeter.TeraDpsApi
                 if (!_allowedAreaId.Any(x => x.AreaId == areaId && ( x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return false; }
 
                 long timediff;
-                try { timediff = FetchServerTime(entity); } catch { return false; }
+                try { timediff = FetchServerTime(entity); }
+                catch
+                {
+                    PacketProcessor.Instance.BossLink.TryAdd(
+                        "!" + Guid + " " + LP.Time_sync_error + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks, entity);
+                    return false;
+                }
 
                 teradpsData.encounterUnixEpoch += timediff;
                 var json = JsonConvert.SerializeObject(teradpsData,
@@ -131,7 +137,7 @@ namespace DamageMeter.TeraDpsApi
 
         public long FetchServerTime(NpcEntity entity)
         {
-            var serverTimeUrl = new Uri(HomeUrl+"/api/shinra/servertime");
+            var serverTimeUrl = new Uri(HomeUrl+"api/shinra/servertime");
             try
             {
                 using (var client = new HttpClient())

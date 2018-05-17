@@ -715,4 +715,7 @@ Reset and paused until map change or relog.</value>
   <data name="HPM" xml:space="preserve">
     <value>Hit/m</value>
   </data>
+  <data name="Time_sync_error" xml:space="preserve">
+    <value>Time sync error</value>
+  </data>
 </root>
