@@ -29,7 +29,7 @@ Shinra Manager by Dark (external contributor)
 ---------------
 https://github.com/SaltyMonkey/ShinraManager
 
-Cool UI project by Folgio
+Cool UI project by Foglio
 -------------------
 https://github.com/Foglio1024/Tera-custom-cooldowns
 
