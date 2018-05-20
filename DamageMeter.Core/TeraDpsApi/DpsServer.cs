@@ -47,10 +47,10 @@ namespace DamageMeter.TeraDpsApi
 
                 long timediff;
                 try { timediff = FetchServerTime(entity); }
-                catch
+                catch (Exception e)
                 {
                     PacketProcessor.Instance.BossLink.TryAdd(
-                        "!" + Guid + " " + LP.Time_sync_error + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks, entity);
+                        "!" + Guid + " " + LP.Time_sync_error + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks + "\r\n" + e, entity);
                     return false;
                 }
 
@@ -60,10 +60,10 @@ namespace DamageMeter.TeraDpsApi
                 teradpsData.encounterUnixEpoch -= timediff;
                 SendFightData(entity, json, 3);
             }
-            catch
+            catch (Exception e)
             {
                 PacketProcessor.Instance.BossLink.TryAdd(
-                       "!" + Guid + " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks, entity);
+                       "!" + Guid + " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks + "\r\n" + e, entity);
                 return false;
             }
             return true;
