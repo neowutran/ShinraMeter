@@ -50,7 +50,7 @@ namespace DamageMeter.TeraDpsApi
                 catch (Exception e)
                 {
                     if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
-                        "!" + Guid + " " + LP.Time_sync_error + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks + "\r\n" + e, entity);
+                        "!" + DateTime.UtcNow.Ticks + " " + LP.Time_sync_error + " " + entity.Info.Name + " " + Guid + "\r\n" + e, entity);
                     return false;
                 }
 
@@ -63,7 +63,7 @@ namespace DamageMeter.TeraDpsApi
             catch (Exception e)
             {
                 if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
-                       "!" + Guid + " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks + "\r\n" + e, entity);
+                       "!" + DateTime.UtcNow.Ticks + " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + Guid + "\r\n" + e, entity);
                 return false;
             }
             return true;
@@ -121,7 +121,7 @@ namespace DamageMeter.TeraDpsApi
                 else
                 {
                     if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
-                        "!" + Guid + " " + (string)responseObject["message"] + " " + npc.Info.Name + " " + DateTime.UtcNow.Ticks, npc);
+                        "!" + DateTime.UtcNow.Ticks + " " + (string)responseObject["message"] + " " + npc.Info.Name + " " + Guid, npc);
                 }
             }
           }

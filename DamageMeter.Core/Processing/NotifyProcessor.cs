@@ -451,6 +451,7 @@ namespace DamageMeter.Processing
 
         internal void SpawnMe(SpawnMeServerMessage message)
         {
+            HudManager.Instance.CurrentBosses.DisposeAll();
             S_SPAWN_ME.Process(message);
             _lastBosses = new Dictionary<EntityId, long>();
             _lastBossMeterUser = null;
