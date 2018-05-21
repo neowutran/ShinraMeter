@@ -49,7 +49,7 @@ namespace DamageMeter.TeraDpsApi
                 try { timediff = FetchServerTime(entity); }
                 catch (Exception e)
                 {
-                    PacketProcessor.Instance.BossLink.TryAdd(
+                    if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
                         "!" + Guid + " " + LP.Time_sync_error + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks + "\r\n" + e, entity);
                     return false;
                 }
@@ -62,7 +62,7 @@ namespace DamageMeter.TeraDpsApi
             }
             catch (Exception e)
             {
-                PacketProcessor.Instance.BossLink.TryAdd(
+                if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
                        "!" + Guid + " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + DateTime.UtcNow.Ticks + "\r\n" + e, entity);
                 return false;
             }
@@ -116,11 +116,11 @@ namespace DamageMeter.TeraDpsApi
                 var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Result.Content.ReadAsStringAsync().Result);
                 if (responseObject.ContainsKey("id") && ((string)responseObject["id"]).StartsWith("http"))
                 {
-                    PacketProcessor.Instance.BossLink.TryAdd((string)responseObject["id"], npc);
+                    if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd((string)responseObject["id"], npc);
                 }
                 else
                 {
-                    PacketProcessor.Instance.BossLink.TryAdd(
+                    if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
                         "!" + Guid + " " + (string)responseObject["message"] + " " + npc.Info.Name + " " + DateTime.UtcNow.Ticks, npc);
                 }
             }
