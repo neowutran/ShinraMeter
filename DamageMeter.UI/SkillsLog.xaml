@@ -27,7 +27,7 @@
             <ui:MaterialSwitch Grid.Column="3" Status="True" Foreground="{StaticResource CastText}" SwitchColor="{StaticResource CastText}"  Content="{x:Static l:LP.Counter}" Height="30" x:Name="Casts"
                       On="ValueChanged" Off="ValueChanged" Margin="20,5"/>
         </Grid>
-        <ScrollViewer Name="ScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="500">
+        <ScrollViewer Name="ScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Visible" MaxHeight="500">
 
             <ItemsControl Name="Skills" PreviewMouseWheel="Skills_PreviewMouseWheel" Background="Transparent"
                           BorderThickness="0"
