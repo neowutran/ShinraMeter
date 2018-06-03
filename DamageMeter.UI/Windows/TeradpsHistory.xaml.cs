@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Windows;
+using DamageMeter.TeraDpsApi;
 using Data;
 using Tera.Game;
 
@@ -10,7 +11,7 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class TeradpsHistory
     {
-        public TeradpsHistory(ConcurrentDictionary<string, NpcEntity> bossHistory)
+        public TeradpsHistory(ConcurrentDictionary<UploadData, NpcEntity> bossHistory)
         {
             InitializeComponent();
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
@@ -22,9 +23,9 @@ namespace DamageMeter.UI
             HideWindow();
         }
 
-        public void Update(ConcurrentDictionary<string, NpcEntity> bossHistory)
+        public void Update(ConcurrentDictionary<UploadData, NpcEntity> bossHistory)
         {
-            TeraDpsHistory.Items.Clear();
+            //TeraDpsHistory.Items.Clear();
             foreach (var boss in bossHistory) { TeraDpsHistory.Items.Add(new HistoryLink(boss.Key, boss.Value)); }
         }
 
