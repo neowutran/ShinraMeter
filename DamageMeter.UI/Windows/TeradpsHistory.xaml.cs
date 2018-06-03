@@ -25,7 +25,7 @@ namespace DamageMeter.UI
 
         public void Update(ConcurrentDictionary<UploadData, NpcEntity> bossHistory)
         {
-            //TeraDpsHistory.Items.Clear();
+            TeraDpsHistory.Items.Clear();
             foreach (var boss in bossHistory) { TeraDpsHistory.Items.Add(new HistoryLink(boss.Key, boss.Value)); }
         }
 
