@@ -27,15 +27,15 @@ namespace DamageMeter.TeraDpsApi
 
         public DpsServerData Data;
         public DpsServer(DpsServerData data, bool anonymousUpload)
-        {  
+        {
             AnonymousUpload = anonymousUpload;
             Guid = Guid.NewGuid();
             Data = data;
-            Debug.WriteLine("dps url:"+data.UploadUrl + ";enabled:" + Enabled + ";anonymous:" + AnonymousUpload);
+            Debug.WriteLine("dps url:" + data.UploadUrl + ";enabled:" + Enabled + ";anonymous:" + AnonymousUpload);
         }
 
 
-       public bool CheckAndSendFightData(EncounterBase teradpsData, NpcEntity entity)
+        public bool CheckAndSendFightData(EncounterBase teradpsData, NpcEntity entity)
         {
             if (!Enabled && !AnonymousUpload || String.IsNullOrWhiteSpace(UploadUrl?.ToString())) { return false; }
             var areaId = int.Parse(teradpsData.areaId);
@@ -43,14 +43,21 @@ namespace DamageMeter.TeraDpsApi
             try
             {
                 if (_allowedAreaId.Count == 0) { FetchAllowedAreaId(); }
-                if (!_allowedAreaId.Any(x => x.AreaId == areaId && ( x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return false; }
+                if (!_allowedAreaId.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) { return false; }
 
                 long timediff;
                 try { timediff = FetchServerTime(entity); }
                 catch (Exception e)
                 {
-                    if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
-                        "!" + DateTime.UtcNow.Ticks + " " + LP.Time_sync_error + " " + entity.Info.Name + " " + Guid + "\r\n" + e, entity);
+                    if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(new UploadData
+                    {
+                        Success = false,
+                        Time = DateTime.UtcNow,
+                        Message = LP.Time_sync_error,
+                        Npc = entity.Info.Name,
+                        Server = Data.HostName,
+                        Exception = e.ToString()
+                    }, entity);
                     return false;
                 }
 
@@ -63,15 +70,23 @@ namespace DamageMeter.TeraDpsApi
             catch (Exception e)
             {
                 if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
-                       "!" + DateTime.UtcNow.Ticks + " " + LP.TeraDpsIoApiError + " " + entity.Info.Name + " " + Guid + "\r\n" + e, entity);
+                    new UploadData
+                    {
+                        Success = false,
+                        Exception = e.ToString(),
+                        Time = DateTime.UtcNow,
+                        Message = LP.TeraDpsIoApiError,
+                        Npc = entity.Info.Name,
+                        Server = Data.HostName
+                    }, entity);
                 return false;
             }
             return true;
-         }
+        }
 
         public bool SendGlyphData()
         {
-            if (!Enabled||String.IsNullOrWhiteSpace(GlyphUrl?.ToString())) { return false ; }
+            if (!Enabled || String.IsNullOrWhiteSpace(GlyphUrl?.ToString())) { return false; }
 
             var json = JsonConvert.SerializeObject(PacketProcessor.Instance.Glyphs,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
@@ -103,41 +118,56 @@ namespace DamageMeter.TeraDpsApi
 
         private void SendFightData(NpcEntity npc, string json, int retry = 3)
         {
-    
-          try
-          {
-            using (var client = new HttpClient())
+
+            try
             {
-                client.DefaultRequestHeaders.Add("X-Auth-Token", Token);
-                client.DefaultRequestHeaders.Add("X-Auth-Username", Username);
-                client.DefaultRequestHeaders.Add("X-Local-Time", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString());
-                client.Timeout = TimeSpan.FromSeconds(40);
-                var response = client.PostAsync(UploadUrl, new StringContent(json, Encoding.UTF8, "application/json"));
-                var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Result.Content.ReadAsStringAsync().Result);
-                if (responseObject.ContainsKey("id") && ((string)responseObject["id"]).StartsWith("http"))
+                using (var client = new HttpClient())
                 {
-                    if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd((string)responseObject["id"], npc);
-                }
-                else
-                {
-                    if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
-                        "!" + DateTime.UtcNow.Ticks + " " + (string)responseObject["message"] + " " + npc.Info.Name + " " + Guid, npc);
+                    client.DefaultRequestHeaders.Add("X-Auth-Token", Token);
+                    client.DefaultRequestHeaders.Add("X-Auth-Username", Username);
+                    client.DefaultRequestHeaders.Add("X-Local-Time", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString());
+                    client.Timeout = TimeSpan.FromSeconds(40);
+                    var response = client.PostAsync(UploadUrl, new StringContent(json, Encoding.UTF8, "application/json"));
+                    var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Result.Content.ReadAsStringAsync().Result);
+                    if (responseObject.ContainsKey("id") && ((string)responseObject["id"]).StartsWith("http"))
+                    {
+                        if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
+                            new UploadData
+                            {
+                                Success = true,
+                                Server = Data.HostName,
+                                Url = (string)responseObject["id"],
+                                Npc = npc.Info.Name,
+                                Time = DateTime.UtcNow
+                            }, npc);
+                    }
+                    else
+                    {
+                        if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
+                            new UploadData
+                            {
+                                Success = false,
+                                Time = DateTime.UtcNow,
+                                Message = (string)responseObject["message"],
+                                Npc = npc.Info.Name,
+                                Server = Data.HostName
+                            }, npc);
+                    }
                 }
             }
-          }
-          catch
-          {
+            catch
+            {
                 //Network issue or server respond with shitty value
                 //TODO logs
-                if(retry <= 1) { throw;}
+                if (retry <= 1) { throw; }
                 Thread.Sleep(10000);
-                SendFightData(npc,json, --retry);
-          }
+                SendFightData(npc, json, --retry);
+            }
         }
 
         public long FetchServerTime(NpcEntity entity)
         {
-            var serverTimeUrl = new Uri(HomeUrl+"api/shinra/servertime");
+            var serverTimeUrl = new Uri(HomeUrl + "api/shinra/servertime");
             try
             {
                 using (var client = new HttpClient())
@@ -167,11 +197,11 @@ namespace DamageMeter.TeraDpsApi
                     var response = client.GetAsync(AllowedAreaUrl);
                     var allwedAreaIdByServerString = response.Result.Content.ReadAsStringAsync().Result;
                     allowedAreaIdByServer = JsonConvert.DeserializeObject<List<AreaAllowed>>(allwedAreaIdByServerString);
-                    Debug.WriteLine("Allowed Area Id successfully retrieved for "+AllowedAreaUrl+" : "+ allwedAreaIdByServerString);
+                    Debug.WriteLine("Allowed Area Id successfully retrieved for " + AllowedAreaUrl + " : " + allwedAreaIdByServerString);
                 }
                 catch
                 {
-                    allowedAreaIdByServer = new List<AreaAllowed> (DefaultAreaAllowed);
+                    allowedAreaIdByServer = new List<AreaAllowed>(DefaultAreaAllowed);
                     Debug.WriteLine("Allowed Area Id retrieve failed for " + AllowedAreaUrl + " , using default values");
                     // TODO, display to error to a UI ?
                 }
@@ -185,7 +215,7 @@ namespace DamageMeter.TeraDpsApi
             _allowedAreaId.RemoveAll(x => BasicTeraData.Instance.WindowData.BlackListAreaId.Contains(x.AreaId));
         }
 
-        public Uri HomeUrl => UploadUrl==null ? null : new Uri(UploadUrl.GetLeftPart(UriPartial.Authority));
+        public Uri HomeUrl => UploadUrl == null ? null : new Uri(UploadUrl.GetLeftPart(UriPartial.Authority));
         private List<AreaAllowed> _allowedAreaId = new List<AreaAllowed>();
         public Guid Guid { get; private set; }
         public bool AnonymousUpload { get; private set; }

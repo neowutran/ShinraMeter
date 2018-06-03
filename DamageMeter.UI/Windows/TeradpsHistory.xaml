@@ -11,7 +11,7 @@
         <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
     <Window.Resources>
-        <Style TargetType="{x:Type ToolTip}">
+        <!--<Style TargetType="{x:Type ToolTip}">
             <Setter Property="Background" Value="#8F000000" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Foreground" Value="White" />
@@ -22,7 +22,7 @@
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
+        </Style>-->
         <Style x:Key="ShinraButtonStyle" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="Margin" Value="5" />

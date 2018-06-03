@@ -202,11 +202,11 @@ namespace DamageMeter
             if (stats == null) { return; }
             var sendThread = new Thread(() =>
             {
-                if (type.HasFlag(Dest.Site) && PacketProcessor.Instance.BossLink.Any(x => x.Value == entity && x.Key.StartsWith("!")))
+                if (type.HasFlag(Dest.Site) && PacketProcessor.Instance.BossLink.Any(x => x.Value == entity && !x.Key.Success))
                 {
-                    DpsServers.Where(x => PacketProcessor.Instance.BossLink.Where(y => y.Value == entity && y.Key.StartsWith("!"))
-                            .Select(y => y.Key.Substring(1, y.Key.IndexOf(" ", StringComparison.Ordinal) - 1))
-                            .Contains(x.Guid.ToString())).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
+                    DpsServers.Where(x => PacketProcessor.Instance.BossLink.Where(y => y.Value == entity && !y.Key.Success)
+                        .Select(y => y.Key.Server)
+                        .Contains(x.Data.HostName)).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
                 }
                 if (type.HasFlag(Dest.Excel))
                 {
