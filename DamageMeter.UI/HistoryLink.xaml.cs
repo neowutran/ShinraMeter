@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DamageMeter.TeraDpsApi;
 using Data;
 using Tera.Game;
 
@@ -13,15 +15,17 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class HistoryLink
     {
-        public HistoryLink(string link, NpcEntity boss)
+        public HistoryLink(UploadData link, NpcEntity boss)
         {
             InitializeComponent();
             Boss.Content = boss.Info.Name;
-            Boss.Tag = link;
-            if (link.StartsWith("!"))
+            Boss.Tag = link.Url;
+            var tt = new UploadTooltip(link);
+            var t = new ToolTip { Background = Brushes.Transparent, Padding = new Thickness(10, 10, 20, 20), BorderThickness = new Thickness(0), Content = tt };
+            Boss.ToolTip = t;
+            if (!link.Success)
             {
                 Boss.Foreground = Brushes.Red;
-                Boss.ToolTip = link;
                 return;
             }
             Link.Source = BasicTeraData.Instance.ImageDatabase.Link.Source;
