@@ -122,6 +122,7 @@
     <Compile Include="TeraDpsApi\Members.cs" />
     <Compile Include="TeraDpsApi\SkillLog.cs" />
     <Compile Include="Exporter\PacketsExporter.cs" />
+    <Compile Include="TeraDpsApi\UploadData.cs" />
     <Compile Include="TeraWindow.cs" />
     <Compile Include="PacketProcessor.cs" />
     <Compile Include="UiUpdateMessage.cs" />

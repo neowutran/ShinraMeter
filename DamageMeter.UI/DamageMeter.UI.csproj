@@ -152,6 +152,9 @@
     <Compile Include="SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UploadTooltip.xaml.cs">
+      <DependentUpon>UploadTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\PopupNotification.xaml.cs">
       <DependentUpon>PopupNotification.xaml</DependentUpon>
     </Compile>
@@ -285,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UploadTooltip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
