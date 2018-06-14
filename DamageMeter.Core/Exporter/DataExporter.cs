@@ -136,10 +136,10 @@ namespace DamageMeter
                     if (percentage == 0) { continue; }
                     teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(buff.Key.Id + "", percentage + ""));
                     var stacks = new List<List<int>> {new List<int> {0, (int) percentage}};
-                    var stackList = buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x);
+                    var stackList = buff.Value.Stacks(firstTick, lastTick);
                     teradpsUser.buffDetail.Add(new List<object> {buff.Key.Id, stacks});
                     if (stackList.Any() && stackList.Max() == 1) { continue; }
-                    foreach (var stack in buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x))
+                    foreach (var stack in stackList)
                     {
                         percentage = buff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
                         if (percentage == 0) { continue; }
@@ -176,9 +176,13 @@ namespace DamageMeter
                         skillLog.skillLowestCrit = skill.LowestCrit() + "";
                         skillLog.skillTotalDamage = skilldamage + "";
 
-
                         if (skilldamage == 0) { continue; }
                         teradpsUser.skillLog.Add(skillLog);
+                    }
+                    foreach (var cast in teradpsUser.skillCasts) {
+                        var skillLog = teradpsUser.skillLog.FirstOrDefault(x => x.skillId == cast[0].ToString());
+                        if (skillLog != null) skillLog.skillCasts = cast[1].ToString();
+                        else teradpsUser.skillLog.Add(new SkillLog {skillId = cast[0].ToString(),skillCasts = cast[1].ToString()});
                     }
                 }
                 if (PacketProcessor.Instance.MeterPlayers.Contains(user.Source)) { teradpsData.uploader = teradpsData.members.Count.ToString(); }

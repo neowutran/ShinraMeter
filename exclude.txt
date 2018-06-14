@@ -11,4 +11,5 @@
 \social\
 \sys_msg\
 \world_map\
+dungeons-def.xml
 .git
