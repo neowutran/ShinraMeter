@@ -147,15 +147,13 @@ namespace DamageMeter
                     }
                 }
 
-                var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Counter);
-                foreach (var skill in skillsId.OrderByDescending(x => x.Hits())) { teradpsUser.skillCasts.Add(new List<int> { skill.Skills.First().Key.Id, (int)skill.Hits() }); }
                 if (user.Amount > 0)
                 {
                     var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
                     extendedStats.PlayerSkills.Add(serverPlayerName, skills.GetSkillsDealt(user.Source.User, entity, timedEncounter));
                     extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
-                    skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
+                    var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
                     extendedStats.PlayerSkillsAggregated[teradpsUser.playerServer + "/" + teradpsUser.playerName] = skillsId;
 
                     foreach (var skill in skillsId.OrderByDescending(x => x.Amount()))
@@ -179,11 +177,14 @@ namespace DamageMeter
                         if (skilldamage == 0) { continue; }
                         teradpsUser.skillLog.Add(skillLog);
                     }
-                    foreach (var cast in teradpsUser.skillCasts) {
-                        var skillLog = teradpsUser.skillLog.FirstOrDefault(x => x.skillId == cast[0].ToString());
-                        if (skillLog != null) skillLog.skillCasts = cast[1].ToString();
-                        else teradpsUser.skillLog.Add(new SkillLog {skillId = cast[0].ToString(),skillCasts = cast[1].ToString()});
-                    }
+                }
+                var casts = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Counter);
+                foreach (var cast in casts.OrderByDescending(x => x.Hits()))
+                {
+                    var id = cast.Skills.First().Key.Id.ToString();
+                    var skillLog = teradpsUser.skillLog.FirstOrDefault(x => x.skillId == id);
+                    if (skillLog != null) skillLog.skillCasts = cast.Hits().ToString();
+                    else teradpsUser.skillLog.Add(new SkillLog { skillId = id, skillCasts = cast.Hits().ToString() });
                 }
                 if (PacketProcessor.Instance.MeterPlayers.Contains(user.Source)) { teradpsData.uploader = teradpsData.members.Count.ToString(); }
                 teradpsData.members.Add(teradpsUser);
