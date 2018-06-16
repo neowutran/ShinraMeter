@@ -37,7 +37,7 @@
                 </Grid>
             </Expander.Header>
             <Expander.Content>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="-1,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="-1,0,0,0">
                     <ItemsControl MouseLeftButtonDown="DragWindow" x:Name="SkillsDetailList"
                                   Background="Transparent" BorderThickness="0" Focusable="False"
                                   HorizontalContentAlignment="Stretch" VerticalAlignment="Top"

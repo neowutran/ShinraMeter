@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d">
     <Grid>
-        <ScrollViewer Name="ScrollViewer" VerticalScrollBarVisibility="Auto" MaxHeight="500">
+        <ScrollViewer Name="ScrollViewer" VerticalScrollBarVisibility="Visible" MaxHeight="500">
 
-            <ItemsControl ScrollViewer.CanContentScroll="True" PreviewMouseWheel="SkillsList_PreviewMouseWheel"
-                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+            <ItemsControl ScrollViewer.CanContentScroll="False" PreviewMouseWheel="SkillsList_PreviewMouseWheel"
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
                           MouseLeftButtonDown="DragWindow" x:Name="SkillsList"
                           Background="Transparent" BorderThickness="0" Focusable="False"
                           HorizontalContentAlignment="Stretch" VerticalAlignment="Top" IsTextSearchEnabled="False"

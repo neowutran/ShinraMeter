@@ -136,10 +136,10 @@ namespace DamageMeter
                     if (percentage == 0) { continue; }
                     teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(buff.Key.Id + "", percentage + ""));
                     var stacks = new List<List<int>> {new List<int> {0, (int) percentage}};
-                    var stackList = buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x);
+                    var stackList = buff.Value.Stacks(firstTick, lastTick);
                     teradpsUser.buffDetail.Add(new List<object> {buff.Key.Id, stacks});
                     if (stackList.Any() && stackList.Max() == 1) { continue; }
-                    foreach (var stack in buff.Value.Stacks(firstTick, lastTick).OrderBy(x => x))
+                    foreach (var stack in stackList)
                     {
                         percentage = buff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
                         if (percentage == 0) { continue; }
@@ -147,15 +147,13 @@ namespace DamageMeter
                     }
                 }
 
-                var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Counter);
-                foreach (var skill in skillsId.OrderByDescending(x => x.Hits())) { teradpsUser.skillCasts.Add(new List<int> { skill.Skills.First().Key.Id, (int)skill.Hits() }); }
                 if (user.Amount > 0)
                 {
                     var serverPlayerName = $"{teradpsUser.playerServer}_{teradpsUser.playerName}";
                     extendedStats.PlayerSkills.Add(serverPlayerName, skills.GetSkillsDealt(user.Source.User, entity, timedEncounter));
                     extendedStats.PlayerBuffs.Add(serverPlayerName, buffs);
 
-                    skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
+                    var skillsId = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Damage);
                     extendedStats.PlayerSkillsAggregated[teradpsUser.playerServer + "/" + teradpsUser.playerName] = skillsId;
 
                     foreach (var skill in skillsId.OrderByDescending(x => x.Amount()))
@@ -176,10 +174,17 @@ namespace DamageMeter
                         skillLog.skillLowestCrit = skill.LowestCrit() + "";
                         skillLog.skillTotalDamage = skilldamage + "";
 
-
                         if (skilldamage == 0) { continue; }
                         teradpsUser.skillLog.Add(skillLog);
                     }
+                }
+                var casts = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Counter);
+                foreach (var cast in casts.OrderByDescending(x => x.Hits()))
+                {
+                    var id = cast.Skills.First().Key.Id.ToString();
+                    var skillLog = teradpsUser.skillLog.FirstOrDefault(x => x.skillId == id);
+                    if (skillLog != null) skillLog.skillCasts = cast.Hits().ToString();
+                    else teradpsUser.skillLog.Add(new SkillLog { skillId = id, skillCasts = cast.Hits().ToString() });
                 }
                 if (PacketProcessor.Instance.MeterPlayers.Contains(user.Source)) { teradpsData.uploader = teradpsData.members.Count.ToString(); }
                 teradpsData.members.Add(teradpsUser);
@@ -202,11 +207,11 @@ namespace DamageMeter
             if (stats == null) { return; }
             var sendThread = new Thread(() =>
             {
-                if (type.HasFlag(Dest.Site) && PacketProcessor.Instance.BossLink.Any(x => x.Value == entity && x.Key.StartsWith("!")))
+                if (type.HasFlag(Dest.Site) && PacketProcessor.Instance.BossLink.Any(x => x.Value == entity && !x.Key.Success))
                 {
-                    DpsServers.Where(x => PacketProcessor.Instance.BossLink.Where(y => y.Value == entity && y.Key.StartsWith("!"))
-                            .Select(y => y.Key.Substring(1, y.Key.IndexOf(" ", StringComparison.Ordinal) - 1))
-                            .Contains(x.Guid.ToString())).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
+                    DpsServers.Where(x => PacketProcessor.Instance.BossLink.Where(y => y.Value == entity && !y.Key.Success)
+                        .Select(y => y.Key.Server)
+                        .Contains(x.Data.HostName)).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
                 }
                 if (type.HasFlag(Dest.Excel))
                 {

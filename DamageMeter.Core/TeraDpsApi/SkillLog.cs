@@ -8,6 +8,7 @@
         public string skillDamagePercent;
         public string skillHighestCrit;
         public string skillHits;
+        public string skillCasts;
         public string skillId;
         public string skillLowestCrit;
         public string skillTotalDamage;

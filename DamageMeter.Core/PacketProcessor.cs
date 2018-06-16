@@ -43,7 +43,7 @@ namespace DamageMeter
         private bool _keepAlive = true;
         private long _lastTick;
         internal AbnormalityTracker AbnormalityTracker;
-        public ConcurrentDictionary<string, NpcEntity> BossLink = new ConcurrentDictionary<string, NpcEntity>();
+        public ConcurrentDictionary<UploadData, NpcEntity> BossLink = new ConcurrentDictionary<UploadData, NpcEntity>();
         public GlyphBuild Glyphs = new GlyphBuild();
         internal MessageFactory MessageFactory = new MessageFactory();
         internal bool NeedInit = true;
