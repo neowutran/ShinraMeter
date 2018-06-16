@@ -5,6 +5,7 @@ using DamageMeter.Processing;
 using Data;
 using Tera.Game;
 using Tera.Game.Messages;
+using Tera.RichPresence;
 using C_CHECK_VERSION = Tera.Game.Messages.C_CHECK_VERSION;
 using S_CREST_INFO = Tera.Game.Messages.S_CREST_INFO;
 using C_LOGIN_ARBITER = Tera.Game.Messages.C_LOGIN_ARBITER;
@@ -42,7 +43,11 @@ namespace DamageMeter
             {typeof(S_AVAILABLE_EVENT_MATCHING_LIST), new Action<S_AVAILABLE_EVENT_MATCHING_LIST>(x => NotifyProcessor.Instance.UpdateCredits(x))},
             {typeof(S_UPDATE_NPCGUILD), new Action<S_UPDATE_NPCGUILD>(x => NotifyProcessor.Instance.UpdateCredits(x))},
             {typeof(S_BOSS_GAGE_INFO), new Action<S_BOSS_GAGE_INFO>(x => NotifyProcessor.Instance.S_BOSS_GAGE_INFO(x))}, //override with optional processing
-            {typeof(S_RETURN_TO_LOBBY), new Action<S_RETURN_TO_LOBBY>(x => NotifyProcessor.Instance.S_LOAD_TOPO(null))},
+            {typeof(S_RETURN_TO_LOBBY), new Action<S_RETURN_TO_LOBBY>(x =>
+            {
+                NotifyProcessor.Instance.S_LOAD_TOPO(null);
+                RichPresence.Instance.ReturnToLobby();
+            })},
             {typeof(S_LOAD_TOPO), new Action<S_LOAD_TOPO>(x => NotifyProcessor.Instance.S_LOAD_TOPO(x))},
             {typeof(S_CHAT), new Action<S_CHAT>(x => Chat.Instance.Add(x))},
             {typeof(S_WHISPER), new Action<S_WHISPER>(x => Chat.Instance.Add(x))},
@@ -68,6 +73,11 @@ namespace DamageMeter
 //            {typeof(Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT), new Action<Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT>(x=>NotifyProcessor.S_BEGIN_THROUGH_ARBITER_CONTRACT(x))}
         };
 
+        private static readonly Dictionary<Type, Delegate> MessageToRichPresence = new Dictionary<Type, Delegate>
+        {
+            {typeof(S_VISIT_NEW_SECTION), new Action<S_VISIT_NEW_SECTION>(x => RichPresence.Instance.VisitNewSection(x))}
+        };
+        
         private static readonly Dictionary<Type, Delegate> MainProcessor = new Dictionary<Type, Delegate>();
 
         public PacketProcessingFactory()
@@ -80,6 +90,7 @@ namespace DamageMeter
             MainProcessor.Clear();
             MessageToProcessingInit.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
             MessageToProcessing.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
+            MessageToRichPresence.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
             UpdateEntityTracker();
             UpdatePlayerTracker();
             UpdateAbnormalityTracker();

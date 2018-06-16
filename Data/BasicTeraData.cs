@@ -22,6 +22,8 @@ namespace Data
         private static string _region = "Unknown";
         private readonly Func<string, TeraData> _dataForRegion;
 
+       
+        
         private BasicTeraData() : this(FindResourceDirectory()) { }
 
         private BasicTeraData(string resourceDirectory)
@@ -34,7 +36,7 @@ namespace Data
             LP.Culture = WindowData.UILanguage != "Auto" ? CultureInfo.GetCultureInfo(WindowData.UILanguage) : CultureInfo.CurrentUICulture;
             EventsData = new EventsData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
-            Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));
+            Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "d"));
             //handle overrides
             var serversOverridePath = Path.Combine(ResourceDirectory, "config/server-overrides.txt");
             if (!File.Exists(serversOverridePath)) //create the default file if it doesn't exist
@@ -47,6 +49,9 @@ namespace Data
 
             ImageDatabase = new ImageDatabase(Path.Combine(ResourceDirectory, "img/"));
             Icons = new IconsDatabase(Path.Combine(ResourceDirectory, "data/"));
+            
+            // change later 
+            MapData = new MapData(this, "EU-EN");
         }
 
 
@@ -63,6 +68,7 @@ namespace Data
         public string ResourceDirectory { get; }
         public ServerDatabase Servers { get; }
         public IconsDatabase Icons { get; set; }
+        public MapData MapData { get; set; }
 
         private static IEnumerable<Server> GetServers(string filename)
         {
