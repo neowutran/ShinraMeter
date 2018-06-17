@@ -34,12 +34,29 @@ namespace Tera.RichPresence
 
         private string DefaultImage => _me.FullName == "Killian : Roukanken" ? "roukanken_default" : "tera_default";
         private Timestamps Timestamps => _bosses.Count > 0 ? new Timestamps{Start = _fightStarted} : null;
-        
+
+
+        private void HandlePartyChanged()
+        {
+            UpdatePresence();
+        }
+
+
+        private int PartySize => PacketProcessor.Instance.PlayerTracker.PartyList().Count;
+        private bool IsRaid => PacketProcessor.Instance.PlayerTracker.IsRaid;
+        private Party Party => PartySize <= 1 ? null: new Party
+        {
+            ID = "none",
+            Size = PartySize,
+            Max = IsRaid ? 30 : 5
+        };
         
         private DiscordRPC.RichPresence InGamePresence => new DiscordRPC.RichPresence
         {
-            State = GetFightName() != null ? $"Fighting {GetFightName()}" : null,
+            Details = GetFightName() != null ? $"Fighting {GetFightName()}" : "Idle",
+            State = PartySize <= 1 ? "Solo" : (IsRaid ? "In raid" : "In party"),
             Timestamps = Timestamps,
+            Party = Party,
             Assets = new Assets
             {
                 LargeImageKey = BasicTeraData.Instance.MapData.GetImageName(_location) ?? DefaultImage,
@@ -112,6 +129,7 @@ namespace Tera.RichPresence
         {
             _me = me;
             _isIngame = true;
+            PacketProcessor.Instance.PlayerTracker.PartyChangedEvent += HandlePartyChanged;
             UpdatePresence();
         }
         
