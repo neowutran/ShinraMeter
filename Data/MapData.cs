@@ -60,6 +60,7 @@ namespace Data
                 Worlds.Add(world.Id, world);
             }
             LoadNames(basicData, region);
+            LoadImages(basicData);
         }
 
 
@@ -88,6 +89,22 @@ namespace Data
 
         }
 
+        void LoadImages(BasicTeraData basicData)
+        {
+            string path = Path.Combine(basicData.ResourceDirectory, "data/section_images.tsv");
+            
+            var lines = File.ReadLines(path);
+            var listOfParts = lines.Select(s => s.Split('\t'));
+            foreach (var parts in listOfParts)
+            {
+                World world = Worlds[uint.Parse(parts[0])];
+                Guard guard = world.Guards[uint.Parse(parts[1])];
+                Section section = guard.Sections[uint.Parse(parts[2])];
+
+                section.ImageName = parts[3];
+            }
+        }
+
         public string GetMapId(uint w, uint g, uint s)
         {
             return Worlds[w].Guards[g].Sections[s].MapId;
@@ -95,14 +112,18 @@ namespace Data
 
         public string GetGuardName(Location loc)
         {
-            var guard = Worlds[loc.World].Guards[loc.Guard];
+            var guard = loc == null ? null : Worlds[loc.World]?.Guards[loc.Guard];
+            if (guard == null) { return null; }
+
             Names.TryGetValue(guard.NameId, out var name);
             return name;
         }
         
         public string GetSectionName(Location loc)
         {
-            var section = Worlds[loc.World].Guards[loc.Guard].Sections[loc.Section];
+            var section = loc == null ? null : Worlds[loc.World]?.Guards[loc.Guard]?.Sections[loc.Section];
+            if (section == null) { return null; }
+
             Names.TryGetValue(section.NameId, out var name);
             return name;
         }
@@ -121,7 +142,7 @@ namespace Data
 
         public string GetImageName(Location loc)
         {
-            return $"guard_{loc.Guard}";
+            return loc == null ? null : Worlds[loc.World]?.Guards[loc.Guard]?.Sections[loc.Section]?.ImageName;
         }
     }
 

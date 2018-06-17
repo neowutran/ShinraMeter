@@ -12,7 +12,7 @@ namespace Data
         public double Width { get; }
         public double Height { get; }
         public bool IsDungeon { get; }
-
+        public string ImageName { get; set; }
        
         public Section(uint sId, uint sNameId, string mapId, double top, double left, double width, double height, bool dg)
         {
@@ -24,6 +24,7 @@ namespace Data
             Width = width;
             Height = height;
             IsDungeon = dg;
+            ImageName = null;
         }
 
         public bool ContainsPoint(float x, float y)
@@ -33,5 +34,6 @@ namespace Data
 
             return matchesX && matchesY;
         }
+        
     }
 }

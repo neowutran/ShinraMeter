@@ -36,7 +36,7 @@ namespace Data
             LP.Culture = WindowData.UILanguage != "Auto" ? CultureInfo.GetCultureInfo(WindowData.UILanguage) : CultureInfo.CurrentUICulture;
             EventsData = new EventsData(this);
             _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
-            Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "d"));
+            Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));
             //handle overrides
             var serversOverridePath = Path.Combine(ResourceDirectory, "config/server-overrides.txt");
             if (!File.Exists(serversOverridePath)) //create the default file if it doesn't exist

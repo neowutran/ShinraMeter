@@ -17,6 +17,7 @@ using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
 using System.Diagnostics;
+using Tera.RichPresence;
 
 namespace DamageMeter
 {
@@ -93,6 +94,7 @@ namespace DamageMeter
                 BasicTeraData.Instance.WindowData.Save();
                 BasicTeraData.Instance.WindowData.Close();
                 BasicTeraData.Instance.HotkeysData.Save();
+                RichPresence.Instance.Deinitialize();
             }
             TeraSniffer.Instance.Enabled = false;
             _keepAlive = false;
@@ -119,6 +121,7 @@ namespace DamageMeter
             NeedInit = true;
             MessageFactory = new MessageFactory();
             NotifyProcessor.Instance.S_LOAD_TOPO(null);
+            RichPresence.Instance.HandleEndConnection();
             Connected?.Invoke(LP.SystemTray_No_server);
             OnGuildIconAction(null);
         }
@@ -128,6 +131,7 @@ namespace DamageMeter
             Server = server;
             NeedInit = true;
             MessageFactory = new MessageFactory();
+            RichPresence.Instance.HandleConnected(server);
             Connected?.Invoke(server.Name);
         }
 
@@ -379,6 +383,8 @@ namespace DamageMeter
                 {
                     //Unprocessed packet
                 }
+
+                RichPresence.Instance.Invoke();
             }
         }
 
