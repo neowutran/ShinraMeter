@@ -130,6 +130,7 @@ namespace Data
 
         public string GetFullName(Location loc)
         {
+            if (loc == null) return null;
             var guardName = GetGuardName(loc);
             var sectionName = GetSectionName(loc);
             
