@@ -76,7 +76,9 @@ namespace DamageMeter
 
         private static readonly Dictionary<Type, Delegate> MessageToRichPresence = new Dictionary<Type, Delegate>
         {
-            {typeof(S_VISIT_NEW_SECTION), new Action<S_VISIT_NEW_SECTION>(x => RichPresence.Instance.VisitNewSection(x))}
+            {typeof(S_VISIT_NEW_SECTION), new Action<S_VISIT_NEW_SECTION>(x => RichPresence.Instance.VisitNewSection(x))},
+            {typeof(S_SHOW_PARTY_MATCH_INFO), new Action<S_SHOW_PARTY_MATCH_INFO>(x => RichPresence.Instance.HandleShowLfg(x))},
+            {typeof(C_REGISTER_PARTY_INFO), new Action<C_REGISTER_PARTY_INFO>(x => RichPresence.Instance.HandlePostLfg(x))},
         };
         
         private static readonly Dictionary<Type, Delegate> MainProcessor = new Dictionary<Type, Delegate>();

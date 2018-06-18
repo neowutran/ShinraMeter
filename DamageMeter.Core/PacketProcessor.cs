@@ -94,7 +94,6 @@ namespace DamageMeter
                 BasicTeraData.Instance.WindowData.Save();
                 BasicTeraData.Instance.WindowData.Close();
                 BasicTeraData.Instance.HotkeysData.Save();
-                RichPresence.Instance.Deinitialize();
             }
             TeraSniffer.Instance.Enabled = false;
             _keepAlive = false;

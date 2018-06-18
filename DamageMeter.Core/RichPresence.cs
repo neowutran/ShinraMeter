@@ -13,6 +13,16 @@ using Tera.Game.Messages;
 
 namespace Tera.RichPresence
 {
+    enum State
+    {
+       Idle, Lfg, Fight 
+    }
+
+    enum PartyType
+    {
+        Solo, Party, Raid
+    }
+    
     public class RichPresence
     {
         private const string ClientId = "448196693964488715";
@@ -30,19 +40,36 @@ namespace Tera.RichPresence
 
         private List<NpcEntity> _bosses = new List<NpcEntity>();
         private DateTime? _fightStarted;
-        
+
+        private string _lfgMessage = null;
+        private DateTime? _lfgStarted = null;
+        private Party _lastParty;
 
         private string DefaultImage => _me.FullName == "Killian : Roukanken" ? "roukanken_default" : "tera_default";
-        private Timestamps Timestamps => _bosses.Count > 0 ? new Timestamps{Start = _fightStarted} : null;
+        
+        private State State => getState();
+        
+        private string Details => 
+            State == State.Idle ? "Idle" :
+            State == State.Fight ? $"Fighting {GetFightName()}" :
+            State == State.Lfg ? $"LFG | {_lfgMessage}" : null;
 
-
-        private void HandlePartyChanged()
-        {
-            UpdatePresence();
-        }
+        private Timestamps Timestamps =>
+            State == State.Fight ? new Timestamps {Start = _fightStarted} : 
+            State == State.Lfg ? new Timestamps { Start = _lfgStarted} : null;
 
 
         private int PartySize => PacketProcessor.Instance.PlayerTracker.PartyList().Count;
+        private PartyType PartyType => 
+            PartySize <= 1 ? PartyType.Party :
+            IsRaid ? PartyType.Raid : PartyType.Party;
+        
+        private string PartyStatus => 
+            PartyType == PartyType.Solo ? "Solo" :
+            PartyType == PartyType.Party ? "In party" :
+            PartyType == PartyType.Raid ? "In raid": null;
+        
+        
         private bool IsRaid => PacketProcessor.Instance.PlayerTracker.IsRaid;
         private Party Party => PartySize <= 1 ? null: new Party
         {
@@ -53,8 +80,8 @@ namespace Tera.RichPresence
         
         private DiscordRPC.RichPresence InGamePresence => new DiscordRPC.RichPresence
         {
-            Details = GetFightName() != null ? $"Fighting {GetFightName()}" : "Idle",
-            State = PartySize <= 1 ? "Solo" : (IsRaid ? "In raid" : "In party"),
+            Details = Details,
+            State = PartyStatus,
             Timestamps = Timestamps,
             Party = Party,
             Assets = new Assets
@@ -79,6 +106,15 @@ namespace Tera.RichPresence
         
         private DiscordRPC.RichPresence Presence => _isIngame ? InGamePresence : CharacterSelectPresence;
 
+        
+        private State getState()
+        {
+            if (_fightStarted != null) return State.Fight;
+            if (_lfgStarted != null) return State.Lfg;
+            
+            return State.Idle;
+        }
+        
         private string GetFightName()
         {
             if (_bosses.Count == 0) return null;
@@ -114,10 +150,12 @@ namespace Tera.RichPresence
             _location = null;
             _me = null;
             _isIngame = false;
-            _server = null;
             
             _bosses = new List<NpcEntity>();
             _fightStarted = null;
+
+            _lfgMessage = null;
+            _lfgStarted = null;
         }
         
         public void Deinitialize()
@@ -185,11 +223,47 @@ namespace Tera.RichPresence
             
         }
 
-        public void UserIdle()
+        public void HandleUserIdle()
         {
             _bosses = new List<NpcEntity>();
             _fightStarted = null;
             
+            UpdatePresence();
+        }
+
+        private void HandlePartyChanged()
+        {
+            // if guy left pt or pt is now full
+            if ((_lastParty != null && Party == null) || Party.Size == Party.Max)
+            {
+                _lfgMessage = null;
+                _lfgStarted = null;
+            }
+            
+            _lastParty = Party;
+            UpdatePresence();
+        }
+        
+        public void HandleShowLfg(S_SHOW_PARTY_MATCH_INFO sShowPartyMatchInfo)
+        {
+            try
+            {
+                var lfg = sShowPartyMatchInfo.Listings.First(listing => PacketProcessor.Instance.PlayerTracker.MyParty(_me.ServerId, listing.LeaderId));
+                _lfgMessage = lfg.Message;
+                _lfgStarted = _lfgStarted ?? DateTime.UtcNow;
+            }
+            catch (InvalidOperationException)
+            {
+                _lfgMessage = null;
+                _lfgStarted = null;
+            }
+            UpdatePresence();
+        }
+
+        public void HandlePostLfg(C_REGISTER_PARTY_INFO cRegisterPartyInfo)
+        {
+            _lfgMessage = cRegisterPartyInfo.Message;
+            _lfgStarted = _lfgStarted ?? DateTime.UtcNow;
             UpdatePresence();
         }
     }

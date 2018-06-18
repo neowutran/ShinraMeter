@@ -11,7 +11,7 @@ namespace DamageMeter.Processing
         {
             if (message.User != PacketProcessor.Instance.EntityTracker.MeterUser.Id) { return; }
 
-            if (message.Status == 0) RichPresence.Instance.UserIdle();
+            if (message.Status == 0) RichPresence.Instance.HandleUserIdle();
             
             if (BasicTeraData.Instance.WindowData.IdleResetTimeout <= 0) { return; }
             if (message.Status != 1) { DamageTracker.Instance.LastIdleStartTime = message.Time.Ticks; }
