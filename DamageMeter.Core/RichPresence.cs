@@ -316,7 +316,7 @@ namespace Tera.RichPresence
         private void HandlePartyChanged()
         {
             // if guy left pt or pt is now full
-            if ((_lastParty != null && Party == null) || Party.Size == Party.Max)
+            if ((_lastParty != null && Party == null) || (Party != null && Party.Size == Party.Max))
             {
                 _lfgMessage = null;
                 _lfgStarted = null;
