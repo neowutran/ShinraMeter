@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Documents;
 using DamageMeter;
 using Data;
 using DiscordRPC;
 using DiscordRPC.Message;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using Tera.Game;
 using Tera.Game.Messages;
 
@@ -15,7 +17,7 @@ namespace Tera.RichPresence
 {
     enum State
     {
-       Idle, Lfg, Fight 
+       Idle, Lfg, Fight, Matching
     }
 
     enum PartyType
@@ -29,7 +31,7 @@ namespace Tera.RichPresence
         private static RichPresence _instance;
 
         private DiscordRpcClient _client = null;
-        public DiscordRpcClient Client => _client ?? InitClient();
+        private DiscordRpcClient Client => _client ?? InitClient();
         
         public static RichPresence Instance => _instance ?? (_instance = new RichPresence());
 
@@ -39,36 +41,46 @@ namespace Tera.RichPresence
         private Server _server;
 
         private List<NpcEntity> _bosses = new List<NpcEntity>();
+        private Dictionary<EntityId, long> _bossHps = new Dictionary<EntityId, long>();
+
         private DateTime? _fightStarted;
 
         private string _lfgMessage = null;
         private DateTime? _lfgStarted = null;
         private Party _lastParty;
+        
+        private MatchingType _matchingType;
+        private DateTime? _matchingStarted;
 
         private string DefaultImage => _me.FullName == "Killian : Roukanken" ? "roukanken_default" : "tera_default";
         
         private State State => getState();
+
         
         private string Details => 
             State == State.Idle ? "Idle" :
-            State == State.Fight ? $"Fighting {GetFightName()}" :
-            State == State.Lfg ? $"LFG | {_lfgMessage}" : null;
+            State == State.Fight ? $"Fight | {GetFightName()} {FightHp()}" :
+            State == State.Lfg ? $"LFG | {_lfgMessage}" :
+            State == State.Matching ? $"In {_matchingType.ToString().ToLower()} matching" : null;
 
         private Timestamps Timestamps =>
             State == State.Fight ? new Timestamps {Start = _fightStarted} : 
-            State == State.Lfg ? new Timestamps { Start = _lfgStarted} : null;
+            State == State.Lfg ? new Timestamps {Start = _lfgStarted} : 
+            State == State.Matching ? new Timestamps {Start = _matchingStarted} : null;
 
 
         private int PartySize => PacketProcessor.Instance.PlayerTracker.PartyList().Count;
         private PartyType PartyType => 
-            PartySize <= 1 ? PartyType.Party :
+            PartySize <= 1 ? PartyType.Solo :
             IsRaid ? PartyType.Raid : PartyType.Party;
         
         private string PartyStatus => 
             PartyType == PartyType.Solo ? "Solo" :
             PartyType == PartyType.Party ? "In party" :
             PartyType == PartyType.Raid ? "In raid": null;
-        
+
+        private string AdditionalStatus => _matchingStarted == null ? null :
+            _matchingType == MatchingType.Dungeon ? " | IMS" : " | BG Queue";
         
         private bool IsRaid => PacketProcessor.Instance.PlayerTracker.IsRaid;
         private Party Party => PartySize <= 1 ? null: new Party
@@ -81,7 +93,7 @@ namespace Tera.RichPresence
         private DiscordRPC.RichPresence InGamePresence => new DiscordRPC.RichPresence
         {
             Details = Details,
-            State = PartyStatus,
+            State = $"{PartyStatus}{AdditionalStatus}",
             Timestamps = Timestamps,
             Party = Party,
             Assets = new Assets
@@ -111,7 +123,7 @@ namespace Tera.RichPresence
         {
             if (_fightStarted != null) return State.Fight;
             if (_lfgStarted != null) return State.Lfg;
-            
+            if (_matchingStarted != null) return State.Matching;
             return State.Idle;
         }
         
@@ -124,6 +136,34 @@ namespace Tera.RichPresence
 
             if (_bosses.All(boss => boss.Info.Name == firstName)) return firstName + "s";
             return "multiple BAMs";
+        }
+
+        private float GetFightHpPercent()
+        {
+            long totalMax = 1;
+            long totalNow = 0;
+            
+            foreach (var boss in _bosses)
+            {
+                var max = boss.Info.HP;
+                _bossHps.TryGetValue(boss.Id, out var now);
+
+                if (now < max && now > 0)
+                {
+                    totalMax += max;
+                    totalNow += now;
+                }
+            }
+            
+            return (float) totalNow / totalMax;
+        }
+
+        private string FightHp()
+        {
+            float hp = GetFightHpPercent();
+            if (hp < 0) return null;
+
+            return $"| {hp*100:n0}%";
         }
         
         private DiscordRpcClient InitClient()
@@ -161,6 +201,7 @@ namespace Tera.RichPresence
         public void Deinitialize()
         {
             Client.Dispose();
+            _client = null;
         }
 
         public void Login(Player me)
@@ -244,7 +285,8 @@ namespace Tera.RichPresence
             UpdatePresence();
         }
         
-        public void HandleShowLfg(S_SHOW_PARTY_MATCH_INFO sShowPartyMatchInfo)
+        // TODO: add LFG link packet processing for more precision (?)
+        public void HandleLfg(S_SHOW_PARTY_MATCH_INFO sShowPartyMatchInfo)
         {
             try
             {
@@ -260,10 +302,56 @@ namespace Tera.RichPresence
             UpdatePresence();
         }
 
-        public void HandlePostLfg(C_REGISTER_PARTY_INFO cRegisterPartyInfo)
+        public void HandleLfg(C_REGISTER_PARTY_INFO cRegisterPartyInfo)
         {
             _lfgMessage = cRegisterPartyInfo.Message;
             _lfgStarted = _lfgStarted ?? DateTime.UtcNow;
+            UpdatePresence();
+        }
+
+        public void HandleLfg(S_MY_PARTY_MATCH_INFO sShowPartyMatchInfo)
+        {
+            _lfgMessage = sShowPartyMatchInfo.Message;
+            _lfgStarted = _lfgStarted ?? DateTime.UtcNow;
+            UpdatePresence();
+        }
+        
+       
+        public void HandleBossHp(S_BOSS_GAGE_INFO message)
+        {
+            var bossHp = 0L;
+
+            if (message.HpRemaining < message.TotalHp)
+            {
+                bossHp = message.HpRemaining;
+            }
+
+            _bossHps[message.EntityId] = bossHp;
+            UpdatePresence();
+        }
+
+        public void HandleBossHp(SCreatureChangeHp message)
+        {
+            var bossHp = 0L;
+
+            if (message.HpRemaining < message.TotalHp)
+            {
+                bossHp = message.HpRemaining;
+            }
+
+            _bossHps[message.TargetId] = bossHp;
+            UpdatePresence();
+        }
+
+        public void HandleIms(S_CHANGE_EVENT_MATCHING_STATE message)
+        {
+            if (message.Searching)
+            {
+                _matchingStarted = _matchingStarted ?? DateTime.UtcNow;
+                _matchingType = message.Type;
+            }
+            else { _matchingStarted = null; }
+            
             UpdatePresence();
         }
     }

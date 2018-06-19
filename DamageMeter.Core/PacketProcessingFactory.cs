@@ -77,8 +77,10 @@ namespace DamageMeter
         private static readonly Dictionary<Type, Delegate> MessageToRichPresence = new Dictionary<Type, Delegate>
         {
             {typeof(S_VISIT_NEW_SECTION), new Action<S_VISIT_NEW_SECTION>(x => RichPresence.Instance.VisitNewSection(x))},
-            {typeof(S_SHOW_PARTY_MATCH_INFO), new Action<S_SHOW_PARTY_MATCH_INFO>(x => RichPresence.Instance.HandleShowLfg(x))},
-            {typeof(C_REGISTER_PARTY_INFO), new Action<C_REGISTER_PARTY_INFO>(x => RichPresence.Instance.HandlePostLfg(x))},
+            {typeof(S_SHOW_PARTY_MATCH_INFO), new Action<S_SHOW_PARTY_MATCH_INFO>(x => RichPresence.Instance.HandleLfg(x))},
+            {typeof(C_REGISTER_PARTY_INFO), new Action<C_REGISTER_PARTY_INFO>(x => RichPresence.Instance.HandleLfg(x))},
+            {typeof(S_MY_PARTY_MATCH_INFO), new Action<S_MY_PARTY_MATCH_INFO>(x => RichPresence.Instance.HandleLfg(x))},
+            {typeof(S_CHANGE_EVENT_MATCHING_STATE), new Action<S_CHANGE_EVENT_MATCHING_STATE>(x => RichPresence.Instance.HandleIms(x))},
         };
         
         private static readonly Dictionary<Type, Delegate> MainProcessor = new Dictionary<Type, Delegate>();
@@ -113,7 +115,11 @@ namespace DamageMeter
         {
             var entityTrackerProcessing = new Dictionary<Type, Delegate>
             {
-                {typeof(S_BOSS_GAGE_INFO), new Action<S_BOSS_GAGE_INFO>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
+                {typeof(S_BOSS_GAGE_INFO), new Action<S_BOSS_GAGE_INFO>(x =>
+                {
+                    PacketProcessor.Instance.EntityTracker.Update(x);
+                    RichPresence.Instance.HandleBossHp(x);
+                })},
                 {typeof(S_USER_LOCATION), new Action<S_USER_LOCATION>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(SNpcLocation), new Action<SNpcLocation>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(S_CREATURE_ROTATE), new Action<S_CREATURE_ROTATE>(x => PacketProcessor.Instance.EntityTracker.Update(x))},

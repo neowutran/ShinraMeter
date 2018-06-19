@@ -8,11 +8,14 @@ using Data.Actions.Notify;
 using Data.Actions.Notify.SoundElements;
 using Data.Events;
 using Data.Events.Abnormality;
+using DiscordRPC;
 using Lang;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Action = Data.Actions.Action;
+using EventType = Data.EventType;
+using RichPresence = Tera.RichPresence.RichPresence;
 
 namespace DamageMeter.Processing
 {
@@ -439,6 +442,7 @@ namespace DamageMeter.Processing
         internal void S_BOSS_GAGE_INFO(S_BOSS_GAGE_INFO message)
         {
             PacketProcessor.Instance.EntityTracker.Update(message);
+            RichPresence.Instance.HandleBossHp(message);
             HudManager.Instance.AddOrUpdateBoss(message);
             long newHp = 0;
             if (message.TotalHp != message.HpRemaining)
