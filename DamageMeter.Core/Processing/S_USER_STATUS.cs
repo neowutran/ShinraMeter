@@ -10,8 +10,6 @@ namespace DamageMeter.Processing
         internal static void Process(SUserStatus message)
         {
             if (message.User != PacketProcessor.Instance.EntityTracker.MeterUser.Id) { return; }
-
-            if (message.Status == 0) RichPresence.Instance.HandleUserIdle();
             
             if (BasicTeraData.Instance.WindowData.IdleResetTimeout <= 0) { return; }
             if (message.Status != 1) { DamageTracker.Instance.LastIdleStartTime = message.Time.Ticks; }

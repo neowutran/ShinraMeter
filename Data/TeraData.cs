@@ -19,6 +19,7 @@ namespace Data
             BasicTeraData.Instance.SkillDatabase = new SkillDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
             BasicTeraData.Instance.HotDotDatabase = new HotDotDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
             //BasicTeraData.Instance.QuestInfoDatabase = new QuestInfoDatabase(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "data/"), language);
+            BasicTeraData.Instance.MapData = new MapData(BasicTeraData.Instance, language);
         }
 
         //public OpCodeNamer OpCodeNamer { get; private set; }

@@ -51,7 +51,7 @@ namespace Data
             Icons = new IconsDatabase(Path.Combine(ResourceDirectory, "data/"));
             
             // change later 
-            MapData = new MapData(this, "EU-EN");
+            ;
         }
 
 
