@@ -138,7 +138,7 @@ namespace Data
             
             if (sectionName.StartsWith(guardName)) sectionName = sectionName.Substring(guardName.Length);
 
-            return $"{guardName} - {sectionName}";
+            return sectionName == "" ? guardName : $"{guardName} - {sectionName}";
         }
 
         public string GetImageName(Location loc)
