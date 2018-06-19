@@ -350,13 +350,6 @@ namespace Tera.RichPresence
             UpdatePresence();
         }
 
-        public void HandleLfg(S_MY_PARTY_MATCH_INFO sShowPartyMatchInfo)
-        {
-            _lfgMessage = sShowPartyMatchInfo.Message;
-            _lfgStarted = _lfgStarted ?? DateTime.UtcNow;
-            UpdatePresence();
-        }
-        
        
         public void HandleBossHp(S_BOSS_GAGE_INFO message)
         {

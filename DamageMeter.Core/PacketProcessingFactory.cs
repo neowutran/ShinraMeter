@@ -79,7 +79,6 @@ namespace DamageMeter
             {typeof(S_VISIT_NEW_SECTION), new Action<S_VISIT_NEW_SECTION>(x => RichPresence.Instance.VisitNewSection(x))},
             {typeof(S_SHOW_PARTY_MATCH_INFO), new Action<S_SHOW_PARTY_MATCH_INFO>(x => RichPresence.Instance.HandleLfg(x))},
             {typeof(C_REGISTER_PARTY_INFO), new Action<C_REGISTER_PARTY_INFO>(x => RichPresence.Instance.HandleLfg(x))},
-            {typeof(S_MY_PARTY_MATCH_INFO), new Action<S_MY_PARTY_MATCH_INFO>(x => RichPresence.Instance.HandleLfg(x))},
             {typeof(S_CHANGE_EVENT_MATCHING_STATE), new Action<S_CHANGE_EVENT_MATCHING_STATE>(x => RichPresence.Instance.HandleIms(x))},
         };
         
