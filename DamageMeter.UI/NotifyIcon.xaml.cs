@@ -13,6 +13,7 @@ using Lang;
 using System.Windows.Media.Animation;
 using System.Collections.Generic;
 using DamageMeter.Sniffing;
+using Tera.RichPresence;
 
 namespace DamageMeter.UI
 {
@@ -95,6 +96,12 @@ namespace DamageMeter.UI
             //RankSitesIcon.Source = BasicTeraData.Instance.ImageDatabase.Cloud.Source;
             //MoongourdIcon.Source = BasicTeraData.Instance.ImageDatabase.Moongourd.Source;
             //TeralogsIcon.Source = BasicTeraData.Instance.ImageDatabase.Teralogs.Source;
+            
+            RpEnabled.Status = BasicTeraData.Instance.WindowData.EnableRichPresence;
+            RichPresenceShowLocation.Status = BasicTeraData.Instance.WindowData.RichPresenceShowLocation;
+            RichPresenceShowCharacter.Status = BasicTeraData.Instance.WindowData.RichPresenceShowCharacter;
+            RichPresenceShowStatus.Status = BasicTeraData.Instance.WindowData.RichPresenceShowStatus;
+            RichPresenceShowParty.Status = BasicTeraData.Instance.WindowData.RichPresenceShowParty;
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -540,5 +547,67 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro = false;
 
         }
+        
+        private void EnableRp(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.EnableRichPresence = true;
+            RichPresence.Instance.Update();
+        }
+
+        private void DisableRp(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.EnableChat = false;
+            RichPresence.Instance.Deinitialize();
+        }
+        
+        private void RichPresenceShowLocationEnable(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RichPresenceShowLocation = true;
+            RichPresence.Instance.Update();
+        }
+            
+        private void RichPresenceShowLocationDisable(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RichPresenceShowLocation = false;
+            RichPresence.Instance.Update();
+        }
+            
+        private void RichPresenceShowCharacterEnable(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RichPresenceShowCharacter = true;
+            RichPresence.Instance.Update();
+        }
+            
+        private void RichPresenceShowCharacterDisable(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RichPresenceShowCharacter = false;
+            RichPresence.Instance.Update();
+        }
+            
+        private void RichPresenceShowStatusEnable(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RichPresenceShowStatus = true;
+            RichPresence.Instance.Update();
+        }
+            
+        private void RichPresenceShowStatusDisable(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RichPresenceShowStatus = false;
+            RichPresence.Instance.Update();
+        }
+            
+        private void RichPresenceShowPartyEnable(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RichPresenceShowParty = true;
+            RichPresence.Instance.Update();
+        }
+            
+        private void RichPresenceShowPartyDisable(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RichPresenceShowParty = false;
+            RichPresence.Instance.Update();
+        }
+            
+        
     }
 }

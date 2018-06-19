@@ -19,7 +19,7 @@ namespace Lang {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class LP {
@@ -601,6 +601,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable discord&apos;s Rich Presence.
+        /// </summary>
+        public static string EnableRp {
+            get {
+                return ResourceManager.GetString("EnableRp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enrage.
         /// </summary>
         public static string Enrage {
@@ -623,7 +632,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;7017 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_archer {
             get {
@@ -645,7 +654,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;7017 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_berserker {
             get {
@@ -667,7 +676,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;7017 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_brawler {
             get {
@@ -690,7 +699,7 @@ namespace Lang {
         ///	&lt;/common_afk&gt;
         ///	
         ///	&lt;!-- The boss became enraged --&gt;
-        ///	&lt;abnormality i [rest of string was truncated]&quot;;.
+        ///	&lt;abnormality ingame=&quot;true&quot; t [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_common {
             get {
@@ -712,7 +721,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;7017 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_gunner {
             get {
@@ -735,7 +744,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_lancer {
             get {
@@ -757,7 +766,7 @@ namespace Lang {
         ///		&lt;/abnormalities&gt;
         ///		&lt;actions&gt;
         ///			&lt;notify&gt;
-        ///				&lt;balloon title_text=&quot;{abnormality [rest of string was truncated]&quot;;.
+        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_mystic {
             get {
@@ -776,7 +785,7 @@ namespace Lang {
         ///		&lt;actions&gt;
         ///			&lt;notify&gt;
         ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;3000&quot; /&gt;
-        ///				&lt;text_to_speech text=&quot;{abnormality_name}&quot; voice_gender=&quot;Female&quot; voic [rest of string was truncated]&quot;;.
+        ///				&lt;text_to_speech text=&quot;{abnormality_name}&quot; voice_gender=&quot;Female&quot; voice_age=&quot;Adu [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_ninja {
             get {
@@ -797,7 +806,7 @@ namespace Lang {
         ///		&lt;actions&gt;
         ///			&lt;notify&gt;
         ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{player_name} {time_left}&quot; display_time=&quot;3000&quot; /&gt;
-        ///				&lt;text_ [rest of string was truncated]&quot;;.
+        ///				&lt;text_to_speech te [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_priest {
             get {
@@ -819,7 +828,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;7017 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_reaper {
             get {
@@ -841,7 +850,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;7017 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_slayer {
             get {
@@ -863,7 +872,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;7017 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_sorcerer {
             get {
@@ -885,7 +894,7 @@ namespace Lang {
         ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
         ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;7017 [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_valkyrie {
             get {
@@ -904,7 +913,8 @@ namespace Lang {
         ///		&lt;actions&gt;
         ///			&lt;notify&gt;
         ///				&lt;balloon title_text=&quot;{abnormality_name} : off&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;3000&quot; /&gt;
-        ///				&lt;text_to_speech text=&quot;{abnormality_name}: off&quot; voice_gender=&quot;Female&quot; voice_age=&quot;Adult&quot; voice_position=&quot;0&quot; volume=&quot;30&quot; rate=&quot;0 [rest of string was truncated]&quot;;.
+        ///				&lt;text_to_speech text=&quot;{abnormality_name}: off&quot; voice_gender=&quot;Female&quot; voice_age=&quot;Adult&quot; voice_position=&quot;0&quot; volume=&quot;30&quot; rate=&quot;0&quot;/&gt;
+        ///			&lt;/n [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_warrior {
             get {
@@ -1431,6 +1441,42 @@ namespace Lang {
         public static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show character.
+        /// </summary>
+        public static string RichPresenceShowCharacter {
+            get {
+                return ResourceManager.GetString("RichPresenceShowCharacter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show location.
+        /// </summary>
+        public static string RichPresenceShowLocation {
+            get {
+                return ResourceManager.GetString("RichPresenceShowLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show party.
+        /// </summary>
+        public static string RichPresenceShowParty {
+            get {
+                return ResourceManager.GetString("RichPresenceShowParty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show status.
+        /// </summary>
+        public static string RichPresenceShowStatus {
+            get {
+                return ResourceManager.GetString("RichPresenceShowStatus", resourceCulture);
             }
         }
         

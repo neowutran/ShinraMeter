@@ -56,14 +56,21 @@ namespace Tera.RichPresence
         
         private State State => getState();
 
+        private bool ShowCharacter => BasicTeraData.Instance.WindowData.RichPresenceShowCharacter;
+        private bool ShowLocation => BasicTeraData.Instance.WindowData.RichPresenceShowLocation;
+        private bool ShowStatus => BasicTeraData.Instance.WindowData.RichPresenceShowStatus;
+        private bool ShowParty => BasicTeraData.Instance.WindowData.RichPresenceShowParty;
+        
         
         private string Details => 
+            !ShowStatus ? "Playing" :
             State == State.Idle ? "Idle" :
             State == State.Fight ? $"Fight | {GetFightName()} {FightHp()}" :
             State == State.Lfg ? $"LFG | {_lfgMessage}" :
             State == State.Matching ? $"In {_matchingType.ToString().ToLower()} matching" : null;
 
         private Timestamps Timestamps =>
+            !ShowStatus ? null :
             State == State.Fight ? new Timestamps {Start = _fightStarted} : 
             State == State.Lfg ? new Timestamps {Start = _lfgStarted} : 
             State == State.Matching ? new Timestamps {Start = _matchingStarted} : null;
@@ -75,20 +82,25 @@ namespace Tera.RichPresence
             IsRaid ? PartyType.Raid : PartyType.Party;
         
         private string PartyStatus => 
+            !ShowParty ? null :
             PartyType == PartyType.Solo ? "Solo" :
             PartyType == PartyType.Party ? "In party" :
             PartyType == PartyType.Raid ? "In raid": null;
 
-        private string AdditionalStatus => _matchingStarted == null ? null :
+        private string AdditionalStatus => 
+            !ShowStatus ? null : 
+            _matchingStarted == null ? null :
             _matchingType == MatchingType.Dungeon ? " | IMS" : " | BG Queue";
         
         private bool IsRaid => PacketProcessor.Instance.PlayerTracker.IsRaid;
-        private Party Party => PartySize <= 1 ? null: new Party
-        {
-            ID = "none",
-            Size = PartySize,
-            Max = IsRaid ? 30 : 5
-        };
+        private Party Party => 
+            !ShowParty ? null : 
+            PartySize <= 1 ? null: new Party
+            {
+                ID = "none",
+                Size = PartySize,
+                Max = IsRaid ? 30 : 5
+            };
         
         private DiscordRPC.RichPresence InGamePresence => new DiscordRPC.RichPresence
         {
@@ -98,25 +110,27 @@ namespace Tera.RichPresence
             Party = Party,
             Assets = new Assets
             {
-                LargeImageKey = BasicTeraData.Instance.MapData.GetImageName(_location) ?? DefaultImage,
-                LargeImageText = _location == null ? null : BasicTeraData.Instance.MapData.GetFullName(_location),
-                SmallImageKey = "class_" + _me.RaceGenderClass.Class.ToString().ToLower(), 
-                SmallImageText = $"Lvl {_me.Level} {_me.Name} ({_me.Server})"
+                LargeImageKey = (ShowLocation ? BasicTeraData.Instance.MapData.GetImageName(_location) : null) ?? DefaultImage,
+                LargeImageText = _location == null || !ShowLocation ? null : BasicTeraData.Instance.MapData.GetFullName(_location),
+                SmallImageKey = ShowCharacter ? $"class_{_me.RaceGenderClass.Class.ToString().ToLower()}" : null, 
+                SmallImageText = ShowCharacter ? $"Lvl {_me.Level} {_me.Name} ({_me.Server})" : null,
             }
 
         };
 
         private DiscordRPC.RichPresence CharacterSelectPresence => new DiscordRPC.RichPresence
         {
-            Details = "Character selection",
-            State = $"{_server.Name}",
+            Details = ShowStatus ? "Character selection" : "Playing",
+            State = ShowCharacter ? $"{_server.Name}" : null,
             Assets = new Assets
             {
                 LargeImageKey = "tera_default",
             }
         };
         
-        private DiscordRPC.RichPresence Presence => _isIngame ? InGamePresence : CharacterSelectPresence;
+        private DiscordRPC.RichPresence Presence => 
+            _isIngame ? InGamePresence : 
+            _server != null ? CharacterSelectPresence : null;
 
         
         private State getState()
@@ -176,6 +190,8 @@ namespace Tera.RichPresence
         
         private void UpdatePresence(DiscordRPC.RichPresence presence = null)
         {
+            if (!BasicTeraData.Instance.WindowData.EnableRichPresence) return;
+            
             presence = presence ?? Presence;
             Client.SetPresence(presence);
         }
@@ -352,6 +368,11 @@ namespace Tera.RichPresence
             }
             else { _matchingStarted = null; }
             
+            UpdatePresence();
+        }
+
+        public void Update()
+        {
             UpdatePresence();
         }
     }

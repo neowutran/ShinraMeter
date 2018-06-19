@@ -717,5 +717,20 @@ Reset and paused until map change or relog.</value>
   </data>
   <data name="Time_sync_error" xml:space="preserve">
     <value>Time sync error</value>
+  </data>  
+  <data name="EnableRp" xml:space="preserve">
+    <value>Enable discord's Rich Presence</value>
+  </data>
+  <data name="RichPresenceShowLocation" xml:space="preserve">
+    <value>Show location</value>
+  </data>
+  <data name="RichPresenceShowCharacter" xml:space="preserve">
+    <value>Show character</value>
+  </data>
+  <data name="RichPresenceShowStatus" xml:space="preserve">
+    <value>Show status</value>
+  </data>
+  <data name="RichPresenceShowParty" xml:space="preserve">
+    <value>Show party</value>
   </data>
 </root>

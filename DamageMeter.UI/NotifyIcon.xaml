@@ -605,6 +605,52 @@
                                             </StackPanel>
                                         </Grid>
 
+                                        <!-- Rich presence settings card -->
+                                        <Grid Margin="10,10,10,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Rich presence settings" />
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.EnableRp}"
+                                                                    x:Name="RpEnabled" On="EnableRp" Off="DisableRp" />
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.RichPresenceShowLocation}"
+                                                                    x:Name="RichPresenceShowLocation" On="RichPresenceShowLocationEnable"
+                                                                    Off="RichPresenceShowLocationDisable" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.RichPresenceShowCharacter}"
+                                                                    x:Name="RichPresenceShowCharacter" On="RichPresenceShowCharacterEnable"
+                                                                    Off="RichPresenceShowCharacterDisable" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.RichPresenceShowStatus}"
+                                                                    x:Name="RichPresenceShowStatus" On="RichPresenceShowStatusEnable"
+                                                                    Off="RichPresenceShowStatusDisable" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+                                                <ui:MaterialSwitch  Content="{x:Static l:LP.RichPresenceShowParty}"
+                                                                    x:Name="RichPresenceShowParty" On="RichPresenceShowPartyEnable"
+                                                                    Off="RichPresenceShowPartyDisable" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
+
+                                            </StackPanel>
+                                        </Grid>
+                                        
                                         <!--Color settings card-->
                                         <Grid Margin="10,10,10,10">
                                             <Grid.Resources>
@@ -781,6 +827,8 @@
                                             </UniformGrid>
                                         </Grid>
 
+                                        
+                                        
                                     </StackPanel>
                                 </ScrollViewer>
                             </Grid>
