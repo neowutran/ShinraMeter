@@ -50,7 +50,7 @@ namespace Tera.RichPresence
         private DateTime? _lfgStarted = null;
         private Party _lastParty;
         
-        private MatchingType _matchingType;
+        private MatchingType? _matchingType;
         private DateTime? _matchingStarted;
 
         // ;)
@@ -209,19 +209,23 @@ namespace Tera.RichPresence
         public void Initialize()
         {
             _location = null;
-            _me = null;
-            _isIngame = false;
             
             _bosses = new List<NpcEntity>();
+            _bossHps = new Dictionary<EntityId, long>();
             _fightStarted = null;
 
             _lfgMessage = null;
             _lfgStarted = null;
+
+            _matchingStarted = null;
+            _matchingType = null;
         }
         
         public void Deinitialize()
         {
-            Client.Dispose();
+            if (_client == null) { return; }
+
+            _client.Dispose();
             _client = null;
         }
 
@@ -236,6 +240,8 @@ namespace Tera.RichPresence
         public void HandleConnected(Server server)
         {
             Initialize();
+            _me = null;
+            _isIngame = false;
             _server = server;
             UpdatePresence();
         }
@@ -255,6 +261,8 @@ namespace Tera.RichPresence
         public void ReturnToLobby()
         {
             Initialize();
+            _me = null;
+            _isIngame = false;
             UpdatePresence();
         }
 
@@ -265,10 +273,30 @@ namespace Tera.RichPresence
             if (boss == null) return;
             
             _bosses.Remove(boss);
+            _bossHps.Remove(boss.Id);
             if (_bosses.Count == 0) _fightStarted = null;
             
             UpdatePresence();
         }
+        
+        public void S_LOAD_TOPO(S_LOAD_TOPO message)
+        {
+            Initialize();
+            UpdatePresence();
+        }
+
+        public void HadleNpcOccupierInfo(SNpcOccupierInfo message)
+        {
+            if (!message.HasReset) { return; }
+
+            _bosses.RemoveAll(boss => boss.Id == message.NPC);
+            _bossHps.Remove(message.NPC);
+
+            if (_bosses.Count == 0) { _fightStarted = null; }
+            
+            UpdatePresence();
+        }
+        
 
         public void EachSkillResult(SkillResult skillResult)
         {
@@ -283,18 +311,6 @@ namespace Tera.RichPresence
                 UpdatePresence();
             }
             
-        }
-
-        public void HandleUserIdle()
-        {
-            _bosses = new List<NpcEntity>();
-            _fightStarted = null;
-            
-            // _bosses = _bosses.FindAll(boss => _bossHps.ContainsKey(boss.Id) && _bossHps[boss.Id] != boss.Info.HP);
-            // _fightStarted = _bosses.Count == 0 ? null : _fightStarted;
-
-            
-            UpdatePresence();
         }
 
         private void HandlePartyChanged()
@@ -365,6 +381,7 @@ namespace Tera.RichPresence
             }
 
             _bossHps[message.TargetId] = bossHp;
+            
             UpdatePresence();
         }
 

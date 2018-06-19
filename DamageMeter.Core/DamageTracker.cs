@@ -24,6 +24,7 @@ namespace DamageMeter
         public void UpdateEntities(SNpcOccupierInfo npcOccupierResult)
         {
             PacketProcessor.Instance.AbnormalityTracker.Update(npcOccupierResult);
+            RichPresence.Instance.HadleNpcOccupierInfo(npcOccupierResult);
             if (!npcOccupierResult.HasReset) {
                 Debug.WriteLine("S_NPC_OCCUPIER_INFO: NPC = " + npcOccupierResult.NPC + "; target = " + npcOccupierResult.Target + " ; Engager = "+npcOccupierResult.Engager);
                 return;

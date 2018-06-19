@@ -466,6 +466,7 @@ namespace DamageMeter.Processing
         internal void S_LOAD_TOPO(S_LOAD_TOPO message)
         {
             HudManager.Instance.CurrentBosses.DisposeAll();
+            RichPresence.Instance.S_LOAD_TOPO(message);
             _lastBosses = new Dictionary<EntityId, long>();
             _lastBossMeterUser = null;
             _lastBossHpMeterUser = 0;

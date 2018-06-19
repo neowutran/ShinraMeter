@@ -99,6 +99,7 @@ namespace DamageMeter
             _keepAlive = false;
             Thread.Sleep(500);
             HudManager.Instance.CurrentBosses.DisposeAll();
+            RichPresence.Instance.Deinitialize();
             Application.Exit();
         }
 

@@ -775,4 +775,5 @@ Reset and paused until map change or relog.</value>
   <data name="RpMultipleEnemies" xml:space="preserve">
     <value>Various</value>
   </data>
+  
 </root>
