@@ -9,6 +9,7 @@ using DamageMeter;
 using Data;
 using DiscordRPC;
 using DiscordRPC.Message;
+using Lang;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using Tera.Game;
 using Tera.Game.Messages;
@@ -52,7 +53,8 @@ namespace Tera.RichPresence
         private MatchingType _matchingType;
         private DateTime? _matchingStarted;
 
-        private string DefaultImage => _me.FullName == "Killian : Roukanken" ? "roukanken_default" : "tera_default";
+        // ;)
+        private string DefaultImage => "tera_default";
         
         private State State => getState();
 
@@ -63,11 +65,14 @@ namespace Tera.RichPresence
         
         
         private string Details => 
-            !ShowStatus ? "Playing" :
-            State == State.Idle ? "Idle" :
-            State == State.Fight ? $"Fight | {GetFightName()} {FightHp()}" :
-            State == State.Lfg ? $"LFG | {_lfgMessage}" :
-            State == State.Matching ? $"In {_matchingType.ToString().ToLower()} matching" : null;
+            !ShowStatus ? LP.RpStatusPlaying:
+            State == State.Idle ? LP.RpStatusIdle :
+            State == State.Fight ? $"{LP.RpStatusFight} | {GetFightName()} {FightHp()}" :
+            State == State.Lfg ? $"{LP.RpStatusLfg} | {_lfgMessage}" :
+            State == State.Matching ? 
+                (_matchingType == MatchingType.Dungeon ? LP.RpStatusDungeonMatch: 
+                _matchingType == MatchingType.Battleground ? LP.RpStatusBattlegroundMatch : null)
+            : null;
 
         private Timestamps Timestamps =>
             !ShowStatus ? null :
@@ -83,21 +88,21 @@ namespace Tera.RichPresence
         
         private string PartyStatus => 
             !ShowParty ? null :
-            PartyType == PartyType.Solo ? "Solo" :
-            PartyType == PartyType.Party ? "In party" :
-            PartyType == PartyType.Raid ? "In raid": null;
+            PartyType == PartyType.Solo ? LP.RpPartySolo :
+            PartyType == PartyType.Party ? LP.RpPartyParty :
+            PartyType == PartyType.Raid ? LP.RpPartyRaid : null;
 
         private string AdditionalStatus => 
             !ShowStatus ? null : 
             _matchingStarted == null ? null :
-            _matchingType == MatchingType.Dungeon ? " | IMS" : " | BG Queue";
+            _matchingType == MatchingType.Dungeon ? $" | {LP.RpPartyQueue}" : $" | {LP.RpPartyBg}";
         
         private bool IsRaid => PacketProcessor.Instance.PlayerTracker.IsRaid;
         private Party Party => 
             !ShowParty ? null : 
             PartySize <= 1 ? null: new Party
             {
-                ID = "none",
+                ID = "none",        // crashes otherwise
                 Size = PartySize,
                 Max = IsRaid ? 30 : 5
             };
@@ -113,18 +118,18 @@ namespace Tera.RichPresence
                 LargeImageKey = (ShowLocation ? BasicTeraData.Instance.MapData.GetImageName(_location) : null) ?? DefaultImage,
                 LargeImageText = _location == null || !ShowLocation ? null : BasicTeraData.Instance.MapData.GetFullName(_location),
                 SmallImageKey = ShowCharacter ? $"class_{_me.RaceGenderClass.Class.ToString().ToLower()}" : null, 
-                SmallImageText = ShowCharacter ? $"Lvl {_me.Level} {_me.Name} ({_me.Server})" : null,
+                SmallImageText = ShowCharacter ? $"{LP.RpLevel} {_me.Level} {_me.Name} ({_me.Server})" : null,
             }
-
+        
         };
 
         private DiscordRPC.RichPresence CharacterSelectPresence => new DiscordRPC.RichPresence
         {
-            Details = ShowStatus ? "Character selection" : "Playing",
+            Details = ShowStatus ? LP.RpStatusCharSelect : LP.RpStatusPlaying,
             State = ShowCharacter ? $"{_server.Name}" : null,
             Assets = new Assets
             {
-                LargeImageKey = "tera_default",
+                LargeImageKey = DefaultImage,
             }
         };
         
@@ -147,9 +152,9 @@ namespace Tera.RichPresence
             
             string firstName = _bosses[0].Info.Name;
             if (_bosses.Count == 1) return firstName;
-
-            if (_bosses.All(boss => boss.Info.Name == firstName)) return firstName + "s";
-            return "multiple BAMs";
+            if (_bosses.All(boss => boss.Info.Name == firstName)) return firstName;
+            
+            return LP.RpMultipleEnemies;
         }
 
         private float GetFightHpPercent()
@@ -285,6 +290,10 @@ namespace Tera.RichPresence
             _bosses = new List<NpcEntity>();
             _fightStarted = null;
             
+            // _bosses = _bosses.FindAll(boss => _bossHps.ContainsKey(boss.Id) && _bossHps[boss.Id] != boss.Info.HP);
+            // _fightStarted = _bosses.Count == 0 ? null : _fightStarted;
+
+            
             UpdatePresence();
         }
 
@@ -301,7 +310,7 @@ namespace Tera.RichPresence
             UpdatePresence();
         }
         
-        // TODO: add LFG link packet processing for more precision (?)
+        // TODO: add LFG link packet processing for more precision
         public void HandleLfg(S_SHOW_PARTY_MATCH_INFO sShowPartyMatchInfo)
         {
             try

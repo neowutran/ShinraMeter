@@ -1481,6 +1481,132 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lvl.
+        /// </summary>
+        public static string RpLevel {
+            get {
+                return ResourceManager.GetString("RpLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Various.
+        /// </summary>
+        public static string RpMultipleEnemies {
+            get {
+                return ResourceManager.GetString("RpMultipleEnemies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BG Queue.
+        /// </summary>
+        public static string RpPartyBg {
+            get {
+                return ResourceManager.GetString("RpPartyBg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In party.
+        /// </summary>
+        public static string RpPartyParty {
+            get {
+                return ResourceManager.GetString("RpPartyParty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IMS.
+        /// </summary>
+        public static string RpPartyQueue {
+            get {
+                return ResourceManager.GetString("RpPartyQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In raid.
+        /// </summary>
+        public static string RpPartyRaid {
+            get {
+                return ResourceManager.GetString("RpPartyRaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Solo.
+        /// </summary>
+        public static string RpPartySolo {
+            get {
+                return ResourceManager.GetString("RpPartySolo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In battleground matching.
+        /// </summary>
+        public static string RpStatusBattlegroundMatch {
+            get {
+                return ResourceManager.GetString("RpStatusBattlegroundMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Character selection.
+        /// </summary>
+        public static string RpStatusCharSelect {
+            get {
+                return ResourceManager.GetString("RpStatusCharSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In dungeon matching.
+        /// </summary>
+        public static string RpStatusDungeonMatch {
+            get {
+                return ResourceManager.GetString("RpStatusDungeonMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fight.
+        /// </summary>
+        public static string RpStatusFight {
+            get {
+                return ResourceManager.GetString("RpStatusFight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Idle.
+        /// </summary>
+        public static string RpStatusIdle {
+            get {
+                return ResourceManager.GetString("RpStatusIdle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LFG.
+        /// </summary>
+        public static string RpStatusLfg {
+            get {
+                return ResourceManager.GetString("RpStatusLfg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Playing.
+        /// </summary>
+        public static string RpStatusPlaying {
+            get {
+                return ResourceManager.GetString("RpStatusPlaying", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Say color.
         /// </summary>
         public static string SayColor {
