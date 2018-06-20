@@ -11,6 +11,7 @@ using DiscordRPC;
 using DiscordRPC.Message;
 using Lang;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Tera.Game;
 using Tera.Game.Messages;
 
@@ -67,7 +68,7 @@ namespace Tera.RichPresence
         private string Details => 
             !ShowStatus ? LP.RpStatusPlaying:
             State == State.Idle ? LP.RpStatusIdle :
-            State == State.Fight ? $"{LP.RpStatusFight} | {GetFightName()} {FightHp()}" :
+            State == State.Fight ? $"{LP.RpStatusFight} | {FightHp()}{GetFightName()} " :
             State == State.Lfg ? $"{LP.RpStatusLfg} | {_lfgMessage}" :
             State == State.Matching ? 
                 (_matchingType == MatchingType.Dungeon ? LP.RpStatusDungeonMatch: 
@@ -81,7 +82,7 @@ namespace Tera.RichPresence
             State == State.Matching ? new Timestamps {Start = _matchingStarted} : null;
 
 
-        private int PartySize => PacketProcessor.Instance.PlayerTracker.PartyList().Count;
+        private int PartySize => PacketProcessor.Instance.PlayerTracker.PartySize;
         private PartyType PartyType => 
             PartySize <= 1 ? PartyType.Solo :
             IsRaid ? PartyType.Raid : PartyType.Party;
@@ -182,7 +183,7 @@ namespace Tera.RichPresence
             float hp = GetFightHpPercent();
             if (hp < 0) return null;
 
-            return $"| {hp*100:n0}%";
+            return $"{hp*100:n0}% | ";
         }
         
         private DiscordRpcClient InitClient()
@@ -203,7 +204,7 @@ namespace Tera.RichPresence
 
         public void Invoke()
         {
-            Client.Invoke();
+            _client?.Invoke();
         }
 
         public void Initialize()

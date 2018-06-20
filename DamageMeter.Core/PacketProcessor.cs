@@ -306,6 +306,8 @@ namespace DamageMeter
                 Exit();
             }
 
+            RichPresence.Instance.Initialize();
+            
             while (_keepAlive)
             {
                 if (NeedToCopy != null)
