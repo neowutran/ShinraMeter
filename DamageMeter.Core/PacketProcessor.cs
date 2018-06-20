@@ -217,6 +217,8 @@ namespace DamageMeter
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
             var uiMessage = new UiUpdateMessage(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash);
             handler?.Invoke(uiMessage);
+            RichPresence.Instance.Invoke();
+
         }
         
         public List<DpsServer> Initialize()
@@ -383,8 +385,6 @@ namespace DamageMeter
                 {
                     //Unprocessed packet
                 }
-
-                RichPresence.Instance.Invoke();
             }
         }
 
