@@ -86,7 +86,6 @@
     <Compile Include="HotkeysData.cs" />
     <Compile Include="InvalidConfigFileException.cs" />
     <Compile Include="ImageDatabase.cs" />
-    <Compile Include="Location.cs" />
     <Compile Include="ObjectToXmlUtility.cs" />
     <Compile Include="OpcodeDownloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
