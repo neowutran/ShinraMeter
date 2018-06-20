@@ -107,6 +107,10 @@ namespace NetworkSniffer
                         OnEndConnection(connection);
                         return;
                     }
+                    if(payload == null)
+                    {
+                        return;
+                    }
                     connection.HandleTcpReceived(tcpPacket.SequenceNumber, payload);
                 }
                 //if (!string.IsNullOrEmpty(TcpLogFile))

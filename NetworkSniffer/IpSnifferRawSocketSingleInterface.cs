@@ -59,7 +59,7 @@ namespace NetworkSniffer
                 try { ipPacket = new IPv4Packet(new ByteArraySegment(args.Buffer, 0, bytesRead)); }
                 catch (InvalidOperationException) { continue; }
 
-                if (ipPacket.Version != IpVersion.IPv4 || ipPacket.Protocol != IPProtocolType.TCP) { continue; }
+                if (ipPacket.Version != IPVersion.IPv4 || ipPacket.Protocol != IPProtocolType.TCP) { continue; }
                 OnPacketReceived(ipPacket);
             }
             _socket.Close();

@@ -74,8 +74,8 @@
     <Reference Include="Markdig, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Markdig.0.15.0\lib\net40\Markdig.dll</HintPath>
     </Reference>
-    <Reference Include="Markdig.Wpf, Version=0.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Markdig.Wpf.0.2.3\lib\net45\Markdig.Wpf.dll</HintPath>
+    <Reference Include="Markdig.Wpf, Version=0.2.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.Wpf.0.2.4\lib\net452\Markdig.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
