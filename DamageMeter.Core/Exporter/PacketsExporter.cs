@@ -26,28 +26,50 @@ namespace DamageMeter
 {
     public class PacketsExporter
     {
+        public static readonly List<AreaAllowed> DefaultAreaAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>(
+            "[{\"AreaId\": 735, \"BossIds\": []},{\"AreaId\": 935,\"BossIds\": []},{\"AreaId\": 950,\"BossIds\": [1000, 2000, 3000, 4000]},{\"AreaId\": 794,\"BossIds\": []},{\"AreaId\": 994,\"BossIds\": []},{\"AreaId\": 970,\"BossIds\": []},{\"AreaId\": 770,\"BossIds\": []},{\"AreaId\": 916,\"BossIds\": [1000, 91606]},{\"AreaId\": 710,\"BossIds\": [3000]},{\"AreaId\": 716,\"BossIds\": [1000]},{\"AreaId\": 969,\"BossIds\": [76903]},{\"AreaId\": 769,\"BossIds\": [76903]},{\"AreaId\": 455,\"BossIds\": [300]},{\"AreaId\": 766,\"BossIds\": [76619]},{\"AreaId\": 760,\"BossIds\": [3000]},{\"AreaId\": 860,\"BossIds\": [3000]},{\"AreaId\": 739,\"BossIds\": []},{\"AreaId\": 939,\"BossIds\": []},{\"AreaId\": 720,\"BossIds\": []},{\"AreaId\": 920,\"BossIds\": []}]"
+            );
+        private List<AreaAllowed> _allowedAreaId = new List<AreaAllowed>();
+
         public static PacketsExporter Instance => _instance ?? (_instance = new PacketsExporter());
         private static PacketsExporter _instance;
         private static readonly string PUBLIC_KEY_STRING = "<?xml version=\"1.0\" encoding=\"utf-16\"?><RSAParameters xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"><Exponent>AQAB</Exponent><Modulus>sD+HLW7fz2xuQ+JoawSXsZLrb8m7Vn9HVnmkeIJazHDEwPycQrDyYo4XNI27qC2ZhEGlk0qQ1Dd8pFEvhsVVzyve2Ov7CuuuBm7I/rpO1ii9TvEPIjr47eQ5fY4+Trwzjp9au1nw8/E2XNJTFagU1Ch1jJK730BS3ZAbcJSnpUGR0svCnbAc2gpPUJfQxaQgYlr23bdS2dTC/qey/pieg9QhU4N9ZCoYMCshB5+r2wLEfcgHkYtP2aUbUBVGGQ4YtfkX8eIZsRjmMClEzeaVSqvkNh5q5K6qdKFpkc1zZnLKNhwjo/OmcjIc11q/8wlOZPiRKsVe9gC8ySdDCGQXIW9PF2rFYEvTVPWRVeLOPlCfTA1wVXDBlNs5Bchix7pBVumfO2apuizzgWfqm0Q7xyvsHfv7I7ejynjPr5/aEdHzWZK1/RSEwWCSMrstMTzDuuNgOlpYzbAxEpAc1APKAxxjD3C7bgY9IHFNgTpGIYlzJgA6xy2MCWgLm5q0pNjpaiQIBiuCArxMSIn2qpPOkoRLmi2cXHKl27WmjQtBVrw93jRPtLMUSyJ5fsXAVlXy5gnXBl69tQmrvuiRZKWqpZCDhrXHpUEj7J9cULUv0bjzonpAH6UnPVZTIp/VHq+yh0wnbPRUzqcT+ku34U8J3NGYlkf9ZgqGup9EJRka2eE=</Modulus></RSAParameters>";
-        public static readonly List<AreaAllowed> BossAllowed = JsonConvert.DeserializeObject<List<AreaAllowed>>(
-          "[" +
-            "{\"AreaId\":716, \"BossIds\":[1000]}," +
-            "{\"AreaId\":769, \"BossIds\":[76903]}," +
-            "{\"AreaId\":969, \"BossIds\":[76903]}," +
-            "{\"AreaId\": 735,\"BossIds\": [3000]}," +
-            "{\"AreaId\": 935,\"BossIds\": [3000]}," +
-            "{\"AreaId\": 950,\"BossIds\": [3000, 4000]}," +
-            "{\"AreaId\": 794,\"BossIds\": [3000]}," +
-            "{\"AreaId\": 994,\"BossIds\": [3000]}," +
-            "{\"AreaId\": 916,\"BossIds\": [1000]}" +
-            "]"
-          );
+        public void FetchAllowedAreaId()
+        {
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(40);
+                List<AreaAllowed> allowedAreaIdByServer;
+                try
+                {
+                    var response = client.GetAsync(DpsServerData.Neowutran.AllowedAreaUrl);
+                    var allwedAreaIdByServerString = response.Result.Content.ReadAsStringAsync().Result;
+                    allowedAreaIdByServer = JsonConvert.DeserializeObject<List<AreaAllowed>>(allwedAreaIdByServerString);
+                    Debug.WriteLine("Allowed Area Id successfully retrieved for " + DpsServerData.Neowutran.AllowedAreaUrl + " : " + allwedAreaIdByServerString);
+                }
+                catch
+                {
+                    allowedAreaIdByServer = new List<AreaAllowed>(DefaultAreaAllowed);
+                    Debug.WriteLine("Allowed Area Id retrieve failed for " + DpsServerData.Neowutran.AllowedAreaUrl + " , using default values");
+                    // TODO, display to error to a UI ?
+                }
+                ComputeAllowedAreaId(allowedAreaIdByServer);
+            }
+        }
+
+        private void ComputeAllowedAreaId(List<AreaAllowed> allowedAreaIdByServer)
+        {
+            _allowedAreaId = allowedAreaIdByServer;
+            _allowedAreaId.RemoveAll(x => BasicTeraData.Instance.WindowData.BlackListAreaId.Contains(x.AreaId));
+        }
+
         public void Export(EncounterBase teradpsData, NpcEntity entity)
         {
+            FetchAllowedAreaId();
             BasicTeraData.LogError("PacketExport: Start", true);
             // Only export when a notable dungeons is cleared
             var areaId = int.Parse(teradpsData.areaId);
-            if (!BossAllowed.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) {
+            if (!_allowedAreaId.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) {
                 BasicTeraData.LogError("PacketExport: Boss not allowed, exiting", true);
                 return;
             }
@@ -196,7 +218,7 @@ namespace DamageMeter
             {
                 client.Timeout = TimeSpan.FromSeconds(3600);
                 var response = client.PostAsync(
-                    new Uri("https://neowutran.ovh/storage/store_packets.php?version=" + version + "&sha1=" + sendCheckSum),
+                    new Uri("https://neowutran.ovh:8083/store_packets?version=" + version + "&sha1=" + sendCheckSum),
                     new ByteArrayContent(filebytes)
                     );
                 BasicTeraData.LogError("PacketExport: "+ response.Result.Content.ReadAsStringAsync().Result, true);
