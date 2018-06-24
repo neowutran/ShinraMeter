@@ -14,6 +14,8 @@ namespace DamageMeter.Processing
             if (PacketProcessor.Instance.NeedInit)
             {
                 PacketProcessor.Instance.RaiseConnected(BasicTeraData.Instance.Servers.GetServerName(message.ServerId, PacketProcessor.Instance.Server));
+                PacketProcessor.Instance.Server = BasicTeraData.Instance.Servers.GetServer(message.ServerId, PacketProcessor.Instance.Server);
+                PacketProcessor.Instance.MessageFactory.Region = PacketProcessor.Instance.Server.Region;
                 var trackerreset = true;
                 if (PacketProcessor.Instance.EntityTracker != null)
                 {
@@ -30,8 +32,6 @@ namespace DamageMeter.Processing
                         throw;
                     }
                 }
-                PacketProcessor.Instance.Server = BasicTeraData.Instance.Servers.GetServer(message.ServerId, PacketProcessor.Instance.Server);
-                PacketProcessor.Instance.MessageFactory.Region = PacketProcessor.Instance.Server.Region;
                 if (trackerreset)
                 {
                     PacketProcessor.Instance.TeraData = BasicTeraData.Instance.DataForRegion(PacketProcessor.Instance.Server.Region);
