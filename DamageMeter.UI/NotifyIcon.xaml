@@ -616,7 +616,10 @@
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
 
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Rich presence settings" />
-                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3" Name="RPSettingsPanel">
+                                                <StackPanel.LayoutTransform>
+                                                    <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                </StackPanel.LayoutTransform>
                                                 <ui:MaterialSwitch  Content="{x:Static l:LP.EnableRp}"
                                                                     x:Name="RpEnabled" On="EnableRp" Off="DisableRp" >
                                                     <ui:MaterialSwitch.LayoutTransform>

@@ -75,7 +75,6 @@ namespace DamageMeter.UI
             NoAbnormalsInHUD.Status = BasicTeraData.Instance.WindowData.NoAbnormalsInHUD;
             OverlaySwitch.Status = BasicTeraData.Instance.WindowData.EnableOverlay;
             DisplayOnlyBossHitByMeterUser.Status = BasicTeraData.Instance.WindowData.DisplayOnlyBossHitByMeterUser;
-            ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             //PerformanceTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Performance.Source;
             SettingsTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Settings.Source;
             //LinksTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Links.Source;
@@ -102,6 +101,8 @@ namespace DamageMeter.UI
             RichPresenceShowCharacter.Status = BasicTeraData.Instance.WindowData.RichPresenceShowCharacter;
             RichPresenceShowStatus.Status = BasicTeraData.Instance.WindowData.RichPresenceShowStatus;
             RichPresenceShowParty.Status = BasicTeraData.Instance.WindowData.RichPresenceShowParty;
+            ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
+            RPSettingsVisible(BasicTeraData.Instance.WindowData.EnableRichPresence);
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -378,8 +379,20 @@ namespace DamageMeter.UI
             PartyEvent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
 
             ColorSettingsContainer.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
-            
-            RpEnabled.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+
+            RPSettingsPanel.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+        }
+
+        private void RPSettingsVisible(bool show) {
+            DoubleAnimation an;
+            if (show)
+            {
+                an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
+            else
+            {
+                an = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
+            }
             RichPresenceShowCharacter.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
             RichPresenceShowLocation.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
             RichPresenceShowParty.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
@@ -561,12 +574,14 @@ namespace DamageMeter.UI
         private void EnableRp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableRichPresence = true;
+            RPSettingsVisible(true);
             RichPresence.Instance.Update();
         }
 
         private void DisableRp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableChat = false;
+            RPSettingsVisible(false);
             RichPresence.Instance.Deinitialize();
         }
         

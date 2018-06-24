@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Windows.Documents;
 using DamageMeter;
-using DamageMeter.Processing;
 using Data;
 using DiscordRPC;
-using DiscordRPC.Message;
 using Lang;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using Tera.Game;
 using Tera.Game.Messages;
 
