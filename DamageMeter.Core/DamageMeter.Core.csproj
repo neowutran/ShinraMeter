@@ -36,6 +36,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Discord RPC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\lib\Discord RPC.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -94,6 +97,7 @@
     <Compile Include="Exporter\DataExporter.cs" />
     <Compile Include="Processing\C_LOGIN_ARBITER.cs" />
     <Compile Include="Processing\S_CREATURE_CHANGE_HP.cs" />
+    <Compile Include="RichPresence.cs" />
     <Compile Include="TeraDpsApi\DpsServer.cs" />
     <Compile Include="Exporter\ExcelExporter.cs" />
     <Compile Include="FormatHelpers.cs" />
@@ -144,6 +148,10 @@
     <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj">
       <Project>{66bb1685-8ff5-4431-b77f-7f80c92a5da4}</Project>
       <Name>DamageMeter.Sniffing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tera.RichPresence\Tera.RichPresence.csproj">
+      <Project>{9edc2acc-e513-422b-bff3-57939cf3965e}</Project>
+      <Name>Tera.RichPresence</Name>
     </ProjectReference>
     <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
       <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>

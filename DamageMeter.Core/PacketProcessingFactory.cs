@@ -5,6 +5,7 @@ using DamageMeter.Processing;
 using Data;
 using Tera.Game;
 using Tera.Game.Messages;
+using Tera.RichPresence;
 using C_CHECK_VERSION = Tera.Game.Messages.C_CHECK_VERSION;
 using S_CREST_INFO = Tera.Game.Messages.S_CREST_INFO;
 using C_LOGIN_ARBITER = Tera.Game.Messages.C_LOGIN_ARBITER;
@@ -43,7 +44,11 @@ namespace DamageMeter
             {typeof(S_UPDATE_NPCGUILD), new Action<S_UPDATE_NPCGUILD>(x => NotifyProcessor.Instance.UpdateCredits(x))},
             {typeof(SpawnMeServerMessage), new Action<SpawnMeServerMessage>(x => NotifyProcessor.Instance.SpawnMe(x))}, //override with optional processing
             {typeof(S_BOSS_GAGE_INFO), new Action<S_BOSS_GAGE_INFO>(x => NotifyProcessor.Instance.S_BOSS_GAGE_INFO(x))}, //override with optional processing
-            {typeof(S_RETURN_TO_LOBBY), new Action<S_RETURN_TO_LOBBY>(x => NotifyProcessor.Instance.S_LOAD_TOPO(null))},
+            {typeof(S_RETURN_TO_LOBBY), new Action<S_RETURN_TO_LOBBY>(x =>
+            {
+                NotifyProcessor.Instance.S_LOAD_TOPO(null);
+                RichPresence.Instance.ReturnToLobby();
+            })},
             {typeof(S_LOAD_TOPO), new Action<S_LOAD_TOPO>(x => NotifyProcessor.Instance.S_LOAD_TOPO(x))},
             {typeof(S_CHAT), new Action<S_CHAT>(x => Chat.Instance.Add(x))},
             {typeof(S_WHISPER), new Action<S_WHISPER>(x => Chat.Instance.Add(x))},
@@ -54,7 +59,11 @@ namespace DamageMeter
             {typeof(S_BATTLE_FIELD_ENTRANCE_INFO), new Action<S_BATTLE_FIELD_ENTRANCE_INFO>(x => NotifyProcessor.Instance.InstanceMatchingSuccess(x))},
             {typeof(S_REQUEST_CONTRACT), new Action<S_REQUEST_CONTRACT>(x => NotifyProcessor.Instance.S_REQUEST_CONTRACT(x))},
             {typeof(S_CHECK_TO_READY_PARTY), new Action<S_CHECK_TO_READY_PARTY>(x => NotifyProcessor.Instance.S_CHECK_TO_READY_PARTY(x))},
-            {typeof(S_CREST_MESSAGE), new Action<S_CREST_MESSAGE>(x => NotifyProcessor.Instance.SkillReset(x.SkillId, x.Type))}
+            {typeof(S_CREST_MESSAGE), new Action<S_CREST_MESSAGE>(x => NotifyProcessor.Instance.SkillReset(x.SkillId, x.Type))},
+            {typeof(S_VISIT_NEW_SECTION), new Action<S_VISIT_NEW_SECTION>(x => RichPresence.Instance.VisitNewSection(x))},
+            {typeof(S_SHOW_PARTY_MATCH_INFO), new Action<S_SHOW_PARTY_MATCH_INFO>(x => RichPresence.Instance.HandleLfg(x))},
+            {typeof(C_REGISTER_PARTY_INFO), new Action<C_REGISTER_PARTY_INFO>(x => RichPresence.Instance.HandleLfg(x))},
+            {typeof(S_CHANGE_EVENT_MATCHING_STATE), new Action<S_CHANGE_EVENT_MATCHING_STATE>(x => RichPresence.Instance.HandleIms(x))}
         };
 
         private static readonly Dictionary<Type, Delegate> MessageToProcessing = new Dictionary<Type, Delegate>
@@ -68,7 +77,7 @@ namespace DamageMeter
             {typeof(SUserStatus), new Action<SUserStatus>(S_USER_STATUS.Process)}
 //            {typeof(Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT), new Action<Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT>(x=>NotifyProcessor.S_BEGIN_THROUGH_ARBITER_CONTRACT(x))}
         };
-
+        
         private static readonly Dictionary<Type, Delegate> MainProcessor = new Dictionary<Type, Delegate>();
 
         public PacketProcessingFactory()

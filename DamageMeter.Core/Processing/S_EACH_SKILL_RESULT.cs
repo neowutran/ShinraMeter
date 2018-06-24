@@ -1,6 +1,7 @@
 ﻿using Data;
 using Tera.Game;
 using Tera.Game.Messages;
+using Tera.RichPresence;
 
 namespace DamageMeter.Processing
 {
@@ -12,6 +13,7 @@ namespace DamageMeter.Processing
             var skillResult = new SkillResult(message, PacketProcessor.Instance.EntityTracker, PacketProcessor.Instance.PlayerTracker,
                 BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.PetSkillDatabase, PacketProcessor.Instance.AbnormalityTracker);
             DamageTracker.Instance.Update(skillResult);
+            RichPresence.Instance.EachSkillResult(skillResult);
             NotifyProcessor.Instance.UpdateMeterBoss(message);
         }
     }

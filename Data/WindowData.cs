@@ -122,6 +122,7 @@ namespace Data
             ParseDpsServers();
             ParseLanguage();
             ParseUILanguage();
+            ParseRichPresence();
             Parse("date_in_excel_path", "dateInExcelPath");
             if (dateInExcelPath) { excelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
             DpsServers.CollectionChanged += DpsServers_CollectionChanged;
@@ -195,6 +196,12 @@ namespace Data
         private bool showTimeLeft = false;
         private bool noAbnormalsInHUD = false;
         private bool displayTimerBasedOnAggro = true;
+        
+        private bool enableRichPresence = true;
+        private bool richPresenceShowLocation = true;
+        private bool richPresenceShowCharacter = true;
+        private bool richPresenceShowStatus = true;
+        private bool richPresenceShowParty = true;
 
         public bool DisplayTimerBasedOnAggro { get => displayTimerBasedOnAggro; set { displayTimerBasedOnAggro = value; Save(); } }
 
@@ -258,6 +265,12 @@ namespace Data
         public bool DateInExcelPath { get => dateInExcelPath; set { dateInExcelPath = value; Save();}}
         public bool ShowTimeLeft { get => showTimeLeft; set { showTimeLeft = value; Save();}}
         public bool NoAbnormalsInHUD { get => noAbnormalsInHUD; set { noAbnormalsInHUD = value; Save();}}
+        
+        public bool EnableRichPresence { get => enableRichPresence; set { enableRichPresence = value; Save();}}
+        public bool RichPresenceShowLocation { get => richPresenceShowLocation ; set { richPresenceShowLocation = value; Save();}}
+        public bool RichPresenceShowCharacter { get => richPresenceShowCharacter ; set { richPresenceShowCharacter = value; Save();}}
+        public bool RichPresenceShowStatus { get => richPresenceShowStatus ; set { richPresenceShowStatus = value; Save();}}
+        public bool RichPresenceShowParty { get => richPresenceShowParty ; set { richPresenceShowParty = value; Save();}}
 
         private void ParseWindowStatus(string xmlName, string settingName)
         {
@@ -394,6 +407,41 @@ namespace Data
             if (otherWindowElement == null) { return; }
             if (int.TryParse(otherWindowElement.Value, out int otherWindowOpacity)) { this.otherWindowOpacity = (double)otherWindowOpacity / 100; }
         }
+        
+        private void ParseRichPresence()
+        {
+            var root = _xml.Root;
+            var rp = root?.Element("rich_presence");
+            var enabled = rp?.Element("enabled");
+            if (enabled != null)
+            {
+                if (bool.TryParse(enabled.Value, out var enableRichPresence)) { this.enableRichPresence = enableRichPresence; }
+            }
+            
+            var showLocation = rp?.Element("show_location");
+            if (showLocation != null)
+            {
+                if (bool.TryParse(showLocation .Value, out var richPresenceShowLocation )) { this.richPresenceShowLocation = richPresenceShowLocation ; }
+            }
+            
+            var showCharacter = rp?.Element("show_character");
+            if (showCharacter != null)
+            {
+                if (bool.TryParse(showCharacter .Value, out var richPresenceShowCharacter )) { this.richPresenceShowCharacter = richPresenceShowCharacter ; }
+            }
+            
+            var showStatus = rp?.Element("show_status");
+            if (showStatus != null)
+            {
+                if (bool.TryParse(showStatus .Value, out var richPresenceShowStatus )) { this.richPresenceShowStatus = richPresenceShowStatus ; }
+            }
+            
+            var showParty = rp?.Element("show_party");
+            if (showParty != null)
+            {
+                if (bool.TryParse(showParty .Value, out var richPresenceShowParty )) { this.richPresenceShowParty = richPresenceShowParty ; }
+            }
+        }
 
         public void Save()
         {
@@ -472,6 +520,12 @@ namespace Data
             xml.Root.Add(new XElement("enable_overlay", enableOverlay));
             xml.Root.Add(new XElement("display_timer_based_on_aggro", displayTimerBasedOnAggro));
             xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
+            xml.Root.Add(new XElement("rich_presence"));
+            xml.Root.Element("rich_presence").Add(new XElement("enabled", enableRichPresence));
+            xml.Root.Element("rich_presence").Add(new XElement("show_location", richPresenceShowLocation));
+            xml.Root.Element("rich_presence").Add(new XElement("show_character", richPresenceShowCharacter));
+            xml.Root.Element("rich_presence").Add(new XElement("show_status", richPresenceShowStatus));
+            xml.Root.Element("rich_presence").Add(new XElement("show_party", richPresenceShowParty));
 
             xml.Root.Add(new XElement("dps_servers"));
             foreach(var server in DpsServers)

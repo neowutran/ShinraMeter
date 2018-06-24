@@ -17,6 +17,7 @@ using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
 using System.Diagnostics;
+using Tera.RichPresence;
 
 namespace DamageMeter
 {
@@ -98,6 +99,7 @@ namespace DamageMeter
             _keepAlive = false;
             Thread.Sleep(500);
             HudManager.Instance.CurrentBosses.DisposeAll();
+            RichPresence.Instance.Deinitialize();
             Application.Exit();
         }
 
@@ -119,6 +121,7 @@ namespace DamageMeter
             NeedInit = true;
             MessageFactory = new MessageFactory();
             NotifyProcessor.Instance.S_LOAD_TOPO(null);
+            RichPresence.Instance.HandleEndConnection();
             Connected?.Invoke(LP.SystemTray_No_server);
             OnGuildIconAction(null);
         }
@@ -128,6 +131,7 @@ namespace DamageMeter
             Server = server;
             NeedInit = true;
             MessageFactory = new MessageFactory();
+            RichPresence.Instance.HandleConnected(server);
             Connected?.Invoke(server.Name);
         }
 
@@ -213,6 +217,8 @@ namespace DamageMeter
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
             var uiMessage = new UiUpdateMessage(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash);
             handler?.Invoke(uiMessage);
+            RichPresence.Instance.Invoke();
+
         }
         
         public List<DpsServer> Initialize()
@@ -300,6 +306,8 @@ namespace DamageMeter
                 Exit();
             }
 
+            RichPresence.Instance.Initialize();
+            
             while (_keepAlive)
             {
                 if (NeedToCopy != null)
