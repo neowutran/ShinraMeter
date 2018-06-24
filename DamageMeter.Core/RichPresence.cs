@@ -6,6 +6,7 @@ using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Documents;
 using DamageMeter;
+using DamageMeter.Processing;
 using Data;
 using DiscordRPC;
 using DiscordRPC.Message;
@@ -234,6 +235,7 @@ namespace Tera.RichPresence
         {
             _me = me;
             _isIngame = true;
+            _server = PacketProcessor.Instance.Server;
             PacketProcessor.Instance.PlayerTracker.PartyChangedEvent += HandlePartyChanged;
             UpdatePresence();
         }

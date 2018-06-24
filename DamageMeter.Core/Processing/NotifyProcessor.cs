@@ -444,6 +444,7 @@ namespace DamageMeter.Processing
             PacketProcessor.Instance.EntityTracker.Update(message);
             RichPresence.Instance.HandleBossHp(message);
             HudManager.Instance.AddOrUpdateBoss(message);
+            RichPresence.Instance.ReturnToLobby();
             long newHp = 0;
             if (message.TotalHp != message.HpRemaining)
             {
