@@ -119,8 +119,8 @@ namespace Tera.RichPresence
             {
                 LargeImageKey = (ShowLocation ? BasicTeraData.Instance.MapData.GetImageName(_location) : null) ?? DefaultImage,
                 LargeImageText = _location == null || !ShowLocation ? null : BasicTeraData.Instance.MapData.GetFullName(_location),
-                SmallImageKey = ShowCharacter ? $"class_{_me.RaceGenderClass.Class.ToString().ToLower()}" : null, 
-                SmallImageText = ShowCharacter ? $"{LP.RpLevel} {_me.Level} {_me.Name} ({_me.Server})" : null,
+                SmallImageKey = ShowCharacter  && _me != null ? $"class_{_me.RaceGenderClass.Class.ToString().ToLower()}" : null, 
+                SmallImageText = ShowCharacter && _me != null ? $"{LP.RpLevel} {_me.Level} {_me.Name} ({_me.Server})" : null,
             }
         
         };
@@ -197,7 +197,8 @@ namespace Tera.RichPresence
         
         private void UpdatePresence(DiscordRPC.RichPresence presence = null)
         {
-            if (!BasicTeraData.Instance.WindowData.EnableRichPresence) return;
+            if (!BasicTeraData.Instance.WindowData.EnableRichPresence || !BasicTeraData.Instance.WindowData.EnableChat) 
+                return;
             
             presence = presence ?? Presence;
             Client.SetPresence(presence);

@@ -347,12 +347,16 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.EnableChat = true;
             ChatSettingsVisible(true);
+            
+            RichPresence.Instance.Update();
         }
 
         private void DisableChat(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableChat = false;
             ChatSettingsVisible(false);
+            
+            RichPresence.Instance.Deinitialize();
         }
 
         private void ChatSettingsVisible(bool show)
@@ -374,6 +378,12 @@ namespace DamageMeter.UI
             PartyEvent.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
 
             ColorSettingsContainer.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            
+            RpEnabled.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            RichPresenceShowCharacter.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            RichPresenceShowLocation.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            RichPresenceShowParty.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
+            RichPresenceShowStatus.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
         }
 
         private void EnableCopyInspect(object sender, RoutedEventArgs e)

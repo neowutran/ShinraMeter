@@ -618,7 +618,11 @@
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Rich presence settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch  Content="{x:Static l:LP.EnableRp}"
-                                                                    x:Name="RpEnabled" On="EnableRp" Off="DisableRp" />
+                                                                    x:Name="RpEnabled" On="EnableRp" Off="DisableRp" >
+                                                    <ui:MaterialSwitch.LayoutTransform>
+                                                        <ScaleTransform ScaleY="1"></ScaleTransform>
+                                                    </ui:MaterialSwitch.LayoutTransform>
+                                                </ui:MaterialSwitch>
                                                 <ui:MaterialSwitch  Content="{x:Static l:LP.RichPresenceShowLocation}"
                                                                     x:Name="RichPresenceShowLocation" On="RichPresenceShowLocationEnable"
                                                                     Off="RichPresenceShowLocationDisable" >
