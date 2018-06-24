@@ -4,6 +4,7 @@ using Data;
 using Lang;
 using Tera.Game;
 using Tera.Game.Messages;
+using Tera.RichPresence;
 
 namespace DamageMeter.Processing
 {
@@ -62,6 +63,8 @@ namespace DamageMeter.Processing
             PacketProcessor.Instance.RaisePause(false);
             var me = PacketProcessor.Instance.PlayerTracker.Me();
             if (!PacketProcessor.Instance.MeterPlayers.Contains(me)) { PacketProcessor.Instance.MeterPlayers.Add(me); }
+
+            RichPresence.Instance.Login(me);
         }
 
         internal static void SelectFont(string region)

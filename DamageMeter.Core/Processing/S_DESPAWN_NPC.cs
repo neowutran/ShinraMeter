@@ -1,4 +1,5 @@
 ﻿using Tera.Game.Messages;
+using Tera.RichPresence;
 
 namespace DamageMeter.Processing
 {
@@ -9,6 +10,7 @@ namespace DamageMeter.Processing
             PacketProcessor.Instance.AbnormalityTracker.Update(message);
             NotifyProcessor.Instance.DespawnNpc(message);
             DataExporter.AutomatedExport(message, PacketProcessor.Instance.AbnormalityStorage);
+            RichPresence.Instance.DespawnNpc(message);
         }
     }
 }
