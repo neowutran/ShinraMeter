@@ -7,9 +7,7 @@
 \equip_exp\
 \guild_quests\
 \quests\
-\regions\
 \social\
 \sys_msg\
-\world_map\
-dungeons-def.xml
+dungeons-def
 .git
