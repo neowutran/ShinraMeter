@@ -181,8 +181,11 @@ namespace Tera.RichPresence
         
         private DiscordRpcClient InitClient()
         {
-            _client = new DiscordRpcClient(ClientId, true, -1);
-            _client.Initialize();
+            try {
+                _client = new DiscordRpcClient(ClientId, true, -1);
+                _client.Initialize();
+            }
+            catch (Exception e){ BasicTeraData.LogError("Discord RPC Init fail: "+e.Message, false, true);}
 
             return _client;
         }
@@ -193,7 +196,8 @@ namespace Tera.RichPresence
                 return;
             
             presence = presence ?? Presence;
-            Client.SetPresence(presence);
+            try { Client?.SetPresence(presence); }
+            catch (Exception e) { BasicTeraData.LogError("Discord RPC set presence fail: " + e.Message, false, true); }
         }
 
         public void Invoke()
