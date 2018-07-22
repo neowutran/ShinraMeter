@@ -580,7 +580,7 @@ namespace DamageMeter.UI
 
         private void DisableRp(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.EnableChat = false;
+            BasicTeraData.Instance.WindowData.EnableRichPresence = false;
             RPSettingsVisible(false);
             RichPresence.Instance.Deinitialize();
         }
