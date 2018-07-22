@@ -202,7 +202,8 @@ namespace Tera.RichPresence
 
         public void Invoke()
         {
-            _client?.Invoke();
+            try { _client?.Invoke(); }
+            catch (Exception e) { BasicTeraData.LogError("Discord RPC invoke error: " + e.Message, false, true); }
         }
 
         public void Initialize()
