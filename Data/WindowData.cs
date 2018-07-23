@@ -199,7 +199,7 @@ namespace Data
         
         private bool enableRichPresence = true;
         private bool richPresenceShowLocation = true;
-        private bool richPresenceShowCharacter = true;
+        private bool richPresenceShowCharacter = false;
         private bool richPresenceShowStatus = true;
         private bool richPresenceShowParty = true;
 
