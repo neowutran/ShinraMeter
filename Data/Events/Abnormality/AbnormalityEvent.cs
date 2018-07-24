@@ -6,8 +6,8 @@ namespace Data.Events.Abnormality
     public class AbnormalityEvent : Event
     {
         public AbnormalityEvent(bool inGame, bool active, int priority, List<BlackListItem> areaBossBlackList, Dictionary<int, int> ids, List<HotDot.Types> types,
-            AbnormalityTargetType target, AbnormalityTriggerType trigger, int remainingSecondsBeforeTrigger, int rewarnTimeoutSecounds) : base(inGame, active,
-            priority, areaBossBlackList)
+            AbnormalityTargetType target, AbnormalityTriggerType trigger, int remainingSecondsBeforeTrigger, int rewarnTimeoutSecounds, List<PlayerClass> ignoreClasses) 
+                : base(inGame, active, priority, areaBossBlackList, ignoreClasses)
         {
             Types = types;
             Ids = ids;
