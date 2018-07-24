@@ -103,7 +103,7 @@ namespace Tera.RichPresence
         
         private DiscordRPC.RichPresence InGamePresence => new DiscordRPC.RichPresence
         {
-            Details = Details,
+            Details = Details.Length>=128 ? Details.Remove(127) : Details,
             State = $"{PartyStatus}{AdditionalStatus}",
             Timestamps = Timestamps,
             Party = Party,
