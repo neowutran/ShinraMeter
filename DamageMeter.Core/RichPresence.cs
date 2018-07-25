@@ -4,6 +4,7 @@ using System.Linq;
 using DamageMeter;
 using Data;
 using DiscordRPC;
+using DiscordRPC.Logging;
 using Lang;
 using Tera.Game;
 using Tera.Game.Messages;
@@ -183,6 +184,7 @@ namespace Tera.RichPresence
         {
             try {
                 _client = new DiscordRpcClient(ClientId, true, -1);
+                _client.Logger=new ShinraLogger(){Level = LogLevel.Error};
                 _client.Initialize();
             }
             catch (Exception e){ BasicTeraData.LogError("Discord RPC Init fail: "+e.Message, false, true);}
@@ -394,6 +396,22 @@ namespace Tera.RichPresence
         public void Update()
         {
             UpdatePresence();
+        }
+    }
+    public class ShinraLogger : DiscordRPC.Logging.ILogger
+    {
+        public LogLevel Level { get; set; }
+        public void Info(string message, params object[] args)
+        {
+            //Null Logger, so no messages are acutally sent
+        }
+        public void Warning(string message, params object[] args)
+        {
+            //Null Logger, so no messages are acutally sent 
+        }
+        public void Error(string message, params object[] args)
+        {
+            BasicTeraData.LogError("DiscordRPC logged error:\r\n"+ message, false, true);
         }
     }
 }
