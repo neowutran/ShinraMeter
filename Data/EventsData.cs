@@ -74,8 +74,8 @@ namespace Data
                 return;
             }
             EventsClass = new Dictionary<Event, List<Action>>();
-            MissingAbnormalities = new Dictionary<Event, List<Action>>();
-            AddedRemovedAbnormalities = new Dictionary<Event, List<Action>>();
+            MissingAbnormalities = new Dictionary<AbnormalityEvent, List<Action>>();
+            AddedRemovedAbnormalities = new Dictionary<AbnormalityEvent, List<Action>>();
             Cooldown = new Dictionary<Event, List<Action>>();
             Events = new Dictionary<Event, List<Action>>();
             AFK = null;
@@ -87,8 +87,8 @@ namespace Data
 
         private Dictionary<Event, List<Action>> EventsCommon { get; }
         private Dictionary<Event, List<Action>> EventsClass { get; set; }
-        public Dictionary<Event, List<Action>> MissingAbnormalities { get; private set; }
-        public Dictionary<Event, List<Action>> AddedRemovedAbnormalities { get; private set; }
+        public Dictionary<AbnormalityEvent, List<Action>> MissingAbnormalities { get; private set; }
+        public Dictionary<AbnormalityEvent, List<Action>> AddedRemovedAbnormalities { get; private set; }
         public Dictionary<Event, List<Action>> Events { get; private set; }
 
         public Dictionary<Event, List<Action>> Cooldown { get; private set; }
@@ -116,31 +116,32 @@ namespace Data
                 return;
             }
             EventsClass = new Dictionary<Event, List<Action>>();
-            MissingAbnormalities = new Dictionary<Event, List<Action>>();
-            AddedRemovedAbnormalities = new Dictionary<Event, List<Action>>();
+            MissingAbnormalities = new Dictionary<AbnormalityEvent, List<Action>>();
+            AddedRemovedAbnormalities = new Dictionary<AbnormalityEvent, List<Action>>();
             Cooldown = new Dictionary<Event, List<Action>>();
             Events = new Dictionary<Event, List<Action>>();
             AFK = null;
             ParseAbnormalities(EventsClass, xml);
             ParseCooldown(EventsClass, xml);
-            AssociateEvent(EventsCommon);
-            AssociateEvent(EventsClass);
+            AssociateEvent(EventsCommon, playerClass);
+            AssociateEvent(EventsClass, playerClass);
         }
 
-        private void AssociateEvent(Dictionary<Event, List<Action>> rootEvents)
+        private void AssociateEvent(Dictionary<Event, List<Action>> rootEvents, PlayerClass playerClass=PlayerClass.Common)
         {
             foreach (var e in rootEvents)
             {
                 if (!e.Key.Active) { continue; }
+                if (playerClass!=PlayerClass.Common && e.Key.IgnoreClasses.Contains(playerClass)) { continue; }
                 Events.Add(e.Key, e.Value);
                 var evAbnormalities = e.Key as AbnormalityEvent;
                 if (evAbnormalities != null)
                 {
                     if (evAbnormalities.Trigger == AbnormalityTriggerType.MissingDuringFight || evAbnormalities.Trigger == AbnormalityTriggerType.Ending)
                     {
-                        MissingAbnormalities.Add(e.Key, e.Value);
+                        MissingAbnormalities.Add(evAbnormalities, e.Value);
                     }
-                    else { AddedRemovedAbnormalities.Add(e.Key, e.Value); }
+                    else { AddedRemovedAbnormalities.Add(evAbnormalities, e.Value); }
                 }
 
                 var evCooldown = e.Key as CooldownEvent;
@@ -243,6 +244,16 @@ namespace Data
             return areaBossBlacklist;
         }
 
+        private List<PlayerClass> ParseIgnoreClasses(string str) {
+            var res = new List<PlayerClass>();
+            if (string.IsNullOrWhiteSpace(str)) return res;
+            var arr = str.Split(',');
+            foreach (var cl in arr) {
+                if (Enum.TryParse(cl,out PlayerClass pClass))res.Add(pClass);
+            }
+            return res;
+        }
+
         private void ParseCooldown(Dictionary<Event, List<Action>> events, XDocument xml)
         {
             var root = xml.Root;
@@ -291,6 +302,7 @@ namespace Data
                 var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? default_priority);
+                var ignoreClasses = ParseIgnoreClasses(abnormality.Attribute("ignore_classes")?.Value ?? "");
                 AbnormalityTargetType target;
                 AbnormalityTriggerType trigger;
                 Enum.TryParse(abnormality.Attribute("target").Value, true, out target);
@@ -304,7 +316,7 @@ namespace Data
                 }
                 var blacklist = ParseAreaBossBlackList(abnormality);
                 var abnormalityEvent = new AbnormalityEvent(ingame, active, priority, blacklist.Any() ? blacklist : default_blacklist, ids, types, target, trigger,
-                    remainingSecondsBeforeTrigger, rewarnTimeoutSeconds);
+                    remainingSecondsBeforeTrigger, rewarnTimeoutSeconds, ignoreClasses);
                 events.Add(abnormalityEvent, new List<Action>());
                 var t = trigger == AbnormalityTriggerType.MissingDuringFight ? EventType.MissingAb : EventType.AddRemoveAb;
                 ParseActions(abnormality, events, abnormalityEvent, t);

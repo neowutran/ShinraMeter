@@ -188,9 +188,9 @@ namespace DamageMeter.Processing
                 }
 
 
-                foreach (var entityIdToCheck in entitiesIdToCheck)
-                {
-                    if (e.Key.NextChecks.ContainsKey(entityIdToCheck) && time < e.Key.NextChecks[entityIdToCheck]) { continue; }
+                foreach (var entityIdToCheck in entitiesIdToCheck) {
+                    if (!e.Key.NextChecks.ContainsKey(entityIdToCheck)) abnormalityEvent.NextChecks[entityIdToCheck] = time.AddSeconds(abnormalityEvent.RewarnTimeoutSeconds > 20 ? 0 : abnormalityEvent.RewarnTimeoutSeconds);
+                    if (time <= e.Key.NextChecks[entityIdToCheck]) { continue; }
 
                     TimeSpan? abnormalityTimeLeft = null;
                     var noAbnormalitiesMissing = false;
@@ -448,8 +448,8 @@ namespace DamageMeter.Processing
             if (message.TotalHp != message.HpRemaining)
             {
                 newHp = (long) message.HpRemaining;
-                if (message.EntityId == _lastBossMeterUser) { _lastBossHpMeterUser = newHp; }
             }
+            if (message.EntityId == _lastBossMeterUser) { _lastBossHpMeterUser = newHp; }
             _lastBosses[message.EntityId] = newHp;
         }
 
@@ -460,7 +460,9 @@ namespace DamageMeter.Processing
             _lastBosses = new Dictionary<EntityId, long>();
             _lastBossMeterUser = null;
             _lastBossHpMeterUser = 0;
-            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys) { e.NextChecks = new Dictionary<EntityId, DateTime>(); }
+            if (BasicTeraData.Instance.EventsData.MissingAbnormalities?.Keys != null) {
+                foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys) e.NextChecks = new Dictionary<EntityId, DateTime>();
+            }
         }
 
         internal void S_LOAD_TOPO(S_LOAD_TOPO message)
@@ -470,12 +472,17 @@ namespace DamageMeter.Processing
             _lastBosses = new Dictionary<EntityId, long>();
             _lastBossMeterUser = null;
             _lastBossHpMeterUser = 0;
-            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities?.Keys ?? new Dictionary<Event, List<Action>>().Keys ) { e.NextChecks = new Dictionary<EntityId, DateTime>(); }
+            if (BasicTeraData.Instance.EventsData.MissingAbnormalities?.Keys != null) {
+                foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys) e.NextChecks = new Dictionary<EntityId, DateTime>();
+            }
         }
 
         internal void SpawnUser(SpawnUserServerMessage message)
         {
-            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys) { e.NextChecks[message.Id] = DateTime.UtcNow.AddSeconds(5); }
+            if (_lastBosses.Any(x => x.Value > 0))
+                if (BasicTeraData.Instance.EventsData.MissingAbnormalities?.Keys != null) {
+                    foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys) e.NextChecks[message.Id] = DateTime.UtcNow.AddSeconds(5);
+                }
         }
 
         internal void DespawnNpc(SDespawnNpc message)
@@ -487,6 +494,10 @@ namespace DamageMeter.Processing
                 _lastBossMeterUser = null;
                 _lastBossHpMeterUser = 0;
             }
+            if (!_lastBosses.Any(x => x.Value > 0))
+                if (BasicTeraData.Instance.EventsData.MissingAbnormalities?.Keys != null) {
+                    foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities.Keys) e.NextChecks = new Dictionary<EntityId, DateTime>();
+                }
         }
 
         internal void S_BEGIN_THROUGH_ARBITER_CONTRACT(S_BEGIN_THROUGH_ARBITER_CONTRACT message)
