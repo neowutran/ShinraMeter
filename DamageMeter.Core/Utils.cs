@@ -1,18 +1,38 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
 namespace DamageMeter
 {
-    public static class DispatcherExtensions
+    public static class Extensions
     {
         public static void InvokeIfRequired(this Dispatcher disp, Action dotIt, DispatcherPriority priority)
         {
             if (disp.Thread != Thread.CurrentThread) { disp.Invoke(priority, dotIt); }
             else { dotIt(); }
+        }
+
+        public static string LimitUtf8ByteCount(this string s, int n)
+        {
+            // quick test (we probably won't be trimming most of the time)
+            if (Encoding.UTF8.GetByteCount(s) <= n)
+                return s;
+            // get the bytes
+            var a = Encoding.UTF8.GetBytes(s);
+            // if we are in the middle of a character (highest two bits are 10)
+            if (n > 0 && (a[n] & 0xC0) == 0x80)
+            {
+                // remove all bytes whose two highest bits are 10
+                // and one more (start of multi-byte sequence - highest bits should be 11)
+                while (--n > 0 && (a[n] & 0xC0) == 0x80)
+                    ;
+            }
+            // convert back to string (with the limit adjusted)
+            return Encoding.UTF8.GetString(a, 0, n);
         }
     }
 
