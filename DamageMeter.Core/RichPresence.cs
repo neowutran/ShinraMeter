@@ -411,7 +411,8 @@ namespace Tera.RichPresence
         }
         public void Error(string message, params object[] args)
         {
-            BasicTeraData.LogError("DiscordRPC logged error:\r\n"+ message, false, true);
+            if (message!= "Failed connection to {0}. {1}")
+                BasicTeraData.LogError("DiscordRPC logged error:\r\n"+ message, false, true);
         }
     }
 }
