@@ -352,7 +352,7 @@ namespace DamageMeter.Database
         public List<PlayerDamageDealt> PlayerDamageInformation(long beginTime, long endTime)
         {
             var sql =
-                "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
+                "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(case when hotdot=0 then critic else NULL end) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
                 "FROM skills " + "WHERE time BETWEEN $begin AND $end AND type = $type AND sourceServerIdPlayerId IS NOT NULL " +
                 "GROUP BY type, sourceServerIdPlayerId " + "ORDER BY `total_amount` DESC;";
 
