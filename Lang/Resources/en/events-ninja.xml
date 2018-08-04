@@ -7,7 +7,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Focus" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+3"/>
+				<text_to_speech text="Focus" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+3"/>
 			</notify>
 		</actions>
 	</abnormality>

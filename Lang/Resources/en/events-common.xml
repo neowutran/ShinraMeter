@@ -9,7 +9,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+3"/>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+3"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -63,7 +63,7 @@
 		<actions>
 				<notify>
 					<balloon title_text="{afk_title}" body_text="{afk_body}" display_time="3000" />
-					<text_to_speech text="{afk_body}"  voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
+					<text_to_speech text="{afk_body}"  voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0" />
 				</notify>
 			</actions>
 	</common_afk>
@@ -90,7 +90,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Black" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
+				<text_to_speech text="Black" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -104,7 +104,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Red" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Red" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -116,7 +116,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="{abnormality_name} ON" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="{abnormality_name} ON" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -140,7 +140,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="{abnormality_name} OFF" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+2"/>
+				<text_to_speech text="{abnormality_name} OFF" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -153,7 +153,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -166,7 +166,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -180,7 +180,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name} {time_left}" display_time="3000" />
-				<text_to_speech text="Crystal bind" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0" />
+				<text_to_speech text="Crystal bind" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -208,13 +208,13 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Nostrum" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Nostrum" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
 	
 	<!-- Everful Nostrum for your party members -->
-	<abnormality ingame="true" priority="4" remaining_seconds_before_trigger="20" rewarn_timeout_seconds="7" trigger="MissingDuringFight" target="PartySelfExcluded">
+	<abnormality ingame="true" priority="4" remaining_seconds_before_trigger="20" rewarn_timeout_seconds="40" trigger="MissingDuringFight" target="PartySelfExcluded">
 		<abnormalities>
 			<abnormality>4031</abnormality>
 			<abnormality>4030</abnormality>
@@ -243,7 +243,7 @@
 	</abnormality>
 
 	<!-- Bravery for yourself -->
-	<abnormality ingame="true" remaining_seconds_before_trigger="30" rewarn_timeout_seconds="3" trigger="MissingDuringFight" target="Self" priority="1">
+	<abnormality ingame="true" remaining_seconds_before_trigger="30" rewarn_timeout_seconds="3" trigger="MissingDuringFight" target="Self" priority="1" ignore_classes="Mystic,Priest">
 		<abnormalities>
 			<abnormality>4830</abnormality>
 			<abnormality>4831</abnormality>
