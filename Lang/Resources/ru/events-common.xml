@@ -208,7 +208,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Ноктиний" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Желтая банка не выпита" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
