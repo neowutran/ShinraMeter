@@ -142,9 +142,9 @@ namespace Data
                     @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\",
                     ModifierKeys.Control, Keys.End, "hits_received", "descending",
                     @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\", 4, 15),
-                new CopyKey(@"Damage Done @ {encounter} {timer} {partyDps} {enrage}:\", "",
-                    @"[{class}] {name}: {damage_percentage} ({damage_dealt}) | Crit: {crit_rate} | {global_dps}\", ModifierKeys.Shift, Keys.End, "damage_percentage",
-                    "descending", @"[{class}] {name}: {debuff_list}\", 4, 15)
+                new CopyKey(@"{encounter} {timer} ({enrage}) {partyDps}:\", @"{debuff_list}\",
+                    @"{class}: {name}: {global_dps} | {death_duration} - {deaths}\", ModifierKeys.Shift, Keys.End, "damage_percentage",
+                    "descending", "", 0, 10)
             };
             ExcelSave = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
             ClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageUp, ModifierKeys.Control);

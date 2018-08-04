@@ -1,39 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
-
-	<!-- Blessing of Shakan -->
-	<abnormality active="false" ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
-		<abnormalities>
-			<abnormality>805102</abnormality>
-			<abnormality>805101</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
-			</notify>
-		</actions>
-	</abnormality>
 	
-	<!-- Blessing of Balder --> 
-	<abnormality active="false" ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="40" trigger="MissingDuringFight" target="Party">
+	
+	<!-- Unleash berserker -->
+	<abnormality ingame="true" trigger="Added" target="Party" ignore_classes="Berserker">
 		<abnormalities>
-			<abnormality>805600</abnormality>
-			<abnormality>805601</abnormality>
-			<abnormality>805602</abnormality>
-			<abnormality>805603</abnormality>
-			<abnormality>805604</abnormality>
+			<abnormality>401705</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="1000" />
+				<text_to_speech text="{abnormality_name}" voice_gender="Male" voice_age="Adult" voice_position="0" volume="30" rate="1"/>
 			</notify>
 		</actions>
 	</abnormality>
 	
 	<!-- Energy Stars -->
-	<abnormality active="false" ingame="true"  rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	<abnormality active="true" ingame="true"  rewarn_timeout_seconds="5" remaining_seconds_before_trigger="4" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>801500</abnormality>
 			<abnormality>801501</abnormality>
@@ -42,21 +25,56 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+			<!--<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+				<beeps>
+					<beep frequency="150" duration="500"/>
+				</beeps> -->
+				<balloon title_text="Étoile" body_text="Étoile" display_time="3000" />
+				<text_to_speech text="Étoile énergétique" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	
+	
+	<!-- Thrall of Wrath -->
+	<abnormality active="true" ingame="true"  trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>702004</abnormality>
+		</abnormalities>
+		<actions> 
+			<notify>
+				<balloon title_text="Debut du Courroux" body_text="Debut du Courroux" display_time="3000" />
+				<text_to_speech text="Debut du Courroux" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+		<!-- Thrall of Wrath -->
+	<abnormality active="true" ingame="true"  trigger="Removed" target="Self">
+		<abnormalities>
+			<abnormality>702004</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="Fin du Courroux" body_text="Fin du Courroux" display_time="3000" />
+				<text_to_speech text="Fin du Courroux" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions>
 	</abnormality>
 	
 	<!-- Triple Nemesis -->
-	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5"  remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+	<abnormality ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="3" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
 			<abnormality>28090</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+			<!--<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				 <beeps>
+					<beep frequency="100" duration="500"/>
+				</beeps> -->
+				<text_to_speech text="Triple Némésice" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions>
 	</abnormality>

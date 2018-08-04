@@ -1,47 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
-	<!-- Mystic contagion -->
-	<abnormality active="true" ingame="true" trigger="Added" target="Boss">
-		<abnormalities>
-			<abnormality>701700</abnormality>
-			<abnormality>701701</abnormality>
-			<abnormality>701702</abnormality>
-			<abnormality>701703</abnormality>
-			<abnormality>701704</abnormality>
-			<abnormality>701705</abnormality>
-			<abnormality>701706</abnormality>
-			<abnormality>701707</abnormality>
-			<abnormality>701708</abnormality>
-			<abnormality>701720</abnormality>
-			<abnormality>701721</abnormality>
-			<abnormality>701722</abnormality>
-			<abnormality>701723</abnormality>
-			<abnormality>701724</abnormality>
-			<abnormality>701725</abnormality>
-			<abnormality>701726</abnormality>
-			<abnormality>701727</abnormality>
-			<abnormality>701728</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
-			</notify>
-		</actions>
-	</abnormality>
-	<!-- Adrenaline Rush -->
-	<abnormality active="true" ingame="true" trigger="Added" target="Self">
-		<abnormalities>
-			<abnormality>200701</abnormality>
-			<abnormality>200700</abnormality>
-		</abnormalities>
-		<actions>
-			<notify>
-				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
-			</notify>
-		</actions>
-	</abnormality>
 
 	<!-- Endurance debuff -->
 	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
@@ -57,7 +15,9 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech text="Endurance debuff" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+				<beeps>
+					<beep frequency="392" duration="500"/>
+				</beeps>
 			</notify>
 		</actions>
 	</abnormality>	

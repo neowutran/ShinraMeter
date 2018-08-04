@@ -1,6 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 
+	<!-- Unleash berserker -->
+	<abnormality ingame="true" trigger="Added" target="Party">
+		<abnormalities>
+			<abnormality>401705</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="1000" />
+				<text_to_speech text="{abnormality_name}" voice_gender="Male" voice_age="Adult" voice_position="0" volume="30" rate="1"/>
+			</notify>
+		</actions>
+	</abnormality>
+
 	<!-- United Thrall of Protection (endurance buff) -->
 	<abnormality active="true" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="PartySelfExcluded">
 		<area_boss_blacklist>
@@ -16,18 +29,6 @@
 		</actions>
 	</abnormality>
 	
-	<!-- Reset metamorphic blast -->
-	 <cooldown ingame="true" active="false" skill_id="81100">
-		<actions>
-			<notify>
-				<balloon title_text="{skill_name} reset" body_text="{skill_name}" display_time="3000" />
-				<beeps>
-					<beep frequency="185" duration="500"/>
-				</beeps>
-			</notify>
-		</actions>
-    </cooldown>
-	
 	<!-- United Thrall of Protection (endurance buff) -->
 	<abnormality active="true" priority="7" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="Self">
 		<area_boss_blacklist>
@@ -42,7 +43,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Thrall" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Serviteur de protection" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -62,11 +63,99 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
 	
+	<!-- Awakening thrall -->
+	<abnormality active="true" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<area_boss_blacklist>
+			<blacklist area_id="713" />
+			<blacklist area_id="813" />
+			<blacklist area_id="432" />
+			<blacklist area_id="431" />
+			<blacklist area_id="433" />		
+		</area_boss_blacklist>
+		<abnormalities>
+			<abnormality>702000</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<text_to_speech text="Awakening" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	
+	<!-- Fortified Thrall of Vengeance (power buff) Yukikoo edition -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="20" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<area_boss_blacklist>
+			<blacklist area_id="713" />
+			<blacklist area_id="813" />
+			<blacklist area_id="432" />
+			<blacklist area_id="431" />
+			<blacklist area_id="433" />		
+		</area_boss_blacklist>
+		<abnormalities>
+			<abnormality>702003</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<text_to_speech text="Vengeance" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Fortified Thrall of Vengeance (power buff) Vek edition -->
+	<abnormality active="true" priority="7" ingame="true" rewarn_timeout_seconds="17" trigger="Added" target="Self">
+		<area_boss_blacklist>
+			<blacklist area_id="713" />
+			<blacklist area_id="813" />
+			<blacklist area_id="432" />
+			<blacklist area_id="431" />
+			<blacklist area_id="433" />		
+		</area_boss_blacklist>
+		<abnormalities>
+			<abnormality>702003</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<beeps>
+					<beep frequency="0" duration="15000"/>
+					<beep frequency="1000" duration="170"/>
+				</beeps>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="1000" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+		<!-- Words of Judgment -->
+	<abnormality active="true" ingame="true"  trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>805803</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="Added" display_time="3000" />
+				<text_to_speech text="Début du Jugement" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+		<!-- Words of Judgment -->
+	<abnormality active="true" ingame="true"  trigger="Removed" target="Self">
+		<abnormalities>
+			<abnormality>805803</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="Removed" display_time="3000" />
+				<text_to_speech text="Fin du Jugement" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions> 
+	</abnormality>
+		
 	<!-- Endurance debuff -->
 	<abnormality active="true" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<area_boss_blacklist>
@@ -82,7 +171,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Debuff" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Debuff" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -99,7 +188,31 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Party aura -->
+	<abnormality ingame="true"  rewarn_timeout_seconds="1" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="PartySelfExcluded">
+		<abnormalities>
+			<abnormality>700330</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{player_name} is too far" display_time="2000" />
+			</notify>
+		</actions>
+	</abnormality>
+
+	<!-- Vow of Rebirth -->
+	<abnormality ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>700100</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="1000" />
 			</notify>
 		</actions>
 	</abnormality>
