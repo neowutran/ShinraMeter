@@ -88,6 +88,7 @@ namespace DamageMeter.UI
         private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
 
         private void SkillLog_ContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            if (_beginTime == 0) return;
             var dc = DataContext as Database.Structures.Skill;
             if (dc==null) return;
             Update(dc);
