@@ -22,7 +22,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech voice_position="0" text="Jugement" />
+				<text_to_speech voice_position="0" text="Burst" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -53,11 +53,11 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name} : on" body_text="{abnormality_name}" display_time="3000" />
-				<text_to_speech voice_position="0" text="Courroux" />
+				<text_to_speech voice_position="0" text="Burst" />
 			</notify>
 		</actions>
 	</abnormality>
-
+	
 	<!-- Notification when something happen & you are not on the Tera windows -->
 	<common_afk priority="0">
 		<actions>

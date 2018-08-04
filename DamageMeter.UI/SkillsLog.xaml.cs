@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace DamageMeter.UI
@@ -11,89 +15,45 @@ namespace DamageMeter.UI
     public partial class SkillsLog
     {
         private readonly bool _initialized;
-        private readonly bool _received;
 
-        private readonly IEnumerable<Database.Structures.Skill> _skills;
+        public bool Received { get; }
+        public ICollectionView View { get; }
+        private readonly ObservableCollection<Database.Structures.Skill> _skills;
+        public long BeginTime { get; }
 
         public SkillsLog(IEnumerable<Database.Structures.Skill> skills, bool received)
         {
             InitializeComponent();
-            //ContentWidth = 900;
             if (skills == null) { return; }
-            var enumerable = skills as Database.Structures.Skill[] ?? skills.ToArray();
+            var enumerable = new ObservableCollection<Database.Structures.Skill>((skills as Database.Structures.Skill[] ?? skills.ToArray()).OrderByDescending(x=>x.Time));
             if (!enumerable.Any()) { return; }
-            _received = received;
+            Received = received;
             _skills = enumerable;
+            View = CollectionViewSource.GetDefaultView(_skills);
+            BeginTime = enumerable.Min(x => x.Time);
+            View.Filter = x => {
+                var y = x as Database.Structures.Skill;
+                if (y == null) return false;
+                if ((bool)Damage.Status && y.Type == Database.Database.Type.Damage) return true;
+                if ((bool)Heal.Status && y.Type == Database.Database.Type.Heal) return true;
+                if ((bool)Mana.Status && y.Type == Database.Database.Type.Mana) return true;
+                if ((bool)Casts.Status && y.Type == Database.Database.Type.Counter) return true;
+                return false;
+            };
+            DataContext = this;
             _initialized = true;
-            Display();
-        }
-
-        public double ContentWidth { get; private set; }
-
-        private void Display()
-        {
-            Database.Database.Type? typeDamage = null;
-            Database.Database.Type? typeHeal = null;
-            Database.Database.Type? typeMana = null;
-            Database.Database.Type? typeCounter = null;
-            Database.Database.Type? lastType = null;
-
-            if ((bool) Damage.Status)
-            {
-                typeDamage = Database.Database.Type.Damage;
-                lastType = typeDamage;
-            }
-            if ((bool) Heal.Status)
-            {
-                typeHeal = Database.Database.Type.Heal;
-                lastType = typeHeal;
-            }
-            if ((bool) Mana.Status)
-            {
-                typeMana = Database.Database.Type.Mana;
-                lastType = typeMana;
-            }
-
-            if ((bool)Casts.Status)
-            {
-                typeCounter = Database.Database.Type.Counter;
-                lastType = typeCounter;
-            }
-
-            if (lastType == null)
-            {
-                typeMana = Database.Database.Type.Mana;
-                typeHeal = Database.Database.Type.Heal;
-                typeDamage = Database.Database.Type.Damage;
-                typeCounter = Database.Database.Type.Counter;
-            }
-            else
-            {
-                if (typeDamage == null) { typeDamage = lastType; }
-                if (typeHeal == null) { typeHeal = lastType; }
-                if (typeMana == null) { typeMana = lastType; }
-                if (typeCounter == null) { typeCounter = lastType; }
-            }
-
-            Skills.Items.Clear();
-            var beginTime = _skills.Min(x => x.Time);
-            foreach (var skill in _skills.Where(x => x.Type == typeDamage || x.Type == typeHeal || x.Type == typeMana || x.Type == typeCounter).OrderByDescending(x => x.Time))
-            {
-                var log = new SkillLog();
-                log.Update(skill, _received, beginTime);
-                Skills.Items.Add(log);
-            }
         }
 
         private void ValueChanged(object sender, RoutedEventArgs e)
         {
             if (!_initialized) { return; }
-            Display();
+            (Skills.ItemsSource as ICollectionView)?.Refresh();
         }
 
         private void Skills_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta);
+            var s = (ScrollViewer)sender;
+            s.ScrollToVerticalOffset(s.VerticalOffset - (e.Delta>0?10:-10));
             e.Handled = true;
         }
     }

@@ -5,7 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:l="clr-namespace:Lang;assembly=Lang"
              xmlns:ui="clr-namespace:DamageMeter.UI"
+             d:DataContext="{d:DesignInstance {x:Type ui:SkillsLog}}"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ItemsControl}" x:Key="SkillItemsControl">
+            <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+            <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ItemsControl}">
+                        <Border SnapsToDevicePixels="True"
+                            BorderThickness="{TemplateBinding Border.BorderThickness}"
+                            Padding="{TemplateBinding Control.Padding}"
+                            BorderBrush="{TemplateBinding Border.BorderBrush}"
+                            Background="{TemplateBinding Panel.Background}">
+                            <ScrollViewer Padding="{TemplateBinding Control.Padding}" Focusable="False"
+                                      PreviewMouseWheel="Skills_PreviewMouseWheel"
+                                      VerticalContentAlignment="Top"
+                                      VerticalAlignment="Top" Height="Auto"
+                                      CanContentScroll="True" VerticalScrollBarVisibility="Visible">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -27,15 +60,16 @@
             <ui:MaterialSwitch Grid.Column="3" Status="True" Foreground="{StaticResource CastText}" SwitchColor="{StaticResource CastText}"  Content="{x:Static l:LP.Counter}" Height="30" x:Name="Casts"
                       On="ValueChanged" Off="ValueChanged" Margin="20,5"/>
         </Grid>
-        <ScrollViewer Name="ScrollViewer" Grid.Row="1" VerticalScrollBarVisibility="Visible" MaxHeight="500">
-
-            <ItemsControl Name="Skills" PreviewMouseWheel="Skills_PreviewMouseWheel" Background="Transparent"
+        <ItemsControl Grid.Row="1" Name="Skills" Background="Transparent" MaxHeight="500" Style="{StaticResource SkillItemsControl}"
                           BorderThickness="0"
                           Focusable="False" Grid.IsSharedSizeScope="True"
-                          ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                          HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left" />
-        </ScrollViewer>
-
+                          ItemsSource="{Binding View}" Tag="{Binding}"
+                          HorizontalContentAlignment="Stretch" IsTextSearchEnabled="False" HorizontalAlignment="Left" Margin="1,-1,0,1">
+            <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <ui:SkillLog Tag="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                  </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

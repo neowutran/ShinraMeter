@@ -18,19 +18,20 @@ namespace DamageMeter.UI
             InitializeComponent();
         }
 
-
-        public void Update(Database.Structures.Skill skill, bool received, long beginTime)
+        private bool _received;
+        private long _beginTime;
+        public void Update(Database.Structures.Skill skill)
         {
             var skillInfo = SkillResult.GetSkill(skill.Source, skill.Pet, skill.SkillId, skill.HotDot, PacketProcessor.Instance.EntityTracker,
                 BasicTeraData.Instance.SkillDatabase, BasicTeraData.Instance.HotDotDatabase, BasicTeraData.Instance.PetSkillDatabase);
-            var entity = received ? skill.Source : skill.Target;
+            var entity = _received ? skill.Source : skill.Target;
             Brush color = null;
             var fontWeight = FontWeights.Normal;
             if (skill.Critic) { fontWeight = FontWeights.Bold; }
             SkillAmount.FontWeight = fontWeight;
             SkillAmount.ToolTip = skill.Critic ? LP.Critical : LP.White;
             SkillName.Content = skill.SkillId;
-            Time.Content = (skill.Time - beginTime) / TimeSpan.TicksPerSecond + LP.Seconds;
+            Time.Content = (skill.Time - _beginTime) / TimeSpan.TicksPerSecond + LP.Seconds;
             if (skillInfo != null)
             {
                 SkillIcon.ImageSource = BasicTeraData.Instance.Icons.GetImage(skillInfo.IconName);
@@ -81,9 +82,25 @@ namespace DamageMeter.UI
                 SkillTarget.Content = npcEntity.Info.Name + " : " + npcEntity.Info.Area;
             }
             else if (entity is UserEntity) { SkillTarget.Content = ((UserEntity)entity).Name; }
-            SkillPet.Content = skill.Pet == null ? "" : skill.Pet.Name;
+//            SkillPet.Content = skill.Pet == null ? "" : skill.Pet.Name;
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e) { ((ClickThrouWindow)Window.GetWindow(this))?.Move(sender, e); }
+
+        private void SkillLog_ContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            var dc = DataContext as Database.Structures.Skill;
+            if (dc==null) return;
+            Update(dc);
+        }
+
+        private void SkillLog_OnLoaded(object sender, RoutedEventArgs e) {
+            var dc = DataContext as Database.Structures.Skill;
+            if (dc == null) return;
+            var tab = (SkillsLog)Tag;
+            _received = tab.Received;
+            _beginTime = tab.BeginTime;
+            Update(dc);
+
+        }
     }
 }

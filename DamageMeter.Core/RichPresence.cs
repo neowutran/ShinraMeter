@@ -104,7 +104,7 @@ namespace Tera.RichPresence
         
         private DiscordRPC.RichPresence InGamePresence => new DiscordRPC.RichPresence
         {
-            Details = Details.Length>=128 ? Details.Remove(127) : Details,
+            Details = Details.LimitUtf8ByteCount(128),
             State = $"{PartyStatus}{AdditionalStatus}",
             Timestamps = Timestamps,
             Party = Party,
@@ -411,7 +411,7 @@ namespace Tera.RichPresence
         }
         public void Error(string message, params object[] args)
         {
-            if (message!= "Failed connection to {0}. {1}")
+            if (message != "Failed connection to {0}. {1}" && message != "Failed to connect for some reason.")
                 BasicTeraData.LogError("DiscordRPC logged error:\r\n"+ message, false, true);
         }
     }

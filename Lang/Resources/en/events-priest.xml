@@ -25,18 +25,12 @@
 		</abnormalities>
 		<actions>
 			<notify>
-			<!--<balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
-				<beeps>
-					<beep frequency="150" duration="500"/>
-				</beeps> -->
-				<balloon title_text="Étoile" body_text="Étoile" display_time="3000" />
-				<text_to_speech text="Étoile énergétique" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions>
 	</abnormality>
-	
-	
-	
+		
 	<!-- Thrall of Wrath -->
 	<abnormality active="true" ingame="true"  trigger="Added" target="Self">
 		<abnormalities>
@@ -44,8 +38,8 @@
 		</abnormalities>
 		<actions> 
 			<notify>
-				<balloon title_text="Debut du Courroux" body_text="Debut du Courroux" display_time="3000" />
-				<text_to_speech text="Debut du Courroux" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<balloon title_text="{abnormality_name}" body_text="START {abnormality_name}" display_time="3000" />
+				<text_to_speech text="Start {abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -57,8 +51,8 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<balloon title_text="Fin du Courroux" body_text="Fin du Courroux" display_time="3000" />
-				<text_to_speech text="Fin du Courroux" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<balloon title_text="{abnormality_name}" body_text="END {abnormality_name}" display_time="3000" />
+				<text_to_speech text="END {abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -70,11 +64,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-			<!--<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
-				 <beeps>
-					<beep frequency="100" duration="500"/>
-				</beeps> -->
-				<text_to_speech text="Triple Némésice" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions>
 	</abnormality>

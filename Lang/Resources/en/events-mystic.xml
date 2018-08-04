@@ -9,7 +9,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="1000" />
-				<text_to_speech text="{abnormality_name}" voice_gender="Male" voice_age="Adult" voice_position="0" volume="30" rate="1"/>
+				<text_to_speech text="{abnormality_name}" voice_gender="Male" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="1"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -43,7 +43,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Serviteur de protection" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -63,7 +63,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -82,7 +82,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Awakening" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Awakening" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -102,7 +102,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Vengeance" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Vengeance" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -138,7 +138,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="Added" display_time="3000" />
-				<text_to_speech text="Début du Jugement" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<text_to_speech text="Judgement start" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -151,7 +151,7 @@
 		<actions>
 			<notify>
 				<balloon title_text="{abnormality_name}" body_text="Removed" display_time="3000" />
-				<text_to_speech text="Fin du Jugement" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="80" rate="+2"/>
+				<text_to_speech text="Judgement end" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="80" rate="+2"/>
 			</notify>
 		</actions> 
 	</abnormality>
@@ -171,7 +171,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Debuff" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Debuff" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
@@ -188,13 +188,13 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" culture="fr-FR" voice_position="0" volume="30" rate="0"/>
+				<text_to_speech text="Aura" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
 			</notify>
 		</actions>
 	</abnormality>
 	
 	<!-- Party aura -->
-	<abnormality ingame="true"  rewarn_timeout_seconds="1" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="PartySelfExcluded">
+	<abnormality ingame="true"  rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="PartySelfExcluded">
 		<abnormalities>
 			<abnormality>700330</abnormality>
 		</abnormalities>
@@ -206,7 +206,7 @@
 	</abnormality>
 
 	<!-- Vow of Rebirth -->
-	<abnormality ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	<abnormality ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>700100</abnormality>
 		</abnormalities>
