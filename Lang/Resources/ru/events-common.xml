@@ -140,7 +140,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="Ярость кончилась" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+2"/>
+				<balloon title_text="Ярость кончилась" body_text="{abnormality_name}" display_time="3000" />
 			</notify>
 		</actions>
 	</abnormality>
