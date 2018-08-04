@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             Loaded="SkillLog_OnLoaded"
+             DataContextChanged="SkillLog_ContextChanged"
              mc:Ignorable="d">
     <Grid MouseLeftButtonDown="DragWindow">
         <Grid.ColumnDefinitions>
@@ -11,7 +13,7 @@
             <ColumnDefinition SharedSizeGroup="s2" MinWidth="70" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="s3" MinWidth="70" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="s4" MinWidth="200" Width="Auto" />
-            <ColumnDefinition SharedSizeGroup="s5" MinWidth="200" Width="Auto" />
+            <!--<ColumnDefinition SharedSizeGroup="s5" MinWidth="200" Width="Auto" />-->
             <ColumnDefinition SharedSizeGroup="s6" MinWidth="60" Width="Auto" />
         </Grid.ColumnDefinitions>
         <Ellipse Fill="#1999" Margin="10,2,2,2"></Ellipse>
@@ -41,10 +43,10 @@
                HorizontalAlignment="Stretch" x:Name="SkillTarget" VerticalAlignment="Center"
                MinHeight="29"
                Foreground="{StaticResource LightSecondaryText}" />
-        <Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Right"
+        <!--<Label Grid.Column="5" FontSize="14" HorizontalContentAlignment="Right"
                HorizontalAlignment="Stretch" x:Name="SkillPet" VerticalAlignment="Center"
                MinHeight="29"
-               Foreground="{StaticResource LightSecondaryText}" />
+               Foreground="{StaticResource LightSecondaryText}" />-->
         <Label Grid.Column="6" FontSize="14" HorizontalContentAlignment="Right"
                HorizontalAlignment="Stretch" x:Name="Time" VerticalAlignment="Center"
                MinHeight="29"
