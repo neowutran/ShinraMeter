@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
@@ -576,7 +577,7 @@ namespace DamageMeter.UI
                 }
                 else
                 {
-                    BackgroundColor.Background = (SolidColorBrush) App.Current.FindResource("DarkBarColor");
+                    BackgroundColor.Background = (SolidColorBrush) App.Current.FindResource("KrBgColor");
                     TooSlow.Visibility = Visibility.Collapsed;
                 }
             });
@@ -588,12 +589,13 @@ namespace DamageMeter.UI
 
         private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            Footer.Visibility = Visibility.Visible;
+            Footer.BeginAnimation(HeightProperty, new DoubleAnimation(33, TimeSpan.FromMilliseconds(350)) {EasingFunction =  new QuadraticEase()});
+
         }
 
         private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            Footer.Visibility = Visibility.Collapsed;
+            Footer.BeginAnimation(HeightProperty, new DoubleAnimation(0, TimeSpan.FromMilliseconds(350)) {EasingFunction =  new QuadraticEase()});
         }
     }
 

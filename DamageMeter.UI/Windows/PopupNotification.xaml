@@ -13,7 +13,7 @@
                         Title="Notification popup">
     <Window.Resources>
         <DataTemplate x:Key="notification">
-            <ui:NotificationControl HorizontalAlignment="Left" />
+            <ui:NotificationControl HorizontalAlignment="Center" />
         </DataTemplate>
     </Window.Resources>
     <Window.Background>
@@ -34,7 +34,7 @@
         <ItemsControl Grid.Row="1" ItemTemplate="{StaticResource notification}" Name="content">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel HorizontalAlignment="Left" Orientation="Vertical" VerticalAlignment="Stretch" Name="mainPanel"/>
+                    <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" VerticalAlignment="Stretch" Name="mainPanel"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>

@@ -27,16 +27,22 @@
                 </Setter>
             </Style>
         </Grid.Resources>
-        <Rectangle Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="DragWindow"
+        <Border Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="DragWindow"
                    x:Name="DpsIndicator"
-                   Fill="#2bf"
-                   Opacity="1" HorizontalAlignment="Left" Height="20" Margin="0,0,0,1"
-                   Stroke="Transparent" VerticalAlignment="Bottom"
-                   Width="0" >
-            <Rectangle.LayoutTransform>
-                <ScaleTransform ScaleY=".1"/>
-            </Rectangle.LayoutTransform>
-        </Rectangle>
+                    Opacity="1" HorizontalAlignment="Left" Height="Auto" Margin="0,0,0,1"
+                   BorderBrush="#2bf" VerticalAlignment="Stretch"
+                   Width="0" BorderThickness="0 0 0 2" >
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0 1">
+                    <GradientStop Color="#32bf" Offset="1"></GradientStop>
+                    <GradientStop Color="#02bf" Offset="0"></GradientStop>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Border.LayoutTransform>
+                <ScaleTransform ScaleY="1"/>
+            </Border.LayoutTransform>
+        </Border>
 
         <Grid Focusable="False" PreviewMouseRightButtonDown="ShowSkills" MouseLeftButtonDown="DragWindow"
               x:Name="GridStats" HorizontalAlignment="Center" Width="Auto" MouseEnter="GridStats_MouseEnter" MouseLeave="GridStats_MouseLeave"

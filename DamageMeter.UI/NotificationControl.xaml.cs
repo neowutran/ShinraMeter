@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using Xceed.Wpf.AvalonDock.Controls;
 
 namespace DamageMeter.UI
@@ -124,7 +125,8 @@ namespace DamageMeter.UI
                     break;
             }
 
-            rect.Fill = new SolidColorBrush(col);
+            rect.Stroke = new SolidColorBrush(col);
+            (rect.Effect as DropShadowEffect).Color = col;
             DHeight = ActualHeight;
             ((UIElement)this).FindLogicalAncestor<PopupNotification>().DHeight += DHeight;
             var an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));

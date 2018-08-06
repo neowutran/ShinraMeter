@@ -228,13 +228,14 @@
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource MainBorder}" Grid.RowSpan="5" x:Name="BackgroundColor"/>
+        <Border Style="{StaticResource MainBorder}" BorderBrush="{StaticResource KrBorderColor}" BorderThickness="1" Background="{StaticResource KrBgColor}" Grid.RowSpan="5" x:Name="BackgroundColor"/>
+        <!--<Border Background="#1fff" Grid.ColumnSpan="2" Grid.Row="1"></Border>-->
+<!--<Separator Grid.Row="1" VerticalAlignment="Bottom" Background="#1fff" Margin="0 0"></Separator>-->
         <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="29" />
             </Grid.ColumnDefinitions>
-
             <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
                       SelectionChanged="ListEncounter_OnSelectionChanged"
                       x:Name="ListEncounter" HorizontalAlignment="Stretch"
@@ -260,9 +261,9 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-            <Path Data="{StaticResource Svg.Timer}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
+                <Path Data="{StaticResource Svg.Timer}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
 
-            <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
+                <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
                    Foreground="White" PreviewMouseLeftButtonDown="ChangeTimeLeft"
                    VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
             </Grid>
@@ -271,9 +272,9 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-            <Path Grid.Column="0" Data="{StaticResource Svg.Sword}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
+                <Path Grid.Column="0" Data="{StaticResource Svg.Sword}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
 
-            <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
+                <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
                    Foreground="White"
                    VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
             </Grid>
@@ -282,8 +283,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-            <Path Grid.Column="0" Data="{StaticResource Svg.HeartHalfFull}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
-            <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
+                <Path Grid.Column="0" Data="{StaticResource Svg.HeartHalfFull}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
+                <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
                    Foreground="White" 
                    VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
             </Grid>
@@ -296,7 +297,7 @@
         <TextBlock  Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center" Name="TooSlow" 
                    Background="Transparent" Foreground="Yellow" Text="{x:Static l:LP.Your_computer_is_too_slow}"
                    Visibility="Collapsed"/>
-        <Grid Grid.Row="4" Name="Footer" Visibility="Collapsed">
+        <Grid Grid.Row="4" Name="Footer" Height="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="*"/>
@@ -304,7 +305,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <!--Blur button-->
             <ToggleButton  
         Grid.Column="2" x:Name="HideNames"
@@ -312,12 +313,12 @@
         Height="25" VerticalAlignment="Top" Width="25" Margin="2">
                 <Image Name="HideNamesImage" />
             </ToggleButton>
-            
+
             <!--Adds button-->
             <Image PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown"
            HorizontalAlignment="Center" x:Name="Chrono" Stretch="Fill"  Style="{StaticResource ImageButton}"
            Height="25" VerticalAlignment="Top" Width="25" Grid.Column="3" Margin="2"/>
-            
+
             <!--Settings button-->
             <Image  
         HorizontalAlignment="Center"  Stretch="Fill" x:Name="Config"
@@ -367,7 +368,7 @@
                 </Image.ContextMenu>
 
             </Image>
-            
+
             <!--Stats button-->
             <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown"
            Stretch="Fill"  Style="{StaticResource ImageButton}"

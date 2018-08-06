@@ -130,6 +130,13 @@
         <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#FF212121" />
         <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FF212121" />
         <SolidColorBrush x:Key="ShinraColor" Color="#b50000" />
+        <Color x:Key="KrBgColorBase">#232830</Color>
+        <Color x:Key="KrBorderColorBase">#515b65</Color>
+        <Color x:Key="KrBgColorBaseTransp">#00232830</Color>
+        <Color x:Key="KrBorderColorBaseTransp">#00515b65</Color>
+        <SolidColorBrush x:Key="KrBgColor" Color="{StaticResource KrBgColorBase}"/>
+        <SolidColorBrush x:Key="KrBorderColor" Color="{StaticResource KrBorderColorBase}"/>
+
         <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
             <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}" />
