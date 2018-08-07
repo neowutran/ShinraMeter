@@ -37,6 +37,90 @@ namespace DamageMeter.UI
             Class.Source = Image;
             LabelName.Content = PlayerName;
             LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
+            var dpsCol100 = Color.FromArgb(255, 244, 164, 66);
+            var dpsCol30 = Color.FromArgb(60, 244, 164, 66);
+            var dpsCol0 = Color.FromArgb(0, 244, 164, 66);
+            var tankCol100 = Color.FromArgb(255, 68, 178, 252);
+            var tankCol30 = Color.FromArgb(60, 68, 178, 252);
+            var tankCol0 = Color.FromArgb(0, 68, 178, 252);
+            var healCol100 = Color.FromArgb(255, 59, 226, 75);
+            var healCol30 = Color.FromArgb(60, 59, 226, 75);
+            var healCol0 = Color.FromArgb(0, 59, 226, 75);
+            var unkCol100 = Color.FromArgb(255, 200, 200, 200);
+            var unkCol30 = Color.FromArgb(60, 200, 200, 200);
+            var unkCol0 = Color.FromArgb(0, 200, 200, 200);
+            if (playerDamageDealt != null)
+            {
+                switch (playerDamageDealt.Source.Class)
+                {
+                    case Tera.Game.PlayerClass.Warrior:
+                    case Tera.Game.PlayerClass.Slayer:
+                    case Tera.Game.PlayerClass.Berserker:
+                    case Tera.Game.PlayerClass.Sorcerer:
+                    case Tera.Game.PlayerClass.Archer:
+                    case Tera.Game.PlayerClass.Reaper:
+                    case Tera.Game.PlayerClass.Gunner:
+                    case Tera.Game.PlayerClass.Ninja:
+                    case Tera.Game.PlayerClass.Valkyrie:
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(dpsCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(dpsCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(dpsCol100);
+                        break;
+                    case Tera.Game.PlayerClass.Priest:
+                    case Tera.Game.PlayerClass.Mystic:
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(healCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(healCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(healCol100);
+                        break;
+                    case Tera.Game.PlayerClass.Brawler:
+                    case Tera.Game.PlayerClass.Lancer:
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(tankCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(tankCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(tankCol100);
+                        break;
+                    case Tera.Game.PlayerClass.Common:
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(unkCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(unkCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(unkCol100);
+                        break;
+                }
+            }
+            else if (PlayerHealDealt != null)
+            {
+                switch (playerDamageDealt.Source.Class)
+                {
+                    case Tera.Game.PlayerClass.Warrior:
+                    case Tera.Game.PlayerClass.Slayer:
+                    case Tera.Game.PlayerClass.Berserker:
+                    case Tera.Game.PlayerClass.Sorcerer:
+                    case Tera.Game.PlayerClass.Archer:
+                    case Tera.Game.PlayerClass.Reaper:
+                    case Tera.Game.PlayerClass.Gunner:
+                    case Tera.Game.PlayerClass.Ninja:
+                    case Tera.Game.PlayerClass.Valkyrie:
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(dpsCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(dpsCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(dpsCol100);
+                        break;
+                    case Tera.Game.PlayerClass.Priest:
+                    case Tera.Game.PlayerClass.Mystic:
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(healCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(healCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(healCol100);
+                        break;
+                    case Tera.Game.PlayerClass.Brawler:
+                    case Tera.Game.PlayerClass.Lancer:
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(tankCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(tankCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(tankCol100);
+                        break;
+                    case Tera.Game.PlayerClass.Common:
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(unkCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(unkCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(unkCol100);
+                        break;
+                }
+            }
         }
 
         public PlayerDamageDealt PlayerDamageDealt { get; set; }
@@ -65,7 +149,7 @@ namespace DamageMeter.UI
         public string PlayerName => PlayerDamageDealt.Source.Name;
 
 
-        public string DamagePart => Math.Round((double) PlayerDamageDealt.Amount * 100 / EntityInformation.TotalDamage) + "%";
+        public string DamagePart => Math.Round((double)PlayerDamageDealt.Amount * 100 / EntityInformation.TotalDamage) + "%";
 
         public void Repaint(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playerHealDealt, EntityInformation entityInformation,
             Database.Structures.Skills skills, PlayerAbnormals buffs, bool timedEncounter)
@@ -96,12 +180,12 @@ namespace DamageMeter.UI
             _windowSkill?.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter);
             Spacer.Width = 0;
             GridStats.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var SGrid = ((MainWindow) ((FrameworkElement) ((FrameworkElement) ((FrameworkElement) Parent).Parent).Parent).Parent).SGrid;
-            var EGrid = ((MainWindow) ((FrameworkElement) ((FrameworkElement) ((FrameworkElement) Parent).Parent).Parent).Parent).EGrid;
+            var SGrid = ((MainWindow)((FrameworkElement)((FrameworkElement)((FrameworkElement)Parent).Parent).Parent).Parent).SGrid;
+            var EGrid = ((MainWindow)((FrameworkElement)((FrameworkElement)((FrameworkElement)Parent).Parent).Parent).Parent).EGrid;
             SGrid.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var mainWidth = SGrid.DesiredSize.Width;
             Spacer.Width = mainWidth > GridStats.DesiredSize.Width ? mainWidth - GridStats.DesiredSize.Width : 0;
-            var an = new DoubleAnimation(DpsIndicator.ActualWidth, EntityInformation.TotalDamage == 0 ? mainWidth : mainWidth * PlayerDamageDealt.Amount / EntityInformation.TotalDamage,  TimeSpan.FromMilliseconds(400)) { EasingFunction = new QuadraticEase()};
+            var an = new DoubleAnimation(DpsIndicator.ActualWidth, EntityInformation.TotalDamage == 0 ? mainWidth : mainWidth * PlayerDamageDealt.Amount / EntityInformation.TotalDamage, TimeSpan.FromMilliseconds(400)) { EasingFunction = new QuadraticEase() };
             DpsIndicator.BeginAnimation(WidthProperty, an);
             EGrid.MaxWidth = Math.Max(mainWidth, GridStats.DesiredSize.Width);
         }
@@ -126,8 +210,8 @@ namespace DamageMeter.UI
                 _windowSkill = new Skills(this, PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter)
                 {
                     Title = PlayerName,
-                    PlayerNameTB = {Text = PlayerName}
-                     //CloseMeter = {Content = LP.ResourceManager.GetString(PlayerDamageDealt.Source.Class.ToString(), LP.Culture) + " " + PlayerName + ": " + LP.Close}
+                    PlayerNameTB = { Text = PlayerName }
+                    //CloseMeter = {Content = LP.ResourceManager.GetString(PlayerDamageDealt.Source.Class.ToString(), LP.Culture) + " " + PlayerName + ": " + LP.Close}
                 };
                 var main = Window.GetWindow(this);
                 var screen = Screen.FromHandle(new WindowInteropHelper(main).Handle);
@@ -146,8 +230,8 @@ namespace DamageMeter.UI
                     var m = source.CompositionTarget.TransformToDevice;
                     var dx = m.M11;
                     var dy = m.M22;
-                    ((UIElement) _windowSkill.DpsPanel.Content).Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                    var maxWidth = (((UIElement) _windowSkill.DpsPanel.Content).DesiredSize.Width + 6) * BasicTeraData.Instance.WindowData.Scale;
+                    ((UIElement)_windowSkill.DpsPanel.Content).Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                    var maxWidth = (((UIElement)_windowSkill.DpsPanel.Content).DesiredSize.Width + 6) * BasicTeraData.Instance.WindowData.Scale;
                     Point locationFromScreen;
                     if (screen.WorkingArea.X + screen.WorkingArea.Width > (main.Left + main.Width + maxWidth) * dx)
                     {
