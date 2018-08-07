@@ -125,8 +125,8 @@ namespace DamageMeter.UI
                     break;
             }
 
-            rect.Stroke = new SolidColorBrush(col);
-            (rect.Effect as DropShadowEffect).Color = col;
+            //rect.Stroke = new SolidColorBrush(col);
+            //(rect.Effect as DropShadowEffect).Color = col;
             DHeight = ActualHeight;
             ((UIElement)this).FindLogicalAncestor<PopupNotification>().DHeight += DHeight;
             var an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));

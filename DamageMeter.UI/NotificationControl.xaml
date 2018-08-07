@@ -36,10 +36,10 @@
         <Grid Grid.RowSpan="3" Opacity=".7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="66"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Border BorderThickness="0 2 0 2" Margin="0 20 0 0" >
+            <Border BorderThickness="0 2 0 2" Margin="0 25 0 0" >
                 <Border.Background>
                     <LinearGradientBrush EndPoint="1 0">
                         <GradientStop Color="{StaticResource KrBgColorBase}" Offset="1"></GradientStop>
@@ -54,7 +54,7 @@
                 </Border.BorderBrush>
 
             </Border>
-            <Border BorderThickness="0 2 0 2"  Margin="0 20 0 0" Grid.Column="2">
+            <Border BorderThickness="0 2 0 2"  Margin="0 25 0 0" Grid.Column="2">
                 <Border.Background>
                     <LinearGradientBrush EndPoint="1 0">
                         <GradientStop Color="{StaticResource KrBgColorBase}" Offset="0"></GradientStop>
@@ -73,17 +73,18 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-            <Polygon Points="0 20 24 44 48 20 48 48 0 48" Margin="0 0 0 0" Fill="{StaticResource KrBgColor}"/>
+            <Polygon Points="0 25  33 58  66 25  66 66  0 66" Margin="0 0 0 0" Fill="{StaticResource KrBgColor}"/>
                 <Border Grid.Row="1" Background="{StaticResource KrBgColor}"></Border>
             </Grid>
             <Border Grid.Column="1" BorderBrush="{StaticResource KrBorderColor}" BorderThickness="0 0 0 2"></Border>
-            <Path Grid.Column="1" Data="M-2 20 0 20 24 44 48 20 50 20" Margin="0 1 0 0" StrokeThickness="2" Stroke="{StaticResource KrBorderColor}" />
+            <Path Grid.Column="1" Data="M -4 25  0 25  33 58  66 25  70 25" Margin="0 1 0 0" StrokeThickness="2"
+                  Stroke="{StaticResource KrBorderColor}" />
         </Grid>
         <Grid>
-            <Rectangle Width="40" Height="40"  VerticalAlignment="Top" Fill="{StaticResource KrBgColor}" Margin="0" OpacityMask="{StaticResource IconOpacityBrush}"/>
-            <Image Width="40" Height="40" x:Name="img" VerticalAlignment="Top"
+            <Rectangle Width="50" Height="50"  VerticalAlignment="Top" Fill="{StaticResource KrBgColor}" Margin="0" OpacityMask="{StaticResource IconOpacityBrush}"/>
+            <Image Width="50" Height="50" x:Name="img" VerticalAlignment="Top"
                    Visibility="Hidden"  Margin="0" OpacityMask="{StaticResource IconOpacityBrush}"/>
-            <Rectangle x:Name="ell" OpacityMask="{StaticResource IconOpacityBrush}" Width="40" Height="40" 
+            <Rectangle x:Name="ell" OpacityMask="{StaticResource IconOpacityBrush}" Width="50" Height="50" 
                    Margin="0" Grid.RowSpan="2" Grid.Column="1" StrokeThickness="0" Stroke="#555" VerticalAlignment="Top">
                 <Rectangle.Fill>
                     <ImageBrush x:Name="ellImgBrush" ImageSource="{Binding Icon, Converter={StaticResource iconConv}}"/>
@@ -92,14 +93,14 @@
                     <DropShadowEffect Opacity=".7" ShadowDepth="2"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <Rectangle Stroke="#2bf" StrokeThickness="2" Width="30" Height="30" 
+            <Rectangle Stroke="#dfff" StrokeThickness="2" Width="40" Height="40" 
                        VerticalAlignment="Top" Grid.RowSpan="3" Margin="5" Name="rect"
                        RenderTransformOrigin=".5 .5">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="45"/>
                 </Rectangle.RenderTransform>
                 <Rectangle.Effect>
-                    <DropShadowEffect Opacity="1" BlurRadius="8" ShadowDepth="0" Color="#2bf"/>
+                    <DropShadowEffect Opacity="1" BlurRadius="15" ShadowDepth="0" Color="#fff"/>
                 </Rectangle.Effect>
 
             </Rectangle>
