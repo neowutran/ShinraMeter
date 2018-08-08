@@ -85,42 +85,6 @@ namespace DamageMeter.UI
                         break;
                 }
             }
-            else if (PlayerHealDealt != null)
-            {
-                switch (playerDamageDealt.Source.Class)
-                {
-                    case Tera.Game.PlayerClass.Warrior:
-                    case Tera.Game.PlayerClass.Slayer:
-                    case Tera.Game.PlayerClass.Berserker:
-                    case Tera.Game.PlayerClass.Sorcerer:
-                    case Tera.Game.PlayerClass.Archer:
-                    case Tera.Game.PlayerClass.Reaper:
-                    case Tera.Game.PlayerClass.Gunner:
-                    case Tera.Game.PlayerClass.Ninja:
-                    case Tera.Game.PlayerClass.Valkyrie:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(dpsCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(dpsCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(dpsCol100);
-                        break;
-                    case Tera.Game.PlayerClass.Priest:
-                    case Tera.Game.PlayerClass.Mystic:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(healCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(healCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(healCol100);
-                        break;
-                    case Tera.Game.PlayerClass.Brawler:
-                    case Tera.Game.PlayerClass.Lancer:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(tankCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(tankCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(tankCol100);
-                        break;
-                    case Tera.Game.PlayerClass.Common:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(unkCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(unkCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(unkCol100);
-                        break;
-                }
-            }
         }
 
         public PlayerDamageDealt PlayerDamageDealt { get; set; }
