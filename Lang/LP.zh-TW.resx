@@ -565,7 +565,7 @@
 # 例子:
 # 111.22.33.44 NA VPN Server 1
 #
-# 目前可用地區: EU, NA, RU, KR, TW, JP
+# 目前可用地區: EU, NA, RU, KR, KR-PTS, TW, THA, JP, JP-C
 #
 # 開頭"#"為注釋 會被忽略
 # 請在下一行之後開始添加

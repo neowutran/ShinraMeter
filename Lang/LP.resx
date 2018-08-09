@@ -567,7 +567,7 @@ Reset and paused until map change or relog.</value>
 # Example:
 # 111.22.33.44 NA VPN Server 1
 #
-# Current possible regions: EU, NA, RU, KR, TW, JP
+# Current possible regions: EU, NA, RU, KR, KR-PTS, TW, THA, JP, JP-C
 #
 # Lines starting with '#' are ignored
 # Place servers below the next line

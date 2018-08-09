@@ -19,7 +19,7 @@ namespace Lang {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class LP {
@@ -621,18 +621,7 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_archer {
             get {
@@ -643,18 +632,7 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_berserker {
             get {
@@ -664,19 +642,18 @@ namespace Lang {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
-        ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
+        ///&lt;events&gt;	
+        ///	&lt;!-- Endurance debuff  --&gt;
+        ///	&lt;abnormality active=&quot;false&quot; ingame=&quot;true&quot; rewarn_timeout_seconds=&quot;5&quot; remaining_seconds_before_trigger=&quot;0&quot; trigger=&quot;MissingDuringFight&quot; target=&quot;Boss&quot;&gt;
         ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;10153140&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;200300&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;200301&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;200302&lt;/abnormality&gt;
+        ///		&lt;/abnormalities&gt;
+        ///		&lt;actions&gt;
+        ///			&lt;notify&gt;
+        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_brawler {
             get {
@@ -688,18 +665,18 @@ namespace Lang {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
         ///
-        ///	&lt;!-- Notification when something happen &amp; you are not on the Tera windows --&gt;
-        ///	&lt;common_afk priority=&quot;0&quot;&gt;
+        ///	&lt;!-- Adrenaline Rush --&gt;
+        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Self&quot; ignore_classes=&quot;Mystic,Priest&quot;&gt;
+        ///		&lt;abnormalities&gt;
+        ///			&lt;abnormality&gt;200701&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;200700&lt;/abnormality&gt;
+        ///		&lt;/abnormalities&gt;
         ///		&lt;actions&gt;
-        ///				&lt;notify&gt;
-        ///					&lt;balloon title_text=&quot;{afk_title}&quot; body_text=&quot;{afk_body}&quot; display_time=&quot;3000&quot; /&gt;
-        ///					&lt;text_to_speech text=&quot;{afk_body}&quot; voice_gender=&quot;Female&quot; voice_age=&quot;Adult&quot; voice_position=&quot;0&quot; volume=&quot;30&quot; rate=&quot;0&quot; /&gt;
-        ///				&lt;/notify&gt;
-        ///			&lt;/actions&gt;
-        ///	&lt;/common_afk&gt;
-        ///	
-        ///	&lt;!-- The boss became enraged --&gt;
-        ///	&lt;abnormality ingame=&quot;true&quot; t [rest of string was truncated]&quot;;.
+        ///			&lt;notify&gt;
+        ///				&lt;text_to_speech text=&quot;{abnormality_name}&quot; voice_gender=&quot;Female&quot; voice_age=&quot;Adult&quot;  voice_position=&quot;0&quot; volume=&quot;80&quot; rate=&quot;+3&quot;/&gt;
+        ///			&lt;/notify&gt;
+        ///		&lt;/actions&gt;
+        ///	&lt;/abnormal [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_common {
             get {
@@ -710,18 +687,8 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///		
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_gunner {
             get {
@@ -731,20 +698,17 @@ namespace Lang {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
-        ///&lt;events&gt;
-        ///
-        ///&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
+        ///&lt;events&gt;	
+        ///	&lt;!-- Endurance debuff --&gt;
+        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; rewarn_timeout_seconds=&quot;5&quot; remaining_seconds_before_trigger=&quot;0&quot; trigger=&quot;MissingDuringFight&quot; target=&quot;Boss&quot;&gt;
         ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///			&lt;abnormality&gt;200300&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;200301&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;200302&lt;/abnormality&gt;
+        ///		&lt;/abnormalities&gt;
+        ///		&lt;actions&gt;
+        ///			&lt;notify&gt;
+        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{abnormality_name}&quot; display_ti [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_lancer {
             get {
@@ -756,17 +720,17 @@ namespace Lang {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
         ///
-        ///	&lt;!-- United Thrall of Protection (endurance buff) --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; remaining_seconds_before_trigger=&quot;40&quot; rewarn_timeout_seconds=&quot;5&quot; trigger=&quot;MissingDuringFight&quot; target=&quot;PartySelfExcluded&quot;&gt;
-        ///		&lt;area_boss_blacklist&gt;
-        ///			&lt;blacklist area_id=&quot;950&quot; /&gt;
-        ///		&lt;/area_boss_blacklist&gt;
+        ///	&lt;!-- Unleash berserker --&gt;
+        ///	&lt;abnormality ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Party&quot;&gt;
         ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;27120&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;401705&lt;/abnormality&gt;
         ///		&lt;/abnormalities&gt;
         ///		&lt;actions&gt;
         ///			&lt;notify&gt;
-        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_ [rest of string was truncated]&quot;;.
+        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;1000&quot; /&gt;
+        ///				&lt;text_to_speech text=&quot;{abnormality_name}&quot; voice_gender=&quot;Male&quot; voice_age=&quot;Adult&quot;  voice_position=&quot;0&quot; volume=&quot;30&quot; rate=&quot;1&quot;/&gt;
+        ///			&lt;/notify&gt;
+        ///		&lt;/acti [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_mystic {
             get {
@@ -784,8 +748,11 @@ namespace Lang {
         ///		&lt;/abnormalities&gt;
         ///		&lt;actions&gt;
         ///			&lt;notify&gt;
-        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;3000&quot; /&gt;
-        ///				&lt;text_to_speech text=&quot;{abnormality_name}&quot; voice_gender=&quot;Female&quot; voice_age=&quot;Adu [rest of string was truncated]&quot;;.
+        ///				&lt;text_to_speech text=&quot;Focus&quot; voice_gender=&quot;Female&quot; voice_age=&quot;Adult&quot;  voice_position=&quot;0&quot; volume=&quot;80&quot; rate=&quot;+3&quot;/&gt;
+        ///			&lt;/notify&gt;
+        ///		&lt;/actions&gt;
+        ///	&lt;/abnormality&gt;
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_ninja {
             get {
@@ -796,17 +763,17 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///
-        ///	&lt;!-- Blessing of Shakan --&gt;
-        ///	&lt;abnormality active=&quot;false&quot; ingame=&quot;true&quot; rewarn_timeout_seconds=&quot;10&quot; remaining_seconds_before_trigger=&quot;40&quot; trigger=&quot;MissingDuringFight&quot; target=&quot;Party&quot;&gt;
+        ///	
+        ///	
+        ///	&lt;!-- Unleash berserker --&gt;
+        ///	&lt;abnormality ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Party&quot; ignore_classes=&quot;Berserker&quot;&gt;
         ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;805102&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;805101&lt;/abnormality&gt;
+        ///			&lt;abnormality&gt;401705&lt;/abnormality&gt;
         ///		&lt;/abnormalities&gt;
         ///		&lt;actions&gt;
         ///			&lt;notify&gt;
-        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{player_name} {time_left}&quot; display_time=&quot;3000&quot; /&gt;
-        ///				&lt;text_to_speech te [rest of string was truncated]&quot;;.
+        ///				&lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;1000&quot; /&gt;
+        ///				&lt;text_to_speech text=&quot;{abnormality_name}&quot; voice_gender=&quot;Male&quot; voice_age=&quot;Adult&quot; voice_position=&quot;0&quot; volume=&quot;30&quot; rate [rest of string was truncated]&quot;;.
         /// </summary>
         public static string events_priest {
             get {
@@ -817,18 +784,7 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_reaper {
             get {
@@ -839,18 +795,7 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_slayer {
             get {
@@ -861,18 +806,7 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_sorcerer {
             get {
@@ -883,18 +817,7 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///	&lt;!-- Mystic contagion --&gt;
-        ///	&lt;abnormality active=&quot;true&quot; ingame=&quot;true&quot; trigger=&quot;Added&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;701700&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701701&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701702&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701703&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701704&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701705&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701706&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701707&lt;/abnormality&gt;
-        ///			&lt;abnormality&gt;701708&lt;/abnormali [rest of string was truncated]&quot;;.
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_valkyrie {
             get {
@@ -905,16 +828,7 @@ namespace Lang {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///	&lt;!-- The boss is not enraged anymore  --&gt;
-        ///	&lt;abnormality ingame=&quot;true&quot; trigger=&quot;Removed&quot; target=&quot;Boss&quot;&gt;
-        ///		&lt;abnormalities&gt;
-        ///			&lt;abnormality&gt;8888888&lt;/abnormality&gt;
-        ///		&lt;/abnormalities&gt;
-        ///		&lt;actions&gt;
-        ///			&lt;notify&gt;
-        ///				&lt;balloon title_text=&quot;{abnormality_name} : off&quot; body_text=&quot;{abnormality_name}&quot; display_time=&quot;3000&quot; /&gt;
-        ///				&lt;text_to_speech text=&quot;{abnormality_name}: off&quot; voice_gender=&quot;Female&quot; voice_age=&quot;Adult&quot; voice_position=&quot;0&quot; volume=&quot;30&quot; rate=&quot;0&quot;/&gt;
-        ///			&lt;/n [rest of string was truncated]&quot;;.
+        ///&lt;/events&gt;.
         /// </summary>
         public static string events_warrior {
             get {
@@ -1643,7 +1557,7 @@ namespace Lang {
         ///# Example:
         ///# 111.22.33.44 NA VPN Server 1
         ///#
-        ///# Current possible regions: EU, NA, RU, KR, TW, JP
+        ///# Current possible regions: EU, NA, RU, KR, KR-PTS, TW, THA, JP, JP-C
         ///#
         ///# Lines starting with &apos;#&apos; are ignored
         ///# Place servers below the next line

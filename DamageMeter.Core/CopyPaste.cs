@@ -39,6 +39,7 @@ namespace DamageMeter
                     clip = "/查看 ";
                     break;
                 case "JP":
+                case "JP-C":
                     clip = "/詳細確認 ";
                     break;
                 case "THA":

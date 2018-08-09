@@ -367,7 +367,7 @@
 # 例子:
 # 111.22.33.44 NA VPN Server 1
 #
-# 目前可用地区: EU, NA, RU, KR, TW, JP
+# 目前可用地区: EU, NA, RU, KR, KR-PTS, TW, THA, JP, JP-C
 #
 # "#"开条的行为注释 会被忽略
 # 请在下一行之后开始添加
