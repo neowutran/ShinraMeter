@@ -194,6 +194,7 @@ namespace DamageMeter.Processing
 
                     TimeSpan? abnormalityTimeLeft = null;
                     var noAbnormalitiesMissing = false;
+                    var stack = 0;
 
                     foreach (var id in abnormalityEvent.Ids)
                     {
@@ -207,6 +208,7 @@ namespace DamageMeter.Processing
                         {
                             abnormalityTimeLeft = TimeSpan.FromTicks(timeLeft);
                         }
+                        if (id.Value > 0) stack = Math.Max(stack, PacketProcessor.Instance.AbnormalityTracker.Stack(entityIdToCheck, id.Key));
                     }
 
                     if (noAbnormalitiesMissing) { continue; }
@@ -251,6 +253,7 @@ namespace DamageMeter.Processing
                             else { textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", LP.NoCrystalBind); }
 
                             textToSpeech.Text = textToSpeech.Text.Replace("{time_left}", abnormalityTimeLeft?.Seconds.ToString() ?? "0");
+                            textToSpeech.Text = textToSpeech.Text.Replace("{stack}", stack.ToString());
                         }
 
                         if (notifyAction.Balloon != null)
@@ -270,6 +273,8 @@ namespace DamageMeter.Processing
                                 notifyAction.Balloon.Icon = "icon_items.q_closedspace_stone_05_tex";
                             }
                             notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{player_name}", player?.Name);
+                            notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{stack}", stack.ToString());
+                            notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{stack}", stack.ToString());
                             notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{player_name}", player?.Name);
 
                             if (abnormalityTimeLeft.HasValue)
