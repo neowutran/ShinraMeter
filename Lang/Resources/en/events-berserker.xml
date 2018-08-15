@@ -1,3 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
+  <!-- Unleash ubreakable -->
+    <abnormality ingame="true" trigger="Ending" target="Self" remaining_seconds_before_trigger="3" rewarn_timeout_seconds="2">
+        <abnormalities>
+            <abnormality>401705</abnormality>
+        </abnormalities>
+        <actions>
+            <notify>
+                <text_to_speech text="Die Die Die" voice_gender="Male" voice_age="Adult" voice_position="0" volume="30" rate="1"/>
+            </notify>
+        </actions>
+    </abnormality>
+	    <!-- Flurry -->
+    <abnormality ingame="true" trigger="Ending" target="Self" remaining_seconds_before_trigger="1" rewarn_timeout_seconds="2">
+        <abnormalities>
+            <abnormality>400500</abnormality>
+            <abnormality>400501</abnormality>
+            <abnormality>400508</abnormality>
+        </abnormalities>
+        <actions>
+            <notify>
+                <balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="1000" />
+                <text_to_speech text="Push dash" voice_gender="Female" voice_age="Adult" voice_position="0" volume="30" rate="0"/>
+            </notify>
+        </actions>
+    </abnormality>
 </events>

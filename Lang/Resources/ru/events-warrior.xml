@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 	
-	<!-- Endurance debuff -->
+<!-- Endurance debuff -->
 	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="MyBoss">
 		<abnormalities>
 			<abnormality>101200</abnormality>
@@ -26,7 +26,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="{abnormality_name}" />
+				<text_to_speech text="Порезка" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -38,7 +38,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="{abnormality_name} {stack}" />
+				<text_to_speech text="Стаки скорости {stack}" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -51,7 +51,7 @@
 		</abnormalities>
 		<actions>
 			<notify>
-				<text_to_speech text="{abnormality_name}" />
+				<text_to_speech text="Включи стойку" />
 			</notify>
 		</actions>
 	</abnormality>

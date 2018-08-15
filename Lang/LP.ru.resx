@@ -623,7 +623,7 @@
     <value>Resources\en\events-sorcerer.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="events_warrior" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\en\events-warrior.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Resources\ru\events-warrior.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="DisablePartyEvents" xml:space="preserve">
     <value>Отключить оповещения про группу</value>

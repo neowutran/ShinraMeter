@@ -125,7 +125,6 @@
 					<beep frequency="0" duration="15000"/>
 					<beep frequency="1000" duration="170"/>
 				</beeps>
-				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="1000" />
 			</notify>
 		</actions>
 	</abnormality>
@@ -206,7 +205,7 @@
 	</abnormality>
 
 	<!-- Vow of Rebirth -->
-	<abnormality ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+	<abnormality active="false"  ingame="true" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
 			<abnormality>700100</abnormality>
 		</abnormalities>
