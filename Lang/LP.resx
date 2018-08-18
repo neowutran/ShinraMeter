@@ -776,4 +776,29 @@ Reset and paused until map change or relog.</value>
     <value>Various</value>
   </data>
   
+  <data name="UI_Detection_Settings" xml:space="preserve">
+    <value>Detection settings</value>
+  </data>
+  <data name="UI_UI_Settings" xml:space="preserve">
+    <value>UI settings</value>
+  </data>
+  <data name="UI_Input_Settings" xml:space="preserve">
+    <value>Input settings</value>
+  </data>
+  <data name="UI_DPS_Export_Settings" xml:space="preserve">
+    <value>DPS servers settings</value>
+  </data>
+  <data name="UI_Misc_Settings" xml:space="preserve">
+    <value>Misc settings</value>
+  </data>
+  <data name="UI_Event_Settings" xml:space="preserve">
+    <value>Event settings</value>
+  </data>
+  <data name="UI_RP_Settings" xml:space="preserve">
+    <value>Rich presence settings</value>
+  </data>
+  <data name="UI_Chat_Settings" xml:space="preserve">
+    <value>Chat color settings</value>
+  </data>
+  
 </root>
