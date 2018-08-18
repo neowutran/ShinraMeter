@@ -700,4 +700,62 @@
   <data name="HPM" xml:space="preserve">
     <value>Удар/мин</value>
   </data>
+    <data name="EnableRp" xml:space="preserve">
+    <value>Включить Discord Rich Presence</value>
+  </data>
+  <data name="RichPresenceShowLocation" xml:space="preserve">
+    <value>Показывать локацию</value>
+  </data>
+  <data name="RichPresenceShowCharacter" xml:space="preserve">
+    <value>Показывать персонажа</value>
+  </data>
+  <data name="RichPresenceShowStatus" xml:space="preserve">
+    <value>Показывать статус</value>
+  </data>
+  <data name="RichPresenceShowParty" xml:space="preserve">
+    <value>Показывать группу</value>
+  </data>
+  <data name="RpStatusPlaying" xml:space="preserve">
+    <value>Играет</value>
+  </data>
+  <data name="RpStatusIdle" xml:space="preserve">
+    <value>Бездействует</value>
+  </data>
+  <data name="RpStatusFight" xml:space="preserve">
+    <value>Дерётся</value>
+  </data>
+  <data name="RpStatusLfg" xml:space="preserve">
+    <value>Ищет группу</value>
+  </data>
+  <data name="RpStatusCharSelect" xml:space="preserve">
+    <value>Выбор персонажа</value>
+  </data>
+  <data name="RpStatusDungeonMatch" xml:space="preserve">
+    <value>Ищет данж</value>
+  </data>
+  <data name="RpStatusBattlegroundMatch" xml:space="preserve">
+    <value>Ищет арену</value>
+  </data>
+  <data name="RpPartySolo" xml:space="preserve">
+    <value>Соло</value>
+  </data>
+  <data name="RpPartyParty" xml:space="preserve">
+    <value>В группе</value>
+  </data>
+  <data name="RpPartyRaid" xml:space="preserve">
+    <value>В рейде</value>
+  </data>
+  <data name="RpPartyBg" xml:space="preserve">
+    <value>Ожидает BG</value>
+  </data>
+  <data name="RpPartyQueue" xml:space="preserve">
+    <value>IMS</value>
+  </data>
+  <data name="RpLevel" xml:space="preserve">
+    <value>Ур</value>
+  </data>
+  <data name="RpMultipleEnemies" xml:space="preserve">
+    <value>Разные</value>
+  </data>
+  
 </root>
