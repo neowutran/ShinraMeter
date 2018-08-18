@@ -314,7 +314,7 @@
                                             </Grid.RowDefinitions>
                                             <Border Style="{StaticResource SettingsCard}" />
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Detection settings" />
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="{x:Static l:LP.UI_Detection_Settings}" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Count_only_bosses}" 
                                                           x:Name="CountOnlyBoss"
@@ -354,7 +354,7 @@
                                             </Grid.RowDefinitions>
                                             <Border Style="{StaticResource SettingsCard}" />
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="UI settings" />
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="{x:Static l:LP.UI_UI_Settings}" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.Display_timer_aggro_or_firsthit}" 
                                                                    x:Name="DisplayTimerOnAggro"
@@ -417,7 +417,7 @@
                                             <Border Style="{StaticResource SettingsCard}" />
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
 
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Input settings" />
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="{x:Static l:LP.UI_Input_Settings}" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.RemoveTeraAltEnterHotkey}"
                                                   x:Name="RemoveTeraAltEnterHotkey"
@@ -456,7 +456,7 @@
                                             <Border Style="{StaticResource SettingsCard}" />
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
 
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="DPS servers settings" />
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="{x:Static l:LP.UI_DPS_Export_Settings}" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" >
                                                 <!--
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Site_export}" 
@@ -537,7 +537,7 @@
                                             </Grid.RowDefinitions>
                                             <Border Style="{StaticResource SettingsCard}" />
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Misc settings" />
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="{x:Static l:LP.UI_Misc_Settings}" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" 
                                                           x:Name="AutoExcelExport"
@@ -572,7 +572,7 @@
                                             <Border Style="{StaticResource SettingsCard}" />
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
 
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Event settings" />
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="{x:Static l:LP.UI_Event_Settings}" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
                                                 <ui:MaterialSwitch  Content="{x:Static l:LP.EnableChat}"
                                                                     x:Name="ChatEnabled" On="EnableChat" Off="DisableChat" />
@@ -615,7 +615,7 @@
                                             <Border Style="{StaticResource SettingsCard}" />
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
 
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Rich presence settings" />
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="{x:Static l:LP.UI_RP_Settings}" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3" Name="RPSettingsPanel">
                                                 <StackPanel.LayoutTransform>
                                                     <ScaleTransform ScaleY="1"></ScaleTransform>
@@ -671,7 +671,7 @@
                                             </Grid.RowDefinitions>
                                             <Border Style="{StaticResource SettingsCard}" />
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
-                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Chat color settings" />
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="{x:Static l:LP.UI_Chat_Settings}" />
                                             <UniformGrid Columns="2" Grid.Row="2" Margin="20,3,3,3" x:Name="ColorSettingsContainer">
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
