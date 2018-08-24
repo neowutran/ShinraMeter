@@ -102,6 +102,7 @@ namespace Data
             {
                 try
                 {
+                    if (!Instance.WindowData.Debug || local) { return; }
                     var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().Cast<ManagementObject>()
                                    select x.GetPropertyValue("Version") + " Memory Total:" + x.GetPropertyValue("TotalVisibleMemorySize") + " Virtual:" +
                                           x.GetPropertyValue("TotalVirtualMemorySize") + " PhFree:" + x.GetPropertyValue("FreePhysicalMemory") + " VFree:" +
@@ -110,7 +111,6 @@ namespace Data
                                                  select x.GetPropertyValue("Name") + " load:" + x.GetPropertyValue("LoadPercentage") + "%").FirstOrDefault() ??
                                              "processor unknown");
                     error = $"##### (version={UpdateManager.Version} Region={_region}) running on {name}:\r\n" + (debug ? "##### Debug: " : "") + error;
-                    if (!Instance.WindowData.Debug || local) { return; }
 
                     using (var client = new HttpClient())
                     {
