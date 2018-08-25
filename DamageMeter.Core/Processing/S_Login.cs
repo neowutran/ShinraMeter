@@ -58,6 +58,7 @@ namespace DamageMeter.Processing
             }
             PacketProcessor.Instance.OnGuildIconAction(PacketProcessor.Instance.UserLogoTracker.GetLogo(message.PlayerId));
             PacketProcessor.Instance.EntityTracker.Update(message);
+            PacketProcessor.Instance.PlayerTracker.UpdateParty(message);
             BasicTeraData.Instance.EventsData.Load(PacketProcessor.Instance.EntityTracker.MeterUser.RaceGenderClass.Class);
             PacketProcessor.Instance.PacketProcessing.Update();
             PacketProcessor.Instance.RaisePause(false);
