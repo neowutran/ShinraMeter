@@ -20,7 +20,7 @@ namespace Data
         private static readonly ILog Log = LogManager.GetLogger("ShinraMeter");
         private static int _errorCount = 10; //limit number of debug messages in one session
         private static string _region = "Unknown";
-        private readonly Func<string, TeraData> _dataForRegion;
+        //private readonly Func<string, TeraData> _dataForRegion;
 
        
         
@@ -35,7 +35,7 @@ namespace Data
             WindowData = new WindowData(this);
             LP.Culture = WindowData.UILanguage != "Auto" ? CultureInfo.GetCultureInfo(WindowData.UILanguage) : CultureInfo.CurrentUICulture;
             EventsData = new EventsData(this);
-            _dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
+            //_dataForRegion = Helpers.Memoize<string, TeraData>(region => new TeraData(region));
             Servers = new ServerDatabase(Path.Combine(ResourceDirectory, "data"));
             //handle overrides
             var serversOverridePath = Path.Combine(ResourceDirectory, "config/server-overrides.txt");
@@ -79,7 +79,8 @@ namespace Data
         public TeraData DataForRegion(string region)
         {
             _region = region;
-            return _dataForRegion(region);
+            return new TeraData(region);
+            //return _dataForRegion(region);
         }
 
         private static string FindResourceDirectory()
