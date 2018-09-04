@@ -97,9 +97,9 @@ namespace DamageMeter.UI
         private void SkillLog_OnLoaded(object sender, RoutedEventArgs e) {
             var dc = DataContext as Database.Structures.Skill;
             if (dc == null) return;
-            var tab = (SkillsLog)Tag;
-            _received = tab.Received;
-            _beginTime = tab.BeginTime;
+            var tab = Tag as SkillsLog;
+            _received = tab?.Received ?? false;
+            _beginTime = tab?.BeginTime ?? 0;
             Update(dc);
 
         }

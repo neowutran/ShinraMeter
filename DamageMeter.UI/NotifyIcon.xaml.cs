@@ -489,7 +489,7 @@ namespace DamageMeter.UI
         private void EnableNoAbnormalsInHUD(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.NoAbnormalsInHUD = true;
-            foreach (var boss in HudManager.Instance.CurrentBosses)
+            foreach (var boss in HudManager.Instance.CurrentBosses.ToSyncArray())
             {
                 boss.Buffs.DisposeAll();
             }
