@@ -60,7 +60,7 @@ namespace DamageMeter.Processing
                 }
 
                 var tts = (TextToSpeech) notifyAction.Sound;
-                tts.Text = tts.Text.Replace("{afk_body}", bodyText);
+                if (bodyText.Length < 20) tts.Text = tts.Text.Replace("{afk_body}", bodyText);
                 tts.Text = tts.Text.Replace("{afk_title}", titleText);
 
                 return new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, ev.Item1.Priority);
