@@ -394,7 +394,7 @@ namespace DamageMeter.Database
             if (target == null)
             {
                 sql =
-                    "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
+                    "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(case when hotdot=0 then critic else NULL end) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
                     "FROM skills WHERE type = $type AND sourceServerIdPlayerId IS NOT NULL GROUP BY sourceServerIdPlayerId ORDER BY `total_amount` DESC;";
                 command = new SQLiteCommand(sql, Connexion);
                 command.Parameters.AddWithValue("$type", Type.Damage);
@@ -402,7 +402,7 @@ namespace DamageMeter.Database
             }
 
             sql =
-                "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(critic) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
+                "SELECT SUM(amount) as total_amount, SUM(case when critic=1 then amount else NULL end) as crit_amount, MIN(time) as start_time, MAX(time) as end_time, SUM(case when hotdot=0 then critic else NULL end) as number_critics, COUNT(case when hotdot=0 then 1 else NULL end) AS number_hits, sourceServerIdPlayerId " +
                 "FROM skills " + "WHERE target = $target AND type = $type AND sourceServerIdPlayerId IS NOT NULL " + "GROUP BY sourceServerIdPlayerId " +
                 "ORDER BY `total_amount`  DESC;";
             command = new SQLiteCommand(sql, Connexion);
