@@ -68,6 +68,20 @@
 			</actions>
 	</common_afk>
 	
+	<!-- Durion hardmode stacks -->
+	<abnormality active="true" priority="1" ingame="true" trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>981026</abnormality>
+			<abnormality>468039</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="WARNING {abnormality_name} {stack}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech voice_position="0" text="Стаки {stack}" />
+			</notify>
+		</actions>
+	</abnormality>
+	
 	<!-- Raid P3 tank debuff overload warning -->
 	<abnormality ingame="true" trigger="Added" target="Self" priority="11" >
 		<abnormalities>
