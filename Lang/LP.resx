@@ -717,7 +717,7 @@ Reset and paused until map change or relog.</value>
   </data>
   <data name="Time_sync_error" xml:space="preserve">
     <value>Time sync error</value>
-  </data>  
+  </data>
   <data name="EnableRp" xml:space="preserve">
     <value>Enable discord's Rich Presence</value>
   </data>
@@ -775,5 +775,10 @@ Reset and paused until map change or relog.</value>
   <data name="RpMultipleEnemies" xml:space="preserve">
     <value>Various</value>
   </data>
-  
+  <data name="MaxTTSSize" xml:space="preserve">
+    <value>TTS max size</value>
+  </data>
+  <data name="TTSSizeExceededTruncate" xml:space="preserve">
+    <value>Truncate TTS message</value>
+  </data>
 </root>

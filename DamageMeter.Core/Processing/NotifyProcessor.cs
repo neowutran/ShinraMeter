@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -60,8 +61,14 @@ namespace DamageMeter.Processing
                 }
 
                 var tts = (TextToSpeech) notifyAction.Sound;
-                if (bodyText.Length < 20) tts.Text = tts.Text.Replace("{afk_body}", bodyText);
                 tts.Text = tts.Text.Replace("{afk_title}", titleText);
+                if (!BasicTeraData.Instance.WindowData.TTSSizeExceededTruncate && bodyText.Length > BasicTeraData.Instance.WindowData.MaxTTSSize) {
+                        notifyAction.Sound = null;
+                }
+                else
+                {
+                    tts.Text = tts.Text.Replace("{afk_body}", bodyText.Substring(0, Math.Min(bodyText.Length, BasicTeraData.Instance.WindowData.MaxTTSSize)));
+                }
 
                 return new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, ev.Item1.Priority);
             }

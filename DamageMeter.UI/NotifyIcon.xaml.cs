@@ -103,6 +103,8 @@ namespace DamageMeter.UI
             RichPresenceShowParty.Status = BasicTeraData.Instance.WindowData.RichPresenceShowParty;
             ChatSettingsVisible(BasicTeraData.Instance.WindowData.EnableChat);
             RPSettingsVisible(BasicTeraData.Instance.WindowData.EnableRichPresence);
+            MaxTTSSizeSpinner.Value = BasicTeraData.Instance.WindowData.MaxTTSSize;
+            TTSSizeExceededTruncate.Status = BasicTeraData.Instance.WindowData.TTSSizeExceededTruncate;
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -632,7 +634,21 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.RichPresenceShowParty = false;
             RichPresence.Instance.Update();
         }
-            
-        
+
+        private void TTSSizeExceededTruncate_On(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.TTSSizeExceededTruncate = true;
+        }
+
+        private void DisableTTSSizeExceededTruncate(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.TTSSizeExceededTruncate = false;
+        }
+
+        private void MaxTTSSizeSpinner_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.MaxTTSSize = MaxTTSSizeSpinner?.Value ?? 40;
+
+        }
     }
 }

@@ -100,8 +100,10 @@ namespace Data
             Parse("click_throu", "clickThrou");
             Parse("packets_collect", "packetsCollect");
             Parse("display_timer_based_on_aggro", "displayTimerBasedOnAggro");
+            Parse("max_tts_size", "maxTTSSize");
+            Parse("tts_size_exceeded_truncate", "ttsSizeExceededTruncate");
 
-            
+
             ParseColor("say_color", "sayColor");
             ParseColor("alliance_color", "allianceColor");
             ParseColor("area_color", "areaColor");
@@ -150,6 +152,8 @@ namespace Data
         private string language = "Auto";
         private string uILanguage = "Auto";
         private double mainWindowOpacity = 0.5;
+        private int maxTTSSize = 40;
+        private bool ttsSizeExceededTruncate = true;
         private double otherWindowOpacity = 0.9;
         private int lFDelay = 150;
         private WindowStatus bossGageStatus = new WindowStatus(new Point(0, 0), true, 1);
@@ -235,6 +239,9 @@ namespace Data
         public bool Winpcap { get => winpcap; set { winpcap = value; Save();}}
         public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; Save();}}
         public bool NoPaste { get => noPaste; set { noPaste = value; Save();}}
+        public int MaxTTSSize { get => maxTTSSize; set { maxTTSSize = value; Save(); } }
+        public bool TTSSizeExceededTruncate { get => ttsSizeExceededTruncate; set { ttsSizeExceededTruncate = value; Save(); } }
+
         public bool AllowTransparency { get => allowTransparency; set { allowTransparency = value; Save();}}
         public bool AlwaysVisible { get => alwaysVisible; set { alwaysVisible = value; Save();}}
         public bool Topmost { get => topmost; set { topmost = value; Save();}}
@@ -520,6 +527,8 @@ namespace Data
             xml.Root.Add(new XElement("enable_overlay", enableOverlay));
             xml.Root.Add(new XElement("display_timer_based_on_aggro", displayTimerBasedOnAggro));
             xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
+            xml.Root.Add(new XElement("max_tts_size", maxTTSSize));
+            xml.Root.Add(new XElement("tts_size_exceeded_truncate", ttsSizeExceededTruncate));
             xml.Root.Add(new XElement("rich_presence"));
             xml.Root.Element("rich_presence").Add(new XElement("enabled", enableRichPresence));
             xml.Root.Element("rich_presence").Add(new XElement("show_location", richPresenceShowLocation));

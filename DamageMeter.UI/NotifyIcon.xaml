@@ -382,6 +382,22 @@
                                                                Off="DisableShowAlways" />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Stay_topmost}" x:Name="StayTopMost"
                                                   On="EnableStayTopMost" Off="DisableStayTopMost" />
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Name="MaxTTSSize" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.MaxTTSSize}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff"
+                                                                BorderBrush="Transparent" BorderThickness="0"
+                                                                Name="MaxTTSSizeSpinner"
+                                                                ValueChanged="MaxTTSSizeSpinner_ValueChanged" FormatString="N0"
+                                                                Increment="1" Maximum="200" Minimum="10" />
+                                                </Grid>
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.TTSSizeExceededTruncate}" x:Name="TTSSizeExceededTruncate"
+                                                  On="TTSSizeExceededTruncate_On" Off="DisableTTSSizeExceededTruncate"/>
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.ShowSelfOnTop}" x:Name="ShowSelfOnTop"
                                                   On="EnableShowSelfOnTop" Off="DisableShowSelfOnTop" />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.NoAbnormalsInHUD}"
