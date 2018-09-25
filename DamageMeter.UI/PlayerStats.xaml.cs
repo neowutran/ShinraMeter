@@ -178,6 +178,7 @@ namespace DamageMeter.UI
                     //CloseMeter = {Content = LP.ResourceManager.GetString(PlayerDamageDealt.Source.Class.ToString(), LP.Culture) + " " + PlayerName + ": " + LP.Close}
                 };
                 var main = Window.GetWindow(this);
+                if (main == null) { _windowSkill = null; return;}//switched bosses while loading details window
                 var screen = Screen.FromHandle(new WindowInteropHelper(main).Handle);
                 // Transform screen point to WPF device independent point
                 var source = PresentationSource.FromVisual(this);
