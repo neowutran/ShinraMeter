@@ -63,7 +63,7 @@ namespace DamageMeter.Processing
                 var tts = (TextToSpeech) notifyAction.Sound;
                 tts.Text = tts.Text.Replace("{afk_title}", titleText);
                 if (!BasicTeraData.Instance.WindowData.TTSSizeExceededTruncate && bodyText.Length > BasicTeraData.Instance.WindowData.MaxTTSSize) {
-                        notifyAction.Sound = null;
+                    tts.Text = tts.Text.Replace("{afk_body}", "");
                 }
                 else
                 {
