@@ -36,16 +36,16 @@ namespace Data
             catch { }
             try
             {
-                Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/protocol." + version + ".map", filename);
+                Download("https://raw.githubusercontent.com/caali-hackerman/tera-data/master/map_base/protocol." + version + ".map", filename);
                 return true;
             }
             catch { }
-            try
-            {
-                Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map/protocol." + version + ".map", filename);
-                return true;
-            }
-            catch { }
+            //try
+            //{
+            //    Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map/protocol." + version + ".map", filename);
+            //    return true;
+            //}
+            //catch { }
             return false;
         }
 
@@ -80,22 +80,16 @@ namespace Data
             catch { }
             try
             {
-                Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/sysmsg." + version + ".map", "sysmsg." + version + ".map");
+                Download("https://raw.githubusercontent.com/caali-hackerman/tera-data/master/map_base/sysmsg." + version + ".map", "sysmsg." + version + ".map");
                 return true;
             }
             catch { }
-            try
-            {
-                Download("https://raw.githubusercontent.com/hackerman-caali/tera-data/master/map_base/sysmsg." + revision/100 + ".map", filename);
-                return true;
-            }
-            catch { }
-            try
-            {
-                Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map/sysmsg." + revision/100 + ".map", filename);
-                return true;
-            }
-            catch { }
+            //try
+            //{
+            //    Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map/sysmsg." + revision/100 + ".map", filename);
+            //    return true;
+            //}
+            //catch { }
             return false;
         }
 
