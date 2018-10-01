@@ -264,7 +264,7 @@ namespace Data
                 var skillId = int.Parse(abnormality.Attribute("skill_id")?.Value ?? "0");
                 var onlyResetted = bool.Parse(abnormality.Attribute("only_resetted")?.Value ?? "True");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
-                var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
+                var ingame = bool.Parse(abnormality.Attribute("ingame")?.Value ?? "true");
                 var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? default_priority);
                 ParseAreaBossBlackList(abnormality);
                 var cooldownEvent = new CooldownEvent(ingame, active, priority, skillId, onlyResetted);
@@ -299,7 +299,7 @@ namespace Data
                     if (!Enum.TryParse(idElement, true, out type)) { throw new Exception(idElement + " is not an acceptable value."); }
                     types.Add(type);
                 }
-                var ingame = bool.Parse(abnormality.Attribute("ingame").Value);
+                var ingame = bool.Parse(abnormality.Attribute("ingame")?.Value ?? "true");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? default_priority);
                 var ignoreClasses = ParseIgnoreClasses(abnormality.Attribute("ignore_classes")?.Value ?? "");
