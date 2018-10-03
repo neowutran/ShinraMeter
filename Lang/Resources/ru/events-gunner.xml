@@ -3,7 +3,7 @@
 	<!-- robot RP -->
 	<abnormality ingame="true" rewarn_timeout_seconds="6" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
-			<abnormality>180722</abnormality>
+			<abnormality>10152270</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
