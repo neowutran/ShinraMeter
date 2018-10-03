@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
 	<!-- robot RP -->
 	<abnormality ingame="true" rewarn_timeout_seconds="6" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<abnormalities>
-			<abnormality>180722</abnormality>
+			<abnormality>10152270</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
