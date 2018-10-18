@@ -71,12 +71,11 @@ namespace DamageMeter.Processing
         internal static void SelectFont(string region)
         {
             CopyPaste.PFC = new PrivateFontCollection();
-            if (region == "RU") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Fira Sans.ttf"); }
-            else if (region == "KR"||region == "KR-PTS") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\2002L_chat.ttf"); }
-            else if (region == "TW") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\DFPHeiMedium-B5.ttf"); }
-            else if (region == "JP"||region == "JP-C") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\TT-UDShinGo-Medium.ttf"); }
-            else { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Frutiger LT Pro 55 Roman.ttf"); }
-            CopyPaste.Font = new Font(CopyPaste.PFC.Families[0], 12, FontStyle.Regular, GraphicsUnit.Pixel);
+            if (region == "KR"||region == "KR-PTS") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Noto Sans CJK KR Bold.ttf"); }
+            else if (region == "TW") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Noto Sans CJK TC Bold.ttf"); }
+            else if (region == "JP"||region == "JP-C") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Noto Sans CJK JP Bold.ttf"); }
+            else { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Noto Sans.ttf"); }
+            CopyPaste.Font = new Font(CopyPaste.PFC.Families[0], 12, FontStyle.Bold, GraphicsUnit.Pixel);
         }
     }
 }
