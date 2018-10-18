@@ -202,7 +202,9 @@ namespace DamageMeter
                                                    : playerStats.Amount * TimeSpan.TicksPerSecond / entityInfo.Interval) + LP.PerSecond;
                 playerHolder["{interval}"] = playerStats.Interval / TimeSpan.TicksPerSecond + LP.Seconds;
                 playerHolder["{damage_dealt}"] = FormatHelpers.Instance.FormatValue(playerStats.Amount);
-                playerHolder["{class}"] = LP.ResourceManager.GetString(playerStats.Source.Class.ToString(), LP.Culture) + "";
+                var classTrim = LP.ResourceManager.GetString(playerStats.Source.Class.ToString(), LP.Culture) + "";
+                playerHolder["{class}"] = classTrim;
+                playerHolder["{class_trim}"] = classTrim.Substring(0,Math.Min(4,classTrim.Length));
                 playerHolder["{classId}"] = (int) playerStats.Source.Class + "";
                 playerHolder["{fullname}"] = copy.LimitNameLength > 0 && playerStats.Source.FullName.Length > copy.LimitNameLength
                     ? playerStats.Source.FullName.Substring(0, copy.LimitNameLength)

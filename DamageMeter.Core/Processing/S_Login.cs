@@ -73,6 +73,7 @@ namespace DamageMeter.Processing
             CopyPaste.PFC = new PrivateFontCollection();
             if (region == "KR"||region == "KR-PTS") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Noto Sans CJK KR Bold.ttf"); }
             else if (region == "TW") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Noto Sans CJK TC Bold.ttf"); }
+            else if (region == "THA") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Arial Unicode MS.ttf"); }
             else if (region == "JP"||region == "JP-C") { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Noto Sans CJK JP Bold.ttf"); }
             else { CopyPaste.PFC.AddFontFile(BasicTeraData.Instance.ResourceDirectory + "data\\fonts\\Noto Sans.ttf"); }
             CopyPaste.Font = new Font(CopyPaste.PFC.Families[0], 12, FontStyle.Bold, GraphicsUnit.Pixel);
