@@ -40,12 +40,12 @@ namespace Data
                 return true;
             }
             catch { }
-            //try
-            //{
-            //    Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map/protocol." + version + ".map", filename);
-            //    return true;
-            //}
-            //catch { }
+            try
+            {
+                Download("https://raw.githubusercontent.com/tera-proxy/tera-data/master/map/protocol." + version + ".map", filename);
+                return true;
+            }
+            catch { }
             return false;
         }
 
@@ -84,12 +84,12 @@ namespace Data
                 return true;
             }
             catch { }
-            //try
-            //{
-            //    Download("https://raw.githubusercontent.com/meishuu/tera-data/master/map/sysmsg." + revision/100 + ".map", filename);
-            //    return true;
-            //}
-            //catch { }
+            try
+            {
+                Download("https://raw.githubusercontent.com/tera-proxy/tera-data/master/map/sysmsg." + revision / 100 + ".map", filename);
+                return true;
+            }
+            catch { }
             return false;
         }
 
