@@ -160,7 +160,7 @@
 	</abnormality>
 		
 	<!-- Joy of party is at 100% (everyone is in the dungeons) -->
-	<abnormality ingame="false" priority="0" trigger="Added" target="Self">
+	<abnormality ingame="false" priority="0" trigger="Added" target="Self" out_of_combat="true">
 		<abnormalities>
 			<abnormality>999001021</abnormality>
 		</abnormalities>

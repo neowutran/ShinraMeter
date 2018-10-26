@@ -12,19 +12,21 @@ namespace Data.Events
 
     public abstract class Event
     {
-        protected Event(bool inGame, bool active, int priority, List<BlackListItem> areaBossBlackList,List<PlayerClass> ignoreClasses=null)
+        protected Event(bool inGame, bool active, int priority, List<BlackListItem> areaBossBlackList, bool outOfCombat = false, List<PlayerClass> ignoreClasses=null)
         {
             NextChecks = new Dictionary<EntityId, DateTime>();
             InGame = inGame;
             Active = active;
             Priority = priority;
             AreaBossBlackList = areaBossBlackList;
+            OutOfCombat = outOfCombat;
             IgnoreClasses = ignoreClasses ?? new List<PlayerClass>();
         }
 
         public Dictionary<EntityId, DateTime> NextChecks { get; set; }
         public bool InGame { get; set; }
         public bool Active { get; set; }
+        public bool OutOfCombat { get; set; }
 
         public List<BlackListItem> AreaBossBlackList { get; set; }
         public List<PlayerClass> IgnoreClasses { get; set; }

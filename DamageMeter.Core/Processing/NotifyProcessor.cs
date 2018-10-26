@@ -142,15 +142,15 @@ namespace DamageMeter.Processing
         {
             if (!BasicTeraData.Instance.WindowData.EnableChat) { return; }
             var meterUser = PacketProcessor.Instance.EntityTracker.MeterUser;
-            var bossIds = _lastBosses.Where(x => x.Value > 0).Select(x => x.Key).ToList();
-            if (meterUser == null || !bossIds.Any()) { return; }
+            if (meterUser == null) { return; }
             if (PacketProcessor.Instance.AbnormalityStorage.DeadOrJustResurrected(PacketProcessor.Instance.PlayerTracker.Me())) { return; }
+            var bossIds = _lastBosses.Where(x => x.Value > 0).Select(x => x.Key).ToList();
             var teraActive = TeraWindow.IsTeraActive();
             var time = DateTime.Now;
             var bossList = bossIds.Select(x => (NpcEntity) PacketProcessor.Instance.EntityTracker.GetOrNull(x)).ToList();
 
-            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities)
-            {
+            foreach (var e in BasicTeraData.Instance.EventsData.MissingAbnormalities) {
+                if (!(bossIds.Any() || e.Key.OutOfCombat)) { continue; }
                 var entitiesIdToCheck = new List<EntityId>();
                 var abnormalityEvent = (AbnormalityEvent) e.Key;
                 if (abnormalityEvent.InGame != teraActive) { continue; }
@@ -374,13 +374,15 @@ namespace DamageMeter.Processing
         private void AbnormalityNotifierCommon(EntityId target, int abnormalityId, AbnormalityTriggerType trigger, int stack)
         {
             var meterUser = PacketProcessor.Instance.EntityTracker.MeterUser;
+            if (meterUser == null) { return; }
+            if (PacketProcessor.Instance.AbnormalityStorage.DeadOrJustResurrected(PacketProcessor.Instance.PlayerTracker.Me())) { return; }
             var bossIds = _lastBosses.Where(x => x.Value > 0).Select(x => x.Key).ToList();
-            if (meterUser == null || !bossIds.Any()) { return; }
             var teraActive = TeraWindow.IsTeraActive();
             var bossList = bossIds.Select(x => (NpcEntity) PacketProcessor.Instance.EntityTracker.GetOrNull(x)).ToList();
 
             foreach (var e in BasicTeraData.Instance.EventsData.AddedRemovedAbnormalities)
             {
+                if (!(bossIds.Any() || e.Key.OutOfCombat)) { continue; }
                 var player = meterUser;
                 var abnormalityEvent = (AbnormalityEvent) e.Key;
                 if (abnormalityEvent.InGame != teraActive) { continue; }

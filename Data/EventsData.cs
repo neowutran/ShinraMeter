@@ -300,6 +300,7 @@ namespace Data
                     types.Add(type);
                 }
                 var ingame = bool.Parse(abnormality.Attribute("ingame")?.Value ?? "true");
+                var outOfCombat = bool.Parse(abnormality.Attribute("out_of_combat")?.Value ?? "false");
                 var active = bool.Parse(abnormality.Attribute("active")?.Value ?? default_active);
                 var priority = int.Parse(abnormality.Attribute("priority")?.Value ?? default_priority);
                 var ignoreClasses = ParseIgnoreClasses(abnormality.Attribute("ignore_classes")?.Value ?? "");
@@ -316,7 +317,7 @@ namespace Data
                 }
                 var blacklist = ParseAreaBossBlackList(abnormality);
                 var abnormalityEvent = new AbnormalityEvent(ingame, active, priority, blacklist.Any() ? blacklist : default_blacklist, ids, types, target, trigger,
-                    remainingSecondsBeforeTrigger, rewarnTimeoutSeconds, ignoreClasses);
+                    remainingSecondsBeforeTrigger, rewarnTimeoutSeconds, outOfCombat, ignoreClasses);
                 events.Add(abnormalityEvent, new List<Action>());
                 var t = trigger == AbnormalityTriggerType.MissingDuringFight ? EventType.MissingAb : EventType.AddRemoveAb;
                 ParseActions(abnormality, events, abnormalityEvent, t);
