@@ -11,7 +11,7 @@ using Data;
 using Lang;
 using Tera.Game.Abnormality;
 using FontStyle = System.Drawing.FontStyle;
-using Tera.Game;
+using Tera.Game.Messages;
 
 namespace DamageMeter
 {
@@ -33,20 +33,18 @@ namespace DamageMeter
         public static void CopyInspect(string name)
         {
             string clip;
-            switch (PacketProcessor.Instance.Server.Region)
+            switch (BasicTeraData.Instance.Servers.Language)
             {
-                case "TW":
+                case LangEnum.TW:
                     clip = "/查看 ";
                     break;
-                case "JP":
-                case "JP-C":
+                case LangEnum.JP:
                     clip = "/詳細確認 ";
                     break;
-                case "THA":
+                case LangEnum.THA:
                     clip = "/ดูอุปกรณ์ ";
                     break;
-                case "KR-PTS":
-                case "KR":
+                case LangEnum.KR:
                     clip = "/살펴보기 ";
                     break;
                 default:
