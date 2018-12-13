@@ -9,5 +9,5 @@
 \quests\
 \social\
 \sys_msg\
-dungeons-def
+dungeon-defs
 .git
