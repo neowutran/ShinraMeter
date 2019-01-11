@@ -68,6 +68,20 @@
 			</actions>
 	</common_afk>
 	
+	<!-- Bahaar 30%- laser target debuff -->
+	    <abnormality active="true" priority="1" rewarn_timeout_seconds="4" ingame="true" trigger="Added" target="Self">
+		<abnormalities>
+		    <abnormality>90442502</abnormality>
+		</abnormalities>
+		<actions>
+		    <notify>
+			<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+			<text_to_speech voice_position="0" text="Лазер на тебе" />
+		    </notify>
+		</actions>
+	    </abnormality>
+	
+	
 	<!-- Durion hardmode stacks -->
 	<abnormality active="true" priority="1" ingame="true" trigger="Added" target="Self">
 		<abnormalities>
