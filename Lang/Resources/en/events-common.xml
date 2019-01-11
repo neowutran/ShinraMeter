@@ -80,6 +80,19 @@
 			</notify>
 		</actions>
 	</abnormality>
+	
+	<!-- Bahaar 30%- laser target debuff -->
+	    <abnormality active="true" priority="1" rewarn_timeout_seconds="4" ingame="true" trigger="Added" target="Self">
+		<abnormalities>
+		    <abnormality>90442502</abnormality>
+		</abnormalities>
+		<actions>
+		    <notify>
+			<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3500" />
+			<text_to_speech voice_position="0" text="Laser on you" />
+		    </notify>
+		</actions>
+	    </abnormality>
 		
 	<!-- Raid 30, phase 3, black debuff (Dust) -->
 	<abnormality ingame="true" priority="11" trigger="Added" target="Self">
