@@ -70,7 +70,7 @@ namespace DamageMeter
                 if (entity == null) { return; }
                 boss = new Boss(entity, Visibility.Visible);
                 _bosses.Add(boss);
-                PacketProcessor.Instance.AbnormalityTracker.BuffList(entity.Id).ToList().ForEach(x=>boss.AddOrRefresh(x));
+                PacketProcessor.Instance.AbnormalityTracker.BuffList(entity.Id).ForEach(x=>boss.AddOrRefresh(x));
             }
             boss.MaxHP = entity.Info.HP;
         }

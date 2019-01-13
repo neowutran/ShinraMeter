@@ -40,7 +40,7 @@ namespace DamageMeter
         internal AbnormalityStorage AbnormalityStorage;
 
         internal readonly List<Player> MeterPlayers = new List<Player>();
-        private bool _forceUiUpdate;
+        internal bool ForceUiUpdate;
         private bool _keepAlive = true;
         private long _lastTick;
         internal AbnormalityTracker AbnormalityTracker;
@@ -139,13 +139,13 @@ namespace DamageMeter
         {
             DamageTracker.Instance.Reset();
             AbnormalityStorage.ClearEnded();
-            _forceUiUpdate = true;
+            ForceUiUpdate = true;
         }
 
         public void ResetCurrent()
         {
             DamageTracker.Instance.DeleteEntity(Encounter);
-            _forceUiUpdate = true;
+            ForceUiUpdate = true;
         }
 
         private void UpdateUi(int packetsWaiting = 0)
@@ -365,10 +365,10 @@ namespace DamageMeter
                     RaisePause(true);
                 }
 
-                if (_forceUiUpdate)
+                if (ForceUiUpdate)
                 {
                     UpdateUi(packetsWaiting);
-                    _forceUiUpdate = false;
+                    ForceUiUpdate = false;
                 }
 
                 CheckUpdateUi(packetsWaiting);

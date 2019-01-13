@@ -366,6 +366,7 @@ namespace DamageMeter.Processing
                         textToSpeech.Text = textToSpeech.Text.Replace("{skill_name}", skill?.Name ?? skillId.ToString());
                     }
                     PacketProcessor.Instance.FlashMessage.Add(new NotifyFlashMessage(notifyAction.Sound, notifyAction.Balloon, e.Key.Priority));
+                    PacketProcessor.Instance.ForceUiUpdate = true;
                 }
             }
         }
