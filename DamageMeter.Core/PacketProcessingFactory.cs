@@ -9,6 +9,7 @@ using Tera.RichPresence;
 using C_CHECK_VERSION = Tera.Game.Messages.C_CHECK_VERSION;
 using S_CREST_INFO = Tera.Game.Messages.S_CREST_INFO;
 using C_LOGIN_ARBITER = Tera.Game.Messages.C_LOGIN_ARBITER;
+using S_ACTION_STAGE = DamageMeter.Processing.S_ACTION_STAGE;
 
 namespace DamageMeter
 {
@@ -73,6 +74,7 @@ namespace DamageMeter
             {typeof(SNpcOccupierInfo), new Action<SNpcOccupierInfo>(x => DamageTracker.Instance.UpdateEntities(x))},
             {typeof(SDespawnNpc), Helpers.Contructor<Func<SDespawnNpc, S_DESPAWN_NPC>>()},
             {typeof(SCreatureLife), Helpers.Contructor<Func<SCreatureLife, S_CREATURE_LIFE>>()},
+            {typeof(Tera.Game.Messages.S_ACTION_STAGE), Helpers.Contructor<Func<Tera.Game.Messages.S_ACTION_STAGE,S_ACTION_STAGE>>()},
             {typeof(S_CREST_INFO), Helpers.Contructor<Func<S_CREST_INFO, Processing.S_CREST_INFO>>()},
             {typeof(SUserStatus), new Action<SUserStatus>(S_USER_STATUS.Process)}
 //            {typeof(Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT), new Action<Tera.Game.Messages.S_BEGIN_THROUGH_ARBITER_CONTRACT>(x=>NotifyProcessor.S_BEGIN_THROUGH_ARBITER_CONTRACT(x))}
@@ -116,7 +118,6 @@ namespace DamageMeter
                 {typeof(S_INSTANT_MOVE), new Action<S_INSTANT_MOVE>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(S_INSTANT_DASH), new Action<S_INSTANT_DASH>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(S_ACTION_END), new Action<S_ACTION_END>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
-                {typeof(S_ACTION_STAGE), new Action<S_ACTION_STAGE>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(S_CHANGE_DESTPOS_PROJECTILE), new Action<S_CHANGE_DESTPOS_PROJECTILE>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(C_PLAYER_LOCATION), new Action<C_PLAYER_LOCATION>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(S_MOUNT_VEHICLE_EX), new Action<S_MOUNT_VEHICLE_EX>(x => PacketProcessor.Instance.EntityTracker.Update(x))},

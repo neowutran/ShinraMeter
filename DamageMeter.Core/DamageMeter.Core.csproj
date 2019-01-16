@@ -95,6 +95,7 @@
     <Compile Include="Database\Structures\Skills.cs" />
     <Compile Include="Database\Structures\StatsSummary.cs" />
     <Compile Include="Exporter\DataExporter.cs" />
+    <Compile Include="Processing\S_ACTION_STAGE.cs" />
     <Compile Include="Processing\C_LOGIN_ARBITER.cs" />
     <Compile Include="Processing\S_CREATURE_CHANGE_HP.cs" />
     <Compile Include="RichPresence.cs" />

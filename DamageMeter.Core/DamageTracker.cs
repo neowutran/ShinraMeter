@@ -115,8 +115,8 @@ namespace DamageMeter
 
             var skillType = Database.Database.Type.Mana;
             if (message.IsHp) { skillType = message.IsHeal ? Database.Database.Type.Heal : Database.Database.Type.Damage; }
-            if (message.Amount == 0) { skillType = Database.Database.Type.Counter; }
-            if (!IsValidSkill(message)) { skillType = Database.Database.Type.Counter; }// count DFA etc
+            if (message.Amount == 0) { return; skillType = Database.Database.Type.Counter; }
+            if (!IsValidSkill(message)) { return; skillType = Database.Database.Type.Counter; }// count DFA etc
 
             if (entityTarget is NpcEntity entity)
             {
