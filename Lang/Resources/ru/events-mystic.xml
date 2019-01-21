@@ -32,6 +32,7 @@
 	<!-- United Thrall of Protection (endurance buff) -->
 	<abnormality active="true" priority="7" ingame="true" remaining_seconds_before_trigger="40" rewarn_timeout_seconds="5" trigger="MissingDuringFight" target="Self">
 		<area_boss_blacklist>
+			<blacklist area_id="126" />
 			<blacklist area_id="713" />
 			<blacklist area_id="813" />
 			<blacklist area_id="432" />
@@ -51,6 +52,7 @@
 	<!-- Mana aura -->
 	<abnormality ingame="true" priority="7" rewarn_timeout_seconds="10" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<area_boss_blacklist>
+			<blacklist area_id="126" />
 			<blacklist area_id="713" />
 			<blacklist area_id="813" />
 			<blacklist area_id="432" />
@@ -71,6 +73,7 @@
 	<!-- Awakening thrall -->
 	<abnormality active="true" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<area_boss_blacklist>
+			<blacklist area_id="126" />
 			<blacklist area_id="713" />
 			<blacklist area_id="813" />
 			<blacklist area_id="432" />
@@ -91,6 +94,7 @@
 	<!-- Fortified Thrall of Vengeance (power buff) Yukikoo edition -->
 	<abnormality active="true" ingame="true" rewarn_timeout_seconds="20" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
 		<area_boss_blacklist>
+			<blacklist area_id="126" />
 			<blacklist area_id="713" />
 			<blacklist area_id="813" />
 			<blacklist area_id="432" />
@@ -110,6 +114,7 @@
 	<!-- Fortified Thrall of Vengeance (power buff) Vek edition -->
 	<abnormality active="false" priority="7" ingame="true" rewarn_timeout_seconds="17" trigger="Added" target="Self">
 		<area_boss_blacklist>
+			<blacklist area_id="126" />
 			<blacklist area_id="713" />
 			<blacklist area_id="813" />
 			<blacklist area_id="432" />
@@ -132,6 +137,7 @@
 	<!-- Endurance debuff -->
 	<abnormality active="true" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
 		<area_boss_blacklist>
+			<blacklist area_id="126" />
 			<blacklist area_id="713" />
 			<blacklist area_id="813" />
 			<blacklist area_id="432" />
