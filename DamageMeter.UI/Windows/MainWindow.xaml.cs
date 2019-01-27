@@ -34,6 +34,7 @@ using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 using Microsoft.Win32;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using DamageMeter.Processing;
 
 namespace DamageMeter.UI
 {
@@ -54,7 +55,7 @@ namespace DamageMeter.UI
         private bool _keyboardInitialized;
         private bool _topMost = true;
         private bool _paused = false;
-
+        private bool _mapChanged = true;
         internal bool ForceWindowVisibilityHidden;
         //private readonly SystemTray _systemTray;
 
@@ -77,6 +78,7 @@ namespace DamageMeter.UI
             PacketProcessor.Instance.UnsetClickThrouAction += UnsetClickThrou;
             PacketProcessor.Instance.GuildIconAction += InstanceOnGuildIconAction;
             PacketProcessor.Instance.PauseAction += PauseState;
+            PacketProcessor.Instance.MapChangedAction += MapChanged;
             _dispatcherTimer = new DispatcherTimer();
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -91,6 +93,7 @@ namespace DamageMeter.UI
             Chatbox.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
             BossGageImg.Source = BasicTeraData.Instance.ImageDatabase.BossGage.Source;
             HideNamesImage.Source = BasicTeraData.Instance.ImageDatabase.HideNicknames.Source;
+            UserPauseBtn.Source = BasicTeraData.Instance.ImageDatabase.Pause.Source;
             HideNames.ToolTip = LP.Blur_player_names;
             ListEncounter.PreviewKeyDown += ListEncounterOnPreviewKeyDown;
             UpdateComboboxEncounter(new List<NpcEntity>(), null);
@@ -99,7 +102,7 @@ namespace DamageMeter.UI
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
             Scroller.MaxHeight = BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed * 30;
-            _entityStats = new EntityStatsMain(){ Scale = BasicTeraData.Instance.WindowData.DebuffsStatus.Scale, DontClose = true};
+            _entityStats = new EntityStatsMain() { Scale = BasicTeraData.Instance.WindowData.DebuffsStatus.Scale, DontClose = true };
             _bossGageBar = new BossGageWindow() { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale, DontClose = true };
             _popupNotification = new PopupNotification() { DontClose = true };
             _windowHistory = new TeradpsHistory(new ConcurrentDictionary<UploadData, NpcEntity>()) { Scale = BasicTeraData.Instance.WindowData.HistoryStatus.Scale, DontClose = true };
@@ -107,7 +110,19 @@ namespace DamageMeter.UI
             SystemEvents.SessionEnding += new SessionEndingEventHandler(SystemEvents_SessionEnding);
             NotifyIcon.Initialize(this);
             NotifyIcon.InitializeServerList(PacketProcessor.Instance.Initialize());
-            if (BasicTeraData.Instance.WindowData.ClickThrou) { SetClickThrou(); }            
+            if (BasicTeraData.Instance.WindowData.ClickThrou) { SetClickThrou(); }
+        }
+
+        private void MapChanged()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (!_paused)
+                {
+                    _mapChanged = true;
+                    WaitingMapChange.Visibility = Visibility.Collapsed;
+                }
+            });
         }
 
         public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
@@ -127,7 +142,7 @@ namespace DamageMeter.UI
                 NotifyIcon.Tray.Icon = bitmap?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
             }
 
-            Dispatcher.Invoke((PacketProcessor.GuildIconEvent) ChangeUi, icon);
+            Dispatcher.Invoke((PacketProcessor.GuildIconEvent)ChangeUi, icon);
         }
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
@@ -153,7 +168,7 @@ namespace DamageMeter.UI
         public new void SetClickThrou()
         {
             var hwnd = new WindowInteropHelper(this).Handle;
-            if(hwnd.ToInt64() == 0)
+            if (hwnd.ToInt64() == 0)
             {
                 _needRefreshClickThrou = true;
                 return;
@@ -346,7 +361,7 @@ namespace DamageMeter.UI
                 }
             }
 
-            Dispatcher.Invoke((PacketProcessor.UpdateUiHandler) ChangeUi, nmessage);
+            Dispatcher.Invoke((PacketProcessor.UpdateUiHandler)ChangeUi, nmessage);
         }
 
         private void ShowHistory(object sender, MouseButtonEventArgs e)
@@ -358,7 +373,7 @@ namespace DamageMeter.UI
         private void ShowChat(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            _chatbox = new Chatbox {Owner = this};
+            _chatbox = new Chatbox { Owner = this };
             _chatbox.ShowWindow();
         }
 
@@ -371,12 +386,13 @@ namespace DamageMeter.UI
                 SnapToScreen();
             }
 
-            Dispatcher.Invoke((ChangeTitle) ChangeTitle, serverName);
+            Dispatcher.Invoke((ChangeTitle)ChangeTitle, serverName);
         }
 
         internal void StayTopMost()
         {
-            if (!_topMost || !Topmost) {
+            if (!_topMost || !Topmost)
+            {
                 Debug.WriteLine("Not topmost");
                 return;
             }
@@ -392,7 +408,7 @@ namespace DamageMeter.UI
             if (entities.Count != ListEncounter.Items.Count - 1) { return true; }
             for (var i = 1; i < ListEncounter.Items.Count - 1; i++)
             {
-                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entities[i - 1]) { return true; }
+                if ((NpcEntity)((ComboBoxItem)ListEncounter.Items[i]).Content != entities[i - 1]) { return true; }
             }
             return false;
         }
@@ -403,7 +419,7 @@ namespace DamageMeter.UI
 
             for (var i = 1; i < ListEncounter.Items.Count; i++)
             {
-                if ((NpcEntity) ((ComboBoxItem) ListEncounter.Items[i]).Content != entity) { continue; }
+                if ((NpcEntity)((ComboBoxItem)ListEncounter.Items[i]).Content != entity) { continue; }
                 ListEncounter.SelectedItem = ListEncounter.Items[i];
                 return true;
             }
@@ -423,17 +439,17 @@ namespace DamageMeter.UI
             }
 
             NpcEntity selectedEntity = null;
-            if ((ComboBoxItem) ListEncounter.SelectedItem != null && !(((ComboBoxItem) ListEncounter.SelectedItem).Content is string))
+            if ((ComboBoxItem)ListEncounter.SelectedItem != null && !(((ComboBoxItem)ListEncounter.SelectedItem).Content is string))
             {
-                selectedEntity = (NpcEntity) ((ComboBoxItem) ListEncounter.SelectedItem).Content;
+                selectedEntity = (NpcEntity)((ComboBoxItem)ListEncounter.SelectedItem).Content;
             }
 
             ListEncounter.Items.Clear();
-            ListEncounter.Items.Add(new ComboBoxItem {Content = LP.TotalEncounter});
+            ListEncounter.Items.Add(new ComboBoxItem { Content = LP.TotalEncounter });
             var selected = false;
             foreach (var entity in entities)
             {
-                var item = new ComboBoxItem {Content = entity};
+                var item = new ComboBoxItem { Content = entity };
                 ListEncounter.Items.Add(item);
                 if (entity != selectedEntity) { continue; }
                 ListEncounter.SelectedItem = item;
@@ -454,7 +470,7 @@ namespace DamageMeter.UI
             _windowHistory.Owner = this;
             if (BasicTeraData.Instance.WindowData.RememberPosition)
             {
-                LastSnappedPoint=BasicTeraData.Instance.WindowData.Location;
+                LastSnappedPoint = BasicTeraData.Instance.WindowData.Location;
                 Left = LastSnappedPoint?.X ?? 0;
                 Top = LastSnappedPoint?.Y ?? 0;
                 _dragged = true;
@@ -494,7 +510,7 @@ namespace DamageMeter.UI
             if (e.AddedItems.Count != 1) { return; }
 
             NpcEntity encounter = null;
-            if (((ComboBoxItem) e.AddedItems[0]).Content is NpcEntity) { encounter = (NpcEntity) ((ComboBoxItem) e.AddedItems[0]).Content; }
+            if (((ComboBoxItem)e.AddedItems[0]).Content is NpcEntity) { encounter = (NpcEntity)((ComboBoxItem)e.AddedItems[0]).Content; }
 
             if (encounter != PacketProcessor.Instance.Encounter) { PacketProcessor.Instance.NewEncounter = encounter; }
         }
@@ -572,30 +588,69 @@ namespace DamageMeter.UI
                 _paused = pause;
                 if (pause)
                 {
-                    BackgroundColor.Background = Brushes.DarkRed;
-                    TooSlow.Visibility = Visibility.Visible;
+                    _mapChanged = false;
+                    if (BasicTeraData.Instance.WindowData.UserPaused)
+                    {
+                        UserPaused.Visibility = Visibility.Visible;
+                        TooSlow.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        BackgroundColor.Background = Brushes.DarkRed;
+                        TooSlow.Visibility = Visibility.Visible;
+                        UserPaused.Visibility = Visibility.Collapsed;
+
+
+                    }
                 }
                 else
                 {
-                    BackgroundColor.Background = (SolidColorBrush) App.Current.FindResource("KrBgColor");
+                    BackgroundColor.Background = (SolidColorBrush)App.Current.FindResource("KrBgColor");
                     TooSlow.Visibility = Visibility.Collapsed;
+                    UserPaused.Visibility = Visibility.Collapsed;
+                    if(!_mapChanged) WaitingMapChange.Visibility = Visibility.Visible;
                 }
             });
         }
 
         private delegate void ChangeTitle(string servername);
 
-        public ToggleButton HideNames4Binding { get => HideNames;}
+        public ToggleButton HideNames4Binding { get => HideNames; }
 
         private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            Footer.BeginAnimation(HeightProperty, new DoubleAnimation(33, TimeSpan.FromMilliseconds(350)) {EasingFunction =  new QuadraticEase()});
+            Footer.BeginAnimation(HeightProperty, new DoubleAnimation(33, TimeSpan.FromMilliseconds(350)) { EasingFunction = new QuadraticEase() });
 
         }
 
         private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            Footer.BeginAnimation(HeightProperty, new DoubleAnimation(0, TimeSpan.FromMilliseconds(350)) {EasingFunction =  new QuadraticEase()});
+            Footer.BeginAnimation(HeightProperty, new DoubleAnimation(0, TimeSpan.FromMilliseconds(350)) { EasingFunction = new QuadraticEase() });
+        }
+
+        private void UserPauseBtnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.UserPaused = !BasicTeraData.Instance.WindowData.UserPaused;
+            if (BasicTeraData.Instance.WindowData.UserPaused)
+            {
+                PacketProcessor.Instance.PacketProcessing.Pause();
+                Database.Database.Instance.DeleteAll();
+                PacketProcessor.Instance.AbnormalityStorage = new AbnormalityStorage();
+                PacketProcessor.Instance.AbnormalityTracker = new AbnormalityTracker(PacketProcessor.Instance.EntityTracker, PacketProcessor.Instance.PlayerTracker, BasicTeraData.Instance.HotDotDatabase, PacketProcessor.Instance.AbnormalityStorage, DamageTracker.Instance.Update);
+                HudManager.Instance.CurrentBosses.DisposeAll();
+                TeraSniffer.Instance.Packets = new ConcurrentQueue<Tera.Message>();
+                NotifyProcessor.Instance.S_LOAD_TOPO(null);
+                WaitingMapChange.Visibility = Visibility.Collapsed;
+                UserPauseBtn.Source = BasicTeraData.Instance.ImageDatabase.Play.Source;
+
+            }
+            else
+            {
+                PacketProcessor.Instance.PacketProcessing.Update();
+                WaitingMapChange.Visibility = Visibility.Visible;
+                UserPauseBtn.Source = BasicTeraData.Instance.ImageDatabase.Pause.Source;
+            }
+            PacketProcessor.Instance.RaisePause(BasicTeraData.Instance.WindowData.UserPaused);
         }
     }
 
@@ -607,7 +662,7 @@ namespace DamageMeter.UI
             return data.Select(dealt => new ClassInfo
             {
                 PName = $"{dealt.Source.Name}",
-                PDmg = $"{FormatHelpers.Instance.FormatPercent((double)dealt.Amount/sum)}",
+                PDmg = $"{FormatHelpers.Instance.FormatPercent((double)dealt.Amount / sum)}",
                 PDsp =
                     $"{FormatHelpers.Instance.FormatValue(interval == 0 ? dealt.Amount : dealt.Amount * TimeSpan.TicksPerSecond / interval)}{LP.PerSecond}",
                 PCrit = $"{Math.Round(dealt.CritRate)}%",

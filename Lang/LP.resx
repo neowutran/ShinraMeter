@@ -781,4 +781,10 @@ Reset and paused until map change or relog.</value>
   <data name="TTSSizeExceededTruncate" xml:space="preserve">
     <value>Truncate TTS message</value>
   </data>
+  <data name="UserPaused" xml:space="preserve">
+    <value>Paused by user</value>
+  </data>
+  <data name="WaitingMapChange" xml:space="preserve">
+    <value>Waiting for map change or relog</value>
+  </data>
 </root>

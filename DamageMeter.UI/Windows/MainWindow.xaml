@@ -297,9 +297,20 @@
         <TextBlock  Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center" Name="TooSlow" 
                    Background="Transparent" Foreground="Yellow" Text="{x:Static l:LP.Your_computer_is_too_slow}"
                    Visibility="Collapsed"/>
+        <TextBlock  Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center" Name="WaitingMapChange" 
+                   Background="Transparent" Foreground="#f55" Text="{x:Static l:LP.WaitingMapChange}" FontWeight="DemiBold"
+                   Visibility="Collapsed"/>
+        <TextBlock  Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center" Name="UserPaused" 
+                   Background="Transparent" 
+                   Visibility="Collapsed">
+            <Run  Text="{x:Static l:LP.UserPaused}" Foreground="#aaa"></Run>
+            <LineBreak/>
+            <Run FontWeight="DemiBold" Foreground="#f55" Text="Change map or relog after resuming meter"></Run>
+        </TextBlock>
         <Grid Grid.Row="4" Name="Footer" Height="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -374,6 +385,12 @@
            Stretch="Fill"  Style="{StaticResource ImageButton}"
            HorizontalAlignment="Center" Margin="2"
            Height="25" VerticalAlignment="Top" Width="25" Grid.Column="1" />
+
+            <!--Adds button-->
+            <Image PreviewMouseLeftButtonDown="UserPauseBtnPreviewMouseLeftButtonDown"
+           HorizontalAlignment="Center" x:Name="UserPauseBtn" Stretch="Fill"  Style="{StaticResource ImageButton}"
+           Height="25" VerticalAlignment="Top" Width="25" Grid.Column="5" Margin="2"/>
+
 
         </Grid>
         <ui:NotifyIcon x:Name="NotifyIcon" />

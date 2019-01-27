@@ -199,6 +199,7 @@ namespace Data
         private bool dateInExcelPath = false;
         private bool showTimeLeft = false;
         private bool noAbnormalsInHUD = false;
+        private bool _userPaused = false;
         private bool displayTimerBasedOnAggro = true;
         
         private bool enableRichPresence = true;
@@ -272,6 +273,8 @@ namespace Data
         public bool DateInExcelPath { get => dateInExcelPath; set { dateInExcelPath = value; Save();}}
         public bool ShowTimeLeft { get => showTimeLeft; set { showTimeLeft = value; Save();}}
         public bool NoAbnormalsInHUD { get => noAbnormalsInHUD; set { noAbnormalsInHUD = value; Save();}}
+
+        public bool UserPaused { get => _userPaused; set { _userPaused = value;}}
         
         public bool EnableRichPresence { get => enableRichPresence; set { enableRichPresence = value; Save();}}
         public bool RichPresenceShowLocation { get => richPresenceShowLocation ; set { richPresenceShowLocation = value; Save();}}

@@ -37,13 +37,13 @@ namespace DamageMeter
 
         private static PacketProcessor _instance;
         private static readonly object _pasteLock = new object();
-        internal AbnormalityStorage AbnormalityStorage;
+        public AbnormalityStorage AbnormalityStorage;
 
         internal readonly List<Player> MeterPlayers = new List<Player>();
         internal bool ForceUiUpdate;
         private bool _keepAlive = true;
         private long _lastTick;
-        internal AbnormalityTracker AbnormalityTracker;
+        public AbnormalityTracker AbnormalityTracker;
         public ConcurrentDictionary<UploadData, NpcEntity> BossLink = new ConcurrentDictionary<UploadData, NpcEntity>();
         public GlyphBuild Glyphs = new GlyphBuild();
         internal MessageFactory MessageFactory = new MessageFactory();
@@ -54,7 +54,7 @@ namespace DamageMeter
         public bool NeedToReset;
         public bool NeedToResetCurrent;
 
-        internal PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
+        public PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
         public Server Server;
         internal UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
@@ -86,6 +86,7 @@ namespace DamageMeter
         public event GuildIconEvent GuildIconAction;
         public event UnsetClickThrouEvent UnsetClickThrouAction;
         public event PauseEvent PauseAction;
+        public event Action MapChangedAction;
 
         public void Exit()
         {
@@ -108,9 +109,13 @@ namespace DamageMeter
             Connected?.Invoke(message);
         }
 
-        internal void RaisePause(bool pause)
+        public void RaisePause(bool pause)
         {
             PauseAction?.Invoke(pause);
+        }
+        public void RaiseMapChanged()
+        {
+            MapChangedAction?.Invoke();
         }
 
         public event ConnectedHandler Connected;
