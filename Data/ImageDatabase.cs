@@ -48,6 +48,9 @@ namespace Data
 
             Delete = new Image { Source = new BitmapImage(new Uri(folder + "delete.png")) };
 
+            Play = new Image { Source = new BitmapImage(new Uri(folder + "play.png")) };
+            Pause = new Image { Source = new BitmapImage(new Uri(folder + "pause.png")) };
+
             Icon = new BitmapImage(new Uri(folder + "shinra.ico"));
 
             Tray = new Icon(folder + "shinra.ico");
@@ -97,6 +100,9 @@ namespace Data
         public Image AggroTime { get; }
 
         public Image Delete { get; }
+
+        public Image Play { get; }
+        public Image Pause { get; }
 
         public Icon Tray { get; }
     }
