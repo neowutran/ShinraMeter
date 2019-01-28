@@ -60,11 +60,11 @@ namespace DamageMeter.Processing
             PacketProcessor.Instance.EntityTracker.Update(message);
             PacketProcessor.Instance.PlayerTracker.UpdateParty(message);
             BasicTeraData.Instance.EventsData.Load(PacketProcessor.Instance.EntityTracker.MeterUser.RaceGenderClass.Class);
-            PacketProcessor.Instance.PacketProcessing.Update();
-            PacketProcessor.Instance.RaisePause(false);
+            if (BasicTeraData.Instance.WindowData.UserPaused) PacketProcessor.Instance.PacketProcessing.Pause();
+            else PacketProcessor.Instance.PacketProcessing.Update();
+            PacketProcessor.Instance.RaisePause(BasicTeraData.Instance.WindowData.UserPaused);
             var me = PacketProcessor.Instance.PlayerTracker.Me();
             if (!PacketProcessor.Instance.MeterPlayers.Contains(me)) { PacketProcessor.Instance.MeterPlayers.Add(me); }
-
             RichPresence.Instance.Login(me);
         }
 

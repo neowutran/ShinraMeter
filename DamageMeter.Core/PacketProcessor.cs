@@ -16,7 +16,6 @@ using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
-using System.Diagnostics;
 using Tera.RichPresence;
 
 namespace DamageMeter
@@ -37,13 +36,13 @@ namespace DamageMeter
 
         private static PacketProcessor _instance;
         private static readonly object _pasteLock = new object();
-        public AbnormalityStorage AbnormalityStorage;
+        internal AbnormalityStorage AbnormalityStorage;
 
         internal readonly List<Player> MeterPlayers = new List<Player>();
         internal bool ForceUiUpdate;
         private bool _keepAlive = true;
         private long _lastTick;
-        public AbnormalityTracker AbnormalityTracker;
+        internal AbnormalityTracker AbnormalityTracker;
         public ConcurrentDictionary<UploadData, NpcEntity> BossLink = new ConcurrentDictionary<UploadData, NpcEntity>();
         public GlyphBuild Glyphs = new GlyphBuild();
         internal MessageFactory MessageFactory = new MessageFactory();
@@ -53,8 +52,9 @@ namespace DamageMeter
         public DataExporter.Dest NeedToExport = DataExporter.Dest.None;
         public bool NeedToReset;
         public bool NeedToResetCurrent;
+        public bool NeedPause;
 
-        public PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
+        internal PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
         public Server Server;
         internal UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
@@ -360,14 +360,14 @@ namespace DamageMeter
                 var packetsWaiting = TeraSniffer.Instance.Packets.Count;
                 if (packetsWaiting > 5000)
                 {
-                    PacketProcessing.Pause();
-                    Database.Database.Instance.DeleteAll();
-                    AbnormalityStorage = new AbnormalityStorage();
-                    AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, AbnormalityStorage, DamageTracker.Instance.Update);
-                    HudManager.Instance.CurrentBosses.DisposeAll();
-                    TeraSniffer.Instance.Packets=new ConcurrentQueue<Message>();
-                    NotifyProcessor.Instance.S_LOAD_TOPO(null);
+                    Pause();
                     RaisePause(true);
+                }
+
+                if (NeedPause)
+                {
+                    Pause(false);
+                    NeedPause = false;
                 }
 
                 if (ForceUiUpdate)
@@ -393,6 +393,26 @@ namespace DamageMeter
                     //Unprocessed packet
                 }
             }
+        }
+
+        private void Pause(bool reset=true) {
+            PacketProcessing.Pause();
+            if (reset) {
+                Database.Database.Instance.DeleteAll();
+                AbnormalityStorage = new AbnormalityStorage();
+                AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, AbnormalityStorage, DamageTracker.Instance.Update);
+                if (MessageFactory.ChatEnabled)
+                {
+                    AbnormalityTracker.AbnormalityAdded += NotifyProcessor.Instance.AbnormalityNotifierAdded;
+                    AbnormalityTracker.AbnormalityRemoved += NotifyProcessor.Instance.AbnormalityNotifierRemoved;
+                }
+            }
+            else {
+                AbnormalityStorage.EndAll(DateTime.UtcNow.Ticks);
+            }
+            TeraSniffer.Instance.Packets = new ConcurrentQueue<Message>();
+            HudManager.Instance.CurrentBosses.DisposeAll();
+            NotifyProcessor.Instance.S_LOAD_TOPO(null);
         }
 
         public void CheckUpdateUi(int packetsWaiting)

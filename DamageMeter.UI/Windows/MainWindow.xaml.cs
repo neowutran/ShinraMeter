@@ -599,8 +599,6 @@ namespace DamageMeter.UI
                         BackgroundColor.Background = Brushes.DarkRed;
                         TooSlow.Visibility = Visibility.Visible;
                         UserPaused.Visibility = Visibility.Collapsed;
-
-
                     }
                 }
                 else
@@ -633,24 +631,17 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.UserPaused = !BasicTeraData.Instance.WindowData.UserPaused;
             if (BasicTeraData.Instance.WindowData.UserPaused)
             {
-                PacketProcessor.Instance.PacketProcessing.Pause();
-                Database.Database.Instance.DeleteAll();
-                PacketProcessor.Instance.AbnormalityStorage = new AbnormalityStorage();
-                PacketProcessor.Instance.AbnormalityTracker = new AbnormalityTracker(PacketProcessor.Instance.EntityTracker, PacketProcessor.Instance.PlayerTracker, BasicTeraData.Instance.HotDotDatabase, PacketProcessor.Instance.AbnormalityStorage, DamageTracker.Instance.Update);
-                HudManager.Instance.CurrentBosses.DisposeAll();
-                TeraSniffer.Instance.Packets = new ConcurrentQueue<Tera.Message>();
-                NotifyProcessor.Instance.S_LOAD_TOPO(null);
+                PacketProcessor.Instance.NeedPause=true;
                 WaitingMapChange.Visibility = Visibility.Collapsed;
                 UserPauseBtn.Source = BasicTeraData.Instance.ImageDatabase.Play.Source;
 
             }
             else
             {
-                PacketProcessor.Instance.PacketProcessing.Update();
                 WaitingMapChange.Visibility = Visibility.Visible;
                 UserPauseBtn.Source = BasicTeraData.Instance.ImageDatabase.Pause.Source;
             }
-            PacketProcessor.Instance.RaisePause(BasicTeraData.Instance.WindowData.UserPaused);
+            PauseState(BasicTeraData.Instance.WindowData.UserPaused);
         }
     }
 

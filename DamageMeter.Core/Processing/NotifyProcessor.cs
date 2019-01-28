@@ -20,7 +20,7 @@ using RichPresence = Tera.RichPresence.RichPresence;
 
 namespace DamageMeter.Processing
 {
-    public class NotifyProcessor
+    internal class NotifyProcessor
     {
         private static NotifyProcessor _instance;
         internal Dictionary<EntityId, long> _lastBosses = new Dictionary<EntityId, long>();
@@ -480,7 +480,7 @@ namespace DamageMeter.Processing
             }
         }
 
-        public void S_LOAD_TOPO(S_LOAD_TOPO message)
+        internal void S_LOAD_TOPO(S_LOAD_TOPO message)
         {
             HudManager.Instance.CurrentBosses.DisposeAll();
             PacketProcessor.Instance.RaiseMapChanged();
@@ -539,7 +539,7 @@ namespace DamageMeter.Processing
             UpdateCredits(message.Type, message.Credits);
         }
 
-        public void Resume(S_LOAD_TOPO sLoadTopo)
+        internal void Resume(S_LOAD_TOPO sLoadTopo)
         {
             if (BasicTeraData.Instance.WindowData.UserPaused) return;
             PacketProcessor.Instance.PacketProcessing.Update();
