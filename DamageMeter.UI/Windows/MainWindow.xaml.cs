@@ -47,7 +47,7 @@ namespace DamageMeter.UI
         private readonly DispatcherTimer _dispatcherTimer;
         private readonly EntityStatsMain _entityStats;
         private readonly PopupNotification _popupNotification;
-
+        public GraphViewModel GraphViewModel { get; }
         public D3D9Render.Renderer DXrender;
 
         private readonly TeradpsHistory _windowHistory;
@@ -111,6 +111,7 @@ namespace DamageMeter.UI
             NotifyIcon.Initialize(this);
             NotifyIcon.InitializeServerList(PacketProcessor.Instance.Initialize());
             if (BasicTeraData.Instance.WindowData.ClickThrou) { SetClickThrou(); }
+            GraphViewModel = new GraphViewModel();
         }
 
         private void MapChanged()
@@ -359,6 +360,17 @@ namespace DamageMeter.UI
                 {
                     StayTopMost();
                 }
+                if (message.StatsSummary.PlayerDamageDealt.Count <= 5 && BasicTeraData.Instance.WindowData.ShowRealtimeGraph || true)
+                {
+                    GraphViewModel.Update(message);
+                    Graph.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    Graph.Visibility = Visibility.Collapsed;
+                    GraphViewModel.Reset();
+                }
+
             }
 
             Dispatcher.Invoke((PacketProcessor.UpdateUiHandler)ChangeUi, nmessage);
@@ -606,7 +618,7 @@ namespace DamageMeter.UI
                     BackgroundColor.Background = (SolidColorBrush)App.Current.FindResource("KrBgColor");
                     TooSlow.Visibility = Visibility.Collapsed;
                     UserPaused.Visibility = Visibility.Collapsed;
-                    if(!_mapChanged) WaitingMapChange.Visibility = Visibility.Visible;
+                    if (!_mapChanged) WaitingMapChange.Visibility = Visibility.Visible;
                 }
             });
         }
@@ -631,7 +643,7 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.UserPaused = !BasicTeraData.Instance.WindowData.UserPaused;
             if (BasicTeraData.Instance.WindowData.UserPaused)
             {
-                PacketProcessor.Instance.NeedPause=true;
+                PacketProcessor.Instance.NeedPause = true;
                 WaitingMapChange.Visibility = Visibility.Collapsed;
                 UserPauseBtn.Source = BasicTeraData.Instance.ImageDatabase.Play.Source;
 

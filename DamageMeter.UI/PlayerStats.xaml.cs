@@ -37,16 +37,20 @@ namespace DamageMeter.UI
             Class.Source = Image;
             LabelName.Content = PlayerName;
             LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
-            var dpsCol100 = Color.FromArgb(255, 244, 164, 66);
-            var dpsCol30 = Color.FromArgb(60, 244, 164, 66);
-            var dpsCol0 = Color.FromArgb(0, 244, 164, 66);
+            var isMe = PlayerDamageDealt.Source.User.Id.Id == PacketProcessor.Instance.PlayerTracker.Me().User.Id.Id;
+            var meCol100 = Color.FromArgb(255, 244, 164, 66);
+            var meCol30 = Color.FromArgb(60, 244, 164, 66);
+            var meCol0 = Color.FromArgb(0, 244, 164, 66);
+            var dpsCol100 = Color.FromArgb(255, 255, 68, 102);
+            var dpsCol30 = Color.FromArgb(60, 255, 68, 102);
+            var dpsCol0 = Color.FromArgb(0, 255, 68, 102);
             var tankCol100 = Color.FromArgb(255, 68, 178, 252);
+            var healCol100 = Color.FromArgb(255, 59, 226, 75);
+            var unkCol100 = Color.FromArgb(255, 200, 200, 200);
             var tankCol30 = Color.FromArgb(60, 68, 178, 252);
             var tankCol0 = Color.FromArgb(0, 68, 178, 252);
-            var healCol100 = Color.FromArgb(255, 59, 226, 75);
             var healCol30 = Color.FromArgb(60, 59, 226, 75);
             var healCol0 = Color.FromArgb(0, 59, 226, 75);
-            var unkCol100 = Color.FromArgb(255, 200, 200, 200);
             var unkCol30 = Color.FromArgb(60, 200, 200, 200);
             var unkCol0 = Color.FromArgb(0, 200, 200, 200);
             if (playerDamageDealt != null)
@@ -62,21 +66,21 @@ namespace DamageMeter.UI
                     case Tera.Game.PlayerClass.Gunner:
                     case Tera.Game.PlayerClass.Ninja:
                     case Tera.Game.PlayerClass.Valkyrie:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(dpsCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(dpsCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(dpsCol100);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(isMe?  meCol30 : dpsCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(isMe?  meCol0 : dpsCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(isMe ? meCol100 : dpsCol100);
                         break;
                     case Tera.Game.PlayerClass.Priest:
                     case Tera.Game.PlayerClass.Mystic:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(healCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(healCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(healCol100);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(isMe?  meCol30 :healCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(isMe ? meCol0 : healCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(isMe ? meCol100 : healCol100);
                         break;
                     case Tera.Game.PlayerClass.Brawler:
                     case Tera.Game.PlayerClass.Lancer:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(tankCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(tankCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(tankCol100);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(isMe?  meCol30 :tankCol30, 1);
+                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(isMe ? meCol0 : tankCol0, 0);
+                        DpsIndicator.BorderBrush = new SolidColorBrush(isMe ? meCol100 : tankCol100);
                         break;
                     case Tera.Game.PlayerClass.Common:
                         (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(unkCol30, 1);
