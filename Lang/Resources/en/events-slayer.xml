@@ -1,3 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <events>
+  <!-- Notifies for missing overpower buff-->
+    <abnormality ingame="true" remaining_seconds_before_trigger="10" rewarn_timeout_seconds="3" trigger="MissingDuringFight" target="Self">
+        <abnormalities>
+            <abnormality>300330</abnormality>
+        </abnormalities>
+        <actions>
+            <notify>
+                <balloon title_text="{abnormality_name}" body_text="{player_name} {time_left}" display_time="3000" />
+                <text_to_speech text="Overpower" voice_gender="Female" voice_age="Adult" culture="en-US" voice_position="0" volume="30" rate="0"/>
+            </notify>
+        </actions>
+    </abnormality>
 </events>
