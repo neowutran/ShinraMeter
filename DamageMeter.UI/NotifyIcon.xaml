@@ -382,6 +382,8 @@
                                                                Off="DisableShowAlways" />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Stay_topmost}" x:Name="StayTopMost"
                                                   On="EnableStayTopMost" Off="DisableStayTopMost" />
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_ShowGraph}" x:Name="ShowDpsGraph"
+                                                  On="EnableGraph" Off="DisableGraph" />
                                                 <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />

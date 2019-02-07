@@ -650,5 +650,15 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.MaxTTSSize = MaxTTSSizeSpinner?.Value ?? 40;
 
         }
+
+        private void EnableGraph(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.ShowRealtimeGraph = true;
+        }
+
+        private void DisableGraph(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.ShowRealtimeGraph = false;
+        }
     }
 }
