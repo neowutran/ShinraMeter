@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Media;
 using Data;
 using LiveCharts;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Tera.Game;
 using Color = System.Windows.Media.Color;
@@ -73,7 +74,6 @@ namespace DamageMeter.UI
         private long _currTime = -1;
         private ulong _currEntity = 0;
         private bool _enraged;
-
         internal static int Samples = 10;
         internal static int ShowedSamples = int.MaxValue;
 
@@ -96,7 +96,7 @@ namespace DamageMeter.UI
                     {
                         StrokeThickness = 0,
                         Fill = new SolidColorBrush(Colors.Red) { Opacity = .2 },
-                        Value = _currSample,
+                        Value = _currTime/(double)TimeSpan.TicksPerSecond,
                         SectionWidth = 1
                     });
                 }
@@ -107,7 +107,7 @@ namespace DamageMeter.UI
                     {
                         // update duration
                         var last = EnrageSections.Last();
-                        last.SectionWidth = _currSample - last.Value;
+                        last.SectionWidth = _currTime/(double)TimeSpan.TicksPerSecond - last.Value;
                     }
                     else
                     {
@@ -116,7 +116,7 @@ namespace DamageMeter.UI
                         {
                             StrokeThickness = 0,
                             Fill = new SolidColorBrush(Colors.Red) { Opacity = .2 },
-                            Value = _currSample,
+                            Value = _currTime/(double)TimeSpan.TicksPerSecond,
                             SectionWidth = 1
                         });
                     }
@@ -138,20 +138,20 @@ namespace DamageMeter.UI
         internal void Update(UiUpdateMessage message)
         {
             NotifyPropertyChanged(nameof(ChartVisibility));
-            // skip update if timer is the same
+            /// skip update if timer is the same
             if (_currTime == message.StatsSummary.EntityInformation.Interval) return;
             _currSample++;
 
             CheckReset(message);
 
-            // store the amount of samples we received until now
+            /// store the amount of samples we received until now
             if (_values >= ShowedSamples) _values = ShowedSamples;
             else _values++;
 
-            // store current enemy
+            /// store current enemy
             _currEntity = message.StatsSummary.EntityInformation.Entity != null ? message.StatsSummary.EntityInformation.Entity.Id.Id : 0;
 
-            // show only current player if there are more than 5 players
+            /// show only current player if there are more than 5 players
             var onlyMeChanged = false;
             if (!_onlyMe && message.StatsSummary.PlayerDamageDealt.Count > 5)
             {
@@ -159,7 +159,7 @@ namespace DamageMeter.UI
                 _onlyMe = true;
             }
 
-            // adds enrage stat
+            /// adds enrage stat
             if (BasicTeraData.Instance.HotDotDatabase?.Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged) == null) Enraged = false; 
             else
             {
@@ -167,11 +167,17 @@ namespace DamageMeter.UI
                 message.Abnormals.Get(message.StatsSummary.EntityInformation.Entity)
                                  .TryGetValue(BasicTeraData.Instance.HotDotDatabase?
                                  .Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged), out var enrageHotDot);
-
-                Enraged = (enrageHotDot?.LastEnd() ?? long.MaxValue) == currTime;
+                var lastEnd = long.MaxValue;
+                try
+                {
+                    /// potato fix for now
+                    lastEnd = enrageHotDot.LastEnd();
+                }
+                catch  { }
+                Enraged = lastEnd == currTime;
             }
 
-            // iterate player stats and update line series
+            /// iterate player stats and update line series
             foreach (var playerDamage in message.StatsSummary.PlayerDamageDealt)
             {
                 var playerId = playerDamage.Source.User.Id;
@@ -179,7 +185,7 @@ namespace DamageMeter.UI
                 var pClass = playerDamage.Source.Class;
                 var isMe = playerId.Id == PacketProcessor.Instance.PlayerTracker.Me().User.Id.Id;
 
-                // skip or remove this player if we have too many entries
+                /// skip or remove this player if we have too many entries
                 if (_onlyMe && !isMe)
                 {
                     if (onlyMeChanged)
@@ -192,39 +198,39 @@ namespace DamageMeter.UI
                     continue;
                 }
 
-                // add this player to sources if it's not already there
+                /// add this player to sources if it's not already there
                 var src = Sources.FirstOrDefault(x => x.Id == playerId.Id);
                 if (src == null)
                 {
                     src = new DpsSource(playerId.Id);
                     Sources.Add(src);
                 }
-                // update it
+                /// update it
                 src.Update(playerDamage.Amount);
 
-                // check if we already have a line series for this player
+                /// check if we already have a line series for this player
                 if (Series.FirstOrDefault(x => x.Title == name) is LineSeries existing)
                 {
-                    // series exists, add and remove points
+                    /// series exists, add and remove points
 
-                    // get player line series
-                    var seriesVals = existing.Values as ChartValues<double>;
-                    // remove first point if total sample count is above the maximum
+                    /// get player line series
+                    var seriesVals = existing.Values as ChartValues<ObservablePoint>;
+                    /// remove first point if total sample count is above the maximum
                     if (_values >= ShowedSamples) seriesVals.RemoveAt(0);
-                    // get average for current instant and add it as a line point
-                    seriesVals.Add(src.Avg);
-                    // remove first point if the series is longer than it should be (shouldn't happen anyway)
+                    /// get average for current instant and add it as a line point
+                    seriesVals.Add(new ObservablePoint(_currTime/ (double)TimeSpan.TicksPerSecond, src.Avg));
+                    /// remove first point if the series is longer than it should be (shouldn't happen anyway)
                     while (seriesVals.Count >= _values) seriesVals.RemoveAt(0);
                 }
                 else
                 {
-                    // series doesen't exist, create it
+                    /// series doesen't exist, create it
 
-                    // get line color (red = dps, blue = tank, green = healer, orange = currPlayer)
+                    /// get line color (red = dps, blue = tank, green = healer, orange = currPlayer)
                     var color = GetColor(pClass);
                     if (isMe) color = ((Color)App.Current.FindResource("MeColor"));
 
-                    // create the series
+                    /// create the series
                     var newSeries = new LineSeries()
                     {
                         Title = name,
@@ -234,13 +240,13 @@ namespace DamageMeter.UI
                         StrokeThickness = 2,
                         LineSmoothness = 0
                     };
-                    newSeries.Values = new ChartValues<double>();
+                    newSeries.Values = new ChartValues<ObservablePoint>();
 
-                    // fill the series with zeros if this player joined after the start of the fight
-                    while (newSeries.Values.Count < _values - 1) newSeries.Values.Add(0D);
-                    // add current sample too
-                    newSeries.Values.Add(src.Avg);
-                    // add new series to Series collection
+                    /// fill the series with zeros if this player joined after the start of the fight
+                    //while (newSeries.Values.Count < _values - 1) newSeries.Values.Add(0D);
+                    /// add current sample too
+                    newSeries.Values.Add(new ObservablePoint(_currTime/(double)TimeSpan.TicksPerSecond, src.Avg));
+                    /// add new series to Series collection
                     Series.Add(newSeries);
                 }
             }
