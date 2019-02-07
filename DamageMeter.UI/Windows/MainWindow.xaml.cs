@@ -360,7 +360,7 @@ namespace DamageMeter.UI
                 {
                     StayTopMost();
                 }
-                if (message.StatsSummary.PlayerDamageDealt.Count <= 5 && BasicTeraData.Instance.WindowData.ShowRealtimeGraph || true)
+                if (BasicTeraData.Instance.WindowData.ShowRealtimeGraph) 
                 {
                     GraphViewModel.Update(message);
                     Graph.Visibility = Visibility.Visible;
