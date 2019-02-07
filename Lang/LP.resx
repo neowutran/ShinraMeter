@@ -787,4 +787,7 @@ Reset and paused until map change or relog.</value>
   <data name="WaitingMapChange" xml:space="preserve">
     <value>Waiting for map change or relog</value>
   </data>
+  <data name="SystemTray_ShowGraph" xml:space="preserve">
+    <value>Show realtime graph</value>
+  </data>
 </root>

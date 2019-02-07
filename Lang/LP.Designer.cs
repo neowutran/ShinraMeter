@@ -1927,6 +1927,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Show realtime graph.
+        /// </summary>
+        public static string SystemTray_ShowGraph {
+            get {
+                return ResourceManager.GetString("SystemTray_ShowGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Site export.
         /// </summary>
         public static string SystemTray_Site_export {
