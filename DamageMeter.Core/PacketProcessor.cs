@@ -213,7 +213,7 @@ namespace DamageMeter
 
             var heals = Database.Database.Instance.PlayerHealInformation(entityInfo.BeginTime, entityInfo.EndTime);
 
-            var flash = FlashMessage;
+            var flash = FlashMessage.Where(x => x != null).ToList();
             FlashMessage = new List<NotifyFlashMessage>();
 
             var statsSummary = new StatsSummary(playersInfo, heals, entityInfo);

@@ -390,7 +390,7 @@ namespace Data
             var languageElement = root?.Element("language");
             if (languageElement == null) { return; }
             language = languageElement.Value;
-            if (!Array.Exists(new[] {"Auto", "EU-EN", "EU-FR", "EU-GER", "NA", "RU", "JP", "JP-C" , "TW", "KR", "KR-PTS"}, s => s.Equals(language))) { language = "Auto"; }
+            if (!Array.Exists(new[] {"Auto", "EU-EN", "EU-FR", "EU-GER", "EUC-EN", "EUC-FR", "EUC-GER", "NA", "RU", "JP", "JPC" , "TW", "KRC", "KR-PTS"}, s => s.Equals(language))) { language = "Auto"; }
         }
 
         private void ParseUILanguage()

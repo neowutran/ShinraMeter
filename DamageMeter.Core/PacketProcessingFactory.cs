@@ -145,6 +145,14 @@ namespace DamageMeter
         {
             var abnormalityTrackerProcessing = new Dictionary<Type, Delegate>
             {
+                { typeof(SAddCharmStatus) , new Action<SAddCharmStatus>((x)=>PacketProcessor.Instance.AbnormalityTracker.Update(x)) },
+                { typeof(SEnableCharmStatus) , new Action<SEnableCharmStatus>((x)=>PacketProcessor.Instance.AbnormalityTracker.Update(x)) },
+                { typeof(SRemoveCharmStatus) , new Action<SRemoveCharmStatus>((x)=>PacketProcessor.Instance.AbnormalityTracker.Update(x)) },
+                { typeof(SResetCharmStatus) , new Action<SResetCharmStatus>((x)=>PacketProcessor.Instance.AbnormalityTracker.Update(x)) },
+                { typeof(SPartyMemberCharmAdd) , new Action<SPartyMemberCharmAdd>((x)=>PacketProcessor.Instance.AbnormalityTracker.Update(x)) },
+                { typeof(SPartyMemberCharmDel) , new Action<SPartyMemberCharmDel>((x)=>PacketProcessor.Instance.AbnormalityTracker.Update(x)) },
+                { typeof(SPartyMemberCharmEnable) , new Action<SPartyMemberCharmEnable>((x)=>PacketProcessor.Instance.AbnormalityTracker.Update(x)) },
+                { typeof(SPartyMemberCharmReset) , new Action<SPartyMemberCharmReset>((x)=>PacketProcessor.Instance.AbnormalityTracker.Update(x)) },
                 {typeof(SAbnormalityBegin), new Action<SAbnormalityBegin>(Abnormalities.Update)},
                 {typeof(SAbnormalityEnd), new Action<SAbnormalityEnd>(Abnormalities.Update)},
                 {typeof(SAbnormalityRefresh), new Action<SAbnormalityRefresh>(Abnormalities.Update)},
