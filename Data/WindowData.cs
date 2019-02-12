@@ -207,7 +207,7 @@ namespace Data
         private bool richPresenceShowCharacter = false;
         private bool richPresenceShowStatus = true;
         private bool richPresenceShowParty = true;
-        private bool showRealtimeGraph = true;
+        private bool showRealtimeGraph = false;
 
         public bool DisplayTimerBasedOnAggro { get => displayTimerBasedOnAggro; set { displayTimerBasedOnAggro = value; Save(); } }
 
