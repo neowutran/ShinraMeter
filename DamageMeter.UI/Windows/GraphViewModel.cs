@@ -23,11 +23,12 @@ namespace DamageMeter.UI
             private double _damageSum;
             private long _timeSum;
             private long _prevTick;
+            private long _interval = TimeSpan.TicksPerSecond * Samples;
 
             // properties
             public ulong Id { get; }
             public Queue<Tuple<double, long>> Values { get; }
-            public double Avg => Values.Count == 0 || _timeSum == 0 ? _damageSum : TimeSpan.TicksPerSecond * _damageSum / _timeSum;
+            public double Avg => Values.Count == 0 ? _damageSum : _damageSum / _interval;
 
             // ctor
             public DpsSource(ulong id)
@@ -40,29 +41,34 @@ namespace DamageMeter.UI
             // methods
             public void Update(long newAmount)
             {
-                // get the amount of damage done between this and previous time instants
+                /// get the amount of damage done between this and previous time instants
                 var dmgDiff = Convert.ToDouble(newAmount - _prevAmount);
-                // get the amount of ticks between this and previous update
-                var timeDiff = Values.Count != 0 ? DateTime.Now.Ticks - _prevTick : 0L;
-                // get a factor indicating how many seconds last interval was
-                var factor = timeDiff != 0 ? timeDiff / (double)TimeSpan.TicksPerSecond : 1;
+                /// get the amount of ticks between this and previous update
+                //var timeDiff = Values.Count != 0 ? DateTime.Now.Ticks - _prevTick : 0L;
+                /// get a factor indicating how many seconds last interval was
+                //var factor = timeDiff != 0 ? timeDiff / (double)TimeSpan.TicksPerSecond : 1;
 
-                // update values
-                _prevAmount = newAmount;
-                _prevTick = DateTime.Now.Ticks;
-                _timeSum += timeDiff;
-                dmgDiff = dmgDiff / factor;
+                /// update values
+                //_timeSum += timeDiff;
+                //dmgDiff = dmgDiff / factor;
+                var now = DateTime.Now.Ticks;
                 _damageSum += dmgDiff;
 
-                // queue damage and time deltas
-                Values.Enqueue(new Tuple<double, long>(dmgDiff, timeDiff));
+                /// queue damage and time deltas
+                Values.Enqueue(new Tuple<double, long>(dmgDiff, now));
+
+                _prevAmount = newAmount;
+                _prevTick = DateTime.Now.Ticks;
 
                 if (Values.Count < Samples) return;
 
-                // remove first value pair in the queue and subtract it from total damage and total time
-                var val = Values.Dequeue();
-                _damageSum -= val.Item1;
-                _timeSum -= val.Item2;
+                /// remove first value pair in the queue and subtract it from total damage and total time
+                while (Values.Peek().Item2 < now - _interval)
+                {
+                    var val = Values.Dequeue();
+                    _damageSum -= val.Item1;
+                    //_timeSum -= val.Item2;
+                }
             }
         }
 
@@ -97,7 +103,7 @@ namespace DamageMeter.UI
                     {
                         StrokeThickness = 0,
                         Fill = new SolidColorBrush(Colors.Red) { Opacity = .2 },
-                        Value = _currTime/(double)TimeSpan.TicksPerSecond,
+                        Value = _currTime / (double)TimeSpan.TicksPerSecond,
                         SectionWidth = 1
                     });
                 }
@@ -108,7 +114,7 @@ namespace DamageMeter.UI
                     {
                         // update duration
                         var last = EnrageSections.Last();
-                        last.SectionWidth = _currTime/(double)TimeSpan.TicksPerSecond - last.Value;
+                        last.SectionWidth = _currTime / (double)TimeSpan.TicksPerSecond - last.Value;
                     }
                     else
                     {
@@ -117,7 +123,7 @@ namespace DamageMeter.UI
                         {
                             StrokeThickness = 0,
                             Fill = new SolidColorBrush(Colors.Red) { Opacity = .2 },
-                            Value = _currTime/(double)TimeSpan.TicksPerSecond,
+                            Value = _currTime / (double)TimeSpan.TicksPerSecond,
                             SectionWidth = 1
                         });
                     }
@@ -162,7 +168,7 @@ namespace DamageMeter.UI
             }
 
             /// adds enrage stat
-            if (BasicTeraData.Instance.HotDotDatabase?.Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged) == null) Enraged = false; 
+            if (BasicTeraData.Instance.HotDotDatabase?.Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged) == null) Enraged = false;
             else
             {
                 var currTime = message.StatsSummary.EntityInformation.EndTime;
@@ -175,7 +181,7 @@ namespace DamageMeter.UI
                     /// potato fix for now
                     lastEnd = enrageHotDot.LastEnd();
                 }
-                catch  { }
+                catch { }
                 Enraged = lastEnd == currTime;
             }
 
@@ -220,7 +226,7 @@ namespace DamageMeter.UI
                     /// remove first point if total sample count is above the maximum
                     if (_values >= ShowedSamples) seriesVals.RemoveAt(0);
                     /// get average for current instant and add it as a line point
-                    seriesVals.Add(new ObservablePoint(_currTime/ (double)TimeSpan.TicksPerSecond, src.Avg));
+                    seriesVals.Add(new ObservablePoint(_currTime / (double)TimeSpan.TicksPerSecond, src.Avg));
                     /// remove first point if the series is longer than it should be (shouldn't happen anyway)
                     while (seriesVals.Count >= _values) seriesVals.RemoveAt(0);
                 }
@@ -247,7 +253,7 @@ namespace DamageMeter.UI
                     /// fill the series with zeros if this player joined after the start of the fight
                     //while (newSeries.Values.Count < _values - 1) newSeries.Values.Add(0D);
                     /// add current sample too
-                    newSeries.Values.Add(new ObservablePoint(_currTime/(double)TimeSpan.TicksPerSecond, src.Avg));
+                    newSeries.Values.Add(new ObservablePoint(_currTime / (double)TimeSpan.TicksPerSecond, src.Avg));
                     /// add new series to Series collection
                     Series.Add(newSeries);
                 }
@@ -263,7 +269,7 @@ namespace DamageMeter.UI
                 // causes NullReference for some reason
                 EnrageSections.Clear();
             }
-            catch  { }
+            catch { }
             _enraged = false;
             _values = 0;
             _onlyMe = false;
