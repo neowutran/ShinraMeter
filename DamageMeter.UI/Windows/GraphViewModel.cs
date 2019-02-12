@@ -80,6 +80,7 @@ namespace DamageMeter.UI
         // properties
         //private StepLineSeries Enrage { get; set; }
         public Func<double, string> DpsFormatter { get; set; }
+        public Func<double, string> TimeFormatter { get; set; }
         public SeriesCollection Series { get; set; }
         //public SeriesCollection EnrageSeries { get; set; }
         public SectionsCollection EnrageSections { get; }
@@ -130,6 +131,7 @@ namespace DamageMeter.UI
         {
             Series = new SeriesCollection();
             DpsFormatter = new Func<double, string>((v) => FormatHelpers.Instance.FormatValue(Convert.ToInt64(v)));
+            TimeFormatter = new Func<double, string>((v) => FormatHelpers.Instance.FormatTimeSpan(TimeSpan.FromSeconds(v)));
             Sources = new List<DpsSource>();
             EnrageSections = new SectionsCollection();
         }
