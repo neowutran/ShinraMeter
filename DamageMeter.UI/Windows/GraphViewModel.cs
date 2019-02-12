@@ -28,7 +28,7 @@ namespace DamageMeter.UI
             // properties
             public ulong Id { get; }
             public Queue<Tuple<double, long>> Values { get; }
-            public double Avg => Values.Count == 0 ? _damageSum : _damageSum / _interval;
+            public double Avg => Values.Count == 0 ? _damageSum : _damageSum*TimeSpan.TicksPerSecond / _interval;
 
             // ctor
             public DpsSource(ulong id)
