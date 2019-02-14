@@ -22,7 +22,7 @@ namespace DamageMeter
         private static readonly Dictionary<Type, Delegate> MessageToProcessingPaused = new Dictionary<Type, Delegate>
         {
             {typeof(C_LOGIN_ARBITER), Helpers.Contructor<Func<C_LOGIN_ARBITER, Processing.C_LOGIN_ARBITER>>()},
-            {typeof(S_GET_USER_LIST), new Action<S_GET_USER_LIST>(x => PacketProcessor.Instance.UserLogoTracker.SetUserList(x))},
+            //{typeof(S_GET_USER_LIST), new Action<S_GET_USER_LIST>(x => PacketProcessor.Instance.UserLogoTracker.SetUserList(x))},
             {typeof(S_GET_USER_GUILD_LOGO), new Action<S_GET_USER_GUILD_LOGO>(x => PacketProcessor.Instance.UserLogoTracker.AddLogo(x))},
             {typeof(C_CHECK_VERSION), Helpers.Contructor<Func<C_CHECK_VERSION, Processing.C_CHECK_VERSION>>()},
             {typeof(S_LOAD_TOPO), new Action<S_LOAD_TOPO>(x => NotifyProcessor.Instance.Resume(x))},
@@ -32,7 +32,7 @@ namespace DamageMeter
         private static readonly Dictionary<Type, Delegate> MessageToProcessingInit = new Dictionary<Type, Delegate>
         {
             {typeof(C_LOGIN_ARBITER), Helpers.Contructor<Func<C_LOGIN_ARBITER, Processing.C_LOGIN_ARBITER>>()},
-            {typeof(S_GET_USER_LIST), new Action<S_GET_USER_LIST>(x => PacketProcessor.Instance.UserLogoTracker.SetUserList(x))},
+            //{typeof(S_GET_USER_LIST), new Action<S_GET_USER_LIST>(x => PacketProcessor.Instance.UserLogoTracker.SetUserList(x))},
             {typeof(S_GET_USER_GUILD_LOGO), new Action<S_GET_USER_GUILD_LOGO>(x => PacketProcessor.Instance.UserLogoTracker.AddLogo(x))},
             {typeof(C_CHECK_VERSION), Helpers.Contructor<Func<C_CHECK_VERSION, Processing.C_CHECK_VERSION>>()},
             {typeof(LoginServerMessage), Helpers.Contructor<Func<LoginServerMessage, S_LOGIN>>()}
@@ -113,6 +113,7 @@ namespace DamageMeter
             {
                 {typeof(S_BOSS_GAGE_INFO), new Action<S_BOSS_GAGE_INFO>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(S_USER_LOCATION), new Action<S_USER_LOCATION>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
+                {typeof(S_GUILD_NAME), new Action<S_GUILD_NAME>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(SNpcLocation), new Action<SNpcLocation>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(S_CREATURE_ROTATE), new Action<S_CREATURE_ROTATE>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
                 {typeof(S_INSTANT_MOVE), new Action<S_INSTANT_MOVE>(x => PacketProcessor.Instance.EntityTracker.Update(x))},
