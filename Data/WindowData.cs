@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -102,7 +103,6 @@ namespace Data
             Parse("display_timer_based_on_aggro", "displayTimerBasedOnAggro");
             Parse("max_tts_size", "maxTTSSize");
             Parse("tts_size_exceeded_truncate", "ttsSizeExceededTruncate");
-            Parse("show_realtime_graph", nameof(showRealtimeGraph));
 
             ParseColor("say_color", "sayColor");
             ParseColor("alliance_color", "allianceColor");
@@ -125,6 +125,7 @@ namespace Data
             ParseLanguage();
             ParseUILanguage();
             ParseRichPresence();
+
             Parse("date_in_excel_path", "dateInExcelPath");
             if (dateInExcelPath) { excelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
             DpsServers.CollectionChanged += DpsServers_CollectionChanged;
@@ -207,7 +208,9 @@ namespace Data
         private bool richPresenceShowCharacter = false;
         private bool richPresenceShowStatus = true;
         private bool richPresenceShowParty = true;
-        private bool showRealtimeGraph = false;
+        private bool realtimeGraphEnabled = false;
+        private int realtimeGraphDisplayedInterval = 120;
+        private int realtimeGraphCMAseconds = 10;
 
         public bool DisplayTimerBasedOnAggro { get => displayTimerBasedOnAggro; set { displayTimerBasedOnAggro = value; Save(); } }
 
@@ -283,7 +286,9 @@ namespace Data
         public bool RichPresenceShowStatus { get => richPresenceShowStatus; set { richPresenceShowStatus = value; Save(); } }
         public bool RichPresenceShowParty { get => richPresenceShowParty; set { richPresenceShowParty = value; Save(); } }
 
-        public bool ShowRealtimeGraph { get => showRealtimeGraph; set { showRealtimeGraph = value; Save(); } }
+        public bool RealtimeGraphEnabled { get => realtimeGraphEnabled; set { realtimeGraphEnabled = value; Save(); } }
+        public int RealtimeGraphDisplayedInterval { get => realtimeGraphDisplayedInterval; set { realtimeGraphDisplayedInterval = value; Save(); } }
+        public int RealtimeGraphCMAseconds { get => realtimeGraphCMAseconds; set { realtimeGraphCMAseconds = value; Save(); } }
 
         private void ParseWindowStatus(string xmlName, string settingName)
         {
@@ -420,7 +425,26 @@ namespace Data
             if (otherWindowElement == null) { return; }
             if (int.TryParse(otherWindowElement.Value, out int otherWindowOpacity)) { this.otherWindowOpacity = (double)otherWindowOpacity / 100; }
         }
-
+        private void ParseRealtimeGraph()
+        {
+            var root = _xml.Root;
+            var rg = root?.Element("realtime_graph");
+            rg.Descendants().ToList().ForEach(e =>
+            {
+                if (e.Name == "enabled")
+                {
+                    if (bool.TryParse(e.Value, out var enabled)) realtimeGraphEnabled = enabled;
+                }
+                else if (e.Name == "displayed_interval")
+                {
+                    if (int.TryParse(e.Value, out var interval)) realtimeGraphDisplayedInterval = interval;
+                }
+                else if (e.Name == "cma_seconds")
+                {
+                    if (int.TryParse(e.Value, out var cma)) realtimeGraphCMAseconds = cma;
+                }
+            });
+        }
         private void ParseRichPresence()
         {
             var root = _xml.Root;
@@ -535,7 +559,10 @@ namespace Data
             xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
             xml.Root.Add(new XElement("max_tts_size", maxTTSSize));
             xml.Root.Add(new XElement("tts_size_exceeded_truncate", ttsSizeExceededTruncate));
-            xml.Root.Add(new XElement("show_realtime_graph"));
+            xml.Root.Add(new XElement("realtime_graph"));
+            xml.Root.Element("realtime_graph").Add(new XElement("enabled"), realtimeGraphEnabled);
+            xml.Root.Element("realtime_graph").Add(new XElement("displayed_interval"), realtimeGraphDisplayedInterval);
+            xml.Root.Element("realtime_graph").Add(new XElement("cma_seconds"), realtimeGraphCMAseconds);
             xml.Root.Add(new XElement("rich_presence"));
             xml.Root.Element("rich_presence").Add(new XElement("enabled", enableRichPresence));
             xml.Root.Element("rich_presence").Add(new XElement("show_location", richPresenceShowLocation));

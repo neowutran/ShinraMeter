@@ -22,7 +22,7 @@
                 </Style>
             </lvc:CartesianChart.Style>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis MinValue="0" ShowLabels="False" FontSize="10" IsMerged="True" Sections="{Binding EnrageSections}"
+                <lvc:Axis  ShowLabels="False" FontSize="10" IsMerged="True" Sections="{Binding EnrageSections}"
                           LabelFormatter="{Binding TimeFormatter}">
                     <lvc:Axis.Separator >
                         <lvc:Separator IsEnabled="False" Step="30"  Stroke="#2fff" />

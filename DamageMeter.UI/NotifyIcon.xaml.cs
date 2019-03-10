@@ -105,6 +105,10 @@ namespace DamageMeter.UI
             RPSettingsVisible(BasicTeraData.Instance.WindowData.EnableRichPresence);
             MaxTTSSizeSpinner.Value = BasicTeraData.Instance.WindowData.MaxTTSSize;
             TTSSizeExceededTruncate.Status = BasicTeraData.Instance.WindowData.TTSSizeExceededTruncate;
+
+            RealtimeGraphEnabled.Status = BasicTeraData.Instance.WindowData.RealtimeGraphEnabled;
+            RealtimeGraphDisplayedIntervalSpinner.Value = BasicTeraData.Instance.WindowData.RealtimeGraphDisplayedInterval;
+            RealtimeGraphCmaSecondsSpinner.Value = BasicTeraData.Instance.WindowData.RealtimeGraphCMAseconds;
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -651,14 +655,25 @@ namespace DamageMeter.UI
 
         }
 
-        private void EnableGraph(object sender, RoutedEventArgs e)
+        private void RealtimeGraphEnabled_On(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.ShowRealtimeGraph = true;
+            BasicTeraData.Instance.WindowData.RealtimeGraphEnabled = true;
         }
 
-        private void DisableGraph(object sender, RoutedEventArgs e)
+        private void RealtimeGraphEnabled_Off(object sender, RoutedEventArgs e)
         {
-            BasicTeraData.Instance.WindowData.ShowRealtimeGraph = false;
+            BasicTeraData.Instance.WindowData.RealtimeGraphEnabled = false;
+        }
+
+        private void RealtimeGraphDisplayedIntervalChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.RealtimeGraphDisplayedInterval = RealtimeGraphDisplayedIntervalSpinner.Value ?? 120;
+        }
+
+        private void RealtimeGraphCmaSecondsChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.RealtimeGraphCMAseconds = RealtimeGraphCmaSecondsSpinner.Value ?? 10;
+
         }
     }
 }

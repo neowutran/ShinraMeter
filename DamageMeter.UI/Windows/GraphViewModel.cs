@@ -80,8 +80,10 @@ namespace DamageMeter.UI
         private long _currTime = -1;
         private ulong _currEntity = 0;
         private bool _enraged;
-        internal static int Samples = 10;
-        internal static int ShowedSamples = int.MaxValue;
+        internal static int Samples = BasicTeraData.Instance.WindowData.RealtimeGraphCMAseconds;
+        internal static int ShowedSamples => BasicTeraData.Instance.WindowData.RealtimeGraphDisplayedInterval == 0 
+                                           ? int.MaxValue 
+                                           : BasicTeraData.Instance.WindowData.RealtimeGraphDisplayedInterval ;
 
         // properties
         //private StepLineSeries Enrage { get; set; }

@@ -382,8 +382,6 @@
                                                                Off="DisableShowAlways" />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Stay_topmost}" x:Name="StayTopMost"
                                                   On="EnableStayTopMost" Off="DisableStayTopMost" />
-                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_ShowGraph}" x:Name="ShowDpsGraph"
-                                                  On="EnableGraph" Off="DisableGraph" />
                                                 <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />
@@ -421,6 +419,54 @@
                                                                 Name="NumberPlayersSpinner"
                                                                 ValueChanged="NumberPlayersChanged" FormatString="N0"
                                                                 Increment="1" Maximum="30" Minimum="1" />
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Realtime Graph settings card-->
+                                        <Grid Margin="10,10,10,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Realtime graph settings" />
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.EnableRealtimeGraph}" 
+                                                                   x:Name="RealtimeGraphEnabled"
+                                                                   On="RealtimeGraphEnabled_On"
+                                                                   Off="RealtimeGraphEnabled_Off" />
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Name="RealtimeGraphDisplayedIntervalTb"
+                                                               HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.RealtimeGraphDisplayedInterval}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff"
+                                                                BorderBrush="Transparent" BorderThickness="0"
+                                                                Name="RealtimeGraphDisplayedIntervalSpinner"
+                                                                ValueChanged="RealtimeGraphDisplayedIntervalChanged" FormatString="N0"
+                                                                Increment="1" Maximum="600" Minimum="0" />
+                                                </Grid>
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Name="RealtimeGraphCmaSecondsTb"
+                                                               HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.RealtimeGraphCmaSeconds}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff"
+                                                                BorderBrush="Transparent" BorderThickness="0"
+                                                                Name="RealtimeGraphCmaSecondsSpinner"
+                                                                ValueChanged="RealtimeGraphCmaSecondsChanged" FormatString="N0"
+                                                                Increment="1" Maximum="60" Minimum="10" />
                                                 </Grid>
                                             </StackPanel>
                                         </Grid>
