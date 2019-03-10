@@ -26,7 +26,7 @@ namespace Data
 
         public string GetLanguage(string region)
         {
-            if (BasicTeraData.Instance.WindowData.Language == "Auto") return (region == "EU" ? "EU-":"")+BasicTeraData.Instance.Servers.Language.ToString();
+            if (BasicTeraData.Instance.WindowData.Language == "Auto") return (region.StartsWith("EU") ? region+"-":"")+BasicTeraData.Instance.Servers.Language.ToString();
             return BasicTeraData.Instance.WindowData.Language;
         }
     }
