@@ -561,9 +561,9 @@ namespace Data
             xml.Root.Add(new XElement("max_tts_size", maxTTSSize));
             xml.Root.Add(new XElement("tts_size_exceeded_truncate", ttsSizeExceededTruncate));
             xml.Root.Add(new XElement("realtime_graph"));
-            xml.Root.Element("realtime_graph").Add(new XElement("enabled"), realtimeGraphEnabled);
-            xml.Root.Element("realtime_graph").Add(new XElement("displayed_interval"), realtimeGraphDisplayedInterval);
-            xml.Root.Element("realtime_graph").Add(new XElement("cma_seconds"), realtimeGraphCMAseconds);
+            xml.Root.Element("realtime_graph").Add(new XElement("enabled", realtimeGraphEnabled));
+            xml.Root.Element("realtime_graph").Add(new XElement("displayed_interval", realtimeGraphDisplayedInterval));
+            xml.Root.Element("realtime_graph").Add(new XElement("cma_seconds", realtimeGraphCMAseconds));
             xml.Root.Add(new XElement("rich_presence"));
             xml.Root.Element("rich_presence").Add(new XElement("enabled", enableRichPresence));
             xml.Root.Element("rich_presence").Add(new XElement("show_location", richPresenceShowLocation));
