@@ -430,8 +430,7 @@ namespace Data
         {
             var root = _xml.Root;
             var rg = root?.Element("realtime_graph");
-            if (rg == null) return;
-            rg.Descendants().ToList().ForEach(e =>
+            rg?.Descendants().ToList().ForEach(e =>
             {
                 if (e.Name == "enabled")
                 {
