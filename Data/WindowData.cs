@@ -125,6 +125,7 @@ namespace Data
             ParseLanguage();
             ParseUILanguage();
             ParseRichPresence();
+            ParseRealtimeGraph();
 
             Parse("date_in_excel_path", "dateInExcelPath");
             if (dateInExcelPath) { excelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
