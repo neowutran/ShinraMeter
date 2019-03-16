@@ -238,7 +238,7 @@ namespace DamageMeter.UI
 
                     /// get line color (red = dps, blue = tank, green = healer, orange = currPlayer)
                     var color = GetColor(pClass);
-                    if (isMe) color = ((Color)App.Current.FindResource("MeColor"));
+                    if (isMe) color = BasicTeraData.Instance.WindowData.PlayerColor; //((Color)App.Current.FindResource("MeColor"));
 
                     /// create the series
                     var newSeries = new LineSeries()
@@ -299,16 +299,12 @@ namespace DamageMeter.UI
                 case PlayerClass.Reaper:
                 case PlayerClass.Gunner:
                 case PlayerClass.Ninja:
-                case PlayerClass.Valkyrie:
-                    return ((Color)App.Current.FindResource("DpsColor"));
+                case PlayerClass.Valkyrie: return BasicTeraData.Instance.WindowData.DpsColor; //((Color)App.Current.FindResource("DpsColor"));
                 case PlayerClass.Priest:
-                case PlayerClass.Mystic:
-                    return ((Color)App.Current.FindResource("HealColor"));
+                case PlayerClass.Mystic: return BasicTeraData.Instance.WindowData.HealerColor; //return ((Color)App.Current.FindResource("HealColor"));
                 case PlayerClass.Lancer:
-                case PlayerClass.Brawler:
-                    return ((Color)App.Current.FindResource("TankColor"));
-                default:
-                    return ((Color)App.Current.FindResource("UnkColor"));
+                case PlayerClass.Brawler: return BasicTeraData.Instance.WindowData.TankColor;//return ((Color)App.Current.FindResource("TankColor"));
+                default: return ((Color)App.Current.FindResource("UnkColor"));
             }
         }
     }

@@ -114,6 +114,10 @@ namespace Data
             ParseColor("trading_color", "tradingColor");
             ParseColor("emotes_color", "emotesColor");
             ParseColor("private_channel_color", "privateChannelColor");
+            ParseColor("stat_dps_color", nameof(_dpsColor));
+            ParseColor("stat_healer_color", nameof(_healerColor));
+            ParseColor("stat_tank_color", nameof(_tankColor));
+            ParseColor("stat_player_color", nameof(_playerColor));
             PopupNotificationLocation = ParseLocation(_xml.Root, "popup_notification_location");
             Location = ParseLocation(_xml.Root);
             ParseWindowStatus("boss_gage_window", "bossGageStatus");
@@ -149,6 +153,12 @@ namespace Data
         private Color tradingColor = Brushes.Sienna.Color;
         private Color emotesColor = Brushes.White.Color;
         private Color privateChannelColor = Brushes.Red.Color;
+
+        private Color _dpsColor = Color.FromArgb(255, 255, 68, 102);
+        private Color _playerColor = Color.FromArgb(255, 244, 164, 66);
+        private Color _tankColor = Color.FromArgb(255, 68, 178, 252);
+        private Color _healerColor = Color.FromArgb(255, 59, 226, 75);
+
         private Point location = new Point(0, 0);
         private Point popupNotificationLocation = new Point(0, 0);
         private string language = "Auto";
@@ -291,6 +301,43 @@ namespace Data
         public int RealtimeGraphDisplayedInterval { get => realtimeGraphDisplayedInterval; set { realtimeGraphDisplayedInterval = value; Save(); } }
         public int RealtimeGraphCMAseconds { get => realtimeGraphCMAseconds; set { realtimeGraphCMAseconds = value; Save(); } }
 
+        public Color DpsColor
+        {
+            get => _dpsColor;
+            set
+            {
+                _dpsColor = value;
+                Save();
+            }
+        }
+        public Color PlayerColor
+        {
+            get => _playerColor;
+            set
+            {
+                _playerColor = value;
+                Save();
+            }
+        }
+        public Color TankColor
+        {
+            get => _tankColor;
+            set
+            {
+                _tankColor = value;
+                Save();
+            }
+        }
+        public Color HealerColor
+        {
+            get => _healerColor;
+            set
+            {
+                _healerColor = value;
+                Save();
+            }
+        }
+
         private void ParseWindowStatus(string xmlName, string settingName)
         {
             var root = _xml.Root;
@@ -399,7 +446,7 @@ namespace Data
             var languageElement = root?.Element("language");
             if (languageElement == null) { return; }
             language = languageElement.Value;
-            if (!Array.Exists(new[] {"Auto", "EU-EN", "EU-FR", "EU-GER", "EUC-EN", "EUC-FR", "EUC-GER", "NA", "RU", "JP", "JPC" , "TW", "KRC", "KR-PTS"}, s => s.Equals(language))) { language = "Auto"; }
+            if (!Array.Exists(new[] { "Auto", "EU-EN", "EU-FR", "EU-GER", "EUC-EN", "EUC-FR", "EUC-GER", "NA", "RU", "JP", "JPC", "TW", "KRC", "KR-PTS" }, s => s.Equals(language))) { language = "Auto"; }
         }
 
         private void ParseUILanguage()
@@ -549,6 +596,10 @@ namespace Data
             xml.Root.Add(new XElement("trading_color", tradingColor.ToString()));
             xml.Root.Add(new XElement("emotes_color", emotesColor.ToString()));
             xml.Root.Add(new XElement("private_channel_color", privateChannelColor.ToString()));
+            xml.Root.Add(new XElement("stat_dps_color", _dpsColor.ToString()));
+            xml.Root.Add(new XElement("stat_tank_color", _tankColor.ToString()));
+            xml.Root.Add(new XElement("stat_healer_color", _healerColor.ToString()));
+            xml.Root.Add(new XElement("stat_player_color", _playerColor.ToString()));
             xml.Root.Add(new XElement("disable_party_event", disablePartyEvent));
             xml.Root.Add(new XElement("show_afk_events_ingame", showAfkEventsIngame));
             xml.Root.Add(new XElement("idle_reset_timeout", idleResetTimeout));

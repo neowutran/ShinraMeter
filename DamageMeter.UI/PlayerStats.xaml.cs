@@ -38,21 +38,27 @@ namespace DamageMeter.UI
             LabelName.Content = PlayerName;
             LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
             var isMe = PlayerDamageDealt.Source.User.Id.Id == PacketProcessor.Instance.PlayerTracker.Me().User.Id.Id;
-            var meCol100 = Color.FromArgb(255, 244, 164, 66);
-            var meCol30 = Color.FromArgb(60, 244, 164, 66);
-            var meCol0 = Color.FromArgb(0, 244, 164, 66);
-            var dpsCol100 = Color.FromArgb(255, 255, 68, 102);
-            var dpsCol30 = Color.FromArgb(60, 255, 68, 102);
-            var dpsCol0 = Color.FromArgb(0, 255, 68, 102);
-            var tankCol100 = Color.FromArgb(255, 68, 178, 252);
-            var healCol100 = Color.FromArgb(255, 59, 226, 75);
+
+            var meCol100 = BasicTeraData.Instance.WindowData.PlayerColor; 
+            var meCol30 = Color.FromArgb(60, meCol100.R, meCol100.G, meCol100.B);
+            var meCol0 = Color.FromArgb(0, meCol100.R, meCol100.G, meCol100.B);
+
+            var dpsCol100 = BasicTeraData.Instance.WindowData.DpsColor;
+            var dpsCol30 = Color.FromArgb(60, dpsCol100.R, dpsCol100.G, dpsCol100.B);
+            var dpsCol0 = Color.FromArgb(0, dpsCol100.R, dpsCol100.G, dpsCol100.B);
+
+            var tankCol100 = BasicTeraData.Instance.WindowData.TankColor;
+            var tankCol30 = Color.FromArgb(60, tankCol100.R, tankCol100.G, tankCol100.B);
+            var tankCol0 = Color.FromArgb(0, tankCol100.R, tankCol100.G, tankCol100.B);
+
+            var healCol100 = BasicTeraData.Instance.WindowData.HealerColor;
+            var healCol30 = Color.FromArgb(60, healCol100.R, healCol100.G, healCol100.B);
+            var healCol0 = Color.FromArgb(0, healCol100.R, healCol100.G, healCol100.B);
+
             var unkCol100 = Color.FromArgb(255, 200, 200, 200);
-            var tankCol30 = Color.FromArgb(60, 68, 178, 252);
-            var tankCol0 = Color.FromArgb(0, 68, 178, 252);
-            var healCol30 = Color.FromArgb(60, 59, 226, 75);
-            var healCol0 = Color.FromArgb(0, 59, 226, 75);
             var unkCol30 = Color.FromArgb(60, 200, 200, 200);
             var unkCol0 = Color.FromArgb(0, 200, 200, 200);
+
             if (playerDamageDealt != null)
             {
                 switch (playerDamageDealt.Source.Class)
