@@ -308,7 +308,7 @@
             <LineBreak/>
             <Run FontWeight="DemiBold" Foreground="#f55" Text="Change map or relog after resuming meter"></Run>
         </TextBlock>
-        <controls:RealtimeGraph Grid.Row="4" x:Name="Graph" Margin="-3 1 0 1"
+        <controls:RealtimeGraph Grid.Row="4" x:Name="Graph" Margin="-3 1 0 1" MouseEnter="OnGraphMouseEnter" MouseLeave="OnGraphMouseLeave"
                                 DataContext="{Binding GraphViewModel, RelativeSource={RelativeSource AncestorType=ui:MainWindow}}"/>
         <Grid Grid.Row="5" Name="Footer" Height="0">
             <Grid.ColumnDefinitions>

@@ -655,6 +655,16 @@ namespace DamageMeter.UI
             }
             PauseState(BasicTeraData.Instance.WindowData.UserPaused);
         }
+
+        private void OnGraphMouseLeave(object sender, MouseEventArgs e)
+        {
+            _topMost = true;
+        }
+
+        private void OnGraphMouseEnter(object sender, MouseEventArgs e)
+        {
+            _topMost = false;
+        }
     }
 
     public static class Extensions
