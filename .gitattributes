@@ -1,0 +1,18 @@
+*.xml text eol=lf
+*.xaml text eol=lf
+*.cs text eol=lf
+*.config text eol=lf
+*.csproj text eol=lf
+*.bat text eol=crlf
+*.md text eol=crlf
+*.txt text eol=crlf
+*.dll binary
+*.png binary
+*.zip binary
+*.ttf binary
+*.gif binary
+*.ico binary
+*.mp3 binary
+*.jpg binary
+*.jpeg binary
+*.7z binary

@@ -21,7 +21,7 @@
   -->
 
         <tb:TaskbarIcon.TrayPopup>
-            
+
             <Grid Margin="4">
                 <Grid.Resources>
                     <Style TargetType="{x:Type ToolTip}">
@@ -115,12 +115,12 @@
                                     <Button Grid.Row="2"  Name="Issues" Click="IssueAction" Margin="0" HorizontalAlignment="Stretch" Height="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Left">
                                         <TextBlock VerticalAlignment="Center" Text="{x:Static l:LP.SystemTray_Report_issue}" Margin="16,0"/>
                                     </Button>
-                                    </UniformGrid>
+                                </UniformGrid>
                             </Border>
                         </Grid>
 
                     </Popup>
-                  
+
                     <Button Grid.Column="8" Name="Discord" Click="DiscordAction" ToolTip="{x:Static l:LP.SystemTray_Discord}">
                         <StackPanel Orientation="Horizontal">
                             <Image x:Name="DiscordIcon" Grid.Column="1" Grid.Row="3"  Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -420,6 +420,120 @@
                                                                 ValueChanged="NumberPlayersChanged" FormatString="N0"
                                                                 Increment="1" Maximum="30" Minimum="1" />
                                                 </Grid>
+                                                <UniformGrid Rows="2" Margin="20,3,3,3">
+                                                    <UniformGrid.Resources>
+                                                        <ResourceDictionary Source="Controls/ColorPickerStyle.xaml"/>
+                                                    </UniformGrid.Resources>
+                                                    <Grid  HorizontalAlignment="Left">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Name="DpsColor" VerticalAlignment="Center"
+                                                               Text="Dps color" Grid.Column="1"/>
+                                                        <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                                      DisplayColorAndName="False" Name="DpsColorSelecter"
+                                                                      Margin="5" Grid.Column="0" 
+                                                                      BorderBrush="Transparent" BorderThickness="0"
+                                                                      Background="Transparent" ShowDropDownButton="False"
+                                                                      SelectedColorChanged="DpsColorChanged" 
+                                                                      ColorMode="ColorCanvas"
+                                                                      />
+                                                    </Grid>
+                                                    <Grid  HorizontalAlignment="Left">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Name="HealerColor" VerticalAlignment="Center"
+                                                               Text="Healer color" Grid.Column="1"/>
+                                                        <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                                      DisplayColorAndName="False" Name="HealerColorSelecter"
+                                                                      Margin="5" Grid.Column="0" 
+                                                                      BorderBrush="Transparent" BorderThickness="0"
+                                                                      Background="Transparent" ShowDropDownButton="False"
+                                                                      SelectedColorChanged="HealerColorChanged"
+                                                                      ColorMode="ColorCanvas"/>
+                                                    </Grid>
+                                                    <Grid  HorizontalAlignment="Left">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Name="TankColor" VerticalAlignment="Center"
+                                                               Text="Tank color" Grid.Column="1"/>
+                                                        <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                                      DisplayColorAndName="False" Name="TankColorSelecter"
+                                                                      Margin="5" Grid.Column="0" 
+                                                                      BorderBrush="Transparent" BorderThickness="0"
+                                                                      Background="Transparent" ShowDropDownButton="False"
+                                                                      SelectedColorChanged="TankColorChanged" 
+                                                                      ColorMode="ColorCanvas"/>
+                                                    </Grid>
+                                                    <Grid  HorizontalAlignment="Left">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Name="PlayerColor" VerticalAlignment="Center"
+                                                               Text="Player color" Grid.Column="1"/>
+                                                        <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                                      DisplayColorAndName="False" Name="PlayerColorSelecter"
+                                                                      Margin="5" Grid.Column="0" 
+                                                                      BorderBrush="Transparent" BorderThickness="0"
+                                                                      Background="Transparent" ShowDropDownButton="False"
+                                                                      SelectedColorChanged="PlayerColorChanged" 
+                                                                      ColorMode="ColorCanvas"/>
+                                                    </Grid>
+                                                </UniformGrid>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!--Realtime Graph settings card-->
+                                        <Grid Margin="10,10,10,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Border Style="{StaticResource SettingsCard}" />
+                                            <Border Style="{StaticResource SettingsCardHeader}"/>
+                                            <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Realtime graph settings" />
+                                            <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.EnableRealtimeGraph}" 
+                                                                   x:Name="RealtimeGraphEnabled"
+                                                                   On="RealtimeGraphEnabled_On"
+                                                                   Off="RealtimeGraphEnabled_Off" />
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Name="RealtimeGraphDisplayedIntervalTb"
+                                                               HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.RealtimeGraphDisplayedInterval}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff"
+                                                                BorderBrush="Transparent" BorderThickness="0"
+                                                                Name="RealtimeGraphDisplayedIntervalSpinner"
+                                                                ValueChanged="RealtimeGraphDisplayedIntervalChanged" FormatString="N0"
+                                                                Increment="1" Maximum="600" Minimum="0" />
+                                                </Grid>
+                                                <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Name="RealtimeGraphCmaSecondsTb"
+                                                               HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"
+                                                   Text="{x:Static l:LP.RealtimeGraphCmaSeconds}" />
+                                                    <xctk:IntegerUpDown Margin="5,0" HorizontalAlignment="Right" Grid.Column="1"
+                                                                Foreground="#9fff"
+                                                                BorderBrush="Transparent" BorderThickness="0"
+                                                                Name="RealtimeGraphCmaSecondsSpinner"
+                                                                ValueChanged="RealtimeGraphCmaSecondsChanged" FormatString="N0"
+                                                                Increment="1" Maximum="60" Minimum="10" />
+                                                </Grid>
                                             </StackPanel>
                                         </Grid>
 
@@ -485,7 +599,7 @@
                                                   On="ExportPacketLog_On"
                                                   Off="ExportPacketLog_Off"  />
                                                 <StackPanel x:Name="DpsServers" Orientation="Vertical" Margin="0">
-                                                    
+
                                                 </StackPanel>
                                                 <Grid Margin="0,0,0,0" x:Name="AddServerGrid"  HorizontalAlignment="Stretch" Height="25">
                                                     <Button Grid.Column="0"
@@ -543,7 +657,7 @@
                                                 -->
                                             </StackPanel>
                                         </Grid>
-                                        
+
                                         <!--Misc settings card-->
                                         <Grid Margin="10,10,10,0">
                                             <Grid.RowDefinitions>
@@ -673,7 +787,7 @@
 
                                             </StackPanel>
                                         </Grid>
-                                        
+
                                         <!--Color settings card-->
                                         <Grid Margin="10,10,10,10">
                                             <Grid.Resources>
@@ -694,14 +808,15 @@
                                                         <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="2" Name="WhisperColor" VerticalAlignment="Center"
+                                                    <TextBlock Grid.Column="1" Name="WhisperColor" VerticalAlignment="Center"
                                                    Text="{x:Static l:LP.WhisperColor}" />
                                                     <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto"  VerticalAlignment="Center"
                                                               DisplayColorAndName="False" Name="WhisperColorSelecter"
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="WhisperColorChanged" />
+                                                              SelectedColorChanged="WhisperColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -715,7 +830,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="AllianceColorChanged" />
+                                                              SelectedColorChanged="AllianceColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid >
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -729,7 +845,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="AreaColorChanged" />
+                                                              SelectedColorChanged="AreaColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -743,7 +860,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="GeneralColorChanged" />
+                                                              SelectedColorChanged="GeneralColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -757,7 +875,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="GroupColorChanged" />
+                                                              SelectedColorChanged="GroupColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -771,7 +890,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="GuildColorChanged" />
+                                                              SelectedColorChanged="GuildColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -785,7 +905,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="RaidColorChanged" />
+                                                              SelectedColorChanged="RaidColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -799,7 +920,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="SayColorChanged" />
+                                                              SelectedColorChanged="SayColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -813,7 +935,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="TradingColorChanged" />
+                                                              SelectedColorChanged="TradingColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -827,7 +950,8 @@
                                                               Margin="5" Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="EmotesColorChanged" />
+                                                              SelectedColorChanged="EmotesColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <Grid  HorizontalAlignment="Left">
                                                     <Grid.ColumnDefinitions>
@@ -842,7 +966,8 @@
                                                               Grid.Column="0" 
                                                               BorderBrush="Transparent" BorderThickness="0"
                                                               Background="Transparent" ShowDropDownButton="False"
-                                                              SelectedColorChanged="PrivateChannelColorChanged" />
+                                                              SelectedColorChanged="PrivateChannelColorChanged" 
+                                                              ColorMode="ColorCanvas"/>
                                                 </Grid>
                                                 <UniformGrid.LayoutTransform>
                                                     <ScaleTransform ScaleY="1"/>
@@ -850,8 +975,8 @@
                                             </UniformGrid>
                                         </Grid>
 
-                                        
-                                        
+
+
                                     </StackPanel>
                                 </ScrollViewer>
                             </Grid>

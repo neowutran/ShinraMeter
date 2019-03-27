@@ -6,6 +6,7 @@
                      xmlns:ui="clr-namespace:DamageMeter.UI"
                      xmlns:l="clr-namespace:Lang;assembly=Lang"
                      xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
+                     xmlns:controls="clr-namespace:DamageMeter.UI.Controls"
                      mc:Ignorable="d"
                      Title="Shinra Meter"
                      MinHeight="60" MinWidth="219"
@@ -222,15 +223,15 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.LayoutTransform>
             <ScaleTransform CenterX="0" CenterY="0"
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource MainBorder}" BorderBrush="{StaticResource KrBorderColor}" BorderThickness="1" Background="{StaticResource KrBgColor}" Grid.RowSpan="5" x:Name="BackgroundColor"/>
-        <!--<Border Background="#1fff" Grid.ColumnSpan="2" Grid.Row="1"></Border>-->
-<!--<Separator Grid.Row="1" VerticalAlignment="Bottom" Background="#1fff" Margin="0 0"></Separator>-->
+        <Border Style="{StaticResource MainBorder}" BorderBrush="{StaticResource KrBorderColor}" BorderThickness="1"
+                Background="{StaticResource KrBgColor}" Grid.RowSpan="6" x:Name="BackgroundColor"/>
         <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -307,7 +308,9 @@
             <LineBreak/>
             <Run FontWeight="DemiBold" Foreground="#f55" Text="Change map or relog after resuming meter"></Run>
         </TextBlock>
-        <Grid Grid.Row="4" Name="Footer" Height="0">
+        <controls:RealtimeGraph Grid.Row="4" x:Name="Graph" Margin="-3 1 0 1" MouseEnter="OnGraphMouseEnter" MouseLeave="OnGraphMouseLeave"
+                                DataContext="{Binding GraphViewModel, RelativeSource={RelativeSource AncestorType=ui:MainWindow}}"/>
+        <Grid Grid.Row="5" Name="Footer" Height="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="*"/>

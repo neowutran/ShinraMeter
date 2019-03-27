@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -103,7 +104,6 @@ namespace Data
             Parse("max_tts_size", "maxTTSSize");
             Parse("tts_size_exceeded_truncate", "ttsSizeExceededTruncate");
 
-
             ParseColor("say_color", "sayColor");
             ParseColor("alliance_color", "allianceColor");
             ParseColor("area_color", "areaColor");
@@ -114,6 +114,10 @@ namespace Data
             ParseColor("trading_color", "tradingColor");
             ParseColor("emotes_color", "emotesColor");
             ParseColor("private_channel_color", "privateChannelColor");
+            ParseColor("stat_dps_color", nameof(_dpsColor));
+            ParseColor("stat_healer_color", nameof(_healerColor));
+            ParseColor("stat_tank_color", nameof(_tankColor));
+            ParseColor("stat_player_color", nameof(_playerColor));
             PopupNotificationLocation = ParseLocation(_xml.Root, "popup_notification_location");
             Location = ParseLocation(_xml.Root);
             ParseWindowStatus("boss_gage_window", "bossGageStatus");
@@ -125,6 +129,8 @@ namespace Data
             ParseLanguage();
             ParseUILanguage();
             ParseRichPresence();
+            ParseRealtimeGraph();
+
             Parse("date_in_excel_path", "dateInExcelPath");
             if (dateInExcelPath) { excelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
             DpsServers.CollectionChanged += DpsServers_CollectionChanged;
@@ -147,6 +153,12 @@ namespace Data
         private Color tradingColor = Brushes.Sienna.Color;
         private Color emotesColor = Brushes.White.Color;
         private Color privateChannelColor = Brushes.Red.Color;
+
+        private Color _dpsColor = Color.FromArgb(255, 255, 68, 102);
+        private Color _playerColor = Color.FromArgb(255, 244, 164, 66);
+        private Color _tankColor = Color.FromArgb(255, 68, 178, 252);
+        private Color _healerColor = Color.FromArgb(255, 59, 226, 75);
+
         private Point location = new Point(0, 0);
         private Point popupNotificationLocation = new Point(0, 0);
         private string language = "Auto";
@@ -201,86 +213,130 @@ namespace Data
         private bool noAbnormalsInHUD = false;
         private bool _userPaused = false;
         private bool displayTimerBasedOnAggro = true;
-        
+
         private bool enableRichPresence = true;
         private bool richPresenceShowLocation = true;
         private bool richPresenceShowCharacter = false;
         private bool richPresenceShowStatus = true;
         private bool richPresenceShowParty = true;
+        private bool realtimeGraphEnabled = false;
+        private int realtimeGraphDisplayedInterval = 120;
+        private int realtimeGraphCMAseconds = 10;
 
         public bool DisplayTimerBasedOnAggro { get => displayTimerBasedOnAggro; set { displayTimerBasedOnAggro = value; Save(); } }
 
-        public bool EnableOverlay { get => enableOverlay; set { enableOverlay = value; Save();}}
-        public Color WhisperColor { get => whisperColor; set { whisperColor = value; Save();}}
-        public Color AllianceColor { get => allianceColor; set { allianceColor = value; Save();}}
-        public Color AreaColor { get => areaColor; set { areaColor = value; Save();}}
-        public Color GeneralColor { get => generalColor; set { generalColor = value; Save();}}
-        public Color GroupColor { get => groupColor; set { groupColor = value; Save();}}
-        public Color GuildColor { get => guildColor; set { guildColor = value; Save();}}
-        public Color RaidColor { get => raidColor; set { raidColor = value; Save();}}
-        public Color SayColor { get => sayColor; set { sayColor = value; Save();}}
-        public Color TradingColor { get => tradingColor; set { tradingColor = value; Save();}}
-        public Color EmotesColor { get => emotesColor; set { emotesColor = value; Save();}}
-        public Color PrivateChannelColor { get => privateChannelColor; set { privateChannelColor = value; Save();}}
-        public Point Location { get => location; set { location = value; Save();}}
-        public Point PopupNotificationLocation { get => popupNotificationLocation; set { popupNotificationLocation = value; Save();}}
-        public string Language { get => language; set { language = value; Save();}}
-        public string UILanguage { get => uILanguage; set { uILanguage = value; Save();}}
-        public double MainWindowOpacity { get => mainWindowOpacity; set { mainWindowOpacity = value; Save();}}
-        public double OtherWindowOpacity { get => otherWindowOpacity; set { otherWindowOpacity = value; Save();}}
-        public int LFDelay { get => lFDelay; set { lFDelay = value; Save();}}
-        public WindowStatus BossGageStatus { get => bossGageStatus; set { bossGageStatus = value; Save();}}
-        public WindowStatus DebuffsStatus { get => debuffsStatus; set { debuffsStatus = value; Save();}}
-        public WindowStatus HistoryStatus { get => historyStatus; set { historyStatus = value; Save();}}
-        public string ExcelSaveDirectory { get => excelSaveDirectory; set { excelSaveDirectory = value; Save();}}
-        public double Scale { get => scale; set { scale = value; Save();}}
-        public bool PartyOnly { get => partyOnly; set { partyOnly = value; Save();}}
-        public bool RememberPosition { get => rememberPosition; set { rememberPosition = value; Save();}}
-        public bool AutoUpdate { get => autoUpdate; set { autoUpdate = value; Save();}}
-        public bool Winpcap { get => winpcap; set { winpcap = value; Save();}}
-        public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; Save();}}
-        public bool NoPaste { get => noPaste; set { noPaste = value; Save();}}
+        public bool EnableOverlay { get => enableOverlay; set { enableOverlay = value; Save(); } }
+        public Color WhisperColor { get => whisperColor; set { whisperColor = value; Save(); } }
+        public Color AllianceColor { get => allianceColor; set { allianceColor = value; Save(); } }
+        public Color AreaColor { get => areaColor; set { areaColor = value; Save(); } }
+        public Color GeneralColor { get => generalColor; set { generalColor = value; Save(); } }
+        public Color GroupColor { get => groupColor; set { groupColor = value; Save(); } }
+        public Color GuildColor { get => guildColor; set { guildColor = value; Save(); } }
+        public Color RaidColor { get => raidColor; set { raidColor = value; Save(); } }
+        public Color SayColor { get => sayColor; set { sayColor = value; Save(); } }
+        public Color TradingColor { get => tradingColor; set { tradingColor = value; Save(); } }
+        public Color EmotesColor { get => emotesColor; set { emotesColor = value; Save(); } }
+        public Color PrivateChannelColor { get => privateChannelColor; set { privateChannelColor = value; Save(); } }
+        public Point Location { get => location; set { location = value; Save(); } }
+        public Point PopupNotificationLocation { get => popupNotificationLocation; set { popupNotificationLocation = value; Save(); } }
+        public string Language { get => language; set { language = value; Save(); } }
+        public string UILanguage { get => uILanguage; set { uILanguage = value; Save(); } }
+        public double MainWindowOpacity { get => mainWindowOpacity; set { mainWindowOpacity = value; Save(); } }
+        public double OtherWindowOpacity { get => otherWindowOpacity; set { otherWindowOpacity = value; Save(); } }
+        public int LFDelay { get => lFDelay; set { lFDelay = value; Save(); } }
+        public WindowStatus BossGageStatus { get => bossGageStatus; set { bossGageStatus = value; Save(); } }
+        public WindowStatus DebuffsStatus { get => debuffsStatus; set { debuffsStatus = value; Save(); } }
+        public WindowStatus HistoryStatus { get => historyStatus; set { historyStatus = value; Save(); } }
+        public string ExcelSaveDirectory { get => excelSaveDirectory; set { excelSaveDirectory = value; Save(); } }
+        public double Scale { get => scale; set { scale = value; Save(); } }
+        public bool PartyOnly { get => partyOnly; set { partyOnly = value; Save(); } }
+        public bool RememberPosition { get => rememberPosition; set { rememberPosition = value; Save(); } }
+        public bool AutoUpdate { get => autoUpdate; set { autoUpdate = value; Save(); } }
+        public bool Winpcap { get => winpcap; set { winpcap = value; Save(); } }
+        public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; Save(); } }
+        public bool NoPaste { get => noPaste; set { noPaste = value; Save(); } }
         public int MaxTTSSize { get => maxTTSSize; set { maxTTSSize = value; Save(); } }
         public bool TTSSizeExceededTruncate { get => ttsSizeExceededTruncate; set { ttsSizeExceededTruncate = value; Save(); } }
 
-        public bool AllowTransparency { get => allowTransparency; set { allowTransparency = value; Save();}}
-        public bool AlwaysVisible { get => alwaysVisible; set { alwaysVisible = value; Save();}}
-        public bool Topmost { get => topmost; set { topmost = value; Save();}}
-        public bool Debug { get => debug; set { debug = value; Save();}}
-        public bool Excel { get => excel; set { excel = value; Save();}}
-        public int ExcelCMADPSSeconds { get => excelCMADPSSeconds; set { excelCMADPSSeconds = value; Save();}}
-        public bool ShowHealCrit { get => showHealCrit; set { showHealCrit = value; Save();}}
-        public bool ShowCritDamageRate { get => showCritDamageRate; set { showCritDamageRate = value; Save();}}
-        public bool OnlyBoss { get => onlyBoss; set { onlyBoss = value; Save();}}
-        public bool DetectBosses { get => detectBosses; set { detectBosses = value; Save();}}
-        public bool DisplayOnlyBossHitByMeterUser { get => displayOnlyBossHitByMeterUser; set { displayOnlyBossHitByMeterUser = value; Save();}}
-        public bool ClickThrou { get => clickThrou; set { clickThrou = value; Save();}}
-        public bool PacketsCollect { get => packetsCollect; set { packetsCollect = value; Save();}}
-       
-        public List<int> BlackListAreaId { get => blackListAreaId; set { blackListAreaId = value; Save();}}
-        public string ExcelPathTemplate { get => excelPathTemplate; set { excelPathTemplate = value; Save();}}
-        public int NumberOfPlayersDisplayed { get => numberOfPlayersDisplayed; set { numberOfPlayersDisplayed = value; Save();}}
-        public bool MeterUserOnTop { get => meterUserOnTop; set { meterUserOnTop = value; Save();}}
-        public bool LowPriority { get => lowPriority; set { lowPriority = value; Save();}}
-        public bool EnableChat { get => enableChat; set { enableChat = value; Save();}}
-        public bool CopyInspect { get => copyInspect; set { copyInspect = value; Save();}}
-        public bool ShowAfkEventsIngame { get => showAfkEventsIngame; set { showAfkEventsIngame = value; Save();}}
-        public bool DisablePartyEvent { get => disablePartyEvent; set { disablePartyEvent = value; Save();}}
-        public bool RemoveTeraAltEnterHotkey { get => removeTeraAltEnterHotkey; set { removeTeraAltEnterHotkey = value; Save();}}
-        public bool FormatPasteString { get => formatPasteString; set { formatPasteString = value; Save();}}
-        public bool MuteSound { get => muteSound; set { muteSound = value; Save();}}
-        public int IdleResetTimeout { get => idleResetTimeout; set { idleResetTimeout = value; Save();}}
-        public bool DateInExcelPath { get => dateInExcelPath; set { dateInExcelPath = value; Save();}}
-        public bool ShowTimeLeft { get => showTimeLeft; set { showTimeLeft = value; Save();}}
-        public bool NoAbnormalsInHUD { get => noAbnormalsInHUD; set { noAbnormalsInHUD = value; Save();}}
+        public bool AllowTransparency { get => allowTransparency; set { allowTransparency = value; Save(); } }
+        public bool AlwaysVisible { get => alwaysVisible; set { alwaysVisible = value; Save(); } }
+        public bool Topmost { get => topmost; set { topmost = value; Save(); } }
+        public bool Debug { get => debug; set { debug = value; Save(); } }
+        public bool Excel { get => excel; set { excel = value; Save(); } }
+        public int ExcelCMADPSSeconds { get => excelCMADPSSeconds; set { excelCMADPSSeconds = value; Save(); } }
+        public bool ShowHealCrit { get => showHealCrit; set { showHealCrit = value; Save(); } }
+        public bool ShowCritDamageRate { get => showCritDamageRate; set { showCritDamageRate = value; Save(); } }
+        public bool OnlyBoss { get => onlyBoss; set { onlyBoss = value; Save(); } }
+        public bool DetectBosses { get => detectBosses; set { detectBosses = value; Save(); } }
+        public bool DisplayOnlyBossHitByMeterUser { get => displayOnlyBossHitByMeterUser; set { displayOnlyBossHitByMeterUser = value; Save(); } }
+        public bool ClickThrou { get => clickThrou; set { clickThrou = value; Save(); } }
+        public bool PacketsCollect { get => packetsCollect; set { packetsCollect = value; Save(); } }
 
-        public bool UserPaused { get => _userPaused; set { _userPaused = value;}}
-        
-        public bool EnableRichPresence { get => enableRichPresence; set { enableRichPresence = value; Save();}}
-        public bool RichPresenceShowLocation { get => richPresenceShowLocation ; set { richPresenceShowLocation = value; Save();}}
-        public bool RichPresenceShowCharacter { get => richPresenceShowCharacter ; set { richPresenceShowCharacter = value; Save();}}
-        public bool RichPresenceShowStatus { get => richPresenceShowStatus ; set { richPresenceShowStatus = value; Save();}}
-        public bool RichPresenceShowParty { get => richPresenceShowParty ; set { richPresenceShowParty = value; Save();}}
+        public List<int> BlackListAreaId { get => blackListAreaId; set { blackListAreaId = value; Save(); } }
+        public string ExcelPathTemplate { get => excelPathTemplate; set { excelPathTemplate = value; Save(); } }
+        public int NumberOfPlayersDisplayed { get => numberOfPlayersDisplayed; set { numberOfPlayersDisplayed = value; Save(); } }
+        public bool MeterUserOnTop { get => meterUserOnTop; set { meterUserOnTop = value; Save(); } }
+        public bool LowPriority { get => lowPriority; set { lowPriority = value; Save(); } }
+        public bool EnableChat { get => enableChat; set { enableChat = value; Save(); } }
+        public bool CopyInspect { get => copyInspect; set { copyInspect = value; Save(); } }
+        public bool ShowAfkEventsIngame { get => showAfkEventsIngame; set { showAfkEventsIngame = value; Save(); } }
+        public bool DisablePartyEvent { get => disablePartyEvent; set { disablePartyEvent = value; Save(); } }
+        public bool RemoveTeraAltEnterHotkey { get => removeTeraAltEnterHotkey; set { removeTeraAltEnterHotkey = value; Save(); } }
+        public bool FormatPasteString { get => formatPasteString; set { formatPasteString = value; Save(); } }
+        public bool MuteSound { get => muteSound; set { muteSound = value; Save(); } }
+        public int IdleResetTimeout { get => idleResetTimeout; set { idleResetTimeout = value; Save(); } }
+        public bool DateInExcelPath { get => dateInExcelPath; set { dateInExcelPath = value; Save(); } }
+        public bool ShowTimeLeft { get => showTimeLeft; set { showTimeLeft = value; Save(); } }
+        public bool NoAbnormalsInHUD { get => noAbnormalsInHUD; set { noAbnormalsInHUD = value; Save(); } }
+
+        public bool UserPaused { get => _userPaused; set { _userPaused = value; } }
+
+        public bool EnableRichPresence { get => enableRichPresence; set { enableRichPresence = value; Save(); } }
+        public bool RichPresenceShowLocation { get => richPresenceShowLocation; set { richPresenceShowLocation = value; Save(); } }
+        public bool RichPresenceShowCharacter { get => richPresenceShowCharacter; set { richPresenceShowCharacter = value; Save(); } }
+        public bool RichPresenceShowStatus { get => richPresenceShowStatus; set { richPresenceShowStatus = value; Save(); } }
+        public bool RichPresenceShowParty { get => richPresenceShowParty; set { richPresenceShowParty = value; Save(); } }
+
+        public bool RealtimeGraphEnabled { get => realtimeGraphEnabled; set { realtimeGraphEnabled = value; Save(); } }
+        public int RealtimeGraphDisplayedInterval { get => realtimeGraphDisplayedInterval; set { realtimeGraphDisplayedInterval = value; Save(); } }
+        public int RealtimeGraphCMAseconds { get => realtimeGraphCMAseconds; set { realtimeGraphCMAseconds = value; Save(); } }
+
+        public Color DpsColor
+        {
+            get => _dpsColor;
+            set
+            {
+                _dpsColor = value;
+                Save();
+            }
+        }
+        public Color PlayerColor
+        {
+            get => _playerColor;
+            set
+            {
+                _playerColor = value;
+                Save();
+            }
+        }
+        public Color TankColor
+        {
+            get => _tankColor;
+            set
+            {
+                _tankColor = value;
+                Save();
+            }
+        }
+        public Color HealerColor
+        {
+            get => _healerColor;
+            set
+            {
+                _healerColor = value;
+                Save();
+            }
+        }
 
         private void ParseWindowStatus(string xmlName, string settingName)
         {
@@ -288,14 +344,14 @@ namespace Data
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
             var setting = GetType().GetField(settingName, BindingFlags.NonPublic | BindingFlags.Instance);
-            var currentSetting = (WindowStatus) setting.GetValue(this);
+            var currentSetting = (WindowStatus)setting.GetValue(this);
             var location = ParseLocation(xml);
 
             var xmlVisible = xml.Attribute("visible");
             var visibleSuccess = bool.TryParse(xmlVisible?.Value ?? "false", out bool visible);
             var xmlScale = xml.Attribute("scale");
-            var scaleSuccess = double.TryParse(xmlScale?.Value ?? "0" , NumberStyles.Float, CultureInfo.InvariantCulture, out double scale);
-            setting.SetValue(this, new WindowStatus(location, visibleSuccess ? visible : currentSetting.Visible, scaleSuccess ? scale>0 ? scale : scale : scale));
+            var scaleSuccess = double.TryParse(xmlScale?.Value ?? "0", NumberStyles.Float, CultureInfo.InvariantCulture, out double scale);
+            setting.SetValue(this, new WindowStatus(location, visibleSuccess ? visible : currentSetting.Visible, scaleSuccess ? scale > 0 ? scale : scale : scale));
         }
 
         private void ParseColor(string xmlName, string settingName)
@@ -304,7 +360,7 @@ namespace Data
             var xml = root?.Element(xmlName);
             if (xml == null) { return; }
             var setting = GetType().GetField(settingName, BindingFlags.NonPublic | BindingFlags.Instance);
-            setting.SetValue(this, (Color) ColorConverter.ConvertFromString(xml.Value));
+            setting.SetValue(this, (Color)ColorConverter.ConvertFromString(xml.Value));
         }
 
 
@@ -312,7 +368,7 @@ namespace Data
         {
             var root = _xml.Root;
             var teradps = root.Element("teradps.io");
-            if(teradps == null) { return; }
+            if (teradps == null) { return; }
             var token = teradps.Element("token");
             if (token != null) { DpsServerData.Moongourd.Token = token.Value; }
             var exp = teradps.Element("enabled");
@@ -339,10 +395,10 @@ namespace Data
         {
             var root = _xml.Root;
             var teradps = root.Element("dps_servers");
-            if(teradps == null) { return; }
+            if (teradps == null) { return; }
             DpsServers = new ObservableCollection<DpsServerData>();
             if (teradps.Elements("server") == null) { return; }
-            foreach(var server in teradps.Elements("server"))
+            foreach (var server in teradps.Elements("server"))
             {
                 var username = server.Element("username");
                 var token = server.Element("token");
@@ -351,22 +407,22 @@ namespace Data
                 var allowedAreaUrl = server.Element("allowed_area_url");
                 var glyphUrl = server.Element("glyph_url");
                 var parseSuccess = bool.TryParse(enabled?.Value ?? "false", out bool enabledBool);
-                if(String.IsNullOrWhiteSpace(uploadUrl?.Value)) { continue; }
+                if (String.IsNullOrWhiteSpace(uploadUrl?.Value)) { continue; }
                 DpsServerData serverData = new DpsServerData(
                     new Uri(uploadUrl.Value),
-                    String.IsNullOrWhiteSpace(allowedAreaUrl?.Value) ? null: new Uri(allowedAreaUrl.Value),
+                    String.IsNullOrWhiteSpace(allowedAreaUrl?.Value) ? null : new Uri(allowedAreaUrl.Value),
                     String.IsNullOrWhiteSpace(glyphUrl?.Value) ? null : new Uri(glyphUrl.Value),
-                    username?.Value ?? null, token?.Value ?? null, enabledBool 
+                    username?.Value ?? null, token?.Value ?? null, enabledBool
                 );
                 DpsServers.Add(serverData);
             }
 
-            if(teradps.Element("blacklist") == null) { return; }
-            if(teradps.Element("blacklist").Elements("id") == null) { return; }
-            foreach(var blacklistedAreaId in teradps.Element("blacklist").Elements("id"))
+            if (teradps.Element("blacklist") == null) { return; }
+            if (teradps.Element("blacklist").Elements("id") == null) { return; }
+            foreach (var blacklistedAreaId in teradps.Element("blacklist").Elements("id"))
             {
                 var parseSuccess = int.TryParse(blacklistedAreaId.Value, out int areaId);
-                if (parseSuccess){ blacklistedAreaId.Add(areaId); }
+                if (parseSuccess) { blacklistedAreaId.Add(areaId); }
             }
         }
 
@@ -390,7 +446,7 @@ namespace Data
             var languageElement = root?.Element("language");
             if (languageElement == null) { return; }
             language = languageElement.Value;
-            if (!Array.Exists(new[] {"Auto", "EU-EN", "EU-FR", "EU-GER", "EUC-EN", "EUC-FR", "EUC-GER", "NA", "RU", "JP", "JPC" , "TW", "KRC", "KR-PTS"}, s => s.Equals(language))) { language = "Auto"; }
+            if (!Array.Exists(new[] { "Auto", "EU-EN", "EU-FR", "EU-GER", "EUC-EN", "EUC-FR", "EUC-GER", "NA", "RU", "JP", "JPC", "TW", "KRC", "KR-PTS" }, s => s.Equals(language))) { language = "Auto"; }
         }
 
         private void ParseUILanguage()
@@ -411,13 +467,32 @@ namespace Data
             if (mainWindowElement != null)
             {
                 int mainWindowOpacity;
-                if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity)) { this.mainWindowOpacity = (double) mainWindowOpacity / 100; }
+                if (int.TryParse(mainWindowElement.Value, out mainWindowOpacity)) { this.mainWindowOpacity = (double)mainWindowOpacity / 100; }
             }
             var otherWindowElement = opacity?.Element("otherWindow");
             if (otherWindowElement == null) { return; }
             if (int.TryParse(otherWindowElement.Value, out int otherWindowOpacity)) { this.otherWindowOpacity = (double)otherWindowOpacity / 100; }
         }
-        
+        private void ParseRealtimeGraph()
+        {
+            var root = _xml.Root;
+            var rg = root?.Element("realtime_graph");
+            rg?.Descendants().ToList().ForEach(e =>
+            {
+                if (e.Name == "enabled")
+                {
+                    if (bool.TryParse(e.Value, out var enabled)) realtimeGraphEnabled = enabled;
+                }
+                else if (e.Name == "displayed_interval")
+                {
+                    if (int.TryParse(e.Value, out var interval)) realtimeGraphDisplayedInterval = interval;
+                }
+                else if (e.Name == "cma_seconds")
+                {
+                    if (int.TryParse(e.Value, out var cma)) realtimeGraphCMAseconds = cma;
+                }
+            });
+        }
         private void ParseRichPresence()
         {
             var root = _xml.Root;
@@ -427,29 +502,29 @@ namespace Data
             {
                 if (bool.TryParse(enabled.Value, out var enableRichPresence)) { this.enableRichPresence = enableRichPresence; }
             }
-            
+
             var showLocation = rp?.Element("show_location");
             if (showLocation != null)
             {
-                if (bool.TryParse(showLocation .Value, out var richPresenceShowLocation )) { this.richPresenceShowLocation = richPresenceShowLocation ; }
+                if (bool.TryParse(showLocation.Value, out var richPresenceShowLocation)) { this.richPresenceShowLocation = richPresenceShowLocation; }
             }
-            
+
             var showCharacter = rp?.Element("show_character");
             if (showCharacter != null)
             {
-                if (bool.TryParse(showCharacter .Value, out var richPresenceShowCharacter )) { this.richPresenceShowCharacter = richPresenceShowCharacter ; }
+                if (bool.TryParse(showCharacter.Value, out var richPresenceShowCharacter)) { this.richPresenceShowCharacter = richPresenceShowCharacter; }
             }
-            
+
             var showStatus = rp?.Element("show_status");
             if (showStatus != null)
             {
-                if (bool.TryParse(showStatus .Value, out var richPresenceShowStatus )) { this.richPresenceShowStatus = richPresenceShowStatus ; }
+                if (bool.TryParse(showStatus.Value, out var richPresenceShowStatus)) { this.richPresenceShowStatus = richPresenceShowStatus; }
             }
-            
+
             var showParty = rp?.Element("show_party");
             if (showParty != null)
             {
-                if (bool.TryParse(showParty .Value, out var richPresenceShowParty )) { this.richPresenceShowParty = richPresenceShowParty ; }
+                if (bool.TryParse(showParty.Value, out var richPresenceShowParty)) { this.richPresenceShowParty = richPresenceShowParty; }
             }
         }
 
@@ -521,6 +596,10 @@ namespace Data
             xml.Root.Add(new XElement("trading_color", tradingColor.ToString()));
             xml.Root.Add(new XElement("emotes_color", emotesColor.ToString()));
             xml.Root.Add(new XElement("private_channel_color", privateChannelColor.ToString()));
+            xml.Root.Add(new XElement("stat_dps_color", _dpsColor.ToString()));
+            xml.Root.Add(new XElement("stat_tank_color", _tankColor.ToString()));
+            xml.Root.Add(new XElement("stat_healer_color", _healerColor.ToString()));
+            xml.Root.Add(new XElement("stat_player_color", _playerColor.ToString()));
             xml.Root.Add(new XElement("disable_party_event", disablePartyEvent));
             xml.Root.Add(new XElement("show_afk_events_ingame", showAfkEventsIngame));
             xml.Root.Add(new XElement("idle_reset_timeout", idleResetTimeout));
@@ -532,6 +611,10 @@ namespace Data
             xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
             xml.Root.Add(new XElement("max_tts_size", maxTTSSize));
             xml.Root.Add(new XElement("tts_size_exceeded_truncate", ttsSizeExceededTruncate));
+            xml.Root.Add(new XElement("realtime_graph"));
+            xml.Root.Element("realtime_graph").Add(new XElement("enabled", realtimeGraphEnabled));
+            xml.Root.Element("realtime_graph").Add(new XElement("displayed_interval", realtimeGraphDisplayedInterval));
+            xml.Root.Element("realtime_graph").Add(new XElement("cma_seconds", realtimeGraphCMAseconds));
             xml.Root.Add(new XElement("rich_presence"));
             xml.Root.Element("rich_presence").Add(new XElement("enabled", enableRichPresence));
             xml.Root.Element("rich_presence").Add(new XElement("show_location", richPresenceShowLocation));
@@ -540,7 +623,7 @@ namespace Data
             xml.Root.Element("rich_presence").Add(new XElement("show_party", richPresenceShowParty));
 
             xml.Root.Add(new XElement("dps_servers"));
-            foreach(var server in DpsServers)
+            foreach (var server in DpsServers)
             {
                 var serverXml = new XElement("server");
                 serverXml.Add(new XElement("username", server.Username));

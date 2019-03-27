@@ -137,6 +137,12 @@
         <SolidColorBrush x:Key="KrBgColor" Color="{StaticResource KrBgColorBase}"/>
         <SolidColorBrush x:Key="KrBorderColor" Color="{StaticResource KrBorderColorBase}"/>
 
+        <Color x:Key="DpsColor">#ff4466</Color>
+        <Color x:Key="HealColor">#3be24b</Color>
+        <Color x:Key="TankColor">#44b2fc</Color>
+        <Color x:Key="UnkColor">#c8c8c8</Color>
+        <Color x:Key="MeColor">#f4a442</Color>
+        
         <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
             <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}" />

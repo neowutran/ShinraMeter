@@ -44,7 +44,29 @@ namespace DamageMeter.UI
             Class.Source = Image;
             LabelName.Content = PlayerName;
             LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
-                        
+          
+            var isMe = PlayerDamageDealt.Source.User.Id.Id == PacketProcessor.Instance.PlayerTracker.Me().User.Id.Id;
+
+            var meCol100 = BasicTeraData.Instance.WindowData.PlayerColor; 
+            var meCol30 = Color.FromArgb((byte) (meCol100.A == 0 ? 0 : 60), meCol100.R, meCol100.G, meCol100.B);
+            var meCol0 = Color.FromArgb(0, meCol100.R, meCol100.G, meCol100.B);
+
+            var dpsCol100 = BasicTeraData.Instance.WindowData.DpsColor;
+            var dpsCol30 = Color.FromArgb((byte)(dpsCol100.A == 0 ? 0 : 60), dpsCol100.R, dpsCol100.G, dpsCol100.B);
+            var dpsCol0 = Color.FromArgb(0, dpsCol100.R, dpsCol100.G, dpsCol100.B);
+
+            var tankCol100 = BasicTeraData.Instance.WindowData.TankColor;
+            var tankCol30 = Color.FromArgb((byte)(tankCol100.A == 0 ? 0 : 60), tankCol100.R, tankCol100.G, tankCol100.B);
+            var tankCol0 = Color.FromArgb(0, tankCol100.R, tankCol100.G, tankCol100.B);
+
+            var healCol100 = BasicTeraData.Instance.WindowData.HealerColor;
+            var healCol30 = Color.FromArgb((byte)(healCol100.A == 0 ? 0 : 60), healCol100.R, healCol100.G, healCol100.B);
+            var healCol0 = Color.FromArgb(0, healCol100.R, healCol100.G, healCol100.B);
+
+            var unkCol100 = Color.FromArgb(255, 200, 200, 200);
+            var unkCol30 = Color.FromArgb(60, 200, 200, 200);
+            var unkCol0 = Color.FromArgb(0, 200, 200, 200);
+
             if (playerDamageDealt != null)
             {
                 switch (playerDamageDealt.Source.Class)
