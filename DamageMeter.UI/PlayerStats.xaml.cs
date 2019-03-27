@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -18,10 +17,18 @@ namespace DamageMeter.UI
     /// </summary>
     public partial class PlayerStats
     {
+        private enum Role
+        {
+            Tank, Dps, Heal, Unknown
+        }
+
+        
         private PlayerAbnormals _buffs;
 
         private bool _timedEncounter;
         private Skills _windowSkill;
+        private bool? _isTank = null;
+        
         public ImageSource Image;
 
         public PlayerStats(PlayerDamageDealt playerDamageDealt, PlayerHealDealt playeHealDealt, EntityInformation entityInformation,
@@ -37,6 +44,7 @@ namespace DamageMeter.UI
             Class.Source = Image;
             LabelName.Content = PlayerName;
             LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
+          
             var isMe = PlayerDamageDealt.Source.User.Id.Id == PacketProcessor.Instance.PlayerTracker.Me().User.Id.Id;
 
             var meCol100 = BasicTeraData.Instance.WindowData.PlayerColor; 
@@ -64,38 +72,33 @@ namespace DamageMeter.UI
                 switch (playerDamageDealt.Source.Class)
                 {
                     case Tera.Game.PlayerClass.Warrior:
+                    case Tera.Game.PlayerClass.Berserker: 
+                        DpsIndicatorCheckDefensiveStance(playerDamageDealt);
+                        break;
                     case Tera.Game.PlayerClass.Slayer:
-                    case Tera.Game.PlayerClass.Berserker:
                     case Tera.Game.PlayerClass.Sorcerer:
                     case Tera.Game.PlayerClass.Archer:
                     case Tera.Game.PlayerClass.Reaper:
                     case Tera.Game.PlayerClass.Gunner:
                     case Tera.Game.PlayerClass.Ninja:
                     case Tera.Game.PlayerClass.Valkyrie:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(isMe?  meCol30 : dpsCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(isMe?  meCol0 : dpsCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(isMe ? meCol100 : dpsCol100);
+                        SetDpsIndicatorColor(Role.Dps);
                         break;
                     case Tera.Game.PlayerClass.Priest:
                     case Tera.Game.PlayerClass.Mystic:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(isMe?  meCol30 :healCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(isMe ? meCol0 : healCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(isMe ? meCol100 : healCol100);
+                        SetDpsIndicatorColor(Role.Heal);
                         break;
                     case Tera.Game.PlayerClass.Brawler:
                     case Tera.Game.PlayerClass.Lancer:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(isMe?  meCol30 :tankCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(isMe ? meCol0 : tankCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(isMe ? meCol100 : tankCol100);
+                        SetDpsIndicatorColor(Role.Tank);
                         break;
                     case Tera.Game.PlayerClass.Common:
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(unkCol30, 1);
-                        (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(unkCol0, 0);
-                        DpsIndicator.BorderBrush = new SolidColorBrush(unkCol100);
+                        SetDpsIndicatorColor(Role.Unknown);
                         break;
                 }
             }
         }
+
 
         public PlayerDamageDealt PlayerDamageDealt { get; set; }
 
@@ -151,6 +154,8 @@ namespace DamageMeter.UI
             LabelDamagePart.Content = DamagePart;
             LabelDamagePart.ToolTip = $"{LP.Damage_done}: {Damage}";
 
+            DpsIndicatorCheckDefensiveStance(playerDamageDealt);
+            
             _windowSkill?.Update(PlayerDamageDealt, EntityInformation, Skills, _buffs, _timedEncounter);
             Spacer.Width = 0;
             GridStats.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -164,6 +169,7 @@ namespace DamageMeter.UI
             EGrid.MaxWidth = Math.Max(mainWidth, GridStats.DesiredSize.Width);
         }
 
+       
         public void SetClickThrou()
         {
             _windowSkill?.SetClickThrou();
@@ -174,6 +180,80 @@ namespace DamageMeter.UI
             _windowSkill?.UnsetClickThrou();
         }
 
+
+        private void SetDpsIndicatorColor(Role role)
+        {
+            var dpsCol100 = Color.FromArgb(255, 244, 164, 66);
+            var dpsCol30 = Color.FromArgb(60, 244, 164, 66);
+            var dpsCol0 = Color.FromArgb(0, 244, 164, 66);
+            var tankCol100 = Color.FromArgb(255, 68, 178, 252);
+            var tankCol30 = Color.FromArgb(60, 68, 178, 252);
+            var tankCol0 = Color.FromArgb(0, 68, 178, 252);
+            var healCol100 = Color.FromArgb(255, 59, 226, 75);
+            var healCol30 = Color.FromArgb(60, 59, 226, 75);
+            var healCol0 = Color.FromArgb(0, 59, 226, 75);
+            var unkCol100 = Color.FromArgb(255, 200, 200, 200);
+            var unkCol30 = Color.FromArgb(60, 200, 200, 200);
+            var unkCol0 = Color.FromArgb(0, 200, 200, 200);
+            switch (role)
+            {
+                case Role.Dps:
+                    (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(dpsCol30, 1);
+                    (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(dpsCol0, 0);
+                    DpsIndicator.BorderBrush = new SolidColorBrush(dpsCol100);
+                    break;
+                case Role.Heal:
+                    (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(healCol30, 1);
+                    (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(healCol0, 0);
+                    DpsIndicator.BorderBrush = new SolidColorBrush(healCol100);
+                    break;
+                case Role.Tank:
+                    (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(tankCol30, 1);
+                    (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(tankCol0, 0);
+                    DpsIndicator.BorderBrush = new SolidColorBrush(tankCol100);
+                    break;
+                case Role.Unknown:
+                    (DpsIndicator.Background as LinearGradientBrush).GradientStops[0] = new GradientStop(unkCol30, 1);
+                    (DpsIndicator.Background as LinearGradientBrush).GradientStops[1] = new GradientStop(unkCol0, 0);
+                    DpsIndicator.BorderBrush = new SolidColorBrush(unkCol100);
+                    break;
+            }
+        }
+
+        private void DpsIndicatorCheckDefensiveStance(PlayerDamageDealt damageDealt)
+        {
+            if (damageDealt == null) return;
+
+            AbnormalityDuration abnormalityDuration = null;
+
+            switch (damageDealt.Source.Class)
+            {
+                default: return;
+                case Tera.Game.PlayerClass.Warrior:
+                    if (!_buffs.Times.TryGetValue(BasicTeraData.Instance.HotDotDatabase.DefensiveStance2, out abnormalityDuration))
+                    {
+                        if (!_buffs.Times.TryGetValue(BasicTeraData.Instance.HotDotDatabase.DefensiveStance1, out abnormalityDuration)) { abnormalityDuration = null; }
+                    }
+                    break;
+                case Tera.Game.PlayerClass.Berserker:
+                    if (!_buffs.Times.TryGetValue(BasicTeraData.Instance.HotDotDatabase.Intimidation, out abnormalityDuration)) { abnormalityDuration = null;}
+                    break;
+            }
+            
+            var tank = false;
+
+            if (abnormalityDuration != null)
+            {
+                var fightDuration = damageDealt.EndTime - damageDealt.BeginTime;
+                tank = fightDuration == 0 || (float) abnormalityDuration.Duration(damageDealt.BeginTime, damageDealt.EndTime) / fightDuration > 0.5;
+            }
+            
+            if (tank != _isTank)
+            {
+                SetDpsIndicatorColor(tank ? Role.Tank : Role.Dps);
+                _isTank = tank;
+            }
+        }
 
         private void ShowSkills(object sender, MouseButtonEventArgs e)
         {
