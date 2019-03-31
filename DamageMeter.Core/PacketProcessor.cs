@@ -34,6 +34,8 @@ namespace DamageMeter
 
         public delegate void UpdateUiHandler(UiUpdateMessage message);
 
+        public event Action<bool, EntityId> DisplayGeneralDataChanged;
+
         private static PacketProcessor _instance;
         private static readonly object _pasteLock = new object();
         internal AbnormalityStorage AbnormalityStorage;
@@ -196,7 +198,7 @@ namespace DamageMeter
                 var entityDamaged = currentBoss.Info.HP - entityHP;
                 entityInfo.TimeLeft = entityDamaged == 0 ? 0 : entityInfo.Interval * entityHP / entityDamaged;
             }
-            
+
             Skills skills = null;
             if (SendFullDetails)
             {
@@ -225,12 +227,12 @@ namespace DamageMeter
             RichPresence.Instance.Invoke();
 
         }
-        
+
         public List<DpsServer> Initialize()
         {
             var listForUi = new List<DpsServer>();
             DataExporter.DpsServers = new List<DpsServer> { DpsServer.NeowutranAnonymousServer };
-            foreach(var dpsServer in BasicTeraData.Instance.WindowData.DpsServers)
+            foreach (var dpsServer in BasicTeraData.Instance.WindowData.DpsServers)
             {
                 var server = new DpsServer(dpsServer, false);
                 listForUi.Add(server);
@@ -312,7 +314,7 @@ namespace DamageMeter
             }
 
             RichPresence.Instance.Initialize();
-            
+
             while (_keepAlive)
             {
                 if (NeedToCopy != null)
@@ -330,7 +332,7 @@ namespace DamageMeter
 
                     var tmpcopy = NeedToCopy;
                     var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-                    var pasteThread = new Thread(() => CopyThread(statsSummary, skills, abnormals, timedEncounter, tmpcopy)) {Priority = ThreadPriority.Highest};
+                    var pasteThread = new Thread(() => CopyThread(statsSummary, skills, abnormals, timedEncounter, tmpcopy)) { Priority = ThreadPriority.Highest };
                     pasteThread.SetApartmentState(ApartmentState.STA);
                     pasteThread.Start();
 
@@ -395,9 +397,11 @@ namespace DamageMeter
             }
         }
 
-        private void Pause(bool reset=true) {
+        private void Pause(bool reset = true)
+        {
             PacketProcessing.Pause();
-            if (reset) {
+            if (reset)
+            {
                 Database.Database.Instance.DeleteAll();
                 AbnormalityStorage = new AbnormalityStorage();
                 AbnormalityTracker = new AbnormalityTracker(EntityTracker, PlayerTracker, BasicTeraData.Instance.HotDotDatabase, AbnormalityStorage, DamageTracker.Instance.Update);
@@ -407,7 +411,8 @@ namespace DamageMeter
                     AbnormalityTracker.AbnormalityRemoved += NotifyProcessor.Instance.AbnormalityNotifierRemoved;
                 }
             }
-            else {
+            else
+            {
                 AbnormalityStorage.EndAll(DateTime.UtcNow.Ticks);
             }
             TeraSniffer.Instance.Packets = new ConcurrentQueue<Message>();
@@ -425,6 +430,11 @@ namespace DamageMeter
         internal virtual void OnGuildIconAction(Bitmap icon)
         {
             GuildIconAction?.Invoke(icon);
+        }
+
+        public void InvokeGeneralDataDisplayChanged(bool hide, EntityId eid)
+        {
+            DisplayGeneralDataChanged?.Invoke(hide, eid);
         }
     }
 }

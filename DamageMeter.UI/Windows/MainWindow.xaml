@@ -219,7 +219,7 @@
     <Grid HorizontalAlignment="Left" MinWidth="265" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -251,7 +251,7 @@
                    Height="29" VerticalAlignment="Top" Width="29" >
             </Image>
         </Grid>
-        <Grid Grid.Row="1" Name="SGrid" HorizontalAlignment="Stretch">
+        <Grid Grid.Row="1" Name="SGrid" HorizontalAlignment="Stretch" Height="30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

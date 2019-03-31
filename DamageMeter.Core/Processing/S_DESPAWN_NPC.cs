@@ -11,6 +11,7 @@ namespace DamageMeter.Processing
             NotifyProcessor.Instance.DespawnNpc(message);
             DataExporter.AutomatedExport(message, PacketProcessor.Instance.AbnormalityStorage);
             RichPresence.Instance.DespawnNpc(message);
+            PacketProcessor.Instance.InvokeGeneralDataDisplayChanged(false, message.Npc);
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
@@ -56,6 +57,7 @@ namespace DamageMeter.UI
         private bool _topMost = true;
         private bool _paused = false;
         private bool _mapChanged = true;
+        private bool _hideGeneralData = false;
         internal bool ForceWindowVisibilityHidden;
         //private readonly SystemTray _systemTray;
 
@@ -79,6 +81,7 @@ namespace DamageMeter.UI
             PacketProcessor.Instance.GuildIconAction += InstanceOnGuildIconAction;
             PacketProcessor.Instance.PauseAction += PauseState;
             PacketProcessor.Instance.MapChangedAction += MapChanged;
+            PacketProcessor.Instance.DisplayGeneralDataChanged += OnDisplayGeneralDataChanged;
             _dispatcherTimer = new DispatcherTimer();
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -114,6 +117,19 @@ namespace DamageMeter.UI
             GraphViewModel = new GraphViewModel();
         }
 
+        private void OnDisplayGeneralDataChanged(bool hide, EntityId eid)
+        {
+            if (hide)
+            {
+                _hideEid = eid;
+                _hideGeneralData = true;
+            }
+            else if (_hideEid == eid)
+            {
+                _hideGeneralData = false;
+            }
+        }
+
         private void MapChanged()
         {
             Dispatcher.Invoke(() =>
@@ -123,6 +139,7 @@ namespace DamageMeter.UI
                     _mapChanged = true;
                     WaitingMapChange.Visibility = Visibility.Collapsed;
                 }
+                _hideGeneralData = false;
             });
         }
 
@@ -152,6 +169,7 @@ namespace DamageMeter.UI
         }
 
         private bool _needRefreshClickThrou = false;
+        private EntityId _hideEid;
 
         private void RefreshClickThrou()
         {
@@ -320,7 +338,10 @@ namespace DamageMeter.UI
                     Controls.Remove(invisibleControl.Key);
                 }
 
+
+                SGrid.Visibility = !_hideGeneralData ? Visibility.Visible : Visibility.Collapsed;
                 TotalDamage.Content = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.TotalDamage);
+
                 if (BasicTeraData.Instance.WindowData.ShowTimeLeft && message.StatsSummary.EntityInformation.TimeLeft > 0)
                 {
                     var interval = TimeSpan.FromSeconds(message.StatsSummary.EntityInformation.TimeLeft / TimeSpan.TicksPerSecond);
@@ -360,7 +381,7 @@ namespace DamageMeter.UI
                 {
                     StayTopMost();
                 }
-                if (BasicTeraData.Instance.WindowData.RealtimeGraphEnabled) 
+                if (BasicTeraData.Instance.WindowData.RealtimeGraphEnabled)
                 {
                     GraphViewModel.Update(message);
                     Graph.Visibility = Visibility.Visible;
