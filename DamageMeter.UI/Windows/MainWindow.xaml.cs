@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
@@ -47,7 +48,7 @@ namespace DamageMeter.UI
         private readonly DispatcherTimer _dispatcherTimer;
         private readonly EntityStatsMain _entityStats;
         private readonly PopupNotification _popupNotification;
-
+        public GraphViewModel GraphViewModel { get; }
         public D3D9Render.Renderer DXrender;
 
         private readonly TeradpsHistory _windowHistory;
@@ -56,6 +57,7 @@ namespace DamageMeter.UI
         private bool _topMost = true;
         private bool _paused = false;
         private bool _mapChanged = true;
+        private bool _hideGeneralData = false;
         internal bool ForceWindowVisibilityHidden;
         //private readonly SystemTray _systemTray;
 
@@ -68,7 +70,7 @@ namespace DamageMeter.UI
             if (BasicTeraData.Instance.WindowData.InvisibleUi) { Visibility = Visibility.Hidden; }
             System.Windows.Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
             if (BasicTeraData.Instance.WindowData.LowPriority) { Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle; }
-
+            Console.WriteLine("SuperUniqueStringEasilyDetectableToBeAbleToRandomizeTheProgramAndBypassSignatureBasedBlock");
 
             TeraSniffer.Instance.Enabled = true;
             TeraSniffer.Instance.Warning += PcapWarning;
@@ -79,6 +81,7 @@ namespace DamageMeter.UI
             PacketProcessor.Instance.GuildIconAction += InstanceOnGuildIconAction;
             PacketProcessor.Instance.PauseAction += PauseState;
             PacketProcessor.Instance.MapChangedAction += MapChanged;
+            PacketProcessor.Instance.DisplayGeneralDataChanged += OnDisplayGeneralDataChanged;
             _dispatcherTimer = new DispatcherTimer();
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
@@ -111,6 +114,20 @@ namespace DamageMeter.UI
             NotifyIcon.Initialize(this);
             NotifyIcon.InitializeServerList(PacketProcessor.Instance.Initialize());
             if (BasicTeraData.Instance.WindowData.ClickThrou) { SetClickThrou(); }
+            GraphViewModel = new GraphViewModel();
+        }
+
+        private void OnDisplayGeneralDataChanged(bool hide, EntityId eid)
+        {
+            if (hide)
+            {
+                _hideEid = eid;
+                _hideGeneralData = true;
+            }
+            else if (_hideEid == eid)
+            {
+                _hideGeneralData = false;
+            }
         }
 
         private void MapChanged()
@@ -122,6 +139,7 @@ namespace DamageMeter.UI
                     _mapChanged = true;
                     WaitingMapChange.Visibility = Visibility.Collapsed;
                 }
+                _hideGeneralData = false;
             });
         }
 
@@ -151,6 +169,7 @@ namespace DamageMeter.UI
         }
 
         private bool _needRefreshClickThrou = false;
+        private EntityId _hideEid;
 
         private void RefreshClickThrou()
         {
@@ -319,7 +338,10 @@ namespace DamageMeter.UI
                     Controls.Remove(invisibleControl.Key);
                 }
 
+
+                SGrid.Visibility = !_hideGeneralData ? Visibility.Visible : Visibility.Collapsed;
                 TotalDamage.Content = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.TotalDamage);
+
                 if (BasicTeraData.Instance.WindowData.ShowTimeLeft && message.StatsSummary.EntityInformation.TimeLeft > 0)
                 {
                     var interval = TimeSpan.FromSeconds(message.StatsSummary.EntityInformation.TimeLeft / TimeSpan.TicksPerSecond);
@@ -359,6 +381,17 @@ namespace DamageMeter.UI
                 {
                     StayTopMost();
                 }
+                if (BasicTeraData.Instance.WindowData.RealtimeGraphEnabled)
+                {
+                    GraphViewModel.Update(message);
+                    Graph.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    Graph.Visibility = Visibility.Collapsed;
+                    GraphViewModel.Reset();
+                }
+
             }
 
             Dispatcher.Invoke((PacketProcessor.UpdateUiHandler)ChangeUi, nmessage);
@@ -606,7 +639,7 @@ namespace DamageMeter.UI
                     BackgroundColor.Background = (SolidColorBrush)App.Current.FindResource("KrBgColor");
                     TooSlow.Visibility = Visibility.Collapsed;
                     UserPaused.Visibility = Visibility.Collapsed;
-                    if(!_mapChanged) WaitingMapChange.Visibility = Visibility.Visible;
+                    if (!_mapChanged) WaitingMapChange.Visibility = Visibility.Visible;
                 }
             });
         }
@@ -631,7 +664,7 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.UserPaused = !BasicTeraData.Instance.WindowData.UserPaused;
             if (BasicTeraData.Instance.WindowData.UserPaused)
             {
-                PacketProcessor.Instance.NeedPause=true;
+                PacketProcessor.Instance.NeedPause = true;
                 WaitingMapChange.Visibility = Visibility.Collapsed;
                 UserPauseBtn.Source = BasicTeraData.Instance.ImageDatabase.Play.Source;
 
@@ -642,6 +675,16 @@ namespace DamageMeter.UI
                 UserPauseBtn.Source = BasicTeraData.Instance.ImageDatabase.Pause.Source;
             }
             PauseState(BasicTeraData.Instance.WindowData.UserPaused);
+        }
+
+        private void OnGraphMouseLeave(object sender, MouseEventArgs e)
+        {
+            _topMost = true;
+        }
+
+        private void OnGraphMouseEnter(object sender, MouseEventArgs e)
+        {
+            _topMost = false;
         }
     }
 

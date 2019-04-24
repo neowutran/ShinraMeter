@@ -218,6 +218,8 @@
 			<abnormality>4030</abnormality>
 			<abnormality>4020</abnormality>
 			<abnormality>4021</abnormality>
+			<abnormality>4024</abnormality>
+			<abnormality>4040</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
@@ -233,6 +235,8 @@
 			<abnormality>4030</abnormality>
 			<abnormality>4020</abnormality>
 			<abnormality>4021</abnormality>
+			<abnormality>4024</abnormality>
+			<abnormality>4040</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
@@ -296,7 +300,7 @@
 	</abnormality>
 
 	<!-- 1.5 Dragon buff timer -->
-	<abnormality ingame="true" trigger="Added" target="Self" priority="1" ignore_classes="Mystic,Priest">
+	<abnormality active="false" ingame="true" trigger="Added" target="Self" priority="1" ignore_classes="Mystic,Priest">
 		<abnormalities>
 			<abnormality>6001</abnormality>
 			<abnormality>6003</abnormality>
@@ -315,7 +319,7 @@
 	</abnormality>
 
 	<!-- 2.0 Dragon buff timer -->
-	<abnormality ingame="true" trigger="Added" target="Self" priority="1" ignore_classes="Mystic,Priest">
+	<abnormality active="false" ingame="true" trigger="Added" target="Self" priority="1" ignore_classes="Mystic,Priest">
 		<abnormalities>
 			<abnormality>6002</abnormality>
 			<abnormality>6004</abnormality>

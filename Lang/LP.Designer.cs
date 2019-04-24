@@ -601,6 +601,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Enabled.
+        /// </summary>
+        public static string EnableRealtimeGraph {
+            get {
+                return ResourceManager.GetString("EnableRealtimeGraph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Enable discord&apos;s Rich Presence.
         /// </summary>
         public static string EnableRp {
@@ -1347,6 +1356,24 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a CMA seconds.
+        /// </summary>
+        public static string RealtimeGraphCmaSeconds {
+            get {
+                return ResourceManager.GetString("RealtimeGraphCmaSeconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Displayed interval.
+        /// </summary>
+        public static string RealtimeGraphDisplayedInterval {
+            get {
+                return ResourceManager.GetString("RealtimeGraphDisplayedInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Reaper.
         /// </summary>
         public static string Reaper {
@@ -1923,6 +1950,15 @@ namespace Lang {
         public static string SystemTray_Show_always {
             get {
                 return ResourceManager.GetString("SystemTray_Show_always", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Show realtime graph.
+        /// </summary>
+        public static string SystemTray_ShowGraph {
+            get {
+                return ResourceManager.GetString("SystemTray_ShowGraph", resourceCulture);
             }
         }
         

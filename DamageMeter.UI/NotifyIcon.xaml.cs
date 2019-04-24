@@ -54,6 +54,7 @@ namespace DamageMeter.UI
             ChatEnabled.Status = BasicTeraData.Instance.WindowData.EnableChat;
             CopyInspect.Status = BasicTeraData.Instance.WindowData.CopyInspect;
             FormatPasteString.Status = BasicTeraData.Instance.WindowData.FormatPasteString;
+
             SayColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.SayColor;
             GroupColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GroupColor;
             AllianceColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.AllianceColor;
@@ -65,6 +66,11 @@ namespace DamageMeter.UI
             PrivateChannelColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.PrivateChannelColor;
             GeneralColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.GeneralColor;
             RaidColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.RaidColor;
+            DpsColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.DpsColor;
+            TankColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.TankColor;
+            HealerColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.HealerColor;
+            PlayerColorSelecter.SelectedColor = BasicTeraData.Instance.WindowData.PlayerColor;
+
             PartyEvent.Status = BasicTeraData.Instance.WindowData.DisablePartyEvent;
             ShowAfkIventsIngame.Status = BasicTeraData.Instance.WindowData.ShowAfkEventsIngame;
             MuteSound.Status = BasicTeraData.Instance.WindowData.MuteSound;
@@ -105,6 +111,10 @@ namespace DamageMeter.UI
             RPSettingsVisible(BasicTeraData.Instance.WindowData.EnableRichPresence);
             MaxTTSSizeSpinner.Value = BasicTeraData.Instance.WindowData.MaxTTSSize;
             TTSSizeExceededTruncate.Status = BasicTeraData.Instance.WindowData.TTSSizeExceededTruncate;
+
+            RealtimeGraphEnabled.Status = BasicTeraData.Instance.WindowData.RealtimeGraphEnabled;
+            RealtimeGraphDisplayedIntervalSpinner.Value = BasicTeraData.Instance.WindowData.RealtimeGraphDisplayedInterval;
+            RealtimeGraphCmaSecondsSpinner.Value = BasicTeraData.Instance.WindowData.RealtimeGraphCMAseconds;
         }
 
         private void ResetAction(object sender, RoutedEventArgs e)
@@ -332,6 +342,23 @@ namespace DamageMeter.UI
         private void WhisperColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
             BasicTeraData.Instance.WindowData.WhisperColor = (Color)e.NewValue;
+        }
+
+        private void DpsColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.DpsColor = (Color)e.NewValue;
+        }
+        private void PlayerColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.PlayerColor = (Color)e.NewValue;
+        }
+        private void TankColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.TankColor = (Color)e.NewValue;
+        }
+        private void HealerColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BasicTeraData.Instance.WindowData.HealerColor = (Color)e.NewValue;
         }
 
         private void EnableRemoveTeraAltEnterHotkey(object sender, RoutedEventArgs e)
@@ -648,6 +675,27 @@ namespace DamageMeter.UI
         private void MaxTTSSizeSpinner_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             BasicTeraData.Instance.WindowData.MaxTTSSize = MaxTTSSizeSpinner?.Value ?? 40;
+
+        }
+
+        private void RealtimeGraphEnabled_On(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RealtimeGraphEnabled = true;
+        }
+
+        private void RealtimeGraphEnabled_Off(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.RealtimeGraphEnabled = false;
+        }
+
+        private void RealtimeGraphDisplayedIntervalChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.RealtimeGraphDisplayedInterval = RealtimeGraphDisplayedIntervalSpinner.Value ?? 120;
+        }
+
+        private void RealtimeGraphCmaSecondsChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BasicTeraData.Instance.WindowData.RealtimeGraphCMAseconds = RealtimeGraphCmaSecondsSpinner.Value ?? 10;
 
         }
     }

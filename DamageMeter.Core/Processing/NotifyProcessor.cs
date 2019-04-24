@@ -252,9 +252,8 @@ namespace DamageMeter.Processing
                             var textToSpeech = (TextToSpeech) notifyAction.Sound;
                             if (player != null) { textToSpeech.Text = textToSpeech.Text.Replace("{player_name}", player.Name); }
 
-                            if (abnormalityEvent.Ids.Count > 0)
-                            {
-                                var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key).Name;
+                            if (abnormalityEvent.Ids.Count > 0) {
+                                var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key)?.Name ?? "Unknown abnormality missing";
                                 textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", abName);
                             }
                             else { textToSpeech.Text = textToSpeech.Text.Replace("{abnormality_name}", LP.NoCrystalBind); }
@@ -267,8 +266,8 @@ namespace DamageMeter.Processing
                         {
                             if (abnormalityEvent.Ids.Count > 0)
                             {
-                                var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key).Name;
-                                var icon = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key).EffectIcon;
+                                var abName = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key)?.Name ?? "Unknown abnormality missing";
+                                var icon = BasicTeraData.Instance.HotDotDatabase.Get(abnormalityEvent.Ids.First().Key)?.EffectIcon;
                                 notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{abnormality_name}", abName);
                                 notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{abnormality_name}", abName);
                                 notifyAction.Balloon.Icon = icon;

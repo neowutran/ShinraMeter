@@ -787,4 +787,16 @@ Reset and paused until map change or relog.</value>
   <data name="WaitingMapChange" xml:space="preserve">
     <value>Waiting for map change or relog</value>
   </data>
+  <data name="SystemTray_ShowGraph" xml:space="preserve">
+    <value>Show realtime graph</value>
+  </data>
+  <data name="EnableRealtimeGraph" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="RealtimeGraphCmaSeconds" xml:space="preserve">
+    <value>CMA seconds</value>
+  </data>
+  <data name="RealtimeGraphDisplayedInterval" xml:space="preserve">
+    <value>Displayed interval</value>
+  </data>
 </root>
