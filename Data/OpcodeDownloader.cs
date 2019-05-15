@@ -36,7 +36,7 @@ namespace Data
             catch { }
             try
             {
-                Download("https://raw.githubusercontent.com/caali-hackerman/tera-data/master/map_base/protocol." + version + ".map", filename);
+                Download("https://raw.githubusercontent.com/tera-toolbox/tera-data/master/map_base/protocol." + version + ".map", filename);
                 return true;
             }
             catch { }
@@ -80,7 +80,7 @@ namespace Data
             catch { }
             try
             {
-                Download("https://raw.githubusercontent.com/caali-hackerman/tera-data/master/map_base/sysmsg." + version + ".map", "sysmsg." + version + ".map");
+                Download("https://raw.githubusercontent.com/tera-toolbox/tera-data/master/map_base/sysmsg." + version + ".map", "sysmsg." + version + ".map");
                 return true;
             }
             catch { }
