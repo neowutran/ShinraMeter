@@ -49,7 +49,7 @@
               VerticalAlignment="Top" Height="29" MinHeight="29" MaxHeight="29">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="p0" Width="25" />
-                <ColumnDefinition SharedSizeGroup="p01" Width="Auto" MinWidth="13" />
+                <ColumnDefinition SharedSizeGroup="p01" Width="13" />
                 <ColumnDefinition SharedSizeGroup="p1" MinWidth="90" Width="Auto" />
                 <ColumnDefinition SharedSizeGroup="p2" Width="*" />
                 <ColumnDefinition SharedSizeGroup="p3" MinWidth="45" Width="Auto" />
