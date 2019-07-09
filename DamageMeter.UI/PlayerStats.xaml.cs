@@ -10,6 +10,7 @@ using Data;
 using Lang;
 using Tera.Game.Abnormality;
 using System.Windows.Media.Animation;
+using Tera.Game;
 
 namespace DamageMeter.UI
 {
@@ -37,7 +38,7 @@ namespace DamageMeter.UI
             Class.Source = Image;
             LabelName.Content = PlayerName;
             LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
-            LabelLevel.Content = playerDamageDealt.Source.Level;
+            if(playerDamageDealt.Source.Class != PlayerClass.Common) LabelLevel.Content = playerDamageDealt.Source.Level;
 
             var isMe = PlayerDamageDealt.Source.User.Id.Id == PacketProcessor.Instance.PlayerTracker.Me().User.Id.Id;
 
