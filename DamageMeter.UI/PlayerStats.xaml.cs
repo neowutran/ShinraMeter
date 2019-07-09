@@ -37,6 +37,8 @@ namespace DamageMeter.UI
             Class.Source = Image;
             LabelName.Content = PlayerName;
             LabelName.ToolTip = PlayerDamageDealt.Source.FullName;
+            LabelLevel.Content = playerDamageDealt.Source.Level;
+
             var isMe = PlayerDamageDealt.Source.User.Id.Id == PacketProcessor.Instance.PlayerTracker.Me().User.Id.Id;
 
             var meCol100 = BasicTeraData.Instance.WindowData.PlayerColor; 
