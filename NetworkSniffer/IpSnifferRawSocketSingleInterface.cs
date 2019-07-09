@@ -31,7 +31,7 @@ namespace NetworkSniffer
             if (_isInit) { return; }
             try
             {
-                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP);
+                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Raw, System.Net.Sockets.ProtocolType.IP);
 
                 if (_localIp != null) { _socket.Bind(new IPEndPoint(_localIp, 0)); }
                 _socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, true);
@@ -59,7 +59,7 @@ namespace NetworkSniffer
                 try { ipPacket = new IPv4Packet(new ByteArraySegment(args.Buffer, 0, bytesRead)); }
                 catch (InvalidOperationException) { continue; }
 
-                if (ipPacket.Version != IPVersion.IPv4 || ipPacket.Protocol != IPProtocolType.TCP) { continue; }
+                if (ipPacket.Version != IPVersion.IPv4 || ipPacket.Protocol != PacketDotNet.ProtocolType.Tcp) { continue; }
                 OnPacketReceived(ipPacket);
             }
             _socket.Close();

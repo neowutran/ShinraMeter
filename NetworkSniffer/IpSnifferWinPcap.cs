@@ -10,6 +10,7 @@ using log4net;
 using PacketDotNet;
 using PacketDotNet.Utils;
 using SharpPcap;
+using SharpPcap.LibPcap;
 using SharpPcap.WinPcap;
 
 namespace NetworkSniffer
@@ -20,7 +21,7 @@ namespace NetworkSniffer
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly string _filter;
-        private WinPcapDeviceList _devices;
+        private LibPcapLiveDeviceList _devices;
         private volatile uint _droppedPackets;
         private volatile uint _interfaceDroppedPackets;
         private DateTime _nextCheck;
@@ -29,7 +30,7 @@ namespace NetworkSniffer
         {
             _filter = filter;
             BufferSize = 1 << 24;
-            _devices = WinPcapDeviceList.New();
+            _devices = LibPcapLiveDeviceList.New();
             //BasicTeraData.LogError(string.Join("\r\n",_devices.Select(x=>x.Description)),true,true);
             //check for winpcap installed if not - exception to fallback to rawsockets
             _devices = null;
@@ -48,7 +49,7 @@ namespace NetworkSniffer
             else { Finish(); }
         }
 
-        private static bool IsInteresting(WinPcapDevice device)
+        private static bool IsInteresting(LibPcapLiveDevice device)
         {
             return true;
         }
@@ -56,7 +57,7 @@ namespace NetworkSniffer
         private void Start()
         {
             Debug.Assert(_devices == null);
-            _devices = WinPcapDeviceList.New();
+            _devices = LibPcapLiveDeviceList.New();
             var interestingDevices = _devices.Where(IsInteresting);
             foreach (var device in interestingDevices)
             {
@@ -69,11 +70,13 @@ namespace NetworkSniffer
                     continue;
                 }
                 device.Filter = _filter;
+                /*
                 if (BufferSize != null)
                 {
                     try { device.KernelBufferSize = (uint) BufferSize.Value; }
                     catch (Exception e) { Logger.Warn($"Failed to set KernelBufferSize to {BufferSize.Value} on {device.Name}. {e.Message}"); }
                 }
+                */
                 device.StartCapture();
                 Console.WriteLine("winpcap capture");
             }
@@ -128,7 +131,7 @@ namespace NetworkSniffer
             var now = DateTime.UtcNow;
             if (now <= _nextCheck) { return; }
             _nextCheck = now + TimeSpan.FromSeconds(20);
-            var device = (WinPcapDevice) sender;
+            var device = (LibPcapLiveDevice) sender;
             if (device.Statistics.DroppedPackets == _droppedPackets && device.Statistics.InterfaceDroppedPackets == _interfaceDroppedPackets) { return; }
             _droppedPackets = device.Statistics.DroppedPackets;
             _interfaceDroppedPackets = device.Statistics.InterfaceDroppedPackets;
