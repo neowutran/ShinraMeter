@@ -12,8 +12,12 @@ using Data;
 using Lang;
 using System.Windows.Media.Animation;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using DamageMeter.Sniffing;
 using Tera.RichPresence;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace DamageMeter.UI
 {
@@ -30,7 +34,7 @@ namespace DamageMeter.UI
 
         public void InitializeServerList(List<TeraDpsApi.DpsServer> servers)
         {
-            foreach(var server in servers)
+            foreach (var server in servers)
             {
                 DpsServer dpsServerUi = new DpsServer(server, this);
                 DpsServers.Children.Add(dpsServerUi);
@@ -40,6 +44,7 @@ namespace DamageMeter.UI
         public void Initialize(MainWindow mainWindow)
         {
             _mainWindow = mainWindow;
+            UseNpcap.Status = BasicTeraData.Instance.WindowData.Winpcap;
             AutoExcelExport.Status = BasicTeraData.Instance.WindowData.Excel;
             ExcelCMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             CountOnlyBoss.Status = BasicTeraData.Instance.WindowData.OnlyBoss;
@@ -101,7 +106,7 @@ namespace DamageMeter.UI
             //RankSitesIcon.Source = BasicTeraData.Instance.ImageDatabase.Cloud.Source;
             //MoongourdIcon.Source = BasicTeraData.Instance.ImageDatabase.Moongourd.Source;
             //TeralogsIcon.Source = BasicTeraData.Instance.ImageDatabase.Teralogs.Source;
-            
+
             RpEnabled.Status = BasicTeraData.Instance.WindowData.EnableRichPresence;
             RichPresenceShowLocation.Status = BasicTeraData.Instance.WindowData.RichPresenceShowLocation;
             RichPresenceShowCharacter.Status = BasicTeraData.Instance.WindowData.RichPresenceShowCharacter;
@@ -286,7 +291,7 @@ namespace DamageMeter.UI
         private void Grid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             ConfigScrollViewer.ScrollToVerticalOffset(ConfigScrollViewer.VerticalOffset - e.Delta);
-            e.Handled = true;            
+            e.Handled = true;
         }
 
         private void PrivateChannelColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
@@ -377,7 +382,7 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.EnableChat = true;
             ChatSettingsVisible(true);
-            
+
             RichPresence.Instance.Update();
         }
 
@@ -385,7 +390,7 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.EnableChat = false;
             ChatSettingsVisible(false);
-            
+
             RichPresence.Instance.Deinitialize();
         }
 
@@ -394,7 +399,7 @@ namespace DamageMeter.UI
             DoubleAnimation an;
             if (show)
             {
-                an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() } ;
+                an = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(_animationSpeed)) { EasingFunction = new QuadraticEase() };
             }
             else
             {
@@ -412,7 +417,8 @@ namespace DamageMeter.UI
             RPSettingsPanel.LayoutTransform.BeginAnimation(ScaleTransform.ScaleYProperty, an);
         }
 
-        private void RPSettingsVisible(bool show) {
+        private void RPSettingsVisible(bool show)
+        {
             DoubleAnimation an;
             if (show)
             {
@@ -439,7 +445,7 @@ namespace DamageMeter.UI
         }
 
         private void ClickUploadGlyphAction(object sender, RoutedEventArgs e)
-        { 
+        {
             DataExporter.ExportGlyph();
         }
 
@@ -542,11 +548,11 @@ namespace DamageMeter.UI
         {
             gitPopup.IsOpen = false;
         }
- 
+
         private void EnableOverlay(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableOverlay = true;
-            if (_mainWindow.DXrender!=null) return;
+            if (_mainWindow.DXrender != null) return;
             _mainWindow.DXrender = new Renderer();
         }
 
@@ -599,7 +605,7 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro = false;
 
         }
-        
+
         private void EnableRp(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableRichPresence = true;
@@ -613,49 +619,49 @@ namespace DamageMeter.UI
             RPSettingsVisible(false);
             RichPresence.Instance.Deinitialize();
         }
-        
+
         private void RichPresenceShowLocationEnable(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.RichPresenceShowLocation = true;
             RichPresence.Instance.Update();
         }
-            
+
         private void RichPresenceShowLocationDisable(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.RichPresenceShowLocation = false;
             RichPresence.Instance.Update();
         }
-            
+
         private void RichPresenceShowCharacterEnable(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.RichPresenceShowCharacter = true;
             RichPresence.Instance.Update();
         }
-            
+
         private void RichPresenceShowCharacterDisable(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.RichPresenceShowCharacter = false;
             RichPresence.Instance.Update();
         }
-            
+
         private void RichPresenceShowStatusEnable(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.RichPresenceShowStatus = true;
             RichPresence.Instance.Update();
         }
-            
+
         private void RichPresenceShowStatusDisable(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.RichPresenceShowStatus = false;
             RichPresence.Instance.Update();
         }
-            
+
         private void RichPresenceShowPartyEnable(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.RichPresenceShowParty = true;
             RichPresence.Instance.Update();
         }
-            
+
         private void RichPresenceShowPartyDisable(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.RichPresenceShowParty = false;
@@ -696,7 +702,16 @@ namespace DamageMeter.UI
         private void RealtimeGraphCmaSecondsChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             BasicTeraData.Instance.WindowData.RealtimeGraphCMAseconds = RealtimeGraphCmaSecondsSpinner.Value ?? 10;
+        }
 
+        private void UseNpcapEnabled(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.Winpcap = true;
+        }
+
+        private void UseNpcapDisabled(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.Winpcap = false;
         }
     }
 }

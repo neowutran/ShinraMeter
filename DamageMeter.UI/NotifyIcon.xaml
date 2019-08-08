@@ -316,10 +316,15 @@
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Detection settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="Use npcap (requires restart)" 
+                                                          x:Name="UseNpcap"
+                                                          On="UseNpcapEnabled"
+                                                          Off="UseNpcapDisabled"/>
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Count_only_bosses}" 
                                                           x:Name="CountOnlyBoss"
                                                           On="EnableCountOnlyBoss"
-                                                          Off="DisableCountOnlyBoss" />
+                                                          Off="DisableCountOnlyBoss" 
+                                                          />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Detect_bosses_by_HP_bar}" 
                                                           x:Name="BossByHpBar"
                                                           On="EnableBossByHpBar"
