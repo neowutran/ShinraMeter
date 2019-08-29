@@ -799,4 +799,7 @@ Reset and paused until map change or relog.</value>
   <data name="RealtimeGraphDisplayedInterval" xml:space="preserve">
     <value>Displayed interval</value>
   </data>
+  <data name="SystemTray_Use_Npcap" xml:space="preserve">
+    <value>Use npcap (requires restart)</value>
+  </data>
 </root>
