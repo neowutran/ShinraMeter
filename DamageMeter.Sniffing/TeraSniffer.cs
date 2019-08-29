@@ -142,6 +142,7 @@ namespace DamageMeter.Sniffing
             _serverToClient?.RemoveCallback();
             Connected = false;
             OnEndConnection();
+            _instance.Enabled = false;
             _instance = null;
         }
 
