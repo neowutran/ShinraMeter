@@ -55,6 +55,15 @@
                             <Setter Property="Height" Value="Auto"/>
                             <Setter Property="Width" Value="Auto"/>
                             <Setter Property="Margin" Value="0,0"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsPressed"  Value="True">
+                                    <Setter Property="Background" Value="Red" />
+                                </Trigger>
+                                <!-- in theory handled by default style but let's do not put self in risk-->
+                                <Trigger Property="IsPressed"  Value="False">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
