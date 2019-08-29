@@ -64,6 +64,7 @@ namespace DamageMeter.UI
         public MainWindow()
         {
             InitializeComponent();
+
             // Handler for exceptions in threads behind forms.
             App.SplashScreen?.SetText("Initializing main window...");
             Application.ThreadException += GlobalThreadExceptionHandler;
@@ -115,6 +116,14 @@ namespace DamageMeter.UI
             NotifyIcon.InitializeServerList(PacketProcessor.Instance.Initialize());
             if (BasicTeraData.Instance.WindowData.ClickThrou) { SetClickThrou(); }
             GraphViewModel = new GraphViewModel();
+            //power swith handle
+            SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+        }
+
+        private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode != PowerModes.StatusChange)
+                TeraSniffer.Instance.CleanupForcefully();
         }
 
         private void OnDisplayGeneralDataChanged(bool hide, EntityId eid)
@@ -166,6 +175,8 @@ namespace DamageMeter.UI
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             Exit();
+            //must be removed at exit
+            SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
         }
 
         private bool _needRefreshClickThrou = false;
