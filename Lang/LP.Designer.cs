@@ -817,7 +817,15 @@ namespace Lang {
         /// <summary>
         ///   Cerca una stringa localizzata simile a &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         ///&lt;events&gt;
-        ///&lt;/events&gt;.
+        ///  &lt;!-- Notifies for missing overpower buff--&gt;
+        ///    &lt;abnormality ingame=&quot;true&quot; remaining_seconds_before_trigger=&quot;10&quot; rewarn_timeout_seconds=&quot;3&quot; trigger=&quot;MissingDuringFight&quot; target=&quot;Self&quot;&gt;
+        ///        &lt;abnormalities&gt;
+        ///            &lt;abnormality&gt;300330&lt;/abnormality&gt;
+        ///        &lt;/abnormalities&gt;
+        ///        &lt;actions&gt;
+        ///            &lt;notify&gt;
+        ///                &lt;balloon title_text=&quot;{abnormality_name}&quot; body_text=&quot;{player_name} {time_left}&quot; display_time=&quot;3000&quot; /&gt;
+        ///          [stringa troncata]&quot;;.
         /// </summary>
         public static string events_slayer {
             get {
@@ -1977,6 +1985,15 @@ namespace Lang {
         public static string SystemTray_Stay_topmost {
             get {
                 return ResourceManager.GetString("SystemTray_Stay_topmost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Use npcap (requires restart).
+        /// </summary>
+        public static string SystemTray_Use_Npcap {
+            get {
+                return ResourceManager.GetString("SystemTray_Use_Npcap", resourceCulture);
             }
         }
         
