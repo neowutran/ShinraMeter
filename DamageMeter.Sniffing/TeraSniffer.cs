@@ -136,6 +136,15 @@ namespace DamageMeter.Sniffing
             handler?.Invoke(obj);
         }
 
+        public void CleanupForcefully()
+        {
+            _clientToServer?.RemoveCallback();
+            _serverToClient?.RemoveCallback();
+            Connected = false;
+            OnEndConnection();
+            _instance.Enabled = false;
+            _instance = null;
+        }
 
         private void HandleEndConnection(TcpConnection connection)
         {

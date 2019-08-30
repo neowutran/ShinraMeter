@@ -586,6 +586,7 @@
   <data name="SystemTray_ExcelCMADPSSeconds" xml:space="preserve">
     <value>Скользящее среднее в Excel расчитывать для X сек.</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="events_common" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\ru\events-common.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -700,7 +701,7 @@
   <data name="HPM" xml:space="preserve">
     <value>Удар/мин</value>
   </data>
-    <data name="EnableRp" xml:space="preserve">
+  <data name="EnableRp" xml:space="preserve">
     <value>Включить Discord Rich Presence</value>
   </data>
   <data name="RichPresenceShowLocation" xml:space="preserve">
@@ -757,5 +758,10 @@
   <data name="RpMultipleEnemies" xml:space="preserve">
     <value>Разные</value>
   </data>
-  
+  <data name="Display_timer_aggro_or_firsthit" xml:space="preserve">
+    <value>Таймер на основе агрессии монстра</value>
+  </data>
+  <data name="SystemTray_Use_Npcap" xml:space="preserve">
+    <value>Использовать Npcap (необходим перезапуск)</value>
+  </data>
 </root>

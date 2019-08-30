@@ -55,6 +55,15 @@
                             <Setter Property="Height" Value="Auto"/>
                             <Setter Property="Width" Value="Auto"/>
                             <Setter Property="Margin" Value="0,0"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsPressed"  Value="True">
+                                    <Setter Property="Background" Value="Red" />
+                                </Trigger>
+                                <!-- in theory handled by default style but let's do not put self in risk-->
+                                <Trigger Property="IsPressed"  Value="False">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </Grid.Resources>
                     <Grid.ColumnDefinitions>
@@ -316,7 +325,7 @@
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Detection settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
-                                                <ui:MaterialSwitch Content="Use npcap (requires restart)" 
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Use_Npcap}"
                                                           x:Name="UseNpcap"
                                                           On="UseNpcapEnabled"
                                                           Off="UseNpcapDisabled"/>
