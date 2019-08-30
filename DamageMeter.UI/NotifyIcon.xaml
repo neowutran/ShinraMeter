@@ -57,7 +57,7 @@
                             <Setter Property="Margin" Value="0,0"/>
                             <Style.Triggers>
                                 <Trigger Property="IsPressed"  Value="True">
-                                    <Setter Property="Background" Value="Red" />
+                                    <Setter Property="Background" Value="{StaticResource DamageText}" />
                                 </Trigger>
                                 <!-- in theory handled by default style but let's do not put self in risk-->
                                 <Trigger Property="IsPressed"  Value="False">
