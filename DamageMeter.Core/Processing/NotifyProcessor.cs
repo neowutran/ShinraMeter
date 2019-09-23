@@ -522,7 +522,7 @@ namespace DamageMeter.Processing
 
         internal void UpdateCredits(S_UPDATE_NPCGUILD.NpcGuildType type, int credits)
         {
-            if (type == S_UPDATE_NPCGUILD.NpcGuildType.Vanguard && credits >= 8500)
+            if (type == S_UPDATE_NPCGUILD.NpcGuildType.Vanguard && credits >= (PacketProcessor.Instance.MessageFactory.Version == 351828 ? 8500 : 19500))// hope there wouldn't be any other versions until v86
             {
                 PacketProcessor.Instance.FlashMessage.Add(DefaultNotifyAction(LP.VanguardCredits + credits, LP.VanguardCredits + credits, EventType.VanguardCredits));
             }
