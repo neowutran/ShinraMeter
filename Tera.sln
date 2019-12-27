@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
 EndProject
@@ -27,6 +27,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publisher.csproj", "{968CE869-A989-4608-AA51-6C6BD7CC78F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.D3D9Render", "DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj", "{23F7BE64-3627-4F4E-AF78-291A7664FE6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketViewer.UI", "PacketViewer.UI\PacketViewer.UI.csproj", "{60027A8E-BA12-4130-9A46-8436BD8DEE4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketViewer.Core", "PacketViewer.Core\PacketViewer.Core.csproj", "{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -159,8 +163,35 @@ Global
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x64.Build.0 = Release|Any CPU
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x86.ActiveCfg = Release|Any CPU
 		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x86.Build.0 = Release|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|x64.Build.0 = Debug|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|x86.Build.0 = Debug|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Release|x64.ActiveCfg = Release|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Release|x64.Build.0 = Release|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Release|x86.ActiveCfg = Release|Any CPU
+		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Release|x86.Build.0 = Release|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Debug|x64.Build.0 = Debug|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Debug|x86.Build.0 = Debug|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Release|x64.ActiveCfg = Release|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Release|x64.Build.0 = Release|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Release|x86.ActiveCfg = Release|Any CPU
+		{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CDC2A791-1743-447F-B5C7-C4E1C4142937}
 	EndGlobalSection
 EndGlobal
