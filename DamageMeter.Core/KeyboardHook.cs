@@ -21,6 +21,7 @@ namespace DamageMeter
         private KeyboardHook()
         {
             // register the event of the inner native window.
+            KeyPressed += hook_KeyPressed;
             _window.KeyPressed += delegate(object sender, KeyPressedEventArgs args) { KeyPressed?.Invoke(this, args); };
         }
 
@@ -28,15 +29,16 @@ namespace DamageMeter
         public static KeyboardHook Instance => _instance ?? (_instance = new KeyboardHook());
         public event TopmostSwitch SwitchTopMost;
 
-        public bool SetHotkeys(bool value)
-        {
-            if (value && !_isRegistered)
-            {
-                Register();
-                return true;
+        public bool SetHotkeys(bool value) {
+            lock (_window) {
+                if (value && !_isRegistered)
+                {
+                    Register();
+                    return true;
+                }
+                if (!value && _isRegistered) { ClearHotkeys(); return true; }
+                return false;
             }
-            if (!value && _isRegistered) { ClearHotkeys(); return true; }
-            return false;
         }
 
         private static void hook_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -78,18 +80,13 @@ namespace DamageMeter
         }
 
 
-        public void Update()
-        {
-            ClearHotkeys();
-            Register();
-        }
-
-        public void RegisterKeyboardHook()
-        {
-            // register the event that is fired after the key press.
-            Instance.KeyPressed += hook_KeyPressed;
-
-            if (!_isRegistered) { Register(); }
+        public void Update() {
+            lock (_window) {
+                if (_isRegistered) {
+                    ClearHotkeys();
+                    Register();
+                }
+            }
         }
 
         private void Register()

@@ -9,12 +9,10 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Effects;
 using System.Windows.Threading;
 using DamageMeter.AutoUpdate;
 using DamageMeter.Database.Structures;
@@ -22,12 +20,10 @@ using DamageMeter.Sniffing;
 using DamageMeter.UI.EntityStats;
 using DamageMeter.UI.HUD.Windows;
 using Data;
-using Data.Actions.Notify;
 using Lang;
 using DamageMeter.D3D9Render.TeraData;
 using DamageMeter.TeraDpsApi;
 using Tera.Game;
-using Tera.Game.Abnormality;
 using Application = System.Windows.Forms.Application;
 using Brushes = System.Windows.Media.Brushes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -35,7 +31,6 @@ using MessageBox = System.Windows.MessageBox;
 using Point = System.Windows.Point;
 using Microsoft.Win32;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
-using DamageMeter.Processing;
 
 namespace DamageMeter.UI
 {
@@ -53,7 +48,6 @@ namespace DamageMeter.UI
 
         private readonly TeradpsHistory _windowHistory;
         internal Chatbox _chatbox;
-        private bool _keyboardInitialized;
         private bool _topMost = true;
         private bool _paused = false;
         private bool _mapChanged = true;
@@ -284,12 +278,7 @@ namespace DamageMeter.UI
         {
             var teraWindowActive = TeraWindow.IsTeraActive();
             var meterWindowActive = TeraWindow.IsMeterActive();
-            if (!_keyboardInitialized)
-            {
-                KeyboardHook.Instance.RegisterKeyboardHook();
-                _keyboardInitialized = true;
-            }
-            else { if (KeyboardHook.Instance.SetHotkeys(teraWindowActive)) { StayTopMost(); } }
+            if (KeyboardHook.Instance.SetHotkeys(teraWindowActive)) { StayTopMost(); } 
 
             if (!BasicTeraData.Instance.WindowData.AlwaysVisible)
             {

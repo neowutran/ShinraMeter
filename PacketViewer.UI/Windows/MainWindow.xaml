@@ -4,6 +4,7 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:ui="clr-namespace:PacketViewer.UI"
+                     xmlns:heuristic="clr-namespace:PacketViewer.Heuristic;assembly=PacketViewer.Core"
                      mc:Ignorable="d"
                      Title="Opcode Searcher"
                      MinHeight="300" MinWidth="219"
@@ -523,7 +524,7 @@
                                     </TabItem>
                                     <TabItem Header="Database">
                                         <TabItem.Resources>
-                                            <DataTemplate x:Key="PlayerCidDataTemplate" DataType="viewModels:DatabaseVm">
+                                            <DataTemplate x:Key="PlayerCidDataTemplate" DataType="ui:DatabaseVm">
                                                 <Grid Margin="6,0" Height="22">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition/>
@@ -533,7 +534,7 @@
                                                     <TextBlock Text="{Binding CurrentPlayerCid}" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0" FontWeight="Normal"></TextBlock>
                                                 </Grid>
                                             </DataTemplate>
-                                            <DataTemplate x:Key="SpawnedNpcListDataTemplate" DataType="viewModels:DatabaseVm">
+                                            <DataTemplate x:Key="SpawnedNpcListDataTemplate" DataType="ui:DatabaseVm">
                                                 <Grid >
                                                     <Grid.Resources>
                                                         <DataTemplate x:Key="NpcDataTemplate" DataType="heuristic:Npc">
@@ -589,7 +590,7 @@
                                                     </Expander>
                                                 </Grid>
                                             </DataTemplate>
-                                            <DataTemplate x:Key="SpawnedUsersListDataTemplate" DataType="viewModels:DatabaseVm">
+                                            <DataTemplate x:Key="SpawnedUsersListDataTemplate" DataType="ui:DatabaseVm">
                                                 <Grid >
                                                     <Grid.Resources>
                                                         <DataTemplate x:Key="UserDataTemplate">
