@@ -1,38 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{60027A8E-BA12-4130-9A46-8436BD8DEE4B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>PacketViewer.UI</RootNamespace>
-    <AssemblyName>PacketViewer.UI</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net472</TargetFramework>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
+    <AssemblyTitle>PacketViewer.UI</AssemblyTitle>
+    <Product>PacketViewer.UI</Product>
+    <Copyright>Copyright ©  2019</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestorePackagesPath>..\packages</RestorePackagesPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>PacketViewer.UI.App</StartupObject>
@@ -41,112 +27,27 @@
     <ApplicationIcon>opf.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="ViewModels\ByteViewModel.cs" />
-    <Compile Include="ViewModels\DatabaseVm.cs" />
-    <Compile Include="ViewModels\FilteredOpcodeVm.cs" />
-    <Compile Include="ViewModels\OpcodeToFindVm.cs" />
-    <Compile Include="ViewModels\PacketViewModel.cs" />
-    <Compile Include="Windows\FilterMode.cs" />
-    <Compile Include="Windows\ItemsControlExtensions.cs" />
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\OpcodesMapAnalyze.xaml.cs">
-      <DependentUpon>OpcodesMapAnalyze.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Converters\BoolToVisibleHidden.cs" />
-    <Compile Include="Converters\DirectionToColor.cs" />
-    <Compile Include="Converters\HexPayloadConverter.cs" />
-    <Compile Include="Converters\ListNotEmptyToBool.cs" />
-    <Compile Include="Converters\ModeToColor.cs" />
-    <Compile Include="Converters\ModeToString.cs" />
-    <Compile Include="Converters\OpcodeNameConv.cs" />
-    <Compile Include="Converters\OpcodeToFindToColor.cs" />
-    <Compile Include="Converters\TextPayloadConverter.cs" />
-    <Compile Include="IconUtils.cs" />
-    <Page Include="Windows\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\OpcodesMapAnalyze.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ObservableDictionary.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <Resource Include="DroidSansMono.ttf" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="opf.ico" />
     <Resource Include="shinra.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DamageMeter.Core\DamageMeter.Core.csproj">
-      <Project>{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}</Project>
-      <Name>DamageMeter.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj">
-      <Project>{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}</Project>
-      <Name>DamageMeter.Sniffing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PacketViewer.Core\PacketViewer.Core.csproj">
-      <Project>{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}</Project>
-      <Name>PacketViewer.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
-      <Project>{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}</Project>
-      <Name>Tera.Core</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\DamageMeter.Core\DamageMeter.Core.csproj" />
+    <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj" />
+    <ProjectReference Include="..\PacketViewer.Core\PacketViewer.Core.csproj" />
+    <ProjectReference Include="..\TeraCommon\Tera.Core.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,22 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DamageMeter.UI</RootNamespace>
     <AssemblyName>ShinraMeter</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net471</TargetFramework>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
     <PublishUrl>publier\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,25 +20,23 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <AssemblyTitle>ShinraMeter</AssemblyTitle>
+    <Product>ShinraMeter</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Description>OpenSource Tera DPS Meter</Description>
+    <Copyright>MIT license</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestorePackagesPath>..\packages</RestorePackagesPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
@@ -63,461 +49,43 @@
     <ApplicationIcon>shinra.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
-    </Reference>
-    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
-      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Markdig, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Markdig.0.16.0\lib\net40\Markdig.dll</HintPath>
-    </Reference>
-    <Reference Include="Markdig.Wpf, Version=0.2.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Markdig.Wpf.0.2.8\lib\net452\Markdig.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
+    <PackageReference Include="EntityFramework" Version="6.4.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.5.0" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
+    <PackageReference Include="LiveCharts" Version="0.9.7" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Markdig" Version="0.18.0" />
+    <PackageReference Include="Markdig.Wpf" Version="0.3.1" />
+    <PackageReference Include="NAudio.Vorbis" Version="1.1.0" />
+    <PackageReference Include="NVorbis" Version="0.10.0-beta" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=3.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.5.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="Controls\CustomScrollViewer.cs" />
-    <Compile Include="Controls\RealtimeGraph.xaml.cs">
-      <DependentUpon>RealtimeGraph.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DpsServer.xaml.cs">
-      <DependentUpon>DpsServer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HUD\Controls\RunemarksControl.xaml.cs">
-      <DependentUpon>RunemarksControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HUD\Converters\TimeInMsToLabelConverter.cs" />
-    <Compile Include="HUD\Converters\IconConverter.cs" />
-    <Compile Include="Controls\KineticBehaviour.cs" />
-    <Compile Include="Controls\MaterialSwitch.xaml.cs">
-      <DependentUpon>MaterialSwitch.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="NotificationControl.xaml.cs">
-      <DependentUpon>NotificationControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SplashScreen.xaml.cs">
-      <DependentUpon>SplashScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UploadTooltip.xaml.cs">
-      <DependentUpon>UploadTooltip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\GraphViewModel.cs" />
-    <Compile Include="Windows\PopupNotification.xaml.cs">
-      <DependentUpon>PopupNotification.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Chatbox.xaml.cs">
-      <DependentUpon>Chatbox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ChatMessageUI.xaml.cs">
-      <DependentUpon>ChatMessageUI.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ClickThrouWindow.cs" />
-    <Compile Include="DependencyPropertyWatcher.cs" />
-    <Compile Include="EntityStats\EnduranceDebuffDetail.xaml.cs">
-      <DependentUpon>EnduranceDebuffDetail.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EntityStats\EnduranceDebuffHeader.xaml.cs">
-      <DependentUpon>EnduranceDebuffHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EntityStats\EnduranceDebuff.xaml.cs">
-      <DependentUpon>EnduranceDebuff.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\EntityStatsMain.xaml.cs">
-      <DependentUpon>EntityStatsMain.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HistoryLink.xaml.cs">
-      <DependentUpon>HistoryLink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HUD\Controls\BossGage.xaml.cs">
-      <DependentUpon>BossGage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HUD\Controls\AbnormalityIndicator.xaml.cs">
-      <DependentUpon>AbnormalityIndicator.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HUD\Controls\AbnormalityTooltip.xaml.cs">
-      <DependentUpon>AbnormalityTooltip.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HUD\Controls\Arc.cs" />
-    <Compile Include="HUD\Converters\TransparencyToMarginConverter.cs" />
-    <Compile Include="HUD\Converters\BossHPbarColorConverter.cs" />
-    <Compile Include="HUD\Controls\GenericGauge.xaml.cs">
-      <DependentUpon>GenericGauge.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="HUD\Converters\BoolToVisibiltyConverter.cs" />
-    <Compile Include="HUD\Windows\BossGageWindow.xaml.cs">
-      <DependentUpon>BossGageWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="IconUtils.cs" />
-    <Compile Include="NotifyIcon.xaml.cs">
-      <DependentUpon>NotifyIcon.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Skill.cs" />
-    <Compile Include="SkillDetail\SkillDetailCounter.xaml.cs">
-      <DependentUpon>SkillDetailCounter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillDetail\SkillDetailMana.xaml.cs">
-      <DependentUpon>SkillDetailMana.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillDetail\SkillDetailHeal.xaml.cs">
-      <DependentUpon>SkillDetailHeal.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Buff.xaml.cs">
-      <DependentUpon>Buff.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillLog.xaml.cs">
-      <DependentUpon>SkillLog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillsHeaders\SkillsHeaderCounter.xaml.cs">
-      <DependentUpon>SkillsHeaderCounter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillsLog.xaml.cs">
-      <DependentUpon>SkillsLog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Skill\SkillCounter.xaml.cs">
-      <DependentUpon>SkillCounter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Skill\SkillMana.xaml.cs">
-      <DependentUpon>SkillMana.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Skill\SkillHeal.xaml.cs">
-      <DependentUpon>SkillHeal.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Skill\SkillDps.xaml.cs">
-      <DependentUpon>SkillDps.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillDetail\SkillDetailDps.xaml.cs">
-      <DependentUpon>SkillDetailDps.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\Skills.xaml.cs">
-      <DependentUpon>Skills.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillsDetail.xaml.cs">
-      <DependentUpon>SkillsDetail.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillsHeaders\SkillsHeaderHeal.xaml.cs">
-      <DependentUpon>SkillsHeaderHeal.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillsHeaders\SkillsHeaderMana.xaml.cs">
-      <DependentUpon>SkillsHeaderMana.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SkillsHeaders\SkillsHeaderDps.xaml.cs">
-      <DependentUpon>SkillsHeaderDps.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\TeradpsHistory.xaml.cs">
-      <DependentUpon>TeradpsHistory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WindowServices.cs" />
-    <Compile Include="Windows\UpdatePopup.xaml.cs">
-      <DependentUpon>UpdatePopup.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Controls\ColorCanvasStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ColorPickerStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\RealtimeGraph.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DpsServer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="HUD\Controls\RunemarksControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\MaterialSwitch.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NotificationControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SplashScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UploadTooltip.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\PopupNotification.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Chatbox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ChatMessageUI.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EntityStats\EnduranceDebuffDetail.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="EntityStats\EnduranceDebuffHeader.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="EntityStats\EnduranceDebuff.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\EntityStatsMain.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="HistoryLink.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="HUD\Controls\BossGage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HUD\Controls\AbnormalityIndicator.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HUD\Controls\AbnormalityTooltip.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HUD\Controls\GenericGauge.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HUD\Windows\BossGageWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="NotifyIcon.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PlayerStats.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SkillDetail\SkillDetailCounter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SkillDetail\SkillDetailMana.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SkillDetail\SkillDetailHeal.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Buff.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SkillLog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SkillsHeaders\SkillsHeaderCounter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SkillsLog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Skill\SkillCounter.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Skill\SkillMana.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Skill\SkillHeal.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Skill\SkillDps.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SkillDetail\SkillDetailDps.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\Skills.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SkillsDetail.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SkillsHeaders\SkillsHeaderHeal.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SkillsHeaders\SkillsHeaderMana.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SkillsHeaders\SkillsHeaderDps.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\TeradpsHistory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\UpdatePopup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="PlayerStats.xaml.cs">
-      <DependentUpon>PlayerStats.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <None Include="app.manifest" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj">
-      <Project>{87e95fb1-8b42-4f6f-b51a-d2e3e49cd242}</Project>
-      <Name>DamageMeter.AutoUpdate</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DamageMeter.Core\DamageMeter.Core.csproj">
-      <Project>{d1ed4752-f2fc-44c3-97b2-580bc79f4af1}</Project>
-      <Name>DamageMeter.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj">
-      <Project>{23f7be64-3627-4f4e-af78-291a7664fe6a}</Project>
-      <Name>DamageMeter.D3D9Render</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{4b6aa9bd-cec2-4aa6-b35a-1acb2fa7767b}</Project>
-      <Name>Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj">
-      <Project>{66bb1685-8ff5-4431-b77f-7f80c92a5da4}</Project>
-      <Name>DamageMeter.Sniffing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Lang\Lang.csproj">
-      <Project>{220fef0f-4a83-4ab8-9435-f9bc09b9039f}</Project>
-      <Name>Lang</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
-      <Project>{ee476c7c-2942-4ba4-ab47-7adbe65635fd}</Project>
-      <Name>Tera.Core</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj" />
+    <ProjectReference Include="..\DamageMeter.Core\DamageMeter.Core.csproj" />
+    <ProjectReference Include="..\DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj" />
+    <ProjectReference Include="..\Lang\Lang.csproj" />
+    <ProjectReference Include="..\TeraCommon\Tera.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="shinra.ico" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 et x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="shinra.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.111.0\build\net46\System.Data.SQLite.Core.targets'))" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del $(OutDir)\SQLite.Interop.dll" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -32,7 +32,7 @@ namespace Data
         private FileStream _filestream;
         private readonly XDocument _xml;
         private readonly String _windowFile;
-
+        private readonly object _lock = new object();
 
         public WindowData(BasicTeraData basicData)
         {
@@ -530,123 +530,124 @@ namespace Data
 
         public void Save()
         {
-            if (_filestream == null) { return; }
+            lock (_lock) {
+                if (_filestream == null) { return; }
 
+                var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
+                xml.Root.Add(new XElement("location"));
+                xml.Root.Element("location").Add(new XElement("x", location.X.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Element("location").Add(new XElement("y", location.Y.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Add(new XElement("scale", scale.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Add(new XElement("popup_notification_location"));
+                xml.Root.Element("popup_notification_location").Add(new XElement("x", popupNotificationLocation.X.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Element("popup_notification_location").Add(new XElement("y", popupNotificationLocation.Y.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Add(new XElement("boss_gage_window", new XAttribute("visible", bossGageStatus.Visible), new XAttribute("scale", BossGageStatus.Scale)));
+                xml.Root.Element("boss_gage_window").Add(new XElement("location"));
+                xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("x", bossGageStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("y", bossGageStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Add(new XElement("debuff_uptime_window", new XAttribute("visible", debuffsStatus.Visible), new XAttribute("scale", DebuffsStatus.Scale)));
+                xml.Root.Element("debuff_uptime_window").Add(new XElement("location"));
+                xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("x", debuffsStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("y", debuffsStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Add(new XElement("upload_history_window", new XAttribute("visible", historyStatus.Visible), new XAttribute("scale", HistoryStatus.Scale)));
+                xml.Root.Element("upload_history_window").Add(new XElement("location"));
+                xml.Root.Element("upload_history_window").Element("location")
+                    .Add(new XElement("x", historyStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Element("upload_history_window").Element("location")
+                    .Add(new XElement("y", historyStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
+                xml.Root.Add(new XElement("language", language));
+                xml.Root.Add(new XElement("ui_language", uILanguage));
+                xml.Root.Add(new XElement("opacity"));
+                xml.Root.Element("opacity").Add(new XElement("mainWindow", mainWindowOpacity * 100));
+                xml.Root.Element("opacity").Add(new XElement("otherWindow", otherWindowOpacity * 100));
+                xml.Root.Add(new XElement("autoupdate", autoUpdate));
+                xml.Root.Add(new XElement("remember_position", rememberPosition));
+                xml.Root.Add(new XElement("winpcap", winpcap));
+                xml.Root.Add(new XElement("invisible_ui_when_no_stats", invisibleUi));
+                xml.Root.Add(new XElement("allow_transparency", allowTransparency));
+                xml.Root.Add(new XElement("topmost", topmost));
+                xml.Root.Add(new XElement("debug", debug));
+                xml.Root.Add(new XElement("excel", excel));
+                xml.Root.Add(new XElement("excel_path_template", excelPathTemplate));
+                xml.Root.Add(new XElement("excel_save_directory", excelSaveDirectory));
+                xml.Root.Add(new XElement("excel_cma_dps_seconds", excelCMADPSSeconds));
+                xml.Root.Add(new XElement("always_visible", alwaysVisible));
+                xml.Root.Add(new XElement("lf_delay", lFDelay));
+                xml.Root.Add(new XElement("partyonly", partyOnly));
+                xml.Root.Add(new XElement("showhealcrit", showHealCrit));
+                xml.Root.Add(new XElement("showtimeleft", showTimeLeft));
+                xml.Root.Add(new XElement("show_crit_damage_rate", showCritDamageRate));
+                xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", detectBosses));
+                xml.Root.Add(new XElement("only_bosses", onlyBoss));
+                xml.Root.Add(new XElement("low_priority", lowPriority));
+                xml.Root.Add(new XElement("number_of_players_displayed", numberOfPlayersDisplayed));
+                xml.Root.Add(new XElement("meter_user_on_top", meterUserOnTop));
+                xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", removeTeraAltEnterHotkey));
+                xml.Root.Add(new XElement("enable_chat_and_notifications", enableChat));
+                xml.Root.Add(new XElement("mute_sound", muteSound));
+                xml.Root.Add(new XElement("click_throu", clickThrou));
+                xml.Root.Add(new XElement("copy_inspect", copyInspect));
+                xml.Root.Add(new XElement("format_paste_string", formatPasteString));
+                xml.Root.Add(new XElement("say_color", sayColor.ToString()));
+                xml.Root.Add(new XElement("alliance_color", allianceColor.ToString()));
+                xml.Root.Add(new XElement("area_color", areaColor.ToString()));
+                xml.Root.Add(new XElement("guild_color", guildColor.ToString()));
+                xml.Root.Add(new XElement("whisper_color", whisperColor.ToString()));
+                xml.Root.Add(new XElement("general_color", generalColor.ToString()));
+                xml.Root.Add(new XElement("group_color", groupColor.ToString()));
+                xml.Root.Add(new XElement("trading_color", tradingColor.ToString()));
+                xml.Root.Add(new XElement("emotes_color", emotesColor.ToString()));
+                xml.Root.Add(new XElement("private_channel_color", privateChannelColor.ToString()));
+                xml.Root.Add(new XElement("stat_dps_color", _dpsColor.ToString()));
+                xml.Root.Add(new XElement("stat_tank_color", _tankColor.ToString()));
+                xml.Root.Add(new XElement("stat_healer_color", _healerColor.ToString()));
+                xml.Root.Add(new XElement("stat_player_color", _playerColor.ToString()));
+                xml.Root.Add(new XElement("disable_party_event", disablePartyEvent));
+                xml.Root.Add(new XElement("show_afk_events_ingame", showAfkEventsIngame));
+                xml.Root.Add(new XElement("idle_reset_timeout", idleResetTimeout));
+                xml.Root.Add(new XElement("no_paste", noPaste));
+                xml.Root.Add(new XElement("packets_collect", packetsCollect));
+                xml.Root.Add(new XElement("no_abnormals_in_hud", noAbnormalsInHUD));
+                xml.Root.Add(new XElement("enable_overlay", enableOverlay));
+                xml.Root.Add(new XElement("display_timer_based_on_aggro", displayTimerBasedOnAggro));
+                xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
+                xml.Root.Add(new XElement("max_tts_size", maxTTSSize));
+                xml.Root.Add(new XElement("tts_size_exceeded_truncate", ttsSizeExceededTruncate));
+                xml.Root.Add(new XElement("realtime_graph"));
+                xml.Root.Element("realtime_graph").Add(new XElement("enabled", realtimeGraphEnabled));
+                xml.Root.Element("realtime_graph").Add(new XElement("displayed_interval", realtimeGraphDisplayedInterval));
+                xml.Root.Element("realtime_graph").Add(new XElement("cma_seconds", realtimeGraphCMAseconds));
+                xml.Root.Add(new XElement("rich_presence"));
+                xml.Root.Element("rich_presence").Add(new XElement("enabled", enableRichPresence));
+                xml.Root.Element("rich_presence").Add(new XElement("show_location", richPresenceShowLocation));
+                xml.Root.Element("rich_presence").Add(new XElement("show_character", richPresenceShowCharacter));
+                xml.Root.Element("rich_presence").Add(new XElement("show_status", richPresenceShowStatus));
+                xml.Root.Element("rich_presence").Add(new XElement("show_party", richPresenceShowParty));
 
-            var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
-            xml.Root.Add(new XElement("location"));
-            xml.Root.Element("location").Add(new XElement("x", location.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("location").Add(new XElement("y", location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("scale", scale.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("popup_notification_location"));
-            xml.Root.Element("popup_notification_location").Add(new XElement("x", popupNotificationLocation.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("popup_notification_location").Add(new XElement("y", popupNotificationLocation.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("boss_gage_window", new XAttribute("visible", bossGageStatus.Visible), new XAttribute("scale", BossGageStatus.Scale)));
-            xml.Root.Element("boss_gage_window").Add(new XElement("location"));
-            xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("x", bossGageStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("boss_gage_window").Element("location").Add(new XElement("y", bossGageStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("debuff_uptime_window", new XAttribute("visible", debuffsStatus.Visible), new XAttribute("scale", DebuffsStatus.Scale)));
-            xml.Root.Element("debuff_uptime_window").Add(new XElement("location"));
-            xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("x", debuffsStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("debuff_uptime_window").Element("location").Add(new XElement("y", debuffsStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("upload_history_window", new XAttribute("visible", historyStatus.Visible), new XAttribute("scale", HistoryStatus.Scale)));
-            xml.Root.Element("upload_history_window").Add(new XElement("location"));
-            xml.Root.Element("upload_history_window").Element("location").Add(new XElement("x", historyStatus.Location.X.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Element("upload_history_window").Element("location").Add(new XElement("y", historyStatus.Location.Y.ToString(CultureInfo.InvariantCulture)));
-            xml.Root.Add(new XElement("language", language));
-            xml.Root.Add(new XElement("ui_language", uILanguage));
-            xml.Root.Add(new XElement("opacity"));
-            xml.Root.Element("opacity").Add(new XElement("mainWindow", mainWindowOpacity * 100));
-            xml.Root.Element("opacity").Add(new XElement("otherWindow", otherWindowOpacity * 100));
-            xml.Root.Add(new XElement("autoupdate", autoUpdate));
-            xml.Root.Add(new XElement("remember_position", rememberPosition));
-            xml.Root.Add(new XElement("winpcap", winpcap));
-            xml.Root.Add(new XElement("invisible_ui_when_no_stats", invisibleUi));
-            xml.Root.Add(new XElement("allow_transparency", allowTransparency));
-            xml.Root.Add(new XElement("topmost", topmost));
-            xml.Root.Add(new XElement("debug", debug));
-            xml.Root.Add(new XElement("excel", excel));
-            xml.Root.Add(new XElement("excel_path_template", excelPathTemplate));
-            xml.Root.Add(new XElement("excel_save_directory", excelSaveDirectory));
-            xml.Root.Add(new XElement("excel_cma_dps_seconds", excelCMADPSSeconds));
-            xml.Root.Add(new XElement("always_visible", alwaysVisible));
-            xml.Root.Add(new XElement("lf_delay", lFDelay));
-            xml.Root.Add(new XElement("partyonly", partyOnly));
-            xml.Root.Add(new XElement("showhealcrit", showHealCrit));
-            xml.Root.Add(new XElement("showtimeleft", showTimeLeft));
-            xml.Root.Add(new XElement("show_crit_damage_rate", showCritDamageRate));
-            xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", detectBosses));
-            xml.Root.Add(new XElement("only_bosses", onlyBoss));
-            xml.Root.Add(new XElement("low_priority", lowPriority));
-            xml.Root.Add(new XElement("number_of_players_displayed", numberOfPlayersDisplayed));
-            xml.Root.Add(new XElement("meter_user_on_top", meterUserOnTop));
-            xml.Root.Add(new XElement("remove_tera_alt_enter_hotkey", removeTeraAltEnterHotkey));
-            xml.Root.Add(new XElement("enable_chat_and_notifications", enableChat));
-            xml.Root.Add(new XElement("mute_sound", muteSound));
-            xml.Root.Add(new XElement("click_throu", clickThrou));
-            xml.Root.Add(new XElement("copy_inspect", copyInspect));
-            xml.Root.Add(new XElement("format_paste_string", formatPasteString));
-            xml.Root.Add(new XElement("say_color", sayColor.ToString()));
-            xml.Root.Add(new XElement("alliance_color", allianceColor.ToString()));
-            xml.Root.Add(new XElement("area_color", areaColor.ToString()));
-            xml.Root.Add(new XElement("guild_color", guildColor.ToString()));
-            xml.Root.Add(new XElement("whisper_color", whisperColor.ToString()));
-            xml.Root.Add(new XElement("general_color", generalColor.ToString()));
-            xml.Root.Add(new XElement("group_color", groupColor.ToString()));
-            xml.Root.Add(new XElement("trading_color", tradingColor.ToString()));
-            xml.Root.Add(new XElement("emotes_color", emotesColor.ToString()));
-            xml.Root.Add(new XElement("private_channel_color", privateChannelColor.ToString()));
-            xml.Root.Add(new XElement("stat_dps_color", _dpsColor.ToString()));
-            xml.Root.Add(new XElement("stat_tank_color", _tankColor.ToString()));
-            xml.Root.Add(new XElement("stat_healer_color", _healerColor.ToString()));
-            xml.Root.Add(new XElement("stat_player_color", _playerColor.ToString()));
-            xml.Root.Add(new XElement("disable_party_event", disablePartyEvent));
-            xml.Root.Add(new XElement("show_afk_events_ingame", showAfkEventsIngame));
-            xml.Root.Add(new XElement("idle_reset_timeout", idleResetTimeout));
-            xml.Root.Add(new XElement("no_paste", noPaste));
-            xml.Root.Add(new XElement("packets_collect", packetsCollect));
-            xml.Root.Add(new XElement("no_abnormals_in_hud", noAbnormalsInHUD));
-            xml.Root.Add(new XElement("enable_overlay", enableOverlay));
-            xml.Root.Add(new XElement("display_timer_based_on_aggro", displayTimerBasedOnAggro));
-            xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
-            xml.Root.Add(new XElement("max_tts_size", maxTTSSize));
-            xml.Root.Add(new XElement("tts_size_exceeded_truncate", ttsSizeExceededTruncate));
-            xml.Root.Add(new XElement("realtime_graph"));
-            xml.Root.Element("realtime_graph").Add(new XElement("enabled", realtimeGraphEnabled));
-            xml.Root.Element("realtime_graph").Add(new XElement("displayed_interval", realtimeGraphDisplayedInterval));
-            xml.Root.Element("realtime_graph").Add(new XElement("cma_seconds", realtimeGraphCMAseconds));
-            xml.Root.Add(new XElement("rich_presence"));
-            xml.Root.Element("rich_presence").Add(new XElement("enabled", enableRichPresence));
-            xml.Root.Element("rich_presence").Add(new XElement("show_location", richPresenceShowLocation));
-            xml.Root.Element("rich_presence").Add(new XElement("show_character", richPresenceShowCharacter));
-            xml.Root.Element("rich_presence").Add(new XElement("show_status", richPresenceShowStatus));
-            xml.Root.Element("rich_presence").Add(new XElement("show_party", richPresenceShowParty));
+                xml.Root.Add(new XElement("dps_servers"));
+                foreach (var server in DpsServers) {
+                    var serverXml = new XElement("server");
+                    serverXml.Add(new XElement("username", server.Username));
+                    serverXml.Add(new XElement("token", server.Token));
+                    serverXml.Add(new XElement("enabled", server.Enabled));
+                    serverXml.Add(new XElement("dps_url", server.UploadUrl));
+                    serverXml.Add(new XElement("glyph_url", server.GlyphUrl));
+                    serverXml.Add(new XElement("allowed_area_url", server.AllowedAreaUrl));
+                    xml.Root.Element("dps_servers").Add(serverXml);
+                }
 
-            xml.Root.Add(new XElement("dps_servers"));
-            foreach (var server in DpsServers)
-            {
-                var serverXml = new XElement("server");
-                serverXml.Add(new XElement("username", server.Username));
-                serverXml.Add(new XElement("token", server.Token));
-                serverXml.Add(new XElement("enabled", server.Enabled));
-                serverXml.Add(new XElement("dps_url", server.UploadUrl));
-                serverXml.Add(new XElement("glyph_url", server.GlyphUrl));
-                serverXml.Add(new XElement("allowed_area_url", server.AllowedAreaUrl));
-                xml.Root.Element("dps_servers").Add(serverXml);
+                xml.Root.Element("dps_servers").Add(new XElement("blacklist"));
+                foreach (var areaId in BlackListAreaId) {
+                    var blacklistId = new XElement("id", areaId);
+                    xml.Root.Element("dps_servers").Element("blacklist").Add(blacklistId);
+                }
+
+                _filestream.SetLength(0);
+                using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true))) { sw.Write(xml.Declaration + Environment.NewLine + xml); }
+
+                _filestream.Close();
+                _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             }
-
-            xml.Root.Element("dps_servers").Add(new XElement("blacklist"));
-            foreach (var areaId in BlackListAreaId)
-            {
-                var blacklistId = new XElement("id", areaId);
-                xml.Root.Element("dps_servers").Element("blacklist").Add(blacklistId);
-            }
-
-            _filestream.SetLength(0);
-            using (var sw = new StreamWriter(_filestream, new UTF8Encoding(true))) { sw.Write(xml.Declaration + Environment.NewLine + xml); }
-            _filestream.Close();
-            _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-
 
         }
 
@@ -654,7 +655,10 @@ namespace Data
         // help request about "why the config file I manually edited while the meter was running got erased?"
         public void Close()
         {
-            _filestream.Close();
+            lock (_lock) {
+                _filestream.Close();
+                _filestream = null;
+            }
         }
 
         private void Parse(string xmlName, string settingName)

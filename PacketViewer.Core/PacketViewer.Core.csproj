@@ -1,218 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PacketViewer.Core</RootNamespace>
-    <AssemblyName>PacketViewer.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyTitle>PacketViewer.Core</AssemblyTitle>
+    <Product>PacketViewer.Core</Product>
+    <Copyright>Copyright ©  2019</Copyright>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestorePackagesPath>..\packages</RestorePackagesPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractPacketHeuristic.cs" />
-    <Compile Include="DbUtils.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="Heuristic\C_ADD_FRIEND.cs" />
-    <Compile Include="Heuristic\C_ASK_INTERACTIVE.cs" />
-    <Compile Include="Heuristic\C_AVAILABLE_EVENT_MATCHING_LIST.cs" />
-    <Compile Include="Heuristic\C_BLOCK_USER.cs" />
-    <Compile Include="Heuristic\C_CANCEL_SKILL.cs" />
-    <Compile Include="Heuristic\C_CHANGE_PARTY_MANAGER.cs" />
-    <Compile Include="Heuristic\C_CHANGE_PARTY_MEMBER_AUTHORITY.cs" />
-    <Compile Include="Heuristic\C_CHAT.cs" />
-    <Compile Include="Heuristic\C_CHECK_VERSION.cs" />
-    <Compile Include="Heuristic\C_DELETE_FRIEND.cs" />
-    <Compile Include="Heuristic\C_DUNGEON_CLEAR_COUNT_LIST.cs" />
-    <Compile Include="Heuristic\C_DUNGEON_COOL_TIME_LIST.cs" />
-    <Compile Include="Heuristic\C_GET_USER_GUILD_LOGO.cs" />
-    <Compile Include="Heuristic\C_GET_USER_LIST.cs" />
-    <Compile Include="Heuristic\C_INVITE_USER_TO_GUILD.cs" />
-    <Compile Include="Heuristic\C_JOIN_PRIVATE_CHANNEL.cs" />
-    <Compile Include="Heuristic\C_LOGIN_ARBITER.cs" />
-    <Compile Include="Heuristic\C_NPCGUILD_LIST.cs" />
-    <Compile Include="Heuristic\C_PARTY_APPLICATION_DENIED.cs" />
-    <Compile Include="Heuristic\C_PLAYER_FLYING_LOCATION.cs" />
-    <Compile Include="Heuristic\C_PLAYER_LOCATION.cs" />
-    <Compile Include="Heuristic\C_PONG.cs" />
-    <Compile Include="Heuristic\C_REMOVE_BLOCKED_USER.cs" />
-    <Compile Include="Heuristic\C_REQUEST_CONTRACT.cs" />
-    <Compile Include="Heuristic\C_REQUEST_NONDB_ITEM_INFO.cs" />
-    <Compile Include="Heuristic\C_REQUEST_USER_ITEMLEVEL_INFO.cs" />
-    <Compile Include="Heuristic\C_REQUEST_USER_PAPERDOLL_INFO.cs" />
-    <Compile Include="Heuristic\C_SECOND_PASSWORD_AUTH.cs" />
-    <Compile Include="Heuristic\C_SELECT_USER.cs" />
-    <Compile Include="Heuristic\C_SET_VISIBLE_RANGE.cs" />
-    <Compile Include="Heuristic\C_SHOW_ITEM_TOOLTIP_EX.cs" />
-    <Compile Include="Heuristic\C_START_SKILL.cs" />
-    <Compile Include="Heuristic\C_TRADE_BROKER_REJECT_SUGGEST.cs" />
-    <Compile Include="Heuristic\C_USE_ITEM.cs" />
-    <Compile Include="Heuristic\C_WHISPER.cs" />
-    <Compile Include="Heuristic\S_ABNORMALITY_BEGIN.cs" />
-    <Compile Include="Heuristic\S_ABNORMALITY_END.cs" />
-    <Compile Include="Heuristic\S_ABNORMALITY_REFRESH.cs" />
-    <Compile Include="Heuristic\S_ACCOMPLISH_ACHIEVEMENT.cs" />
-    <Compile Include="Heuristic\S_ACCOUNT_PACKAGE_LIST.cs" />
-    <Compile Include="Heuristic\S_ACTION_END.cs" />
-    <Compile Include="Heuristic\S_ACTION_STAGE.cs" />
-    <Compile Include="Heuristic\S_ADD_BLOCKED_USER.cs" />
-    <Compile Include="Heuristic\S_ANSWER_INTERACTIVE.cs" />
-    <Compile Include="Heuristic\S_ASK_BIDDING_RARE_ITEM.cs" />
-    <Compile Include="Heuristic\S_AVAILABLE_EVENT_MATCHING_LIST.cs" />
-    <Compile Include="Heuristic\S_AVAILABLE_SOCIAL_LIST.cs" />
-    <Compile Include="Heuristic\S_BAN_PARTY.cs" />
-    <Compile Include="Heuristic\S_BAN_PARTY_MEMBER.cs" />
-    <Compile Include="Heuristic\S_BOSS_GAGE_INFO.cs" />
-    <Compile Include="Heuristic\S_BROCAST_GUILD_FLAG.cs" />
-    <Compile Include="Heuristic\S_CANT_FLY_ANYMORE.cs" />
-    <Compile Include="Heuristic\S_CHANGE_PARTY_MANAGER.cs" />
-    <Compile Include="Heuristic\S_CHAT.cs" />
-    <Compile Include="Heuristic\S_CHECK_TO_READY_PARTY.cs" />
-    <Compile Include="Heuristic\S_CHECK_TO_READY_PARTY_FIN.cs" />
-    <Compile Include="Heuristic\S_CLEAR_ALL_HOLDED_ABNORMALITY.cs" />
-    <Compile Include="Heuristic\S_CLEAR_QUEST_INFO.cs" />
-    <Compile Include="Heuristic\S_CONFIRM_INVITE_CODE_BUTTON.cs" />
-    <Compile Include="Heuristic\S_CREATURE_CHANGE_HP.cs" />
-    <Compile Include="Heuristic\S_CREATURE_ROTATE.cs" />
-    <Compile Include="Heuristic\S_CREST_MESSAGE.cs" />
-    <Compile Include="Heuristic\S_DAILY_QUEST_COMPLETE_COUNT.cs" />
-    <Compile Include="Heuristic\S_DECREASE_COOLTIME_SKILL.cs" />
-    <Compile Include="Heuristic\S_DELETE_FRIEND.cs" />
-    <Compile Include="Heuristic\S_DESPAWN_NPC.cs" />
-    <Compile Include="Heuristic\S_DESPAWN_USER.cs" />
-    <Compile Include="Heuristic\S_DUNGEON_CLEAR_COUNT_LIST.cs" />
-    <Compile Include="Heuristic\S_DUNGEON_COOL_TIME_LIST.cs" />
-    <Compile Include="Heuristic\S_DUNGEON_EVENT_MESSAGE.cs" />
-    <Compile Include="Heuristic\S_EACH_SKILL_RESULT.cs" />
-    <Compile Include="Heuristic\S_EVENT_QUEST_SUMMARY.cs" />
-    <Compile Include="Heuristic\S_FIN_INTER_PARTY_MATCH .cs" />
-    <Compile Include="Heuristic\S_FRIEND_LIST.cs" />
-    <Compile Include="Heuristic\S_GET_USER_LIST.cs" />
-    <Compile Include="Heuristic\S_GUILD_TOWER_INFO.cs" />
-    <Compile Include="Heuristic\S_INVEN.cs" />
-    <Compile Include="Heuristic\S_JOIN_PRIVATE_CHANNEL.cs" />
-    <Compile Include="Heuristic\S_LEAVE_PARTY.cs" />
-    <Compile Include="Heuristic\S_LEAVE_PARTY_MEMBER.cs" />
-    <Compile Include="Heuristic\S_LEAVE_PRIVATE_CHANNEL.cs" />
-    <Compile Include="Heuristic\S_LOADING_SCREEN_CONTROL_INFO.cs" />
-    <Compile Include="Heuristic\S_LOAD_CLIENT_ACCOUNT_SETTING.cs" />
-    <Compile Include="Heuristic\S_LOAD_TOPO.cs" />
-    <Compile Include="Heuristic\S_LOGIN.cs" />
-    <Compile Include="Heuristic\S_LOGIN_ACCOUNT_INFO.cs" />
-    <Compile Include="Heuristic\S_LOGIN_ARBITER.cs" />
-    <Compile Include="Heuristic\S_LOGOUT_PARTY_MEMBER.cs" />
-    <Compile Include="Heuristic\S_MOUNT_VEHICLE_EX.cs" />
-    <Compile Include="Heuristic\S_NOTIFY_TO_FRIENDS_WALK_INTO_SAME_AREA.cs" />
-    <Compile Include="Heuristic\S_NPCGUILD_LIST.cs" />
-    <Compile Include="Heuristic\S_NPC_LOCATION.cs" />
-    <Compile Include="Heuristic\S_NPC_OCCUPIER_INFO.cs" />
-    <Compile Include="Heuristic\S_NPC_STATUS.cs" />
-    <Compile Include="Heuristic\S_NPC_TARGET_USER.cs" />
-    <Compile Include="Heuristic\S_OTHER_USER_APPLY_PARTY.cs" />
-    <Compile Include="Heuristic\S_PARTY_MATCH_LINK.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_ABNORMAL_ADD.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_ABNORMAL_CLEAR.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_ABNORMAL_DEL.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_ABNORMAL_REFRESH.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_BUFF_UPDATE.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_CHANGE_HP.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_CHANGE_MP.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_CHANGE_STAMINA.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_INFO.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_LIST.cs" />
-    <Compile Include="Heuristic\S_PARTY_MEMBER_STAT_UPDATE.cs" />
-    <Compile Include="Heuristic\S_PLAYER_CHANGE_FLIGHT_ENERGY.cs" />
-    <Compile Include="Heuristic\S_PLAYER_CHANGE_MP.cs" />
-    <Compile Include="Heuristic\S_PLAYER_CHANGE_STAMINA.cs" />
-    <Compile Include="Heuristic\S_PLAYER_STAT_UPDATE.cs" />
-    <Compile Include="Heuristic\S_PREPARE_RETURN_TO_LOBBY.cs" />
-    <Compile Include="Heuristic\S_PRIVATE_CHAT.cs" />
-    <Compile Include="Heuristic\S_QUEST_INFO.cs" />
-    <Compile Include="Heuristic\S_REMAIN_PLAY_TIME.cs" />
-    <Compile Include="Heuristic\S_REMOVE_BLOCKED_USER.cs" />
-    <Compile Include="Heuristic\S_REPLY_NONDB_ITEM_INFO.cs" />
-    <Compile Include="Heuristic\S_REQUEST_CONTRACT.cs" />
-    <Compile Include="Heuristic\S_REQUEST_SECOND_PASSWORD_AUTH.cs" />
-    <Compile Include="Heuristic\S_RESULT_BIDDING_DICE_THROW.cs" />
-    <Compile Include="Heuristic\S_RESULT_ITEM_BIDDING.cs" />
-    <Compile Include="Heuristic\S_RETURN_TO_LOBBY.cs" />
-    <Compile Include="Heuristic\S_SECOND_PASSWORD_AUTH_RESULT.cs" />
-    <Compile Include="Heuristic\S_SELECT_USER.cs" />
-    <Compile Include="Heuristic\S_SHOW_NPC_TO_MAP.cs" />
-    <Compile Include="Heuristic\S_SKILL_LIST.cs" />
-    <Compile Include="Heuristic\S_SPAWN_ME.cs" />
-    <Compile Include="Heuristic\S_SPAWN_NPC.cs" />
-    <Compile Include="Heuristic\S_SPAWN_PROJECTILE.cs" />
-    <Compile Include="Heuristic\S_SPAWN_USER.cs" />
-    <Compile Include="Heuristic\S_START_COOLTIME_ITEM.cs" />
-    <Compile Include="Heuristic\S_START_COOLTIME_SKILL.cs" />
-    <Compile Include="Heuristic\S_START_USER_PROJECTILE.cs" />
-    <Compile Include="Heuristic\S_SYSTEM_MESSAGE.cs" />
-    <Compile Include="Heuristic\S_SYSTEM_MESSAGE_LOOT_ITEM.cs" />
-    <Compile Include="Heuristic\S_TRADE_BROKER_DEAL_SUGGESTED.cs" />
-    <Compile Include="Heuristic\S_UPDATE_CONTENTS_ON_OFF.cs" />
-    <Compile Include="Heuristic\S_UPDATE_FRIEND_INFO.cs" />
-    <Compile Include="Heuristic\S_UPDATE_NPCGUILD.cs" />
-    <Compile Include="Heuristic\S_USER_BLOCK_LIST.cs" />
-    <Compile Include="Heuristic\S_USER_EFFECT.cs" />
-    <Compile Include="Heuristic\S_USER_LOCATION.cs" />
-    <Compile Include="Heuristic\S_USER_PAPERDOLL_INFO.cs" />
-    <Compile Include="Heuristic\S_USER_STATUS.cs" />
-    <Compile Include="Heuristic\S_WEAK_POINT.cs" />
-    <Compile Include="Heuristic\S_WHISPER.cs" />
-    <Compile Include="Heuristic\S_WORLD_QUEST_VILLAGER_INFO.cs" />
-    <Compile Include="LogReader.cs" />
-    <Compile Include="NetworkController.cs" />
-    <Compile Include="OpcodeEnum.cs" />
-    <Compile Include="OpcodeFinder.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\TeraCommon\Tera.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj">
-      <Project>{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}</Project>
-      <Name>DamageMeter.Sniffing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Data\Data.csproj">
-      <Project>{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}</Project>
-      <Name>Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TeraCommon\Tera.Core.csproj">
-      <Project>{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}</Project>
-      <Name>Tera.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -24,7 +24,7 @@ namespace PacketViewer.UI
                             ex.InnerException + "\r\n" + ex.TargetSite);
         }
 
-        private async void App_OnStartup(object sender, StartupEventArgs e)
+        private void App_OnStartup(object sender, StartupEventArgs e)
         {
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
