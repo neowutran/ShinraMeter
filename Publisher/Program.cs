@@ -38,7 +38,7 @@ namespace Publisher
             }
             new DirectoryInfo(source).MoveTo(target);
             Console.WriteLine("Compressing main archive");
-            compressor.CompressDirectory(target, target + ".zip", true);
+            compressor.CompressDirectory(target, target + ".zip");
             compressor.PreserveDirectoryRoot = false;
             string hashString;
             using (var stream = File.OpenRead(target + ".zip"))
