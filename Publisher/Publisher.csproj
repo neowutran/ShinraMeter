@@ -1,16 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net471</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <AssemblyTitle>Publisher</AssemblyTitle>
     <Product>Publisher</Product>
     <Copyright>Copyright ©  2017</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup>
-    <RestorePackagesPath>..\packages</RestorePackagesPath>
-  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))">
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>

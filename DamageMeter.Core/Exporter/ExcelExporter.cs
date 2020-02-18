@@ -364,6 +364,7 @@ namespace DamageMeter
 
                     ws.View.TabSelected = true;
                     details.Hidden = eWorkSheetHidden.Hidden;
+                    package.Workbook.View.ActiveTab = 1;
                     package.Workbook.Properties.Title = Boss.Name;
                     package.Workbook.Properties.Author = "ShinraMeter " + UpdateManager.Version;
                     package.Workbook.Properties.Company = "github.com/neowutran & github.com/Gl0";

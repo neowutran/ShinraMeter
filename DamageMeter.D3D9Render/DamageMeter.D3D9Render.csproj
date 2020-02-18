@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
     <AssemblyTitle>ShinraMeter.D3D9Render</AssemblyTitle>
     <Product>ShinraMeter.D3D9Render</Product>
     <Copyright>Copyright ©  2017</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <RestorePackagesPath>..\packages</RestorePackagesPath>

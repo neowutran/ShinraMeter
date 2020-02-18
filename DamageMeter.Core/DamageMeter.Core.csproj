@@ -1,17 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <RootNamespace>DamageMeter</RootNamespace>
     <AssemblyName>DamageMeter</AssemblyName>
-    <TargetFramework>net471</TargetFramework>
     <AssemblyTitle>Tera.DamageMeter.Core</AssemblyTitle>
     <Product>Tera.DamageMeter.Core</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Copyright>Copyright ©  2015</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup>
-    <RestorePackagesPath>..\packages</RestorePackagesPath>
-  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))">
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.0" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
   </PropertyGroup>
@@ -27,24 +37,17 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.0" />
-    <PackageReference Include="EPPlus" Version="4.5.3.2" />
+    <PackageReference Include="EPPlus" Version="4.5.3.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.2.242" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" />
     <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.112" />
-    <PackageReference Include="System.Data.SQLite.Linq" Version="1.0.112" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DiscordRPC">
       <HintPath>..\lib\DiscordRPC.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj" />

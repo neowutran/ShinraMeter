@@ -1,15 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net471</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
     <AssemblyTitle>Lang</AssemblyTitle>
     <Product>Lang</Product>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Description>LangPacks for ShinraMeter</Description>
     <Copyright>Copyright ©  2016</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup>
-    <RestorePackagesPath>..\packages</RestorePackagesPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>

@@ -2,7 +2,6 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <AssemblyName>ShinraMeter</AssemblyName>
-    <TargetFramework>net471</TargetFramework>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <PublishUrl>publier\</PublishUrl>
@@ -27,10 +26,19 @@
     <Copyright>MIT license</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup>
-    <RestorePackagesPath>..\packages</RestorePackagesPath>
-  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))" >
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.0" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))" >
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
@@ -59,13 +67,7 @@
     <PackageReference Include="Markdig.Wpf" Version="0.3.1" />
     <PackageReference Include="NAudio.Vorbis" Version="1.1.0" />
     <PackageReference Include="NVorbis" Version="0.10.0-beta" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.manifest" />

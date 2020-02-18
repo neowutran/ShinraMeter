@@ -1,0 +1,30 @@
+<Project>
+  <PropertyGroup>
+    <Copyright>MIT license</Copyright>
+    <Description>OpenSource Tera DPS Meter.</Description>
+    <Product>ShinraMeter</Product>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'True'">true</ContinuousIntegrationBuild>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+    <Deterministic>true</Deterministic>
+    <EmbedAllSources>true</EmbedAllSources>
+    <LangVersion>8.0</LangVersion>
+    <RestorePackagesPath>..\packages</RestorePackagesPath>
+    <CodeAnalysisRuleSet>..\ShinraMeter.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))" >
+	<DefineConstants>NETFULL</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('netcore'))" >
+	<DefineConstants>NETCORE</DefineConstants>
+  </PropertyGroup>
+</Project>

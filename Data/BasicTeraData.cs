@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using DamageMeter.AutoUpdate;
 using log4net;
@@ -17,7 +18,7 @@ namespace Data
     public class BasicTeraData
     {
         private static BasicTeraData _instance;
-        private static readonly ILog Log = LogManager.GetLogger("ShinraMeter");
+        private static readonly ILog Log = LogManager.GetLogger(typeof(BasicTeraData));
         private static int _errorCount = 10; //limit number of debug messages in one session
         private static string _region = "Unknown";
         //private readonly Func<string, TeraData> _dataForRegion;
@@ -30,7 +31,8 @@ namespace Data
         {
             ResourceDirectory = resourceDirectory;
             Directory.CreateDirectory(Path.Combine(resourceDirectory, "config")); //ensure config dir is created
-            XmlConfigurator.Configure(new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
+            var repo = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(repo, new Uri(Path.Combine(ResourceDirectory, "log4net.xml")));
             HotkeysData = new HotkeysData(this);
             WindowData = new WindowData(this);
             LP.Culture = WindowData.UILanguage != "Auto" ? CultureInfo.GetCultureInfo(WindowData.UILanguage) : CultureInfo.CurrentUICulture;
