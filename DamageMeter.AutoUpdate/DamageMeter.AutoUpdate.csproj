@@ -13,7 +13,6 @@
   <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))" >
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))" >
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>portable</DebugType>
