@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Data
 {
@@ -36,8 +37,14 @@ namespace Data
             catch { }
             try
             {
-                Download("https://raw.githubusercontent.com/tera-toolbox/tera-data/master/map_base/protocol." + version + ".map", filename);
-                return true;
+                ToolboxOpcodes("https://raw.githubusercontent.com/tera-toolbox/tera-toolbox/master/data/data.json", directory);
+                if (File.Exists(filename)) return true;
+            }
+            catch { }
+            try
+            {
+                ToolboxOpcodes("https://raw.githubusercontent.com/tera-toolbox/tera-toolbox/beta/data/data.json", directory);
+                if (File.Exists(filename)) return true;
             }
             catch { }
             try
@@ -80,12 +87,6 @@ namespace Data
             catch { }
             try
             {
-                Download("https://raw.githubusercontent.com/tera-toolbox/tera-data/master/map_base/sysmsg." + version + ".map", "sysmsg." + version + ".map");
-                return true;
-            }
-            catch { }
-            try
-            {
                 Download("https://raw.githubusercontent.com/tera-proxy/tera-data/master/map/sysmsg." + revision / 100 + ".map", filename);
                 return true;
             }
@@ -100,5 +101,24 @@ namespace Data
                 client.DownloadFile(remote, local);
             }
         }
+
+        public static void ToolboxOpcodes(string url, string directory)
+        {
+            using WebClient client = new WebClient();
+            string json = client.DownloadString(url);
+            var parsed = JsonConvert.DeserializeObject<ToolboxTeraData>(json);
+            foreach (var map in parsed.maps)
+            {
+                var fname = Path.Combine(directory, $"protocol.{map.Key}.map");
+                if (!File.Exists(fname)) File.WriteAllText(fname, string.Join("\n", map.Value.Select(x => x.Key + " " + x.Value)));
+            }
+        }
+        public class ToolboxTeraData
+        {
+            public Dictionary<string, Dictionary<string, int>> maps { get; set; }
+            public Dictionary<string, string> protocol { get; set; }
+            public dynamic deprecated { get; set; }
+        }
+
     }
 }
