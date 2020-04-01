@@ -81,7 +81,7 @@ namespace DamageMeter.UI
             _dispatcherTimer.Tick += UpdateKeyboard;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             _dispatcherTimer.Start();
-            if (BasicTeraData.Instance.WindowData.EnableOverlay) DXrender = new D3D9Render.Renderer();
+            //if (BasicTeraData.Instance.WindowData.EnableOverlay) DXrender = new D3D9Render.Renderer(); ///*** fix me
             EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
             Chrono.Source = BasicTeraData.Instance.ImageDatabase.Chronobar.Source;
             Chrono.ToolTip = LP.MainWindow_Only_boss;

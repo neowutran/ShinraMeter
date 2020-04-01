@@ -553,7 +553,7 @@ namespace DamageMeter.UI
         {
             BasicTeraData.Instance.WindowData.EnableOverlay = true;
             if (_mainWindow.DXrender != null) return;
-            _mainWindow.DXrender = new Renderer();
+            //_mainWindow.DXrender = new Renderer(); ///*** fixme
         }
 
         private void DisableOverlay(object sender, RoutedEventArgs e)
