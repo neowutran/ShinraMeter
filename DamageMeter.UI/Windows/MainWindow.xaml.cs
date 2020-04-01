@@ -251,11 +251,13 @@ namespace DamageMeter.UI
             ForceWindowVisibilityHidden = true;
             PacketProcessor.Instance.TickUpdated -= Update;
             _dispatcherTimer.Stop();
-            NotifyIcon.Tray.Visibility = Visibility.Collapsed;
-            NotifyIcon.Tray.Icon = null;
-            NotifyIcon.Tray.IconSource = null;
-            NotifyIcon.Tray.Dispose();
-            NotifyIcon.Tray = null;
+            if (NotifyIcon.Tray != null) {
+                NotifyIcon.Tray.Visibility = Visibility.Collapsed;
+                NotifyIcon.Tray.Icon = null;
+                NotifyIcon.Tray.IconSource = null;
+                NotifyIcon.Tray.Dispose();
+                NotifyIcon.Tray = null;
+            }
             _topMost = false;
             PacketProcessor.Instance.Exit();
             DXrender?.Dispose();

@@ -91,8 +91,14 @@ namespace DamageMeter.AutoUpdate
             if (File.Exists(ExecutableDirectory + @"\tmp\release\Autoupdate.exe"))
             {
                 File.Copy(ExecutableDirectory + @"\tmp\release\Autoupdate.exe", ExecutableDirectory + @"\tmp\Autoupdate.exe");
+                if (File.Exists(ExecutableDirectory + @"\tmp\release\Autoupdate.dll"))
+                    File.Copy(ExecutableDirectory + @"\tmp\release\Autoupdate.dll", ExecutableDirectory + @"\tmp\Autoupdate.dll");
             }
-            else { File.Copy(ExecutableDirectory + @"\Autoupdate.exe", ExecutableDirectory + @"\tmp\Autoupdate.exe"); }
+            else { 
+                if (File.Exists(ExecutableDirectory + @"\Autoupdate.dll"))
+                    File.Copy(ExecutableDirectory + @"\Autoupdate.dll", ExecutableDirectory + @"\tmp\Autoupdate.dll"); 
+                File.Copy(ExecutableDirectory + @"\Autoupdate.exe", ExecutableDirectory + @"\tmp\Autoupdate.exe"); 
+            }
             Process.Start(ExecutableDirectory + @"\tmp\Autoupdate.exe", "pass");
             return true;
         }

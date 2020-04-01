@@ -14,6 +14,7 @@ md "%output%\resources\config"
 md "%output%\lib"
 
 xcopy "%source%\DamageMeter.UI\bin\%variant%" "%output%\" /E
+copy "%source%\DamageMeter.AutoUpdate\bin\Release\net471\Autoupdate.exe" "%output%\Autoupdate.exe"
 xcopy "%source%\lib" "%output%\lib\" /E
 copy "%source%\ReadmeUser.txt" "%output%\readme.txt"
 copy "%source%\add_firewall_exception.bat" "%output%\add_firewall_exception.bat"
