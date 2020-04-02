@@ -561,7 +561,7 @@ namespace DamageMeter.UI
             BasicTeraData.Instance.WindowData.EnableOverlay = false;
             var render = _mainWindow.DXrender;
             _mainWindow.DXrender = null;
-            render.Dispose();
+            render?.Dispose();
         }
 
         private void AddServerButton_OnClick(object sender, RoutedEventArgs e)
