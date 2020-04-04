@@ -51,9 +51,11 @@ namespace DamageMeter.Processing
                 var action1 = action as NotifyAction;
                 if (action1 == null) { continue; }
                 var notifyAction = action1.Clone();
-                notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{afk_body}", bodyText);
-                notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{afk_title}", titleText);
-                notifyAction.Balloon.EventType = evType;
+                if (notifyAction.Balloon != null) {
+                    notifyAction.Balloon.BodyText = notifyAction.Balloon.BodyText.Replace("{afk_body}", bodyText);
+                    notifyAction.Balloon.TitleText = notifyAction.Balloon.TitleText.Replace("{afk_title}", titleText);
+                    notifyAction.Balloon.EventType = evType;
+                }
 
                 if (notifyAction.Sound == null || notifyAction.Sound.GetType() != typeof(TextToSpeech))
                 {

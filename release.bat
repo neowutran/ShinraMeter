@@ -3,6 +3,7 @@ rem msbuild Tera.sln /t:rebuild /p:Configuration=Release /p:Platform="Any CPU" /
 rem msbuild Tera.sln /p:Configuration=Release /p:Platform="Any CPU" /fl /flp:logfile=ShinraMeter.log;verbosity=normal
 msbuild DamageMeter.UI/DamageMeter.UI.csproj /t:publish /p:Configuration=Release,TargetFramework=netcoreapp3.1,RuntimeIdentifer=win-x64 /p:PublishProfile=FolderProfile 
 msbuild Publisher/Publisher.csproj /t:build /p:Configuration=Release,TargetFramework=netcoreapp3.1,RuntimeIdentifer=win-x64
+msbuild DamageMeter.AutoUpdate/DamageMeter.AutoUpdate.csproj /t:build /p:Configuration=Release,TargetFramework=net471,RuntimeIdentifer=win-x64
 
 set output=.\ShinraMeterV
 set source=.
