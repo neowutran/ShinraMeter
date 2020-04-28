@@ -15,16 +15,14 @@ using Tera.Game;
 
 namespace Data
 {
-    public class BasicTeraData
-    {
+    public class BasicTeraData {
         private static BasicTeraData _instance;
+        private static readonly object _lock=new object();
         private static readonly ILog Log = LogManager.GetLogger(typeof(BasicTeraData));
         private static int _errorCount = 10; //limit number of debug messages in one session
         private static string _region = "Unknown";
         //private readonly Func<string, TeraData> _dataForRegion;
 
-       
-        
         private BasicTeraData() : this(FindResourceDirectory()) { }
 
         private BasicTeraData(string resourceDirectory)
@@ -59,7 +57,17 @@ namespace Data
 
         //public QuestInfoDatabase QuestInfoDatabase { get; set; }
         public HotDotDatabase HotDotDatabase { get; set; }
-        public static BasicTeraData Instance => _instance ?? (_instance = new BasicTeraData());
+        public static BasicTeraData Instance {
+            get
+            {
+                if (_instance == null)
+                    lock (_lock)
+                        if (_instance == null)
+                            _instance = new BasicTeraData();
+                return _instance;
+            }
+        }
+
         public PetSkillDatabase PetSkillDatabase { get; set; }
         public SkillDatabase SkillDatabase { get; set; }
         public ImageDatabase ImageDatabase { get; }

@@ -23,13 +23,23 @@ namespace DamageMeter.Processing
     internal class NotifyProcessor
     {
         private static NotifyProcessor _instance;
+        private static readonly object _lock = new object();
         internal Dictionary<EntityId, long> _lastBosses = new Dictionary<EntityId, long>();
         private long _lastBossHpMeterUser;
         private EntityId? _lastBossMeterUser;
 
         private NotifyProcessor() { }
 
-        public static NotifyProcessor Instance => _instance ?? (_instance = new NotifyProcessor());
+        public static NotifyProcessor Instance {
+            get
+            {
+                if (_instance == null)
+                    lock (_lock)
+                        if (_instance == null)
+                            _instance = new NotifyProcessor();
+                return _instance;
+            }
+        }
 
         internal void InstanceMatchingSuccess(S_FIN_INTER_PARTY_MATCH message)
         {

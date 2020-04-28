@@ -37,6 +37,7 @@ namespace DamageMeter
         public event Action<bool, EntityId> DisplayGeneralDataChanged;
 
         private static PacketProcessor _instance;
+        private static readonly object _lock = new object();
         private static readonly object _pasteLock = new object();
         internal AbnormalityStorage AbnormalityStorage;
 
@@ -79,7 +80,15 @@ namespace DamageMeter
 
         public bool TimedEncounter { get; set; }
 
-        public static PacketProcessor Instance => _instance ?? (_instance = new PacketProcessor());
+        public static PacketProcessor Instance {
+            get {
+                if (_instance==null)
+                    lock(_lock)
+                        if (_instance == null)
+                            _instance=new PacketProcessor();
+                return _instance;
+            }
+        }
 
         public EntityTracker EntityTracker { get; internal set; }
         public bool SendFullDetails { get; set; }
