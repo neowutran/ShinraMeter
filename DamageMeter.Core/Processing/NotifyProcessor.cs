@@ -22,7 +22,7 @@ namespace DamageMeter.Processing
 {
     internal class NotifyProcessor
     {
-        private static NotifyProcessor _instance;
+        private static volatile NotifyProcessor _instance;
         private static readonly object _lock = new object();
         internal Dictionary<EntityId, long> _lastBosses = new Dictionary<EntityId, long>();
         private long _lastBossHpMeterUser;

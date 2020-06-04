@@ -16,7 +16,7 @@ using Tera.Game;
 namespace Data
 {
     public class BasicTeraData {
-        private static BasicTeraData _instance;
+        private static volatile BasicTeraData _instance;
         private static readonly object _lock=new object();
         private static readonly ILog Log = LogManager.GetLogger(typeof(BasicTeraData));
         private static int _errorCount = 10; //limit number of debug messages in one session

@@ -36,7 +36,7 @@ namespace DamageMeter
 
         public event Action<bool, EntityId> DisplayGeneralDataChanged;
 
-        private static PacketProcessor _instance;
+        private static volatile PacketProcessor _instance;
         private static readonly object _lock = new object();
         private static readonly object _pasteLock = new object();
         internal AbnormalityStorage AbnormalityStorage;
