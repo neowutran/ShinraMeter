@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Tera.Game;
+using Tera.Game.Messages;
 
 namespace Data
 {
@@ -26,7 +27,7 @@ namespace Data
 
         public string GetLanguage(string region)
         {
-            if (BasicTeraData.Instance.WindowData.Language == "Auto") return (region.StartsWith("EU") ? region+"-":"")+BasicTeraData.Instance.Servers.Language.ToString();
+            if (BasicTeraData.Instance.WindowData.Language == "Auto") return (region.StartsWith("EU") && BasicTeraData.Instance.Servers.Language !=LangEnum.RU ? region+"-":"")+BasicTeraData.Instance.Servers.Language.ToString();
             return BasicTeraData.Instance.WindowData.Language;
         }
     }

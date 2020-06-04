@@ -30,7 +30,6 @@ namespace DamageMeter.Processing
                         BasicTeraData.LogError(
                             "New server:" + PacketProcessor.Instance.Server + ";Old server Id:" + PacketProcessor.Instance.EntityTracker.MeterUser?.ServerId,
                             false, true);
-                        throw;
                     }
                 }
                 if (trackerreset)
