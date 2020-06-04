@@ -471,12 +471,20 @@ namespace DamageMeter.Processing
             RichPresence.Instance.HandleBossHp(message);
             HudManager.Instance.AddOrUpdateBoss(message);
             long newHp = 0;
-            if (message.TotalHp != message.HpRemaining)
-            {
-                newHp = (long) message.HpRemaining;
-            }
-            if (message.EntityId == _lastBossMeterUser) { _lastBossHpMeterUser = newHp; }
+            if (message.TotalHp != message.HpRemaining) {newHp = message.HpRemaining;}
+            if (message.EntityId == _lastBossMeterUser) {_lastBossHpMeterUser = newHp;}
             _lastBosses[message.EntityId] = newHp;
+        }
+
+        internal void AddBoss(EntityId id) { _lastBosses[id] = 0; }
+
+        internal void S_CREATURE_CHANGE_HP(SCreatureChangeHp message) {
+            if (_lastBosses.ContainsKey(message.TargetId)) {
+                long newHp = 0;
+                if (message.TotalHp != message.HpRemaining) {newHp = message.HpRemaining;}
+                if (message.TargetId == _lastBossMeterUser) {_lastBossHpMeterUser = newHp;}
+                _lastBosses[message.TargetId] = newHp;
+            }
         }
 
         internal void SpawnMe(SpawnMeServerMessage message)

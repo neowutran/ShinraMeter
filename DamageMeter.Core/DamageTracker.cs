@@ -3,6 +3,7 @@ using Data;
 using Tera.Game;
 using Tera.Game.Messages;
 using System.Diagnostics;
+using DamageMeter.Processing;
 using Tera.RichPresence;
 
 namespace DamageMeter
@@ -55,7 +56,10 @@ namespace DamageMeter
             if (!entity.Info.Boss) { return; }
             if (PacketProcessor.Instance.Encounter != entity) {
                 PacketProcessor.Instance.NewEncounter = entity;
-                if (BasicTeraData.Instance.WindowData.EnableChat) HudManager.Instance.AddBoss(entity);
+                if (BasicTeraData.Instance.WindowData.EnableChat) {
+                    HudManager.Instance.AddBoss(entity);
+                    NotifyProcessor.Instance.AddBoss(entity.Id);
+                }
             }
         }
 

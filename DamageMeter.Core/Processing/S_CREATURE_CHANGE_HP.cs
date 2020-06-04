@@ -15,6 +15,7 @@ namespace DamageMeter.Processing
         {
             HudManager.Instance.UpdateBoss(message);
             PacketProcessor.Instance.AbnormalityTracker.Update(message);
+            NotifyProcessor.Instance.S_CREATURE_CHANGE_HP(message);
             RichPresence.Instance.HandleBossHp(message);
         }
     }
