@@ -235,6 +235,9 @@
 			<abnormality>4021</abnormality>
 			<abnormality>4024</abnormality>
 			<abnormality>4040</abnormality>
+			<abnormality>4041</abnormality>
+			<abnormality>4042</abnormality>
+			<abnormality>4043</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
