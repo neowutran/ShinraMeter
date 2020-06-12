@@ -20,8 +20,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="PacketDotNet" Version="1.0.1" />
-    <PackageReference Include="SharpPcap" Version="5.0.0" />
+    <PackageReference Include="PacketDotNet" Version="1.0.5" />
+    <PackageReference Include="SharpPcap" Version="5.1.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
   </ItemGroup>

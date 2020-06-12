@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.2.242" />
+    <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.3.283" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj" />
