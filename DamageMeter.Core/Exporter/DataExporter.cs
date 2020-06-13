@@ -173,6 +173,7 @@ namespace DamageMeter
                             skillKey.Id.ToString();
                         skillLog.skillLowestCrit = skill.LowestCrit() + "";
                         skillLog.skillTotalDamage = skilldamage + "";
+                        skillLog.skillTotalCritDamage = skill.AmountCrit() + "";
 
                         if (skilldamage == 0) { continue; }
                         teradpsUser.skillLog.Add(skillLog);

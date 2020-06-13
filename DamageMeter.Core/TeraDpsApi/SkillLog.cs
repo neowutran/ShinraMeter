@@ -12,5 +12,6 @@
         public string skillId;
         public string skillLowestCrit;
         public string skillTotalDamage;
+        public string skillTotalCritDamage;
     }
 }
