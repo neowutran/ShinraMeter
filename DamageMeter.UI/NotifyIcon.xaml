@@ -73,6 +73,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -92,22 +93,25 @@
                     <Button Grid.Column="2"  Click="ExcelExportAction" ToolTip="{x:Static l:LP.SystemTray_Export_current_to_Excel}">
                         <Image x:Name="ExcelExportIcon" Opacity=".8" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"></Image>
                     </Button>
-                    <Button Grid.Column="3" Click="ClickUploadGlyphAction" ToolTip="{x:Static l:LP.UploadGlyphBuild}">
+                    <Button Grid.Column="3"  Click="JsonExportAction" ToolTip="{x:Static l:LP.SystemTray_Export_current_to_Json}">
+                        <Image x:Name="JsonExportIcon" Opacity=".8" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"></Image>
+                    </Button>
+                    <Button Grid.Column="4" Click="ClickUploadGlyphAction" ToolTip="{x:Static l:LP.UploadGlyphBuild}">
                         <Image x:Name="UploadGlyphIcon" Opacity=".8" Margin="6"></Image>
                     </Button>
-                    <Button Grid.Column="4" Click="ClickOpenChatBox" ToolTip="{x:Static l:LP.OpenChatBox}">
+                    <Button Grid.Column="5" Click="ClickOpenChatBox" ToolTip="{x:Static l:LP.OpenChatBox}">
                         <Image x:Name="ChatBoxIcon" Opacity=".8" Margin="6"></Image>
                     </Button>
-                    <Button Grid.Column="5" Click="ResetAction" ToolTip="{x:Static l:LP.Reset}">
+                    <Button Grid.Column="6" Click="ResetAction" ToolTip="{x:Static l:LP.Reset}">
                         <Image x:Name="ResetIcon" Opacity=".8" Margin="6"></Image>
                     </Button>
                     <Rectangle Width="1" VerticalAlignment="Stretch" Grid.Column="6" />
                     <Rectangle Width="1" VerticalAlignment="Stretch" Grid.Column="10" />
-                    <Button Grid.Column="11"  Click="CloseAction" ToolTip="{x:Static l:LP.Close}">
+                    <Button Grid.Column="12"  Click="CloseAction" ToolTip="{x:Static l:LP.Close}">
                         <Image  x:Name="CloseIcon" Opacity=".8" Margin="6"/>
                     </Button>
 
-                    <Button Grid.Column="7" ToolTip="GitHub" Name="gitButton" Click="gitButton_Click">
+                    <Button Grid.Column="8" ToolTip="GitHub" Name="gitButton" Click="gitButton_Click">
                         <Image x:Name="GitHubIcon" Grid.Column="1" Grid.Row="0" Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
                     </Button>
 
@@ -130,7 +134,7 @@
 
                     </Popup>
 
-                    <Button Grid.Column="8" Name="Discord" Click="DiscordAction" ToolTip="{x:Static l:LP.SystemTray_Discord}">
+                    <Button Grid.Column="9" Name="Discord" Click="DiscordAction" ToolTip="{x:Static l:LP.SystemTray_Discord}">
                         <StackPanel Orientation="Horizontal">
                             <Image x:Name="DiscordIcon" Grid.Column="1" Grid.Row="3"  Margin="6" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </StackPanel>
@@ -683,10 +687,14 @@
                                             <Border Style="{StaticResource SettingsCardHeader}"/>
                                             <TextBlock Style="{StaticResource SettingsCardHeaderText}" Text="Misc settings" />
                                             <StackPanel Orientation="Vertical" Grid.Row="2" Margin="3">
+                                                <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Autoexport_to_Json}" 
+                                                                   x:Name="AutoJsonExport"
+                                                                   On="EnableAutoJsonExportAction"
+                                                                   Off="DisableJsonExportAction" />
                                                 <ui:MaterialSwitch Content="{x:Static l:LP.SystemTray_Autoexport_to_Excel}" 
-                                                          x:Name="AutoExcelExport"
-                                                          On="EnableAutoExcelExportAction"
-                                                          Off="DisableExcelExportAction" />
+                                                                   x:Name="AutoExcelExport"
+                                                                   On="EnableAutoExcelExportAction"
+                                                                   Off="DisableExcelExportAction" />
 
                                                 <Grid Margin="20,0,0,0"  Style="{StaticResource SettingWrapper}">
                                                     <Grid.ColumnDefinitions>

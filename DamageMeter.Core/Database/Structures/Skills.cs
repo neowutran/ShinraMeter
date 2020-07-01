@@ -30,7 +30,9 @@ namespace DamageMeter.Database.Structures
         }
         public List<Entity> GetEntities()
         {
-            return SourceIdSkill.Keys.ToList();
+            var result = SourceIdSkill.Keys.ToList();
+            result.AddRange(TargetSourceSkill.Keys.ToList());
+            return result.Distinct().ToList();
         }
         
         public long DamageReceived(Entity target, Entity source, bool timed)

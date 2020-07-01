@@ -46,6 +46,7 @@ namespace DamageMeter.UI
             _mainWindow = mainWindow;
             UseNpcap.Status = BasicTeraData.Instance.WindowData.Winpcap;
             AutoExcelExport.Status = BasicTeraData.Instance.WindowData.Excel;
+            AutoJsonExport.Status = BasicTeraData.Instance.WindowData.Json;
             ExcelCMADPSSpinner.Value = BasicTeraData.Instance.WindowData.ExcelCMADPSSeconds;
             CountOnlyBoss.Status = BasicTeraData.Instance.WindowData.OnlyBoss;
             BossByHpBar.Status = BasicTeraData.Instance.WindowData.DetectBosses;
@@ -90,12 +91,15 @@ namespace DamageMeter.UI
             SettingsTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Settings.Source;
             //LinksTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Links.Source;
 
+            OverlaySwitch.Height=0;// overlay need to be remade from scratch
+
             TopLeftLogo.Source = BasicTeraData.Instance.ImageDatabase.Icon;
 
             CloseIcon.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
             ChatBoxIcon.Source = BasicTeraData.Instance.ImageDatabase.Chat.Source;
             SiteExportIcon.Source = BasicTeraData.Instance.ImageDatabase.SiteExport.Source;
             ExcelExportIcon.Source = BasicTeraData.Instance.ImageDatabase.Excel.Source;
+            JsonExportIcon.Source = BasicTeraData.Instance.ImageDatabase.Json.Source;
             ResetIcon.Source = BasicTeraData.Instance.ImageDatabase.Reset.Source;
             UploadGlyphIcon.Source = BasicTeraData.Instance.ImageDatabase.Upload.Source;
 
@@ -172,6 +176,12 @@ namespace DamageMeter.UI
         {
             PacketProcessor.Instance.NeedToExport = DataExporter.Dest.Excel | DataExporter.Dest.Manual;
         }
+
+        private void JsonExportAction(object sender, RoutedEventArgs e)
+        {
+            PacketProcessor.Instance.NeedToExport = DataExporter.Dest.Json | DataExporter.Dest.Manual;
+        }
+
         private long _lastSend;
 
         private void SiteExportAction(object sender, RoutedEventArgs e)
@@ -189,6 +199,16 @@ namespace DamageMeter.UI
         private void DisableExcelExportAction(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.Excel = false;
+        }
+
+        private void EnableAutoJsonExportAction(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.Json = true;
+        }
+
+        private void DisableJsonExportAction(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.Json = false;
         }
 
         private void DisableStayTopMost(object sender, RoutedEventArgs e)

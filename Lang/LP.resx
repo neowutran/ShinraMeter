@@ -802,4 +802,10 @@ Reset and paused until map change or relog.</value>
   <data name="SystemTray_Use_Npcap" xml:space="preserve">
     <value>Use npcap (requires restart)</value>
   </data>
+  <data name="SystemTray_Export_current_to_Json" xml:space="preserve">
+    <value>Export current to json</value>
+  </data>
+  <data name="SystemTray_Autoexport_to_Json" xml:space="preserve">
+    <value>Autoexport to json</value>
+  </data>
 </root>

@@ -74,6 +74,7 @@ namespace Data
                 Parse("showtimeleft", "showTimeLeft");
                 Parse("partyonly", "partyOnly");
                 Parse("excel", "excel");
+                Parse("json", "json");
                 Parse("scale", "scale");
                 Parse("always_visible", "alwaysVisible");
                 Parse("remember_position", "rememberPosition");
@@ -187,6 +188,7 @@ namespace Data
         private bool topmost = true;
         private bool debug = true;
         private bool excel = false;
+        private bool json = false;
         private int excelCMADPSSeconds = 1;
         private bool showHealCrit = true;
         private bool showCritDamageRate = false;
@@ -266,6 +268,7 @@ namespace Data
         public bool Topmost { get => topmost; set { topmost = value; Save(); } }
         public bool Debug { get => debug; set { debug = value; Save(); } }
         public bool Excel { get => excel; set { excel = value; Save(); } }
+        public bool Json { get => json; set { json = value; Save(); } }
         public int ExcelCMADPSSeconds { get => excelCMADPSSeconds; set { excelCMADPSSeconds = value; Save(); } }
         public bool ShowHealCrit { get => showHealCrit; set { showHealCrit = value; Save(); } }
         public bool ShowCritDamageRate { get => showCritDamageRate; set { showCritDamageRate = value; Save(); } }
@@ -574,6 +577,7 @@ namespace Data
                 xml.Root.Add(new XElement("excel_path_template", excelPathTemplate));
                 xml.Root.Add(new XElement("excel_save_directory", excelSaveDirectory));
                 xml.Root.Add(new XElement("excel_cma_dps_seconds", excelCMADPSSeconds));
+                xml.Root.Add(new XElement("json", json));
                 xml.Root.Add(new XElement("always_visible", alwaysVisible));
                 xml.Root.Add(new XElement("lf_delay", lFDelay));
                 xml.Root.Add(new XElement("partyonly", partyOnly));

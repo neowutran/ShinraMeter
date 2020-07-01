@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using DamageMeter.Database.Structures;
+using DamageMeter.Exporter;
 using DamageMeter.TeraDpsApi;
 using Data;
 using Tera.Game;
@@ -19,7 +20,7 @@ namespace DamageMeter
             None = 1,
             Excel = 2,
             Site = 4,
-            JSON = 8,
+            Json = 8,
             Manual = 16
         }
         public static List<DpsServer> DpsServers = new List<DpsServer> { DpsServer.NeowutranAnonymousServer };
@@ -205,6 +206,8 @@ namespace DamageMeter
             if (entity == null) { return; }
             var stats = GenerateStats(entity, abnormality);
             if (stats == null) { return; }
+            var name = stats.BaseStats.members.Select(x => x.playerName).FirstOrDefault(x => PacketProcessor.Instance.MeterPlayers.Select(z => z.Name).Contains(x));
+            if (type.HasFlag(Dest.Json)) JsonExporter.JsonSave(stats, name, type.HasFlag(Dest.Manual));
             var sendThread = new Thread(() =>
             {
                 if (type.HasFlag(Dest.Site) && PacketProcessor.Instance.BossLink.Any(x => x.Value == entity && !x.Key.Success))
@@ -215,9 +218,7 @@ namespace DamageMeter
                 }
                 if (type.HasFlag(Dest.Excel))
                 {
-                    ExcelExporter.ExcelSave(stats,
-                        stats.BaseStats.members.Select(x => x.playerName)
-                            .FirstOrDefault(x => PacketProcessor.Instance.MeterPlayers.Select(z => z.Name).Contains(x)), type.HasFlag(Dest.Manual));
+                    ExcelExporter.ExcelSave(stats, name, type.HasFlag(Dest.Manual));
                 }
             });
             sendThread.Start();
@@ -228,7 +229,7 @@ namespace DamageMeter
             if (entity == null) { return; }
             var stats = GenerateStats(entity, abnormality);
             if (stats == null) { return; }
-
+            JsonExporter.JsonSave(stats, PacketProcessor.Instance.EntityTracker.MeterUser.Name);
             var sendThread = new Thread(() =>
             {
                 DpsServers.Where(x => !x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));

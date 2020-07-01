@@ -1800,6 +1800,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Autoexport to json.
+        /// </summary>
+        public static string SystemTray_Autoexport_to_Json {
+            get {
+                return ResourceManager.GetString("SystemTray_Autoexport_to_Json", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to before crash.
         /// </summary>
         public static string SystemTray_before_crash {
@@ -1877,6 +1886,15 @@ namespace Lang {
         public static string SystemTray_Export_current_to_Excel {
             get {
                 return ResourceManager.GetString("SystemTray_Export_current_to_Excel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export current to json.
+        /// </summary>
+        public static string SystemTray_Export_current_to_Json {
+            get {
+                return ResourceManager.GetString("SystemTray_Export_current_to_Json", resourceCulture);
             }
         }
         

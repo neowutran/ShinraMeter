@@ -34,6 +34,7 @@ namespace Data
             Links = new Image { Source = new BitmapImage(new Uri(folder + "links.png")) };
 
             Excel = new Image { Source = new BitmapImage(new Uri(folder + "excel.png")) };
+            Json = new Image { Source = new BitmapImage(new Uri(folder + "json.png")) };
             Upload = new Image { Source = new BitmapImage(new Uri(folder + "upload.png")) };
             Reset = new Image { Source = new BitmapImage(new Uri(folder + "reset.png")) };
 
@@ -87,6 +88,7 @@ namespace Data
         public Image Action { get; }
         public Image Settings { get; }
 
+        public Image Json { get; }
         public Image Excel { get; }
         public Image Upload { get; }
         public Image Reset { get; }
