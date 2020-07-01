@@ -17,6 +17,7 @@ namespace DamageMeter.TeraDpsApi
         public uint playerId;
         public string playerName;
         public string playerServer;
+        public uint playerServerId;
         public string playerTotalDamage;
         public string playerTotalDamagePercentage;
         public List<SkillLog> skillLog = new List<SkillLog>();

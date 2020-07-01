@@ -28,7 +28,11 @@ namespace DamageMeter.Database.Structures
         {
             return SourceIdSkill.Keys.Where(x => x is UserEntity).Select(x=>PacketProcessor.Instance.PlayerTracker.Get(((UserEntity)x).ServerId, ((UserEntity)x).PlayerId)).ToList();
         }
-
+        public List<Entity> GetEntities()
+        {
+            return SourceIdSkill.Keys.ToList();
+        }
+        
         public long DamageReceived(Entity target, Entity source, bool timed)
         {
             var sourceString = source?.Id.ToString() ?? "";

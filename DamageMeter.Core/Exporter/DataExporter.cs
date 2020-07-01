@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading;
 using DamageMeter.Database.Structures;
 using DamageMeter.TeraDpsApi;
 using Data;
-using Lang;
-using Newtonsoft.Json;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
@@ -24,7 +19,8 @@ namespace DamageMeter
             None = 1,
             Excel = 2,
             Site = 4,
-            Manual = 8
+            JSON = 8,
+            Manual = 16
         }
         public static List<DpsServer> DpsServers = new List<DpsServer> { DpsServer.NeowutranAnonymousServer };
 
@@ -71,12 +67,14 @@ namespace DamageMeter
             allPlayers.ForEach(x=>playersInfo.Add(new PlayerDamageDealt(0,0,firstTick,lastTick,0,0,x)));
             var teradpsData = new EncounterBase();
             var extendedStats = new ExtendedStats();
-            var _abnormals = abnormals.Clone(entity, firstTick, lastTick);
+            var _abnormals = abnormals.Clone(null, firstTick, lastTick);
             teradpsData.encounterUnixEpoch = new DateTimeOffset(new DateTime(lastTick, DateTimeKind.Utc)).ToUnixTimeSeconds();
             extendedStats.Entity = entity;
             extendedStats.BaseStats = teradpsData;
             extendedStats.FirstTick = firstTick;
             extendedStats.LastTick = lastTick;
+            extendedStats.AllSkills = skills;
+            extendedStats.Abnormals = _abnormals;
             teradpsData.areaId = entity.Info.HuntingZoneId + "";
             teradpsData.bossId = entity.Info.TemplateId + "";
             teradpsData.fightDuration = interval + "";
@@ -113,6 +111,7 @@ namespace DamageMeter
                 teradpsUser.playerClass = user.Source.Class.ToString();
                 teradpsUser.playerName = user.Source.Name;
                 teradpsUser.playerId = user.Source.PlayerId;
+                teradpsUser.playerServerId = user.Source.ServerId;
                 teradpsUser.playerServer = BasicTeraData.Instance.Servers.GetServerName(user.Source.ServerId);
                 teradpsUser.playerAverageCritRate = Math.Round(user.CritRate, 1) + "";
                 teradpsUser.healCrit = user.Source.IsHealer ? heals.FirstOrDefault(x => x.Source == user.Source)?.CritRate + "" : null;
