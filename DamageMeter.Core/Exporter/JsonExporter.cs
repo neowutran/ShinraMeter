@@ -154,7 +154,8 @@ namespace DamageMeter.Exporter {
                     ser.Serialize(jsonw, jsonData);
                     jsonw.Flush();
                     s.Position = 0;
-                    compressor.CompressStream(s, File.Create(fname));
+                    using var cs = File.Create(fname);
+                    compressor.CompressStream(s, cs);
                 }
             });
         }
