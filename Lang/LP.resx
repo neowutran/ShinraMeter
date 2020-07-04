@@ -803,9 +803,9 @@ Reset and paused until map change or relog.</value>
     <value>Use npcap (requires restart)</value>
   </data>
   <data name="SystemTray_Export_current_to_Json" xml:space="preserve">
-    <value>Export current to json</value>
+    <value>Export current to JSON</value>
   </data>
   <data name="SystemTray_Autoexport_to_Json" xml:space="preserve">
-    <value>Autoexport to json</value>
+    <value>Autoexport to JSON</value>
   </data>
 </root>

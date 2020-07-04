@@ -15,7 +15,7 @@ namespace DamageMeter.Exporter {
         private static readonly object savelock = new object();
 
         public static void JsonSave(ExtendedStats exdata, string userName = "", bool manual = false) {
-            if (!BTD.WindowData.Excel && !manual) { return; }
+            if (!BTD.WindowData.Json && !manual) { return; }
 
             var data = exdata.BaseStats;
             var Boss = exdata.Entity.Info;

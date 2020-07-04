@@ -765,9 +765,9 @@
     <value>Использовать Npcap (необходим перезапуск)</value>
   </data>
   <data name="SystemTray_Export_current_to_Json" xml:space="preserve">
-    <value>Сохранить текущий бой в json</value>
+    <value>Сохранить текущий бой в JSON</value>
   </data>
   <data name="SystemTray_Autoexport_to_Json" xml:space="preserve">
-    <value>Автоэкспорт в json</value>
+    <value>Автоэкспорт в JSON</value>
   </data>
 </root>
