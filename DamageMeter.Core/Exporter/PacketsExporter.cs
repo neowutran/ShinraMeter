@@ -71,6 +71,7 @@ namespace DamageMeter
             var areaId = int.Parse(teradpsData.areaId);
             if (!_allowedAreaId.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) {
                 BasicTeraData.LogError("PacketExport: Boss not allowed, exiting", true);
+                TeraSniffer.Instance.EnableMessageStorage = false;
                 return;
             }
             if (!TeraSniffer.Instance.EnableMessageStorage)
