@@ -11,7 +11,7 @@
                      Title="Shinra Meter"
                      MinHeight="60" MinWidth="219"
                      Loaded="MainWindow_OnLoaded"
-                     Closed="MainWindow_OnClosed" 
+                     Closed="MainWindow_OnClosed"
                      MouseEnter="MainWindow_OnMouseEnter"
                      MouseLeave="MainWindow_OnMouseLeave">
 
@@ -39,7 +39,7 @@
                     x:Name="Border"
                     Grid.ColumnSpan="2"
                     CornerRadius="2"
-                    Background="Transparent"
+                    Background="{TemplateBinding Background}"
                     BorderBrush="Transparent"
                     BorderThickness="1" />
                 <Border
@@ -62,12 +62,12 @@
                 <Trigger Property="ToggleButton.IsChecked" Value="true" />
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <Style TargetType="Image" x:Key="ImageButton">
-            <Setter Property="Opacity" Value=".7"/>
-            <Setter Property="Cursor" Value="Hand"/>
+        <Style TargetType="FrameworkElement" x:Key="ImageButton">
+            <Setter Property="Opacity" Value=".7" />
+            <Setter Property="Cursor" Value="Hand" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Opacity"  Value="1"/>
+                    <Setter Property="Opacity" Value="1" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -115,6 +115,7 @@
                             <ToggleButton
                                 Name="ToggleButton"
                                 Template="{StaticResource ComboBoxToggleButton}"
+                                Background="Transparent"
                                 Focusable="false"
                                 IsChecked="{Binding Path=IsDropDownOpen,RelativeSource={RelativeSource TemplatedParent}}"
                                 ClickMode="Press" />
@@ -164,6 +165,10 @@
                             </Popup>
                         </Grid>
                         <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleButton" Property="Background" Value="#1fff" />
+
+                            </Trigger>
                             <Trigger Property="HasItems" Value="false">
                                 <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                             </Trigger>
@@ -174,7 +179,7 @@
                                 <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
                             </Trigger>
                             <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
-                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="4" />
+                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0" />
                                 <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0" />
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -216,7 +221,8 @@
     <Window.Background>
         <SolidColorBrush Color="Transparent" Opacity="0" />
     </Window.Background>
-    <Grid HorizontalAlignment="Left" MinWidth="265" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
+    <Grid HorizontalAlignment="Left" MinWidth="265"
+          Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
@@ -230,8 +236,10 @@
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource MainBorder}" BorderBrush="{StaticResource KrBorderColor}" BorderThickness="1"
-                Background="{StaticResource KrBgColor}" Grid.RowSpan="6" x:Name="BackgroundColor"/>
+        <Border Style="{StaticResource MainBorder}"
+                BorderBrush="{StaticResource KrBorderColor}" BorderThickness="1"
+                Background="{StaticResource KrBgColor}" Grid.RowSpan="6" x:Name="BackgroundColor"
+                Opacity="{Binding WindowOpacity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:MainWindow}}" />
         <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -240,104 +248,130 @@
             <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
                       SelectionChanged="ListEncounter_OnSelectionChanged"
                       x:Name="ListEncounter" HorizontalAlignment="Stretch"
-                      Margin="0,0,0,0" VerticalAlignment="Top" MinWidth="205" Width="Auto"
+                      Margin="0" VerticalAlignment="Top" MinWidth="205" Width="Auto"
                       HorizontalContentAlignment="Left"
                       MinHeight="29" Height="5" Grid.Column="0" />
 
+            <Grid PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown"
+                  Background="Transparent"
+                  Height="29"
+                  Width="29"
+                  Grid.Column="1"
+                    Style="{StaticResource ImageButton}" 
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top">
 
-            <Image PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown" 
-                    Grid.Column="1" Stretch="Fill" x:Name="CloseWindow"
-                   HorizontalAlignment="Right"  Style="{StaticResource ImageButton}"
-                   Height="29" VerticalAlignment="Top" Width="29" >
-            </Image>
+                <Path
+                    Stretch="Uniform" x:Name="CloseWindow"
+                    Data="{StaticResource Svg.Power}"
+                    Fill="White"
+                    Margin="5"
+                    />
+            </Grid>
         </Grid>
         <Grid Grid.Row="1" Name="SGrid" HorizontalAlignment="Stretch" Height="30">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid HorizontalAlignment="Left" Grid.Column="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Path Data="{StaticResource Svg.Timer}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
+                <Path Data="{StaticResource Svg.Timer}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                      Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16" />
 
                 <Label Focusable="False" x:Name="Timer" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
-                   Foreground="White" PreviewMouseLeftButtonDown="ChangeTimeLeft"
-                   VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
+                       Foreground="White" PreviewMouseLeftButtonDown="ChangeTimeLeft"
+                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto"
+                       HorizontalContentAlignment="Center" />
             </Grid>
             <Grid HorizontalAlignment="Left" Grid.Column="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Path Grid.Column="0" Data="{StaticResource Svg.Sword}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
+                <Path Grid.Column="0" Data="{StaticResource Svg.Sword}" HorizontalAlignment="Center"
+                      VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16" />
 
                 <Label Focusable="False" x:Name="PartyDps" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
-                   Foreground="White"
-                   VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
+                       Foreground="White"
+                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto"
+                       HorizontalContentAlignment="Center" />
             </Grid>
             <Grid HorizontalAlignment="Left" Grid.Column="2">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Path Grid.Column="0" Data="{StaticResource Svg.HeartHalfFull}" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16"></Path>
+                <Path Grid.Column="0" Data="{StaticResource Svg.HeartHalfFull}" HorizontalAlignment="Center"
+                      VerticalAlignment="Center" Stretch="Uniform" Margin="5,0,0,0" Fill="#5fff" Height="16" />
                 <Label Focusable="False" x:Name="TotalDamage" HorizontalAlignment="Left" Grid.Column="1" FontSize="14"
-                   Foreground="White" 
-                   VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto" HorizontalContentAlignment="Center" />
+                       Foreground="White"
+                       VerticalAlignment="Top" MinHeight="29" Height="29" Width="Auto"
+                       HorizontalContentAlignment="Center" />
             </Grid>
+            <Path Grid.ColumnSpan="3" Margin="5" HorizontalAlignment="Right" Width="16" Height="16" Stretch="Uniform"
+                  x:Name="QueuedPacketsLed" Fill="Transparent"
+                  ToolTip="Overload. When red, notification functions will be temporarily disabled"
+                  Data="{StaticResource Svg.Warning}" />
+
         </Grid>
-        <ScrollViewer x:Name="Scroller" Grid.Row="2" VerticalScrollBarVisibility="Auto" >
+        <ScrollViewer x:Name="Scroller" Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
                           IsTextSearchEnabled="False"
                           HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" />
         </ScrollViewer>
-        <TextBlock  Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center" Name="TooSlow" 
+        <TextBlock Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"
+                   Name="TooSlow"
                    Background="Transparent" Foreground="Yellow" Text="{x:Static l:LP.Your_computer_is_too_slow}"
-                   Visibility="Collapsed"/>
-        <TextBlock  Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center" Name="WaitingMapChange" 
-                   Background="Transparent" Foreground="#f55" Text="{x:Static l:LP.WaitingMapChange}" FontWeight="DemiBold"
-                   Visibility="Collapsed"/>
-        <TextBlock  Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center" Name="UserPaused" 
-                   Background="Transparent" 
+                   Visibility="Collapsed" />
+        <TextBlock Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"
+                   Name="WaitingMapChange"
+                   Background="Transparent" Foreground="#f55" Text="{x:Static l:LP.WaitingMapChange}"
+                   FontWeight="DemiBold"
+                   Visibility="Collapsed" />
+        <TextBlock Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"
+                   Name="UserPaused"
+                   Background="Transparent"
                    Visibility="Collapsed">
-            <Run  Text="{x:Static l:LP.UserPaused}" Foreground="#aaa"></Run>
-            <LineBreak/>
-            <Run FontWeight="DemiBold" Foreground="#f55" Text="Change map or relog after resuming meter"></Run>
+            <Run Text="{x:Static l:LP.UserPaused}" Foreground="#aaa" />
+            <LineBreak />
+            <Run FontWeight="DemiBold" Foreground="#f55" Text="Change map or relog after resuming meter" />
         </TextBlock>
-        <controls:RealtimeGraph Grid.Row="4" x:Name="Graph" Margin="-3 1 0 1" MouseEnter="OnGraphMouseEnter" MouseLeave="OnGraphMouseLeave"
-                                DataContext="{Binding GraphViewModel, RelativeSource={RelativeSource AncestorType=ui:MainWindow}}"/>
+        <controls:RealtimeGraph Grid.Row="4" x:Name="Graph" Margin="-3 1 0 1" MouseEnter="OnGraphMouseEnter"
+                                MouseLeave="OnGraphMouseLeave"
+                                DataContext="{Binding GraphViewModel, RelativeSource={RelativeSource AncestorType=ui:MainWindow}}" />
         <Grid Grid.Row="5" Name="Footer" Height="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <!--Blur button-->
-            <ToggleButton  
-        Grid.Column="2" x:Name="HideNames"
-        HorizontalAlignment="Center" Style="{StaticResource ToggleButtonStyle}"
-        Height="25" VerticalAlignment="Top" Width="25" Margin="2">
+            <ToggleButton
+                Grid.Column="2" x:Name="HideNames"
+                HorizontalAlignment="Center" Style="{StaticResource ToggleButtonStyle}"
+                Height="25" VerticalAlignment="Top" Width="25" Margin="2">
                 <Image Name="HideNamesImage" />
             </ToggleButton>
 
             <!--Adds button-->
             <Image PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown"
-           HorizontalAlignment="Center" x:Name="Chrono" Stretch="Fill"  Style="{StaticResource ImageButton}"
-           Height="25" VerticalAlignment="Top" Width="25" Grid.Column="3" Margin="2"/>
+                   HorizontalAlignment="Center" x:Name="Chrono" Stretch="Fill" Style="{StaticResource ImageButton}"
+                   Height="25" VerticalAlignment="Top" Width="25" Grid.Column="3" Margin="2" />
 
             <!--Settings button-->
-            <Image  
-        HorizontalAlignment="Center"  Stretch="Fill" x:Name="Config"
-        PreviewMouseLeftButtonDown="Config_MouseLeftButtonDown"  Style="{StaticResource ImageButton}"
-        Height="25" VerticalAlignment="Top" Width="25" Grid.Column="4" Margin="2">
+            <Image
+                HorizontalAlignment="Center" Stretch="Fill" x:Name="Config"
+                PreviewMouseLeftButtonDown="Config_MouseLeftButtonDown" Style="{StaticResource ImageButton}"
+                Height="25" VerticalAlignment="Top" Width="25" Grid.Column="4" Margin="2">
                 <Image.ContextMenu>
                     <ContextMenu Style="{DynamicResource ShinraContext}" x:Name="PopupMenu">
                         <Grid>
@@ -346,12 +380,12 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" x:Name="History" PreviewMouseLeftButtonDown="ShowHistory"
-                           Stretch="Fill"
-                           HorizontalAlignment="Left"
-                           Height="29" VerticalAlignment="Top" Width="29" />
+                                   Stretch="Fill"
+                                   HorizontalAlignment="Left"
+                                   Height="29" VerticalAlignment="Top" Width="29" />
                             <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowHistory"
-                           Content="{Binding Source={x:Static l:LP.SystemTray_Site_export}}" Foreground="White"
-                           FontSize="14" />
+                                   Content="{Binding Source={x:Static l:LP.SystemTray_Site_export}}" Foreground="White"
+                                   FontSize="14" />
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -359,11 +393,11 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" x:Name="Chatbox" PreviewMouseLeftButtonDown="ShowChat"
-                           Stretch="Fill"
-                           HorizontalAlignment="Left"
-                           Height="29" VerticalAlignment="Top" Width="29" />
+                                   Stretch="Fill"
+                                   HorizontalAlignment="Left"
+                                   Height="29" VerticalAlignment="Top" Width="29" />
                             <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowChat"
-                           Content="{Binding Source={x:Static l:LP.Chat}}" Foreground="White" FontSize="14" />
+                                   Content="{Binding Source={x:Static l:LP.Chat}}" Foreground="White" FontSize="14" />
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -371,12 +405,12 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" x:Name="BossGageImg" PreviewMouseLeftButtonDown="ShowBossGage"
-                           Stretch="Fill"
-                           HorizontalAlignment="Left"
-                           Height="29" VerticalAlignment="Top" Width="29" />
+                                   Stretch="Fill"
+                                   HorizontalAlignment="Left"
+                                   Height="29" VerticalAlignment="Top" Width="29" />
                             <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowBossGage"
-                           Content="{Binding Source={x:Static l:LP.ShowBossGage}}" Foreground="White"
-                           FontSize="14" />
+                                   Content="{Binding Source={x:Static l:LP.ShowBossGage}}" Foreground="White"
+                                   FontSize="14" />
                         </Grid>
                     </ContextMenu>
                 </Image.ContextMenu>
@@ -385,17 +419,16 @@
 
             <!--Stats button-->
             <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown"
-           Stretch="Fill"  Style="{StaticResource ImageButton}"
-           HorizontalAlignment="Center" Margin="2"
-           Height="25" VerticalAlignment="Top" Width="25" Grid.Column="1" />
+                   Stretch="Fill" Style="{StaticResource ImageButton}"
+                   HorizontalAlignment="Center" Margin="2"
+                   Height="25" VerticalAlignment="Top" Width="25" Grid.Column="1" />
 
             <!--Adds button-->
             <Image PreviewMouseLeftButtonDown="UserPauseBtnPreviewMouseLeftButtonDown"
-           HorizontalAlignment="Center" x:Name="UserPauseBtn" Stretch="Fill"  Style="{StaticResource ImageButton}"
-           Height="25" VerticalAlignment="Top" Width="25" Grid.Column="5" Margin="2"/>
-
-
+                   HorizontalAlignment="Center" x:Name="UserPauseBtn" Stretch="Fill"
+                   Style="{StaticResource ImageButton}"
+                   Height="25" VerticalAlignment="Top" Width="25" Grid.Column="5" Margin="2" />
         </Grid>
-        <ui:NotifyIcon x:Name="NotifyIcon" />
+        <!--<ui:NotifyIcon x:Name="NotifyIcon" />-->
     </Grid>
 </ui:ClickThrouWindow>

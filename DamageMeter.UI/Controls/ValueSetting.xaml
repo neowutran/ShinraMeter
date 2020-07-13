@@ -1,0 +1,210 @@
+﻿<UserControl x:Class="TCC.UI.Controls.Settings.ValueSetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:settings="clr-namespace:TCC.UI.Controls.Settings"
+             mc:Ignorable="d" 
+            d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="false"/>
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Grid>
+                            <Ellipse Opacity="0" Fill="{Binding SliderColor1, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}" 
+                                     Margin="-5" Name="Ext" />
+                            <Ellipse  Name="Ellipse" 
+                                     Cursor="Hand" Fill="{Binding SliderColor1, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}"  >
+                                <Ellipse.Effect>
+                                    <DropShadowEffect BlurRadius="3" ShadowDepth="1" Opacity=".5"></DropShadowEffect>
+                                </Ellipse.Effect>
+                            </Ellipse>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Ellipse" Property="Fill" Value="{Binding SliderColor2, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Ext"
+                                                 Storyboard.TargetProperty="Opacity"
+                                                 To=".3" EasingFunction="{StaticResource QuadraticEase}"
+                                                 Duration="0:0:0.2"/>
+                                            <!--<ColorAnimation Storyboard.TargetName="Ellipse"
+                                                 Storyboard.TargetProperty="(Ellipse.Fill).(SolidColorBrush.Color)"
+                                                 To="{Binding SliderColor2, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}"
+                                                 Duration="0:0:0.2" EasingFunction="{StaticResource QuadraticEase}"/>-->
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Ext"
+                                                             Storyboard.TargetProperty="Opacity"
+                                                             To="0" EasingFunction="{StaticResource QuadraticEase}"
+                                                             Duration="0:0:0.2"/>
+                                            <!--<ColorAnimation Storyboard.TargetName="Ellipse"
+                                                            Storyboard.TargetProperty="(Ellipse.Fill).(SolidColorBrush.Color)"
+                                                            To="{Binding SliderColor1, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}"
+                                                            Duration="0:0:0.2" EasingFunction="{StaticResource QuadraticEase}"/>-->
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Ellipse" Property="Fill" Value="SlateGray"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border  BorderThickness="0" BorderBrush="Black" 
+                                 Opacity=".7"
+                                 Background="{Binding SliderColor1, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}"
+                                 Height="4" CornerRadius="2 0 0 2"
+                                 x:Name="bg"/>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bg" Property="Background" Value="SlateGray"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" 
+                                Background="{StaticResource DarkBackgroundColor}"
+                                Opacity="1" BorderThickness="0" 
+                                CornerRadius="0 2 2 0" Height="4"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Slider" x:Key="AppSliderStyle">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" Name="row" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" Name="column" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Track Name="PART_Track"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
+                              Grid.Row="1" Grid.Column="1"
+                              Width="{TemplateBinding Width}"
+                              Height="{TemplateBinding Height}">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource SliderRepeatButton}"  Command="Slider.DecreaseLarge" />
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource SliderRepeatButton1}" Command="Slider.IncreaseLarge" />
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource SliderThumbStyle}" />
+                                </Track.Thumb>
+
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Height="35" 
+          Style="{StaticResource GlowHoverGrid}"
+          Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Path Data="{Binding SvgIcon, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" 
+               Width="18" 
+               Height="18" 
+               RenderOptions.BitmapScalingMode="Fant" 
+               HorizontalAlignment="Left" 
+               Margin="7 0" 
+               Opacity=".3"
+               x:Name="Img"/>
+        <TextBlock Style="{StaticResource DefaultTextStyle}" 
+                   Grid.Column="1" 
+                   Margin="5 0" 
+                   Text="{Binding SettingName, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" 
+                   VerticalAlignment="Center" 
+                   Padding="0" 
+                   TextAlignment="Left" 
+                   Opacity=".9"/>
+        <Grid Grid.Column="2" Width="Auto" Margin="7 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Width="Auto" TextAlignment="Right" Background="Transparent" LostKeyboardFocus="TextBox_LostFocus"
+                     Foreground="White" BorderThickness="0" LostFocus="TextBox_LostFocus" KeyDown="UIElement_OnKeyDown"
+                     VerticalAlignment="Center" Margin="0 0 5 0" 
+                     Text="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}"
+                     CaretBrush="{Binding SliderColor2, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}"
+
+                     Visibility="{Binding TextBoxVisibility, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}"></TextBox>
+            <Slider Width="100" Grid.Column="1" Style="{StaticResource AppSliderStyle}" ValueChanged="Slider_ValueChanged" Loaded="FrameworkElement_OnLoaded" HorizontalAlignment="Stretch" VerticalAlignment="Center" MouseDoubleClick="Slider_MouseDoubleClick"
+                Maximum="{Binding Max, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" 
+                Minimum="{Binding Min, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" 
+                Value="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" Margin="0">
+            </Slider>
+        </Grid>
+        <Grid Visibility="Hidden" Grid.Column="2" Margin="10,0,20,0">
+            <Grid.RowDefinitions >
+                <RowDefinition />
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition  Width="12"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock TextAlignment="Right" Grid.RowSpan="2" Grid.Column="0" Margin="10,0" HorizontalAlignment="Right" Style="{StaticResource DefaultTextStyle}" VerticalAlignment="Center" Text="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}"></TextBlock>
+            <Border Grid.Row="0" Grid.Column="1" Width="11" Height="11" Margin="0" Background="#2fff" CornerRadius="2" Cursor="Hand" MouseLeftButtonDown="AddValue"></Border>
+            <Border Grid.Row="1" Grid.Column="1" Width="11" Height="11" Margin="0" Background="#2fff" CornerRadius="2" Cursor="Hand" MouseLeftButtonDown="SubtractValue"></Border>
+            <TextBlock IsHitTestVisible="False" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1,-2,0,0" Width="9" Style="{StaticResource DefaultTextStyle}" Padding="0,0,0,0">+</TextBlock>
+            <TextBlock IsHitTestVisible="False" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1,-3,0,0" Width="6" Style="{StaticResource DefaultTextStyle}" Padding="0,0,0,0">-</TextBlock>
+
+        </Grid>
+    </Grid>
+
+</UserControl>

@@ -139,7 +139,7 @@
     <value>Packets waiting to be processed</value>
   </data>
   <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
-    <value>Export current to Excel</value>
+    <value>Export to Excel</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
@@ -169,7 +169,7 @@
     <value>Detect bosses by HP bar (ignore db)</value>
   </data>
   <data name="SystemTray_Site_export" xml:space="preserve">
-    <value>Site export</value>
+    <value>Site export history</value>
   </data>
   <data name="SystemTray_Count_only_party_members" xml:space="preserve">
     <value>Count only party members</value>
@@ -574,7 +574,7 @@ Reset and paused until map change or relog.</value>
 ###########################################################</value>
   </data>
   <data name="SystemTray_Export_current_to_Site" xml:space="preserve">
-    <value>Export current to site</value>
+    <value>Export to site</value>
   </data>
   <data name="FormatPasteString" xml:space="preserve">
     <value>Format paste string</value>
@@ -803,9 +803,75 @@ Reset and paused until map change or relog.</value>
     <value>Use npcap (requires restart)</value>
   </data>
   <data name="SystemTray_Export_current_to_Json" xml:space="preserve">
-    <value>Export current to JSON</value>
+    <value>Export to JSON</value>
   </data>
   <data name="SystemTray_Autoexport_to_Json" xml:space="preserve">
     <value>Autoexport to JSON</value>
+  </data>
+  <data name="ExportCurrent" xml:space="preserve">
+    <value>Export current</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+  <data name="SettingsTab_ChatColors" xml:space="preserve">
+    <value>Chat color settings</value>
+  </data>
+  <data name="SettingsTab_Detection" xml:space="preserve">
+    <value>Detection settings</value>
+  </data>
+  <data name="SettingsTab_DiscordRP" xml:space="preserve">
+    <value>Discord presence settings</value>
+  </data>
+  <data name="SettingsTab_Events" xml:space="preserve">
+    <value>Events settings</value>
+  </data>
+  <data name="SettingsTab_Graph" xml:space="preserve">
+    <value>Realtime graph settings</value>
+  </data>
+  <data name="SettingsTab_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="SettingsTab_Hotkeys" xml:space="preserve">
+    <value>Hotkeys settings</value>
+  </data>
+  <data name="SettingsTab_HPBar" xml:space="preserve">
+    <value>HP bar settings</value>
+  </data>
+  <data name="SettingsTab_Input" xml:space="preserve">
+    <value>Input settings</value>
+  </data>
+  <data name="SettingsTab_Misc" xml:space="preserve">
+    <value>Misc settings</value>
+  </data>
+  <data name="SettingsTab_Servers" xml:space="preserve">
+    <value>Servers settings</value>
+  </data>
+  <data name="SettingsTab_TTS" xml:space="preserve">
+    <value>TTS settings</value>
+  </data>
+  <data name="SettingsTab_UI" xml:space="preserve">
+    <value>UI settings</value>
+  </data>
+  <data name="SystemTray_AddServer" xml:space="preserve">
+    <value>Add server</value>
+  </data>
+  <data name="SystemTray_IgnorePacketsThreshold" xml:space="preserve">
+    <value>Ignore packets threshold</value>
+  </data>
+  <data name="SystemTray_LowPriority" xml:space="preserve">
+    <value>Low process priority</value>
+  </data>
+  <data name="SystemTray_MainWindowOpacity" xml:space="preserve">
+    <value>Main window opacity</value>
+  </data>
+  <data name="SystemTray_OtherWindowOpacity" xml:space="preserve">
+    <value>Other windows opacity</value>
+  </data>
+  <data name="AutoDisableChatWhenOverloaded" xml:space="preserve">
+    <value>Automatically disable on heavy load</value>
   </data>
 </root>

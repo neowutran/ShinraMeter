@@ -80,12 +80,27 @@ namespace DamageMeter
 
         public bool TimedEncounter { get; set; }
 
-        public static PacketProcessor Instance {
-            get {
-                if (_instance==null)
-                    lock(_lock)
+        private bool _overloaded;
+
+        public bool Overloaded
+        {
+            get => _overloaded;
+            private set
+            {
+                if (_overloaded == value) return;
+                _overloaded = value;
+                OverloadedChanged?.Invoke();
+            }
+        }
+
+        public static PacketProcessor Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    lock (_lock)
                         if (_instance == null)
-                            _instance=new PacketProcessor();
+                            _instance = new PacketProcessor();
                 return _instance;
             }
         }
@@ -98,6 +113,7 @@ namespace DamageMeter
         public event UnsetClickThrouEvent UnsetClickThrouAction;
         public event PauseEvent PauseAction;
         public event Action MapChangedAction;
+        public event Action OverloadedChanged;
 
         public void Exit()
         {
@@ -231,7 +247,7 @@ namespace DamageMeter
             var teradpsHistory = BossLink;
             var chatbox = Chat.Instance.Get();
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
-            var uiMessage = new UiUpdateMessage(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash);
+            var uiMessage = new UiUpdateMessage(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash, packetsWaiting);
             handler?.Invoke(uiMessage);
             RichPresence.Instance.Invoke();
 
@@ -371,8 +387,18 @@ namespace DamageMeter
                 var packetsWaiting = TeraSniffer.Instance.Packets.Count;
                 if (packetsWaiting > 5000)
                 {
-                    Pause();
-                    RaisePause(true);
+                    if (!BasicTeraData.Instance.WindowData.IgnorePacketsThreshold)
+                    {
+                        Pause();
+                        RaisePause(true);
+                    }
+
+                    Overloaded = true;
+
+                }
+                else
+                {
+                    Overloaded = false;
                 }
 
                 if (NeedPause)
@@ -395,6 +421,7 @@ namespace DamageMeter
                     Thread.Sleep(1);
                     continue;
                 }
+                //Thread.Sleep(100); // intentional lag
 
                 var message = MessageFactory.Create(obj);
                 if (message.GetType() == typeof(UnknownMessage)) { continue; }

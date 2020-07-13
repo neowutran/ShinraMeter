@@ -36,7 +36,7 @@ namespace DamageMeter.UI
         {
             foreach (var server in servers)
             {
-                DpsServer dpsServerUi = new DpsServer(server, this);
+                DpsServer dpsServerUi = new DpsServer(server);
                 DpsServers.Children.Add(dpsServerUi);
             }
         }
@@ -550,7 +550,10 @@ namespace DamageMeter.UI
             }
         }
 
-        private void DisableNoAbnormalsInHUD(object sender, RoutedEventArgs e) { BasicTeraData.Instance.WindowData.NoAbnormalsInHUD = false; }
+        private void DisableNoAbnormalsInHUD(object sender, RoutedEventArgs e)
+        {
+            BasicTeraData.Instance.WindowData.NoAbnormalsInHUD = false;
+        }
 
         private void gitButton_Click(object sender, RoutedEventArgs e)
         {
@@ -589,7 +592,7 @@ namespace DamageMeter.UI
             var server = new TeraDpsApi.DpsServer(new DpsServerData(null, null, null, null, null, true), false);
             BasicTeraData.Instance.WindowData.DpsServers.Add(server.Data);
             DataExporter.DpsServers.Add(server);
-            DpsServer dpsServerUi = new DpsServer(server, this);
+            DpsServer dpsServerUi = new DpsServer(server);
             DpsServers.Children.Add(dpsServerUi);
         }
 

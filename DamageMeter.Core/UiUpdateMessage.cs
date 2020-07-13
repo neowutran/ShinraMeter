@@ -15,6 +15,7 @@ namespace DamageMeter
         public readonly Skills Skills;
         public readonly List<NpcEntity> Entities;
         public readonly bool TimedEncounter;
+        public readonly int QueuedPackets;
         public readonly AbnormalityStorage Abnormals;
         public readonly ConcurrentDictionary<UploadData, NpcEntity> BossHistory;
         public readonly List<ChatMessage> Chatbox;
@@ -22,7 +23,7 @@ namespace DamageMeter
 
         public UiUpdateMessage(StatsSummary statsSummary, Skills skills, List<NpcEntity> entities, bool timedEncounter,
             AbnormalityStorage abnormals, ConcurrentDictionary<UploadData, NpcEntity> bossHistory, List<ChatMessage> chatbox,
-             List<NotifyFlashMessage> flash)
+             List<NotifyFlashMessage> flash, int packetsWaiting)
         {
             StatsSummary = statsSummary;
             Skills = skills;
@@ -32,6 +33,7 @@ namespace DamageMeter
             BossHistory = bossHistory;
             Chatbox = chatbox;
             Flash = flash;
+            QueuedPackets = packetsWaiting;
         }
     }
 }

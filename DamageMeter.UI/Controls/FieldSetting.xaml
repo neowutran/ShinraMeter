@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="TCC.UI.Controls.Settings.FieldSetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:settings="clr-namespace:TCC.UI.Controls.Settings"
+             mc:Ignorable="d"  d:DesignWidth="300">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="TooltipTemplate" TargetType="ToolTip">
+            <Grid Margin="5">
+                <Border Style="{StaticResource RevampBorderStyle}"/>
+                <TextBlock Text="{TemplateBinding Content}"
+                           Foreground="#9fff"
+                           Margin="10"
+                           TextWrapping="Wrap"
+                           MaxWidth="300"/>
+            </Grid>
+        </ControlTemplate>
+
+        <!-- ReSharper disable once Xaml.RedundantResource -->
+        <Style x:Key="{x:Type ToolTip}" TargetType="{x:Type ToolTip}">
+            <Setter Property="Template" Value="{StaticResource TooltipTemplate}"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid MinHeight="35" 
+          Style="{StaticResource GlowHoverGrid}"
+          >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Path Data="{Binding SvgIcon, RelativeSource={RelativeSource AncestorType=settings:FieldSetting}}" 
+               Width="18" 
+               Height="18" 
+               RenderOptions.BitmapScalingMode="Fant" 
+               HorizontalAlignment="Left" 
+               Margin="7 0" 
+               Opacity=".3"
+               x:Name="Img"/>
+        <TextBlock Style="{StaticResource DefaultTextStyle}" 
+                   Grid.Column="1" 
+                   Margin="5 0" 
+                   Text="{Binding SettingName, RelativeSource={RelativeSource AncestorType=settings:FieldSetting}}" 
+                   VerticalAlignment="Center" 
+                   Padding="0" 
+                   TextAlignment="Left" 
+                   Opacity=".9"/>
+        <TextBox Grid.Column="2" TextWrapping="Wrap" Width="Auto" 
+                 CaretBrush="#9fff" TextAlignment="Left" Background="#1fff" Foreground="White" 
+                 MaxLines="1"
+                 BorderThickness="0" LostFocus="TextBox_LostFocus" TextChanged="TextBox_TextChanged"  VerticalAlignment="Center"
+                 Margin="7 4" Text="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:FieldSetting}}" x:Name="TB"
+                 ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}">
+        </TextBox>
+
+    </Grid>
+
+</UserControl>

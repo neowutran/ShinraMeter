@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Forms;
@@ -9,6 +10,7 @@ using System.Windows.Media.Animation;
 using Data;
 using System.Windows.Threading;
 using DamageMeter.UI.HUD.Converters;
+using DamageMeter.UI.Windows;
 
 namespace DamageMeter.UI
 {
@@ -22,6 +24,11 @@ namespace DamageMeter.UI
         private readonly Dispatcher _dispatcher;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        protected void InvokePropertyChanged([CallerMemberName] string name = null)
+        {
+            _dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)), DispatcherPriority.DataBind);
+
+        }
         public double Scale
         {
             get => _scale;
@@ -29,7 +36,7 @@ namespace DamageMeter.UI
             {
                 if (value == _scale) return;
                 _scale = value;
-                _dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Scale")), DispatcherPriority.DataBind);
+                InvokePropertyChanged();
             }
         }
 
@@ -41,7 +48,7 @@ namespace DamageMeter.UI
             {
                 if (value == _snappedToBottom) return;
                 _snappedToBottom = value;
-                _dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SnappedToBottom")), DispatcherPriority.DataBind);
+                InvokePropertyChanged();
             }
         }
 
@@ -74,6 +81,14 @@ namespace DamageMeter.UI
             _dispatcher = Dispatcher.CurrentDispatcher;
             _opacity = GetType().Name == "MainWindow" ? 1 : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Scale = BasicTeraData.Instance.WindowData.Scale;
+
+            if (GetType().Name != "MainWindow") SettingsWindowViewModel.OtherWindowsOpacityChanged += OnOpacityChanged;
+        }
+
+        private void OnOpacityChanged(double val)
+        {
+            _opacity = val;
+            Dispatcher.InvokeIfRequired(() => OpacityAnimation(val), DispatcherPriority.DataBind);
         }
 
         public Point? LastSnappedPoint = null;
@@ -174,6 +189,8 @@ namespace DamageMeter.UI
                 return;
             }
             Closing -= ClickThrouWindow_Closing;
+            if(GetType().Name != "MainWindow")
+                SettingsWindowViewModel.OtherWindowsOpacityChanged -= OnOpacityChanged;
             foreach (ClickThrouWindow window in ((ClickThrouWindow)sender).OwnedWindows)
             {
                 window.DontClose = false;

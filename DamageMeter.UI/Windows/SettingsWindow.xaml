@@ -1,0 +1,714 @@
+﻿<Window x:Class="DamageMeter.UI.Windows.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DamageMeter.UI.Windows"
+        xmlns:lang="clr-namespace:Lang;assembly=Lang"
+        xmlns:settings="clr-namespace:TCC.UI.Controls.Settings"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:teraDpsApi="clr-namespace:DamageMeter.TeraDpsApi;assembly=DamageMeter"
+        xmlns:ui="clr-namespace:DamageMeter.UI"
+        xmlns:settingsViews="clr-namespace:DamageMeter.UI.Windows.SettingsViews"
+        Background="{StaticResource DarkBackgroundColor}"
+        WindowStyle="SingleBorderWindow"
+        UseLayoutRounding="True"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="SettingsWindow" Height="580" Width="800"
+        d:DataContext="{d:DesignInstance local:SettingsWindowViewModel}">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      ResizeBorderThickness="0"
+                      GlassFrameThickness="0 0 0 1"
+                      CornerRadius="0" />
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource ButtonMainStyle}">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Height" Value="40" />
+        </Style>
+        <Style TargetType="settings:CheckboxSetting" BasedOn="{StaticResource {x:Type settings:CheckboxSetting}}">
+            <Setter Property="CheckboxSize" Value="14" />
+            <Setter Property="CheckBoxColor">
+                <Setter.Value>
+                    <SolidColorBrush x:Name="cb" Color="{Binding SelfColor}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="settings:ValueSetting">
+            <Setter Property="SliderColor1">
+                <Setter.Value>
+                    <SolidColorBrush x:Name="c1" Color="{Binding SelfColor}" Opacity=".8" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="SliderColor2">
+                <Setter.Value>
+                    <SolidColorBrush x:Name="c2" Color="{Binding SelfColor}" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type ToolTip}">
+            <Setter Property="Background" Value="{StaticResource KrBorderColor}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding}" MaxWidth="600" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <ContentPresenter ContentSource="Header" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="MainBgBrush" Color="#292F33" />
+
+    </Window.Resources>
+    <Grid Background="{StaticResource MainBgBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!-- Title bar -->
+        <Grid Background="#1000" MouseDown="Drag">
+            <Path Data="{StaticResource Svg.Settings}"
+                  Style="{StaticResource SmallButtonPathStyle}"
+                  HorizontalAlignment="Left"
+                  Opacity=".3"
+                  Height="14"
+                  Margin="13 0" />
+            <Rectangle Width="1" Margin="40 5" Fill="#1fff" HorizontalAlignment="Left" />
+            <TextBlock Text="Shinra Meter settings"
+                       Foreground="#6fff"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Margin="50 0" />
+
+            <Button HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Cursor="Arrow"
+                    Height="30"
+                    Width="30"
+                    Click="CloseWindow">
+                <Path Data="{StaticResource Svg.Close}"
+                      Fill="#f55"
+                      Stretch="Uniform"
+                      Margin="8" />
+            </Button>
+        </Grid>
+
+        <!-- Main content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TabControl SelectedIndex="{Binding SelectedIndex}"
+                        TabStripPlacement="Left"
+                        Background="Transparent"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Grid.ColumnSpan="2"
+                        Margin="10 0 0 0"
+                        MaxWidth="500"
+                        Visibility="Visible"
+                        VerticalAlignment="Center">
+                <!--Home-->
+                <TabItem>
+                    <settingsViews:SettingsHomeView />
+                </TabItem>
+                <!--Detection-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding UseNpcap, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Use_Npcap}" />
+                        <settings:CheckboxSetting IsOn="{Binding LowPriority, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_LowPriority}" />
+                        <settings:CheckboxSetting IsOn="{Binding CountOnlyBosses, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Count_only_bosses}" />
+                        <settings:CheckboxSetting IsOn="{Binding DetectBossesByHpBar, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Detect_bosses_by_HP_bar}" />
+                        <settings:CheckboxSetting IsOn="{Binding CountOnlyPartyMembers, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Count_only_party_members}" />
+                        <settings:CheckboxSetting IsOn="{Binding IgnorePacketsThreshold, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_IgnorePacketsThreshold}" />
+                        <settings:ValueSetting Value="{Binding ResetTimeout, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.IdleResetTimeout}" Min="0" Max="600" />
+
+                    </StackPanel>
+                </TabItem>
+                <!--UI-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding AggroBasedTimer, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.Display_timer_aggro_or_firsthit}" />
+                        <settings:CheckboxSetting IsOn="{Binding DisplayOnlyBossHitByMeterUser, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.Display_only_boss_hit_by_meter_user}" />
+                        <settings:CheckboxSetting IsOn="{Binding ClickThru, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Click_throu}" />
+                        <settings:CheckboxSetting IsOn="{Binding InvisibleWhenNoStats, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Invisible_when_no_stats}" />
+                        <settings:CheckboxSetting IsOn="{Binding ShowAlways, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Show_always}" />
+                        <settings:CheckboxSetting IsOn="{Binding StayTopmost, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Stay_topmost}" />
+                        <settings:CheckboxSetting IsOn="{Binding ShowSelfOnTop, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.ShowSelfOnTop}" />
+                        <settings:CheckboxSetting IsOn="{Binding FullscreenOverlay, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.EnableOverlay}" IsEnabled="False" />
+                        <settings:ValueSetting Value="{Binding NumberOfPlayersDisplayed, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.NumberPlayersDisplayed}" Min="1" Max="30" />
+                        <settings:ValueSetting Value="{Binding MainWindowOpacity, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.SystemTray_MainWindowOpacity}"
+                                               Min="0" Max="1" />
+                        <settings:ValueSetting Value="{Binding OtherWindowsOpacity, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.SystemTray_OtherWindowOpacity}"
+                                               Min="0.1" Max="1" />
+                        <settings:ValueSetting Value="{Binding Scale, Mode=TwoWay}" SettingName="Scale" Min="0" Max="5" />
+                        <UniformGrid Rows="1" Margin="28 0 0 0">
+                            <UniformGrid.Resources>
+                                <ResourceDictionary Source="../Controls/ColorPickerStyle.xaml" />
+                            </UniformGrid.Resources>
+                            <Grid HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Name="DpsColor" VerticalAlignment="Center"
+                                           Style="{StaticResource DefaultTextStyle}"
+                                           Text="Dps color" Grid.Column="1" />
+                                <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                  DisplayColorAndName="False" Name="DpsColorSelecter"
+                                                  Margin="5" Grid.Column="0"
+                                                  BorderBrush="Transparent" BorderThickness="0"
+                                                  Background="Transparent" ShowDropDownButton="False"
+                                                  SelectedColor="{Binding DpsColor}"
+                                                  ColorMode="ColorCanvas" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Name="HealerColor" VerticalAlignment="Center"
+                                           Style="{StaticResource DefaultTextStyle}"
+                                           Text="Healer color" Grid.Column="1" />
+                                <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                  DisplayColorAndName="False" Name="HealerColorSelecter"
+                                                  Margin="5" Grid.Column="0"
+                                                  BorderBrush="Transparent" BorderThickness="0"
+                                                  Background="Transparent" ShowDropDownButton="False"
+                                                  SelectedColor="{Binding HealerColor}"
+                                                  ColorMode="ColorCanvas" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Name="TankColor" VerticalAlignment="Center"
+                                           Style="{StaticResource DefaultTextStyle}"
+                                           Text="Tank color" Grid.Column="1" />
+                                <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                  DisplayColorAndName="False" Name="TankColorSelecter"
+                                                  Margin="5" Grid.Column="0"
+                                                  BorderBrush="Transparent" BorderThickness="0"
+                                                  Background="Transparent" ShowDropDownButton="False"
+                                                  SelectedColor="{Binding TankColor}"
+                                                  ColorMode="ColorCanvas" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Left">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Name="PlayerColor" VerticalAlignment="Center"
+                                           Style="{StaticResource DefaultTextStyle}"
+                                           Text="Player color" Grid.Column="1" />
+                                <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                                  DisplayColorAndName="False" Name="PlayerColorSelecter"
+                                                  Margin="5" Grid.Column="0"
+                                                  BorderBrush="Transparent" BorderThickness="0"
+                                                  Background="Transparent" ShowDropDownButton="False"
+                                                  SelectedColor="{Binding SelfColor}"
+                                                  ColorMode="ColorCanvas" />
+                            </Grid>
+                        </UniformGrid>
+
+                    </StackPanel>
+                </TabItem>
+                <!--TTS-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding TtsMessagesTruncate, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.TTSSizeExceededTruncate}" />
+                        <settings:ValueSetting Value="{Binding TtsMaxSize, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.MaxTTSSize}"
+                                               Min="10" Max="200"
+                                               IsEnabled="{Binding TtsMessagesTruncate}" />
+                    </StackPanel>
+                </TabItem>
+                <!--HP bar-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding BossGageVisible, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.ShowBossGage}" />
+                        <settings:CheckboxSetting IsOn="{Binding BossGageAbnormalsDisabled, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.NoAbnormalsInHUD}"
+                                                  IsEnabled="{Binding BossGageVisible}" />
+                    </StackPanel>
+                </TabItem>
+                <!--Graph-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding RealtimeGraphEnabled, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.EnableRealtimeGraph}" />
+                        <settings:ValueSetting Value="{Binding RealtimeGraphDisplayedInterval, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.RealtimeGraphDisplayedInterval}" Min="0"
+                                               Max="600"
+                                               IsEnabled="{Binding RealtimeGraphEnabled}" />
+                        <settings:ValueSetting Value="{Binding RealtimeGraphCMAseconds, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.RealtimeGraphCmaSeconds}" Min="10"
+                                               Max="60"
+                                               IsEnabled="{Binding RealtimeGraphEnabled}" />
+
+                    </StackPanel>
+                </TabItem>
+                <!--Input-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding RemoveAltEnter, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.RemoveTeraAltEnterHotkey}" />
+                        <settings:CheckboxSetting IsOn="{Binding FormatPasteString, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.FormatPasteString}" />
+                        <settings:CheckboxSetting IsOn="{Binding DisableIngameChatPaste, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.NoPaste}" />
+                        <settings:ValueSetting Value="{Binding PasteDelay, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.DelayToWaitPasting}" Min="0" Max="600" />
+                    </StackPanel>
+                </TabItem>
+                <!--Servers-->
+                <TabItem>
+                    <TabItem.Resources>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="0 0 0 2" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Grid Background="Transparent" Margin="{TemplateBinding Padding}">
+
+                                            <Rectangle x:Name="hl" Fill="#1fff" Opacity="0" IsHitTestVisible="False" />
+                                            <Rectangle x:Name="alt" Fill="#1779" Opacity="0" IsHitTestVisible="False" />
+                                            <ContentPresenter Margin="0" />
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <!--<Setter Property="Opacity" TargetName="hl" Value="1" />-->
+                                            </Trigger>
+                                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                                <Setter Property="Opacity" TargetName="alt" Value="0" />
+                                            </Trigger>
+                                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                                <Setter Property="Opacity" TargetName="alt" Value="1" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabItem.Resources>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ListBox ScrollViewer.CanContentScroll="False" ItemsSource="{Binding DpsServers}"
+                                 Background="Transparent" BorderThickness="0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="teraDpsApi:DpsServer">
+                                    <ui:DpsServer />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ListBox>
+                        <Separator Grid.Row="1" VerticalAlignment="Top" Margin="-20 2" Opacity=".2" />
+                        <Button Grid.Row="1" Command="{Binding AddServerCommand}" VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                Margin="0 8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Path Fill="White" Stretch="Uniform" Width="16" Height="16"
+                                      Margin="8 0"
+                                      Data="{StaticResource Svg.AddServer}" />
+                                <TextBlock Grid.Column="1" Text="{x:Static lang:LP.SystemTray_AddServer}"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <!--Events-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding EnableChatAndNotif, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.EnableChat}" />
+                        <settings:CheckboxSetting IsOn="{Binding AutoDisableChatWhenOverloaded, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.AutoDisableChatWhenOverloaded}"
+                                                  IsEnabled="{Binding EnableChatAndNotif}" />
+                        <settings:CheckboxSetting IsOn="{Binding MuteSound, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.MuteSound}"
+                                                  IsEnabled="{Binding EnableChatAndNotif}" />
+                        <settings:CheckboxSetting IsOn="{Binding CopyInspectOnApply, Mode=TwoWay}"
+                                                  IsEnabled="{Binding EnableChatAndNotif}"
+                                                  SettingName="{x:Static lang:LP.CopyInspect}" />
+                        <settings:CheckboxSetting IsOn="{Binding DisablePartyEvents, Mode=TwoWay}"
+                                                  IsEnabled="{Binding EnableChatAndNotif}"
+                                                  SettingName="{x:Static lang:LP.DisablePartyEvents}" />
+                        <settings:CheckboxSetting IsOn="{Binding ShowAfkEventsIngame, Mode=TwoWay}"
+                                                  IsEnabled="{Binding EnableChatAndNotif}"
+                                                  SettingName="{x:Static lang:LP.ShowAfkEventsIngame}" />
+                    </StackPanel>
+                </TabItem>
+                <!--Rich presence-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding RichPresenceEnable, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.EnableRp}" />
+                        <settings:CheckboxSetting IsOn="{Binding RichPresenceShowLocation, Mode=TwoWay}"
+                                                  IsEnabled="{Binding RichPresenceEnable}"
+                                                  SettingName="{x:Static lang:LP.RichPresenceShowLocation}" />
+                        <settings:CheckboxSetting IsOn="{Binding RichPresenceShowCharacter, Mode=TwoWay}"
+                                                  IsEnabled="{Binding RichPresenceEnable}"
+                                                  SettingName="{x:Static lang:LP.RichPresenceShowCharacter}" />
+                        <settings:CheckboxSetting IsOn="{Binding RichPresenceShowStatus, Mode=TwoWay}"
+                                                  IsEnabled="{Binding RichPresenceEnable}"
+                                                  SettingName="{x:Static lang:LP.RichPresenceShowStatus}" />
+                        <settings:CheckboxSetting IsOn="{Binding RichPresenceShowParty, Mode=TwoWay}"
+                                                  IsEnabled="{Binding RichPresenceEnable}"
+                                                  SettingName="{x:Static lang:LP.RichPresenceShowParty}" />
+
+                    </StackPanel>
+                </TabItem>
+                <!--Chat colors-->
+                <TabItem>
+                    <UniformGrid Columns="2" Margin="23 3 3 3" x:Name="ColorSettingsContainer" VerticalAlignment="Top">
+                        <UniformGrid.Resources>
+                            <ResourceDictionary Source="../Controls/ColorPickerStyle.xaml" />
+                        </UniformGrid.Resources>
+
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="SayColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.SayColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="SayColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatSay}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="EmotesColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.EmotesColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="EmotesColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatEmotes}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="GeneralColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.GeneralColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="GeneralColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatGeneral}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="TradingColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.TradingColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="TradingColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatTrade}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="GroupColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.GroupColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="GroupColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatGroup}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="RaidColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.RaidColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="RaidColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatRaid}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="GuildColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.GuildColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="GuildColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatGuild}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="WhisperColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.WhisperColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="WhisperColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatWhisper}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="AreaColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.AreaColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False" Name="AreaColorSelecter"
+                                              Margin="5" Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatArea}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="PrivateChannelColor" VerticalAlignment="Center"
+                                       Style="{StaticResource DefaultTextStyle}"
+                                       Text="{x:Static lang:LP.PrivateChannelColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                              DisplayColorAndName="False"
+                                              Name="PrivateChannelColorSelecter" Margin="5"
+                                              Grid.Column="0"
+                                              BorderBrush="Transparent" BorderThickness="0"
+                                              Background="Transparent" ShowDropDownButton="False"
+                                              SelectedColor="{Binding ChatPrivate}"
+                                              ColorMode="ColorCanvas" />
+                        </Grid>
+                        <!--<Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Name="AllianceColor" VerticalAlignment="Center"
+                                   Style="{StaticResource DefaultTextStyle}"
+                                   Text="{x:Static lang:LP.AllianceColor}" />
+                            <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
+                                          DisplayColorAndName="False" Name="AllianceColorSelecter"
+                                          Margin="5" Grid.Column="0"
+                                          BorderBrush="Transparent" BorderThickness="0"
+                                          Background="Transparent" ShowDropDownButton="False"
+                                          SelectedColor="{Binding ChatAlliance}"
+                                          ColorMode="ColorCanvas" />
+                        </Grid>-->
+
+                        <UniformGrid.LayoutTransform>
+                            <ScaleTransform ScaleY="1" />
+                        </UniformGrid.LayoutTransform>
+                    </UniformGrid>
+
+                </TabItem>
+                <!--Misc-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding ExportPacketLogs, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.ExportPacketLogs}" />
+                        <settings:CheckboxSetting IsOn="{Binding ExcelAutoExport, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Autoexport_to_Excel}" />
+                        <settings:CheckboxSetting IsOn="{Binding JsonAutoExport, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_Autoexport_to_Json}" />
+                        <settings:ValueSetting Value="{Binding ExcelCmaSeconds, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.SystemTray_ExcelCMADPSSeconds}"
+                                               Min="1"
+                                               Max="60" />
+                    </StackPanel>
+                </TabItem>
+                <!--Hotkeys-->
+                <TabItem>
+                    <StackPanel>
+                        <settings:HotkeySetting SettingName="Topmost" 
+                                                Value="{Binding TopmostHotkey, Mode=TwoWay}" />
+                        <settings:HotkeySetting SettingName="Click through" 
+                                                Value="{Binding ClickThrouHotkey, Mode=TwoWay}" />
+                        <settings:HotkeySetting SettingName="Paste" 
+                                                Value="{Binding PasteHotkey, Mode=TwoWay}" />
+                        <settings:HotkeySetting SettingName="Excel save" 
+                                                Value="{Binding ExcelSaveHotkey, Mode=TwoWay}" />
+                        <settings:HotkeySetting SettingName="Reset" 
+                                                Value="{Binding ResetHotkey, Mode=TwoWay}" />
+                        <settings:HotkeySetting SettingName="Reset current" 
+                                                Value="{Binding ResetCurrentHotkey, Mode=TwoWay}" />
+                        <Separator Opacity=".2" />
+                        <ItemsControl ItemsSource="{Binding CopyKeys}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="local:CopyKeyVM">
+                                    <settings:HotkeySetting SettingName="{Binding Name}"
+                                                            Value="{Binding HotKey, Mode=TwoWay}"
+                                                            ToolTip="{Binding Preview}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+            <Border Background="#2d3438" Width="40" HorizontalAlignment="Left" x:Name="SliderBackgroundBorder"
+                    Opacity="1">
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0" Color="#292F33" RenderingBias="Performance" BlurRadius="20"
+                                      ShadowDepth="10"
+                                      Direction="0" />
+                </Border.Effect>
+
+            </Border>
+
+            <Rectangle Fill="Transparent"
+                       MouseEnter="ActivatorOnMouseEnter"
+                       MouseLeave="ActivatorOnMouseLeave"
+                       Width="40" HorizontalAlignment="Left"
+                       VerticalAlignment="Stretch" x:Name="SliderActivator" />
+            <Rectangle Fill="White" Width="40" Margin="-500 0 0 0" Grid.ColumnSpan="2"
+                       x:Name="OpacityMaskRect"
+                       HorizontalAlignment="Left"
+                       UseLayoutRounding="True" SnapsToDevicePixels="True">
+                <Rectangle.RenderTransform>
+                    <ScaleTransform ScaleX="1" />
+                </Rectangle.RenderTransform>
+            </Rectangle>
+            <Grid x:Name="Slider" IsHitTestVisible="False"
+                  MouseLeave="ActivatorOnMouseLeave">
+                <Grid.OpacityMask>
+                    <VisualBrush Visual="{Binding ElementName=OpacityMaskRect}" Stretch="None" AlignmentX="Left" />
+                </Grid.OpacityMask>
+
+                <Rectangle Width="3" x:Name="SelRect"
+                           HorizontalAlignment="Left" Height="40" VerticalAlignment="Top">
+                    <Rectangle.Fill>
+                        <SolidColorBrush x:Name="sc"  Color="{Binding SelfColor}" />
+                    </Rectangle.Fill>
+                    <Rectangle.RenderTransform>
+                        <TranslateTransform />
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+
+                <StackPanel x:Name="SliderButtonsContainer">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button" x:Key="s" BasedOn="{StaticResource {x:Type Button}}">
+                            <EventSetter Event="Click" Handler="OnSliderButtonClick" />
+                            <Setter Property="Command" Value="{Binding SetViewCommand}"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="0"  SvgIcon="{StaticResource Svg.Home}"       Label="{x:Static lang:LP.SettingsTab_Home}"       />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="1"  SvgIcon="{StaticResource Svg.Detection}"  Label="{x:Static lang:LP.SettingsTab_Detection}"  />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="2"  SvgIcon="{StaticResource Svg.UI}"         Label="{x:Static lang:LP.SettingsTab_UI}"         />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="3"  SvgIcon="{StaticResource Svg.TTS}"        Label="{x:Static lang:LP.SettingsTab_TTS}"        />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="4"  SvgIcon="{StaticResource Svg.HPBar}"      Label="{x:Static lang:LP.SettingsTab_HPBar}"      />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="5"  SvgIcon="{StaticResource Svg.Graph}"      Label="{x:Static lang:LP.SettingsTab_Graph}"      />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="6"  SvgIcon="{StaticResource Svg.Input}"      Label="{x:Static lang:LP.SettingsTab_Input}"      />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="7"  SvgIcon="{StaticResource Svg.Servers}"    Label="{x:Static lang:LP.SettingsTab_Servers}"    />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="8"  SvgIcon="{StaticResource Svg.Events}"     Label="{x:Static lang:LP.SettingsTab_Events}"     />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="9"  SvgIcon="{StaticResource Svg.Discord}"    Label="{x:Static lang:LP.SettingsTab_DiscordRP}"  />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="10" SvgIcon="{StaticResource Svg.ChatColors}" Label="{x:Static lang:LP.SettingsTab_ChatColors}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="11" SvgIcon="{StaticResource Svg.Misc}"       Label="{x:Static lang:LP.SettingsTab_Misc}"       />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="12" SvgIcon="{StaticResource Svg.Hotkeys}"    Label="{x:Static lang:LP.SettingsTab_Hotkeys}"    />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

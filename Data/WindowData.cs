@@ -54,7 +54,7 @@ namespace Data
                     _xml = XDocument.Load(_filestream);
                 }
                 catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException) {
-                    Save();
+                    Save() ;
                     return;
                 }
                 catch { return; }
@@ -70,6 +70,8 @@ namespace Data
 
                 Parse("display_only_boss_hit_by_meter_user", "displayOnlyBossHitByMeterUser");
                 Parse("show_crit_damage_rate", "showCritDamageRate");
+                Parse("ignore_packets_threshold", nameof(ignorePacketsThreshold));
+                Parse("auto_disable_chat_when_overloaded", nameof(autoDisableChatWhenOverloaded));
                 Parse("showhealcrit", "showHealCrit");
                 Parse("showtimeleft", "showTimeLeft");
                 Parse("partyonly", "partyOnly");
@@ -142,7 +144,7 @@ namespace Data
 
         private void DpsServers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Save();
+            /*Save();*/
         }
 
         private bool enableOverlay = false;
@@ -206,6 +208,7 @@ namespace Data
         private bool meterUserOnTop = false;
         private bool lowPriority = true;
         private bool enableChat = true;
+        private bool autoDisableChatWhenOverloaded = false;
         private bool copyInspect = true;
         private bool showAfkEventsIngame = false;
         private bool disablePartyEvent = false;
@@ -228,84 +231,89 @@ namespace Data
         private int realtimeGraphDisplayedInterval = 120;
         private int realtimeGraphCMAseconds = 10;
 
-        public bool DisplayTimerBasedOnAggro { get => displayTimerBasedOnAggro; set { displayTimerBasedOnAggro = value; Save(); } }
+        private bool ignorePacketsThreshold = false;
 
-        public bool EnableOverlay { get => enableOverlay; set { enableOverlay = value; Save(); } }
-        public Color WhisperColor { get => whisperColor; set { whisperColor = value; Save(); } }
-        public Color AllianceColor { get => allianceColor; set { allianceColor = value; Save(); } }
-        public Color AreaColor { get => areaColor; set { areaColor = value; Save(); } }
-        public Color GeneralColor { get => generalColor; set { generalColor = value; Save(); } }
-        public Color GroupColor { get => groupColor; set { groupColor = value; Save(); } }
-        public Color GuildColor { get => guildColor; set { guildColor = value; Save(); } }
-        public Color RaidColor { get => raidColor; set { raidColor = value; Save(); } }
-        public Color SayColor { get => sayColor; set { sayColor = value; Save(); } }
-        public Color TradingColor { get => tradingColor; set { tradingColor = value; Save(); } }
-        public Color EmotesColor { get => emotesColor; set { emotesColor = value; Save(); } }
-        public Color PrivateChannelColor { get => privateChannelColor; set { privateChannelColor = value; Save(); } }
-        public Point Location { get => location; set { location = value; Save(); } }
-        public Point PopupNotificationLocation { get => popupNotificationLocation; set { popupNotificationLocation = value; Save(); } }
-        public string Language { get => language; set { language = value; Save(); } }
-        public string UILanguage { get => uILanguage; set { uILanguage = value; Save(); } }
-        public double MainWindowOpacity { get => mainWindowOpacity; set { mainWindowOpacity = value; Save(); } }
-        public double OtherWindowOpacity { get => otherWindowOpacity; set { otherWindowOpacity = value; Save(); } }
-        public int LFDelay { get => lFDelay; set { lFDelay = value; Save(); } }
-        public WindowStatus BossGageStatus { get => bossGageStatus; set { bossGageStatus = value; Save(); } }
-        public WindowStatus DebuffsStatus { get => debuffsStatus; set { debuffsStatus = value; Save(); } }
-        public WindowStatus HistoryStatus { get => historyStatus; set { historyStatus = value; Save(); } }
-        public string ExcelSaveDirectory { get => excelSaveDirectory; set { excelSaveDirectory = value; Save(); } }
-        public double Scale { get => scale; set { scale = value; Save(); } }
-        public bool PartyOnly { get => partyOnly; set { partyOnly = value; Save(); } }
-        public bool RememberPosition { get => rememberPosition; set { rememberPosition = value; Save(); } }
-        public bool AutoUpdate { get => autoUpdate; set { autoUpdate = value; Save(); } }
-        public bool Winpcap { get => winpcap; set { winpcap = value; Save(); } }
-        public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; Save(); } }
-        public bool NoPaste { get => noPaste; set { noPaste = value; Save(); } }
-        public int MaxTTSSize { get => maxTTSSize; set { maxTTSSize = value; Save(); } }
-        public bool TTSSizeExceededTruncate { get => ttsSizeExceededTruncate; set { ttsSizeExceededTruncate = value; Save(); } }
+        public bool DisplayTimerBasedOnAggro { get => displayTimerBasedOnAggro; set { displayTimerBasedOnAggro = value; /*Save();*/ } }
 
-        public bool AllowTransparency { get => allowTransparency; set { allowTransparency = value; Save(); } }
-        public bool AlwaysVisible { get => alwaysVisible; set { alwaysVisible = value; Save(); } }
-        public bool Topmost { get => topmost; set { topmost = value; Save(); } }
-        public bool Debug { get => debug; set { debug = value; Save(); } }
-        public bool Excel { get => excel; set { excel = value; Save(); } }
-        public bool Json { get => json; set { json = value; Save(); } }
-        public int ExcelCMADPSSeconds { get => excelCMADPSSeconds; set { excelCMADPSSeconds = value; Save(); } }
-        public bool ShowHealCrit { get => showHealCrit; set { showHealCrit = value; Save(); } }
-        public bool ShowCritDamageRate { get => showCritDamageRate; set { showCritDamageRate = value; Save(); } }
-        public bool OnlyBoss { get => onlyBoss; set { onlyBoss = value; Save(); } }
-        public bool DetectBosses { get => detectBosses; set { detectBosses = value; Save(); } }
-        public bool DisplayOnlyBossHitByMeterUser { get => displayOnlyBossHitByMeterUser; set { displayOnlyBossHitByMeterUser = value; Save(); } }
-        public bool ClickThrou { get => clickThrou; set { clickThrou = value; Save(); } }
-        public bool PacketsCollect { get => packetsCollect; set { packetsCollect = value; Save(); } }
+        public bool EnableOverlay { get => enableOverlay; set { enableOverlay = value; /*Save();*/ } }
+        public Color WhisperColor { get => whisperColor; set { whisperColor = value; /*Save();*/ } }
+        public Color AllianceColor { get => allianceColor; set { allianceColor = value; /*Save();*/ } }
+        public Color AreaColor { get => areaColor; set { areaColor = value; /*Save();*/ } }
+        public Color GeneralColor { get => generalColor; set { generalColor = value; /*Save();*/ } }
+        public Color GroupColor { get => groupColor; set { groupColor = value; /*Save();*/ } }
+        public Color GuildColor { get => guildColor; set { guildColor = value; /*Save();*/ } }
+        public Color RaidColor { get => raidColor; set { raidColor = value; /*Save();*/ } }
+        public Color SayColor { get => sayColor; set { sayColor = value; /*Save();*/ } }
+        public Color TradingColor { get => tradingColor; set { tradingColor = value; /*Save();*/ } }
+        public Color EmotesColor { get => emotesColor; set { emotesColor = value; /*Save();*/ } }
+        public Color PrivateChannelColor { get => privateChannelColor; set { privateChannelColor = value; /*Save();*/ } }
+        public Point Location { get => location; set { location = value; /*Save();*/ } }
+        public Point PopupNotificationLocation { get => popupNotificationLocation; set { popupNotificationLocation = value; /*Save();*/ } }
+        public string Language { get => language; set { language = value; /*Save();*/ } }
+        public string UILanguage { get => uILanguage; set { uILanguage = value; /*Save();*/ } }
+        public double MainWindowOpacity { get => mainWindowOpacity; set { mainWindowOpacity = value; /*Save();*/ } }
+        public double OtherWindowOpacity { get => otherWindowOpacity; set { otherWindowOpacity = value; /*Save();*/ } }
+        public int LFDelay { get => lFDelay; set { lFDelay = value; /*Save();*/ } }
+        public WindowStatus BossGageStatus { get => bossGageStatus; set { bossGageStatus = value; /*Save();*/ } }
+        public WindowStatus DebuffsStatus { get => debuffsStatus; set { debuffsStatus = value; /*Save();*/ } }
+        public WindowStatus HistoryStatus { get => historyStatus; set { historyStatus = value; /*Save();*/ } }
+        public string ExcelSaveDirectory { get => excelSaveDirectory; set { excelSaveDirectory = value; /*Save();*/ } }
+        public double Scale { get => scale; set { scale = value; /*Save();*/ } }
+        public bool PartyOnly { get => partyOnly; set { partyOnly = value; /*Save();*/ } }
+        public bool RememberPosition { get => rememberPosition; set { rememberPosition = value; /*Save();*/ } }
+        public bool AutoUpdate { get => autoUpdate; set { autoUpdate = value; /*Save();*/ } }
+        public bool Winpcap { get => winpcap; set { winpcap = value; /*Save();*/ } }
+        public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; /*Save();*/ } }
+        public bool NoPaste { get => noPaste; set { noPaste = value; /*Save();*/ } }
+        public int MaxTTSSize { get => maxTTSSize; set { maxTTSSize = value; /*Save();*/ } }
+        public bool TTSSizeExceededTruncate { get => ttsSizeExceededTruncate; set { ttsSizeExceededTruncate = value; /*Save();*/ } }
 
-        public List<int> BlackListAreaId { get => blackListAreaId; set { blackListAreaId = value; Save(); } }
-        public string ExcelPathTemplate { get => excelPathTemplate; set { excelPathTemplate = value; Save(); } }
-        public int NumberOfPlayersDisplayed { get => numberOfPlayersDisplayed; set { numberOfPlayersDisplayed = value; Save(); } }
-        public bool MeterUserOnTop { get => meterUserOnTop; set { meterUserOnTop = value; Save(); } }
-        public bool LowPriority { get => lowPriority; set { lowPriority = value; Save(); } }
-        public bool EnableChat { get => enableChat; set { enableChat = value; Save(); } }
-        public bool CopyInspect { get => copyInspect; set { copyInspect = value; Save(); } }
-        public bool ShowAfkEventsIngame { get => showAfkEventsIngame; set { showAfkEventsIngame = value; Save(); } }
-        public bool DisablePartyEvent { get => disablePartyEvent; set { disablePartyEvent = value; Save(); } }
-        public bool RemoveTeraAltEnterHotkey { get => removeTeraAltEnterHotkey; set { removeTeraAltEnterHotkey = value; Save(); } }
-        public bool FormatPasteString { get => formatPasteString; set { formatPasteString = value; Save(); } }
-        public bool MuteSound { get => muteSound; set { muteSound = value; Save(); } }
-        public int IdleResetTimeout { get => idleResetTimeout; set { idleResetTimeout = value; Save(); } }
-        public bool DateInExcelPath { get => dateInExcelPath; set { dateInExcelPath = value; Save(); } }
-        public bool ShowTimeLeft { get => showTimeLeft; set { showTimeLeft = value; Save(); } }
-        public bool NoAbnormalsInHUD { get => noAbnormalsInHUD; set { noAbnormalsInHUD = value; Save(); } }
+        public bool AllowTransparency { get => allowTransparency; set { allowTransparency = value; /*Save();*/ } }
+        public bool AlwaysVisible { get => alwaysVisible; set { alwaysVisible = value; /*Save();*/ } }
+        public bool Topmost { get => topmost; set { topmost = value; /*Save();*/ } }
+        public bool Debug { get => debug; set { debug = value; /*Save();*/ } }
+        public bool Excel { get => excel; set { excel = value; /*Save();*/ } }
+        public bool Json { get => json; set { json = value; /*Save();*/ } }
+        public int ExcelCMADPSSeconds { get => excelCMADPSSeconds; set { excelCMADPSSeconds = value; /*Save();*/ } }
+        public bool ShowHealCrit { get => showHealCrit; set { showHealCrit = value; /*Save();*/ } }
+        public bool ShowCritDamageRate { get => showCritDamageRate; set { showCritDamageRate = value; /*Save();*/ } }
+        public bool OnlyBoss { get => onlyBoss; set { onlyBoss = value; /*Save();*/ } }
+        public bool DetectBosses { get => detectBosses; set { detectBosses = value; /*Save();*/ } }
+        public bool DisplayOnlyBossHitByMeterUser { get => displayOnlyBossHitByMeterUser; set { displayOnlyBossHitByMeterUser = value; /*Save();*/ } }
+        public bool ClickThrou { get => clickThrou; set { clickThrou = value; /*Save();*/ } }
+        public bool PacketsCollect { get => packetsCollect; set { packetsCollect = value; /*Save();*/ } }
+
+        public List<int> BlackListAreaId { get => blackListAreaId; set { blackListAreaId = value; /*Save();*/ } }
+        public string ExcelPathTemplate { get => excelPathTemplate; set { excelPathTemplate = value; /*Save();*/ } }
+        public int NumberOfPlayersDisplayed { get => numberOfPlayersDisplayed; set { numberOfPlayersDisplayed = value; /*Save();*/ } }
+        public bool MeterUserOnTop { get => meterUserOnTop; set { meterUserOnTop = value; /*Save();*/ } }
+        public bool LowPriority { get => lowPriority; set { lowPriority = value; /*Save();*/ } }
+        public bool EnableChat { get => enableChat; set { enableChat = value; /*Save();*/ } }
+        public bool AutoDisableChatWhenOverloaded { get => autoDisableChatWhenOverloaded; set { autoDisableChatWhenOverloaded = value; /*Save();*/ } }
+        public bool CopyInspect { get => copyInspect; set { copyInspect = value; /*Save();*/ } }
+        public bool ShowAfkEventsIngame { get => showAfkEventsIngame; set { showAfkEventsIngame = value; /*Save();*/ } }
+        public bool DisablePartyEvent { get => disablePartyEvent; set { disablePartyEvent = value; /*Save();*/ } }
+        public bool RemoveTeraAltEnterHotkey { get => removeTeraAltEnterHotkey; set { removeTeraAltEnterHotkey = value; /*Save();*/ } }
+        public bool FormatPasteString { get => formatPasteString; set { formatPasteString = value; /*Save();*/ } }
+        public bool MuteSound { get => muteSound; set { muteSound = value; /*Save();*/ } }
+        public int IdleResetTimeout { get => idleResetTimeout; set { idleResetTimeout = value; /*Save();*/ } }
+        public bool DateInExcelPath { get => dateInExcelPath; set { dateInExcelPath = value; /*Save();*/ } }
+        public bool ShowTimeLeft { get => showTimeLeft; set { showTimeLeft = value; /*Save();*/ } }
+        public bool NoAbnormalsInHUD { get => noAbnormalsInHUD; set { noAbnormalsInHUD = value; /*Save();*/ } }
 
         public bool UserPaused { get => _userPaused; set { _userPaused = value; } }
 
-        public bool EnableRichPresence { get => enableRichPresence; set { enableRichPresence = value; Save(); } }
-        public bool RichPresenceShowLocation { get => richPresenceShowLocation; set { richPresenceShowLocation = value; Save(); } }
-        public bool RichPresenceShowCharacter { get => richPresenceShowCharacter; set { richPresenceShowCharacter = value; Save(); } }
-        public bool RichPresenceShowStatus { get => richPresenceShowStatus; set { richPresenceShowStatus = value; Save(); } }
-        public bool RichPresenceShowParty { get => richPresenceShowParty; set { richPresenceShowParty = value; Save(); } }
+        public bool EnableRichPresence { get => enableRichPresence; set { enableRichPresence = value; /*Save();*/ } }
+        public bool RichPresenceShowLocation { get => richPresenceShowLocation; set { richPresenceShowLocation = value; /*Save();*/ } }
+        public bool RichPresenceShowCharacter { get => richPresenceShowCharacter; set { richPresenceShowCharacter = value; /*Save();*/ } }
+        public bool RichPresenceShowStatus { get => richPresenceShowStatus; set { richPresenceShowStatus = value; /*Save();*/ } }
+        public bool RichPresenceShowParty { get => richPresenceShowParty; set { richPresenceShowParty = value; /*Save();*/ } }
 
-        public bool RealtimeGraphEnabled { get => realtimeGraphEnabled; set { realtimeGraphEnabled = value; Save(); } }
-        public int RealtimeGraphDisplayedInterval { get => realtimeGraphDisplayedInterval; set { realtimeGraphDisplayedInterval = value; Save(); } }
-        public int RealtimeGraphCMAseconds { get => realtimeGraphCMAseconds; set { realtimeGraphCMAseconds = value; Save(); } }
+        public bool RealtimeGraphEnabled { get => realtimeGraphEnabled; set { realtimeGraphEnabled = value; /*Save();*/ } }
+        public int RealtimeGraphDisplayedInterval { get => realtimeGraphDisplayedInterval; set { realtimeGraphDisplayedInterval = value; /*Save();*/ } }
+        public int RealtimeGraphCMAseconds { get => realtimeGraphCMAseconds; set { realtimeGraphCMAseconds = value; /*Save();*/ } }
+
+        public bool IgnorePacketsThreshold { get => ignorePacketsThreshold; set { ignorePacketsThreshold = value; /*Save();*/ } }
 
         public Color DpsColor
         {
@@ -313,7 +321,7 @@ namespace Data
             set
             {
                 _dpsColor = value;
-                Save();
+                /*Save();*/
             }
         }
         public Color PlayerColor
@@ -322,7 +330,7 @@ namespace Data
             set
             {
                 _playerColor = value;
-                Save();
+                /*Save();*/
             }
         }
         public Color TankColor
@@ -331,7 +339,7 @@ namespace Data
             set
             {
                 _tankColor = value;
-                Save();
+                /*Save();*/
             }
         }
         public Color HealerColor
@@ -340,7 +348,7 @@ namespace Data
             set
             {
                 _healerColor = value;
-                Save();
+                /*Save();*/
             }
         }
 
@@ -566,7 +574,9 @@ namespace Data
                 xml.Root.Add(new XElement("opacity"));
                 xml.Root.Element("opacity").Add(new XElement("mainWindow", mainWindowOpacity * 100));
                 xml.Root.Element("opacity").Add(new XElement("otherWindow", otherWindowOpacity * 100));
+                xml.Root.Add(new XElement("autoDisableChatWhenOverloaded", autoDisableChatWhenOverloaded));
                 xml.Root.Add(new XElement("autoupdate", autoUpdate));
+                xml.Root.Add(new XElement("ignore_packets_threshold", ignorePacketsThreshold));
                 xml.Root.Add(new XElement("remember_position", rememberPosition));
                 xml.Root.Add(new XElement("winpcap", winpcap));
                 xml.Root.Add(new XElement("invisible_ui_when_no_stats", invisibleUi));

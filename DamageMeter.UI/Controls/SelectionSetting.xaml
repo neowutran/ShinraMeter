@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="TCC.UI.Controls.Settings.SelectionSetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:settings="clr-namespace:TCC.UI.Controls.Settings"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="SelectionSetting_OnLoaded">
+    <Grid Height="35"  Cursor="Hand"
+          Name="MainGrid"
+            Style="{StaticResource GlowHoverGrid}"
+            MouseLeftButtonDown="OnMouseButtonDown">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MaxWidth="32"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Path Data="{Binding SvgIcon, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" 
+               Width="18" 
+               Height="18" 
+               RenderOptions.BitmapScalingMode="Fant" 
+               HorizontalAlignment="Left" 
+               Margin="7 0" 
+               Opacity=".3"
+               x:Name="Img"/>
+        <TextBlock Style="{StaticResource DefaultTextStyle}" 
+                   Grid.Column="1" 
+                   Margin="5 0" 
+                   Text="{Binding SettingName, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" 
+                   VerticalAlignment="Center" 
+                   Padding="0" 
+                   TextAlignment="Left" 
+                   Opacity=".9"/>
+        <ComboBox Grid.Column="2" ItemsSource="{Binding Choices, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" 
+                  SelectionChanged="Selector_OnSelectionChanged" Foreground="White"  VerticalAlignment="Stretch" BorderThickness="0"
+                  VerticalContentAlignment="Center" Margin="7 0" 
+                  Name="Cbox" HorizontalAlignment="Right" HorizontalContentAlignment="Left"
+                  ItemTemplate="{Binding ChoicesTemplate, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}">
+        </ComboBox>
+    </Grid>
+
+</UserControl>

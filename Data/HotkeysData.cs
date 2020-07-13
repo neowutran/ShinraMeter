@@ -10,6 +10,44 @@ using Lang;
 
 namespace Data
 {
+    public struct HotKey
+    {
+        public HotKey(Keys k, HotkeysData.ModifierKeys m) : this()
+        {
+            Key = k;
+            Modifier = m;
+        }
+
+        public Keys Key { get; set; }
+        public HotkeysData.ModifierKeys Modifier { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if (!(obj is HotKey other)) return false;
+            return other.Key == Key && other.Modifier == Modifier;
+        }
+
+        public override string ToString()
+        {
+            var control = (Modifier & HotkeysData.ModifierKeys.Control) != 0;
+            var shift = (Modifier & HotkeysData.ModifierKeys.Shift) != 0;
+            var alt = (Modifier & HotkeysData.ModifierKeys.Alt) != 0;
+            var win = (Modifier & HotkeysData.ModifierKeys.Win) != 0;
+
+            return $"{(control ? "Ctrl + " : "")}{(shift ? "Shift + " : "")}{(alt ? "Alt + " : "")}{(win ? "Win + " : "")}{Key.ToString()}";
+        }
+
+        public KeyValuePair<Keys, HotkeysData.ModifierKeys> ToKeyValuePair()
+        {
+            return new KeyValuePair<Keys, HotkeysData.ModifierKeys>(Key, Modifier);
+        }
+
+        public static HotKey From(in KeyValuePair<Keys, HotkeysData.ModifierKeys> hotkeysTopmost)
+        {
+            return new HotKey(hotkeysTopmost.Key, hotkeysTopmost.Value);
+        }
+    }
+
     public class HotkeysData
     {
         /// <summary>
@@ -25,7 +63,7 @@ namespace Data
             None = 0
         }
 
-        private readonly FileStream _filestream;
+        private FileStream _filestream;
 
         public HotkeysData(BasicTeraData basicData)
         {
@@ -62,40 +100,40 @@ namespace Data
             if (root == null) { return; }
 
             var topmostKey = ReadElement(root, "topmost", false);
-            if (topmostKey != null) { Topmost = (KeyValuePair<Keys, ModifierKeys>) topmostKey; }
+            if (topmostKey != null) { Topmost = (HotKey)topmostKey; }
 
             var pasteKey = ReadElement(root, "paste", false);
-            if (pasteKey != null) { Paste = (KeyValuePair<Keys, ModifierKeys>) pasteKey; }
+            if (pasteKey != null) { Paste = (HotKey)pasteKey; }
 
             var resetKey = ReadElement(root, "reset", true);
-            if (resetKey != null) { Reset = (KeyValuePair<Keys, ModifierKeys>) resetKey; }
+            if (resetKey != null) { Reset = (HotKey)resetKey; }
 
             var activateKey = ReadElement(root, "click_throu", true);
-            if (activateKey != null) { ClickThrou = (KeyValuePair<Keys, ModifierKeys>) activateKey; }
+            if (activateKey != null) { ClickThrou = (HotKey)activateKey; }
 
             var resetCurrentKey = ReadElement(root, "reset_current", true);
-            if (resetCurrentKey != null) { ResetCurrent = (KeyValuePair<Keys, ModifierKeys>) resetCurrentKey; }
+            if (resetCurrentKey != null) { ResetCurrent = (HotKey)resetCurrentKey; }
 
             var excelSaveKey = ReadElement(root, "excel_save", true);
-            if (excelSaveKey != null) { ExcelSave = (KeyValuePair<Keys, ModifierKeys>) excelSaveKey; }
+            if (excelSaveKey != null) { ExcelSave = (HotKey)excelSaveKey; }
 
             Copy = new List<CopyKey>();
             CopyData(xml);
         }
 
         public List<CopyKey> Copy { get; private set; }
-        public KeyValuePair<Keys, ModifierKeys> Topmost { get; private set; }
-        public KeyValuePair<Keys, ModifierKeys> Reset { get; private set; }
-        public KeyValuePair<Keys, ModifierKeys> Paste { get; private set; }
+        public HotKey Topmost { get; set; }
+        public HotKey Reset { get; set; }
+        public HotKey Paste { get; set; }
 
-        public KeyValuePair<Keys, ModifierKeys> ResetCurrent { get; private set; }
+        public HotKey ResetCurrent { get; set; }
 
-        public KeyValuePair<Keys, ModifierKeys> ClickThrou { get; private set; }
+        public HotKey ClickThrou { get; set; }
 
-        public KeyValuePair<Keys, ModifierKeys> ExcelSave { get; private set; }
+        public HotKey ExcelSave { get; set; }
 
 
-        private static KeyValuePair<Keys, ModifierKeys>? ReadElement(XContainer root, string element, bool readAlt)
+        private static HotKey? ReadElement(XContainer root, string element, bool readAlt)
         {
             try
             {
@@ -125,29 +163,29 @@ namespace Data
                 }
 
                 var modifier = ConvertToModifierKey(ctrl, alt, shift, window);
-                return new KeyValuePair<Keys, ModifierKeys>(key, modifier);
+                return new HotKey(key, modifier);
             }
             catch { return null; }
         }
 
         private void DefaultValue()
         {
-            Topmost = new KeyValuePair<Keys, ModifierKeys>(Keys.None, ModifierKeys.None);
-            Paste = new KeyValuePair<Keys, ModifierKeys>(Keys.Home, ModifierKeys.None);
-            Reset = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.None);
-            ResetCurrent = new KeyValuePair<Keys, ModifierKeys>(Keys.Delete, ModifierKeys.Control);
+            Topmost = new HotKey(Keys.None, ModifierKeys.None);
+            Paste = new HotKey(Keys.Home, ModifierKeys.None);
+            Reset = new HotKey(Keys.Delete, ModifierKeys.None);
+            ResetCurrent = new HotKey(Keys.Delete, ModifierKeys.Control);
             Copy = new List<CopyKey>
             {
                 new CopyKey(@"Damage Taken @ {encounter} {timer}:\", "",
                     @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\",
-                    ModifierKeys.Control, Keys.End, "hits_received", "descending",
+                    new HotKey(Keys.End,ModifierKeys.Control), "hits_received", "descending",
                     @"[{class}] {name}: Hits: {hits_received} = {damage_received}; Death {deaths} = {death_duration} Aggro {aggro} = {aggro_duration}\", 4, 15),
                 new CopyKey(@"{encounter} {timer} ({enrage}) {partyDps}:\", @"{debuff_list}\",
-                    @"{class}: {name}: {global_dps} | {death_duration} - {deaths}\", ModifierKeys.Shift, Keys.End, "damage_percentage",
+                    @"{class}: {name}: {global_dps} | {death_duration} - {deaths}\", new HotKey(Keys.End, ModifierKeys.Shift), "damage_percentage",
                     "descending", "", 0, 10)
             };
-            ExcelSave = new KeyValuePair<Keys, ModifierKeys>(Keys.PageDown, ModifierKeys.Control);
-            ClickThrou = new KeyValuePair<Keys, ModifierKeys>(Keys.PageUp, ModifierKeys.Control);
+            ExcelSave = new HotKey(Keys.PageDown, ModifierKeys.Control);
+            ClickThrou = new HotKey(Keys.PageUp, ModifierKeys.Control);
         }
 
         private void CopyData(XDocument xml)
@@ -179,13 +217,13 @@ namespace Data
                     var order = copy.Element("string").Element("order").Value;
                     var orderBy = copy.Element("string").Element("order_by").Value;
                     var modifier = ConvertToModifierKey(ctrl, false, shift, window);
-                    Copy.Add(new CopyKey(header, footer, content, modifier, key, orderBy, order, lowDpsContent, lowDpsTreshold, limitNameLength));
+                    Copy.Add(new CopyKey(header, footer, content, new HotKey(key, modifier), orderBy, order, lowDpsContent, lowDpsTreshold, limitNameLength));
                 }
             }
             catch { MessageBox.Show(LP.Your_hotkeys_xml_file_is_invalid); }
         }
 
-        private static ModifierKeys ConvertToModifierKey(bool ctrl, bool alt, bool shift, bool window)
+        public static ModifierKeys ConvertToModifierKey(bool ctrl, bool alt, bool shift, bool window)
         {
             var modifier = ModifierKeys.None;
             if (ctrl) { modifier |= ModifierKeys.Control; }
@@ -195,14 +233,14 @@ namespace Data
             return modifier;
         }
 
-        public void SaveKey(XDocument xml, string keyName, KeyValuePair<Keys, ModifierKeys> keyValue, bool saveAlt = true)
+        public void SaveKey(XDocument xml, string keyName, HotKey keyValue, bool saveAlt = true)
         {
             xml.Root.Add(new XElement(keyName));
 
-            var xmlCtrl = (keyValue.Value & ModifierKeys.Control) != ModifierKeys.None;
-            var xmlShift = (keyValue.Value & ModifierKeys.Shift) != ModifierKeys.None;
-            var xmlWindow = (keyValue.Value & ModifierKeys.Win) != ModifierKeys.None;
-            var xmlAlt = (keyValue.Value & ModifierKeys.Alt) != ModifierKeys.None;
+            var xmlCtrl = (keyValue.Modifier & ModifierKeys.Control) != ModifierKeys.None;
+            var xmlShift = (keyValue.Modifier & ModifierKeys.Shift) != ModifierKeys.None;
+            var xmlWindow = (keyValue.Modifier & ModifierKeys.Win) != ModifierKeys.None;
+            var xmlAlt = (keyValue.Modifier & ModifierKeys.Alt) != ModifierKeys.None;
             var xmlKey = keyValue.Key;
             xml.Root.Element(keyName).Add(new XElement("ctrl", xmlCtrl.ToString()));
             xml.Root.Element(keyName).Add(new XElement("shift", xmlShift.ToString()));
@@ -227,10 +265,10 @@ namespace Data
             {
                 var copyElement = new XElement("copy");
 
-                var copyCtrl = (copy.Modifier & ModifierKeys.Control) != ModifierKeys.None;
-                var copyShift = (copy.Modifier & ModifierKeys.Shift) != ModifierKeys.None;
-                var copyWindow = (copy.Modifier & ModifierKeys.Win) != ModifierKeys.None;
-                var copyKey = copy.Key;
+                var copyCtrl = (copy.Hotkey.Modifier & ModifierKeys.Control) != ModifierKeys.None;
+                var copyShift = (copy.Hotkey.Modifier & ModifierKeys.Shift) != ModifierKeys.None;
+                var copyWindow = (copy.Hotkey.Modifier & ModifierKeys.Win) != ModifierKeys.None;
+                var copyKey = copy.Hotkey.Key;
 
                 copyElement.Add(new XElement("ctrl", copyCtrl.ToString()));
                 copyElement.Add(new XElement("shift", copyShift.ToString()));
@@ -250,6 +288,9 @@ namespace Data
 
                 xml.Root.Element("copys").Add(copyElement);
             }
+
+            if(!_filestream.CanRead)
+                _filestream = new FileStream(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "config/hotkeys.xml"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
 
             _filestream.SetLength(0);
             using (var sr = new StreamWriter(_filestream, new UTF8Encoding(true)))

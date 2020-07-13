@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="TCC.UI.Controls.Settings.HotkeySetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:settings="clr-namespace:TCC.UI.Controls.Settings"
+             mc:Ignorable="d"  d:DesignWidth="300">
+    <Grid Height="35" 
+          Style="{StaticResource GlowHoverGrid}"
+          >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Path Data="{Binding SvgIcon, RelativeSource={RelativeSource AncestorType=settings:HotkeySetting}}" 
+              Width="18" 
+              Height="18" 
+              RenderOptions.BitmapScalingMode="Fant" 
+              HorizontalAlignment="Left" 
+              Margin="7 0" 
+              Opacity=".3"
+              x:Name="Img"/>
+        <TextBlock Style="{StaticResource DefaultTextStyle}" 
+                   Grid.Column="1" 
+                   Margin="5 0" 
+                   Text="{Binding SettingName, RelativeSource={RelativeSource AncestorType=settings:HotkeySetting}}" 
+                   VerticalAlignment="Center" 
+                   Padding="0" 
+                   TextAlignment="Left" 
+                   Opacity=".9">
+        </TextBlock>
+
+                 <!--MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown"-->
+        <TextBox Grid.Column="3" 
+                 Width="170" 
+                 TextAlignment="Center" Background="#1fff" Foreground="#5fff" 
+                 HorizontalAlignment="Right"
+                 Padding="20 0"
+                 VerticalAlignment="Center" 
+                 GotKeyboardFocus="UIElement_OnGotKeyboardFocus"
+                 LostKeyboardFocus="UIElement_OnLostKeyboardFocus"
+                 BorderBrush="Orange"
+                 CaretBrush="Transparent"
+                 PreviewKeyDown="UIElement_OnKeyDown"
+                 PreviewKeyUp="UIElement_OnKeyUp"
+                 Margin="7 0" Text="{Binding ValueString, Mode=OneWay, RelativeSource={RelativeSource AncestorType=settings:HotkeySetting}}">
+            <TextBox.Style>
+                <Style TargetType="TextBox" >
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="BorderThickness" Value="2"/>
+                        </Trigger>
+                    </Style.Triggers>
+
+                </Style>
+            </TextBox.Style>
+
+        </TextBox>
+<Button Grid.Column="3"
+          VerticalAlignment="Center"
+          HorizontalAlignment="Right"
+          Margin="7 0"
+        Click="ClearKey"
+          ToolTip="Clear"
+        Style="{StaticResource ButtonMainStyle}">
+    <Path Data="{StaticResource Svg.Close}"
+          Stretch="Uniform"
+          Width="10"
+          Height="10"
+          Fill="#3fff"
+          Margin="3"></Path>
+</Button>
+
+    </Grid>
+
+</UserControl>
+

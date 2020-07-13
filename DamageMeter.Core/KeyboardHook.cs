@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -43,36 +44,37 @@ namespace DamageMeter
 
         private static void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
-            if (e.Key == BasicTeraData.Instance.HotkeysData.Topmost.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.Topmost.Value)
+            if (e.Key == BasicTeraData.Instance.HotkeysData.Topmost.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.Topmost.Modifier)
             {
+                Debug.WriteLine("Calling switch topmost");
                 Instance.SwitchTopMost?.Invoke();
             }
-            else if (e.Key == BasicTeraData.Instance.HotkeysData.Paste.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.Paste.Value)
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.Paste.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.Paste.Modifier)
             {
                 var text = Clipboard.GetText();
                 var pasteThread = new Thread(() => CopyPaste.Paste(text));
                 pasteThread.Start();
             }
-            else if (e.Key == BasicTeraData.Instance.HotkeysData.Reset.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Value)
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.Reset.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.Reset.Modifier)
             {
                 //Can't call directly NetworkController.Instance.Reset() => threading problem
                 PacketProcessor.Instance.NeedToReset = true;
             }
-            else if (e.Key == BasicTeraData.Instance.HotkeysData.ResetCurrent.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ResetCurrent.Value)
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.ResetCurrent.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ResetCurrent.Modifier)
             {
                 //Can't call directly NetworkController.Instance.ResetCurrent() => threading problem
                 PacketProcessor.Instance.NeedToResetCurrent = true;
             }
-            else if (e.Key == BasicTeraData.Instance.HotkeysData.ExcelSave.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ExcelSave.Value)
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.ExcelSave.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ExcelSave.Modifier)
             {
                 //Can't call directly Export => threading problem
                 PacketProcessor.Instance.NeedToExport = DataExporter.Dest.Excel | DataExporter.Dest.Manual;
             }
-            else if (e.Key == BasicTeraData.Instance.HotkeysData.ClickThrou.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ClickThrou.Value)
+            else if (e.Key == BasicTeraData.Instance.HotkeysData.ClickThrou.Key && e.Modifier == BasicTeraData.Instance.HotkeysData.ClickThrou.Modifier)
             {
                 PacketProcessor.Instance.SwitchClickThrou();
             }
-            foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy.Where(copy => e.Key == copy.Key && e.Modifier == copy.Modifier))
+            foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy.Where(copy => e.Key == copy.Hotkey.Key && e.Modifier == copy.Hotkey.Modifier))
                 //Can't copy directly, => threading problem
             {
                 PacketProcessor.Instance.NeedToCopy = copy;
@@ -93,18 +95,18 @@ namespace DamageMeter
         {
             //MessageBox.Show("PASSE" + Environment.StackTrace, "ERROR: "+ Environment.StackTrace, MessageBoxButtons.OKCancel);
 
-            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Topmost.Value, BasicTeraData.Instance.HotkeysData.Topmost.Key);
-            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Value, BasicTeraData.Instance.HotkeysData.Paste.Key);
-            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Value, BasicTeraData.Instance.HotkeysData.Reset.Key);
-            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Value, BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
-            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ExcelSave.Value, BasicTeraData.Instance.HotkeysData.ExcelSave.Key);
-            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ClickThrou.Value, BasicTeraData.Instance.HotkeysData.ClickThrou.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Topmost.Modifier, BasicTeraData.Instance.HotkeysData.Topmost.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Paste.Modifier, BasicTeraData.Instance.HotkeysData.Paste.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.Reset.Modifier, BasicTeraData.Instance.HotkeysData.Reset.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ResetCurrent.Modifier, BasicTeraData.Instance.HotkeysData.ResetCurrent.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ExcelSave.Modifier, BasicTeraData.Instance.HotkeysData.ExcelSave.Key);
+            RegisterHotKey(BasicTeraData.Instance.HotkeysData.ClickThrou.Modifier, BasicTeraData.Instance.HotkeysData.ClickThrou.Key);
             if (BasicTeraData.Instance.WindowData.RemoveTeraAltEnterHotkey)
             {
                 RegisterHotKey(HotkeysData.ModifierKeys.Alt, Keys.Enter);
                 RegisterHotKey(HotkeysData.ModifierKeys.Alt | HotkeysData.ModifierKeys.Control, Keys.Enter);
             }
-            foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy) { RegisterHotKey(copy.Modifier, copy.Key); }
+            foreach (var copy in BasicTeraData.Instance.HotkeysData.Copy) { RegisterHotKey(copy.Hotkey.Modifier, copy.Hotkey.Key); }
             _isRegistered = true;
         }
 

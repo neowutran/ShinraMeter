@@ -38,7 +38,14 @@ namespace DamageMeter.UI
                                    ex.InnerException + "\r\n" + ex.TargetSite);
             MessageBox.Show(LP.MainWindow_Fatal_error);
         }
-        
+        private static void SetAlignment()
+        {
+            var ifLeft = SystemParameters.MenuDropAlignment;
+            if (!ifLeft) return;
+            var t = typeof(SystemParameters);
+            var field = t.GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
+            if (field != null) field.SetValue(null, false);
+        }
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
             bool notUpdating;
@@ -48,6 +55,8 @@ namespace DamageMeter.UI
             var updating = new Mutex(true, "ShinraMeterUpdating", out notUpdating);
             _unique = new Mutex(true, "ShinraMeter", out _isNewInstance);
 
+            // force LeftHandedness to avoid menus/tooltips/popup positions to be messed up on some systems
+            SetAlignment();
 
             if (_isNewInstance)
             {

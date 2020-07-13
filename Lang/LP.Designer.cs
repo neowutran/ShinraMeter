@@ -196,6 +196,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically disable on heavy load.
+        /// </summary>
+        public static string AutoDisableChatWhenOverloaded {
+            get {
+                return ResourceManager.GetString("AutoDisableChatWhenOverloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Avg.
         /// </summary>
         public static string Average {
@@ -878,6 +887,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export current.
+        /// </summary>
+        public static string ExportCurrent {
+            get {
+                return ResourceManager.GetString("ExportCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export packets logs.
         /// </summary>
         public static string ExportPacketLogs {
@@ -1301,6 +1319,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        public static string Pause {
+            get {
+                return ResourceManager.GetString("Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /s.
         /// </summary>
         public static string PerSecond {
@@ -1423,6 +1450,15 @@ namespace Lang {
         public static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resume.
+        /// </summary>
+        public static string Resume {
+            get {
+                return ResourceManager.GetString("Resume", resourceCulture);
             }
         }
         
@@ -1638,6 +1674,123 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chat color settings.
+        /// </summary>
+        public static string SettingsTab_ChatColors {
+            get {
+                return ResourceManager.GetString("SettingsTab_ChatColors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detection settings.
+        /// </summary>
+        public static string SettingsTab_Detection {
+            get {
+                return ResourceManager.GetString("SettingsTab_Detection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discord presence settings.
+        /// </summary>
+        public static string SettingsTab_DiscordRP {
+            get {
+                return ResourceManager.GetString("SettingsTab_DiscordRP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Events settings.
+        /// </summary>
+        public static string SettingsTab_Events {
+            get {
+                return ResourceManager.GetString("SettingsTab_Events", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Realtime graph settings.
+        /// </summary>
+        public static string SettingsTab_Graph {
+            get {
+                return ResourceManager.GetString("SettingsTab_Graph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string SettingsTab_Home {
+            get {
+                return ResourceManager.GetString("SettingsTab_Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hotkeys settings.
+        /// </summary>
+        public static string SettingsTab_Hotkeys {
+            get {
+                return ResourceManager.GetString("SettingsTab_Hotkeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HP bar settings.
+        /// </summary>
+        public static string SettingsTab_HPBar {
+            get {
+                return ResourceManager.GetString("SettingsTab_HPBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input settings.
+        /// </summary>
+        public static string SettingsTab_Input {
+            get {
+                return ResourceManager.GetString("SettingsTab_Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Misc settings.
+        /// </summary>
+        public static string SettingsTab_Misc {
+            get {
+                return ResourceManager.GetString("SettingsTab_Misc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Servers settings.
+        /// </summary>
+        public static string SettingsTab_Servers {
+            get {
+                return ResourceManager.GetString("SettingsTab_Servers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TTS settings.
+        /// </summary>
+        public static string SettingsTab_TTS {
+            get {
+                return ResourceManager.GetString("SettingsTab_TTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UI settings.
+        /// </summary>
+        public static string SettingsTab_UI {
+            get {
+                return ResourceManager.GetString("SettingsTab_UI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show common_afk events ingame.
         /// </summary>
         public static string ShowAfkEventsIngame {
@@ -1791,6 +1944,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add server.
+        /// </summary>
+        public static string SystemTray_AddServer {
+            get {
+                return ResourceManager.GetString("SystemTray_AddServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Autoexport to Excel.
         /// </summary>
         public static string SystemTray_Autoexport_to_Excel {
@@ -1800,7 +1962,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Autoexport to json.
+        ///   Looks up a localized string similar to Autoexport to JSON.
         /// </summary>
         public static string SystemTray_Autoexport_to_Json {
             get {
@@ -1881,7 +2043,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export current to Excel.
+        ///   Looks up a localized string similar to Export to Excel.
         /// </summary>
         public static string SystemTray_Export_current_to_Excel {
             get {
@@ -1890,7 +2052,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export current to json.
+        ///   Looks up a localized string similar to Export to JSON.
         /// </summary>
         public static string SystemTray_Export_current_to_Json {
             get {
@@ -1899,11 +2061,20 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export current to site.
+        ///   Looks up a localized string similar to Export to site.
         /// </summary>
         public static string SystemTray_Export_current_to_Site {
             get {
                 return ResourceManager.GetString("SystemTray_Export_current_to_Site", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ignore packets threshold.
+        /// </summary>
+        public static string SystemTray_IgnorePacketsThreshold {
+            get {
+                return ResourceManager.GetString("SystemTray_IgnorePacketsThreshold", resourceCulture);
             }
         }
         
@@ -1926,11 +2097,38 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Low process priority.
+        /// </summary>
+        public static string SystemTray_LowPriority {
+            get {
+                return ResourceManager.GetString("SystemTray_LowPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main window opacity.
+        /// </summary>
+        public static string SystemTray_MainWindowOpacity {
+            get {
+                return ResourceManager.GetString("SystemTray_MainWindowOpacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No server.
         /// </summary>
         public static string SystemTray_No_server {
             get {
                 return ResourceManager.GetString("SystemTray_No_server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other windows opacity.
+        /// </summary>
+        public static string SystemTray_OtherWindowOpacity {
+            get {
+                return ResourceManager.GetString("SystemTray_OtherWindowOpacity", resourceCulture);
             }
         }
         
@@ -1989,7 +2187,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Site export.
+        ///   Looks up a localized string similar to Site export history.
         /// </summary>
         public static string SystemTray_Site_export {
             get {
