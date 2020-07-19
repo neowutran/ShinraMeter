@@ -139,7 +139,7 @@
     <value>Пакеты, ожидающие обработки</value>
   </data>
   <data name="SystemTray_Export_current_to_Excel" xml:space="preserve">
-    <value>Сохранить текущий бой в Excel</value>
+    <value>Сохранить в Excel</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Сброс</value>
@@ -157,7 +157,7 @@
     <value>Сообщить об ошибке</value>
   </data>
   <data name="SystemTray_Discord" xml:space="preserve">
-    <value>Конференция в Discord</value>
+    <value>Discord</value>
   </data>
   <data name="SystemTray_Autoexport_to_Excel" xml:space="preserve">
     <value>Автоэкспорт в Excel</value>
@@ -572,7 +572,7 @@
 ###########################################################</value>
   </data>
   <data name="SystemTray_Export_current_to_Site" xml:space="preserve">
-    <value>Выгрузить текущий бой на сайт</value>
+    <value>Выгрузить на сайт</value>
   </data>
   <data name="FormatPasteString" xml:space="preserve">
     <value>Форматировать таблицу для вставки в чат</value>
@@ -765,9 +765,75 @@
     <value>Использовать Npcap (необходим перезапуск)</value>
   </data>
   <data name="SystemTray_Export_current_to_Json" xml:space="preserve">
-    <value>Сохранить текущий бой в JSON</value>
+    <value>Сохранить в JSON</value>
   </data>
   <data name="SystemTray_Autoexport_to_Json" xml:space="preserve">
     <value>Автоэкспорт в JSON</value>
+  </data>
+  <data name="ExportCurrent" xml:space="preserve">
+    <value>Текущий бой</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Пауза</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Продолжить</value>
+  </data>
+  <data name="SettingsTab_ChatColors" xml:space="preserve">
+    <value>Цвета чата</value>
+  </data>
+  <data name="SettingsTab_Detection" xml:space="preserve">
+    <value>Настройки распознавания</value>
+  </data>
+  <data name="SettingsTab_DiscordRP" xml:space="preserve">
+    <value>Интеграция с Discord</value>
+  </data>
+  <data name="SettingsTab_Events" xml:space="preserve">
+    <value>Оповещения</value>
+  </data>
+  <data name="SettingsTab_Graph" xml:space="preserve">
+    <value>График ДПС</value>
+  </data>
+  <data name="SettingsTab_Home" xml:space="preserve">
+    <value>Действия</value>
+  </data>
+  <data name="SettingsTab_Hotkeys" xml:space="preserve">
+    <value>Горячие клавиши</value>
+  </data>
+  <data name="SettingsTab_HPBar" xml:space="preserve">
+    <value>Полоска HP</value>
+  </data>
+  <data name="SettingsTab_Input" xml:space="preserve">
+    <value>Настройки ввода</value>
+  </data>
+  <data name="SettingsTab_Misc" xml:space="preserve">
+    <value>Прочие настройки</value>
+  </data>
+  <data name="SettingsTab_Servers" xml:space="preserve">
+    <value>Настройки серверов</value>
+  </data>
+  <data name="SettingsTab_TTS" xml:space="preserve">
+    <value>Голосовые сообщения</value>
+  </data>
+  <data name="SettingsTab_UI" xml:space="preserve">
+    <value>Интерфейс</value>
+  </data>
+  <data name="SystemTray_AddServer" xml:space="preserve">
+    <value>Добавить сервер</value>
+  </data>
+  <data name="SystemTray_IgnorePacketsThreshold" xml:space="preserve">
+    <value>Не останавливать анализ при перегрузке.</value>
+  </data>
+  <data name="SystemTray_LowPriority" xml:space="preserve">
+    <value>Пониженный приоритет процесса</value>
+  </data>
+  <data name="SystemTray_MainWindowOpacity" xml:space="preserve">
+    <value>Прозрачность основного окна</value>
+  </data>
+  <data name="SystemTray_OtherWindowOpacity" xml:space="preserve">
+    <value>Прозрачность остальных окон</value>
+  </data>
+  <data name="AutoDisableChatWhenOverloaded" xml:space="preserve">
+    <value>Автоматически выключать при высокой нагрузке</value>
   </data>
 </root>
