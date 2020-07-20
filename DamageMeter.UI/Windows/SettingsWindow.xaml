@@ -14,6 +14,8 @@
         WindowStyle="SingleBorderWindow"
         UseLayoutRounding="True"
         WindowStartupLocation="CenterScreen"
+        KeyDown="OnKeyDown"
+        KeyUp="OnKeyUp"
         mc:Ignorable="d"
         Title="SettingsWindow" Height="580" Width="800"
         d:DataContext="{d:DesignInstance local:SettingsWindowViewModel}">
@@ -85,6 +87,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="0" />
         </Grid.RowDefinitions>
         <!-- Title bar -->
         <Grid Background="#1000" MouseDown="Drag">
@@ -133,7 +136,7 @@
                         Visibility="Visible"
                         VerticalAlignment="Center">
                 <!--Home-->
-                <TabItem>
+                <TabItem >
                     <settingsViews:SettingsHomeView />
                 </TabItem>
                 <!--Detection-->
@@ -291,19 +294,6 @@
                                                Max="60"
                                                IsEnabled="{Binding RealtimeGraphEnabled}" />
 
-                    </StackPanel>
-                </TabItem>
-                <!--Input-->
-                <TabItem>
-                    <StackPanel>
-                        <settings:CheckboxSetting IsOn="{Binding RemoveAltEnter, Mode=TwoWay}"
-                                                  SettingName="{x:Static lang:LP.RemoveTeraAltEnterHotkey}" />
-                        <settings:CheckboxSetting IsOn="{Binding FormatPasteString, Mode=TwoWay}"
-                                                  SettingName="{x:Static lang:LP.FormatPasteString}" />
-                        <settings:CheckboxSetting IsOn="{Binding DisableIngameChatPaste, Mode=TwoWay}"
-                                                  SettingName="{x:Static lang:LP.NoPaste}" />
-                        <settings:ValueSetting Value="{Binding PasteDelay, Mode=TwoWay}"
-                                               SettingName="{x:Static lang:LP.DelayToWaitPasting}" Min="0" Max="600" />
                     </StackPanel>
                 </TabItem>
                 <!--Servers-->
@@ -623,6 +613,16 @@
                 <!--Hotkeys-->
                 <TabItem>
                     <StackPanel>
+                        <settings:CheckboxSetting IsOn="{Binding RemoveAltEnter, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.RemoveTeraAltEnterHotkey}" />
+                        <settings:CheckboxSetting IsOn="{Binding FormatPasteString, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.FormatPasteString}" />
+                        <settings:CheckboxSetting IsOn="{Binding DisableIngameChatPaste, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.NoPaste}" />
+                        <settings:ValueSetting Value="{Binding PasteDelay, Mode=TwoWay}"
+                                               SettingName="{x:Static lang:LP.DelayToWaitPasting}" Min="0" Max="600" />
+                        <Separator Opacity=".2" />
+
                         <settings:HotkeySetting SettingName="Topmost" 
                                                 Value="{Binding TopmostHotkey, Mode=TwoWay}" />
                         <settings:HotkeySetting SettingName="Click through" 
@@ -700,15 +700,26 @@
                     <local:SliderButton Style="{StaticResource s}" CommandParameter="3"  SvgIcon="{StaticResource Svg.TTS}"        Label="{x:Static lang:LP.SettingsTab_TTS}"        />
                     <local:SliderButton Style="{StaticResource s}" CommandParameter="4"  SvgIcon="{StaticResource Svg.HPBar}"      Label="{x:Static lang:LP.SettingsTab_HPBar}"      />
                     <local:SliderButton Style="{StaticResource s}" CommandParameter="5"  SvgIcon="{StaticResource Svg.Graph}"      Label="{x:Static lang:LP.SettingsTab_Graph}"      />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="6"  SvgIcon="{StaticResource Svg.Input}"      Label="{x:Static lang:LP.SettingsTab_Input}"      />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="7"  SvgIcon="{StaticResource Svg.Servers}"    Label="{x:Static lang:LP.SettingsTab_Servers}"    />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="8"  SvgIcon="{StaticResource Svg.Events}"     Label="{x:Static lang:LP.SettingsTab_Events}"     />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="9"  SvgIcon="{StaticResource Svg.Discord}"    Label="{x:Static lang:LP.SettingsTab_DiscordRP}"  />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="10" SvgIcon="{StaticResource Svg.ChatColors}" Label="{x:Static lang:LP.SettingsTab_ChatColors}" />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="11" SvgIcon="{StaticResource Svg.Misc}"       Label="{x:Static lang:LP.SettingsTab_Misc}"       />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="12" SvgIcon="{StaticResource Svg.Hotkeys}"    Label="{x:Static lang:LP.SettingsTab_Hotkeys}"    />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="6"  SvgIcon="{StaticResource Svg.Servers}"    Label="{x:Static lang:LP.SettingsTab_Servers}"    />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="7"  SvgIcon="{StaticResource Svg.Events}"     Label="{x:Static lang:LP.SettingsTab_Events}"     />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="8"  SvgIcon="{StaticResource Svg.Discord}"    Label="{x:Static lang:LP.SettingsTab_DiscordRP}"  />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="9"  SvgIcon="{StaticResource Svg.ChatColors}" Label="{x:Static lang:LP.SettingsTab_ChatColors}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="10" SvgIcon="{StaticResource Svg.Misc}"       Label="{x:Static lang:LP.SettingsTab_Misc}"       />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="11" SvgIcon="{StaticResource Svg.Hotkeys}"    Label="{x:Static lang:LP.SettingsTab_Input}"    />
                 </StackPanel>
             </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2" Background="#1000">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Opacity=".5">
+                <Path Data="{StaticResource Svg.Info}"  Margin="6"
+                      Style="{StaticResource PathBaseStyle}" Opacity=".4"/>
+            <TextBlock Text="Settings are saved when closing this window and when closing meter"
+                       Style="{StaticResource DefaultTextStyle}"
+                       VerticalAlignment="Center"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>

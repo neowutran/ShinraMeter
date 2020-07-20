@@ -349,6 +349,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close (no confirm).
+        /// </summary>
+        public static string CloseNoConfirm {
+            get {
+                return ResourceManager.GetString("CloseNoConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to s CMA DPS.
         /// </summary>
         public static string CMADPS {
@@ -1728,15 +1737,6 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hotkeys settings.
-        /// </summary>
-        public static string SettingsTab_Hotkeys {
-            get {
-                return ResourceManager.GetString("SettingsTab_Hotkeys", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to HP bar settings.
         /// </summary>
         public static string SettingsTab_HPBar {
@@ -1746,7 +1746,7 @@ namespace Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input settings.
+        ///   Looks up a localized string similar to Input and hotkeys settings.
         /// </summary>
         public static string SettingsTab_Input {
             get {

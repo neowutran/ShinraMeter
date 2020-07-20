@@ -729,6 +729,7 @@ namespace DamageMeter.UI.Windows
 
         private int _selectedIndex;
         private long _lastSend;
+        private bool _isShiftDown;
 
         public int SelectedIndex
         {
@@ -847,7 +848,6 @@ namespace DamageMeter.UI.Windows
             PauseChanged?.Invoke();
         }
 
-        //TODO: add hotkeys
 
         public HotKey TopmostHotkey
         {
@@ -914,6 +914,17 @@ namespace DamageMeter.UI.Windows
         }
 
         public ObservableCollection<CopyKeyVM> CopyKeys { get; } = new ObservableCollection<CopyKeyVM>();
+
+        public bool IsShiftDown
+        {
+            get => _isShiftDown;
+            set
+            {
+                if(_isShiftDown == value) return;
+                _isShiftDown = value;
+                NotifyPropertyChanged();
+            }
+        }
     }
 
     public class CopyKeyVM : TSPropertyChanged

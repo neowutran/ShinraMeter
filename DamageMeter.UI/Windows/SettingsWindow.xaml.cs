@@ -107,5 +107,17 @@ namespace DamageMeter.UI.Windows
             _window = new SettingsWindow();
             _window.Show();
         }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.LeftShift) return;
+            ((SettingsWindowViewModel) DataContext).IsShiftDown = true;
+        }
+
+        private void OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.LeftShift) return;
+            ((SettingsWindowViewModel)DataContext).IsShiftDown = false;
+        }
     }
 }

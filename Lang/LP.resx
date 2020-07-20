@@ -835,14 +835,11 @@ Reset and paused until map change or relog.</value>
   <data name="SettingsTab_Home" xml:space="preserve">
     <value>Home</value>
   </data>
-  <data name="SettingsTab_Hotkeys" xml:space="preserve">
-    <value>Hotkeys settings</value>
-  </data>
   <data name="SettingsTab_HPBar" xml:space="preserve">
     <value>HP bar settings</value>
   </data>
   <data name="SettingsTab_Input" xml:space="preserve">
-    <value>Input settings</value>
+    <value>Input and hotkeys settings</value>
   </data>
   <data name="SettingsTab_Misc" xml:space="preserve">
     <value>Misc settings</value>
@@ -873,5 +870,8 @@ Reset and paused until map change or relog.</value>
   </data>
   <data name="AutoDisableChatWhenOverloaded" xml:space="preserve">
     <value>Automatically disable on heavy load</value>
+  </data>
+  <data name="CloseNoConfirm" xml:space="preserve">
+    <value>Close (no confirm)</value>
   </data>
 </root>
