@@ -1,12 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace DamageMeter.UI.HUD.Windows
 {
-    /// <summary>
-    ///     Logica di interazione per BossGageWindow.xaml
-    /// </summary>
     public partial class BossGageWindow
     {
         public BossGageWindow()
@@ -30,10 +28,14 @@ namespace DamageMeter.UI.HUD.Windows
             ContextMenu.IsOpen = true;
         }
 
-        protected override bool Empty
+        protected override bool Empty => !Bosses.HasItems;
+
+        public void TempToggle(bool visible)
         {
-            get
-            { return !Bosses.HasItems; }
+            Dispatcher.InvokeIfRequired(() =>
+            {
+                Bosses.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+            }, DispatcherPriority.DataBind);
         }
     }
 }

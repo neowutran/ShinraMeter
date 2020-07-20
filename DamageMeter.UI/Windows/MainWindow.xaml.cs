@@ -203,10 +203,12 @@ namespace DamageMeter.UI
             {
                 _hideEid = eid;
                 _hideGeneralData = true;
+                _bossGageBar.TempToggle(false);
             }
             else if (_hideEid == eid)
             {
                 _hideGeneralData = false;
+                _bossGageBar.TempToggle(true);
             }
         }
 
@@ -220,6 +222,7 @@ namespace DamageMeter.UI
                     WaitingMapChange.Visibility = Visibility.Collapsed;
                 }
                 _hideGeneralData = false;
+                _bossGageBar.TempToggle(true);
             });
         }
 
