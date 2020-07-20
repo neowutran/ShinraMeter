@@ -59,74 +59,74 @@ namespace Data
                 }
                 catch { return; }
 
-                Parse("lf_delay", "lFDelay");
-                Parse("number_of_players_displayed", "numberOfPlayersDisplayed");
-                Parse("meter_user_on_top", "meterUserOnTop");
-                Parse("excel_save_directory", "excelSaveDirectory");
+                Parse("lf_delay", nameof(lFDelay));
+                Parse("number_of_players_displayed", nameof(numberOfPlayersDisplayed));
+                Parse("meter_user_on_top", nameof(meterUserOnTop));
+                Parse("excel_save_directory", nameof(excelSaveDirectory));
 
                 if (excelSaveDirectory == "") {
                     excelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
                 }
 
-                Parse("display_only_boss_hit_by_meter_user", "displayOnlyBossHitByMeterUser");
-                Parse("show_crit_damage_rate", "showCritDamageRate");
+                Parse("display_only_boss_hit_by_meter_user", nameof(displayOnlyBossHitByMeterUser));
+                Parse("show_crit_damage_rate", nameof(showCritDamageRate));
                 Parse("ignore_packets_threshold", nameof(ignorePacketsThreshold));
                 Parse("auto_disable_chat_when_overloaded", nameof(autoDisableChatWhenOverloaded));
-                Parse("showhealcrit", "showHealCrit");
-                Parse("showtimeleft", "showTimeLeft");
-                Parse("partyonly", "partyOnly");
-                Parse("excel", "excel");
-                Parse("json", "json");
-                Parse("scale", "scale");
-                Parse("always_visible", "alwaysVisible");
-                Parse("remember_position", "rememberPosition");
-                Parse("debug", "debug");
-                Parse("topmost", "topmost");
-                Parse("invisible_ui_when_no_stats", "invisibleUi");
-                Parse("allow_transparency", "allowTransparency");
-                Parse("winpcap", "winpcap");
-                Parse("autoupdate", "autoUpdate");
-                Parse("only_bosses", "onlyBoss");
-                Parse("detect_bosses_only_by_hp_bar", "detectBosses");
-                Parse("excel_path_template", "excelPathTemplate");
-                Parse("low_priority", "lowPriority");
-                Parse("format_paste_string", "formatPasteString");
-                Parse("remove_tera_alt_enter_hotkey", "removeTeraAltEnterHotkey");
-                Parse("enable_chat_and_notifications", "enableChat");
-                Parse("copy_inspect", "copyInspect");
-                Parse("excel_cma_dps_seconds", "excelCMADPSSeconds");
-                Parse("disable_party_event", "disablePartyEvent");
-                Parse("show_afk_events_ingame", "showAfkEventsIngame");
-                Parse("mute_sound", "muteSound");
-                Parse("idle_reset_timeout", "idleResetTimeout");
-                Parse("no_paste", "noPaste");
-                Parse("no_abnormals_in_hud", "noAbnormalsInHUD");
-                Parse("enable_overlay", "enableOverlay");
-                Parse("click_throu", "clickThrou");
-                Parse("packets_collect", "packetsCollect");
-                Parse("display_timer_based_on_aggro", "displayTimerBasedOnAggro");
-                Parse("max_tts_size", "maxTTSSize");
-                Parse("tts_size_exceeded_truncate", "ttsSizeExceededTruncate");
+                Parse("showhealcrit", nameof(showHealCrit));
+                Parse("showtimeleft", nameof(showTimeLeft));
+                Parse("partyonly", nameof(partyOnly));
+                Parse("excel", nameof(excel));
+                Parse("json", nameof(json));
+                Parse("scale", nameof(scale));
+                Parse("always_visible", nameof(alwaysVisible));
+                Parse("remember_position", nameof(rememberPosition));
+                Parse("debug", nameof(debug));
+                Parse("topmost", nameof(topmost));
+                Parse("invisible_ui_when_no_stats", nameof(invisibleUi));
+                Parse("allow_transparency", nameof(allowTransparency));
+                Parse("winpcap", nameof(winpcap));
+                Parse("autoupdate", nameof(autoUpdate));
+                Parse("only_bosses", nameof(onlyBoss));
+                Parse("detect_bosses_only_by_hp_bar", nameof(detectBosses));
+                Parse("excel_path_template", nameof(excelPathTemplate));
+                Parse("low_priority", nameof(lowPriority));
+                Parse("format_paste_string", nameof(formatPasteString));
+                Parse("remove_tera_alt_enter_hotkey", nameof(removeTeraAltEnterHotkey));
+                Parse("enable_chat_and_notifications", nameof(enableChat));
+                Parse("copy_inspect", nameof(copyInspect));
+                Parse("excel_cma_dps_seconds", nameof(excelCMADPSSeconds));
+                Parse("disable_party_event", nameof(disablePartyEvent));
+                Parse("show_afk_events_ingame", nameof(showAfkEventsIngame));
+                Parse("mute_sound", nameof(muteSound));
+                Parse("idle_reset_timeout", nameof(idleResetTimeout));
+                Parse("no_paste", nameof(noPaste));
+                Parse("no_abnormals_in_hud", nameof(noAbnormalsInHUD));
+                Parse("enable_overlay", nameof(enableOverlay));
+                Parse("click_throu", nameof(clickThrou));
+                Parse("packets_collect", nameof(packetsCollect));
+                Parse("display_timer_based_on_aggro", nameof(displayTimerBasedOnAggro));
+                Parse("max_tts_size", nameof(maxTTSSize));
+                Parse("tts_size_exceeded_truncate", nameof(ttsSizeExceededTruncate));
 
-                ParseColor("say_color", "sayColor");
-                ParseColor("alliance_color", "allianceColor");
-                ParseColor("area_color", "areaColor");
-                ParseColor("guild_color", "guildColor");
-                ParseColor("whisper_color", "whisperColor");
-                ParseColor("general_color", "generalColor");
-                ParseColor("group_color", "groupColor");
-                ParseColor("trading_color", "tradingColor");
-                ParseColor("emotes_color", "emotesColor");
-                ParseColor("private_channel_color", "privateChannelColor");
+                ParseColor("say_color", nameof(sayColor));
+                ParseColor("alliance_color", nameof(allianceColor));
+                ParseColor("area_color", nameof(areaColor));
+                ParseColor("guild_color", nameof(guildColor));
+                ParseColor("whisper_color", nameof(whisperColor));
+                ParseColor("general_color", nameof(generalColor));
+                ParseColor("group_color", nameof(groupColor));
+                ParseColor("trading_color", nameof(tradingColor));
+                ParseColor("emotes_color", nameof(emotesColor));
+                ParseColor("private_channel_color", nameof(privateChannelColor));
                 ParseColor("stat_dps_color", nameof(_dpsColor));
                 ParseColor("stat_healer_color", nameof(_healerColor));
                 ParseColor("stat_tank_color", nameof(_tankColor));
                 ParseColor("stat_player_color", nameof(_playerColor));
                 PopupNotificationLocation = ParseLocation(_xml.Root, "popup_notification_location");
                 Location = ParseLocation(_xml.Root);
-                ParseWindowStatus("boss_gage_window", "bossGageStatus");
-                ParseWindowStatus("debuff_uptime_window", "debuffsStatus");
-                ParseWindowStatus("upload_history_window", "historyStatus");
+                ParseWindowStatus("boss_gage_window", nameof(bossGageStatus));
+                ParseWindowStatus("debuff_uptime_window", nameof(debuffsStatus));
+                ParseWindowStatus("upload_history_window", nameof(historyStatus));
                 ParseOpacity();
                 ParseOldDpsServers();
                 ParseDpsServers();
@@ -135,7 +135,7 @@ namespace Data
                 ParseRichPresence();
                 ParseRealtimeGraph();
 
-                Parse("date_in_excel_path", "dateInExcelPath");
+                Parse("date_in_excel_path", nameof(dateInExcelPath));
                 if (dateInExcelPath) { excelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
 
                 DpsServers.CollectionChanged += DpsServers_CollectionChanged;
