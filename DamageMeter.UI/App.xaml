@@ -304,12 +304,14 @@
             </Setter>
         </Style>
         <ControlTemplate TargetType="{x:Type ToggleButton}" x:Key="ToggleButtonTemplate">
-            <Border Background="{TemplateBinding Background}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    CornerRadius="12.5">
-                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Name="content" Opacity=".7"/>
-            </Border>
+            <Grid>
+
+            <Ellipse Fill="{TemplateBinding Background}"/>
+                <ContentPresenter HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center" 
+                                  Name="content" Opacity="1"
+                                  />
+            </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter TargetName="content" Property="Opacity" Value="1"/>
@@ -319,8 +321,7 @@
         <Style x:Key="ToggleButtonStyle" TargetType="{x:Type ToggleButton}">
             <Setter Property="Template" Value="{StaticResource ToggleButtonTemplate}"/>
             <Setter Property="Background" Value="{StaticResource ToggleButton.Static.Background}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
+            <!--<Setter Property="Cursor" Value="Hand"/>-->
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
                     <Setter Property="Background" Value="{StaticResource ToggleButton.IsChecked.Background}"/>
@@ -545,6 +546,18 @@
         </PathGeometry>
         <PathGeometry x:Key="Svg.Shift">
             M15,18V12H17.17L12,6.83L6.83,12H9V18H15M12,4L22,14H17V20H7V14H2L12,4Z
+        </PathGeometry>
+        <PathGeometry x:Key="Svg.ShowAdds">
+            M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M13,7H11V11H7V13H11V17H13V13H17V11H13V7Z
+        </PathGeometry>
+        <PathGeometry x:Key="Svg.OnlyBoss">
+            M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z
+        </PathGeometry>
+        <PathGeometry x:Key="Svg.HideNames">
+            M18.33 8.5L22.92 3.92L21.5 2.5L2.5 21.5L3.92 22.92L8.5 18.33L11.58 21.41A2 2 0 0 0 13 22A2 2 0 0 0 14.41 21.41L21.41 14.41A2 2 0 0 0 22 13A2 2 0 0 0 21.41 11.58M5.61 15.43L15.47 5.65L12.41 2.58A2 2 0 0 0 11 2H4A2 2 0 0 0 2 4V11A2 2 0 0 0 2.59 12.41M5.5 4A1.5 1.5 0 1 1 4 5.5A1.5 1.5 0 0 1 5.5 4Z
+        </PathGeometry>
+        <PathGeometry x:Key="Svg.EntityStats">
+            M22,21H2V3H4V19H6V10H10V19H12V6H16V19H18V14H22V21Z
         </PathGeometry>
         <!---->
 

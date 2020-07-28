@@ -45,6 +45,11 @@ namespace DamageMeter
         {
             Application.Current.Dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(v)), DispatcherPriority.DataBind);
         }
+
+        public void NotifyPropertyChangedEx(string v)
+        {
+            NotifyPropertyChanged(v);
+        }
     }
 
     public class SynchronizedObservableCollection<T> : ObservableCollection<T>

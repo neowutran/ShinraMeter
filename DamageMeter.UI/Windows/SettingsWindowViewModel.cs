@@ -260,8 +260,9 @@ namespace DamageMeter.UI.Windows
             {
                 if (Data.MainWindowOpacity == value) return;
                 Data.MainWindowOpacity = value;
-                MainWindowOpacityChanged?.Invoke(value);
+                //MainWindowOpacityChanged?.Invoke(value);
                 NotifyPropertyChanged();
+                MainViewModel.Instance.NotifyPropertyChangedEx(nameof(MainViewModel.WindowOpacity));
             }
         }
         public double OtherWindowsOpacity
@@ -795,8 +796,14 @@ namespace DamageMeter.UI.Windows
             });
             TogglePauseCommand = new RelayCommand(_ =>
             {
-                BasicTeraData.Instance.WindowData.UserPaused = !BasicTeraData.Instance.WindowData.UserPaused;
-                MainWindow.Instance.PauseState(BasicTeraData.Instance.WindowData.UserPaused);
+                //BasicTeraData.Instance.WindowData.UserPaused = !BasicTeraData.Instance.WindowData.UserPaused;
+                //if (BasicTeraData.Instance.WindowData.UserPaused)
+                //{
+                //    PacketProcessor.Instance.NeedPause = true;
+                //}
+                MainViewModel.Instance.TogglePause();
+                //MainViewModel.Instance.NotifyPropertyChangedEx(nameof(MainViewModel.UserPaused));
+                //MainWindow.Instance.PauseState(BasicTeraData.Instance.WindowData.UserPaused);
             });
             ExportCurrentCommand = new RelayCommand(target =>
             {

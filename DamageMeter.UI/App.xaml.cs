@@ -15,12 +15,11 @@ using Data;
 using log4net;
 using Lang;
 using System.Windows.Threading;
+using DamageMeter.Sniffing;
+using Microsoft.Win32;
 
 namespace DamageMeter.UI
 {
-    /// <summary>
-    ///     Logique d'interaction pour App.xaml
-    /// </summary>
     public partial class App
     {
         private static Mutex _unique;
@@ -38,6 +37,14 @@ namespace DamageMeter.UI
                                    ex.InnerException + "\r\n" + ex.TargetSite);
             MessageBox.Show(LP.MainWindow_Fatal_error);
         }
+        private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
+        {
+            var ex = e.Exception;
+            BasicTeraData.LogError("##### FORM EXCEPTION #####\r\n" + ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data +
+                                   "\r\n" + ex.InnerException + "\r\n" + ex.TargetSite);
+            MessageBox.Show(LP.MainWindow_Fatal_error);
+        }
+
         private static void SetAlignment()
         {
             var ifLeft = SystemParameters.MenuDropAlignment;
@@ -52,11 +59,10 @@ namespace DamageMeter.UI
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
             currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
+
             var updating = new Mutex(true, "ShinraMeterUpdating", out notUpdating);
             _unique = new Mutex(true, "ShinraMeter", out _isNewInstance);
 
-            // force LeftHandedness to avoid menus/tooltips/popup positions to be messed up on some systems
-            SetAlignment();
 
             if (_isNewInstance)
             {
@@ -165,5 +171,34 @@ namespace DamageMeter.UI
         {
             if (_isNewInstance) { _unique.ReleaseMutex(); }
         }
+
+        public static void Setup()
+        {
+            // Handler for exceptions in threads behind forms.
+            System.Windows.Forms.Application.ThreadException += GlobalThreadExceptionHandler;
+            // force LeftHandedness to avoid menus/tooltips/popup positions to be messed up on some systems
+            SetAlignment();
+            // TODO: ????
+            Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
+            if (BasicTeraData.Instance.WindowData.LowPriority) { Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle; }
+
+            TeraSniffer.Instance.Enabled = true;
+            TeraSniffer.Instance.Warning  += (str) => BasicTeraData.LogError(str, false, true);
+            SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+
+        }
+
+        public static void Dispose()
+        {
+            SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
+
+        }
+        private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode != PowerModes.StatusChange)
+                TeraSniffer.Instance.CleanupForcefully();
+        }
+
+
     }
 }

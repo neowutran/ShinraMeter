@@ -7,13 +7,15 @@
                      xmlns:l="clr-namespace:Lang;assembly=Lang"
                      xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
                      xmlns:controls="clr-namespace:DamageMeter.UI.Controls"
+                     xmlns:windows="clr-namespace:DamageMeter.UI.Windows"
                      mc:Ignorable="d"
-                     Title="Shinra Meter"
+                     Title="{Binding WindowTitle}"
                      MinHeight="60" MinWidth="219"
                      Loaded="MainWindow_OnLoaded"
                      Closed="MainWindow_OnClosed"
                      MouseEnter="MainWindow_OnMouseEnter"
-                     MouseLeave="MainWindow_OnMouseLeave">
+                     MouseLeave="MainWindow_OnMouseLeave"
+                     d:DataContext="{d:DesignData MainViewModel}">
 
     <Window.Resources>
         <converters:TransparencyToMarginConverter x:Key="BoolToMargin" />
@@ -236,10 +238,26 @@
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource MainBorder}"
-                BorderBrush="{StaticResource KrBorderColor}" BorderThickness="1"
-                Background="{StaticResource KrBgColor}" Grid.RowSpan="6" x:Name="BackgroundColor"
-                Opacity="{Binding WindowOpacity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:MainWindow}}" />
+        <Border
+            BorderBrush="{StaticResource KrBorderColor}" BorderThickness="1"
+            Grid.RowSpan="6" x:Name="BackgroundBorder"
+            Opacity="{Binding WindowOpacity}">
+
+            <Border.Style>
+                <Style BasedOn="{StaticResource MainBorder}" TargetType="Border">
+                    <Setter Property="Background" Value="{StaticResource KrBgColor}" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding UserPaused}" Value="False" />
+                                <Condition Binding="{Binding Paused}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Background" Value="DarkRed" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
         <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -257,7 +275,7 @@
                   Height="29"
                   Width="29"
                   Grid.Column="1"
-                    Style="{StaticResource ImageButton}" 
+                  Style="{StaticResource ImageButton}"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Top">
 
@@ -265,8 +283,7 @@
                     Stretch="Uniform" x:Name="CloseWindow"
                     Data="{StaticResource Svg.Power}"
                     Fill="White"
-                    Margin="5"
-                    />
+                    Margin="5" />
             </Grid>
         </Grid>
         <Grid Grid.Row="1" Name="SGrid" HorizontalAlignment="Stretch" Height="30">
@@ -317,7 +334,15 @@
                   x:Name="QueuedPacketsLed" Fill="Transparent"
                   ToolTip="Overload. When red, notification functions will be temporarily disabled"
                   Data="{StaticResource Svg.Warning}" />
-
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HideGeneralData}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
         </Grid>
         <ScrollViewer x:Name="Scroller" Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <ItemsControl Name="Players" Background="Transparent" BorderThickness="0" Focusable="False"
@@ -326,53 +351,109 @@
         </ScrollViewer>
         <TextBlock Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"
                    Name="TooSlow"
-                   Background="Transparent" Foreground="Yellow" Text="{x:Static l:LP.Your_computer_is_too_slow}"
-                   Visibility="Collapsed" />
+                   Background="Transparent" Foreground="Yellow"
+                   Text="{x:Static l:LP.Your_computer_is_too_slow}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Paused}" Value="True" />
+                                <Condition Binding="{Binding UserPaused}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+
+        </TextBlock>
         <TextBlock Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"
                    Name="WaitingMapChange"
                    Background="Transparent" Foreground="#f55" Text="{x:Static l:LP.WaitingMapChange}"
-                   FontWeight="DemiBold"
-                   Visibility="Collapsed" />
+                   FontWeight="DemiBold">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding WaitingMapChangeTBVisibile}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+
+        </TextBlock>
         <TextBlock Grid.Row="3" Margin="5" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"
                    Name="UserPaused"
-                   Background="Transparent"
-                   Visibility="Collapsed">
+                   Background="Transparent">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UserPaused}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
             <Run Text="{x:Static l:LP.UserPaused}" Foreground="#aaa" />
             <LineBreak />
             <Run FontWeight="DemiBold" Foreground="#f55" Text="Change map or relog after resuming meter" />
         </TextBlock>
-        <controls:RealtimeGraph Grid.Row="4" x:Name="Graph" Margin="-3 1 0 1" MouseEnter="OnGraphMouseEnter"
+        <controls:RealtimeGraph Grid.Row="4" x:Name="Graph" Margin="-3 1 0 1"
+                                MouseEnter="OnGraphMouseEnter"
                                 MouseLeave="OnGraphMouseLeave"
                                 DataContext="{Binding GraphViewModel, RelativeSource={RelativeSource AncestorType=ui:MainWindow}}" />
-        <Grid Grid.Row="5" Name="Footer" Height="0">
-            <Grid.ColumnDefinitions>
+        <UniformGrid Rows="1" Grid.Row="5" Name="Footer" Height="0">
+            <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>-->
 
             <!--Blur button-->
-            <ToggleButton
-                Grid.Column="2" x:Name="HideNames"
-                HorizontalAlignment="Center" Style="{StaticResource ToggleButtonStyle}"
-                Height="25" VerticalAlignment="Top" Width="25" Margin="2">
-                <Image Name="HideNamesImage" />
+            <ToggleButton x:Name="HideNames"
+                          HorizontalAlignment="Center" Style="{StaticResource ToggleButtonStyle}"
+                          VerticalAlignment="Stretch"
+                          Height="25"
+                          Margin="2">
+                <Path Style="{StaticResource PathBaseStyle}"
+                      Data="{StaticResource Svg.HideNames}"
+                      Margin="6" />
             </ToggleButton>
 
             <!--Adds button-->
-            <Image PreviewMouseLeftButtonDown="Chrono_OnPreviewMouseLeftButtonDown"
-                   HorizontalAlignment="Center" x:Name="Chrono" Stretch="Fill" Style="{StaticResource ImageButton}"
-                   Height="25" VerticalAlignment="Top" Width="25" Grid.Column="3" Margin="2" />
+            <windows:FooterButton
+                Height="25"
+                Command="{Binding ToggleAddsCommand}"
+                x:Name="Chrono"
+                Grid.Column="3">
+                <windows:FooterButton.Style>
+                    <Style BasedOn="{StaticResource ButtonMainStyle}" TargetType="windows:FooterButton">
+                        <Setter Property="ToolTip" Value="{x:Static l:LP.MainWindow_Only_boss}" />
+                        <Setter Property="SvgIcon" Value="{StaticResource Svg.OnlyBoss}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowAdds}" Value="True">
+                                <Setter Property="ToolTip" Value="{x:Static l:LP.MainWindow_Boss_Adds}" />
+                                <Setter Property="SvgIcon" Value="{StaticResource Svg.ShowAdds}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </windows:FooterButton.Style>
+            </windows:FooterButton>
 
             <!--Settings button-->
-            <Image
-                HorizontalAlignment="Center" Stretch="Fill" x:Name="Config"
-                PreviewMouseLeftButtonDown="Config_MouseLeftButtonDown" Style="{StaticResource ImageButton}"
-                Height="25" VerticalAlignment="Top" Width="25" Grid.Column="4" Margin="2">
-                <Image.ContextMenu>
+            <!--<windows:FooterButton  x:Name="Config"
+                PreviewMouseLeftButtonDown="Config_MouseLeftButtonDown"
+                VerticalAlignment="Stretch"
+                SvgIcon="{StaticResource Svg.Settings}"
+                 Grid.Column="4">
+                <Button.ContextMenu>
                     <ContextMenu Style="{DynamicResource ShinraContext}" x:Name="PopupMenu">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -392,18 +473,6 @@
                                 <ColumnDefinition Width="30" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" x:Name="Chatbox" PreviewMouseLeftButtonDown="ShowChat"
-                                   Stretch="Fill"
-                                   HorizontalAlignment="Left"
-                                   Height="29" VerticalAlignment="Top" Width="29" />
-                            <Label Grid.Column="1" PreviewMouseLeftButtonDown="ShowChat"
-                                   Content="{Binding Source={x:Static l:LP.Chat}}" Foreground="White" FontSize="14" />
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
                             <Image Grid.Column="0" x:Name="BossGageImg" PreviewMouseLeftButtonDown="ShowBossGage"
                                    Stretch="Fill"
                                    HorizontalAlignment="Left"
@@ -413,22 +482,43 @@
                                    FontSize="14" />
                         </Grid>
                     </ContextMenu>
-                </Image.ContextMenu>
-
-            </Image>
+                </Button.ContextMenu>
+            </windows:FooterButton>-->
 
             <!--Stats button-->
-            <Image x:Name="EntityStatsImage" PreviewMouseLeftButtonDown="EntityStatsImage_OnPreviewMouseLeftButtonDown"
-                   Stretch="Fill" Style="{StaticResource ImageButton}"
-                   HorizontalAlignment="Center" Margin="2"
-                   Height="25" VerticalAlignment="Top" Width="25" Grid.Column="1" />
+            <windows:FooterButton x:Name="EntityStatsImage"
+                                  Command="{Binding ShowEntityStatsCommand}"
+                                  Height="25"
+                                  Style="{StaticResource ButtonMainStyle}"
+                                  SvgIcon="{StaticResource Svg.EntityStats}" />
+            <windows:FooterButton Command="{Binding ShowUploadHistoryCommand}"
+                                  Height="25"
+                                  ToolTip="{x:Static l:LP.SystemTray_Site_export}"
+                                  Style="{StaticResource ButtonMainStyle}"
+                                  SvgIcon="{StaticResource Svg.History}" />
+            <windows:FooterButton Command="{Binding ShowBossHPBarCommand}"
+                                  ToolTip="{x:Static l:LP.BossHP}"
+                                  Height="25"
+                                  Style="{StaticResource ButtonMainStyle}"
+                                  SvgIcon="{StaticResource Svg.HPBar}" >
+            </windows:FooterButton>
 
-            <!--Adds button-->
-            <Image PreviewMouseLeftButtonDown="UserPauseBtnPreviewMouseLeftButtonDown"
-                   HorizontalAlignment="Center" x:Name="UserPauseBtn" Stretch="Fill"
-                   Style="{StaticResource ImageButton}"
-                   Height="25" VerticalAlignment="Top" Width="25" Grid.Column="5" Margin="2" />
-        </Grid>
+            <!--Pause button-->
+            <windows:FooterButton Command="{Binding TogglePauseCommand}"
+                                  VerticalAlignment="Stretch" x:Name="UserPauseBtn"
+                                  Height="25">
+                <windows:FooterButton.Style>
+                    <Style BasedOn="{StaticResource ButtonMainStyle}" TargetType="windows:FooterButton">
+                        <Setter Property="SvgIcon" Value="{StaticResource Svg.Pause}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UserPaused}" Value="True">
+                                <Setter Property="SvgIcon" Value="{StaticResource Svg.Play}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </windows:FooterButton.Style>
+            </windows:FooterButton>
+        </UniformGrid>
         <!--<ui:NotifyIcon x:Name="NotifyIcon" />-->
     </Grid>
 </ui:ClickThrouWindow>
