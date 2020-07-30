@@ -221,6 +221,17 @@ namespace DamageMeter.Sniffing
 
                 if (!(connection == _clientToServer || connection == _serverToClient)) { return; }
                 if (_decrypter == null) { return; }
+
+                if (!_decrypter.Initialized) {
+                    try {
+                        if (connection == _clientToServer) { _decrypter.ClientToServer(data, needToSkip); }
+                        else { _decrypter.ServerToClient(data, needToSkip); }
+                    } catch (Exception e)
+                    {
+                        BasicTeraData.LogError(e.Message+"\r\n"+e.StackTrace,true);
+                        CleanupForcefully();
+                    }
+                }
                 if (connection == _clientToServer) { _decrypter.ClientToServer(data, needToSkip); }
                 else { _decrypter.ServerToClient(data, needToSkip); }
             }

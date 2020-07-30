@@ -797,14 +797,11 @@
   <data name="SettingsTab_Home" xml:space="preserve">
     <value>Действия</value>
   </data>
-  <data name="SettingsTab_Hotkeys" xml:space="preserve">
-    <value>Горячие клавиши</value>
-  </data>
   <data name="SettingsTab_HPBar" xml:space="preserve">
     <value>Полоска HP</value>
   </data>
   <data name="SettingsTab_Input" xml:space="preserve">
-    <value>Настройки ввода</value>
+    <value>Горячие клавиши и ввод</value>
   </data>
   <data name="SettingsTab_Misc" xml:space="preserve">
     <value>Прочие настройки</value>
@@ -835,5 +832,8 @@
   </data>
   <data name="AutoDisableChatWhenOverloaded" xml:space="preserve">
     <value>Автоматически выключать при высокой нагрузке</value>
+  </data>
+  <data name="CloseNoConfirm" xml:space="preserve">
+    <value>Закрыть (без подтверждения)</value>
   </data>
 </root>
