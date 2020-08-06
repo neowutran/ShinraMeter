@@ -231,6 +231,7 @@ namespace DamageMeter.Sniffing
                         BasicTeraData.LogError(e.Message+"\r\n"+e.StackTrace,true);
                         CleanupForcefully();
                     }
+                    return;
                 }
                 if (connection == _clientToServer) { _decrypter.ClientToServer(data, needToSkip); }
                 else { _decrypter.ServerToClient(data, needToSkip); }
