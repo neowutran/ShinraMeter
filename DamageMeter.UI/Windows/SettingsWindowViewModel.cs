@@ -854,7 +854,7 @@ namespace DamageMeter.UI.Windows
             get => Hotkeys.Topmost;
             set
             {
-                if (Hotkeys.Topmost.Equals(value)) return;
+                if (Hotkeys.Topmost.Equals(value) || BasicTeraData.Instance.HotkeysData.IsAssigned(value)) return;
                 Hotkeys.Topmost = value;
                 NotifyPropertyChanged();
 
@@ -866,7 +866,7 @@ namespace DamageMeter.UI.Windows
             get => Hotkeys.Paste;
             set
             {
-                if (Hotkeys.Paste.Equals(value)) return;
+                if (Hotkeys.Paste.Equals(value) || BasicTeraData.Instance.HotkeysData.IsAssigned(value)) return;
                 Hotkeys.Paste = value;
                 NotifyPropertyChanged();
             }
@@ -876,7 +876,7 @@ namespace DamageMeter.UI.Windows
             get => Hotkeys.ClickThrou;
             set
             {
-                if (Hotkeys.ClickThrou.Equals(value)) return;
+                if (Hotkeys.ClickThrou.Equals(value) || BasicTeraData.Instance.HotkeysData.IsAssigned(value)) return;
                 Hotkeys.ClickThrou = value;
                 NotifyPropertyChanged();
             }
@@ -886,7 +886,7 @@ namespace DamageMeter.UI.Windows
             get => Hotkeys.ExcelSave;
             set
             {
-                if (Hotkeys.ExcelSave.Equals(value)) return;
+                if (Hotkeys.ExcelSave.Equals(value) || BasicTeraData.Instance.HotkeysData.IsAssigned(value)) return;
                 Hotkeys.ExcelSave = value;
                 NotifyPropertyChanged();
             }
@@ -897,7 +897,7 @@ namespace DamageMeter.UI.Windows
             get => Hotkeys.Reset;
             set
             {
-                if (Hotkeys.Reset.Equals(value)) return;
+                if (Hotkeys.Reset.Equals(value) || BasicTeraData.Instance.HotkeysData.IsAssigned(value)) return;
                 Hotkeys.Reset = value;
                 NotifyPropertyChanged();
             }
@@ -907,7 +907,7 @@ namespace DamageMeter.UI.Windows
             get => Hotkeys.ResetCurrent;
             set
             {
-                if (Hotkeys.ResetCurrent.Equals(value)) return;
+                if (Hotkeys.ResetCurrent.Equals(value) || BasicTeraData.Instance.HotkeysData.IsAssigned(value)) return;
                 Hotkeys.ResetCurrent = value;
                 NotifyPropertyChanged();
             }
@@ -936,7 +936,7 @@ namespace DamageMeter.UI.Windows
             get => _ck.Hotkey;
             set
             {
-                if (_ck.Hotkey.Equals(value)) return;
+                if (_ck.Hotkey.Equals(value) || BasicTeraData.Instance.HotkeysData.IsAssigned(value)) return;
                 _ck.Hotkey = value;
                 NotifyPropertyChanged();
             }
