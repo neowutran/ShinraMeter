@@ -603,6 +603,7 @@ namespace DamageMeter.UI
                 LastSnappedPoint = BasicTeraData.Instance.WindowData.Location;
                 Left = LastSnappedPoint?.X ?? 0;
                 Top = LastSnappedPoint?.Y ?? 0;
+                if (!BasicTeraData.Instance.WindowData.RealtimeGraphEnabled) Graph.Visibility = Visibility.Collapsed;
                 _dragged = true;
                 SnapToScreen();
                 _popupNotification.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
