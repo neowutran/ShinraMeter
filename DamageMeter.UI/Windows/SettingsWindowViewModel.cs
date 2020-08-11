@@ -4,6 +4,7 @@ using Nostrum;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -747,7 +748,7 @@ namespace DamageMeter.UI.Windows
 
         public SettingsWindowViewModel()
         {
-            PacketProcessor.Instance.Initialize().ForEach(x => DpsServers.Add(new DpsServerViewModel(x)));
+            DataExporter.DpsServers.Where(x=>!x.AnonymousUpload).ToList().ForEach(x => DpsServers.Add(new DpsServerViewModel(x)));
             ServerRemoved += OnServerRemoved;
             PauseChanged += OnPauseChanged;
 
