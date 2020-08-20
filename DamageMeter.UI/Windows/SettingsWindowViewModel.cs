@@ -769,7 +769,7 @@ namespace DamageMeter.UI.Windows
             });
             OpenChatBoxCommand = new RelayCommand(_ =>
             {
-                MainWindow.Instance._chatbox = new Chatbox { Owner = MainWindow.Instance };
+                MainWindow.Instance._chatbox = new Chatbox();
                 MainWindow.Instance._chatbox.ShowWindow();
             });
             BrowseLinkCommand = new RelayCommand(type =>
