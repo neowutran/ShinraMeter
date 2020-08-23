@@ -191,11 +191,13 @@ namespace DamageMeter.UI
             Closing -= ClickThrouWindow_Closing;
             if(GetType().Name != "MainWindow")
                 SettingsWindowViewModel.OtherWindowsOpacityChanged -= OnOpacityChanged;
-            foreach (ClickThrouWindow window in ((ClickThrouWindow)sender).OwnedWindows)
-            {
-                window.DontClose = false;
-                window.Close();
-            }
+            
+            //foreach (ClickThrouWindow window in ((ClickThrouWindow)sender).OwnedWindows)
+            //{
+            //    window.DontClose = false;
+            //    window.Close();
+            //} // done globally on MainWindow closing
+
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
                 _dispatcher.BeginInvoke(new Action(() =>
