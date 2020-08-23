@@ -202,6 +202,13 @@ namespace DamageMeter.UI
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
+            foreach (Window win in App.Current.Windows)
+            {
+                if (!(win is ClickThrouWindow ctw)) continue;
+
+                ctw.DontClose = false;
+                ctw.Close();
+            }
             Exit();
             //must be removed at exit
             //SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
