@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -289,7 +290,7 @@ namespace Data
                 xml.Root.Element("copys").Add(copyElement);
             }
 
-            if(!_filestream.CanRead)
+            if (!_filestream.CanRead)
                 _filestream = new FileStream(Path.Combine(BasicTeraData.Instance.ResourceDirectory, "config/hotkeys.xml"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
 
             _filestream.SetLength(0);
@@ -299,6 +300,19 @@ namespace Data
                 sr.Write(xml.Declaration + Environment.NewLine + xml);
             }
             _filestream.Close();
+        }
+
+        public bool IsAssigned(HotKey value)
+        {
+            if (value.Key == Keys.None) return false;
+            var hotkeys = typeof(HotkeysData).GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public)
+                                             .Where(p => p.PropertyType == typeof(HotKey))
+                                             .Select(p => (HotKey?)p.GetValue(this))
+                                             .ToList();
+
+            Copy.ForEach(ch => hotkeys.Add(ch.Hotkey));
+
+            return hotkeys.Any(v => v.Equals(value));
         }
     }
 }
