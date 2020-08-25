@@ -116,6 +116,9 @@ namespace DamageMeter
         public event Action MapChangedAction;
         public event Action OverloadedChanged;
 
+        /// <summary>
+        /// Calls <see cref="Application.Exit()"/> after disposing some objects.
+        /// </summary>
         public void Exit()
         {
             if (_keepAlive)

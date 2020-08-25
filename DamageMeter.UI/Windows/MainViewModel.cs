@@ -1,10 +1,11 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System;
 using DamageMeter.AutoUpdate;
 using DamageMeter.UI.Windows;
 using Data;
-using Lang;
 using Nostrum;
+using System.Windows.Input;
+using System.Windows.Media;
+using Lang;
 using Tera.Game;
 
 namespace DamageMeter.UI
@@ -55,6 +56,7 @@ namespace DamageMeter.UI
             }
         }
         public bool UserPaused => BasicTeraData.Instance.WindowData.UserPaused;
+        public bool ShowTimeLeft => BasicTeraData.Instance.WindowData.ShowTimeLeft;
         public double WindowOpacity => BasicTeraData.Instance.WindowData.MainWindowOpacity;
         public bool ShowAdds => PacketProcessor.Instance.TimedEncounter;
         public bool WaitingMapChangeTBVisibile
@@ -79,6 +81,9 @@ namespace DamageMeter.UI
         }
 
         private bool _bossGageVisible;
+        private string _timerText;
+        private string _totalDpsText;
+        private string _totalDamageText;
 
         public bool BossGageVisible
         {
@@ -87,6 +92,38 @@ namespace DamageMeter.UI
             {
                 if (_bossGageVisible == value) return;
                 _bossGageVisible = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+        public string TimerText
+        {
+            get => _timerText;
+            set
+            {
+                if (_timerText == value) return;
+                _timerText = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public string TotalDpsText
+        {
+            get => _totalDpsText;
+            set
+            {
+                if (_totalDpsText == value) return;
+                _totalDpsText = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public string TotalDamageText
+        {
+            get => _totalDamageText;
+            set
+            {
+                if (_totalDamageText == value) return;
+                _totalDamageText = value;
                 NotifyPropertyChanged();
             }
         }
@@ -101,6 +138,7 @@ namespace DamageMeter.UI
         public ICommand VerifyCloseCommand { get; }
 
         private bool _blurPlayerNames;
+        private int _queuedPackets;
 
         public bool BlurPlayerNames
         {
@@ -128,14 +166,43 @@ namespace DamageMeter.UI
             PacketProcessor.Instance.MapChangedAction += OnMapChanged;
             PacketProcessor.Instance.DisplayGeneralDataChanged += OnDisplayGeneralDataChanged;
             PacketProcessor.Instance.OverloadedChanged += OnOverloadedChanged;
+            PacketProcessor.Instance.TickUpdated += OnUpdate;
 
             TogglePauseCommand = new RelayCommand(_ => TogglePause());
             ToggleAddsCommand = new RelayCommand(_ => ToggleAdds());
             SetBossGageVisibilityCommand = new RelayCommand(visibility => SetBossGageVisibility((bool.Parse(visibility.ToString()))));
-            ShowBossHPBarCommand = new RelayCommand(_ => App.WindowManager.BossGage.ShowWindow());
-            ShowEntityStatsCommand = new RelayCommand(_ => App.WindowManager.EntityStats.ShowWindow());
-            ShowUploadHistoryCommand = new RelayCommand(_ => App.WindowManager.UploadHistory.ShowWindow());
+            ShowBossHPBarCommand = new RelayCommand(_ => App.HudContainer.BossGage.ShowWindow());
+            ShowEntityStatsCommand = new RelayCommand(_ => App.HudContainer.EntityStats.ShowWindow());
+            ShowUploadHistoryCommand = new RelayCommand(_ => App.HudContainer.UploadHistory.ShowWindow());
             VerifyCloseCommand = new RelayCommand(noConfirm => App.VerifyClose((bool.Parse(noConfirm.ToString()))));
+        }
+
+        private void OnUpdate(UiUpdateMessage message)
+        {
+            QueuedPackets = message.QueuedPackets;
+            var timeValue = BasicTeraData.Instance.WindowData.ShowTimeLeft && message.StatsSummary.EntityInformation.TimeLeft > 0
+                ? message.StatsSummary.EntityInformation.TimeLeft
+                : message.StatsSummary.EntityInformation.Interval;
+
+            TimerText = TimeSpan.FromSeconds(timeValue / TimeSpan.TicksPerSecond).ToString(@"mm\:ss");
+
+            TotalDpsText = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.Interval == 0
+                               ? message.StatsSummary.EntityInformation.TotalDamage
+                               : message.StatsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond / message.StatsSummary.EntityInformation.Interval) + LP.PerSecond;
+
+            TotalDamageText = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.TotalDamage);
+
+        }
+
+        public int QueuedPackets
+        {
+            get => _queuedPackets;
+            set
+            {
+                if (_queuedPackets == value) return;
+                _queuedPackets = value;
+                NotifyPropertyChanged();
+            }
         }
 
 
@@ -215,4 +282,5 @@ namespace DamageMeter.UI
         }
 
     }
+
 }

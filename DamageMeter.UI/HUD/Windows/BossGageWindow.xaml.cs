@@ -15,7 +15,7 @@ namespace DamageMeter.UI.HUD.Windows
             InitializeComponent();
 
             //Bosses.DataContext = HudManager.Instance.CurrentBosses;
-            Bosses.ItemsSource = HudManager.Instance.CurrentBosses;
+            Bosses.ItemsSource = DamageMeter.HudManager.Instance.CurrentBosses;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

@@ -151,13 +151,13 @@ namespace DamageMeter.UI
             if (Visible & Visibility == Visibility.Hidden) ShowWindow();
         }
 
-        public void SetClickThrou()
+        public virtual void SetClickThrou()
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExTransparent(hwnd);
         }
 
-        public void UnsetClickThrou()
+        public virtual void UnsetClickThrou()
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExVisible(hwnd);

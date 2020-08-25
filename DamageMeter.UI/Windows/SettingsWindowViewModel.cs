@@ -162,10 +162,10 @@ namespace DamageMeter.UI.Windows
                 if (Data.InvisibleUi == value) return;
                 Data.InvisibleUi = value;
                 NotifyPropertyChanged();
-                if (App.WindowManager.MainWindow.ForceWindowVisibilityHidden) return;
-                App.WindowManager.MainWindow.Visibility = value
+                if (App.HudContainer.MainWindow.ForceWindowVisibilityHidden) return;
+                App.HudContainer.MainWindow.Visibility = value
                     ? Visibility.Visible
-                    : App.WindowManager.MainWindow.Controls.Count > 0
+                    : App.HudContainer.MainWindow.Controls.Count > 0
                         ? Visibility.Visible
                         : Visibility.Hidden;
             }
@@ -334,7 +334,7 @@ namespace DamageMeter.UI.Windows
                 Data.NoAbnormalsInHUD = value;
                 NotifyPropertyChanged();
                 if (!value) return;
-                foreach (var boss in HudManager.Instance.CurrentBosses.ToSyncArray())
+                foreach (var boss in DamageMeter.HudManager.Instance.CurrentBosses.ToSyncArray())
                 {
                     boss.Buffs.DisposeAll();
                 }
@@ -824,7 +824,7 @@ namespace DamageMeter.UI.Windows
                         break;
                 }
             });
-            OpenUploadHistoryCommand = new RelayCommand(_ => App.WindowManager.UploadHistory.ShowWindow());
+            OpenUploadHistoryCommand = new RelayCommand(_ => App.HudContainer.UploadHistory.ShowWindow());
             var count = 0;
             Hotkeys.Copy.ForEach(h => CopyKeys.Add(new CopyKeyVM($"DPS paste {++count}", h)));
         }
