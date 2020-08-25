@@ -91,7 +91,7 @@ namespace DamageMeter.UI
             SettingsTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Settings.Source;
             //LinksTabIcon.Source = BasicTeraData.Instance.ImageDatabase.Links.Source;
 
-            OverlaySwitch.Height=0;// overlay need to be remade from scratch
+            OverlaySwitch.Height = 0;// overlay need to be remade from scratch
 
             TopLeftLogo.Source = BasicTeraData.Instance.ImageDatabase.Icon;
 
@@ -133,7 +133,7 @@ namespace DamageMeter.UI
 
         private void CloseAction(object sender, RoutedEventArgs e)
         {
-            _mainWindow.VerifyClose();
+            App.VerifyClose(false);
         }
 
         private void WikiAction(object sender, RoutedEventArgs e)
@@ -507,8 +507,9 @@ namespace DamageMeter.UI
 
         private void ClickOpenChatBox(object sender, RoutedEventArgs e)
         {
-            _mainWindow._chatbox = new Chatbox { Owner = _mainWindow };
-            _mainWindow._chatbox.ShowWindow();
+            //_mainWindow.ShowChat();
+            //_mainWindow._chatbox = new Chatbox { Owner = _mainWindow };
+            //_mainWindow._chatbox.ShowWindow();
         }
 
         private void EnableMuteSound(object sender, RoutedEventArgs e)

@@ -162,10 +162,10 @@ namespace DamageMeter.UI.Windows
                 if (Data.InvisibleUi == value) return;
                 Data.InvisibleUi = value;
                 NotifyPropertyChanged();
-                if (MainWindow.Instance.ForceWindowVisibilityHidden) return;
-                MainWindow.Instance.Visibility = value
+                if (App.WindowManager.MainWindow.ForceWindowVisibilityHidden) return;
+                App.WindowManager.MainWindow.Visibility = value
                     ? Visibility.Visible
-                    : MainWindow.Instance.Controls.Count > 0
+                    : App.WindowManager.MainWindow.Controls.Count > 0
                         ? Visibility.Visible
                         : Visibility.Hidden;
             }
@@ -770,8 +770,9 @@ namespace DamageMeter.UI.Windows
             });
             OpenChatBoxCommand = new RelayCommand(_ =>
             {
-                MainWindow.Instance._chatbox = new Chatbox();
-                MainWindow.Instance._chatbox.ShowWindow();
+                //MainWindow.Instance._chatbox = new Chatbox();
+                //MainWindow.Instance._chatbox.ShowWindow();
+                new Chatbox().ShowWindow(); // force only one?
             });
             BrowseLinkCommand = new RelayCommand(type =>
             {
@@ -793,7 +794,7 @@ namespace DamageMeter.UI.Windows
             CloseMeterCommand = new RelayCommand(_ =>
             {
                 var noConfirm = Keyboard.IsKeyDown(Key.LeftShift);
-                MainWindow.Instance.VerifyClose(noConfirm);
+                App.VerifyClose(noConfirm);
             });
             TogglePauseCommand = new RelayCommand(_ =>
             {
@@ -823,7 +824,7 @@ namespace DamageMeter.UI.Windows
                         break;
                 }
             });
-            OpenUploadHistoryCommand = new RelayCommand(_ => MainWindow.Instance.ShowUploadHistory());
+            OpenUploadHistoryCommand = new RelayCommand(_ => App.WindowManager.UploadHistory.ShowWindow());
             var count = 0;
             Hotkeys.Copy.ForEach(h => CopyKeys.Add(new CopyKeyVM($"DPS paste {++count}", h)));
         }

@@ -8,9 +8,6 @@ using Data;
 
 namespace DamageMeter.UI
 {
-    /// <summary>
-    ///     Logique d'interaction pour Chatbox.xaml
-    /// </summary>
     public partial class Chatbox
     {
         private bool _updated;
@@ -19,24 +16,34 @@ namespace DamageMeter.UI
         {
             InitializeComponent();
             CloseWindow.Source = BasicTeraData.Instance.ImageDatabase.Close.Source;
+
+            PacketProcessor.Instance.TickUpdated += Update;
+
         }
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
+            PacketProcessor.Instance.TickUpdated -= Update;
             Close();
         }
 
-        public void Update(List<ChatMessage> chatbox)
+        public void Update(UiUpdateMessage message)
         {
-            if (_updated) { return; }
-            _updated = true;
-            if (chatbox.Count == 0) Close();
-            for (var i = 0; i < chatbox.Count; i++)
+            Dispatcher.Invoke(() =>
             {
-                if (ChatboxList.Items.Count > i) { ((ChatMessageUi) ChatboxList.Items.GetItemAt(i)).Update(chatbox[i]); }
-                else { ChatboxList.Items.Add(new ChatMessageUi(chatbox[i])); }
-            }
-            SnapToScreen();
+                var chatbox = message.Chatbox;
+                if (_updated) { return; }
+
+                _updated = true;
+                if (chatbox.Count == 0) Close();
+                for (var i = 0; i < chatbox.Count; i++)
+                {
+                    if (ChatboxList.Items.Count > i) { ((ChatMessageUi) ChatboxList.Items.GetItemAt(i)).Update(chatbox[i]); }
+                    else { ChatboxList.Items.Add(new ChatMessageUi(chatbox[i])); }
+                }
+
+                SnapToScreen();
+            });
         }
 
         private void ChatboxList_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

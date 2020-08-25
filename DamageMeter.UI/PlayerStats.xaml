@@ -72,7 +72,7 @@
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}, Path=HideNames4Binding.IsChecked}" Value="True">
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}, Path=DataContext.(l:MainViewModel.BlurPlayerNames)}" Value="True">
                                 <!-- Add the BlurEffect -->
                                 <Setter Property="Effect">
                                     <Setter.Value>
@@ -80,7 +80,7 @@
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}, Path=HideNames4Binding.IsChecked}" Value="False">
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}, Path=DataContext.(l:MainViewModel.BlurPlayerNames)}" Value="False">
                                 <!-- Remove the BlurEffect -->
                                 <Setter Property="Effect" Value="{x:Null}"/>
                             </DataTrigger>

@@ -6,7 +6,8 @@
                      xmlns:ui="clr-namespace:DamageMeter.UI"
                      xmlns:controls="clr-namespace:DamageMeter.UI.HUD.Controls"
                      mc:Ignorable="d"
-                     Title="BossGageWindow" Height="Auto" Width="Auto"
+                     Title="BossGageWindow"
+                     Height="Auto" Width="Auto"
                      MinHeight="30" MinWidth="380"
                      SizeToContent="WidthAndHeight"
                      Topmost="True"
@@ -15,7 +16,14 @@
                      Background="#00000000"
                      MouseRightButtonDown="Window_MouseRightButtonDown"
                      Loaded="Window_Loaded"
-                     ResizeMode="NoResize">
+                     ResizeMode="NoResize" d:DataContext="{d:DesignInstance ui:MainViewModel}">
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Hide" 
+                      Command="{Binding SetBossGageVisibilityCommand}"
+                      CommandParameter="False"/>
+        </ContextMenu>
+    </Window.ContextMenu>
     <Window.Resources>
         <DataTemplate x:Key="BossGageDataTemplate">
             <controls:BossGage />
@@ -30,7 +38,18 @@
         <!--<Grid.CacheMode>
             <BitmapCache RenderAtScale="1"/>
         </Grid.CacheMode>-->
-        <ItemsControl Name="Bosses" ItemTemplate="{StaticResource BossGageDataTemplate}">
+        <ItemsControl Name="Bosses" 
+                      ItemTemplate="{StaticResource BossGageDataTemplate}">
+            <ItemsControl.Style>
+                <Style TargetType="FrameworkElement">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HideGeneralData}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ItemsControl.Style>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Background="Transparent" Orientation="Vertical" ItemHeight="Auto" Height="Auto" />

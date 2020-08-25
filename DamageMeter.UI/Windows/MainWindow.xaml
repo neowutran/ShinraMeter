@@ -9,14 +9,14 @@
                      xmlns:controls="clr-namespace:DamageMeter.UI.Controls"
                      xmlns:windows="clr-namespace:DamageMeter.UI.Windows"
                      mc:Ignorable="d"
+                     UseLayoutRounding="True"
                      Title="{Binding WindowTitle}"
                      MinHeight="60" MinWidth="219"
                      Loaded="MainWindow_OnLoaded"
                      Closed="MainWindow_OnClosed"
                      MouseEnter="MainWindow_OnMouseEnter"
                      MouseLeave="MainWindow_OnMouseLeave"
-                     d:DataContext="{d:DesignData MainViewModel}">
-
+                     d:DataContext="{d:DesignInstance ui:MainViewModel}">
     <Window.Resources>
         <converters:TransparencyToMarginConverter x:Key="BoolToMargin" />
         <Style TargetType="{x:Type ToolTip}">
@@ -261,7 +261,7 @@
         <Grid Grid.Row="0" Name="EGrid" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="29" />
+                <ColumnDefinition Width="0" />
             </Grid.ColumnDefinitions>
             <ComboBox DropDownClosed="ListEncounter_OnDropDownClosed" DropDownOpened="ListEncounter_OnDropDownOpened"
                       SelectionChanged="ListEncounter_OnSelectionChanged"
@@ -270,21 +270,6 @@
                       HorizontalContentAlignment="Left"
                       MinHeight="29" Height="5" Grid.Column="0" />
 
-            <Grid PreviewMouseLeftButtonDown="Close_MouseLeftButtonDown"
-                  Background="Transparent"
-                  Height="29"
-                  Width="29"
-                  Grid.Column="1"
-                  Style="{StaticResource ImageButton}"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Top">
-
-                <Path
-                    Stretch="Uniform" x:Name="CloseWindow"
-                    Data="{StaticResource Svg.Power}"
-                    Fill="White"
-                    Margin="5" />
-            </Grid>
         </Grid>
         <Grid Grid.Row="1" Name="SGrid" HorizontalAlignment="Stretch" Height="30">
             <Grid.ColumnDefinitions>
@@ -406,7 +391,7 @@
                                 MouseEnter="OnGraphMouseEnter"
                                 MouseLeave="OnGraphMouseLeave"
                                 DataContext="{Binding GraphViewModel, RelativeSource={RelativeSource AncestorType=ui:MainWindow}}" />
-        <UniformGrid Rows="1" Grid.Row="5" Name="Footer" Height="0">
+        <UniformGrid Rows="1" Grid.Row="5" Name="Footer" Height="0" Margin="-3 0 -5 0" >
             <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0" />
                 <ColumnDefinition Width="*" />
@@ -418,10 +403,13 @@
 
             <!--Blur button-->
             <ToggleButton x:Name="HideNames"
-                          HorizontalAlignment="Center" Style="{StaticResource ToggleButtonStyle}"
+                          ToolTip="{x:Static l:LP.Blur_player_names}"
+                          HorizontalAlignment="Center" 
+                          Style="{StaticResource ToggleButtonStyle}"
+                          IsChecked="{Binding BlurPlayerNames}"
                           VerticalAlignment="Stretch"
                           Height="25"
-                          Margin="2">
+                          Margin="3">
                 <Path Style="{StaticResource PathBaseStyle}"
                       Data="{StaticResource Svg.HideNames}"
                       Margin="6" />
@@ -430,6 +418,8 @@
             <!--Adds button-->
             <windows:FooterButton
                 Height="25"
+                Margin="3"
+
                 Command="{Binding ToggleAddsCommand}"
                 x:Name="Chrono"
                 Grid.Column="3">
@@ -489,15 +479,18 @@
             <windows:FooterButton x:Name="EntityStatsImage"
                                   Command="{Binding ShowEntityStatsCommand}"
                                   Height="25"
+                                  Margin="3"
                                   Style="{StaticResource ButtonMainStyle}"
                                   SvgIcon="{StaticResource Svg.EntityStats}" />
             <windows:FooterButton Command="{Binding ShowUploadHistoryCommand}"
+                                  Margin="3"
                                   Height="25"
                                   ToolTip="{x:Static l:LP.SystemTray_Site_export}"
                                   Style="{StaticResource ButtonMainStyle}"
                                   SvgIcon="{StaticResource Svg.History}" />
             <windows:FooterButton Command="{Binding ShowBossHPBarCommand}"
                                   ToolTip="{x:Static l:LP.BossHP}"
+                                  Margin="3"
                                   Height="25"
                                   Style="{StaticResource ButtonMainStyle}"
                                   SvgIcon="{StaticResource Svg.HPBar}" >
@@ -505,6 +498,7 @@
 
             <!--Pause button-->
             <windows:FooterButton Command="{Binding TogglePauseCommand}"
+                                  Margin="3"
                                   VerticalAlignment="Stretch" x:Name="UserPauseBtn"
                                   Height="25">
                 <windows:FooterButton.Style>
@@ -518,6 +512,25 @@
                     </Style>
                 </windows:FooterButton.Style>
             </windows:FooterButton>
+
+            <windows:FooterButton 
+                Background="Transparent"
+                Height="25"
+                Width="25"
+                Grid.Column="1"
+                Margin="3"
+                Command="{Binding VerifyCloseCommand}"
+                CommandParameter="False"
+                Style="{StaticResource ButtonMainStyle}"
+                >
+
+                <Path
+                    Stretch="Uniform"
+                    Data="{StaticResource Svg.Power}"
+                    Fill="#ff55"
+                    Margin="3" />
+            </windows:FooterButton>
+
         </UniformGrid>
         <!--<ui:NotifyIcon x:Name="NotifyIcon" />-->
     </Grid>

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +18,12 @@ using log4net;
 using Lang;
 using System.Windows.Threading;
 using DamageMeter.Sniffing;
+using DamageMeter.TeraDpsApi;
+using DamageMeter.UI.EntityStats;
+using DamageMeter.UI.HUD.Windows;
 using Microsoft.Win32;
+using Tera.Game;
+using Point = System.Windows.Point;
 
 namespace DamageMeter.UI
 {
@@ -25,6 +32,7 @@ namespace DamageMeter.UI
         private static Mutex _unique;
         private static bool _isNewInstance;
         public static SplashScreen SplashScreen;
+        public static WindowsManager WindowManager;
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -32,7 +40,7 @@ namespace DamageMeter.UI
 
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
-            var ex = (Exception) e.ExceptionObject;
+            var ex = (Exception)e.ExceptionObject;
             BasicTeraData.LogError("##### CRASH #####\r\n" + ex.Message + "\r\n" + ex.StackTrace + "\r\n" + ex.Source + "\r\n" + ex + "\r\n" + ex.Data + "\r\n" +
                                    ex.InnerException + "\r\n" + ex.TargetSite);
             MessageBox.Show(LP.MainWindow_Fatal_error);
@@ -47,18 +55,16 @@ namespace DamageMeter.UI
 
         private static void SetAlignment()
         {
-            var ifLeft = SystemParameters.MenuDropAlignment;
-            if (!ifLeft) return;
-            var t = typeof(SystemParameters);
-            var field = t.GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static);
-            if (field != null) field.SetValue(null, false);
+            var isLeft = SystemParameters.MenuDropAlignment;
+            if (!isLeft) return;
+            typeof(SystemParameters).GetField("_menuDropAlignment", BindingFlags.NonPublic | BindingFlags.Static)?.SetValue(null, false);
         }
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
             bool notUpdating;
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
-            currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
+            if(!Debugger.IsAttached) currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
 
             var updating = new Mutex(true, "ShinraMeterUpdating", out notUpdating);
             _unique = new Mutex(true, "ShinraMeter", out _isNewInstance);
@@ -90,7 +96,8 @@ namespace DamageMeter.UI
                 FormatHelpers.Instance.CultureInfo = LP.Culture;
                 if (!BasicTeraData.Instance.WindowData.AutoUpdate) { return; }
                 var shutdown = false;
-                try {
+                try
+                {
                     shutdown = await CheckUpdate();
                 }
                 catch (Exception ex)
@@ -157,18 +164,20 @@ namespace DamageMeter.UI
             if (isUpToDate) { return false; }
 
             SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
-            bool result=App.Current.Dispatcher.Invoke(() =>
-            {
-                var patchnotes = new UpdatePopup();
-                patchnotes.ShowDialog();
-                if ((patchnotes.DialogResult??false)!=true) return false;
-                return UpdateManager.Update();
-            });
+            bool result = App.Current.Dispatcher.Invoke(() =>
+              {
+                  var patchnotes = new UpdatePopup();
+                  patchnotes.ShowDialog();
+                  if ((patchnotes.DialogResult ?? false) != true) return false;
+                  return UpdateManager.Update();
+              });
             return result;
         }
 
         private void App_OnExit(object sender, ExitEventArgs e)
         {
+            WindowManager.TrayIcon.Dispose();
+
             if (_isNewInstance) { _unique.ReleaseMutex(); }
         }
 
@@ -178,13 +187,16 @@ namespace DamageMeter.UI
             System.Windows.Forms.Application.ThreadException += GlobalThreadExceptionHandler;
             // force LeftHandedness to avoid menus/tooltips/popup positions to be messed up on some systems
             SetAlignment();
-            // TODO: ????
-            Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale;
-            if (BasicTeraData.Instance.WindowData.LowPriority) { Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle; }
+            Application.Current.Resources["Scale"] = BasicTeraData.Instance.WindowData.Scale; // TODO: ????
+
+            if (BasicTeraData.Instance.WindowData.LowPriority) 
+                Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
 
             TeraSniffer.Instance.Enabled = true;
-            TeraSniffer.Instance.Warning  += (str) => BasicTeraData.LogError(str, false, true);
+            TeraSniffer.Instance.Warning += (str) => BasicTeraData.LogError(str, false, true);
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+
+            WindowManager = new WindowsManager();
 
         }
 
@@ -199,6 +211,90 @@ namespace DamageMeter.UI
                 TeraSniffer.Instance.CleanupForcefully();
         }
 
+
+        public static void VerifyClose(bool noConfirm)
+        {
+            if (!noConfirm)
+            {
+                if (MessageBox.Show(LP.MainWindow_Do_you_want_to_close_the_application, LP.MainWindow_Close_Shinra_Meter_V + UpdateManager.Version,
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) { return; }
+            }
+
+            WindowManager.SaveWindowsPos();
+            WindowManager.MainWindow.Close();
+        }
+    }
+
+    public class WindowsManager
+    {
+        public MainWindow MainWindow; // set from its own ctor
+
+        public readonly EntityStatsMain EntityStats;
+        public readonly BossGageWindow BossGage;
+        public readonly PopupNotification Notifications;
+        public readonly TeradpsHistory UploadHistory;
+        public readonly TrayIcon TrayIcon;
+
+        public WindowsManager()
+        {
+            EntityStats = new EntityStatsMain { Scale = BasicTeraData.Instance.WindowData.DebuffsStatus.Scale, DontClose = true };
+            BossGage = new BossGageWindow { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale, DontClose = true };
+            Notifications = new PopupNotification { DontClose = true };
+            UploadHistory = new TeradpsHistory(new ConcurrentDictionary<UploadData, NpcEntity>()) { Scale = BasicTeraData.Instance.WindowData.HistoryStatus.Scale, DontClose = true };
+            
+            TrayIcon = new TrayIcon();
+
+            PacketProcessor.Instance.TickUpdated += Update;
+
+            PacketProcessor.Instance.SetClickThrouAction += SetClickThrou;
+            PacketProcessor.Instance.UnsetClickThrouAction += UnsetClickThrou;
+
+            PacketProcessor.Instance.GuildIconAction += OnGuildIconChanged;
+
+            PacketProcessor.Instance.Connected += OnConnected;
+
+        }
+
+
+        private void OnConnected(string servername)
+        {
+            TrayIcon.Text = $"Shinra Meter v{UpdateManager.Version}: {servername}";
+        }
+
+        private void OnGuildIconChanged(Bitmap icon)
+        {
+            TrayIcon.Icon = icon?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
+        }
+
+        private void Update(UiUpdateMessage message)
+        {
+            EntityStats.Update(message.StatsSummary.EntityInformation, message.Abnormals);
+            UploadHistory.Update(message.BossHistory);
+            Notifications.AddNotification(message.Flash);
+
+        }
+
+        public void UnsetClickThrou()
+        {
+            EntityStats.UnsetClickThrou();
+            Notifications.UnsetClickThrou();
+            BossGage.UnsetClickThrou();
+        }
+
+        public void SetClickThrou()
+        {
+            EntityStats.SetClickThrou();
+            Notifications.SetClickThrou();
+            BossGage.SetClickThrou();
+        }
+
+        public void SaveWindowsPos()
+        {
+            BasicTeraData.Instance.WindowData.BossGageStatus = new WindowStatus(BossGage.LastSnappedPoint ?? new Point(BossGage.Left, BossGage.Top), BossGage.Visible, BossGage.Scale);
+            BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(UploadHistory.LastSnappedPoint ?? new Point(UploadHistory.Left, UploadHistory.Top), UploadHistory.Visible, UploadHistory.Scale);
+            BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(EntityStats.LastSnappedPoint ?? new Point(EntityStats.Left, EntityStats.Top), EntityStats.Visible, EntityStats.Scale);
+            BasicTeraData.Instance.WindowData.PopupNotificationLocation = Notifications.LastSnappedPoint ?? new Point(Notifications.Left, Notifications.Top);
+        }
 
     }
 }

@@ -14,10 +14,20 @@ namespace DamageMeter.UI
     {
         public PopupNotification()
         {
+            Loaded += OnLoaded;
             InitializeComponent();
             notificationBalloons = new SynchronizedObservableCollection<Balloon>();
             notificationBalloons.CollectionChanged += NotificationBalloons_CollectionChanged;
             content.ItemsSource = notificationBalloons;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
+            this.Left = this.LastSnappedPoint?.X ?? 0;
+            this.Top = this.LastSnappedPoint?.Y ?? 0;
+            this.Show();
+            this.Hide();
         }
 
         private static PopupNotification _instance = null;
@@ -45,24 +55,15 @@ namespace DamageMeter.UI
 
         public void AddNotification(NotifyFlashMessage flash)
         {
-            if (flash == null) { return; }
-            if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
+            Dispatcher.Invoke(() =>
             {
-                var existing = notificationBalloons.ToSyncArray().FirstOrDefault(x => x.TitleText == flash.Balloon.TitleText && x.Icon == flash.Balloon.Icon);
-                if (existing == null)
+
+                if (flash == null) { return; }
+
+                if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
                 {
-                    if (!SnappedToBottom)
-                    {
-                        notificationBalloons.Add(flash.Balloon);
-                    }
-                    else
-                    {
-                        notificationBalloons.Insert(0, flash.Balloon);
-                    }
-                }
-                else
-                {
-                    if(flash.Balloon.EventType == EventType.Whisper)
+                    var existing = notificationBalloons.ToSyncArray().FirstOrDefault(x => x.TitleText == flash.Balloon.TitleText && x.Icon == flash.Balloon.Icon);
+                    if (existing == null)
                     {
                         if (!SnappedToBottom)
                         {
@@ -75,15 +76,31 @@ namespace DamageMeter.UI
                     }
                     else
                     {
-                        existing.UpdateBody(flash.Balloon.BodyText);
-                        existing.Refresh();
+                        if (flash.Balloon.EventType == EventType.Whisper)
+                        {
+                            if (!SnappedToBottom)
+                            {
+                                notificationBalloons.Add(flash.Balloon);
+                            }
+                            else
+                            {
+                                notificationBalloons.Insert(0, flash.Balloon);
+                            }
+                        }
+                        else
+                        {
+                            existing.UpdateBody(flash.Balloon.BodyText);
+                            existing.Refresh();
+                        }
                     }
+
+                    Topmost = false;
+                    Topmost = true;
+                    if (!IsVisible) ShowWindow();
                 }
-                Topmost = false;
-                Topmost = true;
-                if (!IsVisible) ShowWindow();
-            }
-            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null) { Task.Run(() => flash.Sound.Play()); }
+
+                if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null) { Task.Run(() => flash.Sound.Play()); }
+            });
         }
 
         public double DHeight
