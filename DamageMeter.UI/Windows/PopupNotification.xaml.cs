@@ -129,5 +129,10 @@ namespace DamageMeter.UI
             else { spacer.Height = 0; bottomspacer.Height = 0;}
             return base.MeasureOverride(availableSize);
         }
+
+        public override void SaveWindowPos()
+        {
+            BasicTeraData.Instance.WindowData.PopupNotificationLocation = LastSnappedPoint ?? new Point(Left, Top);
+        }
     }
 }

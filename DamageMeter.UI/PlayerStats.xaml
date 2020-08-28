@@ -68,6 +68,7 @@
             <Label Focusable="False" Grid.Column="2" FontSize="14" VerticalAlignment="Center"
                    HorizontalContentAlignment="Left" Margin="2 0"
                    x:Name="LabelName" Foreground="GreenYellow"
+                   HorizontalAlignment="Left"
                    MinHeight="29">
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">

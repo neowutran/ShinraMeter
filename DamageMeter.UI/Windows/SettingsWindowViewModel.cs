@@ -90,8 +90,8 @@ namespace DamageMeter.UI.Windows
                 Data.LowPriority = value;
                 NotifyPropertyChanged();
 
-                Process.GetCurrentProcess().PriorityClass = value 
-                    ? ProcessPriorityClass.Idle 
+                Process.GetCurrentProcess().PriorityClass = value
+                    ? ProcessPriorityClass.Idle
                     : ProcessPriorityClass.Normal;
 
 
@@ -162,12 +162,20 @@ namespace DamageMeter.UI.Windows
                 if (Data.InvisibleUi == value) return;
                 Data.InvisibleUi = value;
                 NotifyPropertyChanged();
-                if (App.HudContainer.MainWindow.ForceWindowVisibilityHidden) return;
-                App.HudContainer.MainWindow.Visibility = value
-                    ? Visibility.Visible
-                    : App.HudContainer.MainWindow.Controls.Count > 0
-                        ? Visibility.Visible
-                        : Visibility.Hidden;
+                if (App.HudContainer.MainWindow.ForceHidden) return;
+                if (value || App.HudContainer.MainWindow.Controls.Count > 0)
+                {
+                    App.HudContainer.MainWindow.ShowWindow();
+                }
+                else
+                {
+                    App.HudContainer.MainWindow.HideWindow();
+                }
+                //App.HudContainer.MainWindow.Visibility = value
+                //    ? Visibility.Visible
+                //    : App.HudContainer.MainWindow.Controls.Count > 0
+                //        ? Visibility.Visible
+                //        : Visibility.Hidden;
             }
         }
         public bool ShowAlways
@@ -210,6 +218,7 @@ namespace DamageMeter.UI.Windows
                 if (Data.NumberOfPlayersDisplayed == value) return;
                 Data.NumberOfPlayersDisplayed = value;
                 NotifyPropertyChanged();
+                NumberOfPlayersDisplayedChanged?.Invoke(value);
             }
         }
 
@@ -713,6 +722,7 @@ namespace DamageMeter.UI.Windows
 
         public static event Action<DpsServerViewModel> ServerRemoved;
         public static event Action<double> WindowScaleChanged;
+        public static event Action<int> NumberOfPlayersDisplayedChanged;
         public static event Action<double> MainWindowOpacityChanged;
         public static event Action<double> OtherWindowsOpacityChanged;
         public static event Action PauseChanged;
@@ -749,7 +759,7 @@ namespace DamageMeter.UI.Windows
 
         public SettingsWindowViewModel()
         {
-            DataExporter.DpsServers.Where(x=>!x.AnonymousUpload).ToList().ForEach(x => DpsServers.Add(new DpsServerViewModel(x)));
+            DataExporter.DpsServers.Where(x => !x.AnonymousUpload).ToList().ForEach(x => DpsServers.Add(new DpsServerViewModel(x)));
             ServerRemoved += OnServerRemoved;
             PauseChanged += OnPauseChanged;
 
@@ -770,8 +780,6 @@ namespace DamageMeter.UI.Windows
             });
             OpenChatBoxCommand = new RelayCommand(_ =>
             {
-                //MainWindow.Instance._chatbox = new Chatbox();
-                //MainWindow.Instance._chatbox.ShowWindow();
                 new Chatbox().ShowWindow(); // force only one?
             });
             BrowseLinkCommand = new RelayCommand(type =>
@@ -791,22 +799,9 @@ namespace DamageMeter.UI.Windows
             {
                 PacketProcessor.Instance.NeedToReset = true;
             });
-            CloseMeterCommand = new RelayCommand(_ =>
-            {
-                var noConfirm = Keyboard.IsKeyDown(Key.LeftShift);
-                App.VerifyClose(noConfirm);
-            });
-            TogglePauseCommand = new RelayCommand(_ =>
-            {
-                //BasicTeraData.Instance.WindowData.UserPaused = !BasicTeraData.Instance.WindowData.UserPaused;
-                //if (BasicTeraData.Instance.WindowData.UserPaused)
-                //{
-                //    PacketProcessor.Instance.NeedPause = true;
-                //}
-                MainViewModel.Instance.TogglePause();
-                //MainViewModel.Instance.NotifyPropertyChangedEx(nameof(MainViewModel.UserPaused));
-                //MainWindow.Instance.PauseState(BasicTeraData.Instance.WindowData.UserPaused);
-            });
+            CloseMeterCommand = MainViewModel.Instance.VerifyCloseCommand;
+            TogglePauseCommand = MainViewModel.Instance.TogglePauseCommand;
+
             ExportCurrentCommand = new RelayCommand(target =>
             {
                 switch (target.ToString())
@@ -929,7 +924,7 @@ namespace DamageMeter.UI.Windows
             get => _isShiftDown;
             set
             {
-                if(_isShiftDown == value) return;
+                if (_isShiftDown == value) return;
                 _isShiftDown = value;
                 NotifyPropertyChanged();
             }

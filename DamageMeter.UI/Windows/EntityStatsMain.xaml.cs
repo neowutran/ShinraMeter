@@ -69,5 +69,10 @@ namespace DamageMeter.UI.EntityStats
         {
             HideWindow();
         }
+
+        public override void SaveWindowPos()
+        {
+            BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(LastSnappedPoint ?? new Point(Left, Top), Visible, Scale);
+        }
     }
 }

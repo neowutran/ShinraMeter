@@ -16,19 +16,22 @@ namespace DamageMeter.UI
 {
     public class ClickThrouWindow : Window, INotifyPropertyChanged
     {
-        private const int GWL_EXSTYLE = -20;
-        private const int WS_EX_NOACTIVATE = 0x08000000;
+        private readonly Dispatcher _dispatcher;
+
+
+        public Point? LastSnappedPoint = null;
 
         private double _scale = 1;
+        private bool _snappedToBottom;
+        protected bool _dragged = false;
+        private bool _dragging = false;
+        private int _oldHeight;
+        private int _oldWidth;
+        private Thickness _margin;
+        private double _opacity;
 
-        private readonly Dispatcher _dispatcher;
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void InvokePropertyChanged([CallerMemberName] string name = null)
-        {
-            _dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)), DispatcherPriority.DataBind);
-
-        }
+        public bool Visible;
+        protected virtual bool Empty => false;
         public double Scale
         {
             get => _scale;
@@ -39,8 +42,6 @@ namespace DamageMeter.UI
                 InvokePropertyChanged();
             }
         }
-
-        private bool _snappedToBottom;
         public bool SnappedToBottom
         {
             get => _snappedToBottom;
@@ -53,10 +54,11 @@ namespace DamageMeter.UI
         }
 
         public bool DontClose = false;
+        
         public ClickThrouWindow()
         {
             SnapsToDevicePixels = true;
-            AllowsTransparency = GetType().Name == "PopupNotification" || BasicTeraData.Instance.WindowData.AllowTransparency;
+            AllowsTransparency = GetType().Name == nameof(PopupNotification) || BasicTeraData.Instance.WindowData.AllowTransparency;
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight - 200;
             Closing += ClickThrouWindow_Closing;
             WindowStyle = WindowStyle.None;
@@ -79,10 +81,11 @@ namespace DamageMeter.UI
             WindowStartupLocation = WindowStartupLocation.Manual;
             ResizeMode = ResizeMode.NoResize;
             _dispatcher = Dispatcher.CurrentDispatcher;
-            _opacity = GetType().Name == "MainWindow" ? 1 : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
+            _opacity = GetType().Name == nameof(MainWindow) ? 1 : BasicTeraData.Instance.WindowData.OtherWindowOpacity;
             Scale = BasicTeraData.Instance.WindowData.Scale;
 
-            if (GetType().Name != "MainWindow") SettingsWindowViewModel.OtherWindowsOpacityChanged += OnOpacityChanged;
+            if (GetType().Name != nameof(MainWindow)) 
+                SettingsWindowViewModel.OtherWindowsOpacityChanged += OnOpacityChanged;
         }
 
         private void OnOpacityChanged(double val)
@@ -90,17 +93,6 @@ namespace DamageMeter.UI
             _opacity = val;
             Dispatcher.InvokeIfRequired(() => OpacityAnimation(val), DispatcherPriority.DataBind);
         }
-
-        public Point? LastSnappedPoint = null;
-        internal bool _dragged = false;
-        private bool _dragging = false;
-        private int _oldHeight;
-        private int _oldWidth;
-        private Thickness _margin;
-        private double _opacity;
-        public bool Visible;
-        protected virtual bool Empty => false;
-
         public void SnapToScreen()
         {
             if (_dragging) return;
@@ -156,7 +148,6 @@ namespace DamageMeter.UI
             var hwnd = new WindowInteropHelper(this).Handle;
             WindowsServices.SetWindowExTransparent(hwnd);
         }
-
         public virtual void UnsetClickThrou()
         {
             var hwnd = new WindowInteropHelper(this).Handle;
@@ -189,15 +180,9 @@ namespace DamageMeter.UI
                 return;
             }
             Closing -= ClickThrouWindow_Closing;
-            if(GetType().Name != "MainWindow")
+            if(GetType().Name != nameof(MainWindow))
                 SettingsWindowViewModel.OtherWindowsOpacityChanged -= OnOpacityChanged;
             
-            //foreach (ClickThrouWindow window in ((ClickThrouWindow)sender).OwnedWindows)
-            //{
-            //    window.DontClose = false;
-            //    window.Close();
-            //} // done globally on MainWindow closing
-
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
                 _dispatcher.BeginInvoke(new Action(() =>
@@ -222,7 +207,10 @@ namespace DamageMeter.UI
                     BeginAnimation(OpacityProperty, a);
                 }));
             }
-            else { Visibility = Visibility.Hidden; }
+            else
+            {
+                Visibility = Visibility.Hidden;
+            }
         }
 
         public void ShowWindow()
@@ -232,8 +220,10 @@ namespace DamageMeter.UI
             {
                 if (BasicTeraData.Instance.WindowData.AllowTransparency)
                 {
-                    //Opacity = 0;
-                    _dispatcher.BeginInvoke(new Action(() => { BeginAnimation(OpacityProperty, OpacityAnimation(_opacity)); }));
+                    _dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        BeginAnimation(OpacityProperty, OpacityAnimation(_opacity));
+                    }));
                 }
                 Visibility = Visibility.Visible;
             }
@@ -253,22 +243,27 @@ namespace DamageMeter.UI
 
             //Set the window style to noactivate.
             var helper = new WindowInteropHelper(this);
-            SetWindowLong(helper.Handle, GWL_EXSTYLE, GetWindowLong(helper.Handle, GWL_EXSTYLE) | WS_EX_NOACTIVATE);
+            WindowsServices.SetWindowLong(helper.Handle, WindowsServices.GWL_EXSTYLE, WindowsServices.GetWindowLong(helper.Handle, WindowsServices.GWL_EXSTYLE) | WindowsServices.WS_EX_NOACTIVATE);
         }
 
         private static DoubleAnimation OpacityAnimation(double to)
         {
-            return new DoubleAnimation(to, TimeSpan.FromMilliseconds(300)) { EasingFunction = new QuadraticEase() };
+            return new DoubleAnimation(to, TimeSpan.FromMilliseconds(250)) { EasingFunction = new QuadraticEase() };
         }
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        public virtual void SaveWindowPos()
+        {
 
-        [DllImport("user32.dll")]
-        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
+        #region INPC
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void InvokePropertyChanged([CallerMemberName] string name = null)
+        {
+            _dispatcher.InvokeIfRequired(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name)), DispatcherPriority.DataBind);
+
+        }
+        #endregion
     }
 }

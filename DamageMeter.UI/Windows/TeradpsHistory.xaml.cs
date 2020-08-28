@@ -6,11 +6,10 @@ using Tera.Game;
 
 namespace DamageMeter.UI
 {
-    /// <summary>
-    ///     Logique d'interaction pour TeradpsHistory.xaml
-    /// </summary>
     public partial class TeradpsHistory
     {
+        protected override bool Empty => !TeraDpsHistory.HasItems;
+
         public TeradpsHistory(ConcurrentDictionary<UploadData, NpcEntity> bossHistory)
         {
             Loaded += OnLoaded;
@@ -23,7 +22,7 @@ namespace DamageMeter.UI
         {
             this.LastSnappedPoint = BasicTeraData.Instance.WindowData.HistoryStatus.Location;
             this.Left = this.LastSnappedPoint?.X ?? 0;
-            this.Top =  this.LastSnappedPoint?.Y ?? 0;
+            this.Top = this.LastSnappedPoint?.Y ?? 0;
             this.Show();
             this.Hide();
             if (BasicTeraData.Instance.WindowData.HistoryStatus.Visible) this.ShowWindow();
@@ -44,6 +43,9 @@ namespace DamageMeter.UI
             });
         }
 
-        protected override bool Empty => !TeraDpsHistory.HasItems;
+        public override void SaveWindowPos()
+        {
+            BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(LastSnappedPoint ?? new Point(Left, Top), Visible, Scale);
+        }
     }
 }

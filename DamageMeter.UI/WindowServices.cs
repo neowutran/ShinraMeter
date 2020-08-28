@@ -6,13 +6,15 @@ namespace DamageMeter.UI
     public static class WindowsServices
     {
         private const int WS_EX_TRANSPARENT = 0x00000020;
-        private const int GWL_EXSTYLE = -20;
+        public const int GWL_EXSTYLE = -20;
+        public const int WS_EX_NOACTIVATE = 0x08000000;
+
 
         [DllImport("user32.dll")]
-        private static extern int GetWindowLong(IntPtr hwnd, int index);
+        public static extern int GetWindowLong(IntPtr hwnd, int index);
 
         [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+        public static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
         public static void SetWindowExTransparent(IntPtr hwnd)
         {
@@ -35,5 +37,9 @@ namespace DamageMeter.UI
             handled = true;
             return new IntPtr(MA_NOACTIVATE);
         }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }

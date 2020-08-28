@@ -596,6 +596,9 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="hilight" Property="Background" Value="#1fff" />
                             </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value=".3" />
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>

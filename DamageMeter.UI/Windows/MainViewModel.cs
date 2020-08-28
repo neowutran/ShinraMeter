@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Data;
 using DamageMeter.AutoUpdate;
 using DamageMeter.UI.Windows;
 using Data;
@@ -20,8 +25,20 @@ namespace DamageMeter.UI
         private bool _mapChanged;
         private bool _hideGeneralData;
         private EntityId _hideEid;
-        private bool _enableChatAfterOverload = false;
-
+        private bool _enableChatAfterOverload;
+        private bool _bossGageVisible;
+        private string _timerText;
+        private string _totalDpsText;
+        private string _totalDamageText;
+        private bool _isGraphVisible;
+        private bool _blurPlayerNames;
+        private int _queuedPackets;
+        private ImageSource _windowIcon;
+        private NpcEntity _selectedEncounter; // TODO: replace NpcEntity with an EncounterViewModel
+        /// <summary>
+        /// This will be used for "TOTAL" encounter
+        /// </summary>
+        public static readonly NpcEntity TotalEncounter = new NpcEntity(EntityId.Empty, EntityId.Empty, null, new NpcInfo(0, 0, false, 0, LP.TotalEncounter, ""), new Vector3f(), new Angle()); // TODO: replace NpcEntity with an EncounterViewModel
 
         public string WindowTitle
         {
@@ -56,8 +73,18 @@ namespace DamageMeter.UI
             }
         }
         public bool UserPaused => BasicTeraData.Instance.WindowData.UserPaused;
-        public bool ShowTimeLeft => BasicTeraData.Instance.WindowData.ShowTimeLeft;
+        public bool ShowTimeLeft
+        {
+            get => BasicTeraData.Instance.WindowData.ShowTimeLeft;
+            set
+            {
+                if (BasicTeraData.Instance.WindowData.ShowTimeLeft == value) return;
+                BasicTeraData.Instance.WindowData.ShowTimeLeft = value;
+                NotifyPropertyChanged();
+            }
+        }
         public double WindowOpacity => BasicTeraData.Instance.WindowData.MainWindowOpacity;
+        public int NumberOfPlayersDisplayed => BasicTeraData.Instance.WindowData.NumberOfPlayersDisplayed;
         public bool ShowAdds => PacketProcessor.Instance.TimedEncounter;
         public bool WaitingMapChangeTBVisibile
         {
@@ -79,12 +106,6 @@ namespace DamageMeter.UI
                 NotifyPropertyChanged();
             }
         }
-
-        private bool _bossGageVisible;
-        private string _timerText;
-        private string _totalDpsText;
-        private string _totalDamageText;
-
         public bool BossGageVisible
         {
             get => _bossGageVisible;
@@ -95,8 +116,6 @@ namespace DamageMeter.UI
                 NotifyPropertyChanged();
             }
         }
-
-
         public string TimerText
         {
             get => _timerText;
@@ -127,19 +146,16 @@ namespace DamageMeter.UI
                 NotifyPropertyChanged();
             }
         }
-
-
-        public ICommand TogglePauseCommand { get; }
-        public ICommand ToggleAddsCommand { get; }
-        public ICommand SetBossGageVisibilityCommand { get; }
-        public ICommand ShowEntityStatsCommand { get; }
-        public ICommand ShowUploadHistoryCommand { get; }
-        public ICommand ShowBossHPBarCommand { get; }
-        public ICommand VerifyCloseCommand { get; }
-
-        private bool _blurPlayerNames;
-        private int _queuedPackets;
-
+        public bool IsGraphVisible
+        {
+            get => _isGraphVisible;
+            set
+            {
+                if (_isGraphVisible == value) return;
+                _isGraphVisible = value;
+                NotifyPropertyChanged();
+            }
+        }
         public bool BlurPlayerNames
         {
             get => _blurPlayerNames;
@@ -150,8 +166,48 @@ namespace DamageMeter.UI
                 NotifyPropertyChanged();
             }
         }
+        public int QueuedPackets
+        {
+            get => _queuedPackets;
+            set
+            {
+                if (_queuedPackets == value) return;
+                _queuedPackets = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public ImageSource WindowIcon
+        {
+            get => _windowIcon;
+            set
+            {
+                if (_windowIcon == value) return;
+                _windowIcon = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
+        public SynchronizedObservableCollection<NpcEntity> Encounters { get; } // TODO: replace NpcEntity with an EncounterViewModel
+        public NpcEntity SelectedEncounter // TODO: replace NpcEntity with an EncounterViewModel
+        {
+            get => _selectedEncounter;
+            set
+            {
+                if (_selectedEncounter == value) return;
+                _selectedEncounter = value;
+                NotifyPropertyChanged();
+            }
+        } 
+        public GraphViewModel GraphData { get; }
 
-
+        public ICommand TogglePauseCommand { get; }
+        public ICommand ToggleAddsCommand { get; }
+        public ICommand SetBossGageVisibilityCommand { get; }
+        public ICommand ShowEntityStatsCommand { get; }
+        public ICommand ShowUploadHistoryCommand { get; }
+        public ICommand ShowBossHPBarCommand { get; }
+        public ICommand VerifyCloseCommand { get; }
+        public ICommand ChangeTimeLeftCommand { get; }
 
         public MainViewModel()
         {
@@ -161,6 +217,10 @@ namespace DamageMeter.UI
 
             WindowTitle = "Shinra Meter v" + UpdateManager.Version;
 
+            GraphData = new GraphViewModel();
+            Encounters = new SynchronizedObservableCollection<NpcEntity>();
+
+
             PacketProcessor.Instance.Connected += OnConnected;
             PacketProcessor.Instance.PauseAction += OnPaused;
             PacketProcessor.Instance.MapChangedAction += OnMapChanged;
@@ -168,13 +228,21 @@ namespace DamageMeter.UI
             PacketProcessor.Instance.OverloadedChanged += OnOverloadedChanged;
             PacketProcessor.Instance.TickUpdated += OnUpdate;
 
+            SettingsWindowViewModel.NumberOfPlayersDisplayedChanged += OnNumberOfPlayersDisplayedChanged;
+
             TogglePauseCommand = new RelayCommand(_ => TogglePause());
             ToggleAddsCommand = new RelayCommand(_ => ToggleAdds());
             SetBossGageVisibilityCommand = new RelayCommand(visibility => SetBossGageVisibility((bool.Parse(visibility.ToString()))));
             ShowBossHPBarCommand = new RelayCommand(_ => App.HudContainer.BossGage.ShowWindow());
             ShowEntityStatsCommand = new RelayCommand(_ => App.HudContainer.EntityStats.ShowWindow());
             ShowUploadHistoryCommand = new RelayCommand(_ => App.HudContainer.UploadHistory.ShowWindow());
-            VerifyCloseCommand = new RelayCommand(noConfirm => App.VerifyClose((bool.Parse(noConfirm.ToString()))));
+            VerifyCloseCommand = new RelayCommand(_ => App.VerifyClose(Keyboard.IsKeyDown(Key.LeftShift)));
+            ChangeTimeLeftCommand = new RelayCommand(_ => ShowTimeLeft = !ShowTimeLeft);
+        }
+
+        private void OnNumberOfPlayersDisplayedChanged(int v)
+        {
+            NotifyPropertyChanged(nameof(NumberOfPlayersDisplayed));
         }
 
         private void OnUpdate(UiUpdateMessage message)
@@ -192,26 +260,82 @@ namespace DamageMeter.UI
 
             TotalDamageText = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.TotalDamage);
 
-        }
-
-        public int QueuedPackets
-        {
-            get => _queuedPackets;
-            set
+            if (BasicTeraData.Instance.WindowData.RealtimeGraphEnabled)
             {
-                if (_queuedPackets == value) return;
-                _queuedPackets = value;
-                NotifyPropertyChanged();
+                GraphData.Update(message);
+                IsGraphVisible = true;
             }
+            else
+            {
+                IsGraphVisible = false;
+                GraphData.Reset();
+            }
+
+            UpdateEncounters(message);
+        }
+        private void UpdateEncounters(UiUpdateMessage message)
+        {
+            var currentBoss = message.StatsSummary.EntityInformation.Entity;
+            var entities = message.Entities;
+
+            if (!NeedUpdateEncounter(entities))
+            {
+                SelectEncounter(currentBoss);
+                return;
+            }
+
+            NpcEntity selectedEntity = null;
+            if (SelectedEncounter != null && SelectedEncounter != TotalEncounter)
+            {
+                selectedEntity = SelectedEncounter;
+            }
+
+            //todo: sync the list without resetting it
+            Encounters.Clear();
+            Encounters.Add(TotalEncounter);
+
+            var selected = false;
+            foreach (var entity in entities)
+            {
+                Encounters.Add(entity);
+                if (entity != selectedEntity) continue;
+                SelectedEncounter = entity;
+                selected = true;
+            }
+
+            if (SelectEncounter(currentBoss)) return;
+            if (selected) return;
+            SelectedEncounter = Encounters.First();
         }
 
+        private bool SelectEncounter(NpcEntity entity)
+        {
+            if (entity == null) { return false; }
+            for (var i = 1; i < Encounters.Count; i++)
+            {
+                if (Encounters[i] != entity) continue;
+                SelectedEncounter = Encounters[i];
+                return true;
+            }
+            return false;
+        }
+
+        private bool NeedUpdateEncounter(IReadOnlyList<NpcEntity> entities)
+        {
+            if (entities.Count != Encounters.Count - 1) return true;
+            for (var i = 1; i < Encounters.Count - 1; i++)
+            {
+                if (Encounters[i] != entities[i - 1]) return true;
+            }
+            return false;
+        }
 
         private void SetBossGageVisibility(bool visibility)
         {
             BossGageVisible = visibility;
         }
 
-        public void TogglePause()
+        private void TogglePause()
         {
             BasicTeraData.Instance.WindowData.UserPaused = !BasicTeraData.Instance.WindowData.UserPaused;
             if (BasicTeraData.Instance.WindowData.UserPaused)
@@ -262,7 +386,6 @@ namespace DamageMeter.UI
         private void OnConnected(string servername)
         {
             WindowTitle = servername;
-
         }
         private void OnOverloadedChanged()
         {
@@ -283,4 +406,17 @@ namespace DamageMeter.UI
 
     }
 
+    public class PlayersDisplayedCountToSizeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (!(value is int val)) val = 1;
+            return val * 30;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

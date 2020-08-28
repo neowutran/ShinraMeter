@@ -41,12 +41,9 @@ namespace DamageMeter.UI.HUD.Windows
 
         protected override bool Empty => !Bosses.HasItems;
 
-        public void TempToggle(bool visible)
+        public override void SaveWindowPos()
         {
-            Dispatcher.InvokeIfRequired(() =>
-            {
-                Bosses.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
-            }, DispatcherPriority.DataBind);
+            BasicTeraData.Instance.WindowData.BossGageStatus = new WindowStatus(LastSnappedPoint ?? new Point(Left, Top), Visible, Scale);
         }
     }
 }

@@ -1,20 +1,14 @@
 ﻿//#define DX_ENABLED
 
 using DamageMeter.AutoUpdate;
-using DamageMeter.D3D9Render;
 using DamageMeter.Sniffing;
-using DamageMeter.TeraDpsApi;
-using DamageMeter.UI.EntityStats;
-using DamageMeter.UI.HUD.Windows;
 using DamageMeter.UI.Windows;
 using Data;
 using Lang;
 using log4net;
 using Microsoft.Win32;
 using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -25,8 +19,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Tera.Game;
-using Point = System.Windows.Point;
 
 namespace DamageMeter.UI
 {
@@ -36,10 +28,7 @@ namespace DamageMeter.UI
         private static bool _isNewInstance;
         public static SplashScreen SplashScreen;
         public static HudContainer HudContainer;
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
+        public static Dispatcher MainDispatcher { get; private set; }
 
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
@@ -64,6 +53,7 @@ namespace DamageMeter.UI
         }
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
+            MainDispatcher = Dispatcher.CurrentDispatcher;
             bool notUpdating;
             var currentDomain = AppDomain.CurrentDomain;
             // Handler for unhandled exceptions.
@@ -135,10 +125,9 @@ namespace DamageMeter.UI
         {
             try
             {
-                if (Directory.Exists(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\"))
-                {
-                    Directory.Delete(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\", true);
-                }
+                var tmpDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\tmp\";
+                if (!Directory.Exists(tmpDir)) return;
+                Directory.Delete(tmpDir, true);
             }
             catch
             {
@@ -151,7 +140,7 @@ namespace DamageMeter.UI
             var current = Process.GetCurrentProcess();
             foreach (var process in Process.GetProcessesByName(current.ProcessName).Where(process => process.Id != current.Id))
             {
-                SetForegroundWindow(process.MainWindowHandle);
+                WindowsServices.SetForegroundWindow(process.MainWindowHandle);
                 break;
             }
             Current.Shutdown();
@@ -166,13 +155,12 @@ namespace DamageMeter.UI
             var isUpToDate = await UpdateManager.IsUpToDate().ConfigureAwait(false);
             if (isUpToDate) { return false; }
 
-            SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
-            bool result = App.Current.Dispatcher.Invoke(() =>
+            WindowsServices.SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
+            var result = App.Current.Dispatcher.Invoke(() =>
               {
                   var patchnotes = new UpdatePopup();
                   patchnotes.ShowDialog();
-                  if ((patchnotes.DialogResult ?? false) != true) return false;
-                  return UpdateManager.Update();
+                  return (patchnotes.DialogResult ?? false) && UpdateManager.Update();
               });
             return result;
         }
@@ -231,133 +219,7 @@ namespace DamageMeter.UI
 
         private void App_OnExit(object sender, ExitEventArgs e)
         {
-
             if (_isNewInstance) { _unique.ReleaseMutex(); }
         }
-    }
-
-    public class HudContainer
-    {
-        public bool NeedRefreshClickThrou = false;
-
-
-        public MainWindow MainWindow; // set from its own ctor
-
-        public readonly EntityStatsMain EntityStats;
-        public readonly BossGageWindow BossGage;
-        public readonly PopupNotification Notifications;
-        public readonly TeradpsHistory UploadHistory;
-        public readonly TrayIcon TrayIcon;
-
-        public Renderer DXrender;
-
-
-        public HudContainer()
-        {
-            EntityStats = new EntityStatsMain { Scale = BasicTeraData.Instance.WindowData.DebuffsStatus.Scale, DontClose = true };
-            BossGage = new BossGageWindow { Scale = BasicTeraData.Instance.WindowData.BossGageStatus.Scale, DontClose = true };
-            Notifications = new PopupNotification { DontClose = true };
-            UploadHistory = new TeradpsHistory(new ConcurrentDictionary<UploadData, NpcEntity>()) { Scale = BasicTeraData.Instance.WindowData.HistoryStatus.Scale, DontClose = true };
-
-#if DX_ENABLED
-            if (BasicTeraData.Instance.WindowData.EnableOverlay) DXrender = new D3D9Render.Renderer(); ///*** fix me
-#endif
-
-            TrayIcon = new TrayIcon();
-
-            PacketProcessor.Instance.TickUpdated += Update;
-
-            PacketProcessor.Instance.SetClickThrouAction += SetClickThrou;
-            PacketProcessor.Instance.UnsetClickThrouAction += UnsetClickThrou;
-
-            PacketProcessor.Instance.GuildIconAction += OnGuildIconChanged;
-
-            PacketProcessor.Instance.Connected += OnConnected;
-        }
-
-
-        private void OnConnected(string servername)
-        {
-            TrayIcon.Text = $"Shinra Meter v{UpdateManager.Version}: {servername}";
-        }
-
-        private void OnGuildIconChanged(Bitmap icon)
-        {
-            TrayIcon.Icon = icon?.GetIcon() ?? BasicTeraData.Instance.ImageDatabase.Tray;
-        }
-
-        private void Update(UiUpdateMessage message)
-        {
-            EntityStats.Update(message.StatsSummary.EntityInformation, message.Abnormals);
-            UploadHistory.Update(message.BossHistory);
-            Notifications.AddNotification(message.Flash);
-            DXrender?.Draw(message.StatsSummary.PlayerDamageDealt.ToClassInfo(message.StatsSummary.EntityInformation.TotalDamage, message.StatsSummary.EntityInformation.Interval));
-
-            RefreshClickThrou();
-
-
-        }
-
-        public void UnsetClickThrou()
-        {
-            if (new WindowInteropHelper(MainWindow).Handle.ToInt64() == 0)
-            {
-                NeedRefreshClickThrou = true;
-                return;
-            }
-
-            NeedRefreshClickThrou = false;
-
-            MainWindow.UnsetClickThrou();
-            EntityStats.UnsetClickThrou();
-            Notifications.UnsetClickThrou();
-            BossGage.UnsetClickThrou();
-        }
-
-        public void SetClickThrou()
-        {
-            if (new WindowInteropHelper(MainWindow).Handle.ToInt64() == 0)
-            {
-                NeedRefreshClickThrou = true;
-                return;
-            }
-
-            NeedRefreshClickThrou = false;
-
-            MainWindow.SetClickThrou();
-            EntityStats.SetClickThrou();
-            Notifications.SetClickThrou();
-            BossGage.SetClickThrou();
-        }
-
-        private void RefreshClickThrou()
-        {
-            if (!NeedRefreshClickThrou) { return; }
-            if (BasicTeraData.Instance.WindowData.ClickThrou)
-            {
-                SetClickThrou();
-            }
-            else
-            {
-                UnsetClickThrou();
-            }
-        }
-
-        public void SaveWindowsPos()
-        {
-            BasicTeraData.Instance.WindowData.Location = MainWindow.LastSnappedPoint ?? new Point(MainWindow.Left, MainWindow.Top);
-            BasicTeraData.Instance.WindowData.BossGageStatus = new WindowStatus(BossGage.LastSnappedPoint ?? new Point(BossGage.Left, BossGage.Top), BossGage.Visible, BossGage.Scale);
-            BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(UploadHistory.LastSnappedPoint ?? new Point(UploadHistory.Left, UploadHistory.Top), UploadHistory.Visible, UploadHistory.Scale);
-            BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(EntityStats.LastSnappedPoint ?? new Point(EntityStats.Left, EntityStats.Top), EntityStats.Visible, EntityStats.Scale);
-            BasicTeraData.Instance.WindowData.PopupNotificationLocation = Notifications.LastSnappedPoint ?? new Point(Notifications.Left, Notifications.Top);
-        }
-
-        public void Dispose()
-        {
-            MainWindow.Dispose();
-            DXrender?.Dispose();
-            TrayIcon.Dispose();
-        }
-
     }
 }
