@@ -7,7 +7,8 @@
                      xmlns:l="clr-namespace:Lang;assembly=Lang"
                      mc:Ignorable="d" Loaded="ClickThrouWindow_Loaded"
                      MinHeight="10" MinWidth="10"
-                     Title="Skills">
+                     Background="Transparent"
+                     Title="Skills" d:DataContext="{d:DesignInstance ui:PlayerDamageViewModel}">
     <Window.Resources>
         <Style TargetType="{x:Type ToolTip}">
             <Setter Property="Background" Value="#8F000000" />
@@ -21,30 +22,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ShinraButtonStyle" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border"
-                                BorderThickness="0"
-                                Padding="4,2"
-                                BorderBrush="Transparent"
-                                CornerRadius="0"
-                                Background="Black">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <Style TargetType="{x:Type TabItem}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -68,88 +45,100 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Panel.ZIndex" Value="100" />
-                                <Setter TargetName="Border" Property="Border.Background" Value="{StaticResource DarkBackgroundColor}"/>
+                                <Setter TargetName="Border" Property="Border.Background"
+                                        Value="{StaticResource DarkBackgroundColor}" />
                             </Trigger>
                             <Trigger SourceName="Border" Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Border" Property="Border.Background" Value="#2ddf"/>
+                                <Setter TargetName="Border" Property="Border.Background" Value="#2ddf" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False" />
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="-2 0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource LightPrimaryText}" />
+
         </Style>
-        <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
+        <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC" />
         <Style TargetType="{x:Type TabControl}">
-            <Setter Property="Padding" Value="2"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Background" Value="{StaticResource TabItem.Selected.Background}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TabItem.Selected.Border}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Padding" Value="2" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="{StaticResource TabItem.Selected.Background}" />
+            <Setter Property="BorderBrush" Value="{StaticResource TabItem.Selected.Border}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TabControl}">
-                        <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true" KeyboardNavigation.TabNavigation="Local">
+                        <Grid x:Name="templateRoot" ClipToBounds="true" SnapsToDevicePixels="true"
+                              KeyboardNavigation.TabNavigation="Local">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="ColumnDefinition0"/>
-                                <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
+                                <ColumnDefinition x:Name="ColumnDefinition0" />
+                                <ColumnDefinition x:Name="ColumnDefinition1" Width="0" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
-                                <RowDefinition x:Name="RowDefinition1" Height="*"/>
+                                <RowDefinition x:Name="RowDefinition0" Height="Auto" />
+                                <RowDefinition x:Name="RowDefinition1" Height="*" />
                             </Grid.RowDefinitions>
-                            <TabPanel x:Name="headerPanel"  Background="Transparent" Grid.Column="0" IsItemsHost="true" Margin="2,2,2,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
-                            <Border x:Name="contentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
-                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            <TabPanel x:Name="headerPanel" Background="Transparent" Grid.Column="0" IsItemsHost="true"
+                                      Margin="2,2,2,0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1" />
+                            <Border x:Name="contentPanel" BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background="{TemplateBinding Background}" Grid.Column="0"
+                                    KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1"
+                                    KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
+                                <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Border>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="TabStripPlacement" Value="Bottom">
-                                <Setter Property="Grid.Row" TargetName="headerPanel" Value="1"/>
-                                <Setter Property="Grid.Row" TargetName="contentPanel" Value="0"/>
-                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
-                                <Setter Property="Margin" TargetName="headerPanel" Value="2,0,2,2"/>
+                                <Setter Property="Grid.Row" TargetName="headerPanel" Value="1" />
+                                <Setter Property="Grid.Row" TargetName="contentPanel" Value="0" />
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*" />
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="Auto" />
+                                <Setter Property="Margin" TargetName="headerPanel" Value="2,0,2,2" />
                             </Trigger>
                             <Trigger Property="TabStripPlacement" Value="Left">
-                                <Setter Property="Grid.Row" TargetName="headerPanel" Value="0"/>
-                                <Setter Property="Grid.Row" TargetName="contentPanel" Value="0"/>
-                                <Setter Property="Grid.Column" TargetName="headerPanel" Value="0"/>
-                                <Setter Property="Grid.Column" TargetName="contentPanel" Value="1"/>
-                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
-                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
-                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                                <Setter Property="Margin" TargetName="headerPanel" Value="2,2,0,2"/>
+                                <Setter Property="Grid.Row" TargetName="headerPanel" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="contentPanel" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="headerPanel" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="contentPanel" Value="1" />
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto" />
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="*" />
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*" />
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0" />
+                                <Setter Property="Margin" TargetName="headerPanel" Value="2,2,0,2" />
                             </Trigger>
                             <Trigger Property="TabStripPlacement" Value="Right">
-                                <Setter Property="Grid.Row" TargetName="headerPanel" Value="0"/>
-                                <Setter Property="Grid.Row" TargetName="contentPanel" Value="0"/>
-                                <Setter Property="Grid.Column" TargetName="headerPanel" Value="1"/>
-                                <Setter Property="Grid.Column" TargetName="contentPanel" Value="0"/>
-                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
-                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
-                                <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                                <Setter Property="Margin" TargetName="headerPanel" Value="0,2,2,2"/>
+                                <Setter Property="Grid.Row" TargetName="headerPanel" Value="0" />
+                                <Setter Property="Grid.Row" TargetName="contentPanel" Value="0" />
+                                <Setter Property="Grid.Column" TargetName="headerPanel" Value="1" />
+                                <Setter Property="Grid.Column" TargetName="contentPanel" Value="0" />
+                                <Setter Property="Width" TargetName="ColumnDefinition0" Value="*" />
+                                <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto" />
+                                <Setter Property="Height" TargetName="RowDefinition0" Value="*" />
+                                <Setter Property="Height" TargetName="RowDefinition1" Value="0" />
+                                <Setter Property="Margin" TargetName="headerPanel" Value="0,2,2,2" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="templateRoot"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Window.Resources>
-    <Window.Background>
-        <SolidColorBrush Color="Transparent" Opacity="0" />
-    </Window.Background>
-    <Grid MouseLeftButtonDown="Move" Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
+    <Grid MouseLeftButtonDown="Move"
+          Margin="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=AllowsTransparency, Converter={StaticResource BoolToMargin}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -159,101 +148,102 @@
                             ScaleX="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}"
                             ScaleY="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ui:ClickThrouWindow}, Path=Scale}" />
         </Grid.LayoutTransform>
-        <Border Style="{StaticResource MainBorder}" Grid.RowSpan="2"/>
+        <Border Style="{StaticResource MainBorder}" Grid.RowSpan="2" />
 
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image x:Name="ClassImage" Width="50" Height="50" HorizontalAlignment="Left"  Margin="5" />
-            <TextBlock x:Name="PlayerNameTB" Foreground="{StaticResource LightPrimaryText}" FontSize="24" Grid.Column="1" VerticalAlignment="Center" Margin="0,5,5,5"></TextBlock>
-            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="1" Grid.Column="2" Height="34" Margin="20,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto">
+            <Path Style="{StaticResource PathBaseStyle}"
+                  Data="{Binding Class, Converter={StaticResource ClassToSvg}}"
+                  Width="50" Height="50"
+                  HorizontalAlignment="Left" />
+            <TextBlock Text="{Binding Name, Mode=OneWay}"
+                       Foreground="{StaticResource LightPrimaryText}"
+                       FontSize="24" Grid.Column="1"
+                       VerticalAlignment="Center" Margin="0 5 5 5" />
 
-            
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" Height="34"
+                        Margin="20,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="Auto">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="17"/>
+                        <Setter Property="CornerRadius" Value="17" />
                         <Setter Property="Background" Value="{StaticResource DarkBackgroundColor}" />
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                        <Setter Property="Padding" Value="10,0"></Setter>
-                        <Setter Property="Margin" Value="0,0,10,0"></Setter>
-                        <Setter Property="MinWidth" Value="34"></Setter>
-                        <Setter Property="MaxWidth" Value="100"></Setter>
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="Padding" Value="10,0" />
+                        <Setter Property="Margin" Value="0,0,10,0" />
+                        <Setter Property="MinWidth" Value="34" />
+                        <Setter Property="MaxWidth" Value="100" />
+                    </Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Orientation" Value="Horizontal"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="MinHeight" Value="29"/>
+                        <Setter Property="Height" Value="Auto"/>
+                        <Setter Property="Focusable" Value="False"/>
+                    </Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Margin" Value="0 5 5 5" />
+                    </Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Foreground" Value="{StaticResource LightPrimaryText}" />
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="0 5 5 5" />
                     </Style>
                 </StackPanel.Resources>
                 <Border>
-                    <StackPanel Background="Transparent" Focusable="False" 
-                        Grid.Column="0" Orientation="Horizontal"
-                       VerticalAlignment="Center" MinHeight="29" Height="Auto"
-                       ToolTip="{x:Static l:LP.Deaths_Tooltip}">
-                        <Image x:Name="DeathIcon" ToolTip="{Binding Source={x:Static l:LP.Deaths}, StringFormat= '\{0\}:'}" Margin="0,5,5,5"/>
-                        <TextBlock x:Name="DeathCounter" Foreground="{StaticResource LightPrimaryText}" VerticalAlignment="Center" Margin="0,5,5,5"></TextBlock>
+                    <StackPanel ToolTip="{x:Static l:LP.Deaths_Tooltip}">
+                        <Image x:Name="DeathIcon" ToolTip="{Binding Source={x:Static l:LP.Deaths}, StringFormat= '\{0\}:'}"/>
+                        <TextBlock x:Name="DeathCounter" />
                     </StackPanel>
                 </Border>
                 <Border>
-
-                    <StackPanel Focusable="False"
-                        Grid.Column="2" Orientation="Horizontal"
-                       VerticalAlignment="Center" MinHeight="29" Height="Auto"
-                       Background="Transparent"
-                       ToolTip="{x:Static l:LP.Death_Time_Tooltip}">
-                        <Image x:Name="DeathTimeIcon" ToolTip="{Binding Source={x:Static l:LP.Death_Time}, StringFormat= '\{0\}:'}" Margin="0,5,5,5"/>
-                        <TextBlock x:Name="DeathDuration" Foreground="{StaticResource LightPrimaryText}" VerticalAlignment="Center" Margin="0,5,5,5"></TextBlock>
+                    <StackPanel ToolTip="{x:Static l:LP.Death_Time_Tooltip}">
+                        <Image x:Name="DeathTimeIcon" ToolTip="{Binding Source={x:Static l:LP.Death_Time}, StringFormat= '\{0\}:'}" />
+                        <TextBlock x:Name="DeathDuration" />
                     </StackPanel>
                 </Border>
                 <Border>
-
-                    <StackPanel Background="Transparent" Focusable="False" HorizontalAlignment="Left"
-                       Orientation="Horizontal" Grid.Column="4"
-                       VerticalAlignment="Center" MinHeight="29" Height="Auto"
-                       ToolTip="{x:Static l:LP.Aggro_Tooltip}">
-                        <Image x:Name="AggroIcon" ToolTip="{Binding Source={x:Static l:LP.Aggro}, StringFormat= '\{0\}:'}"  Margin="0,5,5,5"/>
-                        <TextBlock x:Name="AggroCounter" Foreground="{StaticResource LightPrimaryText}" VerticalAlignment="Center" Margin="0,5,5,5"></TextBlock>
-
+                    <StackPanel HorizontalAlignment="Left" ToolTip="{x:Static l:LP.Aggro_Tooltip}">
+                        <Image x:Name="AggroIcon" ToolTip="{Binding Source={x:Static l:LP.Aggro}, StringFormat= '\{0\}:'}" />
+                        <TextBlock x:Name="AggroCounter" />
                     </StackPanel>
                 </Border>
                 <Border>
-                    <StackPanel Focusable="False" HorizontalAlignment="Left" 
-                       Orientation="Horizontal" Grid.Column="6"
-                       VerticalAlignment="Center" MinHeight="29" Height="Auto"
-                       Background="Transparent"
-                       ToolTip="{x:Static l:LP.Aggro_Time_Tooltip}">
-                        <Image x:Name="AggroTimeIcon" ToolTip="{Binding Source={x:Static l:LP.Aggro_Time}, StringFormat= '\{0\}:'}" Margin="0,5,5,5"/>
-                        <TextBlock x:Name="AggroDuration" Foreground="{StaticResource LightPrimaryText}" VerticalAlignment="Center" Margin="0,5,5,5"></TextBlock>
+                    <StackPanel HorizontalAlignment="Left" ToolTip="{x:Static l:LP.Aggro_Time_Tooltip}">
+                        <Image x:Name="AggroTimeIcon" ToolTip="{Binding Source={x:Static l:LP.Aggro_Time}, StringFormat= '\{0\}:'}" />
+                        <TextBlock x:Name="AggroDuration" />
                     </StackPanel>
                 </Border>
             </StackPanel>
-            <Button Grid.Row="0" Grid.Column="4" x:Name="CloseMeter" Style="{StaticResource ButtonMainStyle}" 
+            <Button Grid.Row="0" Grid.Column="4" x:Name="CloseMeter" Style="{StaticResource ButtonMainStyle}"
                     Background="Transparent"
-                     Click="Button_OnClick" HorizontalContentAlignment="Center"
+                    Command="{Binding CloseSkillDetailsCommand}"
+                    HorizontalContentAlignment="Center"
                     VerticalAlignment="Top" Margin="0">
-                <Image x:Name="CloseWindow" Opacity=".5"
-                       HorizontalAlignment="Left" Margin="0"
-                       Height="Auto" VerticalAlignment="Stretch"  Width="30" />
+                <Path Data="{StaticResource Svg.Close}"
+                      Fill="#f55"
+                      Stretch="Uniform"
+                      Margin="8" />
             </Button>
         </Grid>
 
-        <TabControl Grid.Row="1" Background="{StaticResource DarkBackgroundColor}" BorderThickness="0" x:Name="TabControl" Padding="-2,0,-2,0">
-            <TabItem FontSize="14" Header="{x:Static l:LP.Dps}" x:Name="DpsPanel" Background="Transparent"
-                     Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.Heal}" x:Name="HealPanel" Background="Transparent" Padding="-2,0,-2,0"
-                     Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.Mana}" x:Name="ManaPanel" Background="Transparent" Padding="-2,0,-2,0"
-                     Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.Buff}" x:Name="BuffPanel" Background="Transparent" Padding="-2,0,-2,0"
-                     Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.Counter}" x:Name="CounterPanel" Background="Transparent" Padding="-2,0,-2,0"
-                     Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.SkillDealt}" x:Name="SkillsDealtPanel" Padding="-2,0,-2,0"
-                     Foreground="{StaticResource LightPrimaryText}" />
-            <TabItem FontSize="14" Header="{x:Static l:LP.SkillReceived}" x:Name="SkillsReceivedPanel" Padding="-2,0,-2,0"
-                     Foreground="{StaticResource LightPrimaryText}" />
+        <TabControl Grid.Row="1" Background="{StaticResource DarkBackgroundColor}"
+                    BorderThickness="0" x:Name="TabControl" Padding="-2 0">
+            <TabItem Header="{x:Static l:LP.Dps}" x:Name="DpsPanel" />
+            <TabItem Header="{x:Static l:LP.Heal}" x:Name="HealPanel" />
+            <TabItem Header="{x:Static l:LP.Mana}" x:Name="ManaPanel" />
+            <TabItem Header="{x:Static l:LP.Buff}" x:Name="BuffPanel" />
+            <TabItem Header="{x:Static l:LP.Counter}" x:Name="CounterPanel" />
+            <TabItem Header="{x:Static l:LP.SkillDealt}" x:Name="SkillsDealtPanel" />
+            <TabItem Header="{x:Static l:LP.SkillReceived}" x:Name="SkillsReceivedPanel" />
         </TabControl>
     </Grid>
 </ui:ClickThrouWindow>

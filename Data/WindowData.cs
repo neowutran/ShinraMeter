@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,16 @@ using System.Xml.Linq;
 
 namespace Data
 {
+
+    public enum CaptureMode
+    {
+        [Description("Raw sockets")]
+        RawSockets,
+        [Description("npcap")]
+        Npcap,
+        [Description("TERA Toolbox")]
+        Toolbox
+    }
     public struct WindowStatus
     {
         public Point Location;
@@ -33,28 +44,34 @@ namespace Data
         private readonly XDocument _xml;
         private readonly String _windowFile;
         private readonly object _lock = new object();
+        public event Action ClickThruChanged;
 
         public WindowData(BasicTeraData basicData)
         {
 
-            lock (_lock) {
+            lock (_lock)
+            {
                 // Load XML File
                 _windowFile = Path.Combine(basicData.ResourceDirectory, "config/window.xml");
 
-                try {
+                try
+                {
                     var attrs = File.GetAttributes(_windowFile);
                     File.SetAttributes(_windowFile, attrs & ~FileAttributes.ReadOnly);
                 }
-                catch {
+                catch
+                {
                     //ignore
                 }
 
-                try {
+                try
+                {
                     _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                     _xml = XDocument.Load(_filestream);
                 }
-                catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException) {
-                    Save() ;
+                catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
+                {
+                    Save();
                     return;
                 }
                 catch { return; }
@@ -64,7 +81,8 @@ namespace Data
                 Parse("meter_user_on_top", nameof(meterUserOnTop));
                 Parse("excel_save_directory", nameof(excelSaveDirectory));
 
-                if (excelSaveDirectory == "") {
+                if (excelSaveDirectory == "")
+                {
                     excelSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ShinraMeter/");
                 }
 
@@ -84,7 +102,14 @@ namespace Data
                 Parse("topmost", nameof(topmost));
                 Parse("invisible_ui_when_no_stats", nameof(invisibleUi));
                 Parse("allow_transparency", nameof(allowTransparency));
-                Parse("winpcap", nameof(winpcap));
+                if (Parse("winpcap", nameof(winpcap)))
+                {
+                    CaptureMode = winpcap ? CaptureMode.Npcap : CaptureMode.RawSockets;
+                }
+                else
+                {
+                    Parse("capture_mode", nameof(captureMode));
+                }
                 Parse("autoupdate", nameof(autoUpdate));
                 Parse("only_bosses", nameof(onlyBoss));
                 Parse("detect_bosses_only_by_hp_bar", nameof(detectBosses));
@@ -233,6 +258,8 @@ namespace Data
 
         private bool ignorePacketsThreshold = false;
 
+        private CaptureMode captureMode;
+
         public bool DisplayTimerBasedOnAggro { get => displayTimerBasedOnAggro; set { displayTimerBasedOnAggro = value; /*Save();*/ } }
 
         public bool EnableOverlay { get => enableOverlay; set { enableOverlay = value; /*Save();*/ } }
@@ -262,7 +289,8 @@ namespace Data
         public bool PartyOnly { get => partyOnly; set { partyOnly = value; /*Save();*/ } }
         public bool RememberPosition { get => rememberPosition; set { rememberPosition = value; /*Save();*/ } }
         public bool AutoUpdate { get => autoUpdate; set { autoUpdate = value; /*Save();*/ } }
-        public bool Winpcap { get => winpcap; set { winpcap = value; /*Save();*/ } }
+        //public bool Winpcap { get => winpcap; set { winpcap = value; /*Save();*/ } }
+        public CaptureMode CaptureMode { get => captureMode; set { captureMode = value; /*Save();*/ } }
         public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; /*Save();*/ } }
         public bool NoPaste { get => noPaste; set { noPaste = value; /*Save();*/ } }
         public int MaxTTSSize { get => maxTTSSize; set { maxTTSSize = value; /*Save();*/ } }
@@ -280,7 +308,18 @@ namespace Data
         public bool OnlyBoss { get => onlyBoss; set { onlyBoss = value; /*Save();*/ } }
         public bool DetectBosses { get => detectBosses; set { detectBosses = value; /*Save();*/ } }
         public bool DisplayOnlyBossHitByMeterUser { get => displayOnlyBossHitByMeterUser; set { displayOnlyBossHitByMeterUser = value; /*Save();*/ } }
-        public bool ClickThrou { get => clickThrou; set { clickThrou = value; /*Save();*/ } }
+
+        public bool ClickThrou
+        {
+            get => clickThrou;
+            set
+            {
+                if (clickThrou == value) return;
+                clickThrou = value; /*Save();*/
+                ClickThruChanged?.Invoke();
+            }
+        }
+
         public bool PacketsCollect { get => packetsCollect; set { packetsCollect = value; /*Save();*/ } }
 
         public List<int> BlackListAreaId { get => blackListAreaId; set { blackListAreaId = value; /*Save();*/ } }
@@ -544,7 +583,8 @@ namespace Data
 
         public void Save()
         {
-            lock (_lock) {
+            lock (_lock)
+            {
                 if (_filestream == null) { return; }
 
                 var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
@@ -578,7 +618,8 @@ namespace Data
                 xml.Root.Add(new XElement("autoupdate", autoUpdate));
                 xml.Root.Add(new XElement("ignore_packets_threshold", ignorePacketsThreshold));
                 xml.Root.Add(new XElement("remember_position", rememberPosition));
-                xml.Root.Add(new XElement("winpcap", winpcap));
+                //xml.Root.Add(new XElement("winpcap", winpcap));
+                xml.Root.Add(new XElement("capture_mode", captureMode));
                 xml.Root.Add(new XElement("invisible_ui_when_no_stats", invisibleUi));
                 xml.Root.Add(new XElement("allow_transparency", allowTransparency));
                 xml.Root.Add(new XElement("topmost", topmost));
@@ -642,7 +683,8 @@ namespace Data
                 xml.Root.Element("rich_presence").Add(new XElement("show_party", richPresenceShowParty));
 
                 xml.Root.Add(new XElement("dps_servers"));
-                foreach (var server in DpsServers) {
+                foreach (var server in DpsServers)
+                {
                     var serverXml = new XElement("server");
                     serverXml.Add(new XElement("username", server.Username));
                     serverXml.Add(new XElement("token", server.Token));
@@ -654,7 +696,8 @@ namespace Data
                 }
 
                 xml.Root.Element("dps_servers").Add(new XElement("blacklist"));
-                foreach (var areaId in BlackListAreaId) {
+                foreach (var areaId in BlackListAreaId)
+                {
                     var blacklistId = new XElement("id", areaId);
                     xml.Root.Element("dps_servers").Element("blacklist").Add(blacklistId);
                 }
@@ -672,17 +715,18 @@ namespace Data
         // help request about "why the config file I manually edited while the meter was running got erased?"
         public void Close()
         {
-            lock (_lock) {
+            lock (_lock)
+            {
                 _filestream.Close();
                 _filestream = null;
             }
         }
 
-        private void Parse(string xmlName, string settingName)
+        private bool Parse(string xmlName, string settingName)
         {
             var root = _xml.Root;
             var xml = root?.Element(xmlName);
-            if (xml == null) { return; }
+            if (xml == null) { return false; }
             var setting = GetType().GetField(settingName, BindingFlags.NonPublic | BindingFlags.Instance);
             if (setting.FieldType == typeof(int))
             {
@@ -704,7 +748,18 @@ namespace Data
                 var parseSuccess = bool.TryParse(xml.Value, out bool value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
-            if (setting.FieldType == typeof(string)) { setting.SetValue(this, xml.Value); }
+
+            if (setting.FieldType == typeof(string))
+            {
+                setting.SetValue(this, xml.Value); 
+            }
+
+            if (setting.FieldType.IsSubclassOf(typeof(Enum)))
+            {
+                setting.SetValue(this, Enum.Parse(setting.FieldType, xml.Value));
+            }
+
+            return true;
         }
     }
 }

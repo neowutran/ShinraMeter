@@ -21,7 +21,7 @@
                             <Ellipse  Name="Ellipse" 
                                      Cursor="Hand" Fill="{Binding SliderColor1, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}"  >
                                 <Ellipse.Effect>
-                                    <DropShadowEffect BlurRadius="3" ShadowDepth="1" Opacity=".5"></DropShadowEffect>
+                                    <DropShadowEffect BlurRadius="3" ShadowDepth="1" Opacity=".5" />
                                 </Ellipse.Effect>
                             </Ellipse>
                         </Grid>
@@ -60,7 +60,7 @@
 
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="Ellipse" Property="Fill" Value="SlateGray"></Setter>
+                                <Setter TargetName="Ellipse" Property="Fill" Value="SlateGray" />
                             </Trigger>
                         </ControlTemplate.Triggers>
 
@@ -84,7 +84,7 @@
                                  x:Name="bg"/>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="bg" Property="Background" Value="SlateGray"></Setter>
+                                <Setter TargetName="bg" Property="Background" Value="SlateGray" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -182,12 +182,11 @@
                      Text="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}"
                      CaretBrush="{Binding SliderColor2, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:ValueSetting}}"
 
-                     Visibility="{Binding TextBoxVisibility, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}"></TextBox>
+                     Visibility="{Binding TextBoxVisibility, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" />
             <Slider Width="100" Grid.Column="1" Style="{StaticResource AppSliderStyle}" ValueChanged="Slider_ValueChanged" Loaded="FrameworkElement_OnLoaded" HorizontalAlignment="Stretch" VerticalAlignment="Center" MouseDoubleClick="Slider_MouseDoubleClick"
-                Maximum="{Binding Max, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" 
-                Minimum="{Binding Min, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" 
-                Value="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" Margin="0">
-            </Slider>
+                    Maximum="{Binding Max, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" 
+                    Minimum="{Binding Min, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" 
+                    Value="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" Margin="0" />
         </Grid>
         <Grid Visibility="Hidden" Grid.Column="2" Margin="10,0,20,0">
             <Grid.RowDefinitions >
@@ -198,9 +197,9 @@
                 <ColumnDefinition Width="50" />
                 <ColumnDefinition  Width="12"/>
             </Grid.ColumnDefinitions>
-            <TextBlock TextAlignment="Right" Grid.RowSpan="2" Grid.Column="0" Margin="10,0" HorizontalAlignment="Right" Style="{StaticResource DefaultTextStyle}" VerticalAlignment="Center" Text="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}"></TextBlock>
-            <Border Grid.Row="0" Grid.Column="1" Width="11" Height="11" Margin="0" Background="#2fff" CornerRadius="2" Cursor="Hand" MouseLeftButtonDown="AddValue"></Border>
-            <Border Grid.Row="1" Grid.Column="1" Width="11" Height="11" Margin="0" Background="#2fff" CornerRadius="2" Cursor="Hand" MouseLeftButtonDown="SubtractValue"></Border>
+            <TextBlock TextAlignment="Right" Grid.RowSpan="2" Grid.Column="0" Margin="10,0" HorizontalAlignment="Right" Style="{StaticResource DefaultTextStyle}" VerticalAlignment="Center" Text="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:ValueSetting}}" />
+            <Border Grid.Row="0" Grid.Column="1" Width="11" Height="11" Margin="0" Background="#2fff" CornerRadius="2" Cursor="Hand" MouseLeftButtonDown="AddValue" />
+            <Border Grid.Row="1" Grid.Column="1" Width="11" Height="11" Margin="0" Background="#2fff" CornerRadius="2" Cursor="Hand" MouseLeftButtonDown="SubtractValue" />
             <TextBlock IsHitTestVisible="False" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1,-2,0,0" Width="9" Style="{StaticResource DefaultTextStyle}" Padding="0,0,0,0">+</TextBlock>
             <TextBlock IsHitTestVisible="False" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1,-3,0,0" Width="6" Style="{StaticResource DefaultTextStyle}" Padding="0,0,0,0">-</TextBlock>
 

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -145,4 +147,13 @@ namespace DamageMeter
             finally { _lock.ExitReadLock(); }
         }
     }
+
+    public static class EnumUtils
+    {
+        public static List<T> ListFromEnum<T>()
+        {
+            return Enum.GetValues(typeof(T)).Cast<T>().ToList();
+        }
+    }
+
 }

@@ -106,6 +106,7 @@ namespace DamageMeter.UI.Windows
             _visible = true;
             _window = new SettingsWindow();
             _window.Show();
+            _window.Activate();
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)

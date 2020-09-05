@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DamageMeter.UI"
         mc:Ignorable="d"
         Title="SplashScreen" Height="300" Width="420" ResizeMode="NoResize" AllowsTransparency="True" SizeToContent="Height" ShowInTaskbar="False"
         Background="Transparent" MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStyle="None" WindowStartupLocation="CenterScreen">
@@ -36,7 +35,7 @@
                 <TextBlock Foreground="#90ffffff" FontWeight="Bold">YES</TextBlock>
             </Button>
             <UniformGrid.LayoutTransform>
-                <ScaleTransform ScaleY="0"></ScaleTransform>
+                <ScaleTransform ScaleY="0" />
             </UniformGrid.LayoutTransform>
         </UniformGrid>
     </Grid>

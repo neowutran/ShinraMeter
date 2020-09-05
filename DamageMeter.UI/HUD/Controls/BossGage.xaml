@@ -50,7 +50,7 @@
 
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Name="BossNameTB" Style="{StaticResource tcc_text}"
+                    <TextBlock Name="BossNameTB" Style="{StaticResource DefaultTextStyle}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                FontSize="14"
@@ -59,7 +59,7 @@
                                Grid.Column="0" />
                   
 
-                    <TextBlock Style="{StaticResource tcc_text}"
+                    <TextBlock Style="{StaticResource DefaultTextStyle}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Margin="20,0,0,0"
@@ -69,7 +69,7 @@
                                Text="{Binding CurrentPercentage, StringFormat=##0.## %}"
                                Grid.Row="0"
                                Grid.Column="1" />
-                    <TextBlock Style="{StaticResource tcc_text}"
+                    <TextBlock Style="{StaticResource DefaultTextStyle}"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Margin="20,0,0,0"
@@ -160,7 +160,7 @@
                         </Polygon>-->
                     <Ellipse Fill="#fa0" Width="6" Height="{Binding ElementName=enrageEll, Path=Width}"
                              Name="enrageEll" Stroke="#fb0" />
-                    <TextBlock Width="Auto" FontSize="12" Style="{StaticResource tcc_text}"
+                    <TextBlock Width="Auto" FontSize="12" Style="{StaticResource DefaultTextStyle}"
                                TextAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Padding="0"
                                Text="{Binding EnrageTBtext, RelativeSource={RelativeSource AncestorType=controls:BossGage}}" />
                 </StackPanel>

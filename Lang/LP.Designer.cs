@@ -313,6 +313,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capture mode.
+        /// </summary>
+        public static string CaptureMode {
+            get {
+                return ResourceManager.GetString("CaptureMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chained.
         /// </summary>
         public static string Chained {
@@ -381,6 +390,15 @@ namespace Lang {
         public static string Common {
             get {
                 return ResourceManager.GetString("Common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected to.
+        /// </summary>
+        public static string ConnectedTo {
+            get {
+                return ResourceManager.GetString("ConnectedTo", resourceCulture);
             }
         }
         

@@ -103,6 +103,7 @@
                 <Ellipse Width="14" Height="14" Stroke="#f777" StrokeThickness="1">
                     <Ellipse.Style>
                         <Style TargetType="Ellipse">
+                            <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                             <Setter Property="Fill" Value="{Binding Color, Converter={StaticResource ColorToSolidColorBrushConverter}}" />
                         </Style>
                     </Ellipse.Style>
@@ -325,9 +326,8 @@
                                                  BorderThickness="0"
                                                           Foreground="#9fff"
                                                  UsingAlphaChannel="{Binding UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}}"
-                                                 SelectedColor="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}}" >
-                                    </xctk:ColorCanvas>
-                                </Grid>
+                                                 SelectedColor="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </Grid>
 
                                     <Separator Grid.Row="1"
                                       HorizontalAlignment="Stretch"
@@ -349,14 +349,16 @@
                         <Trigger Property="ColorMode" Value="ColorPalette">
                             <Setter TargetName="_colorPaletteHost" Property="Visibility" Value="Visible" />
                             <Setter TargetName="_colorCanvasHost" Property="Visibility" Value="Collapsed" />
+                            <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                             <Setter TargetName="PART_ColorModeButton"
-                             Property="Content"
-                             Value="{Binding AdvancedButtonHeader, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    Property="Content"
+                                    Value="{Binding AdvancedButtonHeader, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
 
                         <Trigger Property="ColorMode" Value="ColorCanvas">
                             <Setter TargetName="_colorPaletteHost" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="_colorCanvasHost" Property="Visibility" Value="Visible" />
+                            <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                             <Setter TargetName="PART_ColorModeButton"
                              Property="Content"
                              Value="{Binding StandardButtonHeader, RelativeSource={RelativeSource TemplatedParent}}" />

@@ -15,8 +15,7 @@
                 <ControlTemplate TargetType="Thumb">
                     <Ellipse  Name="Ellipse"
                                  Cursor="Hand"
-                          Fill="{StaticResource AccentColor}" Effect="{StaticResource SwitchShadow-1dp}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    </Ellipse>
+                          Fill="{StaticResource AccentColor}" Effect="{StaticResource SwitchShadow-1dp}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

@@ -2,6 +2,7 @@
 using Data;
 using Nostrum;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Tera.RichPresence;
 using Action = System.Action;
+using CaptureMode = Data.CaptureMode;
 
 namespace DamageMeter.UI.Windows
 {
@@ -18,14 +20,36 @@ namespace DamageMeter.UI.Windows
         private static WindowData Data => BasicTeraData.Instance.WindowData;
         private static HotkeysData Hotkeys => BasicTeraData.Instance.HotkeysData;
 
-        // detection
-        public bool UseNpcap
+        public static IEnumerable<CaptureMode> CaptureModes
         {
-            get => Data.Winpcap;
+            get
+            {
+                var ret = EnumUtils.ListFromEnum<CaptureMode>();
+                ret.Remove(CaptureMode.Toolbox);
+                return ret;
+            }
+        }
+
+
+        // detection
+        //public bool UseNpcap
+        //{
+        //    get => Data.Winpcap;
+        //    set
+        //    {
+        //        if (Data.Winpcap == value) return;
+        //        Data.Winpcap = value;
+        //        NotifyPropertyChanged();
+        //    }
+        //}
+
+        public CaptureMode CaptureMode
+        {
+            get => Data.CaptureMode;
             set
             {
-                if (Data.Winpcap == value) return;
-                Data.Winpcap = value;
+                if (Data.CaptureMode == value) return;
+                Data.CaptureMode = value;
                 NotifyPropertyChanged();
             }
         }

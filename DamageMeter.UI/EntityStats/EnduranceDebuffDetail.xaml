@@ -14,9 +14,9 @@
             <ColumnDefinition SharedSizeGroup="b5" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="b6" Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Ellipse Fill="#1999" Grid.Column="1"></Ellipse>
+        <Ellipse Fill="#1999" Grid.Column="1" />
         <Ellipse Grid.Column="1" x:Name="SkillIconWrapper" Stretch="Fill" HorizontalAlignment="Left"
-                           Height="40" VerticalAlignment="Top" Width="40" >
+                 Height="40" VerticalAlignment="Top" Width="40" >
             <Ellipse.Fill>
                 <ImageBrush x:Name="SkillIcon" />
             </Ellipse.Fill>

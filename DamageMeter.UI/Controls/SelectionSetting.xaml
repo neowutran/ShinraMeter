@@ -35,8 +35,7 @@
                   SelectionChanged="Selector_OnSelectionChanged" Foreground="White"  VerticalAlignment="Stretch" BorderThickness="0"
                   VerticalContentAlignment="Center" Margin="7 0" 
                   Name="Cbox" HorizontalAlignment="Right" HorizontalContentAlignment="Left"
-                  ItemTemplate="{Binding ChoicesTemplate, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}">
-        </ComboBox>
+                  ItemTemplate="{Binding ChoicesTemplate, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" />
     </Grid>
 
 </UserControl>

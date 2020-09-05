@@ -56,6 +56,9 @@
     <ApplicationIcon>shinra.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\Heaters.otf" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="3.6.0" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
@@ -80,10 +83,24 @@
     <ProjectReference Include="..\TeraCommon\Tera.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Heaters.otf" />
     <Resource Include="shinra.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="shinra.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="del $(OutDir)\SQLite.Interop.dll" />

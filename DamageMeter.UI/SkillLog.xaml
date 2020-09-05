@@ -16,11 +16,11 @@
             <!--<ColumnDefinition SharedSizeGroup="s5" MinWidth="200" Width="Auto" />-->
             <ColumnDefinition SharedSizeGroup="s6" MinWidth="60" Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Ellipse Fill="#1999" Margin="10,2,2,2"></Ellipse>
+        <Ellipse Fill="#1999" Margin="10,2,2,2" />
         <Ellipse Grid.Column="0" HorizontalAlignment="Left" x:Name="SkillIconWrapper"
-               Height="40" VerticalAlignment="Top" Width="40" Margin="10,2,2,2">
+                 Height="40" VerticalAlignment="Top" Width="40" Margin="10,2,2,2">
             <Ellipse.Fill>
-                <ImageBrush x:Name="SkillIcon"></ImageBrush>
+                <ImageBrush x:Name="SkillIcon" />
             </Ellipse.Fill>
         </Ellipse>
 

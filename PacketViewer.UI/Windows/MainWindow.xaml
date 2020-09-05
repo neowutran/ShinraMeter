@@ -251,8 +251,9 @@
                             <Path Margin="2,2,4,2" Data="{StaticResource Search}" Stretch="Uniform" Fill="#5000" 
                               HorizontalAlignment="Left" Height="14" />
                             <TextBox Grid.Column="1" Margin="0,0,0,0" Width="Auto" TextChanged="SearchBoxChanged" HorizontalAlignment="Stretch" Name="SearchBox" VerticalAlignment="Center"/>
+                            <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                             <TextBlock Margin="5,2" MinWidth="50" Text="Search by opcode or opcode name..." Grid.Column="1" VerticalAlignment="Center" IsHitTestVisible="False"
-                                   Background="Transparent" Foreground="#7000" Visibility="{Binding ElementName=SearchBox, Path=Text.IsEmpty, Converter={StaticResource BoolToVisibleHidden}}" />
+                                       Background="Transparent" Foreground="#7000" Visibility="{Binding ElementName=SearchBox, Path=Text.IsEmpty, Converter={StaticResource BoolToVisibleHidden}}" />
                             <TextBlock Foreground="#9000" HorizontalAlignment="Left" TextAlignment="Left" Margin="5,0,2,0" Width="Auto" Grid.Column="2" Text="{Binding SearchList.Count}"
                                    VerticalAlignment="Center"/>
                             <UniformGrid Rows="1" Margin="4,0,0,0" Grid.Column="3" Width="40">
@@ -460,8 +461,9 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBox Grid.Column="0" Name="OpcodeToFilter" CaretBrush="Black" Grid.ColumnSpan="3" Background="#1000"></TextBox>
+                                                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                                                 <TextBlock Margin="5,2" MinWidth="50" Text="Filter by opcode (dec)..." Grid.Column="0" VerticalAlignment="Center" IsHitTestVisible="False"
-                                                   Background="Transparent" Foreground="#7000" Visibility="{Binding ElementName=OpcodeToFilter, Path=Text.IsEmpty, Converter={StaticResource BoolToVisibleHidden}}" />
+                                                           Background="Transparent" Foreground="#7000" Visibility="{Binding ElementName=OpcodeToFilter, Path=Text.IsEmpty, Converter={StaticResource BoolToVisibleHidden}}" />
 
                                                 <Button Grid.Column="1" Style="{StaticResource ImageButtonStyle}" Height="20" Click="AddWhiteListedOpcode" ToolTip="Show only this opcode">
                                                     <Path Data="{StaticResource AddCircle}" Stretch="Uniform" Fill="MediumSeaGreen" Margin="2"/>

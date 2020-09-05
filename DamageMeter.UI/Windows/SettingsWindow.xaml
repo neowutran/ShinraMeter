@@ -142,8 +142,10 @@
                 <!--Detection-->
                 <TabItem>
                     <StackPanel>
-                        <settings:CheckboxSetting IsOn="{Binding UseNpcap, Mode=TwoWay}"
-                                                  SettingName="{x:Static lang:LP.SystemTray_Use_Npcap}" />
+                        <settings:SelectionSetting SelectedItem="{Binding CaptureMode, Mode=TwoWay}"
+                                                   SettingName="{x:Static lang:LP.CaptureMode}"  
+                                                   Choices="{x:Static local:SettingsWindowViewModel.CaptureModes}"
+                                                   ChoicesType="{x:Type CaptureMode}"/>
                         <settings:CheckboxSetting IsOn="{Binding LowPriority, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.SystemTray_LowPriority}" />
                         <settings:CheckboxSetting IsOn="{Binding CountOnlyBosses, Mode=TwoWay}"

@@ -16,6 +16,8 @@ using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 using Point = System.Windows.Point;
 
+// BIG TODO: include Nostrum nuget package and remove all pasted code
+
 namespace DamageMeter.UI
 {
     public sealed partial class MainWindow
@@ -98,56 +100,54 @@ namespace DamageMeter.UI
         }
         public void Update(UiUpdateMessage nmessage)
         {
-            void ChangeUi(UiUpdateMessage message)
+            Dispatcher.Invoke(() =>
             {
                 //UpdateComboboxEncounter(message.Entities, message.StatsSummary.EntityInformation.Entity);
 
-                #region PlayerStats
+                //var visiblePlayerStats = new HashSet<Player>();
+                //var statsDamage = message.StatsSummary.PlayerDamageDealt;
+                //var statsHeal = message.StatsSummary.PlayerHealDealt;
 
-                var visiblePlayerStats = new HashSet<Player>();
-                var statsDamage = message.StatsSummary.PlayerDamageDealt;
-                var statsHeal = message.StatsSummary.PlayerHealDealt;
-                foreach (var playerStats in statsDamage)
-                {
-                    Controls.TryGetValue(playerStats.Source, out var playerStatsControl);
-                    if (playerStats.Amount == 0) { continue; }
+                //foreach (var playerStats in statsDamage)
+                //{
+                //    Controls.TryGetValue(playerStats.Source, out var playerStatsControl);
+                //    if (playerStats.Amount == 0) { continue; }
 
-                    visiblePlayerStats.Add(playerStats.Source);
-                    if (playerStatsControl != null) { continue; }
-                    playerStatsControl = new PlayerStats(playerStats, statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), message.StatsSummary.EntityInformation,
-                        message.Skills, message.Abnormals.Get(playerStats.Source));
-                    Controls.Add(playerStats.Source, playerStatsControl);
-                }
+                //    visiblePlayerStats.Add(playerStats.Source);
+                //    if (playerStatsControl != null) { continue; }
+                //    playerStatsControl = new PlayerStats(playerStats, statsHeal.FirstOrDefault(x => x.Source == playerStats.Source), message.StatsSummary.EntityInformation, message.Skills, message.Abnormals.Get(playerStats.Source));
+                //    Controls.Add(playerStats.Source, playerStatsControl);
+                //}
 
+                //var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
+                //foreach (var invisibleControl in invisibleControls)
+                //{
+                //    Controls[invisibleControl.Key].CloseSkills();
+                //    Controls.Remove(invisibleControl.Key);
+                //}
 
-                var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
-                foreach (var invisibleControl in invisibleControls)
-                {
-                    Controls[invisibleControl.Key].CloseSkills();
-                    Controls.Remove(invisibleControl.Key);
-                }
+                //Players.Items.Clear();
 
-                Players.Items.Clear();
-
-                foreach (var item in statsDamage)
-                {
-                    if (!Controls.ContainsKey(item.Source)) { continue; }
-                    if (Players.Items.Contains(Controls[item.Source]))
-                    {
-                        BasicTeraData.LogError("duplicate playerinfo: \r\n" + string.Join("\r\n ", statsDamage.Select(x => x.Source.ToString() + " ->  " + x.Amount)), false, true);
-                        continue;
-                    }
-                    Players.Items.Add(Controls[item.Source]);
-                    Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), message.StatsSummary.EntityInformation, message.Skills,
-                        message.Abnormals.Get(item.Source), message.TimedEncounter);
-                }
-                #endregion
+                //foreach (var item in statsDamage)
+                //{
+                //    if (!Controls.ContainsKey(item.Source)) { continue; }
+                //    if (Players.Items.Contains(Controls[item.Source]))
+                //    {
+                //        BasicTeraData.LogError("duplicate playerinfo: \r\n" + string.Join("\r\n ", statsDamage.Select(x => x.Source.ToString() + " ->  " + x.Amount)), false, true);
+                //        continue;
+                //    }
+                //    Players.Items.Add(Controls[item.Source]);
+                //    Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), message.StatsSummary.EntityInformation, message.Skills,
+                //        message.Abnormals.Get(item.Source), message.TimedEncounter);
+                //}
 
                 #region WindowVisibility
+
                 if (BasicTeraData.Instance.WindowData.InvisibleUi && !DC.Paused)
                 {
-                    if (Controls.Count > 0 && !ForceHidden && Visibility != Visibility.Visible) { ShowWindow(); }
-                    if (Controls.Count == 0 && Visibility != Visibility.Hidden) { HideWindow(); }
+                    if (DC.Players.Count > 0 && !ForceHidden && Visibility != Visibility.Visible) ShowWindow();
+
+                    if (DC.Players.Count == 0 && Visibility != Visibility.Hidden) HideWindow();
                 }
                 else if (!ForceHidden && Visibility != Visibility.Visible)
                 {
@@ -156,9 +156,8 @@ namespace DamageMeter.UI
 
                 #endregion
 
-            }
+            });
 
-            Dispatcher.Invoke((PacketProcessor.UpdateUiHandler)ChangeUi, nmessage);
         }
         //private bool NeedUpdateEncounter(IReadOnlyList<NpcEntity> entities)
         //{
@@ -284,10 +283,12 @@ namespace DamageMeter.UI
         }
         private void MainWindow_OnMouseEnter(object sender, MouseEventArgs e)
         {
+            DC.IsMouseOver = true;
             Footer.BeginAnimation(HeightProperty, _expandFooterAnim);
         }
         private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
+            DC.IsMouseOver = false;
             Footer.BeginAnimation(HeightProperty, _shrinkFooterAnim);
         }
         public override void SetClickThrou()

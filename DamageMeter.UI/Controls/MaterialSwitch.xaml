@@ -7,7 +7,7 @@
              mc:Ignorable="d" x:Name="materialSwitch" >
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}"></Setter>
+            <Setter Property="Foreground" Value="{StaticResource LightSecondaryText}" />
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Foreground" Value="{StaticResource LightPrimaryText}"/>
@@ -39,14 +39,12 @@
                    RadiusX="7" 
                    RadiusY="7" 
                    Opacity="1"
-                   Grid.Column="1">
-        </Rectangle>
+                   Grid.Column="1" />
         <Ellipse x:Name="switchHead" Effect="{StaticResource SwitchShadow-1dp}"
                  HorizontalAlignment="Center" 
                  Width="18" 
                  Height="18" 
                  Margin="-22,0,0,0"
-                 Grid.Column="1">
-        </Ellipse>
+                 Grid.Column="1" />
     </Grid>
 </UserControl>

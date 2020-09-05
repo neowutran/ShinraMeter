@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Data;
-using DamageMeter.AutoUpdate;
+﻿using DamageMeter.AutoUpdate;
 using DamageMeter.UI.Windows;
 using Data;
-using Nostrum;
+using Lang;
+using Nostrum.Factories;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using Lang;
+using Nostrum;
 using Tera.Game;
 
 namespace DamageMeter.UI
 {
+
     public class MainViewModel : TSPropertyChanged
     {
         public static MainViewModel Instance { get; private set; }
@@ -27,12 +27,16 @@ namespace DamageMeter.UI
         private EntityId _hideEid;
         private bool _enableChatAfterOverload;
         private bool _bossGageVisible;
+        private bool _connected;
         private string _timerText;
         private string _totalDpsText;
         private string _totalDamageText;
         private bool _isGraphVisible;
         private bool _blurPlayerNames;
-        private int _queuedPackets;
+        private int _queuedPackets; 
+        private bool _isEmpty;
+        private bool _isMouseOver;
+
         private ImageSource _windowIcon;
         private NpcEntity _selectedEncounter; // TODO: replace NpcEntity with an EncounterViewModel
         /// <summary>
@@ -48,6 +52,29 @@ namespace DamageMeter.UI
                 if (_windowTitle == value) return;
                 _windowTitle = value;
                 NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(MainVersionText));
+                NotifyPropertyChanged(nameof(DbVersionText));
+            }
+        }
+
+        public string MainVersionText
+        {
+            get
+            {
+                var ret = "";
+                var split = WindowTitle.Replace("Shinra Meter v", "").Split('.');
+                if (split.Length == 1) return "";
+                return "v" + split[0] + "." + split[1];
+            }
+        }
+        public string DbVersionText
+        {
+            get
+            {
+                var ret = "";
+                var split = WindowTitle.Replace("Shinra Meter v", "").Split('.');
+                if (split.Length == 1) return "";
+                return "." + split[2];
             }
         }
         public bool Paused
@@ -104,6 +131,17 @@ namespace DamageMeter.UI
                 if (_hideGeneralData == value) return;
                 _hideGeneralData = value;
                 NotifyPropertyChanged();
+            }
+        }
+        public bool Connected
+        {
+            get => _connected;
+            set
+            {
+                if (_connected == value) return;
+                _connected = value;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(ConnectionStatusText));
             }
         }
         public bool BossGageVisible
@@ -176,6 +214,32 @@ namespace DamageMeter.UI
                 NotifyPropertyChanged();
             }
         }
+
+        public bool ClickThru => BasicTeraData.Instance.WindowData.ClickThrou;
+
+        public bool IsEmpty
+        {
+            get => _isEmpty;
+            set
+            {
+                if (_isEmpty == value) return;
+                _isEmpty = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public bool IsMouseOver
+        {
+            get => _isMouseOver;
+            set
+            {
+                if (_isMouseOver == value) return;
+                _isMouseOver = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string ConnectionStatusText => Connected ? PacketProcessor.Instance.Server?.Name : LP.SystemTray_No_server;
+
         public ImageSource WindowIcon
         {
             get => _windowIcon;
@@ -186,7 +250,7 @@ namespace DamageMeter.UI
                 NotifyPropertyChanged();
             }
         }
-        
+
         public SynchronizedObservableCollection<NpcEntity> Encounters { get; } // TODO: replace NpcEntity with an EncounterViewModel
         public NpcEntity SelectedEncounter // TODO: replace NpcEntity with an EncounterViewModel
         {
@@ -197,7 +261,9 @@ namespace DamageMeter.UI
                 _selectedEncounter = value;
                 NotifyPropertyChanged();
             }
-        } 
+        }
+        public SynchronizedObservableCollection<PlayerDamageViewModel> Players { get; }
+        public ICollectionViewLiveShaping PlayersView { get; set; }
         public GraphViewModel GraphData { get; }
 
         public ICommand TogglePauseCommand { get; }
@@ -208,6 +274,8 @@ namespace DamageMeter.UI
         public ICommand ShowBossHPBarCommand { get; }
         public ICommand VerifyCloseCommand { get; }
         public ICommand ChangeTimeLeftCommand { get; }
+        public ICommand OpenSettingsCommand { get; }
+
 
         public MainViewModel()
         {
@@ -219,7 +287,13 @@ namespace DamageMeter.UI
 
             GraphData = new GraphViewModel();
             Encounters = new SynchronizedObservableCollection<NpcEntity>();
-
+            Players = new SynchronizedObservableCollection<PlayerDamageViewModel>();
+            PlayersView = CollectionViewFactory.CreateLiveCollectionView(Players,
+                sortFilters: new[]
+                {
+                    new SortDescription(nameof(PlayerDamageViewModel.ShowFirst), ListSortDirection.Descending),
+                    new SortDescription(nameof(PlayerDamageViewModel.Amount), ListSortDirection.Descending)
+                });
 
             PacketProcessor.Instance.Connected += OnConnected;
             PacketProcessor.Instance.PauseAction += OnPaused;
@@ -230,14 +304,24 @@ namespace DamageMeter.UI
 
             SettingsWindowViewModel.NumberOfPlayersDisplayedChanged += OnNumberOfPlayersDisplayedChanged;
 
+            BasicTeraData.Instance.WindowData.ClickThruChanged += OnClickThruChanged;
+
+
             TogglePauseCommand = new RelayCommand(_ => TogglePause());
             ToggleAddsCommand = new RelayCommand(_ => ToggleAdds());
-            SetBossGageVisibilityCommand = new RelayCommand(visibility => SetBossGageVisibility((bool.Parse(visibility.ToString()))));
+            SetBossGageVisibilityCommand = new RelayCommand(visibility => SetBossGageVisibility(bool.Parse(visibility.ToString() ?? "False")));
             ShowBossHPBarCommand = new RelayCommand(_ => App.HudContainer.BossGage.ShowWindow());
             ShowEntityStatsCommand = new RelayCommand(_ => App.HudContainer.EntityStats.ShowWindow());
             ShowUploadHistoryCommand = new RelayCommand(_ => App.HudContainer.UploadHistory.ShowWindow());
             VerifyCloseCommand = new RelayCommand(_ => App.VerifyClose(Keyboard.IsKeyDown(Key.LeftShift)));
             ChangeTimeLeftCommand = new RelayCommand(_ => ShowTimeLeft = !ShowTimeLeft);
+            OpenSettingsCommand = new RelayCommand(_ => SettingsWindow.ShowWindow());
+
+        }
+
+        private void OnClickThruChanged()
+        {
+            NotifyPropertyChanged(nameof(ClickThru));
         }
 
         private void OnNumberOfPlayersDisplayedChanged(int v)
@@ -247,32 +331,74 @@ namespace DamageMeter.UI
 
         private void OnUpdate(UiUpdateMessage message)
         {
-            QueuedPackets = message.QueuedPackets;
-            var timeValue = BasicTeraData.Instance.WindowData.ShowTimeLeft && message.StatsSummary.EntityInformation.TimeLeft > 0
-                ? message.StatsSummary.EntityInformation.TimeLeft
-                : message.StatsSummary.EntityInformation.Interval;
-
-            TimerText = TimeSpan.FromSeconds(timeValue / TimeSpan.TicksPerSecond).ToString(@"mm\:ss");
-
-            TotalDpsText = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.Interval == 0
-                               ? message.StatsSummary.EntityInformation.TotalDamage
-                               : message.StatsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond / message.StatsSummary.EntityInformation.Interval) + LP.PerSecond;
-
-            TotalDamageText = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.TotalDamage);
-
-            if (BasicTeraData.Instance.WindowData.RealtimeGraphEnabled)
+            App.MainDispatcher.InvokeAsync(() =>
             {
-                GraphData.Update(message);
-                IsGraphVisible = true;
-            }
-            else
-            {
-                IsGraphVisible = false;
-                GraphData.Reset();
-            }
+                QueuedPackets = message.QueuedPackets;
+                var timeValue = BasicTeraData.Instance.WindowData.ShowTimeLeft && message.StatsSummary.EntityInformation.TimeLeft > 0
+                    ? message.StatsSummary.EntityInformation.TimeLeft
+                    : message.StatsSummary.EntityInformation.Interval;
 
-            UpdateEncounters(message);
+                TimerText = TimeSpan.FromSeconds(timeValue / TimeSpan.TicksPerSecond).ToString(@"mm\:ss");
+
+                TotalDpsText = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.Interval == 0
+                    ? message.StatsSummary.EntityInformation.TotalDamage
+                    : message.StatsSummary.EntityInformation.TotalDamage * TimeSpan.TicksPerSecond / message.StatsSummary.EntityInformation.Interval) + LP.PerSecond;
+
+                TotalDamageText = FormatHelpers.Instance.FormatValue(message.StatsSummary.EntityInformation.TotalDamage);
+
+                if (BasicTeraData.Instance.WindowData.RealtimeGraphEnabled)
+                {
+                    GraphData.Update(message);
+                    IsGraphVisible = true;
+                }
+                else
+                {
+                    IsGraphVisible = false;
+                    GraphData.Reset();
+                }
+
+                UpdateEncounters(message);
+
+                var statsDamage = message.StatsSummary.PlayerDamageDealt;
+                var statsHeal = message.StatsSummary.PlayerHealDealt;
+                foreach (var damageDealt in statsDamage)
+                {
+                    //if (!Controls.ContainsKey(item.Source)) { continue; }
+                    //if (Players.Contains(Controls[item.Source]))
+                    //{
+                    //    BasicTeraData.LogError("duplicate playerinfo: \r\n" + string.Join("\r\n ", statsDamage.Select(x => x.Source.ToString() + " ->  " + x.Amount)), false, true);
+                    //    continue;
+                    //}
+                    var healDealt = statsHeal.FirstOrDefault(x => x.Source == damageDealt.Source);
+
+                    var existing = Players.FirstOrDefault(p => p.Name == damageDealt.Source.Name);
+                    if (existing != null)
+                    {
+                        existing.Update(damageDealt, healDealt, message.StatsSummary.EntityInformation, message.Skills, message.Abnormals.Get(damageDealt.Source),
+                            message.TimedEncounter);
+                    }
+                    else
+                    {
+                        Players.Add(new PlayerDamageViewModel(damageDealt, healDealt, message.StatsSummary.EntityInformation, message.Skills, message.Abnormals.Get(damageDealt.Source)));
+                    }
+
+                    //Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), 
+                    //    message.StatsSummary.EntityInformation, message.Skills,
+                    //    message.Abnormals.Get(item.Source), message.TimedEncounter);
+                }
+
+
+                Players.Where(x => statsDamage.All(sd => sd.Source.Name != x.Name)).ToList().ForEach(p =>
+                {
+                    //todo: close details window associated to this player first
+                    Players.Remove(p);
+                });
+
+
+                IsEmpty = Players.Count == 0 && Encounters.Count <= 1;
+            });
         }
+
         private void UpdateEncounters(UiUpdateMessage message)
         {
             var currentBoss = message.StatsSummary.EntityInformation.Entity;
@@ -307,7 +433,6 @@ namespace DamageMeter.UI
             if (selected) return;
             SelectedEncounter = Encounters.First();
         }
-
         private bool SelectEncounter(NpcEntity entity)
         {
             if (entity == null) { return false; }
@@ -319,7 +444,6 @@ namespace DamageMeter.UI
             }
             return false;
         }
-
         private bool NeedUpdateEncounter(IReadOnlyList<NpcEntity> entities)
         {
             if (entities.Count != Encounters.Count - 1) return true;
@@ -329,7 +453,6 @@ namespace DamageMeter.UI
             }
             return false;
         }
-
         private void SetBossGageVisibility(bool visibility)
         {
             BossGageVisible = visibility;
@@ -386,6 +509,7 @@ namespace DamageMeter.UI
         private void OnConnected(string servername)
         {
             WindowTitle = servername;
+            Connected = servername != LP.SystemTray_No_server;
         }
         private void OnOverloadedChanged()
         {
@@ -404,19 +528,5 @@ namespace DamageMeter.UI
             }
         }
 
-    }
-
-    public class PlayersDisplayedCountToSizeConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (!(value is int val)) val = 1;
-            return val * 30;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

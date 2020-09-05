@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+    <QuadraticEase x:Key="QuadraticEase"/>
+
+    <system:Double x:Key="ShadowDirection">-100</system:Double>
+    <system:Double x:Key="ShadowOpacity">.3</system:Double>
+
+    <DropShadowEffect x:Key="MenuShadow-8dp" 
+                      BlurRadius="10" 
+                      ShadowDepth="8" 
+                      Opacity="{StaticResource ShadowOpacity}" 
+                      Direction="{StaticResource ShadowDirection}"/>
+    <DropShadowEffect x:Key="BarShadow-4dp" 
+                      BlurRadius="5" 
+                      ShadowDepth="4" 
+                      Opacity="{StaticResource ShadowOpacity}" 
+                      Direction="{StaticResource ShadowDirection}"/>
+    <DropShadowEffect x:Key="CardShadow-2dp" 
+                      BlurRadius="4" 
+                      ShadowDepth="2" 
+                      Opacity="{StaticResource ShadowOpacity}" 
+                      Direction="{StaticResource ShadowDirection}"/>
+    <DropShadowEffect x:Key="SwitchShadow-1dp" 
+                      BlurRadius="2" 
+                      ShadowDepth="1" 
+                      Opacity="{StaticResource ShadowOpacity}" 
+                      Direction="{StaticResource ShadowDirection}"/>
+    <DropShadowEffect x:Key="MainBorderShadow" 
+                      BlurRadius="5" 
+                      ShadowDepth="3" 
+                      Opacity=".3" />
+
+</ResourceDictionary>

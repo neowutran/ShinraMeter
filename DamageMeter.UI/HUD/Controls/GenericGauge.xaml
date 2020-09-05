@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <converters:BoolToVisibiltyConverter x:Key="percVisConv" />
         <DropShadowEffect x:Key="textShadow" BlurRadius="2" ShadowDepth="1" Opacity="1" RenderingBias="Performance" />
-        <Style TargetType="TextBlock" x:Key="text" BasedOn="{StaticResource tcc_text}">
+        <Style TargetType="TextBlock" x:Key="text" BasedOn="{StaticResource DefaultTextStyle}">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="Effect" Value="{StaticResource textShadow}" />
             <Setter Property="Margin" Value="0,-1,0,0" />

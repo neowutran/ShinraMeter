@@ -1,11 +1,11 @@
 ﻿using DamageMeter.UI.Windows;
 using Data;
 using Lang;
-using Nostrum;
 using System;
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Nostrum;
 
 namespace DamageMeter.UI
 {

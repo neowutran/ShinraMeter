@@ -874,4 +874,10 @@ Reset and paused until map change or relog.</value>
   <data name="CloseNoConfirm" xml:space="preserve">
     <value>Close (no confirm)</value>
   </data>
+  <data name="CaptureMode" xml:space="preserve">
+    <value>Capture mode</value>
+  </data>
+  <data name="ConnectedTo" xml:space="preserve">
+    <value>Connected to</value>
+  </data>
 </root>

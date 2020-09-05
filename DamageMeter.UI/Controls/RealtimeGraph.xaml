@@ -1,43 +1,54 @@
 ﻿<UserControl x:Class="DamageMeter.UI.Controls.RealtimeGraph"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:DamageMeter.UI.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ui="clr-namespace:DamageMeter.UI"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="300" d:DataContext="{d:DesignInstance {x:Type ui:GraphViewModel}}" Margin="0 5"
-             >
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="300" 
+             d:DataContext="{d:DesignInstance {x:Type ui:GraphViewModel}}">
     <Grid>
-        <lvc:CartesianChart Series="{Binding Series}" LegendLocation="None" HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" Height="140" Width="Auto" Margin="5 5 5 5" DisableAnimations="True" >
+        <lvc:CartesianChart Series="{Binding Series}" 
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                            Height="140" Width="Auto" 
+                            Margin="-3 0 1 1"
+                            LegendLocation="None" 
+                            DisableAnimations="True">
             <lvc:CartesianChart.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ChartVisibility}" Value="False">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </lvc:CartesianChart.Style>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis  ShowLabels="False" FontSize="10" IsMerged="True" Sections="{Binding EnrageSections}"
+                <lvc:Axis ShowLabels="False"
+                          FontSize="10" 
+                          IsMerged="True" 
+                          Sections="{Binding EnrageSections}"
                           LabelFormatter="{Binding TimeFormatter}">
-                    <lvc:Axis.Separator >
-                        <lvc:Separator IsEnabled="False" Step="30"  Stroke="#2fff" />
+
+                    <lvc:Axis.Separator>
+                        <lvc:Separator IsEnabled="False" Step="30" Stroke="#2fff" />
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis MinValue="0" ShowLabels="True" FontSize="10" Foreground="#5fff" IsMerged="True" 
-                      LabelFormatter="{Binding DpsFormatter}"   >
-                    <lvc:Axis.Separator >
+                <lvc:Axis MinValue="0" 
+                          ShowLabels="True" 
+                          IsMerged="True"
+                          FontSize="10" 
+                          Foreground="#5fff" 
+                          LabelFormatter="{Binding DpsFormatter}">
+                    <lvc:Axis.Separator>
                         <lvc:Separator IsEnabled="True" Stroke="#2fff" />
                     </lvc:Axis.Separator>
+
                 </lvc:Axis>
             </lvc:CartesianChart.AxisY>
-
         </lvc:CartesianChart>
     </Grid>
 </UserControl>

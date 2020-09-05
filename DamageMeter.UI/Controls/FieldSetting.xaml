@@ -51,8 +51,7 @@
                  MaxLines="1"
                  BorderThickness="0" LostFocus="TextBox_LostFocus" TextChanged="TextBox_TextChanged"  VerticalAlignment="Center"
                  Margin="7 4" Text="{Binding Value, RelativeSource={RelativeSource AncestorType=settings:FieldSetting}}" x:Name="TB"
-                 ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}">
-        </TextBox>
+                 ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}" />
 
     </Grid>
 
