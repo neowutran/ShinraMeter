@@ -1,12 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
-                    xmlns:nostrumConv="clr-namespace:Nostrum.Converters">
+                    xmlns:nostrumConv="clr-namespace:Nostrum.Converters;assembly=Nostrum">
 
     <converters:PlayersDisplayedCountToSizeConverter x:Key="PlayersCountToSize" />
     <converters:ClassToSvgConverter x:Key="ClassToSvg" />
     <converters:LoadToColor x:Key="LoadToColor" />
+    <converters:LoadToAngle x:Key="LoadToAngle" />
     <converters:TransparencyToMarginConverter x:Key="BoolToMargin" />
     <nostrumConv:RoundedClipConverter x:Key="RoundedClipConverter"/>
+    <nostrumConv:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
 
 </ResourceDictionary>

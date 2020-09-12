@@ -127,7 +127,7 @@ namespace DamageMeter
             {
                 if (value == _durationLeft) { return; }
                 _durationLeft = value;
-                NotifyPropertyChanged("DurationLeft");
+                NotifyPropertyChanged();
             }
         }
 
@@ -138,7 +138,7 @@ namespace DamageMeter
             {
                 if (value == _duration) { return; }
                 _duration = value;
-                NotifyPropertyChanged("Duration");
+                NotifyPropertyChanged();
             }
         }
 
@@ -149,7 +149,7 @@ namespace DamageMeter
             {
                 if (value == _stacks) { return; }
                 _stacks = value;
-                NotifyPropertyChanged("Stacks");
+                NotifyPropertyChanged();
             }
         }
 
@@ -163,7 +163,7 @@ namespace DamageMeter
         {
             _timer.Stop();
             if (Buff.Time != 0) { _timer.Start(); }
-            NotifyPropertyChanged("Refresh");
+            NotifyPropertyChanged();
         }
     }
 
@@ -211,7 +211,7 @@ namespace DamageMeter
             {
                 if (_name == value) { return; }
                 _name = value;
-                NotifyPropertyChanged("Name");
+                NotifyPropertyChanged();
             }
         }
 
@@ -222,7 +222,7 @@ namespace DamageMeter
             {
                 if (_buffs == value) { return; }
                 _buffs = value;
-                NotifyPropertyChanged("Buffs");
+                NotifyPropertyChanged();
             }
         }
 
@@ -233,7 +233,7 @@ namespace DamageMeter
             {
                 if (_enraged == value) { return; }
                 _enraged = value;
-                NotifyPropertyChanged("Enraged");
+                NotifyPropertyChanged();
             }
         }
 
@@ -244,7 +244,7 @@ namespace DamageMeter
             {
                 if (_maxHp == value) { return; }
                 _maxHp = value;
-                NotifyPropertyChanged("MaxHP");
+                NotifyPropertyChanged();
             }
         }
 
@@ -255,8 +255,8 @@ namespace DamageMeter
             {
                 if (_currentHp == value) { return; }
                 _currentHp = value;
-                NotifyPropertyChanged("CurrentHP");
-                NotifyPropertyChanged("CurrentPercentage");
+                NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(CurrentPercentage));
             }
         }
 
@@ -269,7 +269,7 @@ namespace DamageMeter
             {
                 if (visible == value) { return; }
                 visible = value;
-                NotifyPropertyChanged("Visible");
+                NotifyPropertyChanged();
             }
         }
 
@@ -280,7 +280,7 @@ namespace DamageMeter
             {
                 if (_runemarks == value) { return; }
                 _runemarks = value;
-                NotifyPropertyChanged("Runemarks");
+                NotifyPropertyChanged();
             }
         }
 

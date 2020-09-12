@@ -1,14 +1,13 @@
 ﻿<UserControl x:Class="DamageMeter.UI.HUD.Controls.GenericGauge"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:DamageMeter.UI.HUD.Controls"
-             xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
+             xmlns:nostrum="clr-namespace:Nostrum.Converters;assembly=Nostrum"
              mc:Ignorable="d"
              Loaded="UserControl_Loaded">
     <UserControl.Resources>
-        <converters:BoolToVisibiltyConverter x:Key="percVisConv" />
         <DropShadowEffect x:Key="textShadow" BlurRadius="2" ShadowDepth="1" Opacity="1" RenderingBias="Performance" />
         <Style TargetType="TextBlock" x:Key="text" BasedOn="{StaticResource DefaultTextStyle}">
             <Setter Property="FontSize" Value="11" />
@@ -22,7 +21,7 @@
         <Rectangle Fill="{Binding BarColor, RelativeSource={RelativeSource AncestorType=local:GenericGauge}}"
                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="bar" />
         <TextBlock Style="{StaticResource text}" HorizontalAlignment="Center"
-                   Visibility="{Binding ShowValues, Converter={StaticResource percVisConv},RelativeSource={RelativeSource AncestorType=local:GenericGauge}}">
+                   Visibility="{Binding ShowValues, Converter={nostrum:BoolToVisibility Mode=Collapsed},RelativeSource={RelativeSource AncestorType=local:GenericGauge}}">
             <Run Text="{Binding CurrentVal, RelativeSource={RelativeSource AncestorType=local:GenericGauge}}" />
             <Run Text=" / " />
             <Run Text="{Binding MaxVal, RelativeSource={RelativeSource AncestorType=local:GenericGauge}}" />
@@ -30,10 +29,10 @@
         </TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="3,-1,0,0" Style="{StaticResource text}"
                    Text="{Binding GaugeName, RelativeSource={RelativeSource AncestorType=local:GenericGauge}}"
-                   Visibility="{Binding ShowName, Converter={StaticResource percVisConv},RelativeSource={RelativeSource AncestorType=local:GenericGauge}}" />
+                   Visibility="{Binding ShowName, Converter={nostrum:BoolToVisibility Mode=Collapsed}, RelativeSource={RelativeSource AncestorType=local:GenericGauge}}" />
         <TextBlock HorizontalAlignment="Right" Margin="0,-1,3,0"
                    Style="{StaticResource text}"
-                   Visibility="{Binding ShowPercentage, Converter={StaticResource percVisConv},RelativeSource={RelativeSource AncestorType=local:GenericGauge}}"
+                   Visibility="{Binding ShowPercentage, Converter={nostrum:BoolToVisibility Mode=Collapsed},RelativeSource={RelativeSource AncestorType=local:GenericGauge}}"
                    Text="{Binding Factor, StringFormat=#.#%, RelativeSource={RelativeSource AncestorType=local:GenericGauge}}" />
     </Grid>
 </UserControl>

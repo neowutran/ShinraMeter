@@ -1,18 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using Data;
+using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
-using DamageMeter.UI.Annotations;
-using Data;
 
 namespace DamageMeter.UI.Windows
 {
-    public partial class SettingsWindow 
+    public partial class SettingsWindow
     {
         private readonly DoubleAnimation _effectOffAnim;
         private readonly DoubleAnimation _effectOnAnim;
@@ -96,15 +92,23 @@ namespace DamageMeter.UI.Windows
         {
             BasicTeraData.Instance.WindowData.Save();
             BasicTeraData.Instance.HotkeysData.Save();
-            Close();
+            Hide();
             _visible = false;
+        }
+
+        /// <summary>
+        /// Creates the window without showing it, to avoid instantiating it every time it should be showed, avoiding click lag
+        /// </summary>
+        public static void Create()
+        {
+            _window = new SettingsWindow();
         }
 
         public static void ShowWindow()
         {
             if (_visible) return;
             _visible = true;
-            _window = new SettingsWindow();
+            _window ??= new SettingsWindow(); // it should never be the case, as the window is created only once via Create() method at startup
             _window.Show();
             _window.Activate();
         }
@@ -112,7 +116,7 @@ namespace DamageMeter.UI.Windows
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.LeftShift) return;
-            ((SettingsWindowViewModel) DataContext).IsShiftDown = true;
+            ((SettingsWindowViewModel)DataContext).IsShiftDown = true;
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)

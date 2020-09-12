@@ -10,6 +10,9 @@
         xmlns:teraDpsApi="clr-namespace:DamageMeter.TeraDpsApi;assembly=DamageMeter"
         xmlns:ui="clr-namespace:DamageMeter.UI"
         xmlns:settingsViews="clr-namespace:DamageMeter.UI.Windows.SettingsViews"
+        xmlns:data="clr-namespace:Data;assembly=Data"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
         Background="{StaticResource DarkBackgroundColor}"
         WindowStyle="SingleBorderWindow"
         UseLayoutRounding="True"
@@ -17,7 +20,7 @@
         KeyDown="OnKeyDown"
         KeyUp="OnKeyUp"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="580" Width="800"
+        Title="SettingsWindow" Height="600" Width="800"
         d:DataContext="{d:DesignInstance local:SettingsWindowViewModel}">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"
@@ -81,13 +84,139 @@
             </Setter>
         </Style>
         <SolidColorBrush x:Key="MainBgBrush" Color="#292F33" />
+        <DataTemplate x:Key="MockPlayer" DataType="local:MockPlayerViewModel">
+
+
+            <Grid x:Name="root">
+                <Border Focusable="False"
+                        Opacity="1"
+                        HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                        Height="Auto" Width="Auto">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0 1">
+                            <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=0}}" />
+                            <GradientStop
+                                Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=.2}}"
+                                Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.BorderBrush>
+                        <LinearGradientBrush EndPoint="0 1">
+                            <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=0}}"
+                                          Offset=".6" />
+                            <GradientStop
+                                Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=.9}}"
+                                Offset="1" />
+                        </LinearGradientBrush>
+                    </Border.BorderBrush>
+                    <Grid>
+                        <Border x:Name="IndicatorGovernor"
+                                HorizontalAlignment="Left"
+                                Width="{Binding ActualWidth, ElementName=root}">
+                            <Border.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding DamageFactor}" />
+                            </Border.LayoutTransform>
+                        </Border>
+                        <Border Background="{Binding Role, Converter={converters:RoleToColorConverter}}"
+                                VerticalAlignment="Bottom"
+                                Height="1" />
+                    </Grid>
+                </Border>
+
+                <Grid Focusable="False"
+                      Height="30"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Stretch">
+                    <Grid.Resources>
+                        <Style x:Key="MetricComboBox" TargetType="ComboBox"
+                               BasedOn="{StaticResource {x:Type ComboBox}}">
+                            <Setter Property="MinWidth" Value="10" />
+                            <Setter Property="HorizontalAlignment" Value="Stretch" />
+                            <Setter Property="HorizontalContentAlignment" Value="Left" />
+                            <Setter Property="ItemsSource" Value="{Binding AvailableMetrics}" />
+                            <Setter Property="ItemTemplate">
+                                <Setter.Value>
+                                    <DataTemplate DataType="data:Metric">
+                                        <StackPanel HorizontalAlignment="Stretch">
+                                            <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" x:Name="MetricName"
+                                                       Foreground="#5fff" Margin="0 2"></TextBlock>
+                                            <ContentControl
+                                                Content="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ComboBox}}"
+                                                ContentTemplate="{Binding Converter={StaticResource MetricTemplateSelector}}"
+                                                HorizontalAlignment="Left" />
+                                        </StackPanel>
+                                        <DataTemplate.Triggers>
+                                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=IsSelected}" Value="{x:Null}">
+                                                                        <Setter TargetName="MetricName" Property="Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </DataTemplate.Triggers>
+
+                                    </DataTemplate>
+
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="85" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--Class-->
+                    <Path x:Name="Class"
+                          Data="{Binding Class, Converter={StaticResource ClassToSvg}}"
+                          Focusable="False"
+                          Fill="#ddd"
+                          RenderOptions.BitmapScalingMode="HighQuality"
+                          Stretch="Uniform"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Height="18" Width="18"
+                          Margin="2 0 0 0" />
+
+                    <!--Name-->
+                    <TextBlock
+                        Grid.Column="1"
+                        TextTrimming="CharacterEllipsis"
+                        Margin="2 0 10 0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Foreground="White">
+                        <Run Text="{Binding Name, Mode=OneWay}" />
+                        <Run Text="{Binding Level, Mode=OneWay}"
+                             Foreground="#888"
+                             FontSize="11" />
+                    </TextBlock>
+                    <ComboBox Grid.Column="2"
+                              Style="{StaticResource MetricComboBox}"
+                              SelectedItem="{Binding Metric1, Mode=TwoWay}" />
+                    <ComboBox Grid.Column="3"
+                              Style="{StaticResource MetricComboBox}"
+                              SelectedItem="{Binding Metric2, Mode=TwoWay}" />
+                    <ComboBox Grid.Column="4"
+                              Style="{StaticResource MetricComboBox}"
+                              SelectedItem="{Binding Metric3, Mode=TwoWay}" />
+                    <ComboBox Grid.Column="5"
+                              Style="{StaticResource MetricComboBox}"
+                              SelectedItem="{Binding Metric4, Mode=TwoWay}" />
+                    <ComboBox Grid.Column="6"
+                              Style="{StaticResource MetricComboBox}"
+                              SelectedItem="{Binding Metric5, Mode=TwoWay}" />
+                </Grid>
+            </Grid>
+        </DataTemplate>
 
     </Window.Resources>
     <Grid Background="{StaticResource MainBgBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="0" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <!-- Title bar -->
         <Grid Background="#1000" MouseDown="Drag">
@@ -112,7 +241,7 @@
                     Width="30"
                     Click="CloseWindow">
                 <Path Data="{StaticResource Svg.Close}"
-                      Fill="#f55"
+                      Fill="{StaticResource LightRed}"
                       Stretch="Uniform"
                       Margin="8" />
             </Button>
@@ -132,20 +261,21 @@
                         BorderThickness="0"
                         Grid.ColumnSpan="2"
                         Margin="10 0 0 0"
-                        MaxWidth="500"
                         Visibility="Visible"
                         VerticalAlignment="Center">
                 <!--Home-->
-                <TabItem >
-                    <settingsViews:SettingsHomeView />
+                <TabItem>
+                    <settingsViews:SettingsHomeView
+                        MaxWidth="500" />
                 </TabItem>
                 <!--Detection-->
                 <TabItem>
-                    <StackPanel>
+
+                    <StackPanel MaxWidth="500">
                         <settings:SelectionSetting SelectedItem="{Binding CaptureMode, Mode=TwoWay}"
-                                                   SettingName="{x:Static lang:LP.CaptureMode}"  
+                                                   SettingName="{x:Static lang:LP.CaptureMode}"
                                                    Choices="{x:Static local:SettingsWindowViewModel.CaptureModes}"
-                                                   ChoicesType="{x:Type CaptureMode}"/>
+                                                   ChoicesType="{x:Type CaptureMode}" />
                         <settings:CheckboxSetting IsOn="{Binding LowPriority, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.SystemTray_LowPriority}" />
                         <settings:CheckboxSetting IsOn="{Binding CountOnlyBosses, Mode=TwoWay}"
@@ -163,7 +293,7 @@
                 </TabItem>
                 <!--UI-->
                 <TabItem>
-                    <StackPanel>
+                    <StackPanel MaxWidth="500">
                         <settings:CheckboxSetting IsOn="{Binding AggroBasedTimer, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.Display_timer_aggro_or_firsthit}" />
                         <settings:CheckboxSetting IsOn="{Binding DisplayOnlyBossHitByMeterUser, Mode=TwoWay}"
@@ -189,81 +319,90 @@
                                                SettingName="{x:Static lang:LP.SystemTray_OtherWindowOpacity}"
                                                Min="0.1" Max="1" />
                         <settings:ValueSetting Value="{Binding Scale, Mode=TwoWay}" SettingName="Scale" Min="0" Max="5" />
+                        <Grid Margin="35 10 0 10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Separator Grid.Column="0" Opacity=".2" />
+                            <TextBlock Grid.Column="1" Text="Colors" Margin="10 0" Foreground="#3fff" />
+                            <Separator Grid.Column="2" Opacity=".2" />
+                        </Grid>
                         <UniformGrid Rows="1" Margin="28 0 0 0">
-                            <UniformGrid.Resources>
-                                <ResourceDictionary Source="../Controls/ColorPickerStyle.xaml" />
-                            </UniformGrid.Resources>
-                            <Grid HorizontalAlignment="Left">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Name="DpsColor" VerticalAlignment="Center"
-                                           Style="{StaticResource DefaultTextStyle}"
-                                           Text="Dps color" Grid.Column="1" />
-                                <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
-                                                  DisplayColorAndName="False" Name="DpsColorSelecter"
-                                                  Margin="5" Grid.Column="0"
-                                                  BorderBrush="Transparent" BorderThickness="0"
-                                                  Background="Transparent" ShowDropDownButton="False"
-                                                  SelectedColor="{Binding DpsColor}"
-                                                  ColorMode="ColorCanvas" />
-                            </Grid>
-                            <Grid HorizontalAlignment="Left">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Name="HealerColor" VerticalAlignment="Center"
-                                           Style="{StaticResource DefaultTextStyle}"
-                                           Text="Healer color" Grid.Column="1" />
-                                <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
-                                                  DisplayColorAndName="False" Name="HealerColorSelecter"
-                                                  Margin="5" Grid.Column="0"
-                                                  BorderBrush="Transparent" BorderThickness="0"
-                                                  Background="Transparent" ShowDropDownButton="False"
-                                                  SelectedColor="{Binding HealerColor}"
-                                                  ColorMode="ColorCanvas" />
-                            </Grid>
-                            <Grid HorizontalAlignment="Left">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Name="TankColor" VerticalAlignment="Center"
-                                           Style="{StaticResource DefaultTextStyle}"
-                                           Text="Tank color" Grid.Column="1" />
-                                <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
-                                                  DisplayColorAndName="False" Name="TankColorSelecter"
-                                                  Margin="5" Grid.Column="0"
-                                                  BorderBrush="Transparent" BorderThickness="0"
-                                                  Background="Transparent" ShowDropDownButton="False"
-                                                  SelectedColor="{Binding TankColor}"
-                                                  ColorMode="ColorCanvas" />
-                            </Grid>
-                            <Grid HorizontalAlignment="Left">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Name="PlayerColor" VerticalAlignment="Center"
-                                           Style="{StaticResource DefaultTextStyle}"
-                                           Text="Player color" Grid.Column="1" />
-                                <xctk:ColorPicker HorizontalAlignment="Right" Width="Auto" VerticalAlignment="Center"
-                                                  DisplayColorAndName="False" Name="PlayerColorSelecter"
-                                                  Margin="5" Grid.Column="0"
-                                                  BorderBrush="Transparent" BorderThickness="0"
-                                                  Background="Transparent" ShowDropDownButton="False"
-                                                  SelectedColor="{Binding SelfColor}"
-                                                  ColorMode="ColorCanvas" />
-                            </Grid>
+                            <local:ColorSetting SettingName="Player" SelectedColor="{Binding SelfColor, Mode=TwoWay}"
+                                                DefaultColor="{x:Static data:WindowData.DefaultPlayerColor}" />
+                        </UniformGrid>
+                        <UniformGrid Rows="1" Margin="28 0 0 0">
+                            <local:ColorSetting SettingName="Background"
+                                                SelectedColor="{Binding BackgroundColor, Mode=TwoWay}"
+                                                DefaultColor="{x:Static data:WindowData.DefaultBackgroundColor}" />
+                            <local:ColorSetting SettingName="Border" SelectedColor="{Binding BorderColor, Mode=TwoWay}"
+                                                DefaultColor="{x:Static data:WindowData.DefaultBorderColor}" />
                         </UniformGrid>
 
                     </StackPanel>
                 </TabItem>
-                <!--TTS-->
+
                 <TabItem>
-                    <StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
+                        <StackPanel.Resources>
+                            <Style x:Key="MockBrderStyle" TargetType="Border">
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="Effect" Value="{StaticResource MenuShadow-8dp}" />
+                                <Setter Property="Margin" Value="0 20" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{Binding BackgroundColor}" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="{Binding BorderColor}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </StackPanel.Resources>
+                        <StackPanel Orientation="Horizontal">
+
+                            <Border Style="{StaticResource MockBrderStyle}">
+                                <ContentControl Content="{Binding MockParty[0]}"
+                                                ContentTemplate="{StaticResource MockPlayer}" />
+
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+
+                            <Border Style="{StaticResource MockBrderStyle}">
+                                <ContentControl Content="{Binding MockParty[1]}"
+                                                ContentTemplate="{StaticResource MockPlayer}" />
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <Border Style="{StaticResource MockBrderStyle}">
+                                <ContentControl Content="{Binding MockParty[2]}"
+                                                ContentTemplate="{StaticResource MockPlayer}" />
+                            </Border>
+                        </StackPanel>
+
+                        <UniformGrid Rows="1" HorizontalAlignment="Center">
+                            <local:ColorSetting SettingName="" SelectedColor="{Binding DpsColor, Mode=TwoWay}"
+                                                DefaultColor="{x:Static data:WindowData.DefaultDpsColor}" />
+                            <local:ColorSetting SettingName="" SelectedColor="{Binding TankColor, Mode=TwoWay}"
+                                                DefaultColor="{x:Static data:WindowData.DefaultTankColor}" />
+                            <local:ColorSetting SettingName="" SelectedColor="{Binding HealerColor, Mode=TwoWay}"
+                                                DefaultColor="{x:Static data:WindowData.DefaultHealerColor}" />
+
+
+                        </UniformGrid>
+                    </StackPanel>
+                </TabItem>
+                <!--TTS-->
+                <TabItem >
+                    <StackPanel MaxWidth="500">
                         <settings:CheckboxSetting IsOn="{Binding TtsMessagesTruncate, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.TTSSizeExceededTruncate}" />
                         <settings:ValueSetting Value="{Binding TtsMaxSize, Mode=TwoWay}"
@@ -274,7 +413,7 @@
                 </TabItem>
                 <!--HP bar-->
                 <TabItem>
-                    <StackPanel>
+                    <StackPanel MaxWidth="500">
                         <settings:CheckboxSetting IsOn="{Binding BossGageVisible, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.ShowBossGage}" />
                         <settings:CheckboxSetting IsOn="{Binding BossGageAbnormalsDisabled, Mode=TwoWay}"
@@ -284,17 +423,40 @@
                 </TabItem>
                 <!--Graph-->
                 <TabItem>
-                    <StackPanel>
+                    <StackPanel MaxWidth="500">
                         <settings:CheckboxSetting IsOn="{Binding RealtimeGraphEnabled, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.EnableRealtimeGraph}" />
+                        <settings:SelectionSetting SelectedItem="{Binding GraphMode, Mode=TwoWay}"
+                                                   SettingName="{x:Static lang:LP.RealtimeGraphMode}"
+                                                   Choices="{x:Static local:SettingsWindowViewModel.GraphModes}"
+                                                   ChoicesType="{x:Type data:GraphMode}"
+                                                   IsEnabled="{Binding RealtimeGraphEnabled}" />
+
                         <settings:ValueSetting Value="{Binding RealtimeGraphDisplayedInterval, Mode=TwoWay}"
                                                SettingName="{x:Static lang:LP.RealtimeGraphDisplayedInterval}" Min="0"
                                                Max="600"
                                                IsEnabled="{Binding RealtimeGraphEnabled}" />
                         <settings:ValueSetting Value="{Binding RealtimeGraphCMAseconds, Mode=TwoWay}"
-                                               SettingName="{x:Static lang:LP.RealtimeGraphCmaSeconds}" Min="10"
-                                               Max="60"
-                                               IsEnabled="{Binding RealtimeGraphEnabled}" />
+                                               SettingName="{x:Static lang:LP.RealtimeGraphCmaSeconds}" Min="1"
+                                               Max="60">
+                            <settings:ValueSetting.Style>
+                                <Style TargetType="settings:ValueSetting"
+                                       BasedOn="{StaticResource {x:Type settings:ValueSetting}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GraphMode}" Value="DPS">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RealtimeGraphEnabled}" Value="False">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </settings:ValueSetting.Style>
+
+                        </settings:ValueSetting>
+                        <settings:CheckboxSetting IsOn="{Binding RealtimeGraphAnimated, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.RealtimeGraphAnimated}"
+                                                  IsEnabled="{Binding RealtimeGraphEnabled}" />
 
                     </StackPanel>
                 </TabItem>
@@ -329,7 +491,7 @@
                             </Setter>
                         </Style>
                     </TabItem.Resources>
-                    <Grid>
+                    <Grid MaxWidth="500">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
@@ -363,7 +525,7 @@
                 </TabItem>
                 <!--Events-->
                 <TabItem>
-                    <StackPanel>
+                    <StackPanel MaxWidth="500">
                         <settings:CheckboxSetting IsOn="{Binding EnableChatAndNotif, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.EnableChat}" />
                         <settings:CheckboxSetting IsOn="{Binding AutoDisableChatWhenOverloaded, Mode=TwoWay}"
@@ -385,7 +547,7 @@
                 </TabItem>
                 <!--Rich presence-->
                 <TabItem>
-                    <StackPanel>
+                    <StackPanel MaxWidth="500">
                         <settings:CheckboxSetting IsOn="{Binding RichPresenceEnable, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.EnableRp}" />
                         <settings:CheckboxSetting IsOn="{Binding RichPresenceShowLocation, Mode=TwoWay}"
@@ -405,7 +567,7 @@
                 </TabItem>
                 <!--Chat colors-->
                 <TabItem>
-                    <UniformGrid Columns="2" Margin="23 3 3 3" x:Name="ColorSettingsContainer" VerticalAlignment="Top">
+                    <UniformGrid Columns="2" Margin="23 3 3 3" x:Name="ColorSettingsContainer" VerticalAlignment="Top" MaxWidth="500">
                         <UniformGrid.Resources>
                             <ResourceDictionary Source="../Controls/ColorPickerStyle.xaml" />
                         </UniformGrid.Resources>
@@ -599,7 +761,7 @@
                 </TabItem>
                 <!--Misc-->
                 <TabItem>
-                    <StackPanel>
+                    <StackPanel MaxWidth="500">
                         <settings:CheckboxSetting IsOn="{Binding ExportPacketLogs, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.ExportPacketLogs}" />
                         <settings:CheckboxSetting IsOn="{Binding ExcelAutoExport, Mode=TwoWay}"
@@ -614,7 +776,7 @@
                 </TabItem>
                 <!--Hotkeys-->
                 <TabItem>
-                    <StackPanel>
+                    <StackPanel MaxWidth="500">
                         <settings:CheckboxSetting IsOn="{Binding RemoveAltEnter, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.RemoveTeraAltEnterHotkey}" />
                         <settings:CheckboxSetting IsOn="{Binding FormatPasteString, Mode=TwoWay}"
@@ -625,17 +787,17 @@
                                                SettingName="{x:Static lang:LP.DelayToWaitPasting}" Min="0" Max="600" />
                         <Separator Opacity=".2" />
 
-                        <settings:HotkeySetting SettingName="Topmost" 
+                        <settings:HotkeySetting SettingName="Topmost"
                                                 Value="{Binding TopmostHotkey, Mode=TwoWay}" />
-                        <settings:HotkeySetting SettingName="Click through" 
+                        <settings:HotkeySetting SettingName="Click through"
                                                 Value="{Binding ClickThrouHotkey, Mode=TwoWay}" />
-                        <settings:HotkeySetting SettingName="Paste" 
+                        <settings:HotkeySetting SettingName="Paste"
                                                 Value="{Binding PasteHotkey, Mode=TwoWay}" />
-                        <settings:HotkeySetting SettingName="Excel save" 
+                        <settings:HotkeySetting SettingName="Excel save"
                                                 Value="{Binding ExcelSaveHotkey, Mode=TwoWay}" />
-                        <settings:HotkeySetting SettingName="Reset" 
+                        <settings:HotkeySetting SettingName="Reset"
                                                 Value="{Binding ResetHotkey, Mode=TwoWay}" />
-                        <settings:HotkeySetting SettingName="Reset current" 
+                        <settings:HotkeySetting SettingName="Reset current"
                                                 Value="{Binding ResetCurrentHotkey, Mode=TwoWay}" />
                         <Separator Opacity=".2" />
                         <ItemsControl ItemsSource="{Binding CopyKeys}">
@@ -682,7 +844,7 @@
                 <Rectangle Width="3" x:Name="SelRect"
                            HorizontalAlignment="Left" Height="40" VerticalAlignment="Top">
                     <Rectangle.Fill>
-                        <SolidColorBrush x:Name="sc"  Color="{Binding SelfColor}" />
+                        <SolidColorBrush x:Name="sc" Color="{Binding SelfColor}" />
                     </Rectangle.Fill>
                     <Rectangle.RenderTransform>
                         <TranslateTransform />
@@ -693,34 +855,72 @@
                     <StackPanel.Resources>
                         <Style TargetType="Button" x:Key="s" BasedOn="{StaticResource {x:Type Button}}">
                             <EventSetter Event="Click" Handler="OnSliderButtonClick" />
-                            <Setter Property="Command" Value="{Binding SetViewCommand}"/>
+                            <Setter Property="Command" Value="{Binding SetViewCommand}" />
                         </Style>
                     </StackPanel.Resources>
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="0"  SvgIcon="{StaticResource Svg.Home}"       Label="{x:Static lang:LP.SettingsTab_Home}"       />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="1"  SvgIcon="{StaticResource Svg.Detection}"  Label="{x:Static lang:LP.SettingsTab_Detection}"  />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="2"  SvgIcon="{StaticResource Svg.UI}"         Label="{x:Static lang:LP.SettingsTab_UI}"         />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="3"  SvgIcon="{StaticResource Svg.TTS}"        Label="{x:Static lang:LP.SettingsTab_TTS}"        />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="4"  SvgIcon="{StaticResource Svg.HPBar}"      Label="{x:Static lang:LP.SettingsTab_HPBar}"      />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="5"  SvgIcon="{StaticResource Svg.Graph}"      Label="{x:Static lang:LP.SettingsTab_Graph}"      />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="6"  SvgIcon="{StaticResource Svg.Servers}"    Label="{x:Static lang:LP.SettingsTab_Servers}"    />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="7"  SvgIcon="{StaticResource Svg.Events}"     Label="{x:Static lang:LP.SettingsTab_Events}"     />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="8"  SvgIcon="{StaticResource Svg.Discord}"    Label="{x:Static lang:LP.SettingsTab_DiscordRP}"  />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="9"  SvgIcon="{StaticResource Svg.ChatColors}" Label="{x:Static lang:LP.SettingsTab_ChatColors}" />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="10" SvgIcon="{StaticResource Svg.Misc}"       Label="{x:Static lang:LP.SettingsTab_Misc}"       />
-                    <local:SliderButton Style="{StaticResource s}" CommandParameter="11" SvgIcon="{StaticResource Svg.Hotkeys}"    Label="{x:Static lang:LP.SettingsTab_Input}"    />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="0"
+                                        SvgIcon="{StaticResource Svg.Home}" Label="{x:Static lang:LP.SettingsTab_Home}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="1"
+                                        SvgIcon="{StaticResource Svg.Detection}"
+                                        Label="{x:Static lang:LP.SettingsTab_Detection}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="2"
+                                        SvgIcon="{StaticResource Svg.UI}" Label="{x:Static lang:LP.SettingsTab_UI}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="3"
+                                        SvgIcon="{StaticResource Svg.Layout}"
+                                        Label="{x:Static lang:LP.SettingsTab_Layout}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="4"
+                                        SvgIcon="{StaticResource Svg.TTS}" Label="{x:Static lang:LP.SettingsTab_TTS}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="5"
+                                        SvgIcon="{StaticResource Svg.HPBar}"
+                                        Label="{x:Static lang:LP.SettingsTab_HPBar}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="6"
+                                        SvgIcon="{StaticResource Svg.Graph}"
+                                        Label="{x:Static lang:LP.SettingsTab_Graph}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="7"
+                                        SvgIcon="{StaticResource Svg.Servers}"
+                                        Label="{x:Static lang:LP.SettingsTab_Servers}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="8"
+                                        SvgIcon="{StaticResource Svg.Events}"
+                                        Label="{x:Static lang:LP.SettingsTab_Events}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="9"
+                                        SvgIcon="{StaticResource Svg.Discord}"
+                                        Label="{x:Static lang:LP.SettingsTab_DiscordRP}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="10"
+                                        SvgIcon="{StaticResource Svg.ChatColors}"
+                                        Label="{x:Static lang:LP.SettingsTab_ChatColors}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="11"
+                                        SvgIcon="{StaticResource Svg.Misc}" Label="{x:Static lang:LP.SettingsTab_Misc}" />
+                    <local:SliderButton Style="{StaticResource s}" CommandParameter="12"
+                                        SvgIcon="{StaticResource Svg.Hotkeys}"
+                                        Label="{x:Static lang:LP.SettingsTab_Input}" />
                 </StackPanel>
             </Grid>
         </Grid>
+
+        <!--Toast-->
+        <local:ToastControl Grid.RowSpan="3" Width="Auto"
+                            DataContext="{Binding ToastData}"
+                            ToastText="{Binding Text}"
+                            ToastSeverity="{Binding Severity}"
+                            IsShowed="{Binding Visible}"
+                            Foreground="White"
+                            Effect="{StaticResource MenuShadow-8dp}"
+                            CornerRadius="5"
+                            SlideOffset="-30"
+                            FontSize="14"
+                            FontWeight="DemiBold"
+                            HorizontalAlignment="Center" VerticalAlignment="Top"
+                            Margin="70" />
 
         <Grid Grid.Row="2" Background="#1000">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Opacity=".5">
-                <Path Data="{StaticResource Svg.Info}"  Margin="6"
-                      Style="{StaticResource PathBaseStyle}" Opacity=".4"/>
-            <TextBlock Text="Settings are saved when closing this window and when closing meter"
-                       Style="{StaticResource DefaultTextStyle}"
-                       VerticalAlignment="Center"/>
+                <Path Data="{StaticResource Svg.Info}" Margin="6"
+                      Style="{StaticResource PathBaseStyle}" Opacity=".4" />
+                <TextBlock Text="Settings are saved when closing this window and when closing meter"
+                           Style="{StaticResource DefaultTextStyle}"
+                           VerticalAlignment="Center" />
             </StackPanel>
         </Grid>
     </Grid>

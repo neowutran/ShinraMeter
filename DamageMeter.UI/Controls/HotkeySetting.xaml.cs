@@ -107,7 +107,7 @@ namespace TCC.UI.Controls.Settings
 
         public event PropertyChangedEventHandler PropertyChanged = null!;
 
-        protected void N([CallerMemberName] string? propertyName = null)
+        protected void N([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

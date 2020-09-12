@@ -31,9 +31,9 @@ namespace TCC.UI.Controls.Settings
         }
         public static readonly DependencyProperty ChoicesProperty = DependencyProperty.Register("Choices", typeof(IEnumerable), typeof(SelectionSetting));
 
-        public string? SelectedItem
+        public string SelectedItem
         {
-            get => (string?)GetValue(SelectedItemProperty);
+            get => (string)GetValue(SelectedItemProperty);
             set => SetValue(SelectedItemProperty, value);
         }
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(string), typeof(SelectionSetting));

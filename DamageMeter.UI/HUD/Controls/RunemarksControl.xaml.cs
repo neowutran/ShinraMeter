@@ -1,15 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 
 namespace DamageMeter.UI.HUD.Controls
 {
-    /// <summary>
-    /// Logica di interazione per RunemarksControl.xaml
-    /// </summary>
-    public partial class RunemarksControl : UserControl
+    public partial class RunemarksControl
     {
         public RunemarksControl()
         {
@@ -19,7 +15,7 @@ namespace DamageMeter.UI.HUD.Controls
 
         private void _context_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Runemarks") { SetRunes(_context.Runmarks); }
+            if (e.PropertyName == nameof(_context.Runmarks)) { SetRunes(_context.Runmarks); }
         }
 
         private int _currentRunes = 0;
@@ -34,13 +30,13 @@ namespace DamageMeter.UI.HUD.Controls
                 //baseBorder.Background = new SolidColorBrush(Color.FromRgb(0xff,0x98,0xbb));
                 maxBorder.Opacity = 1;
             }
-            if (diff > 0) { for (int i = 0; i < diff; i++) { dotsContainer.Children[_currentRunes + i].Opacity = 1; } }
+            if (diff > 0) { for (var i = 0; i < diff; i++) { dotsContainer.Children[_currentRunes + i].Opacity = 1; } }
             else
             {
                 //baseBorder.Background = new SolidColorBrush(Color.FromRgb(0x20, 0x20, 0x27));
                 maxBorder.Opacity = 0;
 
-                for (int i = dotsContainer.Children.Count - 1; i >= 0; i--) { dotsContainer.Children[i].Opacity = 0; }
+                for (var i = dotsContainer.Children.Count - 1; i >= 0; i--) { dotsContainer.Children[i].Opacity = 0; }
             }
             _currentRunes = newRunes;
         }

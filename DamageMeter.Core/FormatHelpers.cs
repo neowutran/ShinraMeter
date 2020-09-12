@@ -61,21 +61,13 @@ namespace DamageMeter
                     exponent++;
                 }
 
-                switch (exponent)
+                suffix = exponent switch
                 {
-                    case 0:
-                        suffix = "";
-                        break;
-                    case 4:
-                        suffix = UnitSeparator + "만";
-                        break;
-                    case 8:
-                        suffix = UnitSeparator + "억";
-                        break;
-                    default:
-                        suffix = UnitSeparator + "E" + UnitSeparator + exponent;
-                        break;
-                }
+                    0 => "",
+                    4 => UnitSeparator + "만",
+                    8 => UnitSeparator + "억",
+                    _ => UnitSeparator + "E" + UnitSeparator + exponent
+                };
             }
             else
             {
@@ -90,24 +82,14 @@ namespace DamageMeter
                     exponent++;
                 }
 
-                switch (exponent)
+                suffix = exponent switch
                 {
-                    case 0:
-                        suffix = "";
-                        break;
-                    case 3:
-                        suffix = UnitSeparator + "k";
-                        break;
-                    case 6:
-                        suffix = UnitSeparator + "M";
-                        break;
-                    case 9:
-                        suffix = UnitSeparator + "B";
-                        break;
-                    default:
-                        suffix = UnitSeparator + "E" + UnitSeparator + exponent;
-                        break;
-                }
+                    0 => "",
+                    3 => UnitSeparator + "k",
+                    6 => UnitSeparator + "M",
+                    9 => UnitSeparator + "B",
+                    _ => UnitSeparator + "E" + UnitSeparator + exponent
+                };
             }
             return string.Format(CultureInfo, "{0}{1}", rounded, suffix);
         }

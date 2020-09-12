@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DamageMeter.Database.Structures;
 using Tera.Game;
 using Skill = Tera.Game.Skill;

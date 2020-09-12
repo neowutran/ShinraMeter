@@ -145,7 +145,7 @@ namespace Tera.RichPresence
         {
             if (_bosses.Count == 0) return null;
             
-            string firstName = _bosses[0].Info.Name;
+            var firstName = _bosses[0].Info.Name;
             if (_bosses.Count == 1) return firstName;
             if (_bosses.All(boss => boss.Info.Name == firstName)) return firstName;
             
@@ -174,7 +174,7 @@ namespace Tera.RichPresence
 
         private string FightHp()
         {
-            float hp = GetFightHpPercent();
+            var hp = GetFightHpPercent();
             if (hp < 0) return null;
 
             return $"{hp*100:n0}% | ";
@@ -272,7 +272,7 @@ namespace Tera.RichPresence
 
         public void DespawnNpc(SDespawnNpc message)
         {
-            NpcEntity boss = _bosses.Find(entity => entity.Id == message.NPC);
+            var boss = _bosses.Find(entity => entity.Id == message.NPC);
             if (boss == null) return;
             
             _bosses.Remove(boss);

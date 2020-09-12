@@ -187,7 +187,7 @@
                     Margin="8"
                       Width="14" 
                       Height="14"
-                      Fill="#f55"/>
+                      Fill="{StaticResource LightRed}"/>
 
             </Button>
             <CheckBox x:Name="Enabled"

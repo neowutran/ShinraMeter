@@ -140,7 +140,7 @@ namespace DamageMeter.D3D9Render.Overlays
 
         public static Point GetScreenSpecs()
         {
-            GetScreenSpecs(out int x, out int y);
+            GetScreenSpecs(out var x, out var y);
             return new Point(x, y);
         }
     }

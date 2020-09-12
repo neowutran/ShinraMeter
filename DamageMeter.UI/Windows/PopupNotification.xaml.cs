@@ -46,7 +46,7 @@ namespace DamageMeter.UI
 
         public void AddNotification(List<NotifyFlashMessage> flashList)
         {
-            foreach(NotifyFlashMessage flash in flashList.OrderByDescending(x => x.Priority))
+            foreach(var flash in flashList.OrderByDescending(x => x.Priority))
             {
                 AddNotification(flash);
             }

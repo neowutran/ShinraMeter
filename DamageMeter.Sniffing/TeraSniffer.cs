@@ -10,7 +10,6 @@ using NetworkSniffer;
 using Tera;
 using Tera.Game;
 using Tera.Sniffing;
-using System.Diagnostics;
 using System.Threading;
 
 namespace DamageMeter.Sniffing

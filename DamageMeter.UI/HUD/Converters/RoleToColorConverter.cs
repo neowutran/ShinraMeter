@@ -13,14 +13,14 @@ namespace DamageMeter.UI.HUD.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var retCol = Colors.SlateGray;
-            if (value is PlayerDamageViewModel.PlayerRole role)
+            if (value is PlayerRole role)
             {
                 retCol = role switch
                 {
-                    PlayerDamageViewModel.PlayerRole.Dps => BasicTeraData.Instance.WindowData.DpsColor,
-                    PlayerDamageViewModel.PlayerRole.Tank => BasicTeraData.Instance.WindowData.TankColor,
-                    PlayerDamageViewModel.PlayerRole.Healer => BasicTeraData.Instance.WindowData.HealerColor,
-                    PlayerDamageViewModel.PlayerRole.Self => BasicTeraData.Instance.WindowData.PlayerColor,
+                    PlayerRole.Dps => BasicTeraData.Instance.WindowData.DpsColor,
+                    PlayerRole.Tank => BasicTeraData.Instance.WindowData.TankColor,
+                    PlayerRole.Healer => BasicTeraData.Instance.WindowData.HealerColor,
+                    PlayerRole.Self => BasicTeraData.Instance.WindowData.PlayerColor,
                     _ => retCol
                 };
             }

@@ -66,6 +66,8 @@ namespace DamageMeter.UI
             App.SplashScreen?.CloseWindowSafe();
         }
 
+
+
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
             keyEventArgs.Handled = true;
@@ -224,9 +226,9 @@ namespace DamageMeter.UI
                 SnapToScreen();
                 return;
             }
+
             Top = 0;
             Left = 0;
-
         }
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
@@ -295,13 +297,11 @@ namespace DamageMeter.UI
         {
             base.SetClickThrou();
             foreach (var players in Controls) { players.Value.SetClickThrou(); }
-            // todo: EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStatsClickThrou.Source;
         }
         public override void UnsetClickThrou()
         {
             base.UnsetClickThrou();
             foreach (var players in Controls) { players.Value.UnsetClickThrou(); }
-            //todo: EntityStatsImage.Source = BasicTeraData.Instance.ImageDatabase.EntityStats.Source;
         }
         private void OnScaleChanged(double val)
         {

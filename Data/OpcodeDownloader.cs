@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Data
@@ -19,7 +17,7 @@ namespace Data
 
         private static bool DownloadOpcode(uint version, String directory)
         {
-            String filename = directory + Path.DirectorySeparatorChar + version + ".txt";
+            var filename = directory + Path.DirectorySeparatorChar + version + ".txt";
             if (File.Exists(filename))
             {
                 return false;
@@ -58,7 +56,7 @@ namespace Data
 
         public static bool DownloadSysmsg(uint version, int revision, String directory)
         {
-            String filename = directory + Path.DirectorySeparatorChar + "smt_" + version + ".txt";
+            var filename = directory + Path.DirectorySeparatorChar + "smt_" + version + ".txt";
             if (File.Exists(filename))
             {
                 return false;
@@ -96,7 +94,7 @@ namespace Data
 
         private static void Download(String remote, String local)
         {
-            using (WebClient client = new WebClient())
+            using (var client = new WebClient())
             {
                 client.DownloadFile(remote, local);
             }
@@ -104,8 +102,8 @@ namespace Data
 
         public static void ToolboxOpcodes(string url, string directory)
         {
-            using WebClient client = new WebClient();
-            string json = client.DownloadString(url);
+            using var client = new WebClient();
+            var json = client.DownloadString(url);
             var parsed = JsonConvert.DeserializeObject<ToolboxTeraData>(json);
             foreach (var map in parsed.maps)
             {

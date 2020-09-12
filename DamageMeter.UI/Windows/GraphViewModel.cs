@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
+using System.Diagnostics;
 using System.Linq;
-using System.Windows;
 using System.Windows.Media;
+using DamageMeter.Database.Structures;
 using Data;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -32,6 +30,7 @@ namespace DamageMeter.UI
             public Queue<Tuple<double, long>> Values { get; }
             public double Avg => Values.Count == 0 ? _damageSum : _damageSum * TimeSpan.TicksPerSecond / _interval;
 
+            public double Dps { get; private set; }
             // ctor
             public DpsSource(ulong id)
             {
@@ -41,51 +40,67 @@ namespace DamageMeter.UI
             }
 
             // methods
-            public void Update(long newAmount)
+            public void Update(PlayerDamageDealt newValue, EntityInformation entityInfo)
             {
-                // get the amount of damage done between this and previous time instants
-                var dmgDiff = Convert.ToDouble(newAmount - _prevAmount);
-                // get the amount of ticks between this and previous update
-                //var timeDiff = Values.Count != 0 ? DateTime.Now.Ticks - _prevTick : 0L;
-                // get a factor indicating how many seconds last interval was
-                //var factor = timeDiff != 0 ? timeDiff / (double)TimeSpan.TicksPerSecond : 1;
-
-                // update values
-                //_timeSum += timeDiff;
-                //dmgDiff = dmgDiff / factor;
-                var now = DateTime.Now.Ticks;
-                _damageSum += dmgDiff;
-
-                // queue damage and time deltas
-                Values.Enqueue(new Tuple<double, long>(dmgDiff, now));
-
-                _prevAmount = newAmount;
-                _prevTick = DateTime.Now.Ticks;
-
-                if (Values.Count < Samples) return;
-
-                // remove first value pair in the queue and subtract it from total damage and total time
-                while (Values.Peek().Item2 < now - _interval)
+                switch (BasicTeraData.Instance.WindowData.GraphMode)
                 {
-                    var val = Values.Dequeue();
-                    _damageSum -= val.Item1;
-                    //_timeSum -= val.Item2;
+                    case GraphMode.CMA:
+                        var newAmount = newValue.Amount;
+                        // get the amount of damage done between this and previous time instants
+                        var dmgDiff = Convert.ToDouble(newAmount - _prevAmount);
+
+                        // update values
+                        var now = DateTime.Now.Ticks;
+                        _damageSum += dmgDiff;
+
+                        // queue damage and time deltas
+                        Values.Enqueue(new Tuple<double, long>(dmgDiff, now));
+
+                        _prevAmount = newAmount;
+                        _prevTick = DateTime.Now.Ticks;
+
+                        if (Values.Count < Samples) return;
+
+                        // remove first value pair in the queue and subtract it from total damage and total time
+                        while (Values.Peek().Item2 < now - _interval)
+                        {
+                            var val = Values.Dequeue();
+                            _damageSum -= val.Item1;
+                        }
+                        break;
+                    case GraphMode.DPS:
+                        Dps = entityInfo.Interval == 0 ? newValue.Amount : newValue.Amount * TimeSpan.TicksPerSecond / entityInfo.Interval;
+                        break;
                 }
             }
         }
 
         // fields
-        private List<DpsSource> Sources;
+        private readonly List<DpsSource> Sources;
         private int _currSample = 0;
         private int _values = 0;
         private bool _onlyMe;
         private long _currTime = -1;
         private ulong _currEntity = 0;
         private bool _enraged;
-        internal static int Samples = BasicTeraData.Instance.WindowData.RealtimeGraphCMAseconds;
+        private bool _chartVisibility;
+        internal static int Samples => BasicTeraData.Instance.WindowData.RealtimeGraphCMAseconds;
         internal static int ShowedSamples => BasicTeraData.Instance.WindowData.RealtimeGraphDisplayedInterval == 0
                                            ? int.MaxValue
                                            : BasicTeraData.Instance.WindowData.RealtimeGraphDisplayedInterval;
+        private bool _notAnimated;
+
+        public bool NotAnimated
+        {
+            get => _notAnimated;
+            set
+            {
+                if (_notAnimated == value) return;
+                _notAnimated = value;
+                NotifyPropertyChanged();
+            }
+        }
+
 
         // properties
         //private StepLineSeries Enrage { get; set; }
@@ -94,7 +109,17 @@ namespace DamageMeter.UI
         public SeriesCollection Series { get; set; }
         //public SeriesCollection EnrageSeries { get; set; }
         public SectionsCollection EnrageSections { get; }
-        public bool ChartVisibility => Series.Count > 0;
+
+        public bool ChartVisibility
+        {
+            get => _chartVisibility;
+            set
+            {
+                if (_chartVisibility == value) return;
+                _chartVisibility = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private AxisSection CreateSection()
         {
@@ -148,19 +173,25 @@ namespace DamageMeter.UI
         internal GraphViewModel()
         {
             Series = new SeriesCollection();
-            DpsFormatter = new Func<double, string>((v) => FormatHelpers.Instance.FormatValue(Convert.ToInt64(v)));
-            TimeFormatter = new Func<double, string>((v) => FormatHelpers.Instance.FormatTimeSpan(TimeSpan.FromSeconds(v)));
+            DpsFormatter = (v) => FormatHelpers.Instance.FormatValue(Convert.ToInt64(v));
+            TimeFormatter = (v) => FormatHelpers.Instance.FormatTimeSpan(TimeSpan.FromSeconds(v));
             Sources = new List<DpsSource>();
             EnrageSections = new SectionsCollection();
         }
 
         // methods
+        Stopwatch sw = new Stopwatch();
         internal void Update(UiUpdateMessage message)
         {
+            sw.Stop();
+            Debug.WriteLine(sw.ElapsedMilliseconds);
+
+            sw.Restart();
+            NotAnimated = !BasicTeraData.Instance.WindowData.RealtimeGraphAnimated;
             // skip update if timer is the same
             if (_currTime == message.StatsSummary.EntityInformation.Interval)
             {
-                NotifyPropertyChanged(nameof(ChartVisibility));
+                ChartVisibility = Series.Count > 0 && _currSample != 0;
                 return;
             }
             _currSample++;
@@ -168,7 +199,8 @@ namespace DamageMeter.UI
             CheckReset(message);
 
             // store the amount of samples we received until now
-            if (_values >= ShowedSamples) _values = ShowedSamples;
+            if (_values >= ShowedSamples)
+                _values = ShowedSamples;
             else _values++;
 
             // store current enemy
@@ -183,20 +215,15 @@ namespace DamageMeter.UI
             }
 
             // adds enrage stat
-            if (BasicTeraData.Instance.HotDotDatabase?.Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged) == null) Enraged = false;
+            if (BasicTeraData.Instance.HotDotDatabase?.Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged) == null)
+                Enraged = false;
             else
             {
                 var currTime = message.StatsSummary.EntityInformation.EndTime;
                 message.Abnormals.Get(message.StatsSummary.EntityInformation.Entity)
                                  .TryGetValue(BasicTeraData.Instance.HotDotDatabase?
                                  .Get((int)HotDotDatabase.StaticallyUsedBuff.Enraged), out var enrageHotDot);
-                var lastEnd = long.MaxValue;
-                try
-                {
-                    // potato fix for now
-                    lastEnd = enrageHotDot.LastEnd();
-                }
-                catch { }
+                var lastEnd = enrageHotDot?.LastEnd() ?? long.MaxValue;
                 Enraged = lastEnd == currTime;
             }
 
@@ -229,7 +256,7 @@ namespace DamageMeter.UI
                     Sources.Add(src);
                 }
                 // update it
-                src.Update(playerDamage.Amount);
+                src.Update(playerDamage, message.StatsSummary.EntityInformation);
 
                 // check if we already have a line series for this player
                 if (Series.FirstOrDefault(x => x.Title == name) is LineSeries existing)
@@ -239,9 +266,21 @@ namespace DamageMeter.UI
                     // get player line series
                     var seriesVals = existing.Values as ChartValues<ObservablePoint>;
                     // remove first point if total sample count is above the maximum
-                    if (_values >= ShowedSamples) seriesVals.RemoveAt(0);
+                    //if (_values >= ShowedSamples) seriesVals.RemoveAt(0);
+
                     // get average for current instant and add it as a line point
-                    seriesVals.Add(new ObservablePoint(_currTime / (double)TimeSpan.TicksPerSecond, src.Avg));
+                    double val = 0;
+                    switch (BasicTeraData.Instance.WindowData.GraphMode)
+                    {
+                        case GraphMode.CMA:
+                            val = src.Avg;
+                            break;
+                        case GraphMode.DPS:
+                            val = src.Dps;
+                            break;
+                    }
+
+                    seriesVals.Add(new ObservablePoint(_currTime / (double)TimeSpan.TicksPerSecond, val));
                     // remove first point if the series is longer than it should be (shouldn't happen anyway)
                     while (seriesVals.Count >= _values) seriesVals.RemoveAt(0);
                 }
@@ -253,6 +292,9 @@ namespace DamageMeter.UI
                     var color = GetColor(pClass);
                     if (isMe) color = BasicTeraData.Instance.WindowData.PlayerColor; //((Color)App.Current.FindResource("MeColor"));
                     var colorTrans = Color.FromArgb(0, color.R, color.G, color.B);
+                    var ls = 0;
+                    if (BasicTeraData.Instance.WindowData.GraphMode == GraphMode.DPS) { ls = 1; }
+
                     // create the series
                     var newSeries = new LineSeries()
                     {
@@ -281,22 +323,38 @@ namespace DamageMeter.UI
                         },
                         PointGeometrySize = 0,
                         StrokeThickness = 2,
-                        LineSmoothness = 0
+                        LineSmoothness = ls
                     };
                     newSeries.Values = new ChartValues<ObservablePoint>();
 
                     // fill the series with zeros if this player joined after the start of the fight
                     //while (newSeries.Values.Count < _values - 1) newSeries.Values.Add(0D);
                     // add current sample too
-                    newSeries.Values.Add(new ObservablePoint(_currTime / (double)TimeSpan.TicksPerSecond, src.Avg));
+                    double val = 0;
+                    switch (BasicTeraData.Instance.WindowData.GraphMode)
+                    {
+                        case GraphMode.CMA:
+                            val = src.Avg;
+                            break;
+                        case GraphMode.DPS:
+                            val = src.Dps;
+                            break;
+                    }
+
+                    newSeries.Values.Add(new ObservablePoint(_currTime / (double)TimeSpan.TicksPerSecond, val));
                     // add new series to Series collection
                     Series.Add(newSeries);
                 }
             }
             _currTime = message.StatsSummary.EntityInformation.Interval;
 
-            NotifyPropertyChanged(nameof(ChartVisibility));
-
+            ChartVisibility = Series.Count > 0 && _currSample != 0;
+            var points = 0;
+            foreach (var serie in Series)
+            {
+                points += serie.Values.Count;
+            }
+            Debug.WriteLine("Samples: " + points);
         }
         internal void Reset()
         {

@@ -229,7 +229,7 @@
                     HorizontalContentAlignment="Center"
                     VerticalAlignment="Top" Margin="0">
                 <Path Data="{StaticResource Svg.Close}"
-                      Fill="#f55"
+                      Fill="{StaticResource LightRed}"
                       Stretch="Uniform"
                       Margin="8" />
             </Button>

@@ -326,7 +326,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Path Style="{StaticResource BigButtonPathStyle}" Data="{StaticResource Svg.Power}" Fill="#f55" />
+                <Path Style="{StaticResource BigButtonPathStyle}" Data="{StaticResource Svg.Power}" Fill="{StaticResource LightRed}" />
                 <TextBlock>
                     <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource BigButtonTextStyle}">

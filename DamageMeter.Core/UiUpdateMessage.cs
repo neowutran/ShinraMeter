@@ -2,7 +2,6 @@
 using Data.Actions.Notify;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using DamageMeter.TeraDpsApi;
 using Tera.Game;
 using Tera.Game.Abnormality;

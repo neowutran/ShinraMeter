@@ -880,4 +880,13 @@ Reset and paused until map change or relog.</value>
   <data name="ConnectedTo" xml:space="preserve">
     <value>Connected to</value>
   </data>
+  <data name="RealtimeGraphMode" xml:space="preserve">
+    <value>Graph mode</value>
+  </data>
+  <data name="RealtimeGraphAnimated" xml:space="preserve">
+    <value>Animate</value>
+  </data>
+  <data name="SettingsTab_Layout" xml:space="preserve">
+    <value>Layout settings</value>
+  </data>
 </root>

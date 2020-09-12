@@ -14,6 +14,50 @@ using System.Xml.Linq;
 
 namespace Data
 {
+    public enum Metric
+    {
+        [Description("None")]
+        None,
+
+        [Description("Damage done")]
+        Damage, //
+        [Description("Damage %")]
+        DamagePerc,
+        [Description("DPS")]
+        Dps,
+
+        [Description("Crit rate")]
+        CritRate,
+        [Description("Heal crit rate")]
+        HealCritRate, //
+        [Description("Damage from crits")]
+        DamageFromCrits, //
+
+        [Description("Damage received")]
+        DamageTaken, //
+        [Description("DPS received")]
+        DpsTaken, //
+
+        [Description("Deaths")]
+        Deaths, //
+        [Description("Floortime")]
+        Floortime, //
+        [Description("Floortime %")]
+        FloortimePerc, //
+
+        [Description("Aggro %")]
+        AggroPerc, //
+        [Description("Enrage casts")]
+        EnrageCasts, // // todo
+
+        [Description("HPS")]
+        Hps, // // //todo: needs edits in backend
+        [Description("Healer endurance debuff uptime")]
+        EnduDebuffUptime, //
+        [Description("Healer buffs uptime")]
+        HealerUptimes // // todo
+        // M: veng, wrath, (aura?) -- P: divine, edict, stars
+    }
 
     public enum CaptureMode
     {
@@ -24,6 +68,13 @@ namespace Data
         [Description("TERA Toolbox")]
         Toolbox
     }
+
+    public enum GraphMode
+    {
+        CMA,
+        DPS
+    }
+
     public struct WindowStatus
     {
         public Point Location;
@@ -48,6 +99,9 @@ namespace Data
 
         public WindowData(BasicTeraData basicData)
         {
+            DpsMetrics = new List<Metric> { Metric.Dps, Metric.DamagePerc, Metric.CritRate, Metric.None, Metric.None };
+            TankMetrics = new List<Metric> { Metric.Dps, Metric.DamagePerc, Metric.AggroPerc, Metric.None, Metric.None };
+            HealerMetrics = new List<Metric> { Metric.Dps, Metric.DamagePerc, Metric.EnduDebuffUptime, Metric.None, Metric.None };
 
             lock (_lock)
             {
@@ -147,6 +201,8 @@ namespace Data
                 ParseColor("stat_healer_color", nameof(_healerColor));
                 ParseColor("stat_tank_color", nameof(_tankColor));
                 ParseColor("stat_player_color", nameof(_playerColor));
+                ParseColor("background_color", nameof(_backgroundColor));
+                ParseColor("border_color", nameof(_borderColor));
                 PopupNotificationLocation = ParseLocation(_xml.Root, "popup_notification_location");
                 Location = ParseLocation(_xml.Root);
                 ParseWindowStatus("boss_gage_window", nameof(bossGageStatus));
@@ -159,13 +215,81 @@ namespace Data
                 ParseUILanguage();
                 ParseRichPresence();
                 ParseRealtimeGraph();
-
+                ParseMetrics();
                 Parse("date_in_excel_path", nameof(dateInExcelPath));
                 if (dateInExcelPath) { excelPathTemplate = "{Area}/{Date}/{Boss} {Time} {User}"; }
 
                 DpsServers.CollectionChanged += DpsServers_CollectionChanged;
             }
         }
+
+
+        private void ParseMetrics()
+        {
+            /*
+                <metrics>
+                    <dps_metrics>
+                        <metric>Dps</metric>
+                        <metric>DamagePerc</metric>
+                        <metric>CritRate</metric>
+                        <metric>None</metric>
+                        <metric>None</metric>
+                    </dps_metrics>
+                    <tank_metrics>
+                        <metric>Dps</metric>
+                        ...
+                    </tank_metrics>
+                    <healer_metrics>
+                        <metric>Dps</metric>
+                        ...
+                    </healer_metrics>
+                </metrics>
+            */
+
+            //ugly af tho
+            var root = _xml.Root;
+            var metrics = root?.Element("metrics");
+            metrics?.Descendants().ToList().ForEach(e =>
+            {
+                if (e?.Name == "dps_metrics")
+                {
+                    var i = 0;
+                    e.Descendants().ToList().ForEach(el =>
+                    {
+                        if (el.Name == "metric")
+                        {
+                            if (Enum.TryParse<Metric>(e.Value, out var metric)) DpsMetrics[i] = metric;
+                            i++;
+                        }
+                    }); 
+                }
+                else if (e?.Name == "tank_metrics")
+                {
+                    var i = 0;
+                    e.Descendants().ToList().ForEach(el =>
+                    {
+                        if (el.Name == "metric")
+                        {
+                            if (Enum.TryParse<Metric>(e.Value, out var metric)) TankMetrics[i] = metric;
+                            i++;
+                        }
+                    }); 
+                }
+                else if (e?.Name == "healer_metrics")
+                {
+                    var i = 0;
+                    e.Descendants().ToList().ForEach(el =>
+                    {
+                        if (el.Name == "metric")
+                        {
+                            if (Enum.TryParse<Metric>(e.Value, out var metric)) HealerMetrics[i] = metric;
+                            i++;
+                        }
+                    }); 
+                }
+            });
+        }
+
 
         private void DpsServers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -185,10 +309,19 @@ namespace Data
         private Color emotesColor = Brushes.White.Color;
         private Color privateChannelColor = Brushes.Red.Color;
 
-        private Color _dpsColor = Color.FromArgb(255, 255, 68, 102);
-        private Color _playerColor = Color.FromArgb(255, 244, 164, 66);
-        private Color _tankColor = Color.FromArgb(255, 68, 178, 252);
-        private Color _healerColor = Color.FromArgb(255, 59, 226, 75);
+        public static Color DefaultPlayerColor { get; } = Color.FromRgb(244, 164, 66);
+        public static Color DefaultDpsColor { get; } = Color.FromRgb(255, 68, 102);
+        public static Color DefaultTankColor { get; } = Color.FromRgb(68, 178, 252);
+        public static Color DefaultHealerColor { get; } = Color.FromRgb(59, 226, 75);
+        public static Color DefaultBackgroundColor { get; } = Color.FromRgb(0x23, 0x28, 0x30);
+        public static Color DefaultBorderColor { get; } = Color.FromRgb(0x71, 0x7b, 0x85);
+
+        private Color _playerColor = DefaultPlayerColor;
+        private Color _dpsColor = DefaultDpsColor;
+        private Color _tankColor = DefaultTankColor;
+        private Color _healerColor = DefaultHealerColor;
+        private Color _backgroundColor = DefaultBackgroundColor;
+        private Color _borderColor = DefaultBorderColor;
 
         private Point location = new Point(0, 0);
         private Point popupNotificationLocation = new Point(0, 0);
@@ -253,12 +386,14 @@ namespace Data
         private bool richPresenceShowStatus = true;
         private bool richPresenceShowParty = true;
         private bool realtimeGraphEnabled = false;
+        private bool realtimeGraphAnimated = false;
         private int realtimeGraphDisplayedInterval = 120;
         private int realtimeGraphCMAseconds = 10;
 
         private bool ignorePacketsThreshold = false;
 
         private CaptureMode captureMode;
+        private GraphMode graphMode;
 
         public bool DisplayTimerBasedOnAggro { get => displayTimerBasedOnAggro; set { displayTimerBasedOnAggro = value; /*Save();*/ } }
 
@@ -291,6 +426,7 @@ namespace Data
         public bool AutoUpdate { get => autoUpdate; set { autoUpdate = value; /*Save();*/ } }
         //public bool Winpcap { get => winpcap; set { winpcap = value; /*Save();*/ } }
         public CaptureMode CaptureMode { get => captureMode; set { captureMode = value; /*Save();*/ } }
+        public GraphMode GraphMode { get => graphMode; set { graphMode = value; /*Save();*/ } }
         public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; /*Save();*/ } }
         public bool NoPaste { get => noPaste; set { noPaste = value; /*Save();*/ } }
         public int MaxTTSSize { get => maxTTSSize; set { maxTTSSize = value; /*Save();*/ } }
@@ -349,48 +485,22 @@ namespace Data
         public bool RichPresenceShowParty { get => richPresenceShowParty; set { richPresenceShowParty = value; /*Save();*/ } }
 
         public bool RealtimeGraphEnabled { get => realtimeGraphEnabled; set { realtimeGraphEnabled = value; /*Save();*/ } }
+        public bool RealtimeGraphAnimated { get => realtimeGraphAnimated; set { realtimeGraphAnimated = value; /*Save();*/ } }
         public int RealtimeGraphDisplayedInterval { get => realtimeGraphDisplayedInterval; set { realtimeGraphDisplayedInterval = value; /*Save();*/ } }
         public int RealtimeGraphCMAseconds { get => realtimeGraphCMAseconds; set { realtimeGraphCMAseconds = value; /*Save();*/ } }
 
         public bool IgnorePacketsThreshold { get => ignorePacketsThreshold; set { ignorePacketsThreshold = value; /*Save();*/ } }
 
-        public Color DpsColor
-        {
-            get => _dpsColor;
-            set
-            {
-                _dpsColor = value;
-                /*Save();*/
-            }
-        }
-        public Color PlayerColor
-        {
-            get => _playerColor;
-            set
-            {
-                _playerColor = value;
-                /*Save();*/
-            }
-        }
-        public Color TankColor
-        {
-            get => _tankColor;
-            set
-            {
-                _tankColor = value;
-                /*Save();*/
-            }
-        }
-        public Color HealerColor
-        {
-            get => _healerColor;
-            set
-            {
-                _healerColor = value;
-                /*Save();*/
-            }
-        }
+        public Color DpsColor { get => _dpsColor; set { _dpsColor = value; /*Save();*/ } }
+        public Color PlayerColor { get => _playerColor; set { _playerColor = value; /*Save();*/ } }
+        public Color TankColor { get => _tankColor; set { _tankColor = value; /*Save();*/ } }
+        public Color HealerColor { get => _healerColor; set { _healerColor = value; /*Save();*/ } }
+        public Color BackgroundColor { get => _backgroundColor; set { _backgroundColor = value; /*Save();*/ } }
+        public Color BorderColor { get => _borderColor; set { _borderColor = value; /*Save();*/ } }
 
+        public List<Metric> DpsMetrics { get; private set; }
+        public List<Metric> TankMetrics { get; private set; }
+        public List<Metric> HealerMetrics { get; private set; }
         private void ParseWindowStatus(string xmlName, string settingName)
         {
             var root = _xml.Root;
@@ -401,9 +511,9 @@ namespace Data
             var location = ParseLocation(xml);
 
             var xmlVisible = xml.Attribute("visible");
-            var visibleSuccess = bool.TryParse(xmlVisible?.Value ?? "false", out bool visible);
+            var visibleSuccess = bool.TryParse(xmlVisible?.Value ?? "false", out var visible);
             var xmlScale = xml.Attribute("scale");
-            var scaleSuccess = double.TryParse(xmlScale?.Value ?? "0", NumberStyles.Float, CultureInfo.InvariantCulture, out double scale);
+            var scaleSuccess = double.TryParse(xmlScale?.Value ?? "0", NumberStyles.Float, CultureInfo.InvariantCulture, out var scale);
             setting.SetValue(this, new WindowStatus(location, visibleSuccess ? visible : currentSetting.Visible, scaleSuccess ? scale > 0 ? scale : scale : scale));
         }
 
@@ -427,18 +537,18 @@ namespace Data
             var exp = teradps.Element("enabled");
             if (exp != null)
             {
-                var parseSuccess = bool.TryParse(exp.Value, out bool val);
+                var parseSuccess = bool.TryParse(exp.Value, out var val);
                 DpsServerData.Moongourd.Enabled = val;
             }
             var privateS = teradps.Element("private_servers");
             if (privateS == null) { return; }
             var exp1 = privateS.Attribute("enabled");
-            var parseS = bool.TryParse(exp1?.Value ?? "false", out bool enabled);
+            var parseS = bool.TryParse(exp1?.Value ?? "false", out var enabled);
             if (!parseS || !privateS.HasElements) { return; }
             foreach (var server in privateS.Elements())
             {
                 if (String.IsNullOrWhiteSpace(server?.Value)) { continue; }
-                DpsServerData serverData = new DpsServerData(new Uri(server.Value), null, null, null, null, enabled);
+                var serverData = new DpsServerData(new Uri(server.Value), null, null, null, null, enabled);
                 DpsServers.Add(serverData);
             }
         }
@@ -459,9 +569,9 @@ namespace Data
                 var uploadUrl = server.Element("dps_url");
                 var allowedAreaUrl = server.Element("allowed_area_url");
                 var glyphUrl = server.Element("glyph_url");
-                var parseSuccess = bool.TryParse(enabled?.Value ?? "false", out bool enabledBool);
+                var parseSuccess = bool.TryParse(enabled?.Value ?? "false", out var enabledBool);
                 if (String.IsNullOrWhiteSpace(uploadUrl?.Value)) { continue; }
-                DpsServerData serverData = new DpsServerData(
+                var serverData = new DpsServerData(
                     new Uri(uploadUrl.Value),
                     String.IsNullOrWhiteSpace(allowedAreaUrl?.Value) ? null : new Uri(allowedAreaUrl.Value),
                     String.IsNullOrWhiteSpace(glyphUrl?.Value) ? null : new Uri(glyphUrl.Value),
@@ -474,7 +584,7 @@ namespace Data
             if (teradps.Element("blacklist").Elements("id") == null) { return; }
             foreach (var blacklistedAreaId in teradps.Element("blacklist").Elements("id"))
             {
-                var parseSuccess = int.TryParse(blacklistedAreaId.Value, out int areaId);
+                var parseSuccess = int.TryParse(blacklistedAreaId.Value, out var areaId);
                 if (parseSuccess) { blacklistedAreaId.Add(areaId); }
             }
         }
@@ -524,7 +634,7 @@ namespace Data
             }
             var otherWindowElement = opacity?.Element("otherWindow");
             if (otherWindowElement == null) { return; }
-            if (int.TryParse(otherWindowElement.Value, out int otherWindowOpacity)) { this.otherWindowOpacity = (double)otherWindowOpacity / 100; }
+            if (int.TryParse(otherWindowElement.Value, out var otherWindowOpacity)) { this.otherWindowOpacity = (double)otherWindowOpacity / 100; }
         }
         private void ParseRealtimeGraph()
         {
@@ -536,6 +646,10 @@ namespace Data
                 {
                     if (bool.TryParse(e.Value, out var enabled)) realtimeGraphEnabled = enabled;
                 }
+                else if (e.Name == "animated")
+                {
+                    if (bool.TryParse(e.Value, out var animated)) realtimeGraphAnimated = animated;
+                }
                 else if (e.Name == "displayed_interval")
                 {
                     if (int.TryParse(e.Value, out var interval)) realtimeGraphDisplayedInterval = interval;
@@ -543,6 +657,10 @@ namespace Data
                 else if (e.Name == "cma_seconds")
                 {
                     if (int.TryParse(e.Value, out var cma)) realtimeGraphCMAseconds = cma;
+                }
+                else if (e.Name == "graph_mode")
+                {
+                    if (Enum.TryParse<GraphMode>(e.Value, out var mode)) graphMode = mode;
                 }
             });
         }
@@ -660,6 +778,8 @@ namespace Data
                 xml.Root.Add(new XElement("stat_tank_color", _tankColor.ToString()));
                 xml.Root.Add(new XElement("stat_healer_color", _healerColor.ToString()));
                 xml.Root.Add(new XElement("stat_player_color", _playerColor.ToString()));
+                xml.Root.Add(new XElement("background_color", _backgroundColor.ToString()));
+                xml.Root.Add(new XElement("border_color", _borderColor.ToString()));
                 xml.Root.Add(new XElement("disable_party_event", disablePartyEvent));
                 xml.Root.Add(new XElement("show_afk_events_ingame", showAfkEventsIngame));
                 xml.Root.Add(new XElement("idle_reset_timeout", idleResetTimeout));
@@ -671,16 +791,31 @@ namespace Data
                 xml.Root.Add(new XElement("display_only_boss_hit_by_meter_user", displayOnlyBossHitByMeterUser));
                 xml.Root.Add(new XElement("max_tts_size", maxTTSSize));
                 xml.Root.Add(new XElement("tts_size_exceeded_truncate", ttsSizeExceededTruncate));
+
                 xml.Root.Add(new XElement("realtime_graph"));
                 xml.Root.Element("realtime_graph").Add(new XElement("enabled", realtimeGraphEnabled));
+                xml.Root.Element("realtime_graph").Add(new XElement("animated", realtimeGraphAnimated));
                 xml.Root.Element("realtime_graph").Add(new XElement("displayed_interval", realtimeGraphDisplayedInterval));
                 xml.Root.Element("realtime_graph").Add(new XElement("cma_seconds", realtimeGraphCMAseconds));
+                xml.Root.Element("realtime_graph").Add(new XElement("graph_mode", graphMode));
+
                 xml.Root.Add(new XElement("rich_presence"));
                 xml.Root.Element("rich_presence").Add(new XElement("enabled", enableRichPresence));
                 xml.Root.Element("rich_presence").Add(new XElement("show_location", richPresenceShowLocation));
                 xml.Root.Element("rich_presence").Add(new XElement("show_character", richPresenceShowCharacter));
                 xml.Root.Element("rich_presence").Add(new XElement("show_status", richPresenceShowStatus));
                 xml.Root.Element("rich_presence").Add(new XElement("show_party", richPresenceShowParty));
+
+                xml.Root.Add(new XElement("metrics"));
+                var dmetrics = new XElement("dps_metrics");
+                var tmetrics = new XElement("tank_metrics");
+                var hmetrics = new XElement("healer_metrics");
+                DpsMetrics.ForEach(m => dmetrics.Add(new XElement("metric", m)));
+                TankMetrics.ForEach(m => tmetrics.Add(new XElement("metric", m)));
+                HealerMetrics.ForEach(m => hmetrics.Add(new XElement("metric", m)));
+                xml.Root.Element("metrics").Add(dmetrics);
+                xml.Root.Element("metrics").Add(tmetrics);
+                xml.Root.Element("metrics").Add(hmetrics);
 
                 xml.Root.Add(new XElement("dps_servers"));
                 foreach (var server in DpsServers)
@@ -730,28 +865,28 @@ namespace Data
             var setting = GetType().GetField(settingName, BindingFlags.NonPublic | BindingFlags.Instance);
             if (setting.FieldType == typeof(int))
             {
-                var parseSuccess = int.TryParse(xml.Value, out int value);
+                var parseSuccess = int.TryParse(xml.Value, out var value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
             if (setting.FieldType == typeof(double))
             {
-                var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double value);
+                var parseSuccess = double.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out var value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
             if (setting.FieldType == typeof(float))
             {
-                var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out float value);
+                var parseSuccess = float.TryParse(xml.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out var value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
             if (setting.FieldType == typeof(bool))
             {
-                var parseSuccess = bool.TryParse(xml.Value, out bool value);
+                var parseSuccess = bool.TryParse(xml.Value, out var value);
                 if (parseSuccess) { setting.SetValue(this, value); }
             }
 
             if (setting.FieldType == typeof(string))
             {
-                setting.SetValue(this, xml.Value); 
+                setting.SetValue(this, xml.Value);
             }
 
             if (setting.FieldType.IsSubclassOf(typeof(Enum)))

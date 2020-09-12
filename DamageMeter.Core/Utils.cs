@@ -8,9 +8,44 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using Tera.Game;
 
 namespace DamageMeter
 {
+    public enum PlayerRole
+    {
+        Dps,
+        Tank,
+        Healer,
+        Self,
+        None
+    }
+    public static class MiscUtils
+    {
+        public static PlayerRole RoleFromClass(PlayerClass c)
+        {
+            // //todo: more accurate tank detection
+
+            return c switch
+            {
+                PlayerClass.Warrior => PlayerRole.Dps,
+                PlayerClass.Slayer => PlayerRole.Dps,
+                PlayerClass.Berserker => PlayerRole.Dps,
+                PlayerClass.Sorcerer => PlayerRole.Dps,
+                PlayerClass.Archer => PlayerRole.Dps,
+                PlayerClass.Reaper => PlayerRole.Dps,
+                PlayerClass.Gunner => PlayerRole.Dps,
+                PlayerClass.Ninja => PlayerRole.Dps,
+                PlayerClass.Valkyrie => PlayerRole.Dps,
+                PlayerClass.Priest => PlayerRole.Healer,
+                PlayerClass.Mystic => PlayerRole.Healer,
+                PlayerClass.Brawler => PlayerRole.Tank,
+                PlayerClass.Lancer => PlayerRole.Tank,
+                _ => PlayerRole.None
+            };
+
+        }
+    }
     public static class Extensions
     {
         public static void InvokeIfRequired(this Dispatcher disp, Action dotIt, DispatcherPriority priority)

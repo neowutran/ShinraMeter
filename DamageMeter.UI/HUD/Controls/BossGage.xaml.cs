@@ -9,9 +9,6 @@ using Tera.Game;
 
 namespace DamageMeter.UI.HUD.Controls
 {
-    /// <summary>
-    ///     Logica di interazione per BossGage.xaml
-    /// </summary>
     public partial class BossGage : INotifyPropertyChanged
     {
         private static readonly DoubleAnimation SlideAnimation = new DoubleAnimation();
@@ -25,12 +22,10 @@ namespace DamageMeter.UI.HUD.Controls
         private long _maxHp;
 
 
-        private Color BaseHpColor = Color.FromRgb(0x00, 0x97, 0xce);
         private int curEnrageTime = 36;
 
 
         private float nextEnragePerc = 90;
-        private NumberFormatInfo nfi = new NumberFormatInfo {NumberGroupSeparator = ".", NumberDecimalDigits = 0};
 
 
         private Timer NumberTimer = new Timer(1000);

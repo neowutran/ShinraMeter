@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -9,12 +8,10 @@ using Data.Actions.Notify;
 using Data.Actions.Notify.SoundElements;
 using Data.Events;
 using Data.Events.Abnormality;
-using DiscordRPC;
 using Lang;
 using Tera.Game;
 using Tera.Game.Abnormality;
 using Tera.Game.Messages;
-using Action = Data.Actions.Action;
 using EventType = Data.EventType;
 using RichPresence = Tera.RichPresence.RichPresence;
 
@@ -424,7 +421,7 @@ namespace DamageMeter.Processing
 
                 if (player.OutOfRange) { continue; }
                 var maxHp = bossList.FirstOrDefault(x => x.Id == target)?.Info.HP??0;
-                _lastBosses.TryGetValue(target, out long curHp);
+                _lastBosses.TryGetValue(target, out var curHp);
                 var percHp = maxHp == 0 ? 0 : curHp * 100 / maxHp;
                 var nextHp = percHp <= 10 ? 0 : percHp - 10;
                 foreach (var a in e.Value)

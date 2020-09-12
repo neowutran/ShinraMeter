@@ -9,9 +9,6 @@ using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI
 {
-    /// <summary>
-    ///     Logique d'interaction pour Skills.xaml
-    /// </summary>
     public partial class Skills
     {
         private readonly PlayerStats _parent;

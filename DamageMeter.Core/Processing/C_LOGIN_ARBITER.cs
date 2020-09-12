@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Data;
+﻿using Data;
 
 namespace DamageMeter.Processing
 {

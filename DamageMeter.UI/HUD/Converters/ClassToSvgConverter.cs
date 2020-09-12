@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using Tera.Game;
@@ -19,20 +20,20 @@ namespace DamageMeter.UI.HUD.Converters
 
             var ret = c switch
             {
-                PlayerClass.Warrior =>   App.Current.FindResource("SvgClassWarrior"),
-                PlayerClass.Lancer =>    App.Current.FindResource("SvgClassLancer"),
-                PlayerClass.Slayer =>    App.Current.FindResource("SvgClassSlayer"),
-                PlayerClass.Berserker => App.Current.FindResource("SvgClassBerserker"),
-                PlayerClass.Sorcerer =>  App.Current.FindResource("SvgClassSorcerer"),
-                PlayerClass.Archer =>    App.Current.FindResource("SvgClassArcher"),
-                PlayerClass.Priest =>    App.Current.FindResource("SvgClassPriest"),
-                PlayerClass.Mystic =>    App.Current.FindResource("SvgClassMystic"),
-                PlayerClass.Reaper =>    App.Current.FindResource("SvgClassReaper"),
-                PlayerClass.Gunner =>    App.Current.FindResource("SvgClassGunner"),
-                PlayerClass.Brawler =>   App.Current.FindResource("SvgClassBrawler"),
-                PlayerClass.Ninja =>     App.Current.FindResource("SvgClassNinja"),
-                PlayerClass.Valkyrie =>  App.Current.FindResource("SvgClassValkyrie"),
-                _ =>                     App.Current.FindResource("SvgClassCommon")
+                PlayerClass.Warrior =>   Application.Current.FindResource("SvgClassWarrior"),
+                PlayerClass.Lancer =>    Application.Current.FindResource("SvgClassLancer"),
+                PlayerClass.Slayer =>    Application.Current.FindResource("SvgClassSlayer"),
+                PlayerClass.Berserker => Application.Current.FindResource("SvgClassBerserker"),
+                PlayerClass.Sorcerer =>  Application.Current.FindResource("SvgClassSorcerer"),
+                PlayerClass.Archer =>    Application.Current.FindResource("SvgClassArcher"),
+                PlayerClass.Priest =>    Application.Current.FindResource("SvgClassPriest"),
+                PlayerClass.Mystic =>    Application.Current.FindResource("SvgClassMystic"),
+                PlayerClass.Reaper =>    Application.Current.FindResource("SvgClassReaper"),
+                PlayerClass.Gunner =>    Application.Current.FindResource("SvgClassGunner"),
+                PlayerClass.Brawler =>   Application.Current.FindResource("SvgClassBrawler"),
+                PlayerClass.Ninja =>     Application.Current.FindResource("SvgClassNinja"),
+                PlayerClass.Valkyrie =>  Application.Current.FindResource("SvgClassValkyrie"),
+                _ =>                     Application.Current.FindResource("SvgClassCommon")
             };
 
             return (Geometry) ret;

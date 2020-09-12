@@ -5,28 +5,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:DamageMeter.UI"
              xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
-             xmlns:extensions="clr-namespace:Nostrum.Extensions"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              Focusable="False"
-             Height="27"
+             Height="30"
              Background="Transparent"
              MouseLeftButtonDown="DragWindow"
              MouseEnter="OnMouseEnter"
              MouseLeave="OnMouseLeave"
              d:DataContext="{d:DesignInstance l:PlayerDamageViewModel}">
-    <!--todo:PreviewMouseRightButtonDown="ShowSkills"-->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseRightButtonDown">
+            <i:InvokeCommandAction Command="{Binding ShowSkillDetailsCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <UserControl.Resources>
-        <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
-            <Setter Property="Height" Value="Auto" />
-            <Setter Property="Focusable" Value="False" />
-            <Setter Property="FontSize" Value="13" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="TextAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
     </UserControl.Resources>
 
-    <Grid Focusable="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Focusable="False" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" >
 
         <!--DpsBar-->
         <Border x:Name="DpsIndicator"
@@ -37,17 +33,20 @@
             <Border.Background>
                 <LinearGradientBrush EndPoint="0 1">
                     <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=0}}" />
-                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=.2}}" Offset="1" />
+                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=.2}}"
+                                  Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
             <Border.BorderBrush>
                 <LinearGradientBrush EndPoint="0 1">
-                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=0}}" Offset=".6" />
-                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=.9}}" Offset="1" />
+                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=0}}"
+                                  Offset=".6" />
+                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=.9}}"
+                                  Offset="1" />
                 </LinearGradientBrush>
             </Border.BorderBrush>
             <Grid>
-                <Border x:Name="IndicatorGovernor" 
+                <Border x:Name="IndicatorGovernor"
                         HorizontalAlignment="Left"
                         Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=l:PlayerStatsControl}}">
                     <Border.LayoutTransform>
@@ -56,21 +55,28 @@
                 </Border>
                 <Border Background="{Binding Role, Converter={converters:RoleToColorConverter}}"
                         VerticalAlignment="Bottom"
-                        Height="1"/>
+                        Height="1" />
             </Grid>
         </Border>
+
+        <!--  D -> [ icon | name | dmg% | dps (+ trend?) | crit% | dmg | dmgt | dpst | deaths | floortime ] -->
+        <!--  T -> [ icon | name |   "  |       "        |   "   | dmg | dmgt | dpst | deaths | floortime | aggro% | enrage casts? ] -->
+        <!--  H -> [ icon | name |   "  |       "        |   "   | dmg | dmgt | dpst | deaths | floortime | hcrit% |      hps      | endu% ] -->
+        <!--  M -> [ icon | name |   "  |       "        |   "   | dmg | dmgt | dpst | deaths | floortime | hcrit% |      hps      |   "   |  tov%  |  tow%  ] -->
+        <!--  P -> [ icon | name |   "  |       "        |   "   | dmg | dmgt | dpst | deaths | floortime | hcrit% |      hps      |   "   |   dc%  |  eoj%  |  es%  ] -->
 
         <!--Stats-->
         <Grid x:Name="GridStats"
               Focusable="False"
-              HorizontalAlignment="Center" 
+              HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Background" Value="Transparent" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsHovered, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=l:PlayerStatsControl}}"
-                                     Value="True">
+                        <DataTrigger
+                            Binding="{Binding IsHovered, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=l:PlayerStatsControl}}"
+                            Value="True">
                             <Setter Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush StartPoint="0 0" EndPoint="1 0">
@@ -90,14 +96,15 @@
             </Grid.Style>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="p0" Width="25" />
-                <ColumnDefinition SharedSizeGroup="p01" Width="0" />
-                <ColumnDefinition SharedSizeGroup="p1" MinWidth="90" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="p2" Width="*" />
-                <ColumnDefinition SharedSizeGroup="p3" MinWidth="45" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="p4" MinWidth="70" Width="Auto" />
-                <ColumnDefinition SharedSizeGroup="p5" MinWidth="45" Width="Auto" />
+                <ColumnDefinition MinWidth="90" Width="*" />
+                <ColumnDefinition SharedSizeGroup="p2" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p3" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p4" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p5" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p6" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p7" Width="Auto" />
             </Grid.ColumnDefinitions>
-            
+
             <!--Class-->
             <Path x:Name="Class"
                   Data="{Binding Class, Converter={StaticResource ClassToSvg}}"
@@ -107,42 +114,14 @@
                   Stretch="Uniform"
                   HorizontalAlignment="Center" VerticalAlignment="Center"
                   Height="18" Width="18"
-                  Margin="2 0 0 0" >
-                <Path.Style>
-                    <Style TargetType="Path">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsHovered, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=l:PlayerStatsControl}}" Value="True">
-                                <!--<Setter Property="Visibility" Value="Collapsed"/>-->
-                                <Setter Property="Opacity" Value=".5"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Path.Style>
-            </Path>
-
-            <Button HorizontalContentAlignment="Right" VerticalContentAlignment="Top" Command="{Binding ShowSkillDetailsCommand}"
-            >
-<Button.Style>
-    <Style TargetType="Button" BasedOn="{StaticResource ButtonMainStyle}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsHovered, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=l:PlayerStatsControl}}" Value="False">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </DataTrigger>
-            </Style.Triggers>
-                    </Style>
-</Button.Style>
-
-                <Path Style="{StaticResource PathBaseStyle}" 
-                      Data="{StaticResource Svg.Detection}" Margin="3" Width="12" Height="12"
-                      ></Path>
-            </Button>
+                  Margin="2 0 0 0" />
 
             <!--Name-->
             <TextBlock x:Name="LabelName"
                        ToolTip="{Binding FullName}"
-                       Grid.Column="2"
+                       Grid.Column="1"
                        TextTrimming="CharacterEllipsis"
-                       Margin="2 0"
+                       Margin="2 0 10 0"
                        HorizontalAlignment="Left"
                        Foreground="White">
                 <Run Text="{Binding Name, Mode=OneWay}" />
@@ -150,7 +129,7 @@
                      Foreground="#888"
                      FontSize="11" />
                 <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
+                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MetricTextBlockStyle}">
                         <Setter Property="Effect" Value="{x:Null}" />
                         <Style.Triggers>
                             <DataTrigger
@@ -166,83 +145,27 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-            
-            <!--DamagePerc-->
-            <TextBlock x:Name="LabelDamagePart"
-                       Style="{StaticResource BaseTextBlockStyle}"
-                       Text="{Binding DamagePerc}"
-                       ToolTip="{Binding DamageDone}"
-                       Foreground="#aaa"
-                       Grid.Column="4" />
 
-            <!--TrendArrow + DPS-->
-            <StackPanel Orientation="Horizontal" Grid.Column="5">
-                <StackPanel.Resources>
-                    <Style x:Key="ArrowsStyle" TargetType="Polygon">
-                        <Setter Property="Width" Value="8" />
-                        <Setter Property="Margin" Value="-5 0 4 0" />
-                        <Setter Property="Height" Value="Auto" />
-                        <Setter Property="Stretch" Value="Uniform" />
-                        <Setter Property="RenderTransformOrigin" Value=".5 .5" />
-                        <Setter Property="Points" Value="0,0 1,-1 2,0" />
-                    </Style>
-                </StackPanel.Resources>
-                <!--TrendArrow-->
-                <Polygon>
-                    <Polygon.Style>
-                        <Style TargetType="Polygon" BasedOn="{StaticResource ArrowsStyle}">
-                            <Setter Property="Visibility" Value="Hidden" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Increasing}" Value="True">
-                                    <Setter Property="Fill" Value="MediumSeaGreen" />
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Decreasing}" Value="True">
-                                    <Setter Property="Fill" Value="{StaticResource RedLight}" />
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform ScaleY="-1" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Polygon.Style>
-                </Polygon>
-                <!--DPS-->
-                <TextBlock x:Name="LabelDps"
-                           Style="{StaticResource BaseTextBlockStyle}"
-                           Text="{Binding GlobalDps}"
-                           ToolTip="{Binding IndividualDps}" />
-            </StackPanel>
-            
-            <!--CritRate-->
-            <Button Grid.Column="6" 
-                    VerticalAlignment="Stretch"
-                    Command="{Binding SwitchCritModeCommand}"
-                    Style="{StaticResource ButtonMainStyle}"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center">
-                <TextBlock x:Name="LabelCritRate"
-                           TextAlignment="Right">
-                    <TextBlock.Style>
-                        <Style BasedOn="{StaticResource BaseTextBlockStyle}" TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="LightCoral" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CritMode}" Value="HealCritRate">
-                                    <Setter Property="Foreground" Value="LawnGreen" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding CritMode}" Value="DamageFromCrits">
-                                    <Setter Property="Foreground" Value="DarkOrange" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                    <Run Text="{Binding CritRate, Mode=OneWay}"/>
-                </TextBlock>
-            </Button>
+            <ContentControl Grid.Column="2"
+                            Content="{Binding}"
+                            ContentTemplate="{Binding Metric1, Converter={StaticResource MetricTemplateSelector}}" />
+
+            <ContentControl Grid.Column="3"
+                            Content="{Binding}"
+                            ContentTemplate="{Binding Metric2, Converter={StaticResource MetricTemplateSelector}}" />
+
+            <ContentControl Grid.Column="4"
+                            Content="{Binding}"
+                            ContentTemplate="{Binding Metric3, Converter={StaticResource MetricTemplateSelector}}" />
+
+            <ContentControl Grid.Column="5"
+                            Content="{Binding}"
+                            ContentTemplate="{Binding Metric4, Converter={StaticResource MetricTemplateSelector}}" />
+
+            <ContentControl Grid.Column="6"
+                            Content="{Binding}" 
+                            ContentTemplate="{Binding Metric5, Converter={StaticResource MetricTemplateSelector}}" />
+
         </Grid>
-
     </Grid>
 </UserControl>

@@ -74,14 +74,14 @@ namespace DamageMeter.UI.HUD.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var val = (AbnormalityType) value;
-            switch (val)
+            return val switch
             {
-                case AbnormalityType.Stun: return new SolidColorBrush(Colors.Red);
-                case AbnormalityType.DOT: return new SolidColorBrush(Color.FromRgb(0x98, 0x42, 0xf4));
-                case AbnormalityType.Debuff: return new SolidColorBrush(Color.FromRgb(0x8f, 0xf4, 0x42));
-                case AbnormalityType.Buff: return new SolidColorBrush(Color.FromRgb(0x3f, 0x9f, 0xff));
-                default: return new SolidColorBrush(Colors.White);
-            }
+                AbnormalityType.Stun => new SolidColorBrush(Colors.Red),
+                AbnormalityType.DOT => new SolidColorBrush(Color.FromRgb(0x98, 0x42, 0xf4)),
+                AbnormalityType.Debuff => new SolidColorBrush(Color.FromRgb(0x8f, 0xf4, 0x42)),
+                AbnormalityType.Buff => new SolidColorBrush(Color.FromRgb(0x3f, 0x9f, 0xff)),
+                _ => new SolidColorBrush(Colors.White)
+            };
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

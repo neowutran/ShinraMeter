@@ -11,7 +11,6 @@ using PacketDotNet;
 using PacketDotNet.Utils;
 using SharpPcap;
 using SharpPcap.LibPcap;
-using SharpPcap.WinPcap;
 
 namespace NetworkSniffer
 {

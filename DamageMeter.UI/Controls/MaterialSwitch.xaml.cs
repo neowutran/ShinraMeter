@@ -1,25 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DamageMeter.UI
 {
-    /// <summary>
-    /// Logica di interazione per MaterialSwitch.xaml
-    /// </summary>
-    public partial class MaterialSwitch : UserControl
+    public partial class MaterialSwitch
     {
         DoubleAnimation on;
         DoubleAnimation off;
@@ -93,7 +80,7 @@ namespace DamageMeter.UI
         public static readonly RoutedEvent OffEvent = EventManager.RegisterRoutedEvent("OffEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MaterialSwitch));
         void RaiseOffEvent()
         {
-            RoutedEventArgs e = new RoutedEventArgs(OffEvent, this);
+            var e = new RoutedEventArgs(OffEvent, this);
             RaiseEvent(e);
         }
 
@@ -105,7 +92,7 @@ namespace DamageMeter.UI
         public static readonly RoutedEvent OnEvent = EventManager.RegisterRoutedEvent("OnEvent", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MaterialSwitch));
         void RaiseOnEvent()
         {
-            RoutedEventArgs e = new RoutedEventArgs(OnEvent, this);
+            var e = new RoutedEventArgs(OnEvent, this);
             RaiseEvent(e);
         }
 

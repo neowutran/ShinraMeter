@@ -32,25 +32,14 @@ namespace DamageMeter
 
         public static void CopyInspect(string name)
         {
-            string clip;
-            switch (BasicTeraData.Instance.Servers.Language)
+            var clip = BasicTeraData.Instance.Servers.Language switch
             {
-                case LangEnum.TW:
-                    clip = "/查看 ";
-                    break;
-                case LangEnum.JP:
-                    clip = "/詳細確認 ";
-                    break;
-                case LangEnum.THA:
-                    clip = "/ดูอุปกรณ์ ";
-                    break;
-                case LangEnum.KR:
-                    clip = "/살펴보기 ";
-                    break;
-                default:
-                    clip = "/inspect ";
-                    break;
-            }
+                LangEnum.TW => "/查看 ",
+                LangEnum.JP => "/詳細確認 ",
+                LangEnum.THA => "/ดูอุปกรณ์ ",
+                LangEnum.KR => "/살펴보기 ",
+                _ => "/inspect "
+            };
 
             for (var i = 0; i < 3; i++)
             {

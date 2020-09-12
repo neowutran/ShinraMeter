@@ -14,7 +14,7 @@
                             Height="140" Width="Auto" 
                             Margin="-3 0 1 1"
                             LegendLocation="None" 
-                            DisableAnimations="True">
+                            DisableAnimations="{Binding NotAnimated}">
             <lvc:CartesianChart.Style>
                 <Style TargetType="FrameworkElement">
                     <Style.Triggers>

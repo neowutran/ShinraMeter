@@ -32,7 +32,7 @@
                    TextAlignment="Left" 
                    Opacity=".9"/>
         <ComboBox Grid.Column="2" ItemsSource="{Binding Choices, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" 
-                  SelectionChanged="Selector_OnSelectionChanged" Foreground="White"  VerticalAlignment="Stretch" BorderThickness="0"
+                  SelectionChanged="Selector_OnSelectionChanged" VerticalAlignment="Stretch" BorderThickness="0"
                   VerticalContentAlignment="Center" Margin="7 0" 
                   Name="Cbox" HorizontalAlignment="Right" HorizontalContentAlignment="Left"
                   ItemTemplate="{Binding ChoicesTemplate, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" />

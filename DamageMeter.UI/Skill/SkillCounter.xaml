@@ -25,7 +25,7 @@
                            HorizontalAlignment="Stretch" VerticalAlignment="Center" x:Name="LabelName"
                            Foreground="{StaticResource LightPrimaryText}" Padding="10,0,0,0"
                            MinHeight="40" />
-                    <Label Grid.Column="3" FontSize="14" HorizontalContentAlignment="Right" Padding="0" VerticalContentAlignment="Center"
+                    <Label Grid.Column="2" FontSize="14" HorizontalContentAlignment="Right" Padding="0" VerticalContentAlignment="Center"
                            HorizontalAlignment="Stretch" x:Name="LabelNumberHit" VerticalAlignment="Center"
                            MinHeight="40"
                            Foreground="{StaticResource LightPrimaryText}" />

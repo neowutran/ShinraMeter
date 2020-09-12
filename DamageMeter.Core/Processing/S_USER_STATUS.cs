@@ -1,7 +1,5 @@
 ﻿using Data;
-using DiscordRPC;
 using Tera.Game.Messages;
-using RichPresence = Tera.RichPresence.RichPresence;
 
 namespace DamageMeter.Processing
 {

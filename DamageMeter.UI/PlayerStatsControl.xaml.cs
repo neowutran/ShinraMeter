@@ -38,7 +38,7 @@ namespace DamageMeter.UI
             vm.DamageFactorChanged += OnDamageFactorChanged;
         }
 
-        private void OnDamageFactorChanged(float factor)
+        private void OnDamageFactorChanged(double factor)
         {
             Dispatcher.InvokeAsync(() =>
             {
@@ -72,5 +72,12 @@ namespace DamageMeter.UI
         }
         #endregion
 
+        private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is PlayerDamageViewModel dc)
+            {
+                dc.ShowSkillDetailsCommand.Execute(null);
+            }
+        }
     }
 }

@@ -23,19 +23,52 @@ namespace DamageMeter
             Json = 8,
             Manual = 16
         }
-        public static List<DpsServer> DpsServers = new List<DpsServer> { DpsServer.NeowutranAnonymousServer };
 
+        public enum GlyphExportStatus
+        {
+            Unknown,
+            TooFast,
+            NotLoggedIn,
+            LevelTooLow,
+            InvalidUrl,
+            Rejected,
+            Success
+        }
+
+        public enum FightSendStatus
+        {
+            InProgress,
+            Success,
+            Failed
+        }
+        public static List<DpsServer> DpsServers = new List<DpsServer> { DpsServer.NeowutranAnonymousServer };
+        public static event Action<GlyphExportStatus, string> GlpyhExportStatusUpdated;
+        public static event Action<FightSendStatus, string> FightSendStatusUpdated;
         private static long _lastSend;
 
         public static void ExportGlyph()
         {
-            if (_lastSend + TimeSpan.TicksPerSecond * 30 >= DateTime.Now.Ticks) { return; }
-            if (string.IsNullOrEmpty(PacketProcessor.Instance.Glyphs.playerName)) { return; }
-            if (PacketProcessor.Instance.EntityTracker.MeterUser.Level < 65) { return; }
+            if (_lastSend + TimeSpan.TicksPerSecond * 30 >= DateTime.Now.Ticks)
+            {
+                GlpyhExportStatusUpdated?.Invoke(GlyphExportStatus.TooFast, "Too many retries");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(PacketProcessor.Instance.Glyphs.playerName))
+            {
+                GlpyhExportStatusUpdated?.Invoke(GlyphExportStatus.NotLoggedIn, "You must log in a character to upload glyphs");
+                return;
+            }
+
+            if (PacketProcessor.Instance.EntityTracker.MeterUser.Level < 65)
+            {
+                GlpyhExportStatusUpdated?.Invoke(GlyphExportStatus.LevelTooLow, "Character must be lv65 or higher");
+                return;
+            }
             _lastSend = DateTime.Now.Ticks;
             DpsServers.ForEach(x => x.SendGlyphData());
         }
-        
+
 
         private static ExtendedStats GenerateStats(NpcEntity entity, AbnormalityStorage abnormals)
         {
@@ -61,11 +94,11 @@ namespace DamageMeter
             var interTick = lastTick - firstTick;
             var interval = interTick / TimeSpan.TicksPerSecond;
             var totaldamage = entityInfo.TotalDamage;
-            if (interval == 0||totaldamage==0) { return null; }
+            if (interval == 0 || totaldamage == 0) { return null; }
             var partyDps = TimeSpan.TicksPerSecond * totaldamage / interTick;
             var allPlayers = skills.GetPlayers();
             allPlayers.RemoveAll(x => playersInfo.Any(y => x == y.Source));
-            allPlayers.ForEach(x=>playersInfo.Add(new PlayerDamageDealt(0,0,firstTick,lastTick,0,0,x)));
+            allPlayers.ForEach(x => playersInfo.Add(new PlayerDamageDealt(0, 0, firstTick, lastTick, 0, 0, x)));
             var teradpsData = new EncounterBase();
             var extendedStats = new ExtendedStats();
             var _abnormals = abnormals.Clone(null, firstTick, lastTick);
@@ -87,15 +120,15 @@ namespace DamageMeter
                 var percentage = debuff.Value.Duration(firstTick, lastTick) * 100 / interTick;
                 if (percentage == 0) { continue; }
                 teradpsData.debuffUptime.Add(new KeyValuePair<string, string>(debuff.Key.Id + "", percentage + ""));
-                var stacks = new List<List<int>> {new List<int> {0, (int) percentage}};
+                var stacks = new List<List<int>> { new List<int> { 0, (int)percentage } };
                 var stackList = debuff.Value.Stacks(firstTick, lastTick).OrderBy(x => x);
-                teradpsData.debuffDetail.Add(new List<object> {debuff.Key.Id, stacks});
+                teradpsData.debuffDetail.Add(new List<object> { debuff.Key.Id, stacks });
                 if (stackList.Any() && stackList.Max() == 1) { continue; }
                 foreach (var stack in stackList)
                 {
                     percentage = debuff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
                     if (percentage == 0) { continue; }
-                    stacks.Add(new List<int> {stack, (int) percentage});
+                    stacks.Add(new List<int> { stack, (int)percentage });
                 }
             }
 
@@ -135,15 +168,15 @@ namespace DamageMeter
                     var percentage = buff.Value.Duration(firstTick, lastTick) * 100 / interTick;
                     if (percentage == 0) { continue; }
                     teradpsUser.buffUptime.Add(new KeyValuePair<string, string>(buff.Key.Id + "", percentage + ""));
-                    var stacks = new List<List<int>> {new List<int> {0, (int) percentage}};
+                    var stacks = new List<List<int>> { new List<int> { 0, (int)percentage } };
                     var stackList = buff.Value.Stacks(firstTick, lastTick);
-                    teradpsUser.buffDetail.Add(new List<object> {buff.Key.Id, stacks});
+                    teradpsUser.buffDetail.Add(new List<object> { buff.Key.Id, stacks });
                     if (stackList.Any() && stackList.Max() == 1) { continue; }
                     foreach (var stack in stackList)
                     {
                         percentage = buff.Value.Duration(firstTick, lastTick, stack) * 100 / interTick;
                         if (percentage == 0) { continue; }
-                        stacks.Add(new List<int> {stack, (int) percentage});
+                        stacks.Add(new List<int> { stack, (int)percentage });
                     }
                 }
 
@@ -197,7 +230,7 @@ namespace DamageMeter
         {
             if (!despawnNpc.Dead) { return; }
 
-            var entity = (NpcEntity) DamageTracker.Instance.GetEntity(despawnNpc.Npc);
+            var entity = (NpcEntity)DamageTracker.Instance.GetEntity(despawnNpc.Npc);
             AutomatedExport(entity, abnormality);
         }
 
@@ -232,11 +265,15 @@ namespace DamageMeter
             JsonExporter.JsonSave(stats, PacketProcessor.Instance.EntityTracker.MeterUser.Name);
             var sendThread = new Thread(() =>
             {
-                DpsServers.Where(x => !x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
+                DpsServers.Where(x => !x.AnonymousUpload).ToList().ForEach(x =>
+                {
+                    x.CheckAndSendFightData(stats.BaseStats, entity);
+                });
                 ExcelExporter.ExcelSave(stats, PacketProcessor.Instance.EntityTracker.MeterUser.Name);
                 Anonymize(stats.BaseStats);
                 DpsServers.Where(x => x.AnonymousUpload).ToList().ForEach(x => x.CheckAndSendFightData(stats.BaseStats, entity));
-                if (BasicTeraData.Instance.WindowData.PacketsCollect) {
+                if (BasicTeraData.Instance.WindowData.PacketsCollect)
+                {
                     try
                     {
                         PacketsExporter.Instance.Export(stats.BaseStats, entity);
@@ -261,6 +298,15 @@ namespace DamageMeter
                 members.playerId = 0;
                 members.guild = null;
             }
+        }
+
+        public static void InvokeGlyphExportStatusChanged(GlyphExportStatus res, string msg)
+        {
+            GlpyhExportStatusUpdated?.Invoke(res, msg);
+        }
+        public static void InvokeFightSendStatusUpdated(FightSendStatus res, string msg)
+        {
+            FightSendStatusUpdated?.Invoke(res, msg);
         }
     }
 }

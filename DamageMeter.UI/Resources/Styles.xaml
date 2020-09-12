@@ -1,8 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:settings="clr-namespace:TCC.UI.Controls.Settings"
-                    xmlns:extensions="clr-namespace:Nostrum.Extensions"
-                    xmlns:controls="clr-namespace:Nostrum.Controls">
+                    xmlns:extensions="clr-namespace:Nostrum.Extensions;assembly=Nostrum"
+                    xmlns:controls="clr-namespace:Nostrum.Controls;assembly=Nostrum" 
+                    xmlns:ui="clr-namespace:DamageMeter.UI">
 
     <!--#region Path -->
     <Style TargetType="Path" x:Key="PathBaseStyle">
@@ -187,8 +188,10 @@
                 Data="M 0 0 L 4 4 L 8 0 Z" />
         </Grid>
         <ControlTemplate.Triggers>
-            <Trigger Property="ToggleButton.IsMouseOver" Value="true" />
             <Trigger Property="ToggleButton.IsChecked" Value="true" />
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Arrow" Property="Fill" Value="SlateGray"/>
+            </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -238,8 +241,7 @@
                                      Background="Transparent"
                                      Visibility="Hidden"
                                      IsReadOnly="{TemplateBinding IsReadOnly}" />
-                        <Popup
-                                Name="Popup"
+                        <Popup  Name="Popup"
                                 Placement="Bottom"
                                 IsOpen="{TemplateBinding IsDropDownOpen}"
                                 AllowsTransparency="True"
@@ -272,7 +274,7 @@
                             <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Foreground" Value="SlateGray" />
                         </Trigger>
                         <Trigger Property="IsGrouping" Value="true">
                             <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
@@ -827,5 +829,209 @@
         <Setter Property="Foreground" Value="#ccffffff" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
     </Style>
+    <Style x:Key="MetricTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
 
+    <Style x:Key="MetricPathStyle" TargetType="Path" BasedOn="{StaticResource PathBaseStyle}">
+        <Setter Property="Height" Value="14" />
+        <Setter Property="Width" Value="14" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="6 4 3 4" />
+        <Setter Property="Fill" Value="#5fff" />
+
+    </Style>
+    <Style x:Key="MetricBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="#1fff" />
+        <Setter Property="Height" Value="24" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Grid.ColumnSpan" Value="2" />
+    </Style>
+
+    <DataTemplate x:Key="DamagePercDT" DataType="ui:IPlayerViewModel">
+        <TextBlock Margin="2 0" 
+                   Style="{StaticResource MetricTextBlockStyle}"
+                   Text="{Binding DamagePerc}"
+                   ToolTip="{Binding DamageDone}"
+                   Foreground="#aaa"
+                   />
+    </DataTemplate>
+    <DataTemplate x:Key="DamageDT" DataType="ui:IPlayerViewModel">
+        <TextBlock Margin="2 0" 
+                   Style="{StaticResource MetricTextBlockStyle}"
+                   Text="{Binding DamageDone}"
+                   ToolTip="{Binding DamagePerc}"
+                   Foreground="#aaa"
+        />
+    </DataTemplate>
+    <DataTemplate x:Key="DpsDT" DataType="ui:IPlayerViewModel">
+        <StackPanel Orientation="Horizontal" Margin="2 0" >
+            <StackPanel.Resources>
+                <Style x:Key="ArrowsStyle" TargetType="Polygon">
+                    <Setter Property="Width" Value="8" />
+                    <Setter Property="Margin" Value="0 0 4 0" />
+                    <Setter Property="Height" Value="Auto" />
+                    <Setter Property="Stretch" Value="Uniform" />
+                    <Setter Property="RenderTransformOrigin" Value=".5 .5" />
+                    <Setter Property="Points" Value="0,0 1,-1 2,0" />
+                </Style>
+            </StackPanel.Resources>
+            <!--TrendArrow-->
+            <Polygon>
+                <Polygon.Style>
+                    <Style TargetType="Polygon" BasedOn="{StaticResource ArrowsStyle}">
+                        <Setter Property="Visibility" Value="Hidden" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Increased}" Value="True">
+                                <Setter Property="Fill" Value="MediumSeaGreen" />
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Decreased}" Value="True">
+                                <Setter Property="Fill" Value="{StaticResource LightRed}" />
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleY="-1" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Polygon.Style>
+            </Polygon>
+            <!--DPS-->
+            <TextBlock x:Name="LabelDps"
+                           Style="{StaticResource MetricTextBlockStyle}"
+                           Text="{Binding GlobalDps}"
+                           ToolTip="{Binding IndividualDps}" />
+        </StackPanel>
+
+    </DataTemplate>
+    <DataTemplate x:Key="CritRateDT" DataType="ui:IPlayerViewModel">
+        <TextBlock Margin="2 0"  HorizontalAlignment="Center"
+                   Foreground="LightCoral"
+                   Text="{Binding CritRate}"
+                   Style="{StaticResource MetricTextBlockStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="HealCritRateDT" DataType="ui:IPlayerViewModel">
+        <TextBlock Margin="2 0"     Foreground="MediumSeaGreen"
+                   Text="{Binding HealCritRate}"
+                   Style="{StaticResource MetricTextBlockStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="DamageFromCritsDT" DataType="ui:IPlayerViewModel">
+        <TextBlock Margin="2 0"     Foreground="Orange"
+                   Text="{Binding DamageFromCrits}"
+                   Style="{StaticResource MetricTextBlockStyle}" />
+    </DataTemplate>
+    <DataTemplate x:Key="DeathsDT" DataType="ui:IPlayerViewModel">
+        <Grid Margin="2 0" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource MetricBorderStyle}" />
+            <Path Data="{StaticResource Svg.Death}"
+                      Style="{StaticResource MetricPathStyle}"
+                      />
+            <TextBlock Margin="0 0 6 0"
+                           Grid.Column="1"
+                           Text="{Binding Deaths}"
+                           
+                           Style="{StaticResource MetricTextBlockStyle}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="FloortimeDT" DataType="ui:IPlayerViewModel">
+        <Grid Margin="2 0" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource MetricBorderStyle}" />
+
+            <Path Data="{StaticResource Svg.Death}"
+                      Style="{StaticResource MetricPathStyle}"
+                      />
+            <TextBlock Margin="0 0 6 0"
+                           Grid.Column="1"
+                           Text="{Binding FloorTime}"
+                           Style="{StaticResource MetricTextBlockStyle}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="FloortimePercDT" DataType="ui:IPlayerViewModel">
+        <Grid Margin="2 0" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource MetricBorderStyle}" />
+
+            <Path Data="{StaticResource Svg.Death}"
+                      Style="{StaticResource MetricPathStyle}"
+                      />
+            <TextBlock Margin="0 0 6 0"
+                    Grid.Column="1"
+                           Text="{Binding FloorTimePerc}"
+                           Style="{StaticResource MetricTextBlockStyle}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="AggroPercDT" DataType="ui:IPlayerViewModel">
+        <Grid Margin="2 0" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource MetricBorderStyle}" />
+
+            <Path Data="{StaticResource Svg.Aggro}"
+                      Style="{StaticResource MetricPathStyle}"
+                      />
+            <TextBlock Margin="0 0 6 0"
+                           HorizontalAlignment="Left"
+                           Grid.Column="1"
+                           Text="{Binding AggroPerc}"
+                           Style="{StaticResource MetricTextBlockStyle}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="EnduDebuffUptimeDT" DataType="ui:IPlayerViewModel">
+        <Grid Margin="2 0" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource MetricBorderStyle}" />
+
+            <Path Data="{StaticResource Svg.Shield}"
+                      Style="{StaticResource MetricPathStyle}"
+                      />
+            <TextBlock Margin="0 0 6 0"
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           Text="{Binding EnduDebuffUptimeStr}"
+                           Style="{StaticResource MetricTextBlockStyle}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="Empty" DataType="ui:IPlayerViewModel" />
+    <ui:StatTemplateSelector x:Key="MetricTemplateSelector"
+                                Damage="{StaticResource DamageDT}"
+                                DamagePerc="{StaticResource DamagePercDT}"
+                                Dps="{StaticResource DpsDT}"
+
+                                CritRate="{StaticResource CritRateDT}"
+                                HealCritRate="{StaticResource HealCritRateDT}"
+                                DamageFromCrits="{StaticResource DamageFromCritsDT}"
+
+                                Deaths="{StaticResource DeathsDT}"
+                                Floortime="{StaticResource FloortimeDT}"
+                                FloortimePerc="{StaticResource FloortimePercDT}"
+
+                                AggroPerc="{StaticResource AggroPercDT}"
+                                EnduDebuffUptime="{StaticResource EnduDebuffUptimeDT}"
+
+                                Empty="{StaticResource Empty}" />
 </ResourceDictionary>

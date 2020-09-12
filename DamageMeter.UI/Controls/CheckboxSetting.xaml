@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="35" d:DesignWidth="300">
     <UserControl.Resources>
-        <Style TargetType="{x:Type CheckBox}" x:Key="{x:Type CheckBox}">
+        <Style TargetType="{x:Type CheckBox}" >
             <Setter Property="FocusVisualStyle" Value="{StaticResource EmptyFocusVisual}" />
             <Setter Property="settings:CheckBoxExtensions.Size" Value="{Binding CheckboxSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}" />
             <Setter Property="Background" Value="Transparent" />

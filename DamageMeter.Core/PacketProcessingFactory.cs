@@ -171,7 +171,7 @@ namespace DamageMeter
 
         public bool Process(ParsedMessage message)
         {
-            MainProcessor.TryGetValue(message.GetType(), out Delegate type);
+            MainProcessor.TryGetValue(message.GetType(), out var type);
             if (type == null) { return false; }
             type.DynamicInvoke(message);
             return true;

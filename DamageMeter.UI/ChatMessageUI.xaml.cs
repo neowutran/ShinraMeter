@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Data;
@@ -30,51 +29,25 @@ namespace DamageMeter.UI
 
             Channel.Content = "[" + Channel.Content + "]";
 
-            Brush foreground = null;
-            switch (message.ChatType)
+            Brush foreground = message.ChatType switch
             {
-                case Chat.ChatType.Whisper:
-                    foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.WhisperColor);
-                    break;
-                case Chat.ChatType.Normal:
-                    switch (message.Channel)
-                    {
-                        case S_CHAT.ChannelEnum.Alliance:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.AllianceColor);
-                            break;
-                        case S_CHAT.ChannelEnum.Area:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.AreaColor);
-                            break;
-                        case S_CHAT.ChannelEnum.General:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.GeneralColor);
-                            break;
-                        case S_CHAT.ChannelEnum.Group:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.GroupColor);
-                            break;
-                        case S_CHAT.ChannelEnum.Guild:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.GuildColor);
-                            break;
-                        case S_CHAT.ChannelEnum.Raid:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.RaidColor);
-                            break;
-                        case S_CHAT.ChannelEnum.Say:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.SayColor);
-                            break;
-                        case S_CHAT.ChannelEnum.Trading:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.TradingColor);
-                            break;
-                        case S_CHAT.ChannelEnum.Emotes:
-                            foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.EmotesColor);
-                            break;
-                        default:
-                            foreground = Brushes.White;
-                            break;
-                    }
-                    break;
-                case Chat.ChatType.PrivateChannel:
-                    foreground = new SolidColorBrush(BasicTeraData.Instance.WindowData.PrivateChannelColor);
-                    break;
-            }
+                Chat.ChatType.Whisper => new SolidColorBrush(BasicTeraData.Instance.WindowData.WhisperColor),
+                Chat.ChatType.Normal => message.Channel switch
+                {
+                    S_CHAT.ChannelEnum.Alliance => new SolidColorBrush(BasicTeraData.Instance.WindowData.AllianceColor),
+                    S_CHAT.ChannelEnum.Area => new SolidColorBrush(BasicTeraData.Instance.WindowData.AreaColor),
+                    S_CHAT.ChannelEnum.General => new SolidColorBrush(BasicTeraData.Instance.WindowData.GeneralColor),
+                    S_CHAT.ChannelEnum.Group => new SolidColorBrush(BasicTeraData.Instance.WindowData.GroupColor),
+                    S_CHAT.ChannelEnum.Guild => new SolidColorBrush(BasicTeraData.Instance.WindowData.GuildColor),
+                    S_CHAT.ChannelEnum.Raid => new SolidColorBrush(BasicTeraData.Instance.WindowData.RaidColor),
+                    S_CHAT.ChannelEnum.Say => new SolidColorBrush(BasicTeraData.Instance.WindowData.SayColor),
+                    S_CHAT.ChannelEnum.Trading => new SolidColorBrush(BasicTeraData.Instance.WindowData.TradingColor),
+                    S_CHAT.ChannelEnum.Emotes => new SolidColorBrush(BasicTeraData.Instance.WindowData.EmotesColor),
+                    _ => Brushes.White
+                },
+                Chat.ChatType.PrivateChannel => new SolidColorBrush(BasicTeraData.Instance.WindowData.PrivateChannelColor),
+                _ => null
+            };
 
             Sender.Foreground = foreground;
             Channel.Foreground = foreground;

@@ -78,8 +78,9 @@
     <SolidColorBrush x:Key="Expander.Static.Circle.Stroke" Color="#00333333"/>
     <SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="#FFF"/>
 
-    <SolidColorBrush x:Key="RedLight" Color="#ff5555"/>
-    <SolidColorBrush x:Key="RedStrong" Color="#ff3333"/>
+    <SolidColorBrush x:Key="LightRed" Color="#ff5555"/>
+    <SolidColorBrush x:Key="MidRed" Color="#ff4444"/>
+    <SolidColorBrush x:Key="StrongRed" Color="#ff3333"/>
 
     <!--#endregion-->
 

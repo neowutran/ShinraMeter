@@ -27,7 +27,7 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))">
@@ -66,7 +66,9 @@
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Markdig" Version="0.18.0" />
     <PackageReference Include="Markdig.Wpf" Version="0.3.1" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="NAudio.Vorbis" Version="1.2.0" />
+    <PackageReference Include="Nostrum" Version="1.2.7" />
     <PackageReference Include="NVorbis" Version="0.10.1" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
   </ItemGroup>

@@ -145,10 +145,10 @@ namespace DamageMeter.Exporter {
                     compressor.TempFolderPath = Path.GetTempPath();
                     compressor.PreserveDirectoryRoot = false;
                     compressor.DefaultItemName = Path.GetFileNameWithoutExtension(fileName) + ".json";
-                    using MemoryStream s = new MemoryStream();
-                    using StreamWriter w = new StreamWriter(s);
-                    using JsonTextWriter jsonw = new JsonTextWriter(w);
-                    JsonSerializer ser = new JsonSerializer();
+                    using var s = new MemoryStream();
+                    using var w = new StreamWriter(s);
+                    using var jsonw = new JsonTextWriter(w);
+                    var ser = new JsonSerializer();
                     ser.NullValueHandling = NullValueHandling.Ignore;
                     ser.Formatting = Formatting.Indented;
                     ser.Serialize(jsonw, jsonData);

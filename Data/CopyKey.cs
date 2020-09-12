@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace Data
+﻿namespace Data
 {
     public class CopyKey
     {

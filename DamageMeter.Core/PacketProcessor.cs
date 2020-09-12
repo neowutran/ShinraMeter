@@ -223,7 +223,7 @@ namespace DamageMeter
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter, BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro);
             if (currentBoss != null)
             {
-                NotifyProcessor.Instance._lastBosses.TryGetValue(currentBoss.Id, out long entityHP);
+                NotifyProcessor.Instance._lastBosses.TryGetValue(currentBoss.Id, out var entityHP);
                 var entityDamaged = currentBoss.Info.HP - entityHP;
                 entityInfo.TimeLeft = entityDamaged == 0 ? 0 : entityInfo.Interval * entityHP / entityDamaged;
             }
@@ -416,7 +416,7 @@ namespace DamageMeter
 
                 CheckUpdateUi(packetsWaiting);
 
-                var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out Message obj);
+                var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out var obj);
                 if (!successDequeue)
                 {
                     Thread.Sleep(1);

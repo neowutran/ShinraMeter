@@ -71,7 +71,9 @@ namespace DamageMeter.TeraDpsApi
             }
             catch (Exception e)
             {
-                if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
+                if (!AnonymousUpload)
+                {
+                    PacketProcessor.Instance.BossLink.TryAdd(
                     new UploadData
                     {
                         Success = false,
@@ -81,6 +83,9 @@ namespace DamageMeter.TeraDpsApi
                         Npc = entity.Info.Name,
                         Server = Data.HostName
                     }, entity);
+                    DataExporter.InvokeFightSendStatusUpdated(DataExporter.FightSendStatus.Failed, $"{this.Data.HostName}: upload failed, check upload history for more info");
+
+                }
                 return false;
             }
             return true;
@@ -88,7 +93,14 @@ namespace DamageMeter.TeraDpsApi
 
         public bool SendGlyphData()
         {
-            if (!Enabled || String.IsNullOrWhiteSpace(GlyphUrl?.ToString())) { return false; }
+            if (!Enabled) { return false; }
+
+            if (string.IsNullOrWhiteSpace(GlyphUrl?.ToString()))
+            {
+                if (this.GlyphUrl != NeowutranAnonymousServer.GlyphUrl)
+                    DataExporter.InvokeGlyphExportStatusChanged(DataExporter.GlyphExportStatus.InvalidUrl, Data.HostName + ": invalid URL");
+                return false;
+            }
 
             var json = JsonConvert.SerializeObject(PacketProcessor.Instance.Glyphs,
                 new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, TypeNameHandling = TypeNameHandling.None });
@@ -105,6 +117,10 @@ namespace DamageMeter.TeraDpsApi
                         var response = client.PostAsync(GlyphUrl, new StringContent(json, Encoding.UTF8, "application/json"));
 
                         var responseString = response.Result.Content.ReadAsStringAsync();
+                        //todo: it would be nice to tell if the request was accepted or rejected from the server
+                        if (this.GlyphUrl != NeowutranAnonymousServer.GlyphUrl)
+                            DataExporter.InvokeGlyphExportStatusChanged(DataExporter.GlyphExportStatus.Success, Data.HostName + ": glyphs uploaded successfully");
+
                         Debug.WriteLine(responseString.Result);
                     }
                 }
@@ -112,6 +128,9 @@ namespace DamageMeter.TeraDpsApi
                 {
                     Debug.WriteLine(ex.Message);
                     Debug.WriteLine(ex.StackTrace);
+                    if (this.GlyphUrl != NeowutranAnonymousServer.GlyphUrl)
+                        DataExporter.InvokeGlyphExportStatusChanged(DataExporter.GlyphExportStatus.Unknown, Data.HostName + ": " + ex.Message);
+
                 }
             });
 
@@ -120,7 +139,7 @@ namespace DamageMeter.TeraDpsApi
 
         private void SendFightData(NpcEntity npc, string json, int retry = 3)
         {
-
+            if (!AnonymousUpload) DataExporter.InvokeFightSendStatusUpdated(DataExporter.FightSendStatus.InProgress, this.Data.HostName + ": uploading " + npc.Info.Name + " encounter...");
             try
             {
                 using (var client = new HttpClient())
@@ -133,7 +152,9 @@ namespace DamageMeter.TeraDpsApi
                     var responseObject = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Result.Content.ReadAsStringAsync().Result);
                     if (responseObject.ContainsKey("id") && ((string)responseObject["id"]).StartsWith("http"))
                     {
-                        if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
+                        if (!AnonymousUpload)
+                        {
+                            PacketProcessor.Instance.BossLink.TryAdd(
                             new UploadData
                             {
                                 Success = true,
@@ -142,10 +163,16 @@ namespace DamageMeter.TeraDpsApi
                                 Npc = npc.Info.Name,
                                 Time = DateTime.UtcNow
                             }, npc);
+
+                            DataExporter.InvokeFightSendStatusUpdated(DataExporter.FightSendStatus.Success, $"{this.Data.HostName}: upload successful");
+                        }
+
                     }
                     else
                     {
-                        if (!AnonymousUpload) PacketProcessor.Instance.BossLink.TryAdd(
+                        if (!AnonymousUpload)
+                        {
+                            PacketProcessor.Instance.BossLink.TryAdd(
                             new UploadData
                             {
                                 Success = false,
@@ -154,6 +181,8 @@ namespace DamageMeter.TeraDpsApi
                                 Npc = npc.Info.Name,
                                 Server = Data.HostName
                             }, npc);
+                            DataExporter.InvokeFightSendStatusUpdated(DataExporter.FightSendStatus.Failed, $"{this.Data.HostName}: upload failed, check upload history for more info");
+                        }
                     }
                 }
             }

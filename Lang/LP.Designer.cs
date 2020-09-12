@@ -1418,6 +1418,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Animate.
+        /// </summary>
+        public static string RealtimeGraphAnimated {
+            get {
+                return ResourceManager.GetString("RealtimeGraphAnimated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CMA seconds.
         /// </summary>
         public static string RealtimeGraphCmaSeconds {
@@ -1432,6 +1441,15 @@ namespace Lang {
         public static string RealtimeGraphDisplayedInterval {
             get {
                 return ResourceManager.GetString("RealtimeGraphDisplayedInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Graph mode.
+        /// </summary>
+        public static string RealtimeGraphMode {
+            get {
+                return ResourceManager.GetString("RealtimeGraphMode", resourceCulture);
             }
         }
         
@@ -1769,6 +1787,15 @@ namespace Lang {
         public static string SettingsTab_Input {
             get {
                 return ResourceManager.GetString("SettingsTab_Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Layout settings.
+        /// </summary>
+        public static string SettingsTab_Layout {
+            get {
+                return ResourceManager.GetString("SettingsTab_Layout", resourceCulture);
             }
         }
         

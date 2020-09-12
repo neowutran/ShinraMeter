@@ -55,10 +55,10 @@ namespace NetworkSniffer
         internal void RemoveConnection(TcpConnection connection)
         {
             if (!_connections.ContainsKey(connection.ConnectionId)) { return; }
-            _connections.TryRemove(connection.ConnectionId, out TcpConnection temp);
+            _connections.TryRemove(connection.ConnectionId, out var temp);
             var reverse = connection.ConnectionId.Reverse;
             if (!_connections.ContainsKey(reverse)) { return; }
-            _connections.TryRemove(reverse, out TcpConnection temp1);
+            _connections.TryRemove(reverse, out var temp1);
         }
 
         //private void ParsePacketsLoop()

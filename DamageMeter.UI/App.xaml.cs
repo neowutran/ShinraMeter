@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -66,7 +65,7 @@ namespace DamageMeter.UI
             if (_isNewInstance)
             {
                 var waiting = true;
-                var ssThread = new Thread(new ThreadStart(() =>
+                var ssThread = new Thread(() =>
                 {
                     SynchronizationContext.SetSynchronizationContext(new DispatcherSynchronizationContext(Dispatcher.CurrentDispatcher));
                     SplashScreen = new SplashScreen();
@@ -75,8 +74,10 @@ namespace DamageMeter.UI
                     SplashScreen.Show();
                     waiting = false;
                     Dispatcher.Run();
-                }));
-                ssThread.Name = "SplashScreen window thread";
+                })
+                {
+                    Name = "SplashScreen window thread"
+                };
                 ssThread.SetApartmentState(ApartmentState.STA);
                 ssThread.Start();
                 while (waiting)
@@ -151,7 +152,7 @@ namespace DamageMeter.UI
         private static async Task<bool> CheckUpdate()
         {
             SplashScreen.SetText("Checking for updates...");
-            return false;
+            return false; //TODO: re-enable
             var isUpToDate = await UpdateManager.IsUpToDate().ConfigureAwait(false);
             if (isUpToDate) { return false; }
 
@@ -183,6 +184,8 @@ namespace DamageMeter.UI
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
 
             HudContainer = new HudContainer();
+
+            SettingsWindow.Create();
 
         }
 

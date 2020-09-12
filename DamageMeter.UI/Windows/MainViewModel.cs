@@ -7,13 +7,106 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Nostrum;
 using Tera.Game;
 
 namespace DamageMeter.UI
 {
+    public readonly struct ToastInfo
+    {
+        public enum Severity
+        {
+            Info,
+            Success,
+            Warning,
+            Error
+        }
+        public string Text { get; }
+        public Severity SeverityLevel { get; }
+
+        public ToastInfo(string txt, Severity lvl)
+        {
+            Text = txt;
+            SeverityLevel = lvl;
+        }
+    }
+
+    public class ToastViewModel : TSPropertyChanged
+    {
+        private readonly Queue<ToastInfo> _queue;
+        private bool _visible;
+        private string _text;
+        private ToastInfo.Severity _severity;
+
+        public bool Visible
+        {
+            get => _visible;
+            private set
+            {
+                if (_visible == value) return;
+                _visible = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public string Text
+        {
+            get => _text;
+            private set
+            {
+                if (_text == value) return;
+                _text = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public ToastInfo.Severity Severity
+        {
+            get => _severity;
+            private set
+            {
+                if (_severity == value) return;
+                _severity = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public ToastViewModel()
+        {
+            _queue = new Queue<ToastInfo>();
+        }
+
+        public void Show(string txt, ToastInfo.Severity lvl)
+        {
+            if (Visible)
+            {
+                Enqueue(new ToastInfo(txt, lvl));
+                return;
+            }
+
+            Text = txt;
+            Severity = lvl;
+            Visible = true;
+
+            Task.Delay(3000).ContinueWith(t =>
+            {
+                Visible = false;
+                if (_queue.Count == 0) return;
+                Task.Delay(500).ContinueWith(tt =>
+                {
+                    var next = _queue.Dequeue();
+                    Show(next.Text, next.SeverityLevel);
+                });
+            });
+        }
+
+        public void Enqueue(ToastInfo info)
+        {
+            _queue.Enqueue(info);
+        }
+    }
 
     public class MainViewModel : TSPropertyChanged
     {
@@ -33,7 +126,7 @@ namespace DamageMeter.UI
         private string _totalDamageText;
         private bool _isGraphVisible;
         private bool _blurPlayerNames;
-        private int _queuedPackets; 
+        private int _queuedPackets;
         private bool _isEmpty;
         private bool _isMouseOver;
 
@@ -71,7 +164,6 @@ namespace DamageMeter.UI
         {
             get
             {
-                var ret = "";
                 var split = WindowTitle.Replace("Shinra Meter v", "").Split('.');
                 if (split.Length == 1) return "";
                 return "." + split[2];
@@ -212,9 +304,12 @@ namespace DamageMeter.UI
                 if (_queuedPackets == value) return;
                 _queuedPackets = value;
                 NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(LoadWarning));
+                NotifyPropertyChanged(nameof(LoadCritical));
             }
         }
-
+        public bool LoadWarning => QueuedPackets > 3000;
+        public bool LoadCritical => QueuedPackets > 5000;
         public bool ClickThru => BasicTeraData.Instance.WindowData.ClickThrou;
 
         public bool IsEmpty
@@ -238,7 +333,12 @@ namespace DamageMeter.UI
             }
         }
 
+
+
         public string ConnectionStatusText => Connected ? PacketProcessor.Instance.Server?.Name : LP.SystemTray_No_server;
+
+        public Color BackgroundColor => BasicTeraData.Instance.WindowData.BackgroundColor;
+        public Color BorderColor => BasicTeraData.Instance.WindowData.BorderColor;
 
         public ImageSource WindowIcon
         {
@@ -265,6 +365,7 @@ namespace DamageMeter.UI
         public SynchronizedObservableCollection<PlayerDamageViewModel> Players { get; }
         public ICollectionViewLiveShaping PlayersView { get; set; }
         public GraphViewModel GraphData { get; }
+        public ToastViewModel ToastData { get; }
 
         public ICommand TogglePauseCommand { get; }
         public ICommand ToggleAddsCommand { get; }
@@ -286,6 +387,7 @@ namespace DamageMeter.UI
             WindowTitle = "Shinra Meter v" + UpdateManager.Version;
 
             GraphData = new GraphViewModel();
+            ToastData = new ToastViewModel();
             Encounters = new SynchronizedObservableCollection<NpcEntity>();
             Players = new SynchronizedObservableCollection<PlayerDamageViewModel>();
             PlayersView = CollectionViewFactory.CreateLiveCollectionView(Players,
@@ -303,9 +405,10 @@ namespace DamageMeter.UI
             PacketProcessor.Instance.TickUpdated += OnUpdate;
 
             SettingsWindowViewModel.NumberOfPlayersDisplayedChanged += OnNumberOfPlayersDisplayedChanged;
+            SettingsWindowViewModel.WindowColorsChanged += OnWindowColorsChanged;
 
             BasicTeraData.Instance.WindowData.ClickThruChanged += OnClickThruChanged;
-
+            DataExporter.FightSendStatusUpdated += OnFightSendStatusUpdated;
 
             TogglePauseCommand = new RelayCommand(_ => TogglePause());
             ToggleAddsCommand = new RelayCommand(_ => ToggleAdds());
@@ -319,9 +422,28 @@ namespace DamageMeter.UI
 
         }
 
+        private void OnFightSendStatusUpdated(DataExporter.FightSendStatus status, string txt)
+        {
+            var lvl = status switch
+            {
+                DataExporter.FightSendStatus.Success => ToastInfo.Severity.Success,
+                DataExporter.FightSendStatus.InProgress => ToastInfo.Severity.Info,
+                DataExporter.FightSendStatus.Failed => ToastInfo.Severity.Error,
+                _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
+            };
+            ToastData.Show(txt, lvl);
+        }
+
+        private void OnWindowColorsChanged()
+        {
+            NotifyPropertyChanged(nameof(BackgroundColor));
+            NotifyPropertyChanged(nameof(BorderColor));
+        }
+
         private void OnClickThruChanged()
         {
             NotifyPropertyChanged(nameof(ClickThru));
+            ToastData.Show("Clickthru changed to " + ClickThru, ToastInfo.Severity.Info);
         }
 
         private void OnNumberOfPlayersDisplayedChanged(int v)
@@ -348,7 +470,10 @@ namespace DamageMeter.UI
 
                 if (BasicTeraData.Instance.WindowData.RealtimeGraphEnabled)
                 {
-                    GraphData.Update(message);
+                    Task.Run(() =>
+                    {
+                        App.MainDispatcher.InvokeAsync(() => GraphData.Update(message), DispatcherPriority.Background);
+                    });
                     IsGraphVisible = true;
                 }
                 else
@@ -374,12 +499,12 @@ namespace DamageMeter.UI
                     var existing = Players.FirstOrDefault(p => p.Name == damageDealt.Source.Name);
                     if (existing != null)
                     {
-                        existing.Update(damageDealt, healDealt, message.StatsSummary.EntityInformation, message.Skills, message.Abnormals.Get(damageDealt.Source),
+                        existing.Update(damageDealt, healDealt, message.StatsSummary.EntityInformation, message.Skills, message.Abnormals,
                             message.TimedEncounter);
                     }
                     else
                     {
-                        Players.Add(new PlayerDamageViewModel(damageDealt, healDealt, message.StatsSummary.EntityInformation, message.Skills, message.Abnormals.Get(damageDealt.Source)));
+                        Players.Add(new PlayerDamageViewModel(damageDealt, healDealt, message.StatsSummary.EntityInformation, message.Skills, message.Abnormals, message.TimedEncounter));
                     }
 
                     //Controls[item.Source].Repaint(item, statsHeal.FirstOrDefault(x => x.Source == item.Source), 
@@ -510,6 +635,7 @@ namespace DamageMeter.UI
         {
             WindowTitle = servername;
             Connected = servername != LP.SystemTray_No_server;
+            ToastData.Show(Connected ?"Connected to " + servername : "Disconnected", Connected ? ToastInfo.Severity.Success : ToastInfo.Severity.Info);
         }
         private void OnOverloadedChanged()
         {

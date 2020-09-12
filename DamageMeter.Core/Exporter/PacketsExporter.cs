@@ -4,19 +4,14 @@ using Data;
 using Newtonsoft.Json;
 using SevenZip;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using Tera;
 using Tera.Game;
 using Tera.Game.Messages;
@@ -81,7 +76,7 @@ namespace DamageMeter
                 return;
             }
             // Keep a local reference of the packet list
-            Queue<Message> packetsCopyStorage = TeraSniffer.Instance.GetPacketsLogsAndStop();
+            var packetsCopyStorage = TeraSniffer.Instance.GetPacketsLogsAndStop();
             if (!packetsCopyStorage.Any())
             {
                 BasicTeraData.LogError("PacketExport: Empty packet log, exiting", true);
@@ -89,8 +84,8 @@ namespace DamageMeter
             }
 
             var version = PacketProcessor.Instance.MessageFactory.Version;
-            Guid id = Guid.NewGuid();
-            string filename =  version + "_"+ id;
+            var id = Guid.NewGuid();
+            var filename =  version + "_"+ id;
 
             Debug.WriteLine("Start exporting data");
             BasicTeraData.LogError("PacketExport: Export data to tmp file", true);
@@ -111,10 +106,10 @@ namespace DamageMeter
         private void SaveToTmpFile(string version, Queue<Message> packetsCopyStorage, string filename)
         {
             var header = new LogHeader { Region = version };
-            PacketLogWriter writer = new PacketLogWriter(filename, header);
+            var writer = new PacketLogWriter(filename, header);
             foreach (var message in packetsCopyStorage)
             {
-                ParsedMessage parsedMessage = PacketProcessor.Instance.MessageFactory.Create(message);
+                var parsedMessage = PacketProcessor.Instance.MessageFactory.Create(message);
                 parsedMessage = WipeoutSensitiveData(parsedMessage);
                 writer.Append(message);
             }
@@ -165,7 +160,7 @@ namespace DamageMeter
             csp.ImportParameters(publicKey);
             var clearData = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, inputFilename));
 
-            Aes aes = Aes.Create();
+            var aes = Aes.Create();
             aes.KeySize = 256;
             aes.Mode = CipherMode.CBC;
             aes.BlockSize = 128;
@@ -196,12 +191,15 @@ namespace DamageMeter
         {
             var libpath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Environment.Is64BitProcess ? "lib/7z_x64.dll" : "lib/7z.dll");
             SevenZipBase.SetLibraryPath(libpath);
-            var compressor = new SevenZipCompressor { ArchiveFormat = OutArchiveFormat.SevenZip };
-            compressor.CustomParameters["tc"] = "off";
-            compressor.CompressionLevel = CompressionLevel.Ultra;
-            compressor.CompressionMode = CompressionMode.Create;
-            compressor.TempFolderPath = Path.GetTempPath();
-            compressor.PreserveDirectoryRoot = false;
+            var compressor = new SevenZipCompressor
+            {
+                ArchiveFormat = OutArchiveFormat.SevenZip,
+                CustomParameters = {["tc"] = "off"},
+                CompressionLevel = CompressionLevel.Ultra,
+                CompressionMode = CompressionMode.Create,
+                TempFolderPath = Path.GetTempPath(),
+                PreserveDirectoryRoot = false
+            };
             compressor.CompressFiles(outputFilename, new string[]{ Path.Combine(AppDomain.CurrentDomain.BaseDirectory,inputFilename)});
         }
 
@@ -209,8 +207,8 @@ namespace DamageMeter
         {
             var filebytes = File.ReadAllBytes(filename);
             
-            SHA1Managed sha = new SHA1Managed();
-            byte[] checksum = sha.ComputeHash(filebytes);
+            var sha = new SHA1Managed();
+            var checksum = sha.ComputeHash(filebytes);
             var sendCheckSum = BitConverter.ToString(checksum).Replace("-", string.Empty);
             Debug.WriteLine(sendCheckSum);
             BasicTeraData.LogError("PacketExport: Send hash: "+sendCheckSum, true);

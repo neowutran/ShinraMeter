@@ -4,18 +4,19 @@
 
     <xctk:ColorToSolidColorBrushConverter x:Key="ColorToSolidColorBrushConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <SolidColorBrush x:Key="CheckerBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="CheckerBrush" Color="Transparent" />
     <Style x:Key="SliderThumbStyle" TargetType="Thumb">
-        <Setter Property="SnapsToDevicePixels" Value="true"/>
-        <Setter Property="OverridesDefaultStyle" Value="false"/>
-        <Setter Property="Height" Value="16"/>
-        <Setter Property="Width" Value="16"/>
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="false" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Width" Value="16" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Ellipse  Name="Ellipse"
-                                 Cursor="Hand"
-                          Fill="{StaticResource AccentColor}" Effect="{StaticResource SwitchShadow-1dp}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                    <Ellipse Name="Ellipse"
+                             Cursor="Hand"
+                             Fill="{StaticResource AccentColor}" Effect="{StaticResource SwitchShadow-1dp}"
+                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -28,7 +29,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border Background="{StaticResource AccentColor}" Height="2"/>
+                    <Border Background="{StaticResource AccentColor}" Height="2" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -39,13 +40,13 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
-                    <Border SnapsToDevicePixels="True" Background="Black" Opacity=".26" Height="2"/>
+                    <Border SnapsToDevicePixels="True" Background="Black" Opacity=".26" Height="2" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
     <Style TargetType="Slider" x:Key="AppSliderStyle">
-        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Slider">
@@ -61,19 +62,21 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Track Name="PART_Track"
-                              HorizontalAlignment="Stretch"
-                              VerticalAlignment="Center"
-                              Grid.Row="1" Grid.Column="1"
-                              Width="{TemplateBinding Width}"
-                              Height="{TemplateBinding Height}">
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Center"
+                               Grid.Row="1" Grid.Column="1"
+                               Width="{TemplateBinding Width}"
+                               Height="{TemplateBinding Height}">
                             <Track.DecreaseRepeatButton>
-                                <RepeatButton Style="{StaticResource SliderRepeatButton}"  Command="Slider.DecreaseLarge" />
+                                <RepeatButton Style="{StaticResource SliderRepeatButton}"
+                                              Command="Slider.DecreaseLarge" />
                             </Track.DecreaseRepeatButton>
                             <Track.Thumb>
                                 <Thumb Style="{StaticResource SliderThumbStyle}" />
                             </Track.Thumb>
                             <Track.IncreaseRepeatButton>
-                                <RepeatButton Style="{StaticResource SliderRepeatButton1}" Command="Slider.IncreaseLarge" />
+                                <RepeatButton Style="{StaticResource SliderRepeatButton1}"
+                                              Command="Slider.IncreaseLarge" />
                             </Track.IncreaseRepeatButton>
 
                         </Track>
@@ -84,100 +87,100 @@
     </Style>
 
     <LinearGradientBrush x:Key="ColorPickerDarkBorderBrush"
-                        EndPoint="0.5,1"
-                        StartPoint="0.5,0">
+                         EndPoint="0.5,1"
+                         StartPoint="0.5,0">
         <GradientStop Color="#FFA3AEB9"
-                    Offset="0" />
+                      Offset="0" />
         <GradientStop Color="#FF8399A9"
-                    Offset="0.375" />
+                      Offset="0.375" />
         <GradientStop Color="#FF718597"
-                    Offset="0.375" />
+                      Offset="0.375" />
         <GradientStop Color="#FF617584"
-                    Offset="1" />
+                      Offset="1" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="ColorCanvasBackgroundBrush"
-                        StartPoint="0,0"
-                        EndPoint="0,1">
+                         StartPoint="0,0"
+                         EndPoint="0,1">
         <LinearGradientBrush.GradientStops>
             <GradientStopCollection>
                 <GradientStop Offset="0"
-                          Color="#FFffffff" />
+                              Color="#FFffffff" />
                 <GradientStop Offset="1"
-                          Color="#FFE8EBED" />
+                              Color="#FFE8EBED" />
             </GradientStopCollection>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="HorizontalSliderTrackNormalBackground"
-                    Color="#FFE7EAEA" />
+                     Color="#FFE7EAEA" />
 
     <LinearGradientBrush x:Key="HorizontalSliderTrackNormalBorder"
-                        EndPoint="0,1"
-                        StartPoint="0,0">
+                         EndPoint="0,1"
+                         StartPoint="0,0">
         <GradientStop Color="#FFAEB1AF"
-                    Offset="0.1" />
+                      Offset="0.1" />
         <GradientStop Color="White"
-                    Offset=".9" />
+                      Offset=".9" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="ThumbStroke"
-                        EndPoint="0.5,1"
-                        StartPoint="0.5,0">
+                         EndPoint="0.5,1"
+                         StartPoint="0.5,0">
         <GradientStop Color="#FFA3AEB9"
-                    Offset="0" />
+                      Offset="0" />
         <GradientStop Color="#FF8399A9"
-                    Offset="0.375" />
+                      Offset="0.375" />
         <GradientStop Color="#FF718597"
-                    Offset="0.375" />
+                      Offset="0.375" />
         <GradientStop Color="#FF617584"
-                    Offset="1" />
+                      Offset="1" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="ThumbFill"
-                        StartPoint="0,0"
-                        EndPoint="0,1">
+                         StartPoint="0,0"
+                         EndPoint="0,1">
         <LinearGradientBrush.GradientStops>
             <GradientStopCollection>
                 <GradientStop Offset="0"
-                          Color="#FFfefefe" />
+                              Color="#FFfefefe" />
                 <GradientStop Offset="0.5"
-                          Color="#FFeff1f2" />
+                              Color="#FFeff1f2" />
                 <GradientStop Offset="1"
-                          Color="#FFd0d6db" />
+                              Color="#FFd0d6db" />
             </GradientStopCollection>
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
     <SolidColorBrush x:Key="ThumbMouseOver"
-                    Color="#FFE5F2F6" />
+                     Color="#FFE5F2F6" />
 
     <Style x:Key="ColorCanvasTextBoxStyle"
-          TargetType="TextBox"
-          BasedOn="{StaticResource {x:Type TextBox}}">
+           TargetType="TextBox"
+           BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Background"
-              Value="Transparent" />
+                Value="Transparent" />
         <Setter Property="Foreground"
-                Value="#9fff"/>
+                Value="#9fff" />
         <Style.Triggers>
             <Trigger Property="IsFocused"
-                  Value="False">
+                     Value="False">
                 <Setter Property="BorderBrush"
-                    Value="Transparent" />
+                        Value="Transparent" />
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <Style x:Key="SliderRepeatButtonStyle"
-          TargetType="{x:Type RepeatButton}">
+           TargetType="{x:Type RepeatButton}">
         <Setter Property="OverridesDefaultStyle"
-              Value="true" />
+                Value="true" />
         <Setter Property="IsTabStop"
-              Value="false" />
+                Value="false" />
         <Setter Property="Focusable"
-              Value="false" />
+                Value="false" />
         <Setter Property="Background"
-              Value="Transparent" />
+                Value="Transparent" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
@@ -188,25 +191,25 @@
     </Style>
 
     <Style x:Key="CustomThumbForSlider"
-          TargetType="{x:Type Thumb}">
+           TargetType="{x:Type Thumb}">
         <Setter Property="OverridesDefaultStyle"
-              Value="True" />
+                Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Rectangle x:Name="_thumb"
-                          Fill="{StaticResource ThumbFill}"
-                          Stroke="{StaticResource ThumbStroke}"
-                          Height="14"
-                          Width="8"
-                          RadiusX="1"
-                          RadiusY="1" />
+                               Fill="{StaticResource ThumbFill}"
+                               Stroke="{StaticResource ThumbStroke}"
+                               Height="14"
+                               Width="8"
+                               RadiusX="1"
+                               RadiusY="1" />
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver"
-                           Value="True">
+                                 Value="True">
                             <Setter TargetName="_thumb"
-                             Property="Rectangle.Fill"
-                             Value="{StaticResource ThumbMouseOver}" />
+                                    Property="Rectangle.Fill"
+                                    Value="{StaticResource ThumbMouseOver}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -215,56 +218,56 @@
     </Style>
 
     <Style x:Key="VerticalSlideThumbStyle"
-          TargetType="{x:Type Thumb}">
+           TargetType="{x:Type Thumb}">
         <Setter Property="Focusable"
-              Value="false" />
+                Value="false" />
         <Setter Property="OverridesDefaultStyle"
-              Value="true" />
+                Value="true" />
         <Setter Property="Height"
-              Value="12" />
+                Value="12" />
         <Setter Property="Width"
-              Value="11" />
+                Value="11" />
         <Setter Property="Foreground"
-              Value="Gray" />
+                Value="Gray" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Thumb}">
                     <Canvas SnapsToDevicePixels="true">
                         <Path x:Name="LeftArrow"
-                        Stretch="Fill"
-                        StrokeLineJoin="Round"
-                        Stroke="#FF000000"
-                        Fill="#FF000000"
-                        Data="F1 M 276.761,316L 262.619,307.835L 262.619,324.165L 276.761,316 Z "
-                        RenderTransformOrigin="0.5,0.5"
-                        Width="6"
-                        Height="8">
+                              Stretch="Fill"
+                              StrokeLineJoin="Round"
+                              Stroke="#FF000000"
+                              Fill="#FF000000"
+                              Data="F1 M 276.761,316L 262.619,307.835L 262.619,324.165L 276.761,316 Z "
+                              RenderTransformOrigin="0.5,0.5"
+                              Width="6"
+                              Height="8">
                             <Path.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform />
                                     <SkewTransform />
                                     <RotateTransform />
                                     <TranslateTransform Y="6"
-                                               X="-3" />
+                                                        X="-3" />
                                 </TransformGroup>
                             </Path.RenderTransform>
                         </Path>
                         <Path x:Name="RightArrow"
-                        Stretch="Fill"
-                        StrokeLineJoin="Round"
-                        Stroke="#FF000000"
-                        Fill="#FF000000"
-                        Data="F1 M 276.761,316L 262.619,307.835L 262.619,324.165L 276.761,316 Z "
-                        RenderTransformOrigin="0.5,0.5"
-                        Width="6"
-                        Height="8">
+                              Stretch="Fill"
+                              StrokeLineJoin="Round"
+                              Stroke="#FF000000"
+                              Fill="#FF000000"
+                              Data="F1 M 276.761,316L 262.619,307.835L 262.619,324.165L 276.761,316 Z "
+                              RenderTransformOrigin="0.5,0.5"
+                              Width="6"
+                              Height="8">
                             <Path.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform />
                                     <SkewTransform />
                                     <RotateTransform Angle="-180" />
                                     <TranslateTransform Y="6"
-                                               X="8" />
+                                                        X="8" />
                                 </TransformGroup>
                             </Path.RenderTransform>
                         </Path>
@@ -275,64 +278,64 @@
     </Style>
 
     <Style x:Key="ColorCanvasSliderStyle"
-          TargetType="{x:Type Slider}">
+           TargetType="{x:Type Slider}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Slider}">
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
-                       BorderThickness="{TemplateBinding BorderThickness}"
-                       Background="{TemplateBinding Background}"
-                       SnapsToDevicePixels="true">
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto"
-                                       MinHeight="{TemplateBinding MinHeight}" />
+                                               MinHeight="{TemplateBinding MinHeight}" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <TickBar x:Name="TopTick"
-                              Fill="{TemplateBinding Foreground}"
-                              Height="4"
-                              Placement="Top"
-                              Grid.Row="0"
-                              Visibility="Collapsed" />
+                                     Fill="{TemplateBinding Foreground}"
+                                     Height="4"
+                                     Placement="Top"
+                                     Grid.Row="0"
+                                     Visibility="Collapsed" />
                             <TickBar x:Name="BottomTick"
-                              Fill="{TemplateBinding Foreground}"
-                              Height="4"
-                              Placement="Bottom"
-                              Grid.Row="2"
-                              Visibility="Collapsed" />
+                                     Fill="{TemplateBinding Foreground}"
+                                     Height="4"
+                                     Placement="Bottom"
+                                     Grid.Row="2"
+                                     Visibility="Collapsed" />
                             <Border x:Name="TrackBackground"
-                             BorderBrush="{StaticResource HorizontalSliderTrackNormalBorder}"
-                             BorderThickness="1"
-                             Background="{StaticResource HorizontalSliderTrackNormalBackground}"
-                             CornerRadius="1"
-                             Height="4.0"
-                             Margin="5,0"
-                             Grid.Row="1"
-                             VerticalAlignment="center">
+                                    BorderBrush="{StaticResource HorizontalSliderTrackNormalBorder}"
+                                    BorderThickness="1"
+                                    Background="{StaticResource HorizontalSliderTrackNormalBackground}"
+                                    CornerRadius="1"
+                                    Height="4.0"
+                                    Margin="5,0"
+                                    Grid.Row="1"
+                                    VerticalAlignment="center">
                                 <Canvas Margin="-6,-1">
                                     <Rectangle x:Name="PART_SelectionRange"
-                                      Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
-                                      Height="4.0"
-                                      Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
-                                      StrokeThickness="1.0"
-                                      Visibility="Hidden" />
+                                               Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
+                                               Height="4.0"
+                                               Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
+                                               StrokeThickness="1.0"
+                                               Visibility="Hidden" />
                                 </Canvas>
                             </Border>
                             <Track x:Name="PART_Track"
-                            Grid.Row="1">
+                                   Grid.Row="1">
                                 <Track.DecreaseRepeatButton>
                                     <RepeatButton Command="{x:Static Slider.DecreaseLarge}"
-                                         Style="{StaticResource SliderRepeatButtonStyle}" />
+                                                  Style="{StaticResource SliderRepeatButtonStyle}" />
                                 </Track.DecreaseRepeatButton>
                                 <Track.IncreaseRepeatButton>
                                     <RepeatButton Command="{x:Static Slider.IncreaseLarge}"
-                                         Style="{StaticResource SliderRepeatButtonStyle}" />
+                                                  Style="{StaticResource SliderRepeatButtonStyle}" />
                                 </Track.IncreaseRepeatButton>
                                 <Track.Thumb>
                                     <Thumb x:Name="Thumb"
-                                  Style="{StaticResource CustomThumbForSlider}" />
+                                           Style="{StaticResource CustomThumbForSlider}" />
                                 </Track.Thumb>
                             </Track>
                         </Grid>
@@ -344,18 +347,18 @@
 
     <Style TargetType="{x:Type xctk:ColorCanvas}">
         <Setter Property="Background"
-              Value="{StaticResource ColorCanvasBackgroundBrush}" />
+                Value="{StaticResource ColorCanvasBackgroundBrush}" />
         <Setter Property="BorderBrush"
-              Value="{StaticResource ColorPickerDarkBorderBrush}" />
+                Value="{StaticResource ColorPickerDarkBorderBrush}" />
         <Setter Property="BorderThickness"
-              Value="1" />
+                Value="1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type xctk:ColorCanvas}">
                     <Border Background="{TemplateBinding Background}"
-                       BorderThickness="{TemplateBinding BorderThickness}"
-                       BorderBrush="{TemplateBinding BorderBrush}"
-                       Padding="3">
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Padding="3">
                         <Grid Margin="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -372,101 +375,101 @@
                                 </Grid.RowDefinitions>
 
                                 <Border BorderThickness="1"
-                                BorderBrush="DarkGray"
-                                ClipToBounds="True"
-                                Background="{StaticResource CheckerBrush}">
+                                        BorderBrush="DarkGray"
+                                        ClipToBounds="True"
+                                        Background="{StaticResource CheckerBrush}">
                                     <Canvas x:Name="PART_ColorShadingCanvas"
-                                   Width="200"
-                                   Height="100"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top">
+                                            Width="200"
+                                            Height="100"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Top">
                                         <Rectangle x:Name="ColorShadingRectangle"
-                                         Height="{Binding ElementName=PART_ColorShadingCanvas, Path=Height}"
-                                         Width="{Binding ElementName=PART_ColorShadingCanvas, Path=Width}"
-                                         Fill="{Binding SelectedColor, ElementName=PART_SpectrumSlider, Converter={StaticResource ColorToSolidColorBrushConverter}}" />
+                                                   Height="{Binding ElementName=PART_ColorShadingCanvas, Path=Height}"
+                                                   Width="{Binding ElementName=PART_ColorShadingCanvas, Path=Width}"
+                                                   Fill="{Binding SelectedColor, ElementName=PART_SpectrumSlider, Converter={StaticResource ColorToSolidColorBrushConverter}}" />
                                         <Rectangle x:Name="WhiteGradient"
-                                         Width="{Binding ElementName=PART_ColorShadingCanvas,Path=Width}"
-                                         Height="{Binding ElementName=PART_ColorShadingCanvas,Path=Height}">
+                                                   Width="{Binding ElementName=PART_ColorShadingCanvas,Path=Width}"
+                                                   Height="{Binding ElementName=PART_ColorShadingCanvas,Path=Height}">
                                             <Rectangle.Fill>
                                                 <LinearGradientBrush StartPoint="0,0"
-                                                         EndPoint="1,0">
+                                                                     EndPoint="1,0">
                                                     <GradientStop Offset="0"
-                                                     Color="#ffffffff" />
+                                                                  Color="#ffffffff" />
                                                     <GradientStop Offset="1"
-                                                     Color="Transparent" />
+                                                                  Color="Transparent" />
                                                 </LinearGradientBrush>
                                             </Rectangle.Fill>
                                         </Rectangle>
                                         <Rectangle x:Name="BlackGradient"
-                                         Width="{Binding ElementName=PART_ColorShadingCanvas,Path=Width}"
-                                         Height="{Binding ElementName=PART_ColorShadingCanvas,Path=Height}">
+                                                   Width="{Binding ElementName=PART_ColorShadingCanvas,Path=Width}"
+                                                   Height="{Binding ElementName=PART_ColorShadingCanvas,Path=Height}">
                                             <Rectangle.Fill>
                                                 <LinearGradientBrush StartPoint="0,1"
-                                                         EndPoint="0, 0">
+                                                                     EndPoint="0, 0">
                                                     <GradientStop Offset="0"
-                                                     Color="#ff000000" />
+                                                                  Color="#ff000000" />
                                                     <GradientStop Offset="1"
-                                                     Color="#00000000" />
+                                                                  Color="#00000000" />
                                                 </LinearGradientBrush>
                                             </Rectangle.Fill>
                                         </Rectangle>
                                         <Canvas x:Name="PART_ColorShadeSelector"
-                                      Width="10"
-                                      Height="10"
-                                      IsHitTestVisible="False">
+                                                Width="10"
+                                                Height="10"
+                                                IsHitTestVisible="False">
                                             <Ellipse Width="10"
-                                          Height="10"
-                                          StrokeThickness="3"
-                                          Stroke="#FFFFFFFF"
-                                          IsHitTestVisible="False" />
+                                                     Height="10"
+                                                     StrokeThickness="3"
+                                                     Stroke="#FFFFFFFF"
+                                                     IsHitTestVisible="False" />
                                             <Ellipse Width="10"
-                                          Height="10"
-                                          StrokeThickness="1"
-                                          Stroke="#FF000000"
-                                          IsHitTestVisible="False" />
+                                                     Height="10"
+                                                     StrokeThickness="1"
+                                                     Stroke="#FF000000"
+                                                     IsHitTestVisible="False" />
                                         </Canvas>
                                     </Canvas>
                                 </Border>
 
                                 <Border Grid.Row="1"
-                                Margin="0,5,0,0">
+                                        Margin="0,5,0,0">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Border x:Name="SelectedColorBorder"
-                                      Background="{StaticResource CheckerBrush}"
-                                      Height="22"
-                                      Margin="2,0,2,0"
-                                      BorderThickness="1"
-                                      BorderBrush="#FFC9CACA">
+                                                Background="{StaticResource CheckerBrush}"
+                                                Height="22"
+                                                Margin="2,0,2,0"
+                                                BorderThickness="1"
+                                                BorderBrush="#FFC9CACA">
                                             <Rectangle x:Name="SelectedColor"
-                                            Fill="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorToSolidColorBrushConverter}}" />
+                                                       Fill="{Binding SelectedColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColorToSolidColorBrushConverter}}" />
                                         </Border>
                                         <TextBox x:Name="PART_HexadecimalTextBox"
-                                       Grid.Column="1"
-                                       Margin="2,0,2,0"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource ColorCanvasTextBoxStyle}" />
+                                                 Grid.Column="1"
+                                                 Margin="2,0,2,0"
+                                                 VerticalAlignment="Center"
+                                                 Style="{StaticResource ColorCanvasTextBoxStyle}" />
                                     </Grid>
                                 </Border>
 
                                 <Border Grid.Column="1"
-                                Grid.RowSpan="2"
-                                Margin="4,-8,0,0"
-                                ClipToBounds="False">
+                                        Grid.RowSpan="2"
+                                        Margin="4,-8,0,0"
+                                        ClipToBounds="False">
                                     <xctk:ColorSpectrumSlider x:Name="PART_SpectrumSlider"
-                                                      VerticalAlignment="Stretch" />
+                                                              VerticalAlignment="Stretch" />
                                 </Border>
                             </Grid>
 
                             <Border x:Name="RGBBorder"
-                             MinWidth="180"
-                             Grid.Row="1"
-                             BorderThickness="1"
-                             ClipToBounds="True"
-                             Margin="0,10,0,0">
+                                    MinWidth="180"
+                                    Grid.Row="1"
+                                    BorderThickness="1"
+                                    ClipToBounds="True"
+                                    Margin="0,10,0,0">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -481,114 +484,114 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Grid.Row="0"
-                                      Grid.Column="0"
-                                      Text="R"
-                                      VerticalAlignment="Center" />
+                                               Grid.Column="0"
+                                               Text="R"
+                                               VerticalAlignment="Center" />
                                     <Slider x:Name="PART_RSlider"
-                                   Maximum="255"
-                                   SmallChange="1"
-                                   LargeChange="10"
-                                   TickFrequency="1"
-                                   Grid.Row="0"
-                                   Grid.Column="1"
-                                   Margin="4,6,4,6"
-                                   Style="{StaticResource AppSliderStyle}"
-                                   Value="{Binding R, RelativeSource={RelativeSource TemplatedParent}}"
-                                   VerticalAlignment="Center" />
+                                            Maximum="255"
+                                            SmallChange="1"
+                                            LargeChange="10"
+                                            TickFrequency="1"
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="4,6,4,6"
+                                            Style="{StaticResource AppSliderStyle}"
+                                            Value="{Binding R, RelativeSource={RelativeSource TemplatedParent}}"
+                                            VerticalAlignment="Center" />
                                     <TextBox Grid.Row="0"
-                                    Grid.Column="2"
-                                    Text="{Binding Value, ElementName=PART_RSlider}"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource ColorCanvasTextBoxStyle}" />
+                                             Grid.Column="2"
+                                             Text="{Binding Value, ElementName=PART_RSlider}"
+                                             VerticalAlignment="Center"
+                                             Style="{StaticResource ColorCanvasTextBoxStyle}" />
 
                                     <TextBlock Grid.Row="1"
-                                      Grid.Column="0"
-                                      Text="G"
-                                      VerticalAlignment="Center" />
+                                               Grid.Column="0"
+                                               Text="G"
+                                               VerticalAlignment="Center" />
                                     <Slider x:Name="PART_GSlider"
-                                   Maximum="255"
-                                   SmallChange="1"
-                                   LargeChange="10"
-                                   TickFrequency="1"
-                                   Grid.Row="1"
-                                   Grid.Column="1"
-                                   Margin="4,6,4,6"
-                                   Style="{StaticResource AppSliderStyle}"
-                                   Value="{Binding G, RelativeSource={RelativeSource TemplatedParent}}"
-                                   VerticalAlignment="Center" />
+                                            Maximum="255"
+                                            SmallChange="1"
+                                            LargeChange="10"
+                                            TickFrequency="1"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="4,6,4,6"
+                                            Style="{StaticResource AppSliderStyle}"
+                                            Value="{Binding G, RelativeSource={RelativeSource TemplatedParent}}"
+                                            VerticalAlignment="Center" />
                                     <TextBox Grid.Row="1"
-                                    Grid.Column="2"
-                                    Text="{Binding Value, ElementName=PART_GSlider}"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource ColorCanvasTextBoxStyle}" />
+                                             Grid.Column="2"
+                                             Text="{Binding Value, ElementName=PART_GSlider}"
+                                             VerticalAlignment="Center"
+                                             Style="{StaticResource ColorCanvasTextBoxStyle}" />
 
                                     <TextBlock Grid.Row="2"
-                                      Grid.Column="0"
-                                      Text="B"
-                                      VerticalAlignment="Center" />
+                                               Grid.Column="0"
+                                               Text="B"
+                                               VerticalAlignment="Center" />
                                     <Slider x:Name="PART_BSlider"
-                                   Maximum="255"
-                                   SmallChange="1"
-                                   LargeChange="10"
-                                   TickFrequency="1"
-                                   Grid.Row="2"
-                                   Grid.Column="1"
-                                   Margin="4,6,4,6"
-                                   Style="{StaticResource AppSliderStyle}"
-                                   Value="{Binding B, RelativeSource={RelativeSource TemplatedParent}}"
-                                   VerticalAlignment="Center" />
+                                            Maximum="255"
+                                            SmallChange="1"
+                                            LargeChange="10"
+                                            TickFrequency="1"
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="4,6,4,6"
+                                            Style="{StaticResource AppSliderStyle}"
+                                            Value="{Binding B, RelativeSource={RelativeSource TemplatedParent}}"
+                                            VerticalAlignment="Center" />
                                     <TextBox Grid.Row="2"
-                                    Grid.Column="3"
-                                    Text="{Binding Value, ElementName=PART_BSlider}"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource ColorCanvasTextBoxStyle}" />
+                                             Grid.Column="2"
+                                             Text="{Binding Value, ElementName=PART_BSlider}"
+                                             VerticalAlignment="Center"
+                                             Style="{StaticResource ColorCanvasTextBoxStyle}" />
 
                                     <TextBlock Grid.Row="3"
-                                      Grid.Column="0"
-                                      Text="A"
-                                      VerticalAlignment="Center"
-                                      Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                               Grid.Column="0"
+                                               Text="A"
+                                               VerticalAlignment="Center"
+                                               Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                     <Slider x:Name="PART_OpacitySlider"
-                                   Grid.Row="3"
-                                   Grid.Column="1"
-                                   Maximum="255"
-                                   SmallChange="1"
-                                   LargeChange="10"
-                                   Margin="4,6,4,6"
-                                   Style="{StaticResource AppSliderStyle}"
-                                   Value="{Binding Path=A, RelativeSource={RelativeSource TemplatedParent}}"
-                                   VerticalAlignment="Center"
-                                   Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            Maximum="255"
+                                            SmallChange="1"
+                                            LargeChange="10"
+                                            Margin="4,6,4,6"
+                                            Style="{StaticResource AppSliderStyle}"
+                                            Value="{Binding Path=A, RelativeSource={RelativeSource TemplatedParent}}"
+                                            VerticalAlignment="Center"
+                                            Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                     <TextBox Grid.Row="3"
-                                    Grid.Column="3"
-                                    Text="{Binding Value, ElementName=PART_OpacitySlider}"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource ColorCanvasTextBoxStyle}"
-                                    Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                             Grid.Column="2"
+                                             Text="{Binding Value, ElementName=PART_OpacitySlider}"
+                                             VerticalAlignment="Center"
+                                             Style="{StaticResource ColorCanvasTextBoxStyle}"
+                                             Visibility="{Binding Path=UsingAlphaChannel, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 </Grid>
                             </Border>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled"
-                           Value="False">
+                                 Value="False">
                             <Setter Property="Foreground"
-                             Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
                         <Trigger Property="SelectedColor"
-                           Value="{x:Null}">
+                                 Value="{x:Null}">
                             <Setter Property="Visibility"
-                             Value="Collapsed"
-                             TargetName="PART_ColorShadeSelector" />
+                                    Value="Collapsed"
+                                    TargetName="PART_ColorShadeSelector" />
                             <Setter Property="Background"
-                             Value="Transparent"
-                             TargetName="SelectedColorBorder" />
+                                    Value="Transparent"
+                                    TargetName="SelectedColorBorder" />
                             <Setter Property="IsEnabled"
-                             Value="False"
-                             TargetName="RGBBorder" />
+                                    Value="False"
+                                    TargetName="RGBBorder" />
                             <Setter Property="TextElement.Foreground"
-                             Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
-                             TargetName="RGBBorder" />
+                                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                                    TargetName="RGBBorder" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -598,52 +601,52 @@
 
     <Style TargetType="{x:Type xctk:ColorSpectrumSlider}">
         <Setter Property="BorderBrush"
-              Value="DarkGray" />
+                Value="DarkGray" />
         <Setter Property="BorderThickness"
-              Value="1" />
+                Value="1" />
         <Setter Property="Orientation"
-              Value="Vertical" />
+                Value="Vertical" />
         <Setter Property="Background"
-              Value="Transparent" />
+                Value="Transparent" />
         <Setter Property="Foreground"
-              Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
         <Setter Property="Minimum"
-              Value="0" />
+                Value="0" />
         <Setter Property="Maximum"
-              Value="360" />
+                Value="360" />
         <Setter Property="TickFrequency"
-              Value="0.001" />
+                Value="0.001" />
         <Setter Property="IsSnapToTickEnabled"
-              Value="True" />
+                Value="True" />
         <Setter Property="IsDirectionReversed"
-              Value="False" />
+                Value="False" />
         <Setter Property="IsMoveToPointEnabled"
-              Value="True" />
+                Value="True" />
         <Setter Property="Value"
-              Value="0" />
+                Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type xctk:ColorSpectrumSlider}">
                     <Grid>
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
-                          BorderThickness="{TemplateBinding BorderThickness}"
-                          Margin="0,8,0,0">
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Margin="0,8,0,0">
                             <Border x:Name="PART_TrackBackground"
-                             Width="15">
+                                    Width="15">
                                 <Rectangle x:Name="PART_SpectrumDisplay"
-                                   Stretch="Fill"
-                                   VerticalAlignment="Stretch" />
+                                           Stretch="Fill"
+                                           VerticalAlignment="Stretch" />
                             </Border>
                         </Border>
 
                         <Track Name="PART_Track">
                             <Track.DecreaseRepeatButton>
                                 <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}"
-                                      Command="Slider.DecreaseLarge" />
+                                              Command="Slider.DecreaseLarge" />
                             </Track.DecreaseRepeatButton>
                             <Track.IncreaseRepeatButton>
                                 <RepeatButton Style="{StaticResource SliderRepeatButtonStyle}"
-                                      Command="Slider.IncreaseLarge" />
+                                              Command="Slider.IncreaseLarge" />
                             </Track.IncreaseRepeatButton>
                             <Track.Thumb>
                                 <Thumb Style="{StaticResource VerticalSlideThumbStyle}" />

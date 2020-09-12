@@ -9,17 +9,145 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Lang;
+using Tera.Game;
 using Tera.RichPresence;
 using Action = System.Action;
 using CaptureMode = Data.CaptureMode;
 
 namespace DamageMeter.UI.Windows
 {
+    public class MockPlayerViewModel : TSPropertyChanged, IPlayerViewModel
+    {
+        public string Name { get; }
+        public string Level { get; } = "";
+        public PlayerClass Class { get; }
+        public double DamageFactor { get; }
+        public PlayerRole Role => MiscUtils.RoleFromClass(Class);
+        public bool Increased { get; set; }
+        public bool Decreased { get; set; }
+        public string GlobalDps { get; set; }
+        public string IndividualDps { get; set; }
+        public string DamagePerc { get; set; }
+        public string DamageDone { get; set; }
+        public string CritRate { get; set; }
+        public string HealCritRate { get; set; }
+        public string DamageFromCrits { get; set; }
+        public int Deaths { get; set; }
+        public string FloorTime { get; set; }
+        public string FloorTimePerc { get; set; }
+        public string AggroPerc { get; set; }
+        public double EnduDebuffUptime { get; set; }
+        public string EnduDebuffUptimeStr { get; set; }
+
+        private List<Metric> _metricSource => Role switch
+        {
+            PlayerRole.Tank => BasicTeraData.Instance.WindowData.TankMetrics,
+            PlayerRole.Healer => BasicTeraData.Instance.WindowData.HealerMetrics,
+            _ => BasicTeraData.Instance.WindowData.DpsMetrics,
+        };
+
+        public List<Metric> AvailableMetrics
+        {
+            get
+            {
+                var ret = EnumUtils.ListFromEnum<Metric>();
+                ret.Remove(Metric.Hps);
+                ret.Remove(Metric.DamageTaken);
+                ret.Remove(Metric.DpsTaken);
+                ret.Remove(Metric.EnrageCasts);
+                ret.Remove(Metric.HealerUptimes);
+                if (Role == PlayerRole.Healer) { return ret; }
+
+                ret.Remove(Metric.EnduDebuffUptime);
+
+                return ret;
+            }
+        }
+
+        public Metric Metric1
+        {
+            get => _metricSource[0];
+            set
+            {
+                if (_metricSource[0] == value) return;
+                _metricSource[0] = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public Metric Metric2
+        {
+            get => _metricSource[1];
+            set
+            {
+                if (_metricSource[1] == value) return;
+                _metricSource[1] = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public Metric Metric3
+        {
+            get => _metricSource[2];
+            set
+            {
+                if (_metricSource[2] == value) return;
+                _metricSource[2] = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public Metric Metric4
+        {
+            get => _metricSource[3];
+            set
+            {
+                if (_metricSource[3] == value) return;
+                _metricSource[3] = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public Metric Metric5
+        {
+            get => _metricSource[4];
+            set
+            {
+                if (_metricSource[4] == value) return;
+                _metricSource[4] = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public MockPlayerViewModel(string name, PlayerClass c)
+        {
+            var rng = new Random();
+
+            Name = name;
+            Class = c;
+            DamageFactor = rng.NextDouble();
+            GlobalDps = FormatHelpers.Instance.FormatValue(rng.Next(100_000, 40_000_000)) + LP.PerSecond;
+            DamagePerc = Math.Round(rng.NextDouble() * 100) + "%";
+            DamageDone = FormatHelpers.Instance.FormatValue(rng.Next(100_000_000, 2_000_000_000));
+            CritRate = Math.Round(rng.NextDouble() * 100) + "%";
+            HealCritRate = Math.Round(rng.NextDouble() * 100) + "%";
+            DamageFromCrits = Math.Round(rng.NextDouble() * 100) + "%";
+            Deaths = rng.Next(0, 20);
+            FloorTime = TimeSpan.FromSeconds(rng.Next(0, 500)).ToString(@"mm\:ss");
+            FloorTimePerc = Math.Round(rng.NextDouble() * 100) + "%";
+            AggroPerc = Math.Round(rng.NextDouble() * 100) + "%";
+            EnduDebuffUptime = rng.NextDouble() * 100;
+            EnduDebuffUptimeStr = Math.Round(EnduDebuffUptime) + "%";
+            Increased = rng.NextDouble() >= 0.5;
+            Decreased = !Increased;
+        }
+    }
+
+
     public class SettingsWindowViewModel : TSPropertyChanged
     {
+
         private static WindowData Data => BasicTeraData.Instance.WindowData;
         private static HotkeysData Hotkeys => BasicTeraData.Instance.HotkeysData;
 
+        public static IEnumerable<GraphMode> GraphModes = EnumUtils.ListFromEnum<GraphMode>();
         public static IEnumerable<CaptureMode> CaptureModes
         {
             get
@@ -29,7 +157,6 @@ namespace DamageMeter.UI.Windows
                 return ret;
             }
         }
-
 
         // detection
         //public bool UseNpcap
@@ -246,6 +373,7 @@ namespace DamageMeter.UI.Windows
             }
         }
 
+        //todo: ability to reset to defaults
         public Color SelfColor
         {
             get => Data.PlayerColor;
@@ -264,6 +392,7 @@ namespace DamageMeter.UI.Windows
                 if (Data.DpsColor == value) return;
                 Data.DpsColor = value;
                 NotifyPropertyChanged();
+                MockParty[0].NotifyPropertyChangedEx(nameof(IPlayerViewModel.Role));
             }
         }
         public Color HealerColor
@@ -274,6 +403,8 @@ namespace DamageMeter.UI.Windows
                 if (Data.HealerColor == value) return;
                 Data.HealerColor = value;
                 NotifyPropertyChanged();
+                MockParty[2].NotifyPropertyChangedEx(nameof(IPlayerViewModel.Role));
+
             }
         }
         public Color TankColor
@@ -284,6 +415,30 @@ namespace DamageMeter.UI.Windows
                 if (Data.TankColor == value) return;
                 Data.TankColor = value;
                 NotifyPropertyChanged();
+                MockParty[1].NotifyPropertyChangedEx(nameof(IPlayerViewModel.Role));
+
+            }
+        }
+        public Color BackgroundColor
+        {
+            get => Data.BackgroundColor;
+            set
+            {
+                if (Data.BackgroundColor == value) return;
+                Data.BackgroundColor = value;
+                NotifyPropertyChanged();
+                WindowColorsChanged?.Invoke();
+            }
+        }
+        public Color BorderColor
+        {
+            get => Data.BorderColor;
+            set
+            {
+                if (Data.BorderColor == value) return;
+                Data.BorderColor = value;
+                NotifyPropertyChanged();
+                WindowColorsChanged?.Invoke();
             }
         }
 
@@ -321,6 +476,8 @@ namespace DamageMeter.UI.Windows
                 NotifyPropertyChanged();
             }
         }
+
+        // layout
 
         // tts
         public int TtsMaxSize
@@ -386,6 +543,16 @@ namespace DamageMeter.UI.Windows
                 NotifyPropertyChanged();
             }
         }
+        public bool RealtimeGraphAnimated
+        {
+            get => Data.RealtimeGraphAnimated;
+            set
+            {
+                if (Data.RealtimeGraphAnimated == value) return;
+                Data.RealtimeGraphAnimated = value;
+                NotifyPropertyChanged();
+            }
+        }
         public int RealtimeGraphDisplayedInterval
         {
             get => Data.RealtimeGraphDisplayedInterval;
@@ -403,6 +570,16 @@ namespace DamageMeter.UI.Windows
             {
                 if (Data.RealtimeGraphCMAseconds == value) return;
                 Data.RealtimeGraphCMAseconds = value;
+                NotifyPropertyChanged();
+            }
+        }
+        public GraphMode GraphMode
+        {
+            get => Data.GraphMode;
+            set
+            {
+                if (Data.GraphMode == value) return;
+                Data.GraphMode = value;
                 NotifyPropertyChanged();
             }
         }
@@ -747,7 +924,7 @@ namespace DamageMeter.UI.Windows
         public static event Action<DpsServerViewModel> ServerRemoved;
         public static event Action<double> WindowScaleChanged;
         public static event Action<int> NumberOfPlayersDisplayedChanged;
-        public static event Action<double> MainWindowOpacityChanged;
+        public static event Action WindowColorsChanged;
         public static event Action<double> OtherWindowsOpacityChanged;
         public static event Action PauseChanged;
 
@@ -757,16 +934,17 @@ namespace DamageMeter.UI.Windows
         public ICommand OpenChatBoxCommand { get; }
         public ICommand BrowseLinkCommand { get; }
         public ICommand ResetCommand { get; }
-        public ICommand CloseMeterCommand { get; }
+        public ICommand CloseMeterCommand => MainViewModel.Instance.VerifyCloseCommand;
         public ICommand ExportCurrentCommand { get; }
-        public ICommand TogglePauseCommand { get; }
+        public ICommand TogglePauseCommand => MainViewModel.Instance.TogglePauseCommand;
         public ICommand OpenUploadHistoryCommand { get; }
+        public ICommand ResetColorCommand { get; }
 
+        public List<MockPlayerViewModel> MockParty { get; }
 
         private int _selectedIndex;
         private long _lastSend;
         private bool _isShiftDown;
-
         public int SelectedIndex
         {
             get => _selectedIndex;
@@ -779,10 +957,15 @@ namespace DamageMeter.UI.Windows
         }
         public bool Paused => Data.UserPaused;
 
+        public ToastViewModel ToastData { get; }
 
 
         public SettingsWindowViewModel()
         {
+            ToastData = new ToastViewModel();
+
+            DataExporter.GlpyhExportStatusUpdated += OnGlyphExportStatusUpdated;
+
             DataExporter.DpsServers.Where(x => !x.AnonymousUpload).ToList().ForEach(x => DpsServers.Add(new DpsServerViewModel(x)));
             ServerRemoved += OnServerRemoved;
             PauseChanged += OnPauseChanged;
@@ -823,8 +1006,6 @@ namespace DamageMeter.UI.Windows
             {
                 PacketProcessor.Instance.NeedToReset = true;
             });
-            CloseMeterCommand = MainViewModel.Instance.VerifyCloseCommand;
-            TogglePauseCommand = MainViewModel.Instance.TogglePauseCommand;
 
             ExportCurrentCommand = new RelayCommand(target =>
             {
@@ -844,8 +1025,44 @@ namespace DamageMeter.UI.Windows
                 }
             });
             OpenUploadHistoryCommand = new RelayCommand(_ => App.HudContainer.UploadHistory.ShowWindow());
+            ResetColorCommand = new RelayCommand(type =>
+            {
+                switch (type?.ToString())
+                {
+                    case "self": SelfColor = WindowData.DefaultPlayerColor; break;
+                    case "dps": DpsColor = WindowData.DefaultDpsColor; break;
+                    case "healer": HealerColor = WindowData.DefaultHealerColor; break;
+                    case "tank": TankColor = WindowData.DefaultTankColor; break;
+                    case "background": BackgroundColor = WindowData.DefaultBackgroundColor; break;
+                    case "border": BorderColor = WindowData.DefaultBorderColor; break;
+                }
+            });
             var count = 0;
             Hotkeys.Copy.ForEach(h => CopyKeys.Add(new CopyKeyVM($"DPS paste {++count}", h)));
+            MockParty = new List<MockPlayerViewModel>
+            {
+                new MockPlayerViewModel("Deep.Yes", PlayerClass.Warrior),
+                new MockPlayerViewModel("No.Broler", PlayerClass.Lancer),
+                new MockPlayerViewModel("Priest.Kek", PlayerClass.Mystic)
+            };
+        }
+
+
+        private void OnGlyphExportStatusUpdated(DataExporter.GlyphExportStatus status, string txt)
+        {
+            var lvl = status switch
+            {
+                DataExporter.GlyphExportStatus.Unknown => ToastInfo.Severity.Error,
+                DataExporter.GlyphExportStatus.TooFast => ToastInfo.Severity.Error,
+                DataExporter.GlyphExportStatus.NotLoggedIn => ToastInfo.Severity.Error,
+                DataExporter.GlyphExportStatus.LevelTooLow => ToastInfo.Severity.Error,
+                DataExporter.GlyphExportStatus.InvalidUrl => ToastInfo.Severity.Error,
+                DataExporter.GlyphExportStatus.Rejected => ToastInfo.Severity.Error,
+                DataExporter.GlyphExportStatus.Success => ToastInfo.Severity.Success,
+                _ => throw new ArgumentOutOfRangeException(nameof(status), status, null)
+            };
+            ToastData.Show(txt, lvl);
+
         }
 
         private void OnPauseChanged()

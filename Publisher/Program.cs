@@ -21,12 +21,15 @@ namespace Publisher
             if (Directory.Exists(target)) { Directory.Delete(target, true); }
             var libpath = Path.Combine(Path.GetDirectoryName(source), Environment.Is64BitProcess ? "lib/7z_x64.dll" : "lib/7z.dll");
             SevenZipBase.SetLibraryPath(libpath);
-            var compressor = new SevenZipCompressor {ArchiveFormat = OutArchiveFormat.Zip};
-            compressor.CustomParameters["tc"] = "off";
-            compressor.CompressionLevel = CompressionLevel.High;
-            compressor.CompressionMode = CompressionMode.Create;
-            compressor.TempFolderPath = Path.GetTempPath();
-            compressor.PreserveDirectoryRoot = true;
+            var compressor = new SevenZipCompressor
+            {
+                ArchiveFormat = OutArchiveFormat.Zip,
+                CustomParameters = {["tc"] = "off"},
+                CompressionLevel = CompressionLevel.High,
+                CompressionMode = CompressionMode.Create,
+                TempFolderPath = Path.GetTempPath(),
+                PreserveDirectoryRoot = true
+            };
             if (args.Length == 1)
             {
                 Console.WriteLine("Unpacking old release");

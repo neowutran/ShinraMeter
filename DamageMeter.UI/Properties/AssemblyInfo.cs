@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Windows;
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 

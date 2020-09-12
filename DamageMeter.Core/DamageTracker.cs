@@ -2,7 +2,6 @@
 using Data;
 using Tera.Game;
 using Tera.Game.Messages;
-using System.Diagnostics;
 using DamageMeter.Processing;
 using Tera.RichPresence;
 
