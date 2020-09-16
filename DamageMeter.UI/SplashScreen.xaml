@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         Title="SplashScreen" Height="300" Width="420" ResizeMode="NoResize" AllowsTransparency="True" SizeToContent="Height" ShowInTaskbar="False"
         Background="Transparent" MouseLeftButtonDown="Window_MouseLeftButtonDown" WindowStyle="None" WindowStartupLocation="CenterScreen">
-    <Grid VerticalAlignment="Top" Background="{StaticResource ShinraColor}" Margin="10">
+    <Grid VerticalAlignment="Top" Background="DarkOrange" Margin="10">
         <Grid.Effect>
             <DropShadowEffect Opacity=".5" ShadowDepth="3"/>
         </Grid.Effect>
