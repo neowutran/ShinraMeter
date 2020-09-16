@@ -330,15 +330,13 @@
                             <Separator Grid.Column="2" Opacity=".2" />
                         </Grid>
                         <UniformGrid Rows="1" Margin="28 0 0 0">
-                            <local:ColorSetting SettingName="Player" SelectedColor="{Binding SelfColor, Mode=TwoWay}"
-                                                DefaultColor="{x:Static data:WindowData.DefaultPlayerColor}" />
-                        </UniformGrid>
-                        <UniformGrid Rows="1" Margin="28 0 0 0">
                             <local:ColorSetting SettingName="Background"
                                                 SelectedColor="{Binding BackgroundColor, Mode=TwoWay}"
                                                 DefaultColor="{x:Static data:WindowData.DefaultBackgroundColor}" />
                             <local:ColorSetting SettingName="Border" SelectedColor="{Binding BorderColor, Mode=TwoWay}"
                                                 DefaultColor="{x:Static data:WindowData.DefaultBorderColor}" />
+                            <local:ColorSetting SettingName="Player" SelectedColor="{Binding SelfColor, Mode=TwoWay}"
+                                                DefaultColor="{x:Static data:WindowData.DefaultPlayerColor}" />
                         </UniformGrid>
 
                     </StackPanel>
