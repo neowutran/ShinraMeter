@@ -111,7 +111,7 @@ namespace Tera.RichPresence
             Assets = new Assets
             {
                 LargeImageKey = (ShowLocation ? BasicTeraData.Instance.MapData.GetImageName(_location) : null) ?? DefaultImage,
-                LargeImageText = _location == null || !ShowLocation ? null : BasicTeraData.Instance.MapData.GetFullName(_location),
+                LargeImageText = _location == null || !ShowLocation ? null : BasicTeraData.Instance.MapData.GetFullName(_location) + " (" + PacketProcessor.Instance.Server.Region + ")",
                 SmallImageKey = ShowCharacter  && _me != null ? $"class_{_me.RaceGenderClass.Class.ToString().ToLower()}" : null, 
                 SmallImageText = ShowCharacter && _me != null ? $"{LP.RpLevel} {_me.Level} {_me.Name} ({_me.Server})" : null,
             }
@@ -183,8 +183,8 @@ namespace Tera.RichPresence
         private DiscordRpcClient InitClient()
         {
             try {
-                _client = new DiscordRpcClient(ClientId, true, -1);
-                _client.Logger=new ShinraLogger(){Level = LogLevel.Error};
+                var logger = new ShinraLogger { Level = LogLevel.Error };
+                _client = new DiscordRpcClient(ClientId, -1, logger);
                 _client.Initialize();
             }
             catch (Exception e){ BasicTeraData.LogError("Discord RPC Init fail: "+e.Message, false, true);}
@@ -401,6 +401,10 @@ namespace Tera.RichPresence
     public class ShinraLogger : DiscordRPC.Logging.ILogger
     {
         public LogLevel Level { get; set; }
+        public void Trace(string message, params object[] args)
+        {
+            //Null Logger, so no messages are acutally sent
+        }
         public void Info(string message, params object[] args)
         {
             //Null Logger, so no messages are acutally sent
