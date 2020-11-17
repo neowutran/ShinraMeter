@@ -187,6 +187,10 @@ namespace DamageMeter.UI
 
             SettingsWindow.Create();
 
+            // ugly way to make sure this is instanced on main thread, since there is no
+            // UI control doing it before Excel exporter does it via analysis thread
+            _ = ClassIcons.Instance;
+
         }
 
         private static void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
