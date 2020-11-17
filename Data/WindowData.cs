@@ -249,40 +249,40 @@ namespace Data
             //ugly af tho
             var root = _xml.Root;
             var metrics = root?.Element("metrics");
-            metrics?.Descendants().ToList().ForEach(e =>
+            metrics?.Descendants().ToList().ForEach(metricGroup =>
             {
-                if (e?.Name == "dps_metrics")
+                if (metricGroup?.Name == "dps_metrics")
                 {
                     var i = 0;
-                    e.Descendants().ToList().ForEach(el =>
+                    metricGroup.Descendants().ToList().ForEach(metricElement =>
                     {
-                        if (el.Name == "metric")
+                        if (metricElement.Name == "metric")
                         {
-                            if (Enum.TryParse<Metric>(e.Value, out var metric)) DpsMetrics[i] = metric;
+                            if (Enum.TryParse<Metric>(metricElement.Value, out var metric)) DpsMetrics[i] = metric;
                             i++;
                         }
                     }); 
                 }
-                else if (e?.Name == "tank_metrics")
+                else if (metricGroup?.Name == "tank_metrics")
                 {
                     var i = 0;
-                    e.Descendants().ToList().ForEach(el =>
+                    metricGroup.Descendants().ToList().ForEach(metricElement =>
                     {
-                        if (el.Name == "metric")
+                        if (metricElement.Name == "metric")
                         {
-                            if (Enum.TryParse<Metric>(e.Value, out var metric)) TankMetrics[i] = metric;
+                            if (Enum.TryParse<Metric>(metricElement.Value, out var metric)) TankMetrics[i] = metric;
                             i++;
                         }
                     }); 
                 }
-                else if (e?.Name == "healer_metrics")
+                else if (metricGroup?.Name == "healer_metrics")
                 {
                     var i = 0;
-                    e.Descendants().ToList().ForEach(el =>
+                    metricGroup.Descendants().ToList().ForEach(metricElement =>
                     {
-                        if (el.Name == "metric")
+                        if (metricElement.Name == "metric")
                         {
-                            if (Enum.TryParse<Metric>(e.Value, out var metric)) HealerMetrics[i] = metric;
+                            if (Enum.TryParse<Metric>(metricElement.Value, out var metric)) HealerMetrics[i] = metric;
                             i++;
                         }
                     }); 
