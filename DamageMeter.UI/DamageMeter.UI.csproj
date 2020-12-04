@@ -105,6 +105,6 @@
     </None>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="del $(OutDir)\SQLite.Interop.dll" />
+    <Exec Command="del $(OutDir)\SQLite.Interop.dll&#xD;&#xA;rem xcopy $(SolutionDir)\resources $(OutDir)\resources\ /y /E /EXCLUDE:$(SolutionDir)\exclude.txt" />
   </Target>
 </Project>
