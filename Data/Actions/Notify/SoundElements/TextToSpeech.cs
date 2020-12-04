@@ -40,7 +40,7 @@ namespace Data.Actions.Notify.SoundElements
         }
 #endif
 
-#if NETCORE
+#if NET5_0
         public void Play() {
             var synth = new SpeechLib.SpVoiceClass();
             var voices = synth.GetVoices("", $"Gender={VoiceGender};Age={VoiceAge};Language={new CultureInfo(CultureInfo).LCID:X}");

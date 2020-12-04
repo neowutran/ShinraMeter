@@ -6,9 +6,9 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
+    <TargetFrameworks>net5-windows;net471</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net5'))">
     <COMReference Include="SpeechLib.dll">
       <Guid>c866ca3a-32f7-11d2-9602-00c04f8ee628</Guid>
       <VersionMajor>5</VersionMajor>

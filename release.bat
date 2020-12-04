@@ -1,8 +1,8 @@
 @echo off
 rem msbuild Tera.sln /t:rebuild /p:Configuration=Release /p:Platform="Any CPU" /fl /flp:logfile=ShinraMeter.log;verbosity=diagnostic
 rem msbuild Tera.sln /p:Configuration=Release /p:Platform="Any CPU" /fl /flp:logfile=ShinraMeter.log;verbosity=normal
-msbuild DamageMeter.UI/DamageMeter.UI.csproj /t:publish /p:Configuration=Release,TargetFramework=netcoreapp3.1,RuntimeIdentifer=win-x64 /p:PublishProfile=FolderProfile 
-msbuild Publisher/Publisher.csproj /t:build /p:Configuration=Release,TargetFramework=netcoreapp3.1,RuntimeIdentifer=win-x64
+msbuild DamageMeter.UI/DamageMeter.UI.csproj /t:publish /p:Configuration=Release,TargetFramework=net5-windows,RuntimeIdentifer=win-x64 /p:PublishProfile=FolderProfile 
+msbuild Publisher/Publisher.csproj /t:build /p:Configuration=Release,TargetFramework=net5-windows,RuntimeIdentifer=win-x64
 msbuild DamageMeter.AutoUpdate/DamageMeter.AutoUpdate.csproj /t:build /p:Configuration=Release,TargetFramework=net471,RuntimeIdentifer=win-x64
 
 set output=.\ShinraMeterV
@@ -27,4 +27,4 @@ del "%output%\*.vshost*"
 del "%output%\*.pdb"
 del "%output%\resources\data\hotdot\glyph*.tsv"
 del "%output%\resources\data\hotdot\abnormal.tsv"
-"%source%\Publisher\bin\release\netcoreapp3.1\Publisher.exe"
+"%source%\Publisher\bin\release\net5-windows\Publisher.exe"
