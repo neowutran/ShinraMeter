@@ -21,8 +21,6 @@ namespace DamageMeter.UI
             // fields
             private long _prevAmount;
             private double _damageSum;
-            private long _timeSum;
-            private long _prevTick;
             private long _interval = TimeSpan.TicksPerSecond * Samples;
 
             // properties
@@ -36,7 +34,6 @@ namespace DamageMeter.UI
             {
                 Id = id;
                 Values = new Queue<Tuple<double, long>>();
-                _prevTick = DateTime.Now.Ticks;
             }
 
             // methods
@@ -57,7 +54,6 @@ namespace DamageMeter.UI
                         Values.Enqueue(new Tuple<double, long>(dmgDiff, now));
 
                         _prevAmount = newAmount;
-                        _prevTick = DateTime.Now.Ticks;
 
                         if (Values.Count < Samples) return;
 
