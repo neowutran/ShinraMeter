@@ -309,7 +309,8 @@
                         <settings:CheckboxSetting IsOn="{Binding ShowSelfOnTop, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.ShowSelfOnTop}" />
                         <settings:CheckboxSetting IsOn="{Binding FullscreenOverlay, Mode=TwoWay}"
-                                                  SettingName="{x:Static lang:LP.EnableOverlay}" IsEnabled="False" />
+                                                  SettingName="{x:Static lang:LP.EnableOverlay}" IsEnabled="False" 
+                                                  Visibility="Collapsed"/>
                         <settings:ValueSetting Value="{Binding NumberOfPlayersDisplayed, Mode=TwoWay}"
                                                SettingName="{x:Static lang:LP.NumberPlayersDisplayed}" Min="1" Max="30" />
                         <settings:ValueSetting Value="{Binding MainWindowOpacity, Mode=TwoWay}"
