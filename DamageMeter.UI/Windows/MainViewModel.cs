@@ -442,7 +442,7 @@ namespace DamageMeter.UI
         private void OnClickThruChanged()
         {
             NotifyPropertyChanged(nameof(ClickThru));
-            ToastData.Show("Clickthru changed to " + ClickThru, ToastInfo.Severity.Info);
+            ToastData.Show($"Clickthru {(ClickThru ? "en" : "dis")}abled", ToastInfo.Severity.Info);
         }
 
         private void OnNumberOfPlayersDisplayedChanged(int v)
@@ -632,6 +632,9 @@ namespace DamageMeter.UI
         }
         private void OnConnected(string servername)
         {
+            var alreadyConnected = Connected;
+            var sameServer = servername == WindowTitle;
+            if (alreadyConnected && sameServer) return;
             WindowTitle = servername;
             Connected = servername != LP.SystemTray_No_server;
             ToastData.Show(Connected ?"Connected to " + servername : "Disconnected", Connected ? ToastInfo.Severity.Success : ToastInfo.Severity.Info);
