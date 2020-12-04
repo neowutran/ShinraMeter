@@ -214,6 +214,7 @@ namespace DamageMeter.UI
 
         public void ShowWindow()
         {
+            if(!IsVisible) Show();
             Visible = true;
             if (!Empty)
             {
