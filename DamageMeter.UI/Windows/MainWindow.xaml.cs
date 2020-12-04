@@ -29,7 +29,7 @@ namespace DamageMeter.UI
         private readonly DispatcherTimer _dispatcherTimer;
 
         internal bool ForceHidden;
-        public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
+        //public Dictionary<Player, PlayerStats> Controls { get; set; } = new Dictionary<Player, PlayerStats>();
 
         public MainWindow()
         {
@@ -43,10 +43,6 @@ namespace DamageMeter.UI
 
             InitializeComponent();
 
-            if (BasicTeraData.Instance.WindowData.InvisibleUi)
-                HideWindow();
-            if (BasicTeraData.Instance.WindowData.ClickThrou)
-                SetClickThrou();
             Topmost = BasicTeraData.Instance.WindowData.Topmost;
             ShowInTaskbar = !BasicTeraData.Instance.WindowData.Topmost;
 
@@ -88,7 +84,7 @@ namespace DamageMeter.UI
                     ForceHidden = true;
                 }
 
-                if ((meterWindowActive || teraWindowActive) && (BasicTeraData.Instance.WindowData.InvisibleUi && Controls.Count > 0 ||
+                if ((meterWindowActive || teraWindowActive) && (BasicTeraData.Instance.WindowData.InvisibleUi && DC.Players.Count > 0 ||
                                                                 !BasicTeraData.Instance.WindowData.InvisibleUi))
                 {
                     ForceHidden = false;
@@ -217,6 +213,11 @@ namespace DamageMeter.UI
         //}
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            if (BasicTeraData.Instance.WindowData.ClickThrou)
+                SetClickThrou();
+            if (BasicTeraData.Instance.WindowData.InvisibleUi)
+                HideWindow();
+
             if (BasicTeraData.Instance.WindowData.RememberPosition)
             {
                 LastSnappedPoint = BasicTeraData.Instance.WindowData.Location;
@@ -293,16 +294,16 @@ namespace DamageMeter.UI
             DC.IsMouseOver = false;
             Footer.BeginAnimation(HeightProperty, _shrinkFooterAnim);
         }
-        public override void SetClickThrou()
-        {
-            base.SetClickThrou();
-            foreach (var players in Controls) { players.Value.SetClickThrou(); }
-        }
-        public override void UnsetClickThrou()
-        {
-            base.UnsetClickThrou();
-            foreach (var players in Controls) { players.Value.UnsetClickThrou(); }
-        }
+        //public override void SetClickThrou()
+        //{
+        //    base.SetClickThrou();
+        //    //foreach (var players in Controls) { players.Value.SetClickThrou(); }
+        //}
+        //public override void UnsetClickThrou()
+        //{
+        //    base.UnsetClickThrou();
+        //    //foreach (var players in Controls) { players.Value.UnsetClickThrou(); }
+        //}
         private void OnScaleChanged(double val)
         {
             Scale = val;
