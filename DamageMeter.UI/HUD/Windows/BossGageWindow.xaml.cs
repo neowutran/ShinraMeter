@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Specialized;
+using System.Windows;
 using System.Windows.Input;
 using Data;
 
@@ -8,15 +9,28 @@ namespace DamageMeter.UI.HUD.Windows
     {
         public BossGageWindow()
         {
+            Loaded += OnLoaded;
 
             // DataContext is MainViewModel, set from MainWindow
             InitializeComponent();
 
             //Bosses.DataContext = HudManager.Instance.CurrentBosses;
             Bosses.ItemsSource = DamageMeter.HudManager.Instance.CurrentBosses;
+
+            HudManager.Instance.CurrentBosses.CollectionChanged += OnBossesChanged;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void OnBossesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (!BasicTeraData.Instance.WindowData.BossGageStatus.Visible) return;
+            if (HudManager.Instance.CurrentBosses.Count == 0) HideWindow();
+            else
+            {
+                if (!IsVisible) ShowWindow();
+            }
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             this.LastSnappedPoint = BasicTeraData.Instance.WindowData.BossGageStatus.Location;
             this.Left = this.LastSnappedPoint?.X ?? 0;

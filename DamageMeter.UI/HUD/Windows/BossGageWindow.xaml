@@ -13,9 +13,8 @@
                      Topmost="True"
                      ShowInTaskbar="False"
                      WindowStyle="None"
-                     Background="#00000000"
+                     Background="Transparent"
                      MouseRightButtonDown="Window_MouseRightButtonDown"
-                     Loaded="Window_Loaded"
                      ResizeMode="NoResize" d:DataContext="{d:DesignInstance ui:MainViewModel}">
     <Window.ContextMenu>
         <ContextMenu>

@@ -314,7 +314,7 @@ namespace DamageMeter.UI.Windows
                 Data.InvisibleUi = value;
                 NotifyPropertyChanged();
                 if (App.HudContainer.MainWindow.ForceHidden) return;
-                if (value || App.HudContainer.MainWindow.Controls.Count > 0)
+                if (value || App.HudContainer.MainWindow.DC.Players.Count > 0)
                 {
                     App.HudContainer.MainWindow.ShowWindow();
                 }
@@ -511,6 +511,10 @@ namespace DamageMeter.UI.Windows
                 if (dataBossGageStatus.Visible == value) return;
                 dataBossGageStatus.Visible = value;
                 Data.BossGageStatus = dataBossGageStatus; // todo: check this
+                if(dataBossGageStatus.Visible)
+                    App.HudContainer.BossGage.ShowWindow();
+                else 
+                    App.HudContainer.BossGage.HideWindow();
                 //todo: manually show/hide the window
                 NotifyPropertyChanged();
             }
