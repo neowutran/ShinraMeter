@@ -154,7 +154,6 @@ namespace DamageMeter.UI
         {
             get
             {
-                var ret = "";
                 var split = WindowTitle.Replace("Shinra Meter v", "").Split('.');
                 if (split.Length == 1) return "";
                 return "v" + split[0] + "." + split[1];
