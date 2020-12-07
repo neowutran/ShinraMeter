@@ -1,0 +1,10 @@
+{
+	"name": "shinra-meter",
+	"author": "Foglio, Gl0, neowutran and others",
+	"description": "Shinra DPS meter.",
+	"disableAutoUpdate": true,
+	"options": {
+		"cliName": "shinra-meter",
+		"guiName": "shinra-meter"
+	}
+}
