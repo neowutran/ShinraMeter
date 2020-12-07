@@ -70,6 +70,7 @@ namespace DamageMeter.UI.EntityStats
 
         public override void SaveWindowPos()
         {
+            if (double.IsNaN(Left) || double.IsNaN(Top)) return;
             BasicTeraData.Instance.WindowData.DebuffsStatus = new WindowStatus(LastSnappedPoint ?? new Point(Left, Top), Visible, Scale);
         }
     }

@@ -139,6 +139,7 @@ namespace DamageMeter.UI
             Top = newTop / dy;
             if (_dragged) LastSnappedPoint = new Point(snapLeft / dx, snapTop / dy);
             _dragged = false;
+            App.HudContainer.SaveWindowsPos();
             if (Visible & Visibility == Visibility.Hidden) ShowWindow();
         }
 

@@ -55,6 +55,8 @@ namespace DamageMeter.UI.HUD.Windows
 
         public override void SaveWindowPos()
         {
+            if (double.IsNaN(Left) || double.IsNaN(Top)) return;
+
             BasicTeraData.Instance.WindowData.BossGageStatus = new WindowStatus(LastSnappedPoint ?? new Point(Left, Top), Visible, Scale);
         }
     }

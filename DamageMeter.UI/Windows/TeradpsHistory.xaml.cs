@@ -45,6 +45,7 @@ namespace DamageMeter.UI
 
         public override void SaveWindowPos()
         {
+            if (double.IsNaN(Left) || double.IsNaN(Top)) return;
             BasicTeraData.Instance.WindowData.HistoryStatus = new WindowStatus(LastSnappedPoint ?? new Point(Left, Top), Visible, Scale);
         }
     }

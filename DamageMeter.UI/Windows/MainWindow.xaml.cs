@@ -311,6 +311,7 @@ namespace DamageMeter.UI
 
         public override void SaveWindowPos()
         {
+            if (double.IsNaN(Left) || double.IsNaN(Top)) return;
             BasicTeraData.Instance.WindowData.Location = LastSnappedPoint ?? new Point(Left, Top);
         }
 

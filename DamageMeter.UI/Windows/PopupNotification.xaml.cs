@@ -19,13 +19,15 @@ namespace DamageMeter.UI
             notificationBalloons = new SynchronizedObservableCollection<Balloon>();
             notificationBalloons.CollectionChanged += NotificationBalloons_CollectionChanged;
             content.ItemsSource = notificationBalloons;
+
+            this.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
+            this.Left = this.LastSnappedPoint?.X ?? 0;
+            this.Top = this.LastSnappedPoint?.Y ?? 0;
+
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
-            this.Left = this.LastSnappedPoint?.X ?? 0;
-            this.Top = this.LastSnappedPoint?.Y ?? 0;
             this.Show();
             this.Hide();
         }
@@ -132,6 +134,7 @@ namespace DamageMeter.UI
 
         public override void SaveWindowPos()
         {
+            if (double.IsNaN(Left)|| double.IsNaN(Top)) return;
             BasicTeraData.Instance.WindowData.PopupNotificationLocation = LastSnappedPoint ?? new Point(Left, Top);
         }
     }
