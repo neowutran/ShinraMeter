@@ -7,6 +7,7 @@
     <Copyright>Copyright ©  2017</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <TargetFrameworks>net5-windows</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>embedded</DebugType>

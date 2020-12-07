@@ -28,6 +28,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>shinra.ico</ApplicationIcon>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="shinra.ico" />

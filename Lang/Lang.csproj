@@ -7,6 +7,7 @@
     <Description>LangPacks for ShinraMeter</Description>
     <Copyright>Copyright ©  2016</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>embedded</DebugType>
