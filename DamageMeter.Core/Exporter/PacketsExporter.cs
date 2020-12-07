@@ -66,17 +66,17 @@ namespace DamageMeter
             var areaId = int.Parse(teradpsData.areaId);
             if (!_allowedAreaId.Any(x => x.AreaId == areaId && (x.BossIds.Count == 0 || x.BossIds.Contains((int)entity.Info.TemplateId)))) {
                 BasicTeraData.LogError("PacketExport: Boss not allowed, exiting", true);
-                TeraSniffer.Instance.EnableMessageStorage = false;
+                /*TeraSniffer.Instance*/PacketProcessor.Instance.Sniffer.EnableMessageStorage = false;
                 return;
             }
-            if (!TeraSniffer.Instance.EnableMessageStorage)
+            if (!/*TeraSniffer.Instance*/PacketProcessor.Instance.Sniffer.EnableMessageStorage)
             {
                 BasicTeraData.LogError("PacketExport: Option not activated, exiting", true);
                 // Message storing have already been stopped
                 return;
             }
             // Keep a local reference of the packet list
-            var packetsCopyStorage = TeraSniffer.Instance.GetPacketsLogsAndStop();
+            var packetsCopyStorage = /*TeraSniffer.Instance*/PacketProcessor.Instance.Sniffer.GetPacketsLogsAndStop();
             if (!packetsCopyStorage.Any())
             {
                 BasicTeraData.LogError("PacketExport: Empty packet log, exiting", true);

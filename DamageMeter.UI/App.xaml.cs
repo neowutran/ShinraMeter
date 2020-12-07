@@ -178,8 +178,8 @@ namespace DamageMeter.UI
             if (BasicTeraData.Instance.WindowData.LowPriority)
                 Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
 
-            TeraSniffer.Instance.Enabled = true;
-            TeraSniffer.Instance.Warning += (str) => BasicTeraData.LogError(str, false, true);
+            /*TeraSniffer.Instance*/ PacketProcessor.Instance.Sniffer.Enabled = true;
+            /*TeraSniffer.Instance*/ PacketProcessor.Instance.Sniffer.Warning += (str) => BasicTeraData.LogError(str, false, true);
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
 
@@ -201,7 +201,7 @@ namespace DamageMeter.UI
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
             if (e.Mode != PowerModes.StatusChange)
-                TeraSniffer.Instance.CleanupForcefully();
+                /*TeraSniffer.Instance*/ PacketProcessor.Instance.Sniffer.CleanupForcefully();
         }
 
         public static void VerifyClose(bool noConfirm)

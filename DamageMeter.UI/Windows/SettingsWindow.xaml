@@ -275,7 +275,8 @@
                         <settings:SelectionSetting SelectedItem="{Binding CaptureMode, Mode=TwoWay}"
                                                    SettingName="{x:Static lang:LP.CaptureMode}"
                                                    Choices="{x:Static local:SettingsWindowViewModel.CaptureModes}"
-                                                   ChoicesType="{x:Type CaptureMode}" />
+                                                   ChoicesType="{x:Type CaptureMode}" 
+                                                   IsEnabled="{Binding CanChangeCaptureMode}"/>
                         <settings:CheckboxSetting IsOn="{Binding LowPriority, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.SystemTray_LowPriority}" />
                         <settings:CheckboxSetting IsOn="{Binding CountOnlyBosses, Mode=TwoWay}"

@@ -1,22 +1,206 @@
 ﻿// Copyright (c) Gothos
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Data;
+using NetworkSniffer;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Data;
-using NetworkSniffer;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
 using Tera;
 using Tera.Game;
 using Tera.Sniffing;
-using System.Threading;
 
 namespace DamageMeter.Sniffing
 {
-    public class TeraSniffer : ITeraSniffer
+    public static class TcpClientExtensions
     {
-        private static TeraSniffer _instance;
+        /// <summary>
+        /// Polls the underlying TCP client to determine whether it's connected or not.
+        /// </summary>
+        public static bool IsConnected(this TcpClient client)
+        {
+            if (!client.Client.Poll(0, SelectMode.SelectRead)) return false;
+            return client.Client.Receive(new byte[1], SocketFlags.Peek) != 0;
+        }
+    }
+    public class BaseSniffer : ITeraSniffer
+    {
+        public event Action<Message> MessageReceived;
+        public event Action<Server> NewConnection;
+        public event Action EndConnection;
+
+        public virtual bool Enabled { get; set; }
+
+        public ConcurrentQueue<Message> Packets { get; private set; } = new ConcurrentQueue<Message>();
+        public virtual bool Connected { get; set; }
+
+        public void ClearPackets()
+        {
+            Packets = new ConcurrentQueue<Message>();
+        }
+
+        public Queue<Message> GetPacketsLogsAndStop()
+        {
+            var tmp = PacketsCopyStorage ?? new Queue<Message>();
+            EnableMessageStorage = false;
+            // Wait for thread to sync, more perf than concurrentQueue
+            Thread.Sleep(1);
+            return tmp;
+        }
+
+        public event Action<string> Warning;
+
+        public virtual void CleanupForcefully()
+        {
+            Connected = false;
+            OnEndConnection();
+        }
+
+        private Queue<Message> PacketsCopyStorage;
+
+
+        private bool _enableMessageStorage;
+        public bool EnableMessageStorage
+        {
+            get => _enableMessageStorage;
+            set
+            {
+                _enableMessageStorage = value;
+                if (!_enableMessageStorage) { PacketsCopyStorage = null; }
+            }
+        }
+
+        protected virtual void OnNewConnection(Server server)
+        {
+            PacketsCopyStorage = EnableMessageStorage ? new Queue<Message>() : null;
+            NewConnection?.Invoke(server);
+
+        }
+
+        protected virtual void OnMessageReceived(Message message)
+        {
+            Packets.Enqueue(message);
+            PacketsCopyStorage?.Enqueue(message);
+        }
+
+        protected virtual void OnEndConnection()
+        {
+            EndConnection?.Invoke();
+        }
+
+        protected virtual void OnWarning(string obj)
+        {
+            Warning?.Invoke(obj);
+        }
+    }
+    public class ToolboxSniffer : BaseSniffer
+    {
+        private readonly bool _failed;
+        private bool _enabled;
+        private bool _connected;
+
+        public override bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                _enabled = value;
+                if (_enabled) new Thread(Listen).Start();
+            }
+        }
+
+        public override bool Connected
+        {
+            get => _connected;
+            set
+            {
+                if (_connected == value) return;
+                _connected = value;
+                if (!_connected) OnEndConnection();
+
+            }
+        }
+        private readonly TcpListener _dataConnection;
+        public readonly ToolboxControlInterface ControlConnection;
+
+        public ToolboxSniffer()
+        {
+            _dataConnection = new TcpListener(IPAddress.Parse("127.0.0.60"), 5300);
+            ControlConnection = new ToolboxControlInterface("http://127.0.0.61:5300");
+
+            try
+            {
+                _dataConnection.Start();
+            }
+            catch (Exception e)
+            {
+                //Log.F($"Failed to start Toolbox sniffer: {e}");
+                _failed = true;
+            }
+        }
+
+        private async void Listen()
+        {
+            if (_failed) return;
+            while (Enabled)
+            {
+                var client = _dataConnection.AcceptTcpClient();
+                var resp = await ControlConnection.GetServerId();
+                if (resp != 0)
+                {
+                    await ControlConnection.AddHooks(MessageFactory.OpcodesList);
+                    //PacketAnalyzer.Factory.ReleaseVersion = await ControlConnection.GetReleaseVersion(); //todo: needed?
+                    /*NewConnection?.Invoke(Game.DB.ServerDatabase.GetServer(resp)); */OnNewConnection(BasicTeraData.Instance.Servers.GetServer(resp));
+                }
+                var stream = client.GetStream();
+                while (true)
+                {
+                    Connected = true;
+                    try
+                    {
+                        var lenBuf = new byte[2];
+                        stream.Read(lenBuf, 0, 2);
+                        var len = BitConverter.ToUInt16(lenBuf, 0);
+                        if (len <= 2)
+                        {
+                            if (!client.IsConnected())
+                            {
+                                client.Close();
+                                Connected = false;
+                                break;
+                            }
+                            continue;
+                        }
+                        var length = len - 2;
+                        var dataBuf = new byte[length];
+
+                        var progress = 0;
+                        while (progress < length)
+                        {
+                            progress += stream.Read(dataBuf, progress, length - progress);
+                        }
+                        //MessageReceived?.Invoke(new Message(DateTime.Now, dataBuf));
+                        OnMessageReceived(new Message(DateTime.Now, MessageDirection.Unspecified, new ArraySegment<byte>(dataBuf)));
+
+                    }
+                    catch
+                    {
+                        Connected = false;
+                        client.Close();
+                        //Log.F($"Disconnected: {e}");
+                    }
+                }
+            }
+        }
+
+    }
+    public class TeraSniffer : BaseSniffer
+    {
+        //private static TeraSniffer _instance;
 
         // Only take this lock in callbacks from tcp sniffing, not in code that can be called by the user.
         // Otherwise this could cause a deadlock if the user calls such a method from a callback that already holds a lock
@@ -31,9 +215,10 @@ namespace DamageMeter.Sniffing
         private MessageSplitter _messageSplitter;
         private TcpConnection _serverToClient;
         public int ClientProxyOverhead;
-        private bool _connected;
+        public int ServerProxyOverhead;
 
-        public bool Connected
+        private bool _connected;
+        public override bool Connected
         {
             get => _connected;
             set
@@ -43,13 +228,8 @@ namespace DamageMeter.Sniffing
                 _isNew.Clear();
             }
         }
-    
-        public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
-        private Queue<Message> PacketsCopyStorage;
 
-        public int ServerProxyOverhead;
-
-        private TeraSniffer()
+        public TeraSniffer()
         {
             var servers = BasicTeraData.Instance.Servers;
             _serversByIp = servers.GetServersByIp();
@@ -75,72 +255,20 @@ namespace DamageMeter.Sniffing
             tcpSniffer.EndConnection += HandleEndConnection;
         }
 
-
-        public static TeraSniffer Instance => _instance ?? (_instance = new TeraSniffer());
+        //public static TeraSniffer Instance => _instance ?? (_instance = new TeraSniffer());
 
         // IpSniffer has its own locking, so we need no lock here.
-        public bool Enabled
+        public override bool Enabled
         {
             get => _ipSniffer.Enabled;
             set => _ipSniffer.Enabled = value;
         }
 
-        public event Action<Server> NewConnection;
-        public event Action<Message> MessageReceived;
-        public event Action EndConnection;
-        public event Action<string> Warning;
-
-        protected virtual void OnNewConnection(Server server)
-        {
-            PacketsCopyStorage = EnableMessageStorage ? new Queue<Message>() : null;
-            var handler = NewConnection;
-            handler?.Invoke(server);
-        }
-
-        protected virtual void OnEndConnection()
-        {
-            var handler = EndConnection;
-            handler?.Invoke();
-        }
-
-        protected virtual void OnMessageReceived(Message message)
-        {
-            Packets.Enqueue(message);
-            PacketsCopyStorage?.Enqueue(message);
-        }
-
-        private bool _enableMessageStorage;
-        public bool EnableMessageStorage
-        {
-            get => _enableMessageStorage;
-            set
-            {
-                _enableMessageStorage = value;
-                if (!_enableMessageStorage) { PacketsCopyStorage = null; }
-            }
-        }
-
-        public Queue<Message> GetPacketsLogsAndStop()
-        {
-            var tmp = PacketsCopyStorage ?? new Queue<Message>();
-            EnableMessageStorage = false;
-            // Wait for thread to sync, more perf than concurrentQueue
-            Thread.Sleep(1);
-            return tmp;
-        }
-
-        protected virtual void OnWarning(string obj)
-        {
-            var handler = Warning;
-            handler?.Invoke(obj);
-        }
-
-        public void CleanupForcefully()
+        public override void CleanupForcefully()
         {
             _clientToServer?.RemoveCallback();
             _serverToClient?.RemoveCallback();
-            Connected = false;
-            OnEndConnection();
+            base.CleanupForcefully();
             //_instance.Enabled = false;
             //_instance = null;
         }

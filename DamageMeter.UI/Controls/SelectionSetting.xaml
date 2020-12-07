@@ -23,14 +23,26 @@
                Margin="7 0" 
                Opacity=".3"
                x:Name="Img"/>
-        <TextBlock Style="{StaticResource DefaultTextStyle}" 
-                   Grid.Column="1" 
+        <TextBlock Grid.Column="1" 
                    Margin="5 0" 
                    Text="{Binding SettingName, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" 
                    VerticalAlignment="Center" 
                    Padding="0" 
                    TextAlignment="Left" 
-                   Opacity=".9"/>
+                   >
+            <TextBlock.Style>
+                <Style BasedOn="{StaticResource DefaultTextStyle}" TargetType="TextBlock">
+                            <Setter Property="Opacity" Value=".9" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=(UIElement.IsEnabled), RelativeSource={RelativeSource Self}}"
+                                     Value="False">
+                            <Setter Property="Opacity" Value=".3" />
+                        </DataTrigger>
+                    </Style.Triggers>
+
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <ComboBox Grid.Column="2" ItemsSource="{Binding Choices, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" 
                   SelectionChanged="Selector_OnSelectionChanged" VerticalAlignment="Stretch" BorderThickness="0"
                   VerticalContentAlignment="Center" Margin="7 0" 

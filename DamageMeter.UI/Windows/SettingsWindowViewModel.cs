@@ -153,10 +153,12 @@ namespace DamageMeter.UI.Windows
             get
             {
                 var ret = EnumUtils.ListFromEnum<CaptureMode>();
-                ret.Remove(CaptureMode.Toolbox);
+                if(!Environment.GetCommandLineArgs().Contains("--toolbox")) ret.Remove(CaptureMode.Toolbox);
                 return ret;
             }
         }
+
+        public bool CanChangeCaptureMode => !Environment.GetCommandLineArgs().Contains("--toolbox");
 
         // detection
         //public bool UseNpcap
@@ -172,7 +174,7 @@ namespace DamageMeter.UI.Windows
 
         public CaptureMode CaptureMode
         {
-            get => Data.CaptureMode;
+            get => Environment.GetCommandLineArgs().Contains("--toolbox") ? CaptureMode.Toolbox : Data.CaptureMode ;
             set
             {
                 if (Data.CaptureMode == value) return;
@@ -646,7 +648,7 @@ namespace DamageMeter.UI.Windows
                 if (Data.PacketsCollect == value) return;
                 Data.PacketsCollect = value;
                 NotifyPropertyChanged();
-                TeraSniffer.Instance.EnableMessageStorage = value;
+                /*TeraSniffer.Instance*/ PacketProcessor.Instance.Sniffer.EnableMessageStorage = value;
 
             }
         }
