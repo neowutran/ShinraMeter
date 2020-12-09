@@ -139,7 +139,7 @@ namespace DamageMeter.UI
             Top = newTop / dy;
             if (_dragged) LastSnappedPoint = new Point(snapLeft / dx, snapTop / dy);
             _dragged = false;
-            App.HudContainer.SaveWindowsPos();
+            //App.HudContainer.SaveWindowsPos();
             if (Visible & Visibility == Visibility.Hidden) ShowWindow();
         }
 
@@ -167,6 +167,7 @@ namespace DamageMeter.UI
                 _dragged = true;
                 _dragging = false;
                 SnapToScreen();
+                App.HudContainer.SaveWindowsPos();
             }
             catch { Console.WriteLine(@"Exception Move"); }
         }
