@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Tera;
 using Tera.Game;
@@ -102,6 +103,7 @@ namespace DamageMeter.Sniffing
         private readonly bool _failed;
         private bool _enabled;
         private bool _connected;
+        private Thread _listenThread;
 
         public override bool Enabled
         {
@@ -109,7 +111,7 @@ namespace DamageMeter.Sniffing
             set
             {
                 _enabled = value;
-                if (_enabled) new Thread(Listen).Start();
+                if (_enabled) _listenThread.Start();
             }
         }
 
@@ -135,6 +137,7 @@ namespace DamageMeter.Sniffing
             try
             {
                 _dataConnection.Start();
+                _listenThread = new Thread(Listen);
             }
             catch (Exception e)
             {
@@ -148,7 +151,7 @@ namespace DamageMeter.Sniffing
             if (_failed) return;
             while (Enabled)
             {
-                var client = _dataConnection.AcceptTcpClient();
+                var client = await _dataConnection.AcceptTcpClientAsync();
                 var resp = await ControlConnection.GetServerId();
                 if (resp != 0)
                 {
