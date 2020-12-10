@@ -85,13 +85,13 @@ namespace DamageMeter.UI
             waiting = false;
         }
 
-        internal void UpdateProgress(object sender, DownloadProgressChangedEventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                bar.Value = e.ProgressPercentage;
-                if (bar.Value == 100) bar.Value = 0;
-            });
-        }
+        //internal void UpdateProgress(object sender, DownloadProgressChangedEventArgs e)
+        //{
+        //    Dispatcher.Invoke(() =>
+        //    {
+        //        bar.Value = e.ProgressPercentage;
+        //        if (bar.Value == 100) bar.Value = 0;
+        //    });
+        //}
     }
 }
