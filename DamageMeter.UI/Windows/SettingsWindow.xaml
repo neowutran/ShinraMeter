@@ -307,6 +307,8 @@
                                                   SettingName="{x:Static lang:LP.SystemTray_Show_always}" />
                         <settings:CheckboxSetting IsOn="{Binding StayTopmost, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.SystemTray_Stay_topmost}" />
+                        <settings:CheckboxSetting IsOn="{Binding SnapToBorders, Mode=TwoWay}"
+                                                  SettingName="{x:Static lang:LP.SystemTray_SnapToBorders}" />
                         <settings:CheckboxSetting IsOn="{Binding ShowSelfOnTop, Mode=TwoWay}"
                                                   SettingName="{x:Static lang:LP.ShowSelfOnTop}" />
                         <settings:CheckboxSetting IsOn="{Binding FullscreenOverlay, Mode=TwoWay}"

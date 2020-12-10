@@ -55,7 +55,6 @@ namespace DamageMeter.UI
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             _dispatcherTimer.Start();
 
-            //UpdateComboboxEncounter(new List<NpcEntity>(), null);
 
             SettingsWindowViewModel.WindowScaleChanged += OnScaleChanged;
 

@@ -94,6 +94,7 @@ namespace DamageMeter.UI
         }
         public void SnapToScreen()
         {
+            if(!BasicTeraData.Instance.WindowData.SnapToBorders) return;
             if (_dragging) return;
             if (Empty && Visible) { _oldHeight = 0; HideWindow(true); return; }
             var screen = Screen.FromHandle(new WindowInteropHelper(this).Handle);
@@ -139,7 +140,6 @@ namespace DamageMeter.UI
             Top = newTop / dy;
             if (_dragged) LastSnappedPoint = new Point(snapLeft / dx, snapTop / dy);
             _dragged = false;
-            //App.HudContainer.SaveWindowsPos();
             if (Visible & Visibility == Visibility.Hidden) ShowWindow();
         }
 

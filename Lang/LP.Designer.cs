@@ -2241,6 +2241,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Snap windows to borders.
+        /// </summary>
+        public static string SystemTray_SnapToBorders {
+            get {
+                return ResourceManager.GetString("SystemTray_SnapToBorders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stay topmost.
         /// </summary>
         public static string SystemTray_Stay_topmost {

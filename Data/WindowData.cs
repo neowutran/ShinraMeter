@@ -186,6 +186,7 @@ namespace Data
                 Parse("display_timer_based_on_aggro", nameof(displayTimerBasedOnAggro));
                 Parse("max_tts_size", nameof(maxTTSSize));
                 Parse("tts_size_exceeded_truncate", nameof(ttsSizeExceededTruncate));
+                Parse("snapToBorders", nameof(snapToBorders));
 
                 ParseColor("say_color", nameof(sayColor));
                 ParseColor("alliance_color", nameof(allianceColor));
@@ -342,6 +343,7 @@ namespace Data
         private bool autoUpdate = true;
         private bool winpcap = true;
         private bool invisibleUi = false;
+        private bool snapToBorders= true;
         private bool noPaste = false;
         private bool allowTransparency = true;
         private bool alwaysVisible = false;
@@ -428,6 +430,7 @@ namespace Data
         public CaptureMode CaptureMode { get => captureMode; set { captureMode = value; /*Save();*/ } }
         public GraphMode GraphMode { get => graphMode; set { graphMode = value; /*Save();*/ } }
         public bool InvisibleUi { get => invisibleUi; set { invisibleUi = value; /*Save();*/ } }
+        public bool SnapToBorders { get => snapToBorders; set { snapToBorders = value; /*Save();*/ } }
         public bool NoPaste { get => noPaste; set { noPaste = value; /*Save();*/ } }
         public int MaxTTSSize { get => maxTTSSize; set { maxTTSSize = value; /*Save();*/ } }
         public bool TTSSizeExceededTruncate { get => ttsSizeExceededTruncate; set { ttsSizeExceededTruncate = value; /*Save();*/ } }
@@ -752,6 +755,7 @@ namespace Data
                 xml.Root.Add(new XElement("partyonly", partyOnly));
                 xml.Root.Add(new XElement("showhealcrit", showHealCrit));
                 xml.Root.Add(new XElement("showtimeleft", showTimeLeft));
+                xml.Root.Add(new XElement("snapToBorders", snapToBorders));
                 xml.Root.Add(new XElement("show_crit_damage_rate", showCritDamageRate));
                 xml.Root.Add(new XElement("detect_bosses_only_by_hp_bar", detectBosses));
                 xml.Root.Add(new XElement("only_bosses", onlyBoss));

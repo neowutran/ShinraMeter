@@ -375,6 +375,18 @@ namespace DamageMeter.UI.Windows
             }
         }
 
+        // for Gokoro
+        public bool SnapToBorders
+        {
+            get => Data.SnapToBorders;
+            set
+            {
+                if (Data.SnapToBorders == value) return;
+                Data.SnapToBorders = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         //todo: ability to reset to defaults
         public Color SelfColor
         {

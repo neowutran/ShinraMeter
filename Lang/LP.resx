@@ -889,4 +889,7 @@ Reset and paused until map change or relog.</value>
   <data name="SettingsTab_Layout" xml:space="preserve">
     <value>Layout settings</value>
   </data>
+  <data name="SystemTray_SnapToBorders" xml:space="preserve">
+    <value>Snap windows to borders</value>
+  </data>
 </root>
