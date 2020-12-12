@@ -15,6 +15,11 @@ class ControlInterface
 
     destructor()
     {
+        this.stop();
+    }
+
+    stop()
+    {
         this.server.stop();
     }
 }
