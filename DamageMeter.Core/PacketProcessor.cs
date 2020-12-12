@@ -258,8 +258,6 @@ namespace DamageMeter
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
             var uiMessage = new UiUpdateMessage(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash, packetsWaiting);
             handler?.Invoke(uiMessage);
-            RichPresence.Instance.Invoke();
-
         }
 
         public void Initialize()
