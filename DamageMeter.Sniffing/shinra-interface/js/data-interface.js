@@ -20,7 +20,7 @@ class DataInterface
 
         } catch (err)
         {
-            this.mod.log('Failed to install hook for ' + opcode + ' ' + err);
+            //this.mod.log('Failed to install hook for ' + opcode + ' ' + err);
         }
     }
     removeRawHook(opcode)
