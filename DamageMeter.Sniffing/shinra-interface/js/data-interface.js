@@ -15,7 +15,7 @@ class DataInterface
         {
             this.mod.hook(opcode, 'raw', options, (code, data) =>
             {
-                this.interface.write(this.build(data));
+                this.send(this.build(data));
             });
 
         } catch (err)
@@ -29,7 +29,7 @@ class DataInterface
 
         this.mod.unhook(opcode, 'raw', options, (code, data) =>
         {
-            this.interface.write(this.build(data));
+            this.send(this.build(data));
         })
     }
     installHooks(mod)
@@ -40,7 +40,7 @@ class DataInterface
             this.installedHooks++;
             mod.hook(o, 'raw', { order: -Infinity }, (code, data) =>
             {
-                this.interface.write(this.build(data));
+                this.send(this.build(data));
             })
         });
     }
@@ -48,6 +48,8 @@ class DataInterface
     {
         this.mod.log('Installed hooks: ' + this.installedHooks);
     }
+
+
     constructor(mod)
     {
         this.mod = mod;
@@ -70,12 +72,7 @@ class DataInterface
         this.interface.connect(port, address);
         this.interface.on('error', (err) =>
         {
-            if (err.code === 'ERR_STREAM_DESTROYED')
-            {
-                this.interface.end();
-                this.mod.error("[shinra-interface] Meter was closed or disconnected.");
-                return;
-            }
+            this.interface.end();
             this.mod.error("[shinra-interface] " + err);
         });
         this.interface.on('connect', () => { this.mod.log("[shinra-interface] Connected!") });
@@ -86,6 +83,12 @@ class DataInterface
     build(payload)
     {
         return Buffer.from(payload);
+    }
+
+    send(data)
+    {
+        if (!this.interface.writable) return;
+        this.interface.write(this.build(data));
     }
 
     stop()
