@@ -109,7 +109,13 @@ namespace DamageMeter.UI
                 Process.GetCurrentProcess().Kill();
                 Environment.Exit(0);
             }
-
+            else
+            {
+                if (Environment.GetCommandLineArgs().Contains("--toolbox"))
+                {
+                    Environment.Exit(0);
+                }
+            }
             if (!notUpdating) { SetForeground(); }
             bool isWaitingUpdateEnd;
             var waitUpdateEnd = new Mutex(true, "ShinraMeterWaitUpdateEnd", out isWaitingUpdateEnd);
