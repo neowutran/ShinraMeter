@@ -10,9 +10,15 @@ set tb-output=.\toolbox-output
 set source=.
 set variant=Release\publish
 rmdir /Q /S "%output%"
-rmdir /Q /S "%tb-output%"
-md "%output%
+
 md "%tb-output%
+rem rmdir /Q /S "%tb-output%"
+cd %tb-output%
+for %%i in (*.*) do if not "%%i"==".gitignore" if not "%%i"==".gitattributes" if not "%%i"==".gitmodules" del /q "%%i"
+for /d %%i in (*.*) do if not "%%i"==".git" rd /s /q "%%i"
+cd ..
+
+md "%output%
 md "%output%\resources"
 md "%output%\resources\config"
 md "%output%\lib"
@@ -31,6 +37,7 @@ del "%output%\*.vshost*"
 del "%output%\*.pdb"
 del "%output%\resources\data\hotdot\glyph*.tsv"
 del "%output%\resources\data\hotdot\abnormal.tsv"
-node ".\manifest-generator.js" "%output%"
 xcopy "%output%" "%tb-output%" /y /s
+del "%tb-output%\add_firewall_exception.bat"
+node ".\manifest-generator.js" "%tb-output%"
 "%source%\Publisher\bin\release\net5-windows\Publisher.exe"

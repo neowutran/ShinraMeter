@@ -1,10 +1,13 @@
 {
 	"name": "shinra-meter",
+	"servers": [ "https://raw.githubusercontent.com/Foglio1024/shinra-toolbox-release/master/" ],
+	"supportUrl": "https://github.com/neowutran/ShinraMeter/issues",
 	"author": "Foglio, Gl0, neowutran and others",
 	"description": "Shinra DPS meter.",
-	"disableAutoUpdate": true,
+	"disableAutoUpdate": false,
+	"keywords": ["client"],
 	"options": {
 		"cliName": "shinra-meter",
-		"guiName": "shinra-meter"
+		"guiName": "Shinra Meter"
 	}
 }
