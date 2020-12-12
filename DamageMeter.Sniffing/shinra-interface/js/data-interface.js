@@ -68,8 +68,17 @@ class DataInterface
         });
         this.interface = new net.Socket();
         this.interface.connect(port, address);
-        this.interface.on('error', (err) => { console.log("[shinra-interface] " + err) });
-        this.interface.on('connect', () => { console.log("[shinra-interface] Connected!") });
+        this.interface.on('error', (err) =>
+        {
+            if (err.errno === 'ERR_STREAM_DESTROYED')
+            {
+                this.interface.end();
+                this.mod.error("[shinra-interface] Meter was closed or disconnected.");
+                return;
+            }
+            console.log("[shinra-interface] " + err);
+        });
+        this.interface.on('connect', () => { this.mod.log("[shinra-interface] Connected!") });
 
         this.installHooks(mod);
     }
