@@ -187,7 +187,7 @@ namespace DamageMeter.Sniffing
                             progress += stream.Read(dataBuf, progress, length - progress);
                         }
                         //MessageReceived?.Invoke(new Message(DateTime.Now, dataBuf));
-                        OnMessageReceived(new Message(DateTime.Now, MessageDirection.Unspecified, new ArraySegment<byte>(dataBuf)));
+                        OnMessageReceived(new Message(DateTime.UtcNow, MessageDirection.Unspecified, new ArraySegment<byte>(dataBuf)));
 
                     }
                     catch
