@@ -449,7 +449,7 @@ namespace DamageMeter
             {
                 AbnormalityStorage.EndAll(DateTime.UtcNow.Ticks);
             }
-            TeraSniffer.Instance.Packets = new ConcurrentQueue<Message>();
+            TeraSniffer.Instance.ClearPackets();
             HudManager.Instance.CurrentBosses.DisposeAll();
             NotifyProcessor.Instance.S_LOAD_TOPO(null);
         }

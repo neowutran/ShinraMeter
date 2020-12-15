@@ -45,7 +45,7 @@ namespace DamageMeter.Sniffing
             }
         }
     
-        public ConcurrentQueue<Message> Packets = new ConcurrentQueue<Message>();
+        public ConcurrentQueue<Message> Packets { get; private set; } = new ConcurrentQueue<Message>();
         private Queue<Message> PacketsCopyStorage;
 
         public int ServerProxyOverhead;
@@ -119,6 +119,10 @@ namespace DamageMeter.Sniffing
                 _enableMessageStorage = value;
                 if (!_enableMessageStorage) { PacketsCopyStorage = null; }
             }
+        }
+
+        public void ClearPackets() {
+            Packets = new ConcurrentQueue<Message>();
         }
 
         public Queue<Message> GetPacketsLogsAndStop()
