@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using DamageMeter.Sniffing;
 using Data;
@@ -26,7 +28,18 @@ namespace DamageMeter.Processing
             var sysMsgNamer = new OpCodeNamer(Path.Combine(BasicTeraData.Instance.ResourceDirectory, $"data/opcodes/smt_{message.Versions[0]}.txt"));
             /*TeraSniffer.Instance*/
             PacketProcessor.Instance.Sniffer.Connected = true;
-            PacketProcessor.Instance.MessageFactory = new MessageFactory(opCodeNamer, PacketProcessor.Instance.Server.Region, message.Versions[0], false, sysMsgNamer);
+
+            //temp ugly fix
+            if (Environment.GetCommandLineArgs().Contains("--toolbox") && PacketProcessor.Instance.MessageFactory != null && PacketProcessor.Instance.MessageFactory.ReleaseVersion != 9901)
+            {
+                var rv = PacketProcessor.Instance.MessageFactory.ReleaseVersion;
+                PacketProcessor.Instance.MessageFactory = new MessageFactory(opCodeNamer, PacketProcessor.Instance.Server.Region, message.Versions[0], false, sysMsgNamer);
+                PacketProcessor.Instance.MessageFactory.ReleaseVersion = rv;
+            }
+            else
+            {
+                PacketProcessor.Instance.MessageFactory = new MessageFactory(opCodeNamer, PacketProcessor.Instance.Server.Region, message.Versions[0], false, sysMsgNamer);
+            }
 
             if (!(PacketProcessor.Instance.Sniffer is TeraSniffer ts)) { return; }
             if (/*TeraSniffer.Instance*/ts.ClientProxyOverhead + /*TeraSniffer.Instance*/ts.ServerProxyOverhead > 0x1000)
