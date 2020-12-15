@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using DamageMeter.Database.Structures;
 using DamageMeter.Processing;
 using DamageMeter.Sniffing;
@@ -50,7 +51,9 @@ namespace DamageMeter
         internal AbnormalityTracker AbnormalityTracker;
         public ConcurrentDictionary<UploadData, NpcEntity> BossLink = new ConcurrentDictionary<UploadData, NpcEntity>();
         public GlyphBuild Glyphs = new GlyphBuild();
-        internal MessageFactory MessageFactory = new MessageFactory();
+
+        internal MessageFactory MessageFactory { get; set; }
+
         internal bool NeedInit = true;
         public CopyKey NeedToCopy;
 
@@ -60,21 +63,36 @@ namespace DamageMeter
         public bool NeedPause;
 
 
-
         internal PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
         public Server Server;
         internal UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
         private PacketProcessor()
         {
+            MessageFactory = new MessageFactory();
             Sniffer = SnifferFactory.Create();
-            /*TeraSniffer.Instance*/Sniffer.NewConnection += HandleNewConnection;
-            /*TeraSniffer.Instance*/Sniffer.EndConnection += HandleEndConnection;
+            /*TeraSniffer.Instance*/
+            Sniffer.NewConnection += HandleNewConnection;
+            /*TeraSniffer.Instance*/
+            Sniffer.EndConnection += HandleEndConnection;
+
+            if (Sniffer is ToolboxSniffer tbs)
+            {
+                tbs.ReleaseVersionUpdated += OnReleaseVersionUpdated;
+            }
+
             AbnormalityStorage = new AbnormalityStorage();
             Initialize();
             var packetAnalysis = new Thread(PacketAnalysisLoop);
             packetAnalysis.Start();
-            /*TeraSniffer.Instance*/Sniffer.EnableMessageStorage = BasicTeraData.Instance.WindowData.PacketsCollect;
+            /*TeraSniffer.Instance*/
+            Sniffer.EnableMessageStorage = BasicTeraData.Instance.WindowData.PacketsCollect;
+        }
+
+        private void OnReleaseVersionUpdated(int rv)
+        {
+            MessageFactory.ReleaseVersion = rv;
+            MessageFactory.ReloadSysMsg();
         }
 
         public List<NotifyFlashMessage> FlashMessage = new List<NotifyFlashMessage>();
@@ -132,7 +150,8 @@ namespace DamageMeter
                 BasicTeraData.Instance.WindowData.Close();
                 BasicTeraData.Instance.HotkeysData.Save();
             }
-            /*TeraSniffer.Instance*/Sniffer.Enabled = false;
+            /*TeraSniffer.Instance*/
+            Sniffer.Enabled = false;
             _keepAlive = false;
             Thread.Sleep(500);
             HudManager.Instance.CurrentBosses.DisposeAll();
@@ -455,7 +474,8 @@ namespace DamageMeter
             {
                 AbnormalityStorage.EndAll(DateTime.UtcNow.Ticks);
             }
-            /*TeraSniffer.Instance.Packets = new ConcurrentQueue<Message>(); */ Sniffer.ClearPackets();
+            /*TeraSniffer.Instance.Packets = new ConcurrentQueue<Message>(); */
+            Sniffer.ClearPackets();
             HudManager.Instance.CurrentBosses.DisposeAll();
             NotifyProcessor.Instance.S_LOAD_TOPO(null);
         }

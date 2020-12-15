@@ -105,6 +105,8 @@ namespace DamageMeter.Sniffing
         private bool _connected;
         private Thread _listenThread;
 
+        public event Action<int> ReleaseVersionUpdated; 
+
         public override bool Enabled
         {
             get => _enabled;
@@ -158,6 +160,8 @@ namespace DamageMeter.Sniffing
                     await ControlConnection.AddHooks(MessageFactory.OpcodesList);
                     //PacketAnalyzer.Factory.ReleaseVersion = await ControlConnection.GetReleaseVersion(); //todo: needed?
                     /*NewConnection?.Invoke(Game.DB.ServerDatabase.GetServer(resp)); */OnNewConnection(BasicTeraData.Instance.Servers.GetServer(resp));
+                    var rv = await ControlConnection.GetReleaseVersion(); //todo: needed?
+                    ReleaseVersionUpdated?.Invoke(rv);
                 }
                 var stream = client.GetStream();
                 while (true)
