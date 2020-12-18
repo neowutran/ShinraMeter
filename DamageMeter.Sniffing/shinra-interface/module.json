@@ -1,13 +1,16 @@
 {
-	"name": "shinra-meter",
-	"servers": [ "https://raw.githubusercontent.com/Foglio1024/shinra-toolbox-release/master/" ],
-	"supportUrl": "https://github.com/neowutran/ShinraMeter/issues",
-	"author": "Foglio, Gl0, neowutran and others",
-	"description": "Shinra DPS meter.",
-	"disableAutoUpdate": false,
-	"keywords": ["client"],
-	"options": {
-		"cliName": "shinra-meter",
-		"guiName": "Shinra Meter"
-	}
+  "name": "shinra-meter",
+  "servers": [ "https://raw.githubusercontent.com/Foglio1024/shinra-toolbox-release/master/" ],
+  "supportUrl": "https://github.com/neowutran/ShinraMeter/issues",
+  "author": "Foglio, Gl0, neowutran and others",
+  "description": "Shinra DPS meter.",
+  "disableAutoUpdate": false,
+  "keywords": [ "client" ],
+  "options": {
+    "cliName": "shinra-meter",
+    "guiName": "Shinra Meter"
+  },
+  "dependencies": {
+    "external-interface": "https://raw.githubusercontent.com/Foglio1024/external-interface/master/module.json"
+  }
 }
