@@ -255,9 +255,9 @@ namespace DamageMeter.Sniffing
                 }
                 var stream = _dataConnection.GetStream();
 
-                while (true)
+                Connected = true;
+                while (Connected)
                 {
-                    Connected = true;
                     try
                     {
                         var lenBuf = new byte[2];
@@ -269,7 +269,6 @@ namespace DamageMeter.Sniffing
                             {
                                 _dataConnection.Close();
                                 Connected = false;
-                                break;
                             }
                             continue;
                         }
@@ -286,8 +285,8 @@ namespace DamageMeter.Sniffing
                     }
                     catch
                     {
-                        Connected = false;
                         _dataConnection.Close();
+                        Connected = false;
                     }
                 }
             }
