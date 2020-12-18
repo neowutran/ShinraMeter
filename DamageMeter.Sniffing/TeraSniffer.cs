@@ -110,7 +110,7 @@ namespace DamageMeter.Sniffing
 #if SERVER
         private Thread _listenThread;
 #else
-        private Thread _receiveThread;
+        //private Thread _receiveThread;
 #endif
         public event Action<int> ReleaseVersionUpdated;
 
@@ -126,7 +126,8 @@ namespace DamageMeter.Sniffing
 #if SERVER
                     _listenThread.Start();
 #else
-                    _receiveThread.Start();
+                    Task.Run(ReceiveAsync);
+                    //_receiveThread.Start();
 #endif
                 }
             }
@@ -165,8 +166,6 @@ namespace DamageMeter.Sniffing
 #if SERVER
                 _dataConnection.Start();
                 _listenThread = new Thread(Listen);
-#else
-                _receiveThread = new Thread(Receive);
 #endif
             }
             catch (Exception e)
@@ -232,7 +231,7 @@ namespace DamageMeter.Sniffing
             }
         }
 #else
-        private async void Receive()
+        private async Task ReceiveAsync()
         {
             if (_failed) return;
 
