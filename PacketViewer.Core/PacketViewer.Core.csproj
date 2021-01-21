@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net5-windows</TargetFramework>
     <AssemblyTitle>PacketViewer.Core</AssemblyTitle>
     <Product>PacketViewer.Core</Product>
     <Copyright>Copyright ©  2019</Copyright>

@@ -78,7 +78,7 @@ namespace PacketViewer.UI
         {
             InitializeComponent();
             // Handler for exceptions in threads behind forms.
-            TeraSniffer.Instance.Enabled = true;
+            NetworkController.Instance.Sniffer.Enabled = true;
             //TeraSniffer.Instance.Warning += PcapWarning;
             NetworkController.Instance.Connected += HandleConnected;
             NetworkController.Instance.GuildIconAction += InstanceOnGuildIconAction;

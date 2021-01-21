@@ -9,6 +9,7 @@ using Tera.PacketLog;
 using System.Globalization;
 using System.Drawing;
 using System.Windows.Forms;
+using Tera.Sniffing;
 
 namespace PacketViewer
 {
@@ -27,11 +28,13 @@ namespace PacketViewer
         internal bool NeedInit = true;
         public Server Server;
         internal UserLogoTracker UserLogoTracker = new UserLogoTracker();
+        public  ITeraSniffer Sniffer;
 
         private NetworkController()
         {
-            TeraSniffer.Instance.NewConnection += HandleNewConnection;
-            TeraSniffer.Instance.EndConnection += HandleEndConnection;
+            Sniffer = SnifferFactory.Create();
+            Sniffer.NewConnection += HandleNewConnection;
+            Sniffer.EndConnection += HandleEndConnection;
             var packetAnalysis = new Thread(PacketAnalysisLoop);
             packetAnalysis.Start();
         }
@@ -58,7 +61,7 @@ namespace PacketViewer
         public void Exit()
         {
             _keepAlive = false;
-            TeraSniffer.Instance.Enabled = false;
+            Sniffer.Enabled = false;
             Thread.Sleep(500);
             Application.Exit();
         }
@@ -90,7 +93,7 @@ namespace PacketViewer
         private void UpdateUi()
         {
             var currentLastPacket = OpcodeFinder.Instance.PacketCount;
-            TickUpdated?.Invoke(new Tuple<List<ParsedMessage>, Dictionary<OpcodeId, OpcodeEnum>, int> (UiUpdateData, UiUpdateKnownOpcode, TeraSniffer.Instance.Packets.Count));
+            TickUpdated?.Invoke(new Tuple<List<ParsedMessage>, Dictionary<OpcodeId, OpcodeEnum>, int> (UiUpdateData, UiUpdateKnownOpcode, Sniffer.Packets.Count));
             UiUpdateData = new List<ParsedMessage>();
             UiUpdateKnownOpcode = new Dictionary<OpcodeId, OpcodeEnum>();
         }
@@ -149,16 +152,16 @@ namespace PacketViewer
                 }
 
                 // Update the UI at every packet if the backend it not overload & if we are recording the network
-                if (AnalysisType == AnalysisTypeEnum.Network && TeraSniffer.Instance.Packets.Count < 2000)
+                if (AnalysisType == AnalysisTypeEnum.Network && Sniffer.Packets.Count < 2000)
                 {
                     UpdateUi();
                 }
                 // If loading log file, wait until completion before display
-                if (AnalysisType == AnalysisTypeEnum.LogFile && TeraSniffer.Instance.Packets.Count == 0)
+                if (AnalysisType == AnalysisTypeEnum.LogFile && Sniffer.Packets.Count == 0)
                 {
                     UpdateUi();
                 }
-                var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out var obj);
+                var successDequeue = Sniffer.Packets.TryDequeue(out var obj);
                 if (!successDequeue)
                 {
                     Thread.Sleep(1);
@@ -168,7 +171,7 @@ namespace PacketViewer
                 // Network
                 if (AnalysisType == AnalysisTypeEnum.Unknown) { AnalysisType = AnalysisTypeEnum.Network; }
 
-                if(AnalysisType == AnalysisTypeEnum.LogFile && TeraSniffer.Instance.Connected)
+                if(AnalysisType == AnalysisTypeEnum.LogFile && Sniffer.Connected)
                 {
                     throw new Exception("Not allowed to record network while reading log file");
                 }
@@ -200,7 +203,7 @@ namespace PacketViewer
             AnalysisType = AnalysisTypeEnum.LogFile;
             OpcodeFinder.Instance.Reset();
             ResetUi?.Invoke();
-            LogReader.LoadLogFromFile(LoadFileName).ForEach(x => TeraSniffer.Instance.Packets.Enqueue(x));
+            LogReader.LoadLogFromFile(LoadFileName).ForEach(x => Sniffer.Packets.Enqueue(x));
             LoadFileName = null;
 
         }
