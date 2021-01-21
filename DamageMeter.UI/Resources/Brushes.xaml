@@ -37,6 +37,10 @@
     <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FF212121" />
     <SolidColorBrush x:Key="ShinraColor" Color="#b50000" />
 
+    <SolidColorBrush x:Key="MainBgBrush" Color="#292F33" />
+    <SolidColorBrush x:Key="MainBgDarkBrush" Color="#252B2F" />
+
+
     <SolidColorBrush x:Key="KrBgColor" Color="{StaticResource KrBgColorBase}"/>
     <SolidColorBrush x:Key="KrBgColorDark" Color="{StaticResource KrBgColorDarkBase}"/>
     <SolidColorBrush x:Key="KrBorderColor" Color="{StaticResource KrBorderColorBase}"/>

@@ -74,7 +74,7 @@ namespace DamageMeter.UI
         }
         public string FightDuration => $"{LP.Fight_Duration}: {(TimeSpan.FromSeconds(_damageData.Interval / TimeSpan.TicksPerSecond)):mm\\:ss}";
         // for color
-        public PlayerRole Role => _damageData.Source.User.Id.Id == PacketProcessor.Instance.PlayerTracker.Me().User.Id.Id
+        public PlayerRole Role => _damageData.Source.User.Id.Id == PacketProcessor.Instance.PlayerTracker?.Me().User.Id.Id
             ? PlayerRole.Self
             : MiscUtils.RoleFromClass(Class);
 

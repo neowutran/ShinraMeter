@@ -6,7 +6,7 @@
              xmlns:settings="clr-namespace:TCC.UI.Controls.Settings"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Loaded="SelectionSetting_OnLoaded">
-    <Grid Height="35"  Cursor="Hand"
+    <Grid Cursor="Hand"
           Name="MainGrid"
             Style="{StaticResource GlowHoverGrid}"
             MouseLeftButtonDown="OnMouseButtonDown">
@@ -16,8 +16,10 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Path Data="{Binding SvgIcon, RelativeSource={RelativeSource AncestorType=settings:SelectionSetting}}" 
+              Fill="White"
                Width="18" 
-               Height="18" 
+               Height="18"
+              Stretch="Uniform"
                RenderOptions.BitmapScalingMode="Fant" 
                HorizontalAlignment="Left" 
                Margin="7 0" 
@@ -33,12 +35,12 @@
             <TextBlock.Style>
                 <Style BasedOn="{StaticResource DefaultTextStyle}" TargetType="TextBlock">
                             <Setter Property="Opacity" Value=".9" />
-                    <Style.Triggers>
+                    <!--<Style.Triggers>
                         <DataTrigger Binding="{Binding Path=(UIElement.IsEnabled), RelativeSource={RelativeSource Self}}"
                                      Value="False">
                             <Setter Property="Opacity" Value=".3" />
                         </DataTrigger>
-                    </Style.Triggers>
+                    </Style.Triggers>-->
 
                 </Style>
             </TextBlock.Style>

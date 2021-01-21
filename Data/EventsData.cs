@@ -84,14 +84,16 @@ namespace Data
             AssociateEvent(EventsCommon);
         }
 
-        private Dictionary<Event, List<Action>> EventsCommon { get; }
-        private Dictionary<Event, List<Action>> EventsClass { get; set; }
+        // loaded from file - made public for VM
+        public Dictionary<Event, List<Action>> EventsCommon { get; }
+        public Dictionary<Event, List<Action>> EventsClass { get; set; }
+
+        // used by NotifyProcessor
         public Dictionary<AbnormalityEvent, List<Action>> MissingAbnormalities { get; private set; }
         public Dictionary<AbnormalityEvent, List<Action>> AddedRemovedAbnormalities { get; private set; }
         public Dictionary<Event, List<Action>> Events { get; private set; }
-
         public Dictionary<Event, List<Action>> Cooldown { get; private set; }
-        public System.Tuple<Event, List<Action>> AFK { get; private set; }
+        public Tuple<Event, List<Action>> AFK { get; private set; }
 
 
         public void Load(PlayerClass playerClass)
@@ -126,12 +128,12 @@ namespace Data
             AssociateEvent(EventsClass, playerClass);
         }
 
-        private void AssociateEvent(Dictionary<Event, List<Action>> rootEvents, PlayerClass playerClass=PlayerClass.Common)
+        private void AssociateEvent(Dictionary<Event, List<Action>> rootEvents, PlayerClass playerClass = PlayerClass.Common)
         {
             foreach (var e in rootEvents)
             {
                 if (!e.Key.Active) { continue; }
-                if (playerClass!=PlayerClass.Common && e.Key.IgnoreClasses.Contains(playerClass)) { continue; }
+                if (playerClass != PlayerClass.Common && e.Key.IgnoreClasses.Contains(playerClass)) { continue; }
                 Events.Add(e.Key, e.Value);
                 var evAbnormalities = e.Key as AbnormalityEvent;
                 if (evAbnormalities != null)
@@ -215,8 +217,8 @@ namespace Data
                 {
                     var tts = textToSpeech.First();
                     var text = tts.Attribute("text").Value;
-                    var voiceGender = (VoiceGender) Enum.Parse(typeof(VoiceGender), tts.Attribute("voice_gender")?.Value ?? "Female", true);
-                    var voiceAge = (VoiceAge) Enum.Parse(typeof(VoiceAge), tts.Attribute("voice_age")?.Value ?? "Adult", true);
+                    var voiceGender = (VoiceGender)Enum.Parse(typeof(VoiceGender), tts.Attribute("voice_gender")?.Value ?? "Female", true);
+                    var voiceAge = (VoiceAge)Enum.Parse(typeof(VoiceAge), tts.Attribute("voice_age")?.Value ?? "Adult", true);
 
                     var culture = tts.Attribute("culture")?.Value ?? LP.Culture.ToString();
                     var voicePosition = int.Parse(tts.Attribute("voice_position")?.Value ?? "0");
@@ -238,17 +240,19 @@ namespace Data
             {
                 var areaId = int.Parse(blacklist.Attribute("area_id").Value);
                 var bossId = int.Parse(blacklist.Attribute("boss_id")?.Value ?? "-1");
-                areaBossBlacklist.Add(new BlackListItem {AreaId = areaId, BossId = bossId});
+                areaBossBlacklist.Add(new BlackListItem { AreaId = areaId, BossId = bossId });
             }
             return areaBossBlacklist;
         }
 
-        private List<PlayerClass> ParseIgnoreClasses(string str) {
+        private List<PlayerClass> ParseIgnoreClasses(string str)
+        {
             var res = new List<PlayerClass>();
             if (string.IsNullOrWhiteSpace(str)) return res;
             var arr = str.Split(',');
-            foreach (var cl in arr) {
-                if (Enum.TryParse(cl,out PlayerClass pClass))res.Add(pClass);
+            foreach (var cl in arr)
+            {
+                if (Enum.TryParse(cl, out PlayerClass pClass)) res.Add(pClass);
             }
             return res;
         }

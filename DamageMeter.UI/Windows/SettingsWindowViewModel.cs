@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using DamageMeter.UI.EventsEditor;
 using Lang;
 using Tera.Game;
 using Tera.RichPresence;
@@ -153,7 +154,7 @@ namespace DamageMeter.UI.Windows
             get
             {
                 var ret = EnumUtils.ListFromEnum<CaptureMode>();
-                if(!Environment.GetCommandLineArgs().Contains("--toolbox")) ret.Remove(CaptureMode.Toolbox);
+                if (!Environment.GetCommandLineArgs().Contains("--toolbox")) ret.Remove(CaptureMode.Toolbox);
                 return ret;
             }
         }
@@ -174,7 +175,7 @@ namespace DamageMeter.UI.Windows
 
         public CaptureMode CaptureMode
         {
-            get => Environment.GetCommandLineArgs().Contains("--toolbox") ? CaptureMode.Toolbox : Data.CaptureMode ;
+            get => Environment.GetCommandLineArgs().Contains("--toolbox") ? CaptureMode.Toolbox : Data.CaptureMode;
             set
             {
                 if (Data.CaptureMode == value) return;
@@ -525,9 +526,9 @@ namespace DamageMeter.UI.Windows
                 if (dataBossGageStatus.Visible == value) return;
                 dataBossGageStatus.Visible = value;
                 Data.BossGageStatus = dataBossGageStatus; // todo: check this
-                if(dataBossGageStatus.Visible)
+                if (dataBossGageStatus.Visible)
                     App.HudContainer.BossGage.ShowWindow();
-                else 
+                else
                     App.HudContainer.BossGage.HideWindow();
                 //todo: manually show/hide the window
                 NotifyPropertyChanged();
@@ -660,7 +661,8 @@ namespace DamageMeter.UI.Windows
                 if (Data.PacketsCollect == value) return;
                 Data.PacketsCollect = value;
                 NotifyPropertyChanged();
-                /*TeraSniffer.Instance*/ PacketProcessor.Instance.Sniffer.EnableMessageStorage = value;
+                /*TeraSniffer.Instance*/
+                PacketProcessor.Instance.Sniffer.EnableMessageStorage = value;
 
             }
         }
@@ -957,7 +959,7 @@ namespace DamageMeter.UI.Windows
         public ICommand TogglePauseCommand => MainViewModel.Instance.TogglePauseCommand;
         public ICommand OpenUploadHistoryCommand { get; }
         public ICommand ResetColorCommand { get; }
-
+        public ICommand OpenEventEditorCommand { get; }
         public List<MockPlayerViewModel> MockParty { get; }
 
         private int _selectedIndex;
@@ -1055,6 +1057,8 @@ namespace DamageMeter.UI.Windows
                     case "border": BorderColor = WindowData.DefaultBorderColor; break;
                 }
             });
+            OpenEventEditorCommand = new RelayCommand(_ => new EventsEditorWindow().ShowDialog());
+
             var count = 0;
             Hotkeys.Copy.ForEach(h => CopyKeys.Add(new CopyKeyVM($"DPS paste {++count}", h)));
             MockParty = new List<MockPlayerViewModel>

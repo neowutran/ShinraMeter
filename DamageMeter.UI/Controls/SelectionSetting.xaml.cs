@@ -14,6 +14,7 @@ namespace TCC.UI.Controls.Settings
             get => (string)GetValue(SettingNameProperty);
             set => SetValue(SettingNameProperty, value);
         }
+
         public static readonly DependencyProperty SettingNameProperty = DependencyProperty.Register("SettingName", typeof(string), typeof(SelectionSetting));
 
         public Geometry SvgIcon
@@ -21,14 +22,15 @@ namespace TCC.UI.Controls.Settings
             get => (Geometry)GetValue(SvgIconProperty);
             set => SetValue(SvgIconProperty, value);
         }
-        public static readonly DependencyProperty SvgIconProperty = DependencyProperty.Register("SvgIcon", typeof(Geometry), typeof(SelectionSetting));
 
+        public static readonly DependencyProperty SvgIconProperty = DependencyProperty.Register("SvgIcon", typeof(Geometry), typeof(SelectionSetting));
 
         public IEnumerable Choices
         {
             get => (IEnumerable)GetValue(ChoicesProperty);
             set => SetValue(ChoicesProperty, value);
         }
+
         public static readonly DependencyProperty ChoicesProperty = DependencyProperty.Register("Choices", typeof(IEnumerable), typeof(SelectionSetting));
 
         public string SelectedItem
@@ -36,6 +38,7 @@ namespace TCC.UI.Controls.Settings
             get => (string)GetValue(SelectedItemProperty);
             set => SetValue(SelectedItemProperty, value);
         }
+
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(string), typeof(SelectionSetting));
 
         public Type ChoicesType
@@ -43,13 +46,15 @@ namespace TCC.UI.Controls.Settings
             get => (Type)GetValue(ChoicesTypeProperty);
             set => SetValue(ChoicesTypeProperty, value);
         }
+
         public static readonly DependencyProperty ChoicesTypeProperty = DependencyProperty.Register("ChoicesType", typeof(Type), typeof(SelectionSetting));
 
         public DataTemplate ChoicesTemplate
         {
-            get => (DataTemplate) GetValue(ChoicesTemplateProperty);
+            get => (DataTemplate)GetValue(ChoicesTemplateProperty);
             set => SetValue(ChoicesTemplateProperty, value);
         }
+
         public static readonly DependencyProperty ChoicesTemplateProperty = DependencyProperty.Register("ChoicesTemplate", typeof(DataTemplate), typeof(SelectionSetting), new PropertyMetadata(/*TODO: R.DataTemplates.EnumDescrDataTemplate*/));
 
         public SelectionSetting()
@@ -59,6 +64,7 @@ namespace TCC.UI.Controls.Settings
 
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.AddedItems.Count == 0) return;
             var cb = (ComboBox)sender;
             SelectedItem = cb.SelectedItem == null ? cb.Items[0].ToString() : cb.SelectedItem.ToString();
         }
@@ -66,7 +72,7 @@ namespace TCC.UI.Controls.Settings
         private void SelectionSetting_OnLoaded(object sender, RoutedEventArgs e)
         {
             var i = 0;
-            if(Choices == null) return;
+            if (Choices == null) return;
             foreach (var choice in Choices)
             {
                 if (choice?.ToString() == SelectedItem)
@@ -75,7 +81,6 @@ namespace TCC.UI.Controls.Settings
                 }
                 i++;
             }
-
         }
 
         private void OnMouseButtonDown(object sender, MouseButtonEventArgs e)

@@ -40,6 +40,7 @@
         </Style>
         <Style TargetType="settings:CheckboxSetting" BasedOn="{StaticResource {x:Type settings:CheckboxSetting}}">
             <Setter Property="CheckboxSize" Value="14" />
+            <Setter Property="Margin" Value="32 0 0 0" />
             <Setter Property="CheckBoxColor">
                 <Setter.Value>
                     <SolidColorBrush x:Name="cb" Color="{Binding SelfColor}" />
@@ -47,6 +48,7 @@
             </Setter>
         </Style>
         <Style TargetType="settings:ValueSetting">
+            <Setter Property="Height" Value="32" />
             <Setter Property="SliderColor1">
                 <Setter.Value>
                     <SolidColorBrush x:Name="c1" Color="{Binding SelfColor}" Opacity=".8" />
@@ -83,7 +85,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="MainBgBrush" Color="#292F33" />
         <DataTemplate x:Key="MockPlayer" DataType="local:MockPlayerViewModel">
 
 
@@ -345,7 +346,7 @@
 
                     </StackPanel>
                 </TabItem>
-
+                <!--Layout-->
                 <TabItem>
                     <StackPanel HorizontalAlignment="Center">
                         <StackPanel.Resources>
@@ -545,6 +546,11 @@
                         <settings:CheckboxSetting IsOn="{Binding ShowAfkEventsIngame, Mode=TwoWay}"
                                                   IsEnabled="{Binding EnableChatAndNotif}"
                                                   SettingName="{x:Static lang:LP.ShowAfkEventsIngame}" />
+                        <!--<Button Content="Edit events..." VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                HorizontalContentAlignment="Center"
+                                Padding="10 0" Command="{Binding OpenEventEditorCommand}"/>-->
                     </StackPanel>
                 </TabItem>
                 <!--Rich presence-->

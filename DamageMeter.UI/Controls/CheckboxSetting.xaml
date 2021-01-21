@@ -111,40 +111,66 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Grid.Column" Value="0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SwapCheckboxPosition, RelativeSource={RelativeSource AncestorType=settings:CheckboxSetting}}" Value="False">
+                    <Setter Property="Grid.Column" Value="2"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
-
-
     </UserControl.Resources>
     <Grid VerticalAlignment="Stretch" Cursor="Hand"
           MouseLeftButtonDown="OnMouseButtonDown"
           Style="{StaticResource GlowHoverGrid}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="32" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <Path Width="18"
-              Height="18"
-              Margin="7 0"
-              Data="{Binding SvgIcon, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}"
+        <Path Data="{Binding SvgIcon, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}"
               VerticalAlignment="Center"
               HorizontalAlignment="Center"
-              Opacity=".7" />
+              Opacity=".7" >
+            <Path.Style>
+                <Style TargetType="Path">
+                            <Setter Property="Margin" Value="7 0"></Setter>
+                            <Setter Property="Width" Value="18"></Setter>
+                            <Setter Property="Height" Value="18"></Setter>
+<Style.Triggers>
+                        <DataTrigger Binding="{Binding SvgIcon, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}" Value="{x:Null}">
+                            <Setter Property="Height" Value="0"></Setter>
+                            <Setter Property="Width" Value="0"></Setter>
+                            <Setter Property="Margin" Value="0"></Setter>
+                        </DataTrigger>
+</Style.Triggers>
+                </Style>
+            </Path.Style>
+        </Path>
         <!--Foreground="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}"-->
-        <TextBlock Style="{StaticResource DefaultTextStyle}"
-                   Grid.Column="1"
-                   Margin="5 0 5 0"
+        <TextBlock Grid.Column="1"
                    Text="{Binding SettingName, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}"
                    VerticalAlignment="Center"
                    Padding="0"
                    TextAlignment="Left"
-                   Opacity=".9" />
+                   Opacity=".9" >
+            <TextBlock.Style>
+                <Style BasedOn="{StaticResource DefaultTextStyle}" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="5 0 5 0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SwapCheckboxPosition, RelativeSource={RelativeSource AncestorType=settings:CheckboxSetting}}" Value="True">
+
+                    <Setter Property="Margin" Value="0 0 0 0"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <CheckBox x:Name="CheckBox"
                   IsChecked="{Binding IsOn, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}"
                   BorderBrush="{Binding CheckBoxColor, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}"
                   VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
                   settings:CheckBoxExtensions.Size="{Binding CheckboxSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=settings:CheckboxSetting}}"
-                  Grid.Column="2"
                   Margin="7 0" />
     </Grid>
 </UserControl>

@@ -8,7 +8,7 @@
   "keywords": [ "client" ],
   "options": {
     "cliName": "shinra-meter",
-    "guiName": "Shinra Meter"
+    "guiName": "Shinra Meter (beta)"
   },
   "dependencies": {
     "external-interface": "https://raw.githubusercontent.com/Foglio1024/external-interface/master/module.json"

@@ -683,6 +683,9 @@
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{StaticResource ToggleButton.IsPressed.Background}"/>
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value=".3"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
     <!--#endregion-->
@@ -690,6 +693,33 @@
 
     <Style TargetType="{x:Type settings:CheckboxSetting}">
         <Setter Property="CheckBoxColor" Value="Teal" />
+        <Setter Property="Height" Value="35" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=(UIElement.IsEnabled), RelativeSource={RelativeSource Self}}"
+                         Value="False">
+                <Setter Property="Opacity" Value=".3" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type settings:ValueSetting}">
+        <Setter Property="Height" Value="35" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=(UIElement.IsEnabled), RelativeSource={RelativeSource Self}}"
+                         Value="False">
+                <Setter Property="Opacity" Value=".3" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type settings:FieldSetting}">
+        <Setter Property="Height" Value="35" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=(UIElement.IsEnabled), RelativeSource={RelativeSource Self}}"
+                         Value="False">
+                <Setter Property="Opacity" Value=".3" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type settings:SelectionSetting}">
         <Setter Property="Height" Value="35" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding Path=(UIElement.IsEnabled), RelativeSource={RelativeSource Self}}"

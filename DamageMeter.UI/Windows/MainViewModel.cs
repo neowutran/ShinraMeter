@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using DamageMeter.Database.Structures;
 using Nostrum;
 using Tera.Game;
+using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI
 {
@@ -637,7 +639,7 @@ namespace DamageMeter.UI
             if (alreadyConnected && sameServer) return;
             WindowTitle = servername;
             Connected = servername != LP.SystemTray_No_server;
-            ToastData.Show(Connected ?"Connected to " + servername : "Disconnected", Connected ? ToastInfo.Severity.Success : ToastInfo.Severity.Info);
+            ToastData.Show(Connected ? "Connected to " + servername : "Disconnected", Connected ? ToastInfo.Severity.Success : ToastInfo.Severity.Info);
         }
         private void OnOverloadedChanged()
         {
