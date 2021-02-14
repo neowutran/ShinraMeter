@@ -23,10 +23,16 @@ namespace DamageMeter.UI.HUD.Windows
         private void OnBossesChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (!BasicTeraData.Instance.WindowData.BossGageStatus.Visible) return;
-            if (HudManager.Instance.CurrentBosses.Count == 0) HideWindow();
+            if (HudManager.Instance.CurrentBosses.Count == 0)
+            {
+                HideWindow();
+            }
             else
             {
-                if (!IsVisible) ShowWindow();
+                    ShowWindow();
+                //if (!IsVisible)
+                //{
+                //}
             }
         }
 
@@ -37,7 +43,10 @@ namespace DamageMeter.UI.HUD.Windows
             this.Top = this.LastSnappedPoint?.Y ?? 0;
             this.Show();
             this.Hide();
-            if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible) this.ShowWindow();
+            if (BasicTeraData.Instance.WindowData.BossGageStatus.Visible)
+            {
+                this.ShowWindow();
+            }
 
 
             //ContextMenu = new ContextMenu();
@@ -51,7 +60,7 @@ namespace DamageMeter.UI.HUD.Windows
             ContextMenu.IsOpen = true;
         }
 
-        protected override bool Empty => !Bosses.HasItems;
+        protected override bool Empty => HudManager.Instance.CurrentBosses.Count == 0;
 
         public override void SaveWindowPos()
         {

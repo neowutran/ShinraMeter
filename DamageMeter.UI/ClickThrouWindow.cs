@@ -140,7 +140,7 @@ namespace DamageMeter.UI
             Top = newTop / dy;
             if (_dragged) LastSnappedPoint = new Point(snapLeft / dx, snapTop / dy);
             _dragged = false;
-            if (Visible & Visibility == Visibility.Hidden) ShowWindow();
+            if (Visible && Visibility == Visibility.Hidden) ShowWindow();
         }
 
         public virtual void SetClickThrou()
@@ -201,12 +201,12 @@ namespace DamageMeter.UI
             Visible = set;
             if (BasicTeraData.Instance.WindowData.AllowTransparency)
             {
-                _dispatcher.BeginInvoke(new Action(() =>
+                _dispatcher.Invoke(() =>
                 {
                     var a = OpacityAnimation(0);
                     a.Completed += (o, args) => { Visibility = Visibility.Hidden; };
                     BeginAnimation(OpacityProperty, a);
-                }));
+                });
             }
             else
             {
@@ -220,14 +220,15 @@ namespace DamageMeter.UI
             Visible = true;
             if (!Empty)
             {
+                Visibility = Visibility.Visible;
                 if (BasicTeraData.Instance.WindowData.AllowTransparency)
                 {
-                    _dispatcher.BeginInvoke(new Action(() =>
+                    _dispatcher.Invoke(() =>
                     {
+                        Opacity = 1;
                         BeginAnimation(OpacityProperty, OpacityAnimation(_opacity));
-                    }));
+                    });
                 }
-                Visibility = Visibility.Visible;
             }
             SnapToScreen();
         }
