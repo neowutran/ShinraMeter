@@ -3,34 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetworkSniffer", "NetworkSniffer\NetworkSniffer.csproj", "{5B431143-1A77-44FF-8BC3-926FEC8AD97C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{4B6AA9BD-CEC2-4AA6-B35A-1ACB2FA7767B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.Sniffing", "DamageMeter.Sniffing\DamageMeter.Sniffing.csproj", "{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DamageMeter.Sniffing", "DamageMeter.Sniffing\DamageMeter.Sniffing.csproj", "{66BB1685-8FF5-4431-B77F-7F80C92A5DA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.Core", "DamageMeter.Core\DamageMeter.Core.csproj", "{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DamageMeter.Core", "DamageMeter.Core\DamageMeter.Core.csproj", "{D1ED4752-F2FC-44C3-97B2-580BC79F4AF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.UI", "DamageMeter.UI\DamageMeter.UI.csproj", "{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DamageMeter.UI", "DamageMeter.UI\DamageMeter.UI.csproj", "{ABD0A510-435B-4B43-93E8-BD0CDB1A78B8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5B431143-1A77-44FF-8BC3-926FEC8AD97C} = {5B431143-1A77-44FF-8BC3-926FEC8AD97C}
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A} = {23F7BE64-3627-4F4E-AF78-291A7664FE6A}
 		{968CE869-A989-4608-AA51-6C6BD7CC78F4} = {968CE869-A989-4608-AA51-6C6BD7CC78F4}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.AutoUpdate", "DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj", "{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DamageMeter.AutoUpdate", "DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj", "{87E95FB1-8B42-4F6F-B51A-D2E3E49CD242}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tera.Core", "TeraCommon\Tera.Core.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tera.Core", "TeraCommon\Tera.Core.csproj", "{EE476C7C-2942-4BA4-AB47-7ADBE65635FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lang", "Lang\Lang.csproj", "{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lang", "Lang\Lang.csproj", "{220FEF0F-4A83-4AB8-9435-F9BC09B9039F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publisher.csproj", "{968CE869-A989-4608-AA51-6C6BD7CC78F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Publisher", "Publisher\Publisher.csproj", "{968CE869-A989-4608-AA51-6C6BD7CC78F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DamageMeter.D3D9Render", "DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj", "{23F7BE64-3627-4F4E-AF78-291A7664FE6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacketViewer.UI", "PacketViewer.UI\PacketViewer.UI.csproj", "{60027A8E-BA12-4130-9A46-8436BD8DEE4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketViewer.UI", "PacketViewer.UI\PacketViewer.UI.csproj", "{60027A8E-BA12-4130-9A46-8436BD8DEE4B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketViewer.Core", "PacketViewer.Core\PacketViewer.Core.csproj", "{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacketViewer.Core", "PacketViewer.Core\PacketViewer.Core.csproj", "{6DEE0F27-0FF9-4EA2-A2FD-A53EC27DAE8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,18 +148,6 @@ Global
 		{968CE869-A989-4608-AA51-6C6BD7CC78F4}.Release|x64.Build.0 = Release|Any CPU
 		{968CE869-A989-4608-AA51-6C6BD7CC78F4}.Release|x86.ActiveCfg = Release|Any CPU
 		{968CE869-A989-4608-AA51-6C6BD7CC78F4}.Release|x86.Build.0 = Release|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Debug|x64.Build.0 = Debug|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Debug|x86.Build.0 = Debug|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x64.ActiveCfg = Release|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x64.Build.0 = Release|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x86.ActiveCfg = Release|Any CPU
-		{23F7BE64-3627-4F4E-AF78-291A7664FE6A}.Release|x86.Build.0 = Release|Any CPU
 		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60027A8E-BA12-4130-9A46-8436BD8DEE4B}.Debug|x64.ActiveCfg = Debug|Any CPU

@@ -21,7 +21,6 @@ using DamageMeter.UI.EntityStats;
 using DamageMeter.UI.HUD.Windows;
 using Data;
 using Lang;
-using DamageMeter.D3D9Render.TeraData;
 using DamageMeter.TeraDpsApi;
 using DamageMeter.UI.Windows;
 using Tera.Game;
@@ -81,7 +80,6 @@ namespace DamageMeter.UI
         private readonly EntityStatsMain _entityStats;
         private readonly PopupNotification _popupNotification;
         public GraphViewModel GraphViewModel { get; }
-        public D3D9Render.Renderer DXrender;
 
         private readonly TeradpsHistory _windowHistory;
         internal Chatbox _chatbox;
@@ -352,7 +350,6 @@ namespace DamageMeter.UI
             _trayIcon.Dispose();
             _topMost = false;
             PacketProcessor.Instance.Exit();
-            DXrender?.Dispose();
         }
 
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
@@ -429,7 +426,6 @@ namespace DamageMeter.UI
                         message.Skills, message.Abnormals.Get(playerStats.Source));
                     Controls.Add(playerStats.Source, playerStatsControl);
                 }
-                DXrender?.Draw(statsDamage.ToClassInfo(message.StatsSummary.EntityInformation.TotalDamage, message.StatsSummary.EntityInformation.Interval));
 
                 var invisibleControls = Controls.Where(x => !visiblePlayerStats.Contains(x.Key)).ToList();
                 foreach (var invisibleControl in invisibleControls)
@@ -798,23 +794,6 @@ namespace DamageMeter.UI
         private void OnGraphMouseEnter(object sender, MouseEventArgs e)
         {
             _topMost = false;
-        }
-    }
-
-    public static class Extensions
-    {
-        public static List<ClassInfo> ToClassInfo(this IEnumerable<PlayerDamageDealt> data, long sum, long interval)
-        {
-            // return linq expression method
-            return data.Select(dealt => new ClassInfo
-            {
-                PName = $"{dealt.Source.Name}",
-                PDmg = $"{FormatHelpers.Instance.FormatPercent((double)dealt.Amount / sum)}",
-                PDsp =
-                    $"{FormatHelpers.Instance.FormatValue(interval == 0 ? dealt.Amount : dealt.Amount * TimeSpan.TicksPerSecond / interval)}{LP.PerSecond}",
-                PCrit = $"{Math.Round(dealt.CritRate)}%",
-                PId = dealt.Source.PlayerId
-            }).ToList();
         }
     }
 }

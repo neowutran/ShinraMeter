@@ -7,7 +7,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using DamageMeter.AutoUpdate;
-using DamageMeter.D3D9Render;
 using Data;
 using Lang;
 using System.Windows.Media.Animation;
@@ -575,16 +574,13 @@ namespace DamageMeter.UI
         private void EnableOverlay(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableOverlay = true;
-            if (_mainWindow.DXrender != null) return;
-            //_mainWindow.DXrender = new Renderer(); ///*** fixme
+            // TODO: Please do not remove this method... I'm working on it...
         }
 
         private void DisableOverlay(object sender, RoutedEventArgs e)
         {
             BasicTeraData.Instance.WindowData.EnableOverlay = false;
-            var render = _mainWindow.DXrender;
-            _mainWindow.DXrender = null;
-            render?.Dispose();
+            // TODO: Please do not remove this method... I'm working on it...
         }
 
         private void AddServerButton_OnClick(object sender, RoutedEventArgs e)

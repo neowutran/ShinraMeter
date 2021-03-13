@@ -73,7 +73,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DamageMeter.AutoUpdate\DamageMeter.AutoUpdate.csproj" />
     <ProjectReference Include="..\DamageMeter.Core\DamageMeter.Core.csproj" />
-    <ProjectReference Include="..\DamageMeter.D3D9Render\DamageMeter.D3D9Render.csproj" />
     <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\DamageMeter.Sniffing\DamageMeter.Sniffing.csproj" />
     <ProjectReference Include="..\Lang\Lang.csproj" />
