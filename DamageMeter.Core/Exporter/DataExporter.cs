@@ -160,6 +160,7 @@ namespace DamageMeter
                     {
                         var skillLog = new SkillLog();
                         var skilldamage = skill.Amount();
+                        if (skilldamage == 0) { continue; }
 
                         skillLog.skillAverageCrit = Math.Round(skill.AvgCrit()) + "";
                         skillLog.skillAverageWhite = Math.Round(skill.AvgWhite()) + "";
@@ -175,17 +176,16 @@ namespace DamageMeter
                         skillLog.skillTotalDamage = skilldamage + "";
                         skillLog.skillTotalCritDamage = skill.AmountCrit() + "";
 
-                        if (skilldamage == 0) { continue; }
                         teradpsUser.skillLog.Add(skillLog);
                     }
                 }
                 var casts = SkillAggregate.GetAggregate(user, entityInfo.Entity, skills, timedEncounter, Database.Database.Type.Counter);
                 foreach (var cast in casts.OrderByDescending(x => x.Hits()))
                 {
-                    var id = cast.Skills.First().Key.Id.ToString();
-                    var skillLog = teradpsUser.skillLog.FirstOrDefault(x => x.skillId == id);
+                    var id = cast.Skills.First().Key.Id;
+                    var skillLog = teradpsUser.skillLog.FirstOrDefault(x => BasicTeraData.Instance.SkillDatabase.GetOrNull(user.Source.RaceGenderClass, int.Parse(x.skillId)).ShortName == cast.Name);
                     if (skillLog != null) skillLog.skillCasts = cast.Hits().ToString();
-                    else teradpsUser.skillLog.Add(new SkillLog { skillId = id, skillCasts = cast.Hits().ToString() });
+                    else teradpsUser.skillLog.Add(new SkillLog { skillId = id.ToString(), skillCasts = cast.Hits().ToString() });
                 }
                 if (PacketProcessor.Instance.MeterPlayers.Contains(user.Source)) { teradpsData.uploader = teradpsData.members.Count.ToString(); }
                 teradpsData.members.Add(teradpsUser);
