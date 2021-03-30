@@ -183,7 +183,7 @@ namespace DamageMeter
                 foreach (var cast in casts.OrderByDescending(x => x.Hits()))
                 {
                     var id = cast.Skills.First().Key.Id;
-                    var skillLog = teradpsUser.skillLog.FirstOrDefault(x => BasicTeraData.Instance.SkillDatabase.GetOrNull(user.Source.RaceGenderClass, int.Parse(x.skillId)).ShortName == cast.Name);
+                    var skillLog = teradpsUser.skillLog.FirstOrDefault(x => (BasicTeraData.Instance.SkillDatabase.GetOrNull(user.Source.RaceGenderClass, int.Parse(x.skillId))?.ShortName??"Unknown") == cast.Name);
                     if (skillLog != null) skillLog.skillCasts = cast.Hits().ToString();
                     else teradpsUser.skillLog.Add(new SkillLog { skillId = id.ToString(), skillCasts = cast.Hits().ToString() });
                 }
