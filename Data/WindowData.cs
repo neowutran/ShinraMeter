@@ -133,6 +133,10 @@ namespace Data
                         var invalid = new FileStream(_windowFile.Replace(".xml", "_invalid.xml"), FileMode.OpenOrCreate, FileAccess.Write);
                         _filestream.CopyTo(invalid);
                         invalid.Close();
+                        if (File.Exists(_windowFile.Replace(".xml", "_backup.xml")))
+                        {
+                            File.Copy(_windowFile.Replace(".xml", "_backup.xml"), _windowFile.Replace(".xml", "_restored.xml"));
+                        }
                         MessageBox.Show($"Cannot read settings. Default settings will be generated. Ask for help on Discord in the #shinra-beta-chat channel.\nDetails: {ex.Message}", "Shinra Meter");
                     }
                     Save(true);
