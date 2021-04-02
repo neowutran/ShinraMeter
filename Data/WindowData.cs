@@ -118,6 +118,8 @@ namespace Data
                     //ignore
                 }
 
+                var settingsExisting = File.Exists(_windowFile);
+
                 try
                 {
                     _filestream = new FileStream(_windowFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
@@ -125,10 +127,29 @@ namespace Data
                 }
                 catch (Exception ex) when (ex is XmlException || ex is InvalidOperationException)
                 {
-                    Save();
+                    if (settingsExisting)
+                    {
+                        _filestream.Seek(0, SeekOrigin.Begin);
+                        var invalid = new FileStream(_windowFile.Replace(".xml", "_invalid.xml"), FileMode.OpenOrCreate, FileAccess.Write);
+                        _filestream.CopyTo(invalid);
+                        invalid.Close();
+                        MessageBox.Show($"Cannot read settings. Default settings will be generated. Ask for help on Discord in the #shinra-beta-chat channel.\nDetails: {ex.Message}", "Shinra Meter");
+                    }
+                    Save(true);
                     return;
                 }
-                catch { return; }
+                catch (Exception ex)
+                {
+                    if (settingsExisting)
+                    {
+                        _filestream.Seek(0, SeekOrigin.Begin);
+                        var invalid = new FileStream(_windowFile.Replace(".xml", "_invalid.xml"), FileMode.OpenOrCreate, FileAccess.Write);
+                        _filestream.CopyTo(invalid);
+                        invalid.Close();
+                        MessageBox.Show($"Cannot read settings. Ask for help on Discord in the #shinra-beta-chat channel.\nDetails:{ex.Message}", "Shinra Meter");
+                    }
+                    return;
+                }
 
                 Parse("lf_delay", nameof(lFDelay));
                 Parse("number_of_players_displayed", nameof(numberOfPlayersDisplayed));
@@ -262,7 +283,7 @@ namespace Data
                             if (Enum.TryParse<Metric>(metricElement.Value, out var metric)) DpsMetrics[i] = metric;
                             i++;
                         }
-                    }); 
+                    });
                 }
                 else if (metricGroup?.Name == "tank_metrics")
                 {
@@ -274,7 +295,7 @@ namespace Data
                             if (Enum.TryParse<Metric>(metricElement.Value, out var metric)) TankMetrics[i] = metric;
                             i++;
                         }
-                    }); 
+                    });
                 }
                 else if (metricGroup?.Name == "healer_metrics")
                 {
@@ -286,7 +307,7 @@ namespace Data
                             if (Enum.TryParse<Metric>(metricElement.Value, out var metric)) HealerMetrics[i] = metric;
                             i++;
                         }
-                    }); 
+                    });
                 }
             });
         }
@@ -343,7 +364,7 @@ namespace Data
         private bool autoUpdate = true;
         private bool winpcap = true;
         private bool invisibleUi = false;
-        private bool snapToBorders= true;
+        private bool snapToBorders = true;
         private bool noPaste = false;
         private bool allowTransparency = true;
         private bool alwaysVisible = false;
@@ -702,12 +723,18 @@ namespace Data
             }
         }
 
-        public void Save()
+        public void Save(bool skipBackup = false)
         {
             lock (_lock)
             {
                 if (_filestream == null) { return; }
 
+                if (!skipBackup && File.Exists(_windowFile))
+                {
+                    var copy = new FileStream(_windowFile.Replace(".xml", "_backup.xml"), FileMode.OpenOrCreate, FileAccess.Write);
+                    _filestream.CopyTo(copy);
+                    copy.Close();
+                }
                 var xml = new XDocument(new XDeclaration("1.0", "utf-8", "yes"), new XElement("window"));
                 xml.Root.Add(new XElement("location"));
                 xml.Root.Element("location").Add(new XElement("x", location.X.ToString(CultureInfo.InvariantCulture)));
