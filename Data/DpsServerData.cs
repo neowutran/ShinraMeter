@@ -38,7 +38,7 @@ namespace Data
         public static DpsServerData Moongourd = new DpsServerData(
             new Uri("https://moongourd.com/api/shinra/upload"),
             new Uri("https://moongourd.com/api/shinra/whitelist"),
-            new Uri("https://moongourd.com/api/shinra/glyph_upload"),
+            new Uri("https://moongourd.com/api/shinra/upload_glyph"),
             null, null, false );
         
         public static DpsServerData TeraLogs = new DpsServerData(
