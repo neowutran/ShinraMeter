@@ -7,7 +7,7 @@ class ShinraMeter {
 
         m.clientInterface.once('ready', () => {
             m.log('Starting Shinra Meter...');
-            const shinra = spawn(meterPath, ['--toolbox'], { stdio: 'ignore' });
+            const shinra = spawn(meterPath, ['--toolbox'], { stdio: 'ignore', detached: true });
             shinra.on('exit', () => m.log('Shinra exited because it closed or it is already running.'));
         });
     }
