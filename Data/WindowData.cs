@@ -200,7 +200,7 @@ namespace Data
         private bool clickThrou = false;
         private bool packetsCollect = false;
 
-        public ObservableCollection<DpsServerData> DpsServers = new ObservableCollection<DpsServerData> { DpsServerData.Moongourd };
+        public ObservableCollection<DpsServerData> DpsServers = new ObservableCollection<DpsServerData> { DpsServerData.Moongourd, DpsServerData.TeraLogs };
         private List<int> blackListAreaId = new List<int>();
 
         private string excelPathTemplate = "{Area}/{Boss} {Date} {Time} {User}";
