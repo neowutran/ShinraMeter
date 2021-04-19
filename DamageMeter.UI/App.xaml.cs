@@ -61,6 +61,7 @@ namespace DamageMeter.UI
             var updating = new Mutex(true, "ShinraMeterUpdating", out notUpdating);
             _unique = new Mutex(true, "ShinraMeter", out _isNewInstance);
 
+            ToolboxMode = Environment.GetCommandLineArgs().Contains("--toolbox");
 
             if (_isNewInstance)
             {
@@ -111,7 +112,7 @@ namespace DamageMeter.UI
             }
             else
             {
-                if (Environment.GetCommandLineArgs().Contains("--toolbox"))
+                if (ToolboxMode)
                 {
                     Environment.Exit(0);
                 }
@@ -127,6 +128,8 @@ namespace DamageMeter.UI
             try { _unique.WaitOne(); }
             catch { _unique = new Mutex(true, "ShinraMeter", out _isNewInstance); }
         }
+
+        public static bool ToolboxMode { get; private set; }
 
         private void DeleteTmp()
         {
@@ -184,8 +187,10 @@ namespace DamageMeter.UI
             if (BasicTeraData.Instance.WindowData.LowPriority)
                 Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Idle;
 
-            /*TeraSniffer.Instance*/ PacketProcessor.Instance.Sniffer.Enabled = true;
-            /*TeraSniffer.Instance*/ PacketProcessor.Instance.Sniffer.Warning += (str) => BasicTeraData.LogError(str, false, true);
+            /*TeraSniffer.Instance*/
+            PacketProcessor.Instance.Sniffer.Enabled = true;
+            /*TeraSniffer.Instance*/
+            PacketProcessor.Instance.Sniffer.Warning += (str) => BasicTeraData.LogError(str, false, true);
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
 
@@ -207,7 +212,8 @@ namespace DamageMeter.UI
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
             if (e.Mode != PowerModes.StatusChange)
-                /*TeraSniffer.Instance*/ PacketProcessor.Instance.Sniffer.CleanupForcefully();
+                /*TeraSniffer.Instance*/
+                PacketProcessor.Instance.Sniffer.CleanupForcefully();
         }
 
         public static void VerifyClose(bool noConfirm)
@@ -223,7 +229,7 @@ namespace DamageMeter.UI
             Terminate();
         }
 
-        public static void Terminate()
+        private static void Terminate()
         {
             SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
             HudContainer.Dispose();
@@ -233,6 +239,20 @@ namespace DamageMeter.UI
         private void App_OnExit(object sender, ExitEventArgs e)
         {
             if (_isNewInstance) { _unique.ReleaseMutex(); }
+        }
+
+        public static void StartToolboxProcessCheck()
+        {
+            Task.Run(async () =>
+            {
+                while (MiscUtils.IsToolboxRunning())
+                {
+                    await Task.Delay(2000);
+                    Debug.WriteLine("Toolbox running");
+                }
+                Debug.WriteLine("Toolbox exited, closing meter");
+                MainDispatcher.Invoke(() => VerifyClose(true));
+            });
         }
     }
 }

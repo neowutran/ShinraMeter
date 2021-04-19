@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -44,6 +45,11 @@ namespace DamageMeter
                 _ => PlayerRole.None
             };
 
+        }
+
+        public static bool IsToolboxRunning()
+        {
+            return Process.GetProcessesByName("Electron").Any(x => x.MainWindowTitle == "TERA Toolbox");
         }
     }
     public static class Extensions

@@ -136,6 +136,7 @@ namespace Data
                         if (File.Exists(_windowFile.Replace(".xml", "_backup.xml")))
                         {
                             File.Copy(_windowFile.Replace(".xml", "_backup.xml"), _windowFile.Replace(".xml", "_restored.xml"));
+                            System.Diagnostics.Debug.WriteLine("Saved extra backup");
                         }
                         MessageBox.Show($"Cannot read settings. Default settings will be generated. Ask for help on Discord in the #shinra-beta-chat channel.\nDetails: {ex.Message}", "Shinra Meter");
                     }

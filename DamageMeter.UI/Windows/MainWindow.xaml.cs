@@ -59,6 +59,8 @@ namespace DamageMeter.UI
             SettingsWindowViewModel.WindowScaleChanged += OnScaleChanged;
 
             App.SplashScreen?.CloseWindowSafe();
+
+            if(App.ToolboxMode) App.StartToolboxProcessCheck();
         }
 
 
