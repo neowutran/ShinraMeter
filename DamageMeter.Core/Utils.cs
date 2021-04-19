@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -21,6 +24,7 @@ namespace DamageMeter
         Self,
         None
     }
+
     public static class MiscUtils
     {
         public static PlayerRole RoleFromClass(PlayerClass c)
@@ -49,7 +53,13 @@ namespace DamageMeter
 
         public static bool IsToolboxRunning()
         {
-            return Process.GetProcessesByName("Electron").Any(x => x.MainWindowTitle == "TERA Toolbox");
+            //kinda ewww, but ok
+            var expectedPath = Path.Combine(
+                Path.GetDirectoryName(
+                    Path.GetDirectoryName(
+                        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))!, "node_modules\\electron\\dist\\electron.exe");
+
+            return Process.GetProcessesByName("Electron").Any(x => x.GetFilePath() == expectedPath);
         }
     }
     public static class Extensions
@@ -78,6 +88,45 @@ namespace DamageMeter
             // convert back to string (with the limit adjusted)
             return Encoding.UTF8.GetString(a, 0, n);
         }
+
+        public static string GetFilePath(this Process p)
+        {
+            var capacity = 2000;
+            var builder = new StringBuilder(capacity);
+            var ptr = OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, p.Id);
+            return !QueryFullProcessImageName(ptr, 0, builder, ref capacity) ? string.Empty : builder.ToString();
+        }
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool QueryFullProcessImageName(
+            [In] IntPtr hProcess,
+            [In] int dwFlags,
+            [Out] StringBuilder lpExeName,
+            ref int lpdwSize);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr OpenProcess(
+            ProcessAccessFlags processAccess,
+            bool bInheritHandle,
+            int processId);
+
+        [Flags]
+        private enum ProcessAccessFlags : uint
+        {
+            CreateProcess = 0x0080,
+            CreateThread = 0x0002,
+            DupHandle = 0x0040,
+            QueryInformation = 0x0400,
+            QueryLimitedInformation = 0x1000,
+            SetInformation = 0x0200,
+            SetQuota = 0x0100,
+            SuspendResume = 0x0800,
+            Terminate = 0x0001,
+            Operation = 0x0008,
+            Read = 0x0010,
+            Write = 0x0020,
+            Synchronize = 0x00100000,
+        }
+
     }
 
     public class TSPropertyChanged : INotifyPropertyChanged
