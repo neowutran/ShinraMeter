@@ -40,5 +40,11 @@ namespace Data
             new Uri("https://moongourd.com/api/shinra/whitelist"),
             new Uri("https://moongourd.com/api/shinra/glyph_upload"),
             null, null, false );
+        
+        public static DpsServerData TeraLogs = new DpsServerData(
+            new Uri("https://api.teralogs.com/v1/upload"),
+            new Uri("https://api.teralogs.com/v1/whitelist"),
+            null,
+            null, null, false );
     }
 }
