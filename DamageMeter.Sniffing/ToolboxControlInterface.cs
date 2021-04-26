@@ -74,6 +74,11 @@ namespace DamageMeter.Sniffing
             });
             return resp?.Result != null && resp.Result.Value<bool>();
         }
+        public async Task<uint> GetToolboxPID()
+        {
+            var resp = await _client.CallAsync("getToolboxPID");
+            return resp?.Result?.Value<uint>() ?? 0;
+        }
 
         public async Task<bool> AddDefinition(string opcodeName, uint version, string def)
         {
@@ -132,5 +137,6 @@ namespace DamageMeter.Sniffing
             var resp = await _client.CallAsync("getProtocolVersion");
             return resp?.Result?.Value<uint>() ?? 0;
         }
+
     }
 }

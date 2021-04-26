@@ -10,8 +10,10 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using DamageMeter.Sniffing;
 using Tera.Game;
 
 namespace DamageMeter
@@ -51,15 +53,18 @@ namespace DamageMeter
 
         }
 
-        public static bool IsToolboxRunning()
+        public static async Task<bool> IsToolboxRunningAsync()
         {
-            //kinda ewww, but ok
-            var expectedPath = Path.Combine(
-                Path.GetDirectoryName(
-                    Path.GetDirectoryName(
-                        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))!, "node_modules\\electron\\dist\\electron.exe");
+            ////kinda ewww, but ok
+            //var expectedPath = Path.Combine(
+            //    Path.GetDirectoryName(
+            //        Path.GetDirectoryName(
+            //            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)))!, "node_modules\\electron\\dist\\electron.exe");
 
-            return Process.GetProcessesByName("Electron").Any(x => x.GetFilePath() == expectedPath);
+            //return Process.GetProcessesByName("Electron").Any(x => x.GetFilePath() == expectedPath);
+
+            if (PacketProcessor.Instance.Sniffer is not ToolboxSniffer sniffer) return false;
+            return await sniffer.ControlConnection.GetToolboxPID() != 0;
         }
     }
     public static class Extensions

@@ -245,7 +245,7 @@ namespace DamageMeter.UI
         {
             Task.Run(async () =>
             {
-                while (MiscUtils.IsToolboxRunning())
+                while (await MiscUtils.IsToolboxRunningAsync())
                 {
                     await Task.Delay(2000);
                     Debug.WriteLine("Toolbox running");
