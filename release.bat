@@ -40,4 +40,4 @@ del "%output%\resources\data\hotdot\abnormal.tsv"
 xcopy "%output%" "%tb-output%" /y /s
 del "%tb-output%\add_firewall_exception.bat"
 node ".\manifest-generator.js" "%tb-output%"
-"%source%\Publisher\bin\release\net5-windows\Publisher.exe"
+rem "%source%\Publisher\bin\release\net5-windows\Publisher.exe"
