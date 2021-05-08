@@ -60,8 +60,8 @@
 	<!-- Triple Nemesis -->
 	<abnormality ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="3" trigger="MissingDuringFight" target="Boss">
 		<abnormalities>
-			<abnormality>27160</abnormality>
 			<abnormality>28090</abnormality>
+			<abnormality>27160</abnormality>
 		</abnormalities>
 		<actions>
 			<notify>
