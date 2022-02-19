@@ -56,6 +56,7 @@ namespace DamageMeter.UI
         private Skills _windowSkill;
         private bool _showFirst;
 
+        public Player Source => _damageData.Source;
         public string Name => _damageData.Source.Name;
         public string FullName => _damageData.Source.FullName;
         public PlayerClass Class => _damageData.Source.Class;

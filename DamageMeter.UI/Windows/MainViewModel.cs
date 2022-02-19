@@ -497,7 +497,7 @@ namespace DamageMeter.UI
                     //}
                     var healDealt = statsHeal.FirstOrDefault(x => x.Source == damageDealt.Source);
 
-                    var existing = Players.FirstOrDefault(p => p.Name == damageDealt.Source.Name);
+                    var existing = Players.FirstOrDefault(p => p.Source == damageDealt.Source);
                     if (existing != null)
                     {
                         existing.Update(damageDealt, healDealt, message.StatsSummary.EntityInformation, message.Skills, message.Abnormals,
