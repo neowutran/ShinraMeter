@@ -4,7 +4,7 @@
     <Product>ShinraMeter.D3D9Render</Product>
     <Copyright>Copyright ©  2017</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <TargetFrameworks>net5-windows</TargetFrameworks>
+    <TargetFrameworks>net5-windows;net6-windows</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <RestorePackagesPath>..\packages</RestorePackagesPath>

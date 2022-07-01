@@ -6,9 +6,9 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net5-windows;net471</TargetFrameworks>
+    <TargetFrameworks>net5-windows;net6-windows;net471</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net5'))">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net5')) or $(TargetFramework.StartsWith('net6'))">
     <COMReference Include="SpeechLib.dll">
       <Guid>c866ca3a-32f7-11d2-9602-00c04f8ee628</Guid>
       <VersionMajor>5</VersionMajor>
@@ -35,8 +35,8 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="NAudio" Version="1.10.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Management" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Management" Version="6.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
   </ItemGroup>
