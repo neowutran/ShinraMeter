@@ -52,7 +52,7 @@ namespace DamageMeter.Sniffing
         /// <returns>true if successful</returns>
         public async Task<bool> DumpMap(string path, string mapType)
         {
-            var resp = await _client.CallAsync("dumpMap", new JObject
+            var resp = await _client.CallAsync("dumpMapSync", new JObject
             {
                 { "path", path},
                 { "mapType", mapType }
