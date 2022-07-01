@@ -40,7 +40,7 @@ namespace DamageMeter
 
         private static readonly Dictionary<Type, Delegate> MessageToProcessingOptionnal = new Dictionary<Type, Delegate>
         {
-            //{typeof(S_WEAK_POINT), new Action<S_WEAK_POINT>(x => HudManager.Instance.UpdateRunemarks(x))},
+//            {typeof(S_WEAK_POINT), new Action<S_WEAK_POINT>(x => HudManager.Instance.UpdateRunemarks(x))},  // process only if player - valk
             {typeof(S_AVAILABLE_EVENT_MATCHING_LIST), new Action<S_AVAILABLE_EVENT_MATCHING_LIST>(x => NotifyProcessor.Instance.UpdateCredits(x))},
             {typeof(S_UPDATE_NPCGUILD), new Action<S_UPDATE_NPCGUILD>(x => NotifyProcessor.Instance.UpdateCredits(x))},
             {typeof(SpawnMeServerMessage), new Action<SpawnMeServerMessage>(x => NotifyProcessor.Instance.SpawnMe(x))}, //override with optional processing
