@@ -248,7 +248,7 @@ namespace DamageMeter.UI
                 while (await MiscUtils.IsToolboxRunningAsync())
                 {
                     await Task.Delay(2000);
-                    Debug.WriteLine("Toolbox running");
+                    //Debug.WriteLine("Toolbox running");
                 }
                 Debug.WriteLine("Toolbox exited, closing meter");
                 MainDispatcher.Invoke(() => VerifyClose(true));
