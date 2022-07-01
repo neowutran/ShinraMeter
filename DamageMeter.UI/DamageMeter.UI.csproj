@@ -27,7 +27,7 @@
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
-		<TargetFrameworks>net5-windows;net6-windows</TargetFrameworks>
+		<TargetFrameworks>net6-windows;net5-windows</TargetFrameworks>
 		<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
