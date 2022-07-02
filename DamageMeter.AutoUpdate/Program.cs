@@ -13,7 +13,7 @@ namespace DamageMeter.AutoUpdate
         {
             if (args.Length == 0)
             {
-                Process.Start("explorer.exe", "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                Process.Start( new ProcessStartInfo("https://www.youtube.com/watch?v=dQw4w9WgXcQ") { UseShellExecute = true});
                 MessageBox.Show("Autoupdate.exe is used internally by the meter. End user must not run it.");
                 Environment.Exit(0);
             }

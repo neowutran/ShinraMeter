@@ -8,7 +8,7 @@
     <Copyright>Copyright ©  2015</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <UseWindowsForms>true</UseWindowsForms>
-    <TargetFrameworks>net5-windows;net6-windows;net471</TargetFrameworks>
+    <TargetFrameworks>net6-windows;net5-windows;net471</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('net5'))">
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
