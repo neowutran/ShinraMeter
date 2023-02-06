@@ -6,9 +6,9 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net5-windows;net6-windows;net471</TargetFrameworks>
+    <TargetFrameworks>net7-windows;net5-windows;net6-windows;net471</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net5')) or $(TargetFramework.StartsWith('net6'))">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net5')) or $(TargetFramework.StartsWith('net6')) or $(TargetFramework.StartsWith('net7'))">
     <COMReference Include="SpeechLib.dll">
       <Guid>c866ca3a-32f7-11d2-9602-00c04f8ee628</Guid>
       <VersionMajor>5</VersionMajor>

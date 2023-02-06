@@ -38,7 +38,7 @@ namespace Data.Actions.Notify.SoundElements
         }
 #endif
 
-#if NET5_0 || NET6_0
+#if NET5_0_OR_GREATER
 
         public void Play()
         {

@@ -6,7 +6,7 @@
     <Product>Publisher</Product>
     <Copyright>Copyright ©  2017</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <TargetFrameworks>net5-windows;net6-windows</TargetFrameworks>
+    <TargetFrameworks>net7-windows;net5-windows;net6-windows</TargetFrameworks>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
