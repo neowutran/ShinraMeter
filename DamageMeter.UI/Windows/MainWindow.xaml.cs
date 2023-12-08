@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Nostrum.Factories;
 using Tera.Game;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -60,10 +61,8 @@ namespace DamageMeter.UI
 
             App.SplashScreen?.CloseWindowSafe();
 
-            if(App.ToolboxMode) App.StartToolboxProcessCheck();
+            if (App.ToolboxMode) App.StartToolboxProcessCheck();
         }
-
-
 
         private void ListEncounterOnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
@@ -289,11 +288,13 @@ namespace DamageMeter.UI
         {
             DC.IsMouseOver = true;
             Footer.BeginAnimation(HeightProperty, _expandFooterAnim);
+            Toast.BeginAnimation(OpacityProperty, AnimationFactory.CreateDoubleAnimation(250, .2));
         }
         private void MainWindow_OnMouseLeave(object sender, MouseEventArgs e)
         {
             DC.IsMouseOver = false;
             Footer.BeginAnimation(HeightProperty, _shrinkFooterAnim);
+            Toast.BeginAnimation(OpacityProperty, AnimationFactory.CreateDoubleAnimation(250, 1));
         }
         //public override void SetClickThrou()
         //{

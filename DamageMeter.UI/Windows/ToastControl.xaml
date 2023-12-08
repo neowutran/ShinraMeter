@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:windows="clr-namespace:DamageMeter.UI.Windows"
+             UseLayoutRounding="True"
              mc:Ignorable="d" >
     <Grid >
         <Border CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=windows:ToastControl}}"

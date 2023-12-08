@@ -13,7 +13,6 @@
                      xmlns:extensions="clr-namespace:Nostrum.Extensions;assembly=Nostrum"
                      xmlns:game="clr-namespace:Tera.Game;assembly=Tera.Core"
                      mc:Ignorable="d"
-                     UseLayoutRounding="True"
                      Icon="{Binding WindowIcon}"
                      Title="{Binding WindowTitle}"
                      Background="#01000000"
@@ -527,10 +526,7 @@
                 <wpf:CartesianChart.DrawMargin>
                     <measure:Margin Bottom="0" Right="0" Left="0" Top="0"/>
                 </wpf:CartesianChart.DrawMargin>
-
             </wpf:CartesianChart>
-
-
         </Grid>
 
         <!--Footer-->
@@ -622,16 +618,17 @@
                               Grid.RowSpan="3"
                               VerticalAlignment="Center"
                               Padding="10 0"
-                              CornerRadius="5"
-                              HorizontalAlignment="Stretch"
+                              CornerRadius="2"
+                              HorizontalAlignment="Center"
                               MaxWidth="230"
                               ToastSeverity="{Binding Severity}"
                               IsShowed="{Binding Visible}"
                               Foreground="White"
-                              FontWeight="DemiBold"
-                              FontSize="14"
+                              FontWeight="Normal"
+                              FontSize="12"
                               SlideOffset="-5"
                               IsHitTestVisible="False"
-                              ToastText="{Binding Text}" />
+                              ToastText="{Binding Text}" 
+                              x:Name="Toast"/>
     </Grid>
 </ui:ClickThrouWindow>
