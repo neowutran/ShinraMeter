@@ -2,6 +2,7 @@
 using DamageMeter.UI.Windows;
 using Data;
 using Lang;
+using Nostrum;
 using Nostrum.Factories;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using DamageMeter.Database.Structures;
-using Nostrum;
 using Tera.Game;
-using Tera.Game.Abnormality;
 
 namespace DamageMeter.UI
 {
@@ -334,8 +332,6 @@ namespace DamageMeter.UI
             }
         }
 
-
-
         public string ConnectionStatusText => Connected ? PacketProcessor.Instance.Server?.Name : LP.SystemTray_No_server;
 
         public Color BackgroundColor => BasicTeraData.Instance.WindowData.BackgroundColor;
@@ -365,7 +361,7 @@ namespace DamageMeter.UI
         }
         public SynchronizedObservableCollection<PlayerDamageViewModel> Players { get; }
         public ICollectionViewLiveShaping PlayersView { get; set; }
-        public GraphViewModel GraphData { get; }
+        public RealtimeChartViewModel GraphData { get; }
         public ToastViewModel ToastData { get; }
 
         public ICommand TogglePauseCommand { get; }
@@ -386,8 +382,7 @@ namespace DamageMeter.UI
             App.Setup();
 
             WindowTitle = "Shinra Meter v" + UpdateManager.Version;
-
-            GraphData = new GraphViewModel();
+            GraphData = new RealtimeChartViewModel();
             ToastData = new ToastViewModel();
             Encounters = new SynchronizedObservableCollection<NpcEntity>();
             Players = new SynchronizedObservableCollection<PlayerDamageViewModel>();
@@ -473,7 +468,10 @@ namespace DamageMeter.UI
                 {
                     Task.Run(() =>
                     {
-                        App.MainDispatcher.InvokeAsync(() => GraphData.Update(message), DispatcherPriority.Background);
+                        App.MainDispatcher.InvokeAsync(() =>
+                        {
+                            GraphData.Update(message);
+                        }, DispatcherPriority.Background);
                     });
                     IsGraphVisible = true;
                 }

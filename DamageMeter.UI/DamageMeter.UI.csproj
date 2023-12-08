@@ -69,8 +69,6 @@
 		<PackageReference Include="EntityFramework" Version="6.4.4" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="3.6.0" />
 		<PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc2" />
-		<PackageReference Include="LiveCharts" Version="0.9.7" />
-		<PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
 		<PackageReference Include="log4net" Version="2.0.8" />
 		<PackageReference Include="Markdig" Version="0.18.0" />
 		<PackageReference Include="Markdig.Wpf" Version="0.3.1" />

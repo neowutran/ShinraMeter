@@ -4,14 +4,14 @@
                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:ui="clr-namespace:DamageMeter.UI"
-                     xmlns:controls="clr-namespace:DamageMeter.UI.Controls"
+                     xmlns:hud="clr-namespace:DamageMeter.UI.HUD"
                      xmlns:windows="clr-namespace:DamageMeter.UI.Windows"
                      xmlns:l="clr-namespace:Lang;assembly=Lang"
+                     xmlns:measure="clr-namespace:LiveChartsCore.Measure;assembly=LiveChartsCore"
+                     xmlns:wpf="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+                     xmlns:nostrum="clr-namespace:Nostrum.Converters;assembly=Nostrum"
                      xmlns:extensions="clr-namespace:Nostrum.Extensions;assembly=Nostrum"
                      xmlns:game="clr-namespace:Tera.Game;assembly=Tera.Core"
-                     xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
-                     xmlns:hud="clr-namespace:DamageMeter.UI.HUD"
-                     xmlns:nostrum="clr-namespace:Nostrum.Converters;assembly=Nostrum"
                      mc:Ignorable="d"
                      UseLayoutRounding="True"
                      Icon="{Binding WindowIcon}"
@@ -497,21 +497,40 @@
         </TextBlock>
 
         <!--Graph-->
-        <Grid Grid.Row="6" x:Name="GraphContainer">
+        <Grid Grid.Row="6" x:Name="GraphContainer"
+              >
             <Grid.Style>
                 <Style TargetType="FrameworkElement">
-                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Setter Property="Height" Value="0" />
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsGraphVisible}" Value="True">
-                            <Setter Property="Visibility" Value="Visible" />
+                        <DataTrigger Binding="{Binding GraphData.IsChartVisible}" Value="True">
+                            <Setter Property="Height" Value="140" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <controls:RealtimeGraph x:Name="Graph"
-                                    MouseEnter="OnGraphMouseEnter"
-                                    MouseLeave="OnGraphMouseLeave"
-                                    DataContext="{Binding GraphData}" />
+            <wpf:CartesianChart XAxes="{Binding GraphData.XAxes}"
+                                YAxes="{Binding GraphData.YAxes}"
+                                Series="{Binding GraphData.DpsSeries}"
+                                Sections="{Binding GraphData.EnrageSections}"
+                                Height="140"
+                                Width="{Binding ActualWidth, ElementName=GraphContainer}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                AnimationsSpeed="0:0:0.5"
+                                ZoomMode="X"
+                                Margin="0"
+            >
+                <wpf:CartesianChart.Tooltip>
+                    <ui:RealtimeChartTooltip/>
+                </wpf:CartesianChart.Tooltip>
+                <wpf:CartesianChart.DrawMargin>
+                    <measure:Margin Bottom="0" Right="0" Left="0" Top="0"/>
+                </wpf:CartesianChart.DrawMargin>
+
+            </wpf:CartesianChart>
+
+
         </Grid>
 
         <!--Footer-->
