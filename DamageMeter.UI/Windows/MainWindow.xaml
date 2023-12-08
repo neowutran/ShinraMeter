@@ -517,8 +517,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 ZoomMode="X"
-                                Margin="0"
-            >
+                                Margin="0">
                 <wpf:CartesianChart.Style>
                     <Style TargetType="wpf:CartesianChart">
                         <Setter Property="AnimationsSpeed" Value="0"/>

@@ -68,15 +68,15 @@ public class RealtimeChartViewModel : TSPropertyChanged
     {
         _xAxis = new Axis
         {
-            LabelsPaint = new SolidColorPaint(SKColors.DimGray/*.WithAlpha(100)*/),
+            LabelsPaint = new SolidColorPaint(SKColors.LightSlateGray/*.WithAlpha(100)*/),
             TextSize = 8,
             //MinStep = 10,
-            SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray/*.WithAlpha(30)*/)
+            SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray.WithAlpha(30))
             {
                 StrokeThickness = 1,
                 PathEffect = new DashEffect([3, 3]),
             },
-            TicksPaint = new SolidColorPaint(SKColors.DimGray/*.WithAlpha(20)*/)
+            TicksPaint = new SolidColorPaint(SKColors.DimGray.WithAlpha(20))
             {
                 StrokeThickness = 1,
                 PathEffect = new DashEffect([3, 3]),
@@ -93,16 +93,16 @@ public class RealtimeChartViewModel : TSPropertyChanged
         XAxes = [_xAxis];
         _yAxis = new Axis
         {
-            LabelsPaint = new SolidColorPaint(SKColors.DimGray/*.WithAlpha(100)*/),
+            LabelsPaint = new SolidColorPaint(SKColors.LightSlateGray/*.WithAlpha(100)*/),
             MinLimit = 0,
             TextSize = 8,
             Position = AxisPosition.End,
-            SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray/*.WithAlpha(30)*/)
+            SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray.WithAlpha(30))
             {
                 StrokeThickness = 1,
-                PathEffect = new DashEffect([3, 3]),
+                //PathEffect = new DashEffect([3, 3]),
             },
-            TicksPaint = new SolidColorPaint(SKColors.DimGray/*.WithAlpha(20)*/)
+            TicksPaint = new SolidColorPaint(SKColors.DimGray.WithAlpha(20))
             {
                 StrokeThickness = 1,
                 PathEffect = new DashEffect([3, 3]),
@@ -265,14 +265,14 @@ public class RealtimeChartViewModel : TSPropertyChanged
                 {
                     Name = name,
                     Stroke
-                    //= new SolidColorPaint(SKColors.Red, 2),
-                    = new LinearGradientPaint([
-                        colorTrans.ToSKColor(),
-                        color.ToSKColor().WithAlpha(isMe ? (byte)255 : (byte)200)
-                    ], new SKPoint(0, 0), new SKPoint(1, 0), [0, 1])
-                    {
-                        StrokeThickness = 1
-                    },
+                    = new SolidColorPaint(color.ToSKColor().WithAlpha(isMe ? (byte)255 : (byte)220), 1),
+                    //= new LinearGradientPaint([
+                    //    colorTrans.ToSKColor(),
+                    //    color.ToSKColor().WithAlpha(isMe ? (byte)255 : (byte)200)
+                    //], new SKPoint(0, 0), new SKPoint(1, 0), [0, 1])
+                    //{
+                    //    StrokeThickness = 1
+                    //},
                     GeometryStroke = new SolidColorPaint(color.ToSKColor(), 2),
                     GeometryFill = new SolidColorPaint(color.ToSKColor().WithAlpha(100)),
 
@@ -303,6 +303,11 @@ public class RealtimeChartViewModel : TSPropertyChanged
                 // add new series to Series collection
                 DpsSeries.Add(newSeries);
             }
+
+            _xAxis.MinLimit = null;
+            _xAxis.MaxLimit = null;
+            _yAxis.MinLimit = 0;
+            _yAxis.MaxLimit = null;
         }
     }
 
