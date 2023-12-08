@@ -516,10 +516,19 @@
                                 Width="{Binding ActualWidth, ElementName=GraphContainer}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                AnimationsSpeed="0:0:0.5"
                                 ZoomMode="X"
                                 Margin="0"
             >
+                <wpf:CartesianChart.Style>
+                    <Style TargetType="wpf:CartesianChart">
+                        <Setter Property="AnimationsSpeed" Value="0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding GraphData.IsAnimated}" Value="True">
+                                <Setter Property="AnimationsSpeed" Value="0:0:0.5"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </wpf:CartesianChart.Style>
                 <wpf:CartesianChart.Tooltip>
                     <ui:RealtimeChartTooltip/>
                 </wpf:CartesianChart.Tooltip>
