@@ -4,8 +4,8 @@
     <Product>NetworkSniffer</Product>
     <Copyright>Copyright ©  2015</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <TargetFrameworks>net7-windows;net5-windows;net6-windows;net471</TargetFrameworks>
-    <LangVersion>9.0</LangVersion>
+    <TargetFrameworks>net8-windows;net7-windows;net5-windows;net6-windows;net471</TargetFrameworks>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>embedded</DebugType>

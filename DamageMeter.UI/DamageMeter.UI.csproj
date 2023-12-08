@@ -27,9 +27,10 @@
 		<OutputPath>bin\$(Configuration)\</OutputPath>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
-		<TargetFrameworks>net7-windows;net6-windows;net5-windows</TargetFrameworks>
+		<TargetFrameworks>net8-windows;net7-windows;net6-windows;net5-windows</TargetFrameworks>
 		<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<EnableSourceControlManagerQueries>true</EnableSourceControlManagerQueries>
 	</PropertyGroup>
 	<PropertyGroup Condition="$(TargetFramework.StartsWith('net6'))">
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
@@ -58,7 +59,8 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<ApplicationIcon>shinra.ico</ApplicationIcon>
-		<LangVersion>9.0</LangVersion>
+		<LangVersion>12</LangVersion>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="Resources\Heaters.otf" />
@@ -66,6 +68,7 @@
 	<ItemGroup>
 		<PackageReference Include="EntityFramework" Version="6.4.4" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="3.6.0" />
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc2" />
 		<PackageReference Include="LiveCharts" Version="0.9.7" />
 		<PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
 		<PackageReference Include="log4net" Version="2.0.8" />

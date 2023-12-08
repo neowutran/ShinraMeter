@@ -4,11 +4,11 @@
     <Product>ShinraMeter.D3D9Render</Product>
     <Copyright>Copyright ©  2017</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <TargetFrameworks>net7-windows;net5-windows;net6-windows</TargetFrameworks>
+    <TargetFrameworks>net8-windows;net7-windows;net5-windows;net6-windows</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <RestorePackagesPath>..\packages</RestorePackagesPath>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>embedded</DebugType>
