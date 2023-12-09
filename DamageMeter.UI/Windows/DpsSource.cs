@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DamageMeter.UI
 {
-    internal class DpsSource
+    public class DpsSource
     {
         // fields
         private long _prevAmount;

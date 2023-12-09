@@ -17,7 +17,7 @@ using Color = System.Windows.Media.Color;
 
 namespace DamageMeter.UI;
 
-public class RealtimeChartViewModel : TSPropertyChanged
+public class RealtimeChartViewModel : TSPropertyChanged, IChartViewModel
 {
 
     readonly List<DpsSource> _sources = [];
@@ -66,56 +66,11 @@ public class RealtimeChartViewModel : TSPropertyChanged
 
     public RealtimeChartViewModel()
     {
-        _xAxis = new Axis
-        {
-            LabelsPaint = new SolidColorPaint(SKColors.LightSlateGray/*.WithAlpha(100)*/),
-            TextSize = 8,
-            //MinStep = 10,
-            SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray.WithAlpha(30))
-            {
-                StrokeThickness = 1,
-                PathEffect = new DashEffect([3, 3]),
-            },
-            TicksPaint = new SolidColorPaint(SKColors.DimGray.WithAlpha(20))
-            {
-                StrokeThickness = 1,
-                PathEffect = new DashEffect([3, 3]),
-            },
-            //ForceStepToMin = true,
-            Labeler = v => FormatHelpers.Instance.FormatTimeSpan(TimeSpan.FromSeconds(v)),
-            Padding = new Padding(4),
-            CrosshairLabelsBackground = SKColors.Transparent.AsLvcColor(),
-            CrosshairLabelsPaint = new SolidColorPaint(SKColors.Transparent, 1),
-            CrosshairPaint = new SolidColorPaint(SKColors.DimGray, 1),
-            CrosshairSnapEnabled = true
-
-        };
+        _xAxis = UiUtils.CreateDpsXAxis();
         XAxes = [_xAxis];
-        _yAxis = new Axis
-        {
-            LabelsPaint = new SolidColorPaint(SKColors.LightSlateGray/*.WithAlpha(100)*/),
-            MinLimit = 0,
-            TextSize = 8,
-            Position = AxisPosition.End,
-            SeparatorsPaint = new SolidColorPaint(SKColors.LightSlateGray.WithAlpha(30))
-            {
-                StrokeThickness = 1,
-                //PathEffect = new DashEffect([3, 3]),
-            },
-            TicksPaint = new SolidColorPaint(SKColors.DimGray.WithAlpha(20))
-            {
-                StrokeThickness = 1,
-                PathEffect = new DashEffect([3, 3]),
-            },
-            CrosshairLabelsBackground = SKColors.Transparent.AsLvcColor(),
-            CrosshairLabelsPaint = new SolidColorPaint(SKColors.Transparent, 1),
-            CrosshairPaint = new SolidColorPaint(SKColors.SlateGray, 1),
-            CrosshairSnapEnabled = true,
-            //ForceStepToMin = false,
-            //MinStep = 10,
-            Labeler = v => FormatHelpers.Instance.FormatValue(Convert.ToInt64(v)),
-            Padding = new Padding(4)
-        };
+
+        _yAxis = UiUtils.CreateDpsYAxis();
+        _yAxis.Position = AxisPosition.End;
         YAxes = [_yAxis];
     }
 
@@ -316,7 +271,7 @@ public class RealtimeChartViewModel : TSPropertyChanged
         if (_enraged != value && value)
         {
             // just enraged, add new
-            EnrageSections.Add(CreateSection());
+            EnrageSections.Add(UiUtils.CreateEnrageSection(_currTime, _currTime));
         }
         else if (value)
         {
@@ -330,24 +285,10 @@ public class RealtimeChartViewModel : TSPropertyChanged
             else
             {
                 // add new
-                EnrageSections.Add(CreateSection());
+                EnrageSections.Add(UiUtils.CreateEnrageSection(_currTime, _currTime));
             }
         }
         _enraged = value;
-
-        return;
-
-        RectangularSection CreateSection()
-        {
-            return new RectangularSection()
-            {
-                Xi = _currTime / (double)TimeSpan.TicksPerSecond,
-                Xj = _currTime / (double)TimeSpan.TicksPerSecond,
-                Fill = new LinearGradientPaint([new SKColor(0xff, 0x33, 0x33, 0x30), new SKColor(0xff, 0x33, 0x33, 0x00)],
-                new SKPoint(0, 0), new SKPoint(0, 1), [0, 1])
-            };
-        }
-
     }
 
     void CheckReset(UiUpdateMessage message)
